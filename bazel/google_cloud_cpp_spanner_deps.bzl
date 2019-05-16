@@ -50,28 +50,39 @@ def google_cloud_cpp_spanner_deps():
         )
 
     # Load the googleapis dependency.
-    if "com_github_googleapis_googleapis" not in native.existing_rules():
+    if "com_google_googleapis" not in native.existing_rules():
         http_archive(
-            name = "com_github_googleapis_googleapis",
+            name = "com_google_googleapis",
             urls = [
-                "https://github.com/google/googleapis/archive/6a3277c0656219174ff7c345f31fb20a90b30b97.zip",
+                "https://github.com/google/googleapis/archive/ffa256646fb15c4a6c720f0ed8f984a0ea513416.zip",
             ],
-            strip_prefix = "googleapis-6a3277c0656219174ff7c345f31fb20a90b30b97",
-            sha256 = "82ba91a41fb01305de4e8805c0a9270ed2035007161aa5a4ec60f887a499f5e9",
-            build_file = "@com_github_googleapis_google_cloud_cpp//bazel:googleapis.BUILD",
+            strip_prefix = "googleapis-ffa256646fb15c4a6c720f0ed8f984a0ea513416",
+            sha256 = "86191c1c625a69a8bc8e79beb55ac8d13d63ac51e44a49f7b0b059655e091d74",
+            build_file = "//bazel:googleapis.BUILD",
         )
+
+    #    if "com_github_googleapis_googleapis" not in native.existing_rules():
+    #        http_archive(
+    #            name = "com_github_googleapis_googleapis",
+    #            urls = [
+    #                "https://github.com/google/googleapis/archive/6a3277c0656219174ff7c345f31fb20a90b30b97.zip",
+    #            ],
+    #            strip_prefix = "googleapis-6a3277c0656219174ff7c345f31fb20a90b30b97",
+    #            sha256 = "82ba91a41fb01305de4e8805c0a9270ed2035007161aa5a4ec60f887a499f5e9",
+    #            build_file = "@com_github_googleapis_google_cloud_cpp//bazel:googleapis.BUILD",
+    #        )
 
     # Load gRPC and its dependencies, using a similar pattern to this function.
     # This implictly loads "com_google_protobuf", which we use.
     if "com_github_grpc_grpc" not in native.existing_rules():
         http_archive(
             name = "com_github_grpc_grpc",
-            strip_prefix = "grpc-1.19.1",
+            strip_prefix = "grpc-1.21.0-pre1",
             urls = [
-                "https://github.com/grpc/grpc/archive/v1.19.1.tar.gz",
-                "https://mirror.bazel.build/github.com/grpc/grpc/archive/v1.19.1.tar.gz",
+                "https://github.com/grpc/grpc/archive/v1.21.0-pre1.tar.gz",
+                "https://mirror.bazel.build/github.com/grpc/grpc/archive/v1.21.0-pre1.tar.gz",
             ],
-            sha256 = "f869c648090e8bddaa1260a271b1089caccbe735bf47ac9cd7d44d35a02fb129",
+            sha256 = "cab0fb2a1ab25745234e412afb45bce6ebbe722c992ac1806ccfa279d9b04363",
         )
 
     # We use the cc_proto_library() rule from @com_google_protobuf, which
