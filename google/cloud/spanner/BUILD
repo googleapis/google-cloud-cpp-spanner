@@ -46,6 +46,7 @@ cc_library(
     hdrs = spanner_client_hdrs + ["version_info.h"],
     deps = [
         "@com_github_googleapis_google_cloud_cpp//google/cloud:google_cloud_cpp_common",
+        "@com_google_googleapis//:google_longrunning_operations",
         "@com_google_googleapis//:spanner_protos",
     ],
 )
