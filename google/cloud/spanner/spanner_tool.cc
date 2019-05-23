@@ -144,7 +144,8 @@ int DropDatabase(std::vector<std::string> args) {
 
   spanner::DropDatabaseRequest request;
   google::protobuf::Empty response;
-  request.set_database("projects/" + project + "/instances/" + instance + "/databases/" + database);
+  request.set_database("projects/" + project + "/instances/" + instance +
+                       "/databases/" + database);
 
   grpc::ClientContext context;
   grpc::Status status = stub->DropDatabase(&context, request, &response);
