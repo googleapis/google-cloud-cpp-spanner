@@ -43,7 +43,7 @@ echo "================================================================"
 (cd "${PROJECT_ROOT}" ; ./ci/check-style.sh)
 
 
-readonly BAZEL_BIN="$HOME/bin/bazel"
+readonly BAZEL_BIN="${HOME}/bin/bazel"
 echo "Using Bazel in ${BAZEL_BIN}"
 
 echo "================================================================"
@@ -65,6 +65,29 @@ echo "================================================================"
     --verbose_failures=true \
     --keep_going \
     -- //google/cloud/...:all
+
+echo "================================================================"
+echo "Running the integration tests $(date)"
+echo "================================================================"
+if [[ ${RUN_INTEGRATION_TESTS} != "yes" ]]; then
+  echo "Skipped integration tests"
+else
+  source /c/spanner-integration-tests-config.sh
+  export GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json
+  readonly DATABASE_NAME="test-db-${RANDOM}-${RANDOM}"
+  echo "Running create-database"
+  "$("${BAZEL_BIN}" info bazel-bin)/google/cloud/spanner/spanner_tool" \
+      create-database "${PROJECT_ID}" "${SPANNER_INSTANCE_ID}" "${DATABASE_NAME}"
+  echo "Running list-databases [1]"
+  "$("${BAZEL_BIN}" info bazel-bin)/google/cloud/spanner/spanner_tool" \
+      list-databases "${PROJECT_ID}" "${SPANNER_INSTANCE_ID}"
+  echo "Running drop-database"
+  "$("${BAZEL_BIN}" info bazel-bin)/google/cloud/spanner/spanner_tool" \
+      drop-database "${PROJECT_ID}" "${SPANNER_INSTANCE_ID}" "${DATABASE_NAME}"
+  echo "Running list-databases [2]"
+  "$("${BAZEL_BIN}" info bazel-bin)/google/cloud/spanner/spanner_tool" \
+      list-databases "${PROJECT_ID}" "${SPANNER_INSTANCE_ID}"
+fi
 
 echo "================================================================"
 echo "Build finished at $(date)"
