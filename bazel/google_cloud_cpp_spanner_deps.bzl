@@ -50,15 +50,15 @@ def google_cloud_cpp_spanner_deps():
         )
 
     # Load the googleapis dependency.
-    if "com_github_googleapis_googleapis" not in native.existing_rules():
+    if "com_google_googleapis" not in native.existing_rules():
         http_archive(
-            name = "com_github_googleapis_googleapis",
+            name = "com_google_googleapis",
             urls = [
-                "https://github.com/google/googleapis/archive/6a3277c0656219174ff7c345f31fb20a90b30b97.zip",
+                "https://github.com/google/googleapis/archive/32a10f69e2c9ce15bba13ab1ff928bacebb25160.zip",
             ],
-            strip_prefix = "googleapis-6a3277c0656219174ff7c345f31fb20a90b30b97",
-            sha256 = "82ba91a41fb01305de4e8805c0a9270ed2035007161aa5a4ec60f887a499f5e9",
-            build_file = "@com_github_googleapis_google_cloud_cpp//bazel:googleapis.BUILD",
+            strip_prefix = "googleapis-32a10f69e2c9ce15bba13ab1ff928bacebb25160",
+            sha256 = "2c5dc6d4575e0804ccf3ffb22ca36d68621013c0b2980042d6fb4a04a4447b17",
+            build_file = "//bazel:googleapis.BUILD",
         )
 
     # Load gRPC and its dependencies, using a similar pattern to this function.
@@ -66,12 +66,12 @@ def google_cloud_cpp_spanner_deps():
     if "com_github_grpc_grpc" not in native.existing_rules():
         http_archive(
             name = "com_github_grpc_grpc",
-            strip_prefix = "grpc-1.19.1",
+            strip_prefix = "grpc-1.21.0",
             urls = [
-                "https://github.com/grpc/grpc/archive/v1.19.1.tar.gz",
-                "https://mirror.bazel.build/github.com/grpc/grpc/archive/v1.19.1.tar.gz",
+                "https://github.com/grpc/grpc/archive/v1.21.0.tar.gz",
+                "https://mirror.bazel.build/github.com/grpc/grpc/archive/v1.21.0.tar.gz",
             ],
-            sha256 = "f869c648090e8bddaa1260a271b1089caccbe735bf47ac9cd7d44d35a02fb129",
+            sha256 = "8da7f32cc8978010d2060d740362748441b81a34e5425e108596d3fcd63a97f2",
         )
 
     # We use the cc_proto_library() rule from @com_google_protobuf, which
