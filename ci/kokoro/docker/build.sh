@@ -32,6 +32,11 @@ elif [[ "${BUILD_NAME}" = "clang-tidy" ]]; then
   export CMAKE_FLAGS="-DGOOGLE_CLOUD_CPP_CLANG_TIDY=yes"
   export CHECK_STYLE=yes
   export GENERATE_DOCS=yes
+elif [[ "${BUILD_NAME}" = "integration" ]]; then
+  export BUILD_TYPE=Debug
+  export CC=gcc
+  export CXX=g++
+  export RUN_INTEGRATION_TESTS=yes
 else
   echo "Unknown BUILD_NAME (${BUILD_NAME}). Fix the Kokoro .cfg file."
   exit 1
@@ -96,12 +101,14 @@ sudo docker run \
      --env BUILD_TYPE="${BUILD_TYPE:-Release}" \
      --env CHECK_STYLE="${CHECK_STYLE:-}" \
      --env GENERATE_DOCS="${GENERATE_DOCS:-}" \
+     --env RUN_INTEGRATION_TESTS="${RUN_INTEGRATION_TESTS:-}" \
      --env CMAKE_FLAGS="${CMAKE_FLAGS:-}" \
      --env TERM="${TERM:-dumb}" \
      --env HOME="/v/${BUILD_HOME}" \
      --env USER="${USER}" \
      --user "${UID:-0}" \
      --volume "${PWD}":/v \
+     --volume "${KOKORO_GFILE_DIR}":/c \
      --workdir /v \
      "${IMAGE}:tip" \
      "/v/ci/kokoro/build-docker.sh"
