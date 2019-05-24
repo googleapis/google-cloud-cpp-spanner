@@ -48,7 +48,7 @@ echo "Using Bazel in ${BAZEL_BIN}"
 
 bazel_args=(--test_output=errors --verbose_failures=true --keep_going)
 if [[ -n "${BAZEL_CONFIG}" ]]; then
-    bazel_args=(--config "${BAZEL_CONFIG}")
+    bazel_args+=(--config "${BAZEL_CONFIG}")
 fi
 
 echo "================================================================"
