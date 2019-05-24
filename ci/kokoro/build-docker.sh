@@ -46,13 +46,16 @@ echo "================================================================"
 readonly BAZEL_BIN="${HOME}/bin/bazel"
 echo "Using Bazel in ${BAZEL_BIN}"
 
+bazel_args=(--test_output=errors --verbose_failures=true --keep_going)
+if [[ -n "${BAZEL_CONFIG}" ]]; then
+    bazel_args=(--config "${BAZEL_CONFIG}")
+fi
+
 echo "================================================================"
 echo "Compiling and running unit tests $(date)"
 echo "================================================================"
 "${BAZEL_BIN}" test \
-    --test_output=errors \
-    --verbose_failures=true \
-    --keep_going \
+    "${bazel_args[@]}" \
     -- //google/cloud/...:all
 
 echo "================================================================"
@@ -61,17 +64,13 @@ echo "================================================================"
 # Then build everything else (integration tests, examples, etc). So we can run
 # them next.
 "${BAZEL_BIN}" build \
-    --test_output=errors \
-    --verbose_failures=true \
-    --keep_going \
+    "${bazel_args[@]}" \
     -- //google/cloud/...:all
 
-echo "================================================================"
-echo "Running the integration tests $(date)"
-echo "================================================================"
-if [[ ${RUN_INTEGRATION_TESTS} != "yes" ]]; then
-  echo "Skipped integration tests"
-else
+if [[ ${RUN_INTEGRATION_TESTS} == "yes" ]]; then
+  echo "================================================================"
+  echo "Running the integration tests $(date)"
+  echo "================================================================"
   source /c/spanner-integration-tests-config.sh
   export GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json
   readonly DATABASE_NAME="test-db-${RANDOM}-${RANDOM}"
