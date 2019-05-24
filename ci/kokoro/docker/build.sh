@@ -19,6 +19,7 @@ export CC=gcc
 export CXX=g++
 export DISTRO=ubuntu
 export DISTRO_VERSION=18.04
+export BAZEL_CONFIG=""
 
 if [[ "${BUILD_NAME+x}" != "x" ]]; then
  echo "The BUILD_NAME is not defined or is empty. Fix the Kokoro .cfg file."
@@ -26,17 +27,26 @@ if [[ "${BUILD_NAME+x}" != "x" ]]; then
 elif [[ "${BUILD_NAME}" = "clang-tidy" ]]; then
   # Compile with clang-tidy(1) turned on. The build treats clang-tidy warnings
   # as errors.
-  export BUILD_TYPE=Debug
   export CC=clang
   export CXX=clang++
-  export CMAKE_FLAGS="-DGOOGLE_CLOUD_CPP_CLANG_TIDY=yes"
   export CHECK_STYLE=yes
   export GENERATE_DOCS=yes
 elif [[ "${BUILD_NAME}" = "integration" ]]; then
-  export BUILD_TYPE=Debug
   export CC=gcc
   export CXX=g++
   export RUN_INTEGRATION_TESTS=yes
+elif [[ "${BUILD_NAME}" = "asan" ]]; then
+  export BAZEL_CONFIG=asan
+  export CC=clang
+  export CXX=clang++
+elif [[ "${BUILD_NAME}" = "ubsan" ]]; then
+  export BAZEL_CONFIG=ubsan
+  export CC=clang
+  export CXX=clang++
+elif [[ "${BUILD_NAME}" = "tsan" ]]; then
+  export BAZEL_CONFIG=tsan
+  export CC=clang
+  export CXX=clang++
 else
   echo "Unknown BUILD_NAME (${BUILD_NAME}). Fix the Kokoro .cfg file."
   exit 1
@@ -98,11 +108,9 @@ sudo docker run \
      --env CXX="${CXX}" \
      --env CC="${CC}" \
      --env NCPU="${NCPU:-2}" \
-     --env BUILD_TYPE="${BUILD_TYPE:-Release}" \
      --env CHECK_STYLE="${CHECK_STYLE:-}" \
-     --env GENERATE_DOCS="${GENERATE_DOCS:-}" \
+     --env BAZEL_CONFIG="${BAZEL_CONFIG:-}" \
      --env RUN_INTEGRATION_TESTS="${RUN_INTEGRATION_TESTS:-}" \
-     --env CMAKE_FLAGS="${CMAKE_FLAGS:-}" \
      --env TERM="${TERM:-dumb}" \
      --env HOME="/v/${BUILD_HOME}" \
      --env USER="${USER}" \
