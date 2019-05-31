@@ -13,15 +13,14 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/value.h"
+#include <cmath>
 #include <ios>
 #include <sstream>
-#include <cmath>
 
 namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
-
 Value::Value(bool v) {
   type_.set_code(google::spanner::v1::TypeCode::BOOL);
   value_.set_bool_value(v);
