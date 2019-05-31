@@ -116,7 +116,7 @@ sudo docker run \
      --env USER="${USER}" \
      --user "${UID:-0}" \
      --volume "${PWD}":/v \
-     --volume "${KOKORO_GFILE_DIR}":/c \
+     --volume "${KOKORO_GFILE_DIR:-/dev/shm}":/c \
      --workdir /v \
      "${IMAGE}:tip" \
      "/v/ci/kokoro/build-docker.sh"
