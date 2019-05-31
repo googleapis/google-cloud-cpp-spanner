@@ -15,16 +15,15 @@
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/optional.h"
 #include <gmock/gmock.h>
+#include <cmath>
 #include <limits>
 #include <string>
 #include <vector>
-#include <cmath>
 
 namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
-
 using google::cloud::optional;
 
 // A unit test that shows a brief demo of using the spanner::Value API.

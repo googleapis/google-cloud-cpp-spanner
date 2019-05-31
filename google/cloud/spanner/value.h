@@ -15,8 +15,8 @@
 #ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_VALUE_H_
 #define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_VALUE_H_
 
-#include "google/cloud/spanner/version.h"
 #include "google/cloud/optional.h"
+#include "google/cloud/spanner/version.h"
 #include <google/protobuf/struct.pb.h>
 #include <google/spanner/v1/type.pb.h>
 #include <string>
@@ -25,7 +25,6 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
-
 /**
  * This class represents a type-safe, nullable Spanner value. The available
  * Spanner types are shown at https://cloud.google.com/spanner/docs/data-types,
