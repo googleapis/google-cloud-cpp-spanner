@@ -35,13 +35,12 @@ min_wait=120
 # Do not exit on failures for this loop.
 set +e
 for i in 1 2 3; do
-  "${PROGRAM}" "$@"
-  if [[ $? -eq 0 ]]; then
+  if "${PROGRAM}" "$@"; then
     exit 0
   fi
   # Sleep for a few minutes before trying again.
   period=$(( (RANDOM % 60) + min_wait ))
-  echo "${PROGRAM} failed; trying again in ${period} seconds."
+  echo "${PROGRAM} failed (attempt ${i}); trying again in ${period} seconds."
   sleep ${period}s
   min_wait=$(( min_wait * 2 ))
 done
