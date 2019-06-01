@@ -94,7 +94,6 @@ class Value {
 
   friend bool operator==(Value a, Value b);
   friend bool operator!=(Value a, Value b) { return !(a == b); }
-  friend std::ostream& operator<<(std::ostream& os, Value v);
 
   // Returns true if there is no contained value.
   bool is_null() const;
@@ -138,6 +137,11 @@ class Value {
   T get() const {
     return GetValue(T{});
   }
+
+  // Output the contained value and type. Intended for debugging and human
+  // consumption only, not machine consumption as the output format may change
+  // without notice.
+  friend std::ostream& operator<<(std::ostream& os, Value v);
 
  private:
   // Tag-dispatched function overloads. The arugment type is important, the
