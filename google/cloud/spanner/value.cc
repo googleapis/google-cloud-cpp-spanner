@@ -17,6 +17,10 @@
 #include <ios>
 #include <sstream>
 
+// Implementation note: See
+// https://github.com/googleapis/googleapis/blob/master/google/spanner/v1/type.proto
+// for details about how Spanner types should be encoded.
+
 namespace google {
 namespace cloud {
 namespace spanner {
@@ -38,8 +42,7 @@ Value::Value(double v) {
   if (std::isnan(v)) {
     value_.set_string_value("NaN");
   } else if (std::isinf(v)) {
-    std::string const s = v < 0 ? "-Infinity" : "Infinity";
-    value_.set_string_value(s);
+    value_.set_string_value(v < 0 ? "-Infinity" : "Infinity");
   } else {
     value_.set_number_value(v);
   }
@@ -47,30 +50,46 @@ Value::Value(double v) {
 
 Value::Value(std::string v) {
   type_.set_code(google::spanner::v1::TypeCode::STRING);
-  value_.set_string_value(v);
+  value_.set_string_value(std::move(v));
 }
 
 bool operator==(Value a, Value b) {
-  auto const& at = a.type_;
-  auto const& bt = b.type_;
-  auto const& av = a.value_;
-  auto const& bv = b.value_;
-  if (at.code() != bt.code() || av.kind_case() != bv.kind_case()) return false;
-  switch (av.kind_case()) {
-    case google::protobuf::Value::kNullValue:
-      return true;
-    case google::protobuf::Value::kNumberValue:
-      return av.number_value() == bv.number_value();
-    case google::protobuf::Value::kStringValue:
-      return av.string_value() == bv.string_value();
+  if (a.type_.code() != b.type_.code()) return false;
+  switch (a.type_.code()) {
+    case google::spanner::v1::TypeCode::BOOL:
+      return a.get<bool>() == b.get<bool>();
+    case google::spanner::v1::TypeCode::INT64:
+      return a.get<std::int64_t>() == b.get<std::int64_t>();
+    case google::spanner::v1::TypeCode::FLOAT64:
+      return a.get<double>() == b.get<double>();
+    case google::spanner::v1::TypeCode::STRING:
+      return a.get<std::string>() == b.get<std::string>();
     default:
       return false;
   }
 }
 
-//
-// Value::is_null
-//
+std::ostream& operator<<(std::ostream& os, Value v) {
+  auto const& code = v.type_.code();
+  auto const* const descriptor = google::spanner::v1::TypeCode_descriptor();
+  os << "Value{" << descriptor->FindValueByNumber(code)->name() << ":";
+  if (v.is_null()) return os << "(null)}";
+  switch (code) {
+    case google::spanner::v1::TypeCode::BOOL:
+      os << v.get<bool>();
+      break;
+    case google::spanner::v1::TypeCode::INT64:
+      os << v.get<std::int64_t>();
+      break;
+    case google::spanner::v1::TypeCode::FLOAT64:
+      os << v.get<double>();
+      break;
+    case google::spanner::v1::TypeCode::STRING:
+      os << v.get<std::string>();
+      break;
+  }
+  return os << "}";
+}
 
 bool Value::is_null() const {
   return value_.kind_case() == google::protobuf::Value::kNullValue;
@@ -101,19 +120,20 @@ bool Value::IsType(std::string) const {
 //
 
 bool Value::GetValue(bool) const {
-  if (is_null()) return {};
+  if (is_null() || !is<bool>()) return {};  // XXX: Potentially UB or crash?
   return value_.bool_value();
 }
 
 std::int64_t Value::GetValue(std::int64_t) const {
-  if (is_null()) return {};
+  if (is_null() || !is<std::int64_t>())
+    return {};  // XXX: Potentially UB or crash?
   std::int64_t n;
   std::istringstream(value_.string_value()) >> std::dec >> n;
   return n;
 }
 
 double Value::GetValue(double) const {
-  if (is_null()) return {};
+  if (is_null() || !is<double>()) return {};  // XXX: Potentially UB or crash?
   if (value_.kind_case() == google::protobuf::Value::kStringValue) {
     std::string const& s = value_.string_value();
     auto const inf = std::numeric_limits<double>::infinity();
@@ -125,7 +145,8 @@ double Value::GetValue(double) const {
 }
 
 std::string Value::GetValue(std::string) const {
-  if (is_null()) return {};
+  if (is_null() || !is<std::string>())
+    return {};  // XXX: Potentially UB or crash?
   return value_.string_value();
 }
 

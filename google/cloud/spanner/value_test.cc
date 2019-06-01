@@ -24,112 +24,93 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
+namespace {
+
 using google::cloud::optional;
 
-// A unit test that shows a brief demo of using the spanner::Value API.
-TEST(Value, Demo) {
-  std::string s = "hello";
-  Value v(s);
-  EXPECT_TRUE(v.is<std::string>());
-  EXPECT_FALSE(v.is_null());
-  EXPECT_EQ(s, v.get<std::string>());
-  EXPECT_EQ(s, *v.get<optional<std::string>>());
-
-  // The value and type stored in `v` can be changed.
-  std::int64_t n = 42;
-  v = Value(n);
-  EXPECT_TRUE(v.is<std::int64_t>());
-  EXPECT_FALSE(v.is_null());
-  EXPECT_EQ(n, v.get<std::int64_t>());
-  EXPECT_EQ(n, *v.get<optional<std::int64_t>>());
-
-  // Sets a boolean "null" value.
-  v = Value(optional<bool>{});
-  EXPECT_TRUE(v.is<bool>());
-  EXPECT_TRUE(v.is<optional<bool>>());
-  EXPECT_TRUE(v.is_null());
-  EXPECT_EQ(bool{}, v.get<bool>());
-  EXPECT_EQ(optional<bool>{}, v.get<optional<bool>>());
-  optional<bool> const null_bool = v.get<optional<bool>>();
-  EXPECT_FALSE(null_bool);
+// When testing the basic semantics of a Value object, the result of
+// v.is_null() depends on whether the Value was constructed with an empty
+// optional<T> or not. Factoring this check for an an empty optional out allows
+// us to reuse the same TestBasicSemantics<T>() function template with and
+// without nulls.
+template <typename T>
+bool IsEmptyOptional(T) {
+  return false;
+}
+template <typename T>
+bool IsEmptyOptional(optional<T> opt) {
+  return !opt.has_value();
 }
 
-TEST(Value, RegularTypeSemantics) {
-  Value v1(std::int64_t{123});
-  EXPECT_EQ(123, v1.get<std::int64_t>());
-
-  Value v2 = v1;
-  EXPECT_EQ(v1, v2);
-  EXPECT_EQ(123, v2.get<std::int64_t>());
-
-  Value v3(std::string("Hello"));
-  EXPECT_NE(v1, v3);
-
-  Value v4 = std::move(v3);
-  EXPECT_EQ("Hello", v4.get<std::string>());
-}
+}  // namespace
 
 template <typename T>
-void TestNonNullSemantics(T init) {
+void TestBasicSemantics(T init) {
   Value const v{init};
-  EXPECT_TRUE(v.is<T>());
-  EXPECT_EQ(init, v.get<T>());
-  EXPECT_EQ(init, *v.get<optional<T>>());
+
+  EXPECT_EQ(IsEmptyOptional(init), v.is_null()) << v;
+
+  EXPECT_TRUE(v.is<T>()) << v;
+  EXPECT_TRUE(v.is<optional<T>>()) << v;
+
+  EXPECT_EQ(init, v.get<T>()) << v;
+  EXPECT_EQ(init, *v.get<optional<T>>()) << v;
+
+  Value const copy = v;
+  EXPECT_EQ(copy, v);
+
+  Value const moved = std::move(copy);
+  EXPECT_EQ(moved, v);
 }
 
-template <typename T>
-void TestNullSemantics() {
-  optional<T> const null;
-  Value v{null};
-  EXPECT_TRUE(v.is<T>());
-  EXPECT_TRUE(v.is_null());
-  EXPECT_EQ(T{}, v.get<T>());  // Defined to return T{} even if null
-  optional<T> const null_value = v.get<optional<T>>();
-  EXPECT_FALSE(null_value);
-}
-
-TEST(Value, Semantics) {
-  TestNullSemantics<bool>();
+TEST(Value, BasicSemantics) {
   for (auto x : {false, true}) {
     SCOPED_TRACE("Testing: bool " + std::to_string(x));
-    TestNonNullSemantics<bool>(x);
-    TestNonNullSemantics<optional<bool>>(x);
+    TestBasicSemantics(x);
+    TestBasicSemantics(optional<bool>{x});
+    TestBasicSemantics(optional<bool>{});
   }
 
-  TestNullSemantics<std::int64_t>();
   auto const min64 = std::numeric_limits<std::int64_t>::min();
   auto const max64 = std::numeric_limits<std::int64_t>::max();
   for (auto x : std::vector<std::int64_t>{min64, -1, 0, 1, max64}) {
     SCOPED_TRACE("Testing: std::int64_t " + std::to_string(x));
-    TestNonNullSemantics<std::int64_t>(x);
-    TestNonNullSemantics<optional<std::int64_t>>(x);
+    TestBasicSemantics(x);
+    TestBasicSemantics(optional<std::int64_t>{x});
+    TestBasicSemantics(optional<std::int64_t>{});
   }
 
   // Note: We skip testing the NaN case here because NaN always compares not
   // equal, even with itself. So NaN is handled in a separate test.
-  TestNullSemantics<double>();
   auto const inf = std::numeric_limits<double>::infinity();
   for (auto x : {-inf, -1.0, -0.5, 0.0, 0.5, 1.0, inf}) {
     SCOPED_TRACE("Testing: double " + std::to_string(x));
-    TestNonNullSemantics<double>(x);
-    TestNonNullSemantics<optional<double>>(x);
+    TestBasicSemantics(x);
+    TestBasicSemantics(optional<double>{x});
+    TestBasicSemantics(optional<double>{});
   }
 
-  TestNullSemantics<std::string>();
-  for (auto x : {"", "f", "foo", "12345678901234567890"}) {
+  for (auto x :
+       std::vector<std::string>{"", "f", "foo", "123456789012345678"}) {
     SCOPED_TRACE("Testing: std::string " + std::string(x));
-    TestNonNullSemantics<std::string>(x);
-    TestNonNullSemantics<optional<std::string>>(x);
+    TestBasicSemantics(x);
+    TestBasicSemantics(optional<std::string>{x});
+    TestBasicSemantics(optional<std::string>{});
   }
 }
 
 TEST(Value, DoubleNaN) {
-  double const d = std::nan("NaN");
-  Value v{d};
+  double const nan = std::nan("NaN");
+  Value v{nan};
   EXPECT_TRUE(v.is<double>());
   EXPECT_FALSE(v.is_null());
   EXPECT_TRUE(std::isnan(v.get<double>()));
   EXPECT_TRUE(std::isnan(*v.get<optional<double>>()));
+
+  // Since IEEE 754 defines that nan is not equal to itself, then a Value with
+  // NaN should not be equal to itself.
+  EXPECT_NE(nan, nan);
+  EXPECT_NE(v, v);
 }
 
 }  // namespace SPANNER_CLIENT_NS
