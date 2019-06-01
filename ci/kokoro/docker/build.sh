@@ -102,7 +102,7 @@ mkdir -p "${BUILD_HOME}"
 
 sudo docker run \
      --cap-add SYS_PTRACE \
-     "${interactive_flag}" \
+     ${interactive_flag} \
      --env DISTRO="${DISTRO}" \
      --env DISTRO_VERSION="${DISTRO_VERSION}" \
      --env CXX="${CXX}" \
