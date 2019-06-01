@@ -210,4 +210,4 @@ cmake --build cmake-out/local --target test
 
 ## Install the dependencies in `$HOME/local`.
 
-<!-- TODO(...) - create instructions for this case -->
+<!-- TODO(#40) - create instructions for this case -->
