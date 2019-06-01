@@ -5,6 +5,6 @@ C++ client library when built using CMake.
 
 There are two basic configurations:
 
-<!-- TODO(...) - create a super build based CI -->
+<!-- TODO(#42) - create a super build based CI -->
 - Install all the dependencies and the build the client library.
 - Use a super build to compile the client library.

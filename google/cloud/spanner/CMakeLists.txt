@@ -17,7 +17,7 @@
 find_package(google_cloud_cpp_common CONFIG REQUIRED)
 find_package(googleapis CONFIG REQUIRED)
 
-# TODO(...) - generate version_info.h in the source directory and commit it.
+# TODO(#43) - generate version_info.h in the source directory and commit it.
 configure_file(version_info.h.in version_info.h)
 add_library(spanner_client
             ${CMAKE_BINARY_DIR}/google/cloud/spanner/version_info.h version.cc
@@ -43,16 +43,16 @@ include(CreateBazelConfig)
 create_bazel_config(spanner_client)
 # Also export the version numbers.
 #
-# TODO(...) - This might be unnecessary if we commit version_info.h instead.
+# TODO(#43) - This might be unnecessary if we commit version_info.h instead.
 export_variables_to_bazel("spanner_client_version.bzl"
                           SPANNER_CLIENT_VERSION_MAJOR
                           SPANNER_CLIENT_VERSION_MINOR
                           SPANNER_CLIENT_VERSION_PATCH)
 
 # We need the GCS client library because we use the RFC 3339 formatting
-# functions in that library.
+# functions are in that library.
 #
-# TODO(...) - refactor date formatting out of the storage_client library.
+# TODO(#44) - remove the dependency on the storage client.
 find_package(storage_client CONFIG REQUIRED)
 
 add_executable(spanner_tool spanner_tool.cc)
