@@ -19,6 +19,7 @@
 #include "google/cloud/spanner/version.h"
 #include <google/protobuf/struct.pb.h>
 #include <google/spanner/v1/type.pb.h>
+#include <ostream>
 #include <string>
 
 namespace google {
@@ -26,9 +27,12 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 /**
- * This class represents a type-safe, nullable Spanner value. The available
- * Spanner types are shown at https://cloud.google.com/spanner/docs/data-types,
- * and the following table shows how they map to C++ types.
+ * This class represents a type-safe, nullable Spanner value. It's conceptually
+ * similar to a `std::any` except the only allowed types are those supported by
+ * Spanner, and a "null" value (similar to a `std::any` without a value) still
+ * has an associated type that can be queried with `Value::is<T>()`. The
+ * supported types are shown in the following table along with how they map to
+ * the Spanner types (https://cloud.google.com/spanner/docs/data-types):
  *
  *   Spanner Type | C++ Type
  *   -----------------------
@@ -38,11 +42,13 @@ inline namespace SPANNER_CLIENT_NS {
  *   STRING       | std::string
  *
  * This is a regular C++ value type with support for copy, move, equality, etc,
- * but there is no default constructor. This is a type-erased class so it can
- * be stored in standard C++ containers requiring homogeneity. Callers may
- * create instances by passing any of the supported values (shown in the table
- * above) to the constructor. To consruct a "null" value of a particular type,
- * pass a disengaged google::cloud::optional<T> to the Value constructor.
+ * but there is no default constructor because there is no default type.
+ * Callers may create instances by passing any of the supported values (shown
+ * in the table above) to the constructor. "Null" values are created by passing
+ * a disengaged (i.e., no value) `google::cloud::optional<T>` to the
+ * constructor. Passing a `google::cloud::optional<T>` that contains a value to
+ * the constructor creates a non-null Value and is equivalent to passing the
+ * value without the optional.
  *
  * Example with a non-null value:
  *
@@ -69,11 +75,13 @@ class Value {
   Value& operator=(Value const&) = default;
   Value& operator=(Value&&) = default;
 
-  // Value constructors.
+  // Constructs a non-null instance with the specified value and type.
   explicit Value(bool v);
   explicit Value(std::int64_t v);
   explicit Value(double v);
   explicit Value(std::string v);
+
+  // Constructs a possibly null instance from the optional value and type.
   template <typename T>
   explicit Value(google::cloud::optional<T> opt) {
     if (opt) {
@@ -84,22 +92,56 @@ class Value {
     }
   }
 
+  friend bool operator==(Value a, Value b);
+  friend bool operator!=(Value a, Value b) { return !(a == b); }
+  friend std::ostream& operator<<(std::ostream& os, Value v);
+
+  // Returns true if there is no contained value.
   bool is_null() const;
 
+  // Returns true if the contained value is of the specified type `T`. All
+  // Value instances have some type, even null values. Since all Values are
+  // potentially nullable, `v.is<T>()` will return true if and only if
+  // `v.is<google::cloud::optional<T>>()` returns true.
+  //
+  // Example:
+  //
+  //   spanner::Value v{true};
+  //   assert(v.is<bool>());
+  //   assert(v.is<google::cloud::optional<bool>>());
+  //
   template <typename T>
   bool is() const {
     return IsType(T{});
   }
 
+  // Returns the contained value if the specified type `T` matches the Value's
+  // type and if the contained value is not null. Otherwise, a default
+  // constructed `T` is returned.
+  //
+  // If the requested type is specified as `google::cloud::optional<T>`, then
+  // the returned optional will contain the value if it was not null,
+  // otherwise, the optional will contain no value.
+  //
+  // Example:
+  //
+  //   spanner::Value v{true};
+  //   assert(true == v.get<bool>());
+  //   assert(true == *v.get<google::cloud::optional<bool>>());
+  //
+  //   // Now using a "null" std::int64_t
+  //   v = spanner::Value(google::cloud::optional<std::int64_t>{});
+  //   assert(v.is_null());
+  //   assert(!v.get<google::cloud::optional<std::int64_t>());
+  //
   template <typename T>
   T get() const {
     return GetValue(T{});
   }
 
-  friend bool operator==(Value a, Value b);
-  friend bool operator!=(Value a, Value b) { return !(a == b); }
-
  private:
+  // Tag-dispatched function overloads. The arugment type is important, the
+  // value is ignored.
   bool IsType(bool) const;
   bool IsType(std::int64_t) const;
   bool IsType(double) const;
@@ -109,6 +151,8 @@ class Value {
     return IsType(T{});
   }
 
+  // Tag-dispatched function overloads. The arugment type is important, the
+  // value is ignored.
   bool GetValue(bool) const;
   std::int64_t GetValue(std::int64_t) const;
   double GetValue(double) const;
