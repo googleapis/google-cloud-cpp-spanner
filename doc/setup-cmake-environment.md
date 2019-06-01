@@ -39,6 +39,34 @@ The build takes a few minutes the first time, as it needs to create a Docker
 image with all the development tools and dependencies installed. Future builds
 (with no changes to the source) take only a few seconds.
 
+## Install the dependencies in `$HOME/local`.
+
+This is the recommended way to develop `google-cloud-cpp-spanner` using CMake.
+You will install the dependencies in `$HOME/local` (or a similar directory), and
+compile the project against these libraries. The installation needs to be done
+every time the version of the dependencies is changed, and it is not done
+automatically. But once installed you can use them for any build.
+
+Configure the super-build to install in `$HOME/local`:
+
+```console
+cmake -Hci/kokoro/cmake/super-build -Bcmake-out/super-install \
+    -DGOOGLE_CLOUD_CPP_EXTERNAL_PREFIX=$HOME/local
+```
+
+Install the dependencies:
+
+```console
+cmake --build cmake-out/super-install -- -j $(nproc)
+```
+
+Now you can use these dependencies multiple times, configure the project to
+use them:
+
+```console
+cmake -H. -Bcmake-out/home -DCMAKE_PREFIX_PATH=$HOME/local
+```
+
 ## Using `vcpkg` to install the dependencies
 
 `vcpkg` is a package manager that installs dependencies from source. All the
@@ -101,7 +129,3 @@ Or:
 ```console
 cmake --build cmake-out/vcpkg --target test
 ```
-
-## Install the dependencies in `$HOME/local`.
-
-<!-- TODO(#40) - create instructions for this case -->

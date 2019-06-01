@@ -20,6 +20,7 @@ export CXX=g++
 export DISTRO=ubuntu
 export DISTRO_VERSION=18.04
 export BAZEL_CONFIG=""
+export CMAKE_SOURCE_DIR="."
 
 in_docker_script="ci/kokoro/docker/build-in-docker-bazel.sh"
 
@@ -52,6 +53,11 @@ elif [[ "${BUILD_NAME}" = "tsan" ]]; then
 elif [[ "${BUILD_NAME}" = "cmake" ]]; then
   export DISTRO=fedora-install
   export DISTRO_VERSION=30
+  in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
+elif [[ "${BUILD_NAME}" = "cmake-super" ]]; then
+  export DISTRO=fedora-install
+  export DISTRO_VERSION=30
+  export CMAKE_SOURCE_DIR="."
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 else
   echo "Unknown BUILD_NAME (${BUILD_NAME}). Fix the Kokoro .cfg file."
@@ -125,7 +131,8 @@ sudo docker run \
      --volume "${KOKORO_GFILE_DIR:-/dev/shm}":/c \
      --workdir /v \
      "${IMAGE}:tip" \
-     "/v/${in_docker_script}"
+     "/v/${in_docker_script}" "${CMAKE_SOURCE_DIR}" \
+     "${BUILD_OUTPUT}-${BUILD_NAME}"
 
 exit_status=$?
 echo "Build finished with ${exit_status} exit status $(date)."

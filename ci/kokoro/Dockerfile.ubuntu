@@ -25,12 +25,14 @@ RUN apt update && \
         git \
         gcc \
         g++ \
-        cmake \
+        libssl-dev \
+        make \
+        ninja-build \
         pkg-config \
-	python-pip \
+        python-pip \
         shellcheck \
         tar \
-	unzip \
+        unzip \
         wget
 
 # By default, Ubuntu 18.04 does not install the alternatives for clang-format

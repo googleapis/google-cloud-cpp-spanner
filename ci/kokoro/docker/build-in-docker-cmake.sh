@@ -15,13 +15,20 @@
 
 set -eu
 
+if [[ $# != 2 ]]; then
+  echo "Usage: $(basename "$0") <source-directory> <binary-directory>"
+  exit 1
+fi
+
+readonly SOURCE_DIR="$1"
+readonly BINARY_DIR="$2"
+
 # This script is supposed to run inside a Docker container, see
 # ci/kokoro/cmake/installed-dependencies/build.sh for the expected setup.  The
 # /v directory is a volume pointing to a (clean-ish) checkout of the project:
 if [[ -z "${PROJECT_ROOT+x}" ]]; then
   readonly PROJECT_ROOT="/v"
 fi
-source "${PROJECT_ROOT}/ci/kokoro/linux-config.sh"
 source "${PROJECT_ROOT}/ci/colors.sh"
 
 echo
@@ -32,13 +39,13 @@ echo "================================================================"
 echo "Compiling on $(date)"
 echo "================================================================"
 cd "${PROJECT_ROOT}"
-cmake -H. -B"${BUILD_OUTPUT}"
-cmake --build "${BUILD_OUTPUT}" -- -j "$(nproc)"
+cmake "-H${SOURCE_DIR}" "-B${BINARY_DIR}"
+cmake --build "${BINARY_DIR}" -- -j "$(nproc)"
 
 echo "================================================================"
 echo "Running the unit tests $(date)"
 echo "================================================================"
-env -C "${BUILD_OUTPUT}" ctest --output-on-failure -j "$(nproc)"
+env -C "${BINARY_DIR}" ctest --output-on-failure -j "$(nproc)"
 
 echo "================================================================"
 echo "Build finished at $(date)"
