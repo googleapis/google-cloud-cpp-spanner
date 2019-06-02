@@ -30,6 +30,10 @@ wget -q "${GITHUB_DL}/${BAZEL_VERSION}/${SCRIPT_NAME}.sha256"
 sha256sum --check "${SCRIPT_NAME}.sha256"
 
 chmod +x "${SCRIPT_NAME}"
-"./${SCRIPT_NAME}" --user
+if [[ "${USER:-}" = "root" ]] || [[ "${USER+x}" = "" ]]; then
+  "./${SCRIPT_NAME}"
+else
+  "./${SCRIPT_NAME}" --user
+fi
 
 rm -f "${SCRIPT_NAME}" "${SCRIPT_NAME}.sha256"
