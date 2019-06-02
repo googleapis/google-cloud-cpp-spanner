@@ -13,9 +13,10 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/value.h"
+#include "google/cloud/terminate_handler.h"
 #include <cmath>
 #include <ios>
-#include <sstream>
+#include <string>
 
 // Implementation note: See
 // https://github.com/googleapis/googleapis/blob/master/google/spanner/v1/type.proto
@@ -32,9 +33,7 @@ Value::Value(bool v) {
 
 Value::Value(std::int64_t v) {
   type_.set_code(google::spanner::v1::TypeCode::INT64);
-  std::stringstream ss;
-  ss << std::dec << v;
-  value_.set_string_value(ss.str());
+  value_.set_string_value(std::to_string(v));
 }
 
 Value::Value(double v) {
@@ -55,6 +54,7 @@ Value::Value(std::string v) {
 
 bool operator==(Value a, Value b) {
   if (a.type_.code() != b.type_.code()) return false;
+  if (a.is_null() && b.is_null()) return true;
   switch (a.type_.code()) {
     case google::spanner::v1::TypeCode::BOOL:
       return a.get<bool>() == b.get<bool>();
@@ -127,9 +127,16 @@ bool Value::GetValue(bool) const {
 std::int64_t Value::GetValue(std::int64_t) const {
   if (is_null() || !is<std::int64_t>())
     return {};  // XXX: Potentially UB or crash?
-  std::int64_t n;
-  std::istringstream(value_.string_value()) >> std::dec >> n;
-  return n;
+  auto const& s = value_.string_value();
+  std::size_t processed = 0;
+  long long x = std::stoll(s, &processed, 10);
+  if (processed != s.size()) {
+    // This should never happen, because we only parse strings that we created
+    // using std::to_string(), but it's good to be careful anyway.
+    std::string const err = "Failed to parse number from string: \"" + s + "\"";
+    google::cloud::Terminate(err.c_str());
+  }
+  return {x};
 }
 
 double Value::GetValue(double) const {
