@@ -27,19 +27,23 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 /**
- * This class represents a type-safe, nullable Spanner value. It's conceptually
- * similar to a `std::any` except the only allowed types are those supported by
- * Spanner, and a "null" value (similar to a `std::any` without a value) still
- * has an associated type that can be queried with `Value::is<T>()`. The
- * supported types are shown in the following table along with how they map to
- * the Spanner types (https://cloud.google.com/spanner/docs/data-types):
+ * The Value class represents a type-safe, nullable Spanner value.
  *
+ * It is conceptually similar to a `std::any` except the only allowed types are
+ * those supported by Spanner, and a "null" value (similar to a `std::any`
+ * without a value) still has an associated type that can be queried with
+ * `Value::is<T>()`. The supported types are shown in the following table along
+ * with how they map to the Spanner types
+ * (https://cloud.google.com/spanner/docs/data-types):
+ *
+ * @code
  *   Spanner Type | C++ Type
  *   -----------------------
  *   BOOL         | bool
  *   INT64        | std::int64_t
  *   FLOAT64      | double
  *   STRING       | std::string
+ * @endcode
  *
  * This is a regular C++ value type with support for copy, move, equality, etc,
  * but there is no default constructor because there is no default type.
@@ -52,18 +56,22 @@ inline namespace SPANNER_CLIENT_NS {
  *
  * Example with a non-null value:
  *
+ * @code
  *   std::string msg = "hello";
  *   spanner::Value v(msg);
  *   assert(v.is<std::string>());
  *   assert(!v.is_null());
  *   std::string copy = v.get<std::string>();
  *   assert(msg == copy);
+ * @endcode
  *
  * Example with a null:
  *
+ * @code
  *   spanner::Value v(google::cloud::optional<std::int64_t>{});
  *   assert(v.is<std::int64_t>());
  *   assert(v.is_null());
+ * @endcode
  */
 class Value {
  public:
@@ -95,44 +103,53 @@ class Value {
   friend bool operator==(Value a, Value b);
   friend bool operator!=(Value a, Value b) { return !(a == b); }
 
-  // Returns true if there is no contained value.
+  /**
+   * Returns true if there is no contained value.
+   */
   bool is_null() const;
 
-  // Returns true if the contained value is of the specified type `T`. All
-  // Value instances have some type, even null values. Since all Values are
-  // potentially nullable, `v.is<T>()` will return true if and only if
-  // `v.is<google::cloud::optional<T>>()` returns true.
-  //
-  // Example:
-  //
-  //   spanner::Value v{true};
-  //   assert(v.is<bool>());
-  //   assert(v.is<google::cloud::optional<bool>>());
-  //
+  /**
+   * Returns true if the contained value is of the specified type `T`.
+   *
+   * All Value instances have some type, even null values. Since all Values are
+   * potentially nullable, `v.is<T>()` will return true if and only if
+   * `v.is<google::cloud::optional<T>>()` returns true.
+   *
+   * Example:
+   *
+   * @code
+   *   spanner::Value v{true};
+   *   assert(v.is<bool>());
+   *   assert(v.is<google::cloud::optional<bool>>());
+   * @endcode
+   */
   template <typename T>
   bool is() const {
     return IsType(T{});
   }
 
-  // Returns the contained value if the specified type `T` matches the Value's
-  // type and if the contained value is not null. Otherwise, a default
-  // constructed `T` is returned.
-  //
-  // If the requested type is specified as `google::cloud::optional<T>`, then
-  // the returned optional will contain the value if it was not null,
-  // otherwise, the optional will contain no value.
-  //
-  // Example:
-  //
-  //   spanner::Value v{true};
-  //   assert(true == v.get<bool>());
-  //   assert(true == *v.get<google::cloud::optional<bool>>());
-  //
-  //   // Now using a "null" std::int64_t
-  //   v = spanner::Value(google::cloud::optional<std::int64_t>{});
-  //   assert(v.is_null());
-  //   assert(!v.get<google::cloud::optional<std::int64_t>());
-  //
+  /**
+   * Returns the contained value if the specified type `T` matches the Value's
+   * type and if the contained value is not null. Otherwise, a default
+   * constructed `T` is returned.
+   *
+   * If the requested type is specified as `google::cloud::optional<T>`, then
+   * the returned optional will contain the value if it was not null,
+   * otherwise, the optional will contain no value.
+   *
+   * Example:
+   *
+   * @code
+   *   spanner::Value v{true};
+   *   assert(true == v.get<bool>());
+   *   assert(true == *v.get<google::cloud::optional<bool>>());
+   *
+   *   // Now using a "null" std::int64_t
+   *   v = spanner::Value(google::cloud::optional<std::int64_t>{});
+   *   assert(v.is_null());
+   *   assert(!v.get<google::cloud::optional<std::int64_t>());
+   * @endcode
+   */
   template <typename T>
   T get() const {
     return GetValue(T{});
@@ -144,7 +161,7 @@ class Value {
   friend std::ostream& operator<<(std::ostream& os, Value v);
 
  private:
-  // Tag-dispatched function overloads. The arugment type is important, the
+  // Tag-dispatched function overloads. The argument type is important, the
   // value is ignored.
   bool IsType(bool) const;
   bool IsType(std::int64_t) const;
@@ -155,7 +172,7 @@ class Value {
     return IsType(T{});
   }
 
-  // Tag-dispatched function overloads. The arugment type is important, the
+  // Tag-dispatched function overloads. The argument type is important, the
   // value is ignored.
   bool GetValue(bool) const;
   std::int64_t GetValue(std::int64_t) const;
