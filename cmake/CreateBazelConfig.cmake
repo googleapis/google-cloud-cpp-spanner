@@ -14,9 +14,9 @@
 # limitations under the License.
 # ~~~
 
-function(write_bazel_copyright FILENAME YEAR)
-  file(WRITE "${FILENAME}" "# Copyright ${YEAR} Google LLC")
-  file(APPEND "${FILENAME}" [=[
+function (write_bazel_copyright FILENAME YEAR)
+    file(WRITE "${FILENAME}" "# Copyright ${YEAR} Google LLC")
+    file(APPEND "${FILENAME}" [=[
 
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -128,7 +128,7 @@ function (export_variables_to_bazel filename)
 """Automatically generated version numbers - DO NOT EDIT."""
 
 ]=])
-  foreach(item ${_EXPORT_VARIABLES_TO_BAZEL_OPT_UNPARSED_ARGUMENTS})
-    file(APPEND "${filename}" "${item} = \"${${item}}\"\n")
-  endforeach()
-endfunction()
+    foreach (item ${_EXPORT_VARIABLES_TO_BAZEL_OPT_UNPARSED_ARGUMENTS})
+        file(APPEND "${filename}" "${item} = \"${${item}}\"\n")
+    endforeach ()
+endfunction ()
