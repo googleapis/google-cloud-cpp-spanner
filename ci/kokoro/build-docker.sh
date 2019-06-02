@@ -33,17 +33,11 @@ echo "${COLOR_YELLOW}Starting docker build $(date) with ${NCPU} cores${COLOR_RES
 echo
 
 echo "================================================================"
-echo "Update or Install Bazel $(date)."
-echo "================================================================"
-(cd /var/tmp ; "${PROJECT_ROOT}/ci/install-bazel.sh")
-
-echo "================================================================"
-echo "Verify formattting $(date)"
-echo "================================================================"
+echo "Verify formatting $(date)"
 (cd "${PROJECT_ROOT}" ; ./ci/check-style.sh)
+echo "================================================================"
 
-
-readonly BAZEL_BIN="${HOME}/bin/bazel"
+readonly BAZEL_BIN="/usr/local/bin/bazel"
 echo "Using Bazel in ${BAZEL_BIN}"
 
 bazel_args=(--test_output=errors --verbose_failures=true --keep_going)

@@ -53,3 +53,7 @@ RUN chmod 755 /usr/bin/buildifier
 # because some third party changed something.
 RUN pip install --upgrade pip
 RUN pip install numpy cmake_format==0.5.1
+
+WORKDIR /var/tmp/ci
+COPY install-bazel.sh /var/tmp/ci
+RUN /var/tmp/ci/install-bazel.sh
