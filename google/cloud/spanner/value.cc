@@ -36,6 +36,7 @@ Status CheckValidity(Value const& v) {
 }
 
 }  // namespace
+
 Value::Value(bool v) {
   type_.set_code(google::spanner::v1::TypeCode::BOOL);
   value_.set_bool_value(v);
