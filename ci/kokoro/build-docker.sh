@@ -40,7 +40,7 @@ echo "================================================================"
 readonly BAZEL_BIN="/usr/local/bin/bazel"
 echo "Using Bazel in ${BAZEL_BIN}"
 
-bazel_args=(--test_output=errors --verbose_failures=true --keep_going)
+bazel_args=("--test_output=errors" "--verbose_failures=true" "--keep_going")
 if [[ -n "${BAZEL_CONFIG}" ]]; then
     bazel_args+=(--config "${BAZEL_CONFIG}")
 fi
@@ -65,6 +65,7 @@ if [[ ${RUN_INTEGRATION_TESTS} == "yes" ]]; then
   echo "================================================================"
   echo "Running the integration tests $(date)"
   echo "================================================================"
+  # shellcheck disable=SC1091
   source /c/spanner-integration-tests-config.sh
   export GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json
   readonly DATABASE_NAME="test-db-${RANDOM}-${RANDOM}"

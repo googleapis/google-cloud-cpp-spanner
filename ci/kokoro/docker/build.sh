@@ -77,10 +77,9 @@ echo "Creating Docker image with all the development tools $(date)."
 # is an error, so disabling from this point on is the right choice.
 set +e
 mkdir -p "${BUILD_OUTPUT}"
-"${PROJECT_ROOT}/ci/install-retry.sh" \
-  "${PROJECT_ROOT}/ci/kokoro/install-linux.sh" \
-      >"${BUILD_OUTPUT}/create-build-docker-image.log" 2>&1 </dev/null
-if [[ "$?" != 0 ]]; then
+if ! "${PROJECT_ROOT}/ci/install-retry.sh" \
+       "${PROJECT_ROOT}/ci/kokoro/install-linux.sh" \
+         >"${BUILD_OUTPUT}/create-build-docker-image.log" 2>&1 </dev/null; then
   dump_log "${BUILD_OUTPUT}/create-build-docker-image.log"
   exit 1
 fi
@@ -103,6 +102,7 @@ mkdir -p "${BUILD_HOME}"
 
 sudo docker run \
      --cap-add SYS_PTRACE \
+     ${interactive_flag} \
      --env DISTRO="${DISTRO}" \
      --env DISTRO_VERSION="${DISTRO_VERSION}" \
      --env CXX="${CXX}" \
