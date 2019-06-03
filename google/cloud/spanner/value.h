@@ -15,8 +15,8 @@
 #ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_VALUE_H_
 #define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_VALUE_H_
 
-#include "google/cloud/optional.h"
 #include "google/cloud/spanner/version.h"
+#include "google/cloud/status_or.h"
 #include <google/protobuf/struct.pb.h>
 #include <google/spanner/v1/type.pb.h>
 #include <ostream>
@@ -46,11 +46,8 @@ inline namespace SPANNER_CLIENT_NS {
  * This is a regular C++ value type with support for copy, move, equality, etc,
  * but there is no default constructor because there is no default type.
  * Callers may create instances by passing any of the supported values (shown
- * in the table above) to the constructor. "Null" values are created by passing
- * a disengaged (i.e., no value) `google::cloud::optional<T>` to the
- * constructor. Passing a `google::cloud::optional<T>` that contains a value to
- * the constructor creates a non-null Value and is equivalent to passing the
- * value without the optional.
+ * in the table above) to the constructor. "Null" values are created using the
+ * `Value::MakeNull<T>()` factory function.
  *
  * Example with a non-null value:
  *
@@ -58,17 +55,29 @@ inline namespace SPANNER_CLIENT_NS {
  *     spanner::Value v(msg);
  *     assert(v.is<std::string>());
  *     assert(!v.is_null());
- *     std::string copy = v.get<std::string>();
- *     assert(msg == copy);
+ *     StatusOr<std::string> copy = v.get<std::string>();
+ *     if (copy) {
+ *       std::cout << *copy;  // prints "hello"
+ *     }
  *
  * Example with a null:
  *
- *     spanner::Value v(google::cloud::optional<std::int64_t>{});
+ *     spanner::Value v = spanner::Value::MakeNull<std::int64_t>();
  *     assert(v.is<std::int64_t>());
  *     assert(v.is_null());
+ *     StatusOr<std::int64_t> i = v.get<std::int64_t>();
+ *     if (!i) {
+ *       std::cerr << "error: " << i.status();
+ *     }
  */
 class Value {
  public:
+  /// Factory to construct a "null" Value of the specified type `T`.
+  template <typename T>
+  static Value MakeNull() {
+    return Value(Null<T>{});
+  }
+
   Value() = delete;
 
   /// Copy and move.
@@ -83,24 +92,6 @@ class Value {
   explicit Value(double v);
   explicit Value(std::string v);
 
-  /**
-   * Constructs a possibly null instance from the optional value and type.
-   *
-   * If the given optional has no value, then a Value will be created whose
-   * `is_null()` method will return true. If the given optional contains a
-   * value, then `is_null()` will be false, and it is exactly the same as if
-   * the value were specified directly without the optional.
-   */
-  template <typename T>
-  explicit Value(google::cloud::optional<T> opt) {
-    if (opt) {
-      *this = Value(*opt);
-    } else {
-      *this = Value(T{});
-      value_.set_null_value(google::protobuf::NullValue::NULL_VALUE);
-    }
-  }
-
   friend bool operator==(Value a, Value b);
   friend bool operator!=(Value a, Value b) { return !(a == b); }
 
@@ -110,15 +101,15 @@ class Value {
   /**
    * Returns true if the contained value is of the specified type `T`.
    *
-   * All Value instances have some type, even null values. Since all Values are
-   * potentially nullable, `v.is<T>()` will return true if and only if
-   * `v.is<google::cloud::optional<T>>()` returns true.
+   * All Value instances have some type, even null values.
    *
    * Example:
    *
    *     spanner::Value v{true};
    *     assert(v.is<bool>());
-   *     assert(v.is<google::cloud::optional<bool>>());
+   *
+   *     spanner::Value null_v = spanner::Value::MakeNull<bool>();
+   *     assert(v.is<bool>());
    */
   template <typename T>
   bool is() const {
@@ -126,32 +117,58 @@ class Value {
   }
 
   /**
-   * Returns the contained value if the specified type `T` matches the Value's
-   * type and if the contained value is not null. Otherwise, a default
-   * constructed `T` is returned.
+   * Returns the contained value wrapped in a `google::cloud::StatusOr<T>`.
    *
-   * If the requested type is specified as `google::cloud::optional<T>`, then
-   * the returned optional will contain the value if it was not null,
-   * otherwise, the optional will contain no value.
+   * If the specified type `T` is wrong or if the contained value is "null",
+   * then a non-OK Status will be returned instead of the value.
    *
    * Example:
    *
-   *     spanner::Value v{true};
-   *     assert(true == v.get<bool>());
-   *     assert(true == *v.get<google::cloud::optional<bool>>());
+   *     spanner::Value v{3.14};
+   *     StatusOr<double> d = v.get<double>();
+   *     if (d) {
+   *       std::cout << "d=" << *d;
+   *     }
    *
    *     // Now using a "null" std::int64_t
-   *     v = spanner::Value(google::cloud::optional<std::int64_t>{});
+   *     v = spanner::Value::MakeNull<std::int64_t>();
    *     assert(v.is_null());
-   *     assert(!v.get<google::cloud::optional<std::int64_t>());
+   *     StatusOr<std::int64_t> i = v.get<std::int64_t>();
+   *     if (!i) {
+   *       std::cerr << "Could not get integer: " << i.status();
+   *     }
    */
   template <typename T>
-  T get() const {
+  StatusOr<T> get() const {
     return GetValue(T{});
   }
 
   /**
-   * Output the contained value and type formatted as a string.
+   * Returns the contained value iff it is not null and the the specified `T` is
+   * correct.
+   *
+   * It is the caller's responsibility to ensure that this the specifed type
+   * `T` is correct (e.g., with `is<T>()`) and that the value is not "null"
+   * (e.g., with `!v.is_null()`). Otherwise, the behavior is undefined.
+   *
+   * This is mostly useful if writing generic code where casting is needed.
+   *
+   * Example:
+   *
+   *     spanner::Value v{true};
+   *     bool b = static_cast<bool>(v);  // OK: b == true
+   *
+   *     spanner::Value null_v = spanner::Value::MakeNull<std::int64_t>();
+   *     std::int64_t i = static_cast<std::int64_t>(null_v);  // UB! null
+   *     bool bad = static_cast<bool>(null_v);  // UB! wrong type
+   */
+  template <typename T>
+  explicit operator T() const {
+    return *get<T>();
+  }
+
+  /**
+   * Outputs the contained value and type, formatted as a string.
    *
    * This is intended for debugging and human consumption only, not machine
    * consumption as the output format may change without notice.
@@ -159,28 +176,30 @@ class Value {
   friend std::ostream& operator<<(std::ostream& os, Value v);
 
  private:
+  // A private argument type and constructor that's used by the public
+  // MakeNull<T>() factory function for constructing "null" Values with the
+  // specified type.
+  template <typename T>
+  struct Null {};
+  template <typename T>
+  explicit Value(Null<T>) {
+    *this = Value(T{});
+    value_.set_null_value(google::protobuf::NullValue::NULL_VALUE);
+  }
+
   // Tag-dispatched function overloads. The argument type is important, the
   // value is ignored.
   bool IsType(bool) const;
   bool IsType(std::int64_t) const;
   bool IsType(double) const;
   bool IsType(std::string) const;
-  template <typename T>
-  bool IsType(google::cloud::optional<T> opt) const {
-    return IsType(T{});
-  }
 
   // Tag-dispatched function overloads. The argument type is important, the
   // value is ignored.
-  bool GetValue(bool) const;
-  std::int64_t GetValue(std::int64_t) const;
-  double GetValue(double) const;
-  std::string GetValue(std::string) const;
-  template <typename T>
-  google::cloud::optional<T> GetValue(google::cloud::optional<T> opt) const {
-    if (!is_null()) return GetValue(T{});
-    return {};
-  }
+  StatusOr<bool> GetValue(bool) const;
+  StatusOr<std::int64_t> GetValue(std::int64_t) const;
+  StatusOr<double> GetValue(double) const;
+  StatusOr<std::string> GetValue(std::string) const;
 
   google::spanner::v1::Type type_;
   google::protobuf::Value value_;

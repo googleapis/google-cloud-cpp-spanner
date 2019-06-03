@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/value.h"
-#include "google/cloud/terminate_handler.h"
+#include "google/cloud/log.h"
 #include <cmath>
 #include <ios>
 #include <string>
@@ -26,6 +26,16 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
+namespace {
+
+template <typename T>
+Status CheckValidity(Value const& v) {
+  if (!v.is<T>()) return Status(StatusCode::kInvalidArgument, "wrong type");
+  if (v.is_null()) return Status(StatusCode::kInvalidArgument, "null value");
+  return {};  // OK status
+}
+
+}  // namespace
 Value::Value(bool v) {
   type_.set_code(google::spanner::v1::TypeCode::BOOL);
   value_.set_bool_value(v);
@@ -54,16 +64,17 @@ Value::Value(std::string v) {
 
 bool operator==(Value a, Value b) {
   if (a.type_.code() != b.type_.code()) return false;
-  if (a.is_null() && b.is_null()) return true;
+  if (a.is_null() != b.is_null()) return false;
+  if (a.is_null()) return true;  // They are both null
   switch (a.type_.code()) {
     case google::spanner::v1::TypeCode::BOOL:
-      return a.get<bool>() == b.get<bool>();
+      return *a.get<bool>() == *b.get<bool>();
     case google::spanner::v1::TypeCode::INT64:
-      return a.get<std::int64_t>() == b.get<std::int64_t>();
+      return *a.get<std::int64_t>() == *b.get<std::int64_t>();
     case google::spanner::v1::TypeCode::FLOAT64:
-      return a.get<double>() == b.get<double>();
+      return *a.get<double>() == *b.get<double>();
     case google::spanner::v1::TypeCode::STRING:
-      return a.get<std::string>() == b.get<std::string>();
+      return *a.get<std::string>() == *b.get<std::string>();
     default:
       return false;
   }
@@ -76,16 +87,16 @@ std::ostream& operator<<(std::ostream& os, Value v) {
   if (v.is_null()) return os << "(null)}";
   switch (code) {
     case google::spanner::v1::TypeCode::BOOL:
-      os << v.get<bool>();
+      os << *v.get<bool>();
       break;
     case google::spanner::v1::TypeCode::INT64:
-      os << v.get<std::int64_t>();
+      os << *v.get<std::int64_t>();
       break;
     case google::spanner::v1::TypeCode::FLOAT64:
-      os << v.get<double>();
+      os << *v.get<double>();
       break;
     case google::spanner::v1::TypeCode::STRING:
-      os << v.get<std::string>();
+      os << *v.get<std::string>();
       break;
   }
   return os << "}";
@@ -119,26 +130,27 @@ bool Value::IsType(std::string) const {
 // Value::GetValue
 //
 
-bool Value::GetValue(bool) const {
-  if (is_null() || !is<bool>()) return {};  // XXX: Potentially UB or crash?
+StatusOr<bool> Value::GetValue(bool) const {
+  auto const status = CheckValidity<bool>(*this);
+  if (!status.ok()) return status;
   return value_.bool_value();
 }
 
-std::int64_t Value::GetValue(std::int64_t) const {
-  if (is_null() || !is<std::int64_t>())
-    return {};  // XXX: Potentially UB or crash?
+StatusOr<std::int64_t> Value::GetValue(std::int64_t) const {
+  auto const status = CheckValidity<std::int64_t>(*this);
+  if (!status.ok()) return status;
   auto const& s = value_.string_value();
   std::size_t processed = 0;
   long long x = std::stoll(s, &processed, 10);
   if (processed != s.size()) {
-    std::string const err = "Failed to parse number from string: \"" + s + "\"";
-    google::cloud::Terminate(err.c_str());
+    GCP_LOG(FATAL) << "Failed to parse number from string: \"" << s << "\"";
   }
   return {x};
 }
 
-double Value::GetValue(double) const {
-  if (is_null() || !is<double>()) return {};  // XXX: Potentially UB or crash?
+StatusOr<double> Value::GetValue(double) const {
+  auto const status = CheckValidity<double>(*this);
+  if (!status.ok()) return status;
   if (value_.kind_case() == google::protobuf::Value::kStringValue) {
     std::string const& s = value_.string_value();
     auto const inf = std::numeric_limits<double>::infinity();
@@ -149,9 +161,9 @@ double Value::GetValue(double) const {
   return value_.number_value();
 }
 
-std::string Value::GetValue(std::string) const {
-  if (is_null() || !is<std::string>())
-    return {};  // XXX: Potentially UB or crash?
+StatusOr<std::string> Value::GetValue(std::string) const {
+  auto const status = CheckValidity<std::string>(*this);
+  if (!status.ok()) return status;
   return value_.string_value();
 }
 
