@@ -20,7 +20,10 @@ find_package(googleapis CONFIG REQUIRED)
 # TODO(#43) - generate version_info.h in the source directory and commit it.
 configure_file(version_info.h.in version_info.h)
 add_library(spanner_client
-            ${CMAKE_BINARY_DIR}/google/cloud/spanner/version_info.h version.cc
+            ${CMAKE_BINARY_DIR}/google/cloud/spanner/version_info.h
+            value.cc
+            value.h
+            version.cc
             version.h)
 target_include_directories(spanner_client
                            PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
@@ -67,7 +70,7 @@ function (spanner_client_define_tests)
     # the GTest::gmock target, and the target names are also weird.
     find_package(GTest CONFIG REQUIRED)
 
-    set(spanner_client_unit_tests spanner_version_test.cc)
+    set(spanner_client_unit_tests spanner_version_test.cc value_test.cc)
     # Export the list of unit tests to a .bzl file so we do not need to maintain
     # the list in two places.
     export_list_to_bazel("spanner_client_unit_tests.bzl"
