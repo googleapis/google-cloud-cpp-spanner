@@ -131,8 +131,6 @@ std::int64_t Value::GetValue(std::int64_t) const {
   std::size_t processed = 0;
   long long x = std::stoll(s, &processed, 10);
   if (processed != s.size()) {
-    // This should never happen, because we only parse strings that we created
-    // using std::to_string(), but it's good to be careful anyway.
     std::string const err = "Failed to parse number from string: \"" + s + "\"";
     google::cloud::Terminate(err.c_str());
   }

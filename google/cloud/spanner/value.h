@@ -36,14 +36,12 @@ inline namespace SPANNER_CLIENT_NS {
  * with how they map to the Spanner types
  * (https://cloud.google.com/spanner/docs/data-types):
  *
- * @code
- *   Spanner Type | C++ Type
- *   -----------------------
- *   BOOL         | bool
- *   INT64        | std::int64_t
- *   FLOAT64      | double
- *   STRING       | std::string
- * @endcode
+ *     Spanner Type | C++ Type
+ *     -----------------------
+ *     BOOL         | bool
+ *     INT64        | std::int64_t
+ *     FLOAT64      | double
+ *     STRING       | std::string
  *
  * This is a regular C++ value type with support for copy, move, equality, etc,
  * but there is no default constructor because there is no default type.
@@ -56,40 +54,43 @@ inline namespace SPANNER_CLIENT_NS {
  *
  * Example with a non-null value:
  *
- * @code
- *   std::string msg = "hello";
- *   spanner::Value v(msg);
- *   assert(v.is<std::string>());
- *   assert(!v.is_null());
- *   std::string copy = v.get<std::string>();
- *   assert(msg == copy);
- * @endcode
+ *     std::string msg = "hello";
+ *     spanner::Value v(msg);
+ *     assert(v.is<std::string>());
+ *     assert(!v.is_null());
+ *     std::string copy = v.get<std::string>();
+ *     assert(msg == copy);
  *
  * Example with a null:
  *
- * @code
- *   spanner::Value v(google::cloud::optional<std::int64_t>{});
- *   assert(v.is<std::int64_t>());
- *   assert(v.is_null());
- * @endcode
+ *     spanner::Value v(google::cloud::optional<std::int64_t>{});
+ *     assert(v.is<std::int64_t>());
+ *     assert(v.is_null());
  */
 class Value {
  public:
   Value() = delete;
 
-  // Copy and move.
+  /// Copy and move.
   Value(Value const&) = default;
   Value(Value&&) = default;
   Value& operator=(Value const&) = default;
   Value& operator=(Value&&) = default;
 
-  // Constructs a non-null instance with the specified value and type.
+  /// Constructs a non-null instance with the specified value and type.
   explicit Value(bool v);
   explicit Value(std::int64_t v);
   explicit Value(double v);
   explicit Value(std::string v);
 
-  // Constructs a possibly null instance from the optional value and type.
+  /**
+   * Constructs a possibly null instance from the optional value and type.
+   *
+   * If the given optional has no value, then a Value will be created whose
+   * `is_null()` method will return true. If the given optional contains a
+   * value, then `is_null()` will be false, and it is exactly the same as if
+   * the value were specified directly without the optional.
+   */
   template <typename T>
   explicit Value(google::cloud::optional<T> opt) {
     if (opt) {
@@ -103,9 +104,7 @@ class Value {
   friend bool operator==(Value a, Value b);
   friend bool operator!=(Value a, Value b) { return !(a == b); }
 
-  /**
-   * Returns true if there is no contained value.
-   */
+  /// Returns true if there is no contained value.
   bool is_null() const;
 
   /**
@@ -117,11 +116,9 @@ class Value {
    *
    * Example:
    *
-   * @code
-   *   spanner::Value v{true};
-   *   assert(v.is<bool>());
-   *   assert(v.is<google::cloud::optional<bool>>());
-   * @endcode
+   *     spanner::Value v{true};
+   *     assert(v.is<bool>());
+   *     assert(v.is<google::cloud::optional<bool>>());
    */
   template <typename T>
   bool is() const {
@@ -139,25 +136,26 @@ class Value {
    *
    * Example:
    *
-   * @code
-   *   spanner::Value v{true};
-   *   assert(true == v.get<bool>());
-   *   assert(true == *v.get<google::cloud::optional<bool>>());
+   *     spanner::Value v{true};
+   *     assert(true == v.get<bool>());
+   *     assert(true == *v.get<google::cloud::optional<bool>>());
    *
-   *   // Now using a "null" std::int64_t
-   *   v = spanner::Value(google::cloud::optional<std::int64_t>{});
-   *   assert(v.is_null());
-   *   assert(!v.get<google::cloud::optional<std::int64_t>());
-   * @endcode
+   *     // Now using a "null" std::int64_t
+   *     v = spanner::Value(google::cloud::optional<std::int64_t>{});
+   *     assert(v.is_null());
+   *     assert(!v.get<google::cloud::optional<std::int64_t>());
    */
   template <typename T>
   T get() const {
     return GetValue(T{});
   }
 
-  // Output the contained value and type. Intended for debugging and human
-  // consumption only, not machine consumption as the output format may change
-  // without notice.
+  /**
+   * Output the contained value and type formatted as a string.
+   *
+   * This is intended for debugging and human consumption only, not machine
+   * consumption as the output format may change without notice.
+   */
   friend std::ostream& operator<<(std::ostream& os, Value v);
 
  private:
