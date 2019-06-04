@@ -14,8 +14,6 @@
 
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/log.h"
-#include <google/protobuf/util/field_comparator.h>
-#include <google/protobuf/util/message_differencer.h>
 #include <cmath>
 #include <ios>
 #include <string>
@@ -36,29 +34,6 @@ Status CheckValidity(Value const& v) {
   if (v.is_null()) return Status(StatusCode::kInvalidArgument, "null value");
   return {};  // OK status
 }
-
-// A custom protobuf comparator to make Spanner-encoded FLOAT64 "NaN" values
-// compare not equal to each other. This is the behavior required by IEEE 754.
-class CustomComparator : public google::protobuf::util::DefaultFieldComparator {
- public:
-  ComparisonResult Compare(
-      const google::protobuf::Message& message_1,
-      const google::protobuf::Message& message_2,
-      const google::protobuf::FieldDescriptor* field, int index_1, int index_2,
-      const google::protobuf::util::FieldContext* field_context) override {
-    auto const* const reflection = message_1.GetReflection();
-    // Spanner requires that FLOAT64 values (i.e., double) that represent nan
-    // are stored as the string "NaN". But IEEE 754 requires that NaN compares
-    // not equal to anything, including itself.
-    if (field->name() == "string_value") {
-      if (reflection->GetString(message_1, field) == "NaN") {
-        return DIFFERENT;
-      }
-    }
-    return DefaultFieldComparator::Compare(message_1, message_2, field, index_1,
-                                           index_2, field_context);
-  }
-};
 
 }  // namespace
 
@@ -89,10 +64,21 @@ Value::Value(std::string v) {
 }
 
 bool operator==(Value a, Value b) {
-  google::protobuf::util::MessageDifferencer diff;
-  CustomComparator comp;
-  diff.set_field_comparator(&comp);
-  return diff.Compare(a.type_, b.type_) && diff.Compare(a.value_, b.value_);
+  if (a.type_.code() != b.type_.code()) return false;
+  if (a.is_null() != b.is_null()) return false;
+  if (a.is_null()) return true;  // They are both null
+  switch (a.type_.code()) {
+    case google::spanner::v1::TypeCode::BOOL:
+      return *a.get<bool>() == *b.get<bool>();
+    case google::spanner::v1::TypeCode::INT64:
+      return *a.get<std::int64_t>() == *b.get<std::int64_t>();
+    case google::spanner::v1::TypeCode::FLOAT64:
+      return *a.get<double>() == *b.get<double>();
+    case google::spanner::v1::TypeCode::STRING:
+      return *a.get<std::string>() == *b.get<std::string>();
+    default:
+      return false;
+  }
 }
 
 void PrintTo(Value const& v, std::ostream* os) {
