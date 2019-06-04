@@ -21,6 +21,8 @@ export DISTRO=ubuntu
 export DISTRO_VERSION=18.04
 export BAZEL_CONFIG=""
 
+in_docker_script="ci/kokoro/docker/build-in-docker-bazel.sh"
+
 if [[ "${BUILD_NAME+x}" != "x" ]]; then
  echo "The BUILD_NAME is not defined or is empty. Fix the Kokoro .cfg file."
  exit 1
@@ -47,6 +49,10 @@ elif [[ "${BUILD_NAME}" = "tsan" ]]; then
   export BAZEL_CONFIG=tsan
   export CC=clang
   export CXX=clang++
+elif [[ "${BUILD_NAME}" = "cmake" ]]; then
+  export DISTRO=fedora-install
+  export DISTRO_VERSION=30
+  in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 else
   echo "Unknown BUILD_NAME (${BUILD_NAME}). Fix the Kokoro .cfg file."
   exit 1
@@ -77,8 +83,8 @@ echo "Creating Docker image with all the development tools $(date)."
 # is an error, so disabling from this point on is the right choice.
 set +e
 mkdir -p "${BUILD_OUTPUT}"
-if ! "${PROJECT_ROOT}/ci/install-retry.sh" \
-       "${PROJECT_ROOT}/ci/kokoro/install-linux.sh" \
+if ! "${PROJECT_ROOT}/ci/retry-command.sh" \
+       "${PROJECT_ROOT}/ci/kokoro/create-docker-image.sh" \
          >"${BUILD_OUTPUT}/create-build-docker-image.log" 2>&1 </dev/null; then
   dump_log "${BUILD_OUTPUT}/create-build-docker-image.log"
   exit 1
@@ -119,7 +125,7 @@ sudo docker run \
      --volume "${KOKORO_GFILE_DIR:-/dev/shm}":/c \
      --workdir /v \
      "${IMAGE}:tip" \
-     "/v/ci/kokoro/build-docker.sh"
+     "/v/${in_docker_script}"
 
 exit_status=$?
 echo "Build finished with ${exit_status} exit status $(date)."
