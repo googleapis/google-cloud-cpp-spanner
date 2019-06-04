@@ -168,7 +168,7 @@ class Value {
   }
 
   /**
-   * Allows Google Test to print internall debugging information when test
+   * Allows Google Test to print internal debugging information when test
    * assertions fail.
    *
    * @warning This is intended for debugging and human consumption only, not
