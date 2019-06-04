@@ -1,0 +1,61 @@
+# Copyright 2019 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+ARG DISTRO_VERSION=30
+FROM fedora:${DISTRO_VERSION}
+
+# Fedora includes packages for gRPC, libcurl, and OpenSSL that are recent enough
+# for `google-cloud-cpp`. Install these packages and additional development
+# tools to compile the dependencies:
+RUN dnf makecache && \
+    dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig zlib-devel \
+                   grpc-devel grpc-plugins \
+                   libcurl-devel protobuf-compiler tar wget zlib-devel
+
+# There is no Fedora package for CRC32C, download and install from source.
+WORKDIR /var/tmp/build
+RUN wget -q https://github.com/google/crc32c/archive/1.0.6.tar.gz
+RUN tar -xf 1.0.6.tar.gz
+WORKDIR /var/tmp/build/crc32c-1.0.6
+RUN cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DBUILD_SHARED_LIBS=yes \
+      -DCRC32C_BUILD_TESTS=OFF \
+      -DCRC32C_BUILD_BENCHMARKS=OFF \
+      -DCRC32C_USE_GLOG=OFF \
+      -H. -Bcmake-out/crc32c
+RUN cmake --build cmake-out/crc32c --target install -- -j $(nproc)
+RUN ldconfig
+
+# Download and compile google-cloud-cpp from source too:
+WORKDIR /var/tmp/build
+RUN wget -q https://github.com/googleapis/google-cloud-cpp/archive/v0.9.0.tar.gz
+RUN tar -xf v0.9.0.tar.gz
+WORKDIR /var/tmp/build/google-cloud-cpp-0.9.0
+# Compile without the tests because we are testing spanner, not the base
+# libraries
+RUN cmake -H. -Bcmake-out \
+    -DGOOGLE_CLOUD_CPP_DEPENDENCY_PROVIDER=package \
+    -DBUILD_TESTING=OFF
+RUN cmake --build cmake-out -- -j $(nproc)
+RUN cmake --build cmake-out --target install
+
+# Download and compile googletest, we need a recent version.
+WORKDIR /var/tmp/build
+RUN wget -q https://github.com/google/googletest/archive/b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
+RUN tar -xf b6cd405286ed8635ece71c72f118e659f4ade3fb.tar.gz
+WORKDIR /var/tmp/build/googletest-b6cd405286ed8635ece71c72f118e659f4ade3fb
+RUN cmake \
+        -H. -Bcmake-out/gtest
+RUN cmake --build cmake-out/gtest --target install -- -j $(nproc)
