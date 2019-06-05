@@ -41,8 +41,8 @@ template <typename T>
 class Column {
  public:
   using type = T;
-   // Regular value type, copy, move, equality, etc.
-   Column() = default;
+  // Regular value type, copy, move, equality, etc.
+  Column() = default;
 
   std::string name() const { return {}; }
 };

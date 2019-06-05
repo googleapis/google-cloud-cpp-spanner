@@ -37,11 +37,13 @@ class Row {
   // …
 
   iterator begin() { return {}; }
-  iterator end() { return{}; }
+  iterator end() { return {}; }
   // …
 
   template <typename T>
-  T get(Column<T> const& col) const { return {}; }
+  T get(Column<T> const& col) const {
+    return {};
+  }
 };
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
