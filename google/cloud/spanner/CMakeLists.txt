@@ -21,6 +21,16 @@ find_package(googleapis CONFIG REQUIRED)
 configure_file(version_info.h.in version_info.h)
 add_library(spanner_client
             ${CMAKE_BINARY_DIR}/google/cloud/spanner/version_info.h
+            client.h
+            column.h
+            key.h
+            mutation.h
+            partition.h
+            result_set.h
+            result_stats.h
+            row.h
+            sql_statement.h
+            transaction.h
             value.cc
             value.h
             version.cc

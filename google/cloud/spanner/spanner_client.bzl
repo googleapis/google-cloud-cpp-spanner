@@ -17,6 +17,16 @@
 """Automatically generated source lists for spanner_client - DO NOT EDIT."""
 
 spanner_client_hdrs = [
+    "client.h",
+    "column.h",
+    "key.h",
+    "mutation.h",
+    "partition.h",
+    "result_set.h",
+    "result_stats.h",
+    "row.h",
+    "sql_statement.h",
+    "transaction.h",
     "value.h",
     "version.h",
 ]
