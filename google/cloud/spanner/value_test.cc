@@ -175,13 +175,6 @@ TEST(Value, SpannerArray) {
   EXPECT_FALSE(null_vd.get<ArrayInt64>().ok());
 }
 
-TEST(Value, ArrayOfArray) {
-  using Type = std::vector<std::vector<bool>>;
-  Type vvb;
-  Value v(vvb);
-  EXPECT_TRUE(v.is<Type>());
-}
-
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
 }  // namespace cloud

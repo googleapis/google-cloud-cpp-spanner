@@ -103,7 +103,7 @@ class Value {
    * The type `T` may be any valid type shown above, except vectors of vectors
    * are not allowed.
    */
-  template <typename T>  // Possibly add an enabler
+  template <typename T>  // Possibly add an enabler to disallow T==vector
   explicit Value(std::vector<T> const& v) {
     type_ = GetType(v);
     for (auto const& e : v) {
