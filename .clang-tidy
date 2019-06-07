@@ -12,6 +12,7 @@ Checks: >-
   readability-*,
   performance-*,
   -google-readability-namespace-comments,
+  -readability-named-parameter,
   -readability-braces-around-statements,
   -readability-magic-numbers
 
