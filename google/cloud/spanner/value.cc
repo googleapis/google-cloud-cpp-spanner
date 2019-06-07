@@ -65,6 +65,7 @@ bool Equal(google::spanner::v1::Type const& pt1,
         }
       }
     }
+    // FALLTHROUGH
     default:
       return true;
   }
