@@ -181,7 +181,7 @@ class Value {
   /**
    * Returns the contained value iff is<T>() and !is_null<T>().
    *
-   * It is the caller's responsibility to ensure that the specifed type
+   * It is the caller's responsibility to ensure that the specified type
    * `T` is correct (e.g., with `is<T>()`) and that the value is not "null"
    * (e.g., with `!v.is_null<T>()`). Otherwise, the behavior is undefined.
    *

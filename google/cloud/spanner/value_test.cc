@@ -100,6 +100,7 @@ TEST(Value, MixingTypes) {
   EXPECT_FALSE(a.is_null<A>());
   EXPECT_TRUE(a.get<A>().ok());
   EXPECT_FALSE(a.is<B>());
+  EXPECT_FALSE(a.is_null<B>());
   EXPECT_FALSE(a.get<B>().ok());
 
   Value null_a = Value::MakeNull<A>();
@@ -107,6 +108,7 @@ TEST(Value, MixingTypes) {
   EXPECT_TRUE(null_a.is_null<A>());
   EXPECT_FALSE(null_a.get<A>().ok());
   EXPECT_FALSE(null_a.is<B>());
+  EXPECT_FALSE(null_a.is_null<B>());
   EXPECT_FALSE(null_a.get<B>().ok());
 
   EXPECT_NE(null_a, a);
@@ -116,6 +118,7 @@ TEST(Value, MixingTypes) {
   EXPECT_FALSE(b.is_null<B>());
   EXPECT_TRUE(b.get<B>().ok());
   EXPECT_FALSE(b.is<A>());
+  EXPECT_FALSE(b.is_null<A>());
   EXPECT_FALSE(b.get<A>().ok());
 
   EXPECT_NE(b, a);
@@ -126,6 +129,7 @@ TEST(Value, MixingTypes) {
   EXPECT_TRUE(null_b.is_null<B>());
   EXPECT_FALSE(null_b.get<B>().ok());
   EXPECT_FALSE(null_b.is<A>());
+  EXPECT_FALSE(null_b.is_null<A>());
   EXPECT_FALSE(null_b.get<A>().ok());
 
   EXPECT_NE(null_b, b);
