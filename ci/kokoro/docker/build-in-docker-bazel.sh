@@ -15,13 +15,22 @@
 
 set -eu
 
+if [[ $# != 2 ]]; then
+  # The arugments are ignored, but required for compatibility with
+  # build-in-docker-cmake.sh
+  echo "Usage: $(basename "$0") <source-directory> <binary-directory>"
+  exit 1
+fi
+
+readonly SOURCE_DIR="$1"
+readonly BINARY_DIR="$2"
+
 # This script is supposed to run inside a Docker container, see
 # ci/kokoro/build.sh for the expected setup.  The /v directory is a volume
 # pointing to a (clean-ish) checkout of google-cloud-cpp:
 if [[ -z "${PROJECT_ROOT+x}" ]]; then
   readonly PROJECT_ROOT="/v"
 fi
-source "${PROJECT_ROOT}/ci/kokoro/linux-config.sh"
 source "${PROJECT_ROOT}/ci/colors.sh"
 
 # Run the "bazel build"/"bazel test" cycle inside a Docker image.
