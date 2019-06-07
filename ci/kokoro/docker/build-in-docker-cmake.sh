@@ -61,7 +61,7 @@ fi
 if [[ "${GENERATE_DOCS:-}" = "yes" ]]; then
   echo "================================================================"
   echo "Validate Doxygen documentation $(date)"
-  cmake --build "${BUILD_OUTPUT}" --target doxygen-docs
+  cmake --build "${BINARY_DIR}" --target doxygen-docs
   echo "================================================================"
 fi
 
