@@ -30,10 +30,14 @@ if [[ "${BUILD_NAME+x}" != "x" ]]; then
 elif [[ "${BUILD_NAME}" = "clang-tidy" ]]; then
   # Compile with clang-tidy(1) turned on. The build treats clang-tidy warnings
   # as errors.
+  export DISTRO=fedora-install
+  export DISTRO_VERSION=30
   export CC=clang
   export CXX=clang++
   export CHECK_STYLE=yes
   export GENERATE_DOCS=yes
+  export CLANG_TIDY=yes
+  in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "integration" ]]; then
   export CC=gcc
   export CXX=g++
@@ -119,6 +123,7 @@ sudo docker run \
      --env CC="${CC}" \
      --env NCPU="${NCPU:-2}" \
      --env CHECK_STYLE="${CHECK_STYLE:-}" \
+     --env CLANG_TIDY="${CLANG_TIDY:-}" \
      --env BAZEL_CONFIG="${BAZEL_CONFIG:-}" \
      --env RUN_INTEGRATION_TESTS="${RUN_INTEGRATION_TESTS:-}" \
      --env TERM="${TERM:-dumb}" \
