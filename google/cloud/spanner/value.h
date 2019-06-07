@@ -26,7 +26,6 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
-
 /**
  * The Value class represents a type-safe, nullable Spanner value.
  *
