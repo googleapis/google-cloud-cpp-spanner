@@ -55,9 +55,7 @@ elif [[ "${BUILD_NAME}" = "cmake" ]]; then
   export DISTRO_VERSION=30
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "cmake-super" ]]; then
-  export DISTRO=fedora-install
-  export DISTRO_VERSION=30
-  export CMAKE_SOURCE_DIR="."
+  export CMAKE_SOURCE_DIR="ci/super"
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 else
   echo "Unknown BUILD_NAME (${BUILD_NAME}). Fix the Kokoro .cfg file."
