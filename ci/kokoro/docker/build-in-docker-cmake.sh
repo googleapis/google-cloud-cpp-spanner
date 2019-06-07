@@ -58,6 +58,13 @@ if [[ -r "${BINARY_DIR}/CTestTestfile.cmake" ]]; then
   echo "================================================================"
 fi
 
+if [[ "${GENERATE_DOCS:-}" = "yes" ]]; then
+  echo "================================================================"
+  echo "Validate Doxygen documentation $(date)"
+  cmake --build "${BUILD_OUTPUT}" --target doxygen-docs
+  echo "================================================================"
+fi
+
 echo "================================================================"
 echo "Build finished at $(date)"
 echo "================================================================"
