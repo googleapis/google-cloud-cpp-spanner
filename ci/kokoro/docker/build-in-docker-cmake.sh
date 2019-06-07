@@ -47,15 +47,15 @@ fi
 cmake "-H${SOURCE_DIR}" "-B${BINARY_DIR}" "${cmake_flags[@]}"
 cmake --build "${BINARY_DIR}" -- -j "$(nproc)"
 
-echo "================================================================"
-echo "Running the unit tests $(date)"
-echo "================================================================"
 # When user a super-build the tests are hidden in a subdirectory. We can tell
 # that ${BINARY_DIR} does not have the tests by checking for this file:
-if [[ -f "${BINARY_DIR}/CTestTestFile.cmake}" ]]; then
+if [[ -r "${BINARY_DIR}/CTestTestfile.cmake" ]]; then
+  echo "================================================================"
   # It is Okay to skip the tests in this case because the super build
   # automatically runs them.
   env -C "${BINARY_DIR}" ctest --output-on-failure -j "$(nproc)"
+  echo "Running the unit tests $(date)"
+  echo "================================================================"
 fi
 
 echo "================================================================"
