@@ -50,7 +50,7 @@ automatically. But once installed you can use them for any build.
 Configure the super-build to install in `$HOME/local`:
 
 ```console
-cmake -Hci/kokoro/cmake/super-build -Bcmake-out/super-install \
+cmake -Hci/super -Bcmake-out/super-install \
     -DGOOGLE_CLOUD_CPP_EXTERNAL_PREFIX=$HOME/local
 ```
 
@@ -60,8 +60,8 @@ Install the dependencies:
 cmake --build cmake-out/super-install -- -j $(nproc)
 ```
 
-Now you can use these dependencies multiple times, configure the project to
-use them:
+Now you can use these dependencies multiple times. To use them, add the
+`$HOME/local` directory to `CMAKE_PREFIX_PATH` when you configure the project:
 
 ```console
 cmake -H. -Bcmake-out/home -DCMAKE_PREFIX_PATH=$HOME/local
@@ -75,8 +75,8 @@ However, some of the dependencies, such as `google-cloud-cpp` are only updated
 monthly. If at some point the Spanner client depends on recent changes on
 `google-cloud-cpp` this strategy will not work for you.
 
-With that out of the way, installing Ninja is recommended, because it makes the
-`vcpkg` builds faster, but not required:
+Though not required, we recommend that you install Ninja as it significantly
+speeds up the `vcpkg` builds:
 
 ```console
 sudo apt update && sudo apt install ninja-build
@@ -102,8 +102,8 @@ Once `vcpkg` is built, install all dependencies:
 ./vcpkg install google-cloud-cpp gtest
 ```
 
-Configure the project, using `vcpkg` to find the dependencies, we recommend
-using a sub-directory of `cmake-out` because the CI builds also use
+When you configure the project, set `CMAKE_TOOLCHAIN_FILE` to use `vcpkg`.
+We recommend using a sub-directory of `cmake-out` because the CI builds also use
 sub-directories of `cmake-out/`:
 
 ```console
