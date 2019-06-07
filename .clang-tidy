@@ -12,7 +12,8 @@ Checks: >-
   readability-*,
   performance-*,
   -google-readability-namespace-comments,
-  -readability-named-parameter
+  -readability-braces-around-statements,
+  -readability-magic-numbers
 
 # Enable most warnings as errors.
 WarningsAsErrors: >-
@@ -22,7 +23,9 @@ WarningsAsErrors: >-
   misc-*,
   modernize-*,
   readability-*,
-  performance-*
+  performance-*,
+  -readability-braces-around-statements,
+  -readability-magic-numbers
 
 CheckOptions:
   - { key: readability-identifier-naming.NamespaceCase,          value: lower_case }
@@ -34,7 +37,11 @@ CheckOptions:
   - { key: readability-identifier-naming.PrivateMemberSuffix,    value: _          }
   - { key: readability-identifier-naming.ProtectedMemberSuffix,  value: _          }
   - { key: readability-identifier-naming.MacroDefinitionCase,    value: UPPER_CASE }
-  - { key: readability-identifier-naming.EnumConstantCase,       value: UPPER_CASE }
-  - { key: readability-identifier-naming.ConstexprVariableCase,  value: UPPER_CASE }
-  - { key: readability-identifier-naming.GlobalConstantCase,     value: UPPER_CASE }
-  - { key: readability-identifier-naming.MemberConstantCase,     value: UPPER_CASE }
+  - { key: readability-identifier-naming.EnumConstantCase,       value: CamelCase }
+  - { key: readability-identifier-naming.EnumConstantPrefix,     value: k }
+  - { key: readability-identifier-naming.ConstexprVariableCase,  value: CamelCase }
+  - { key: readability-identifier-naming.ConstexprVariablePrefix, value: k }
+  - { key: readability-identifier-naming.GlobalConstantCase,     value: CamelCase }
+  - { key: readability-identifier-naming.GlobalConstantPrefix,   value: k }
+  - { key: readability-identifier-naming.MemberConstantCase,     value: CamelCase }
+  - { key: readability-identifier-naming.MemberConstantPrefix,   value: k }
