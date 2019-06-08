@@ -41,14 +41,16 @@ build:ubsan --linkopt=-fsanitize=undefined
 build:ubsan --linkopt=-lubsan
 build:ubsan --action_env=UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1
 
-# TODO(#41): this does not work unless libc++ (or libstdc++) are also compiled
-# with -fsanitize=memory.
-# --config tsan: Memory Sanitizer
-# build:msan --strip=never
-# build:msan --copt=-fsanitize=memory
-# build:msan --copt=-O0
-# build:msan --copt=-fno-omit-frame-pointer
-# build:msan --copt=-fsanitize-memory-track-origins
-# build:msan --copt=-fsanitize-memory-use-after-dtor
-# build:msan --linkopt=-fsanitize=memory
-# build:msan --action_env=MSAN_OPTIONS=poison_in_dtor=1
+# --config msan: Memory Sanitizer
+build:msan --strip=never
+build:msan --copt=-fsanitize=memory
+build:msan --copt=-O0
+build:msan --copt=-fno-omit-frame-pointer
+build:msan --copt=-fsanitize-memory-track-origins
+build:msan --copt=-fsanitize-memory-use-after-dtor
+build:msan --linkopt=-fsanitize=memory
+build:msan --action_env=MSAN_OPTIONS=poison_in_dtor=1
+build:msan --cxxopt=-stdlib=libc++
+build:msan --linkopt=-stdlib=libc++
+build:msan --linkopt=-lc++
+build:msan --linkopt=-lc++abi
