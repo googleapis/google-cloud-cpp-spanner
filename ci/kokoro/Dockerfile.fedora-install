@@ -19,10 +19,9 @@ FROM fedora:${DISTRO_VERSION}
 # for `google-cloud-cpp`. Install these packages and additional development
 # tools to compile the dependencies:
 RUN dnf makecache && \
-    dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
-                   grpc-devel grpc-plugins clang clang-tools-extra \
-                   libcxx-devel libcxxabi-devel \
-                   libcurl-devel protobuf-compiler tar wget zlib-devel
+    dnf install -y clang clang-tools-extra cmake doxygen gcc-c++ git \
+        grpc-devel grpc-plugins libcxx-devel libcxxabi-devel libcurl-devel \
+        make openssl-devel pkgconfig protobuf-compiler tar wget zlib-devel
 
 # There is no Fedora package for CRC32C, download and install from source.
 WORKDIR /var/tmp/build

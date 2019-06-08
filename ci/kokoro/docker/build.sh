@@ -124,6 +124,7 @@ sudo docker run \
      --env NCPU="${NCPU:-2}" \
      --env CHECK_STYLE="${CHECK_STYLE:-}" \
      --env CLANG_TIDY="${CLANG_TIDY:-}" \
+     --env GENERATE_DOCS="${GENERATE_DOCS:-}" \
      --env BAZEL_CONFIG="${BAZEL_CONFIG:-}" \
      --env RUN_INTEGRATION_TESTS="${RUN_INTEGRATION_TESTS:-}" \
      --env TERM="${TERM:-dumb}" \
