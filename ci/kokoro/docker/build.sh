@@ -103,38 +103,100 @@ echo "================================================================"
 
 echo "================================================================"
 echo "Running the full build $(date)."
-# When running on Travis the build gets a tty, and docker can produce nicer
-# output in that case, but on Kokoro the script does not get a tty, and Docker
-# terminates the program if we pass the `-it` flag in that case.
-interactive_flag=""
-if [[ -t 0 ]]; then
-  interactive_flag="-it"
+# The default user for a Docker container has uid 0 (root). To avoid creating
+# root-owned files in the build directory we tell docker to use the current
+# user ID, if known.
+docker_uid="${UID:-0}"
+docker_user="${USER:-root}"
+docker_home_prefix="${PWD}/cmake-out/home"
+if [[ "${docker_uid}" == "0" ]]; then
+  docker_home_prefix="${PWD}/cmake-out/root"
 fi
 
 # Make sure the user has a $HOME directory inside the Docker container.
-mkdir -p "${BUILD_HOME}"
+readonly DOCKER_HOME="${docker_home_prefix}/${IMAGE}-${BUILD_NAME}"
+mkdir -p "${DOCKER_HOME}"
 
-sudo docker run \
-     --cap-add SYS_PTRACE \
-     ${interactive_flag} \
-     --env DISTRO="${DISTRO}" \
-     --env DISTRO_VERSION="${DISTRO_VERSION}" \
-     --env CXX="${CXX}" \
-     --env CC="${CC}" \
-     --env NCPU="${NCPU:-2}" \
-     --env CHECK_STYLE="${CHECK_STYLE:-}" \
-     --env CLANG_TIDY="${CLANG_TIDY:-}" \
-     --env GENERATE_DOCS="${GENERATE_DOCS:-}" \
-     --env BAZEL_CONFIG="${BAZEL_CONFIG:-}" \
-     --env RUN_INTEGRATION_TESTS="${RUN_INTEGRATION_TESTS:-}" \
-     --env TERM="${TERM:-dumb}" \
-     --env HOME="/v/${BUILD_HOME}" \
-     --env USER="${USER}" \
-     --user "${UID:-0}" \
-     --volume "${PWD}":/v \
-     --volume "${KOKORO_GFILE_DIR:-/dev/shm}":/c \
-     --workdir /v \
-     "${IMAGE}:tip" \
+# We use an array for the flags so they are easier to document.
+docker_flags=(
+    # Grant the PTRACE capability to the Docker container running the build,
+    # this is needed by tools like AddressSanitizer.
+    "--cap-add" "SYS_PTRACE"
+
+    # The name and version of the distribution, this is used to call
+    # linux-config.sh and determine the Docker image built, and the output
+    # directory for any artifacts.
+    "--env" "DISTRO=${DISTRO}"
+    "--env" "DISTRO_VERSION=${DISTRO_VERSION}"
+
+    # The C++ and C compiler, both Bazel and CMake use this environment variable
+    # to select the compiler binary.
+    "--env" "CXX=${CXX}"
+    "--env" "CC=${CC}"
+
+    # The number of CPUs, probably should be removed, the scripts can detect
+    # this themselves in Kokoro (it was a problem on Travis).
+    "--env" "NCPU=${NCPU:-4}"
+
+    # If set to 'yes', the build script will run the style checks, including
+    # clang-format, cmake-format, and buildifier.
+    "--env" "CHECK_STYLE=${CHECK_STYLE:-}"
+
+    # If set to 'yes', the build script will configure clang-tidy. Currently
+    # only the CMake builds use this flag.
+    "--env" "CLANG_TIDY=${CLANG_TIDY:-}"
+
+    # If set to 'yes', run the integration tests. Currently only the Bazel
+    # builds use this flag.
+    "--env" "RUN_INTEGRATION_TESTS=${RUN_INTEGRATION_TESTS:-}"
+
+    # If set to 'yes', run Doxygen to generate the documents and detect simple
+    # errors in the documentation (e.g. partially documented parameter lists,
+    # invalid links to functions or types). Currently only the CMake builds use
+    # this flag.
+    "--env" "GENERATE_DOCS=${GENERATE_DOCS:-}"
+
+    # When running the integration tests this directory contains the
+    # configuration files needed to run said tests. Make it available inside
+    # the Docker container.
+    "--volume" "${KOKORO_GFILE_DIR:-/dev/shm}:/c"
+
+    # The argument for the --config option in Bazel, this is how we tell Bazel
+    # to build with ASAN, UBSAN, TSAN, etc.
+    "--env" "BAZEL_CONFIG=${BAZEL_CONFIG:-}"
+
+    # Let the Docker image script know what kind of terminal we are using, that
+    # produces properly colorized error messages.
+    "--env" "TERM=${TERM:-dumb}"
+
+    # Run the docker script and this user id. Because the docker image gets to
+    # write in ${PWD} you typically want this to be your user id.
+    "--user" "${docker_uid}"
+
+    # Bazel needs this environment variable to work correctly.
+    "--env" "USER=${docker_user}"
+
+    # We give Bazel and CMake a fake $HOME inside the docker image. Bazel caches
+    # build byproducts in this directory. CMake (when ccache is enabled) uses
+    # it to store $HOME/.ccache
+    "--env" "HOME=/h"
+    "--volume" "${DOCKER_HOME}:/h"
+
+    # Mount the current directory (which is the top-level directory for the
+    # project) as `/v` inside the docker image, and move to that directory.
+    "--volume" "${PWD}:/v"
+    "--workdir" "/v"
+)
+
+# When running the builds from the command-line they get a tty, and the scripts
+# running inside the Docker container can produce nicer output. On Kokoro the
+# script does not get a tty, and Docker terminates the program if we pass the
+# `-it` flag.
+if [[ -t 0 ]]; then
+  docker_flags+=("-it")
+fi
+
+sudo docker run "${docker_flags[@]}" "${IMAGE}:tip" \
      "/v/${in_docker_script}" "${CMAKE_SOURCE_DIR}" \
      "${BUILD_OUTPUT}-${BUILD_NAME}"
 
