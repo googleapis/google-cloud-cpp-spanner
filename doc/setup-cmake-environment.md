@@ -75,13 +75,6 @@ However, some of the dependencies, such as `google-cloud-cpp` are only updated
 monthly. If at some point the Spanner client depends on recent changes on
 `google-cloud-cpp` this strategy will not work for you.
 
-Though not required, we recommend that you install Ninja as it significantly
-speeds up the `vcpkg` builds:
-
-```console
-sudo apt update && sudo apt install ninja-build
-```
-
 Download `vcpkg` from GitHub:
 
 ```console
