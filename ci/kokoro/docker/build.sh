@@ -119,6 +119,10 @@ mkdir -p "${DOCKER_HOME}"
 
 # We use an array for the flags so they are easier to document.
 docker_flags=(
+    # Grant the PTRACE capability to the Docker container running the build,
+    # this is needed by tools like AddressSanitizer.
+    "--cap-add" "SYS_PTRACE"
+
     # The name and version of the distribution, this is used to call
     # linux-config.sh and determine the Docker image built, and the output
     # directory for any artifacts.
