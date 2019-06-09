@@ -88,10 +88,10 @@ class Value {
   Value& operator=(Value&&) = default;
 
   /// Constructs a non-null instance with the specified type and value.
-  explicit Value(bool v);
-  explicit Value(std::int64_t v);
-  explicit Value(double v);
-  explicit Value(std::string v);
+  explicit Value(bool b);
+  explicit Value(std::int64_t i);
+  explicit Value(double d);
+  explicit Value(std::string s);
 
   /**
    * Constructs a non-null instance if `opt` has a value, otherwise constructs
