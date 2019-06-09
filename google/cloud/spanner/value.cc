@@ -79,14 +79,14 @@ Value::Value(std::int64_t v) {
   value_ = MakeValueProto(v);
 }
 
-Value::Value(double d) {
-  type_ = MakeTypeProto(d);
-  value_ = MakeValueProto(d);
+Value::Value(double v) {
+  type_ = MakeTypeProto(v);
+  value_ = MakeValueProto(v);
 }
 
-Value::Value(std::string s) {
-  type_ = MakeTypeProto(s);
-  value_ = MakeValueProto(s);
+Value::Value(std::string v) {
+  type_ = MakeTypeProto(v);
+  value_ = MakeValueProto(std::move(v));
 }
 
 bool operator==(Value const& a, Value const& b) {
@@ -160,7 +160,7 @@ google::protobuf::Value Value::MakeValueProto(double d) {
 
 google::protobuf::Value Value::MakeValueProto(std::string s) {
   google::protobuf::Value v;
-  v.set_string_value(s);
+  v.set_string_value(std::move(s));
   return v;
 }
 
