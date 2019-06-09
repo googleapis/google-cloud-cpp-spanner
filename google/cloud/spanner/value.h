@@ -297,9 +297,9 @@ class Value {
 /**
  * Factory to construct a "null" Value of the specified type `T`.
  *
- * This is equivalent to passing to the constructor an `optional<T>` without a
- * value, though this factory may be easier to invoke and result in clearer
- * code at the call site.
+ * This is equivalent to passing an `optional<T>` without a value to the
+ * constructor, though this factory may be easier to invoke and result in
+ * clearer code at the call site.
  */
 template <typename T>
 Value MakeNullValue() {
