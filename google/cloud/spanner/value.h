@@ -302,7 +302,7 @@ class Value {
  * code at the call site.
  */
 template <typename T>
-static Value MakeNullValue() {
+Value MakeNullValue() {
   return Value(optional<T>{});
 }
 
