@@ -54,6 +54,15 @@ elif [[ "${BUILD_NAME}" = "tsan" ]]; then
   export BAZEL_CONFIG=tsan
   export CC=clang
   export CXX=clang++
+elif [[ "${BUILD_NAME}" = "msan" ]]; then
+  # We use Fedora for this build because (1) I was able to find instructions on
+  # how to build libc++ with msan for that distribution, (2) Fedora has a
+  # relatively recent version of Clang (8.0 as I write this).
+  export DISTRO=fedora-libcxx-msan
+  export DISTRO_VERSION=30
+  export BAZEL_CONFIG=msan
+  export CC=clang
+  export CXX=clang++
 elif [[ "${BUILD_NAME}" = "cmake" ]]; then
   export DISTRO=fedora-install
   export DISTRO_VERSION=30
