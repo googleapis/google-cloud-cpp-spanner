@@ -69,7 +69,7 @@ fi
 if [[ -z "${PROJECT_ROOT+x}" ]]; then
   readonly PROJECT_ROOT="$(cd "$(dirname "$0")/../../.."; pwd)"
 fi
-source "${PROJECT_ROOT}/ci/kokoro/linux-config.sh"
+source "${PROJECT_ROOT}/ci/kokoro/define-docker-variables.sh"
 source "${PROJECT_ROOT}/ci/define-dump-log.sh"
 
 echo "================================================================"
@@ -91,10 +91,12 @@ echo "Creating Docker image with all the development tools $(date)."
 # is an error, so disabling from this point on is the right choice.
 set +e
 mkdir -p "${BUILD_OUTPUT}"
+readonly CREATE_DOCKER_IMAGE_LOG="${BUILD_OUTPUT}/create-build-docker-image.log"
+echo "Logging to ${CREATE_DOCKER_IMAGE_LOG}"
 if ! "${PROJECT_ROOT}/ci/retry-command.sh" \
        "${PROJECT_ROOT}/ci/kokoro/create-docker-image.sh" \
-         >"${BUILD_OUTPUT}/create-build-docker-image.log" 2>&1 </dev/null; then
-  dump_log "${BUILD_OUTPUT}/create-build-docker-image.log"
+         >"${CREATE_DOCKER_IMAGE_LOG}" 2>&1 </dev/null; then
+  dump_log "${CREATE_DOCKER_IMAGE_LOG}"
   exit 1
 fi
 echo "Docker image created $(date)."
@@ -114,8 +116,7 @@ if [[ "${docker_uid}" == "0" ]]; then
 fi
 
 # Make sure the user has a $HOME directory inside the Docker container.
-readonly DOCKER_HOME="${docker_home_prefix}/${IMAGE}-${BUILD_NAME}"
-mkdir -p "${DOCKER_HOME}"
+mkdir -p "${BUILD_HOME}"
 
 # We use an array for the flags so they are easier to document.
 docker_flags=(
@@ -124,8 +125,8 @@ docker_flags=(
     "--cap-add" "SYS_PTRACE"
 
     # The name and version of the distribution, this is used to call
-    # linux-config.sh and determine the Docker image built, and the output
-    # directory for any artifacts.
+    # define-docker-variables.sh and determine the Docker image built, and the
+    # output directory for any artifacts.
     "--env" "DISTRO=${DISTRO}"
     "--env" "DISTRO_VERSION=${DISTRO_VERSION}"
 
@@ -180,7 +181,7 @@ docker_flags=(
     # build byproducts in this directory. CMake (when ccache is enabled) uses
     # it to store $HOME/.ccache
     "--env" "HOME=/h"
-    "--volume" "${DOCKER_HOME}:/h"
+    "--volume" "${PWD}/${BUILD_HOME}:/h"
 
     # Mount the current directory (which is the top-level directory for the
     # project) as `/v` inside the docker image, and move to that directory.
@@ -198,7 +199,7 @@ fi
 
 sudo docker run "${docker_flags[@]}" "${IMAGE}:tip" \
      "/v/${in_docker_script}" "${CMAKE_SOURCE_DIR}" \
-     "${BUILD_OUTPUT}-${BUILD_NAME}"
+     "${BUILD_OUTPUT}"
 
 exit_status=$?
 echo "Build finished with ${exit_status} exit status $(date)."

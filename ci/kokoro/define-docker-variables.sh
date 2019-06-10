@@ -15,14 +15,10 @@
 
 set -eu
 
-# Create a Docker image with all the dependencies necessary to build the
-# project.
-if [[ -z "${PROJECT_ROOT+x}" ]]; then
-  readonly PROJECT_ROOT="$(cd "$(dirname "$0")/../.."; pwd)"
+if [[ -n "${IMAGE+x}" ]]; then
+  echo "IMAGE is already defined."
+else
+  readonly IMAGE="spanci-${DISTRO}-${DISTRO_VERSION}"
+  readonly BUILD_OUTPUT="cmake-out/${IMAGE}-${BUILD_NAME}"
+  readonly BUILD_HOME="cmake-out/home/${IMAGE}-${BUILD_NAME}"
 fi
-source "${PROJECT_ROOT}/ci/kokoro/define-docker-variables.sh"
-
-cd "${PROJECT_ROOT}"
-sudo docker build -t "${IMAGE}:tip" \
-     --build-arg DISTRO_VERSION="${DISTRO_VERSION}" \
-     -f "ci/kokoro/Dockerfile.${DISTRO}" ci
