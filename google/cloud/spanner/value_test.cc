@@ -22,6 +22,15 @@
 
 namespace google {
 namespace cloud {
+
+void PrintTo(optional<bool> const& v, std::ostream* os) {
+  if (!v.has_value()) {
+    *os << "optional<bool>{}";
+    return;
+  }
+  *os << "optional<bool>{" << (v.value() ? "true" : "false") << "}";
+}
+
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 template <typename T>
@@ -60,7 +69,9 @@ TEST(Value, BasicSemantics) {
   for (auto x : {false, true}) {
     SCOPED_TRACE("Testing: bool " + std::to_string(x));
     TestBasicSemantics(x);
+    SCOPED_TRACE("Testing: vector<bool> " + std::to_string(x));
     TestBasicSemantics(std::vector<bool>(5, x));
+    SCOPED_TRACE("Testing: vector<optional<bool>> " + std::to_string(x));
     std::vector<optional<bool>> v(5, x);
     v.resize(10, x);
     TestBasicSemantics(v);

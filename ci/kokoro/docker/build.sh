@@ -70,6 +70,13 @@ elif [[ "${BUILD_NAME}" = "cmake" ]]; then
 elif [[ "${BUILD_NAME}" = "cmake-super" ]]; then
   export CMAKE_SOURCE_DIR="ci/super"
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
+elif [[ "${BUILD_NAME}" = "gcc-4.8" ]]; then
+  # The oldest version of GCC we support is 4.8, this build checks the code
+  # against that version. The use of CentOS 7 for that build is not a
+  # coincidence: the reason we support GCC 4.8 is to support this distribution
+  # (and its commercial cousin: RHEL 7).
+  export DISTRO=centos
+  export DISTRO_VERSION=7
 else
   echo "Unknown BUILD_NAME (${BUILD_NAME}). Fix the Kokoro .cfg file."
   exit 1
