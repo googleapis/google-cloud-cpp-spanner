@@ -58,8 +58,8 @@ if [[ -r "${BINARY_DIR}/CTestTestfile.cmake" ]]; then
   echo "================================================================"
   # It is Okay to skip the tests in this case because the super build
   # automatically runs them.
-  env -C "${BINARY_DIR}" ctest --output-on-failure -j "$(nproc)"
   echo "Running the unit tests $(date)"
+  env -C "${BINARY_DIR}" ctest --output-on-failure -j "$(nproc)"
   echo "================================================================"
 fi
 
