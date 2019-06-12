@@ -216,6 +216,10 @@ TEST(Value, SpannerStruct) {
   EXPECT_TRUE(v2.is<StructType>());
   EXPECT_TRUE((v2.is<std::tuple<bool, std::int64_t>>()));
   EXPECT_NE(v1, v2);
+
+  auto sor = v1.get<StructType>();
+  EXPECT_TRUE(sor.ok());
+  EXPECT_EQ(tup, *sor);
   /* EXPECT_EQ(tup, *v.get<StructType>()); */
   /* EXPECT_NE(tup2, *v.get<StructType>()); */
 }

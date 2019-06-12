@@ -212,7 +212,7 @@ class Value {
       if (is_optional<T>::value) return T{};
       return Status(StatusCode::kInvalidArgument, "null value");
     }
-    return GetValue(T{}, value_);
+    return GetValue(T{}, value_, type_);
   }
 
   /**
@@ -276,7 +276,7 @@ class Value {
     google::spanner::v1::Type t;
     t.set_code(google::spanner::v1::TypeCode::STRUCT);
     AddStructTypes call;
-    IterateTuple(tup, call, t.mutable_struct_type());
+    IterateTuple(tup, call, *t.mutable_struct_type());
     return t;
   }
 
@@ -284,15 +284,15 @@ class Value {
   // for all the elements of a tuple.
   struct AddStructTypes {
     template <typename T>
-    void operator()(T const& t,
-                    google::spanner::v1::StructType* struct_type) const {
-      auto* field = struct_type->add_fields();
+    void operator()(T const&,
+                    google::spanner::v1::StructType& struct_type) const {
+      auto* field = struct_type.add_fields();
       *field->mutable_type() = MakeTypeProto(T{});
     }
     template <typename T>
     void operator()(std::pair<std::string, T> const& p,
-                    google::spanner::v1::StructType* struct_type) const {
-      auto* field = struct_type->add_fields();
+                    google::spanner::v1::StructType& struct_type) const {
+      auto* field = struct_type.add_fields();
       field->set_name(p.first);
       *field->mutable_type() = MakeTypeProto(T{});
     }
@@ -323,7 +323,7 @@ class Value {
   static google::protobuf::Value MakeValueProto(std::tuple<Ts...> const& tup) {
     google::protobuf::Value v;
     AddStructValues call;
-    IterateTuple(tup, call, v.mutable_list_value());
+    IterateTuple(tup, call, *v.mutable_list_value());
     return v;
   }
 
@@ -331,52 +331,89 @@ class Value {
   // all the elements of a tuple.
   struct AddStructValues {
     template <typename T>
-    void operator()(T const& t, google::protobuf::ListValue* list_value) const {
-      *list_value->add_values() = MakeValueProto(t);
+    void operator()(T const& t, google::protobuf::ListValue& list_value) const {
+      *list_value.add_values() = MakeValueProto(t);
     }
     template <typename T>
     void operator()(std::pair<std::string, T> const& p,
-                    google::protobuf::ListValue* list_value) const {
-      *list_value->add_values() = MakeValueProto(p.second);
+                    google::protobuf::ListValue& list_value) const {
+      *list_value.add_values() = MakeValueProto(p.second);
     }
   };
 
   // Tag-dispatch overloads to extract a C++ value from a `Value` protobuf. The
   // first argument type is the tag, the first argument value is ignored.
-  static bool GetValue(bool, google::protobuf::Value const&);
-  static std::int64_t GetValue(std::int64_t, google::protobuf::Value const&);
-  static double GetValue(double, google::protobuf::Value const&);
+  static bool GetValue(bool, google::protobuf::Value const&,
+                       google::spanner::v1::Type const&);
+  static std::int64_t GetValue(std::int64_t, google::protobuf::Value const&,
+                               google::spanner::v1::Type const&);
+  static double GetValue(double, google::protobuf::Value const&,
+                         google::spanner::v1::Type const&);
   static std::string GetValue(std::string const&,
-                              google::protobuf::Value const&);
+                              google::protobuf::Value const&,
+                              google::spanner::v1::Type const&);
   template <typename T>
   static optional<T> GetValue(optional<T> const&,
-                              google::protobuf::Value const& pv) {
-    return GetValue(T{}, pv);
+                              google::protobuf::Value const& pv,
+                              google::spanner::v1::Type const& pt) {
+    return GetValue(T{}, pv, pt);
   }
   template <typename T>
   static std::vector<T> GetValue(std::vector<T> const&,
-                                 google::protobuf::Value const& pv) {
+                                 google::protobuf::Value const& pv,
+                                 google::spanner::v1::Type const& pt) {
     std::vector<T> v;
     for (auto const& e : pv.list_value().values()) {
-      v.push_back(GetValue(T{}, e));
+      v.push_back(GetValue(T{}, e, pt));
     }
     return v;
   }
+  template <typename... Ts>
+  static std::tuple<Ts...> GetValue(std::tuple<Ts...> const&,
+                                    google::protobuf::Value const& pv,
+                                    google::spanner::v1::Type const& pt) {
+    std::tuple<Ts...> tup;
+    ExtractTupleValues call{0, pv.list_value(), pt};
+    IterateTuple(tup, call);
+    return tup;
+  }
+
+  // A functor to be used with IterateTuple (see below) to extract C++ types
+  // from a ListValue proto and store then in a tuple.
+  struct ExtractTupleValues {
+    std::size_t i;
+    google::protobuf::ListValue const& list_value;
+    google::spanner::v1::Type const& type;
+    template <typename T>
+    void operator()(T& t) {
+      t = GetValue(T{}, list_value.values(i), type);
+      ++i;
+    }
+    template <typename T>
+    void operator()(std::pair<std::string, T>& p) {
+      p.first = type.struct_type().fields(i).name();
+      p.second = GetValue(T{}, list_value.values(i), type);
+      ++i;
+    }
+  };
 
   // A helper to iterate the elements of the tuple, calling the given functor
   // `f` with each tuple element and the `out` pointer. Typically `F` should be
   // a functor type with a templated operator() so that it can handle the
   // various types in the tuple.
-  template <std::size_t I = 0, typename F, typename Out, typename... Ts>
-  static typename std::enable_if<(I < sizeof...(Ts)), void>::type IterateTuple(
-      std::tuple<Ts...> const& tup, F&& f, Out* out) {
-    auto const& e = std::get<I>(tup);
-    std::forward<F>(f)(e, out);
-    IterateTuple<I + 1>(tup, std::forward<F>(f), out);
+  template <std::size_t I = 0, typename Tup, typename F, typename... Args>
+  static typename std::enable_if<
+      (I < std::tuple_size<typename std::decay<Tup>::type>::value), void>::type
+  IterateTuple(Tup&& tup, F&& f, Args&&... args) {
+    auto&& e = std::get<I>(std::forward<Tup>(tup));
+    std::forward<F>(f)(e, std::forward<Args>(args)...);
+    IterateTuple<I + 1>(std::forward<Tup>(tup), std::forward<F>(f),
+                        std::forward<Args>(args)...);
   }
-  template <std::size_t I = 0, typename F, typename Out, typename... Ts>
-  static typename std::enable_if<I == sizeof...(Ts), void>::type IterateTuple(
-      std::tuple<Ts...> const&, F&&, Out*) {}
+  template <std::size_t I = 0, typename Tup, typename F, typename... Args>
+  static typename std::enable_if<
+      I == std::tuple_size<typename std::decay<Tup>::type>::value, void>::type
+  IterateTuple(Tup&&, F&&, Args&&...) {}
 
   google::spanner::v1::Type type_;
   google::protobuf::Value value_;
