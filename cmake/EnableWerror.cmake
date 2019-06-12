@@ -32,9 +32,9 @@ function (google_cloud_cpp_add_common_options target)
         target_compile_options(${target} PRIVATE "-Werror")
     endif ()
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"
-            AND "${CMAKE_CXX_COMPILER_VERSION}" VERSION_LESS 5.0)
+        AND "${CMAKE_CXX_COMPILER_VERSION}" VERSION_LESS 5.0)
         # With GCC 4.x this warning is too noisy to be useful.
         target_compile_options(${target}
-                PRIVATE "-Wno-missing-field-initializers")
+                               PRIVATE "-Wno-missing-field-initializers")
     endif ()
 endfunction ()
