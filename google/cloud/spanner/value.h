@@ -149,7 +149,7 @@ class Value {
   bool is() const {
     google::protobuf::util::MessageDifferencer diff;
     auto const* field = google::spanner::v1::StructType::Field::descriptor();
-    // Ignores the name field when checking if `type_` == the proto for `T`.
+    // Ignores the name field because it is never set on the incoming `T`.
     diff.IgnoreField(field->FindFieldByName("name"));
     return diff.Compare(type_, MakeTypeProto(T{}));
   }
