@@ -208,10 +208,14 @@ TEST(Value, SpannerStruct) {
       false, std::make_pair(std::string("foo"), std::int64_t{123}));
   StructType tup2 = std::make_tuple(
       false, std::make_pair(std::string("bar"), std::int64_t{123}));
-  Value v(tup);
+  Value v1(tup);
+  Value v2(tup2);
   /* EXPECT_EQ(Value(false), v); */
-  EXPECT_TRUE(v.is<StructType>());
-  EXPECT_TRUE((v.is<std::tuple<bool, std::int64_t>>()));
+  EXPECT_TRUE(v1.is<StructType>());
+  EXPECT_TRUE((v1.is<std::tuple<bool, std::int64_t>>()));
+  EXPECT_TRUE(v2.is<StructType>());
+  EXPECT_TRUE((v2.is<std::tuple<bool, std::int64_t>>()));
+  EXPECT_NE(v1, v2);
   /* EXPECT_EQ(tup, *v.get<StructType>()); */
   /* EXPECT_NE(tup2, *v.get<StructType>()); */
 }
