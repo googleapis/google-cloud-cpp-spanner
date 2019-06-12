@@ -61,20 +61,19 @@ bool Equal(google::spanner::v1::Type const& pt1,
       return true;
     }
     case google::spanner::v1::TypeCode::STRUCT: {
-      std::cout << "# Equals STRUCT\n";
       auto const& fields1 = pt1.struct_type().fields();
       auto const& fields2 = pt2.struct_type().fields();
       if (fields1.size() != fields2.size()) return false;
-      /* auto const& v1 = pv1.list_value().values(); */
-      /* auto const& v2 = pv2.list_value().values(); */
-      /* if (v1.size() != v2.size()) return false; */
+      auto const& v1 = pv1.list_value().values();
+      auto const& v2 = pv2.list_value().values();
+      if (fields1.size() != v1.size() || v1.size() != v2.size()) return false;
       for (int i = 0; i < fields1.size(); ++i) {
-        auto const f1 = fields1.Get(i);
-        auto const f2 = fields2.Get(i);
+        auto const& f1 = fields1.Get(i);
+        auto const& f2 = fields2.Get(i);
         if (f1.name() != f2.name()) return false;
-        /* if (!Equal(f1.type(), v1.Get(i), f2.type(), v2.Get(i))) { */
-        /*   return false; */
-        /* } */
+        if (!Equal(f1.type(), v1.Get(i), f2.type(), v2.Get(i))) {
+          return false;
+        }
       }
       return true;
     }

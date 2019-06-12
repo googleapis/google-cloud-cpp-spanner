@@ -275,35 +275,28 @@ class Value {
   static google::spanner::v1::Type MakeTypeProto(std::tuple<Ts...> const& tup) {
     google::spanner::v1::Type t;
     t.set_code(google::spanner::v1::TypeCode::STRUCT);
-    AddStructFields(tup, t.mutable_struct_type());
+    AddStructTypes call;
+    IterateTuple(tup, call, t.mutable_struct_type());
     return t;
   }
 
-  // Helper to iterate a tuple, adding each element as a struct field.
-  template <std::size_t I = 0, typename... Ts>
-  static typename std::enable_if<(I < sizeof...(Ts)), void>::type
-  AddStructFields(std::tuple<Ts...> const& tup,
-                  google::spanner::v1::StructType* struct_type) {
-    SetStructField(std::get<I>(tup), struct_type->add_fields());
-    AddStructFields<I + 1, Ts...>(tup, struct_type);
-  }
-  template <std::size_t I = 0, typename... Ts>
-  static typename std::enable_if<I == sizeof...(Ts), void>::type
-  AddStructFields(std::tuple<Ts...> const& tup,
-                  google::spanner::v1::StructType* struct_type) {}
-
-  // Sets the type of a struct field, and the name if given as a pair.
-  template <typename T>
-  static void SetStructField(T const&,
-                             google::spanner::v1::StructType::Field* field) {
-    *field->mutable_type() = MakeTypeProto(T{});
-  }
-  template <typename T>
-  static void SetStructField(std::pair<std::string, T> const& p,
-                             google::spanner::v1::StructType::Field* field) {
-    field->set_name(p.first);
-    SetStructField(T{}, field);
-  }
+  // A functor to be used with IterateTuple (see below) to add a type protos
+  // for all the elements of a tuple.
+  struct AddStructTypes {
+    template <typename T>
+    void operator()(T const& t,
+                    google::spanner::v1::StructType* struct_type) const {
+      auto* field = struct_type->add_fields();
+      *field->mutable_type() = MakeTypeProto(T{});
+    }
+    template <typename T>
+    void operator()(std::pair<std::string, T> const& p,
+                    google::spanner::v1::StructType* struct_type) const {
+      auto* field = struct_type->add_fields();
+      field->set_name(p.first);
+      *field->mutable_type() = MakeTypeProto(T{});
+    }
+  };
 
   // Encodes the argument as a protobuf according to the rules described in
   // https://github.com/googleapis/googleapis/blob/master/google/spanner/v1/type.proto
@@ -326,13 +319,27 @@ class Value {
     }
     return v;
   }
-
   template <typename... Ts>
   static google::protobuf::Value MakeValueProto(std::tuple<Ts...> const& tup) {
     google::protobuf::Value v;
-    // XXX: Pick up here.
+    AddStructValues call;
+    IterateTuple(tup, call, v.mutable_list_value());
     return v;
   }
+
+  // A functor to be used with IterateTuple (see below) to add Value protos for
+  // all the elements of a tuple.
+  struct AddStructValues {
+    template <typename T>
+    void operator()(T const& t, google::protobuf::ListValue* list_value) const {
+      *list_value->add_values() = MakeValueProto(t);
+    }
+    template <typename T>
+    void operator()(std::pair<std::string, T> const& p,
+                    google::protobuf::ListValue* list_value) const {
+      *list_value->add_values() = MakeValueProto(p.second);
+    }
+  };
 
   // Tag-dispatch overloads to extract a C++ value from a `Value` protobuf. The
   // first argument type is the tag, the first argument value is ignored.
@@ -355,6 +362,21 @@ class Value {
     }
     return v;
   }
+
+  // A helper to iterate the elements of the tuple, calling the given functor
+  // `f` with each tuple element and the `out` pointer. Typically `F` should be
+  // a functor type with a templated operator() so that it can handle the
+  // various types in the tuple.
+  template <std::size_t I = 0, typename F, typename Out, typename... Ts>
+  static typename std::enable_if<(I < sizeof...(Ts)), void>::type IterateTuple(
+      std::tuple<Ts...> const& tup, F&& f, Out* out) {
+    auto const& e = std::get<I>(tup);
+    std::forward<F>(f)(e, out);
+    IterateTuple<I + 1>(tup, std::forward<F>(f), out);
+  }
+  template <std::size_t I = 0, typename F, typename Out, typename... Ts>
+  static typename std::enable_if<I == sizeof...(Ts), void>::type IterateTuple(
+      std::tuple<Ts...> const&, F&&, Out*) {}
 
   google::spanner::v1::Type type_;
   google::protobuf::Value value_;

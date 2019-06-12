@@ -207,7 +207,7 @@ TEST(Value, SpannerStruct) {
   StructType tup = std::make_tuple(
       false, std::make_pair(std::string("foo"), std::int64_t{123}));
   StructType tup2 = std::make_tuple(
-      false, std::make_pair(std::string("bar"), std::int64_t{123}));
+      false, std::make_pair(std::string("foo"), std::int64_t{124}));
   Value v1(tup);
   Value v2(tup2);
   /* EXPECT_EQ(Value(false), v); */
