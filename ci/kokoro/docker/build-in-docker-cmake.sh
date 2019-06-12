@@ -36,6 +36,11 @@ echo "${COLOR_YELLOW}Starting docker build $(date) with $(nproc) cores${COLOR_RE
 echo
 
 echo "================================================================"
+echo "Verify formatting $(date)"
+(cd "${PROJECT_ROOT}" ; ./ci/check-style.sh)
+echo "================================================================"
+
+echo "================================================================"
 echo "Compiling on $(date)"
 echo "================================================================"
 cd "${PROJECT_ROOT}"

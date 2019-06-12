@@ -18,14 +18,18 @@ if (${CMAKE_VERSION} VERSION_LESS "3.9")
 
     # Old versions of CMake have really poor support for Doxygen generation.
     message(STATUS "Doxygen generation only enabled for cmake 3.9 and higher")
-else()
+else ()
     # Automatically download the Doxygen documentation for `std::` from
     # https://cppreference.com
 
     find_package(Doxygen)
     if (Doxygen_FOUND)
         set(DOXYGEN_RECURSIVE YES)
-        set(DOXYGEN_FILE_PATTERNS *.h *.cc *.proto *.dox)
+        set(DOXYGEN_FILE_PATTERNS
+            *.h
+            *.cc
+            *.proto
+            *.dox)
         set(DOXYGEN_EXAMPLE_RECURSIVE YES)
         set(DOXYGEN_EXCLUDE "third_party" "cmake-build-debug" "cmake-out")
         set(DOXYGEN_EXCLUDE_SYMLINKS YES)
@@ -43,7 +47,7 @@ else()
         set(DOXYGEN_GENERATE_TESTLIST NO)
         set(DOXYGEN_CLANG_ASSISTED_PARSING YES)
         set(DOXYGEN_CLANG_OPTIONS
-                "-std=c++11 -I${PROJECT_SOURCE_DIR} -I${PROJECT_BINARY_DIR}")
+            "-std=c++11 -I${PROJECT_SOURCE_DIR} -I${PROJECT_BINARY_DIR}")
         set(DOXYGEN_GENERATE_LATEX NO)
         set(DOXYGEN_GRAPHICAL_HIERARCHY NO)
         set(DOXYGEN_DIRECTORY_GRAPH NO)
@@ -60,19 +64,19 @@ else()
         set(DOXYGEN_REFERENCES_LINK_SOURCE NO)
         set(DOXYGEN_SOURCE_BROWSER YES)
         set(DOXYGEN_GENERATE_TAGFILE
-                "${CMAKE_CURRENT_BINARY_DIR}/${GOOGLE_CLOUD_CPP_SUBPROJECT}.tag")
+            "${CMAKE_CURRENT_BINARY_DIR}/${GOOGLE_CLOUD_CPP_SUBPROJECT}.tag")
         set(DOXYGEN_EXCLUDE_SYMBOL "internal")
-        set(DOXYGEN_PREDEFINED "SPANNER_CLIENT_NS=v${SPANNER_CLIENT_VERSION_MAJOR}")
-        set(DOXYGEN_EXCLUDE_PATTERNS
-                "*/google/cloud/spanner/README.md"
-                "*/google/cloud/spanner/internal/*"
-                "*/google/cloud/spanner/*_test.cc")
+        set(DOXYGEN_PREDEFINED
+            "SPANNER_CLIENT_NS=v${SPANNER_CLIENT_VERSION_MAJOR}")
+        set(DOXYGEN_EXCLUDE_PATTERNS "*/google/cloud/spanner/README.md"
+                                     "*/google/cloud/spanner/internal/*"
+                                     "*/google/cloud/spanner/*_test.cc")
 
         doxygen_add_docs(doxygen-docs
-                ${CMAKE_CURRENT_SOURCE_DIR}
-                WORKING_DIRECTORY
-                ${CMAKE_CURRENT_SOURCE_DIR}
-                COMMENT
-                "Generate HTML documentation")
+                         ${CMAKE_CURRENT_SOURCE_DIR}
+                         WORKING_DIRECTORY
+                         ${CMAKE_CURRENT_SOURCE_DIR}
+                         COMMENT
+                         "Generate HTML documentation")
     endif ()
 endif ()
