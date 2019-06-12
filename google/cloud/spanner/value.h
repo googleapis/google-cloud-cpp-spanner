@@ -19,10 +19,14 @@
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/status_or.h"
 #include <google/protobuf/struct.pb.h>
+#include <google/protobuf/util/field_comparator.h>
+#include <google/protobuf/util/message_differencer.h>
 #include <google/spanner/v1/type.pb.h>
 #include <ostream>
 #include <string>
+#include <tuple>
 #include <type_traits>
+#include <utility>
 
 namespace google {
 namespace cloud {
@@ -116,6 +120,12 @@ class Value {
     value_ = MakeValueProto(v);
   }
 
+  template <typename... Ts>
+  explicit Value(std::tuple<Ts...> tup) {
+    type_ = MakeTypeProto(tup);
+    value_ = MakeValueProto(tup);
+  }
+
   friend bool operator==(Value const& a, Value const& b);
   friend bool operator!=(Value const& a, Value const& b) { return !(a == b); }
 
@@ -137,7 +147,11 @@ class Value {
    */
   template <typename T>
   bool is() const {
-    return ProtoEqual(type_, MakeTypeProto(T{}));
+    google::protobuf::util::MessageDifferencer diff;
+    auto const* field = google::spanner::v1::StructType::Field::descriptor();
+    // Ignores the name field when checking if `type_` == the proto for `T`.
+    diff.IgnoreField(field->FindFieldByName("name"));
+    return diff.Compare(type_, MakeTypeProto(T{}));
   }
 
   /**
@@ -257,6 +271,39 @@ class Value {
     *t.mutable_array_element_type() = MakeTypeProto(T{});  // Recursive call
     return t;
   }
+  template <typename... Ts>
+  static google::spanner::v1::Type MakeTypeProto(std::tuple<Ts...> const& tup) {
+    google::spanner::v1::Type t;
+    t.set_code(google::spanner::v1::TypeCode::STRUCT);
+    AddStructFields(tup, t.mutable_struct_type());
+    return t;
+  }
+
+  // Helper to iterate a tuple, adding each element as a struct field.
+  template <std::size_t I = 0, typename... Ts>
+  static typename std::enable_if<(I < sizeof...(Ts)), void>::type
+  AddStructFields(std::tuple<Ts...> const& tup,
+                  google::spanner::v1::StructType* struct_type) {
+    SetStructField(std::get<I>(tup), struct_type->add_fields());
+    AddStructFields<I + 1, Ts...>(tup, struct_type);
+  }
+  template <std::size_t I = 0, typename... Ts>
+  static typename std::enable_if<I == sizeof...(Ts), void>::type
+  AddStructFields(std::tuple<Ts...> const& tup,
+                  google::spanner::v1::StructType* struct_type) {}
+
+  // Sets the type of a struct field, and the name if given as a pair.
+  template <typename T>
+  static void SetStructField(T const&,
+                             google::spanner::v1::StructType::Field* field) {
+    *field->mutable_type() = MakeTypeProto(T{});
+  }
+  template <typename T>
+  static void SetStructField(std::pair<std::string, T> const& p,
+                             google::spanner::v1::StructType::Field* field) {
+    field->set_name(p.first);
+    SetStructField(T{}, field);
+  }
 
   // Encodes the argument as a protobuf according to the rules described in
   // https://github.com/googleapis/googleapis/blob/master/google/spanner/v1/type.proto
@@ -277,6 +324,13 @@ class Value {
     for (auto const& e : vec) {
       *v.mutable_list_value()->add_values() = MakeValueProto(e);
     }
+    return v;
+  }
+
+  template <typename... Ts>
+  static google::protobuf::Value MakeValueProto(std::tuple<Ts...> const& tup) {
+    google::protobuf::Value v;
+    // XXX: Pick up here.
     return v;
   }
 
@@ -301,10 +355,6 @@ class Value {
     }
     return v;
   }
-
-  // Helper to compare protos for equality.
-  static bool ProtoEqual(google::protobuf::Message const& m1,
-                         google::protobuf::Message const& m2);
 
   google::spanner::v1::Type type_;
   google::protobuf::Value value_;

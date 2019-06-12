@@ -14,8 +14,6 @@
 
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/log.h"
-#include <google/protobuf/util/field_comparator.h>
-#include <google/protobuf/util/message_differencer.h>
 #include <cmath>
 #include <ios>
 #include <string>
@@ -95,11 +93,6 @@ bool operator==(Value const& a, Value const& b) {
 
 void PrintTo(Value const& v, std::ostream* os) {
   *os << v.type_.ShortDebugString() << "; " << v.value_.ShortDebugString();
-}
-
-bool Value::ProtoEqual(google::protobuf::Message const& m1,
-                       google::protobuf::Message const& m2) {
-  return google::protobuf::util::MessageDifferencer::Equals(m1, m2);
 }
 
 //
