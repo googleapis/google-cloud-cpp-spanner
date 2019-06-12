@@ -18,6 +18,7 @@
 #include <cmath>
 #include <limits>
 #include <string>
+#include <tuple>
 #include <vector>
 
 namespace google {
@@ -199,6 +200,20 @@ TEST(Value, SpannerArray) {
   EXPECT_NE(null_vd, vi);
   EXPECT_FALSE(null_vd.get<ArrayDouble>().ok());
   EXPECT_FALSE(null_vd.get<ArrayInt64>().ok());
+}
+
+TEST(Value, SpannerStruct) {
+  using StructType = std::tuple<bool, std::pair<std::string, std::int64_t>>;
+  StructType tup = std::make_tuple(
+      false, std::make_pair(std::string("foo"), std::int64_t{123}));
+  StructType tup2 = std::make_tuple(
+      false, std::make_pair(std::string("bar"), std::int64_t{123}));
+  Value v(tup);
+  /* EXPECT_EQ(Value(false), v); */
+  EXPECT_TRUE(v.is<StructType>());
+  EXPECT_TRUE((v.is<std::tuple<bool, std::int64_t>>()));
+  /* EXPECT_EQ(tup, *v.get<StructType>()); */
+  /* EXPECT_NE(tup2, *v.get<StructType>()); */
 }
 
 }  // namespace SPANNER_CLIENT_NS
