@@ -178,11 +178,13 @@ google::protobuf::Value Value::MakeValueProto(std::string s) {
 // Value::GetValue
 //
 
-bool Value::GetValue(bool, google::protobuf::Value const& pv) {
+bool Value::GetValue(bool, google::protobuf::Value const& pv,
+                     google::spanner::v1::Type const&) {
   return pv.bool_value();
 }
 
-std::int64_t Value::GetValue(std::int64_t, google::protobuf::Value const& pv) {
+std::int64_t Value::GetValue(std::int64_t, google::protobuf::Value const& pv,
+                             google::spanner::v1::Type const&) {
   auto const& s = pv.string_value();
   std::size_t processed = 0;
   long long x = std::stoll(s, &processed, 10);
@@ -192,7 +194,8 @@ std::int64_t Value::GetValue(std::int64_t, google::protobuf::Value const& pv) {
   return x;
 }
 
-double Value::GetValue(double, google::protobuf::Value const& pv) {
+double Value::GetValue(double, google::protobuf::Value const& pv,
+                       google::spanner::v1::Type const&) {
   if (pv.kind_case() == google::protobuf::Value::kStringValue) {
     std::string const& s = pv.string_value();
     auto const inf = std::numeric_limits<double>::infinity();
@@ -204,7 +207,8 @@ double Value::GetValue(double, google::protobuf::Value const& pv) {
 }
 
 std::string Value::GetValue(std::string const&,
-                            google::protobuf::Value const& pv) {
+                            google::protobuf::Value const& pv,
+                            google::spanner::v1::Type const&) {
   return pv.string_value();
 }
 
