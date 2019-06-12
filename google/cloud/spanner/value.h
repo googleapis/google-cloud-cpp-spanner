@@ -15,6 +15,7 @@
 #ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_VALUE_H_
 #define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_VALUE_H_
 
+#include "google/cloud/internal/throw_delegate.h"
 #include "google/cloud/optional.h"
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/status_or.h"
@@ -121,7 +122,7 @@ class Value {
   }
 
   template <typename... Ts>
-  explicit Value(std::tuple<Ts...> tup) {
+  explicit Value(std::tuple<Ts...> const& tup) {
     type_ = MakeTypeProto(tup);
     value_ = MakeValueProto(tup);
   }
@@ -265,10 +266,18 @@ class Value {
     return MakeTypeProto(T{});
   }
   template <typename T>
-  static google::spanner::v1::Type MakeTypeProto(std::vector<T> const&) {
+  static google::spanner::v1::Type MakeTypeProto(std::vector<T> const& v) {
     google::spanner::v1::Type t;
     t.set_code(google::spanner::v1::TypeCode::ARRAY);
-    *t.mutable_array_element_type() = MakeTypeProto(T{});  // Recursive call
+    *t.mutable_array_element_type() = MakeTypeProto(v.empty() ? T{} : v[0]);
+
+    for (auto const& e : v) {
+      if (!google::protobuf::util::MessageDifferencer::Equals(
+              MakeTypeProto(e), t.array_element_type())) {
+        internal::ThrowInvalidArgument("Mismatched types");
+      }
+    }
+
     return t;
   }
   template <typename... Ts>
@@ -364,7 +373,7 @@ class Value {
                                  google::spanner::v1::Type const& pt) {
     std::vector<T> v;
     for (auto const& e : pv.list_value().values()) {
-      v.push_back(GetValue(T{}, e, pt));
+      v.push_back(GetValue(T{}, e, pt.array_element_type()));
     }
     return v;
   }
@@ -406,7 +415,8 @@ class Value {
       (I < std::tuple_size<typename std::decay<Tup>::type>::value), void>::type
   IterateTuple(Tup&& tup, F&& f, Args&&... args) {
     auto&& e = std::get<I>(std::forward<Tup>(tup));
-    std::forward<F>(f)(e, std::forward<Args>(args)...);
+    std::forward<F>(f)(std::forward<decltype(e)>(e),
+                       std::forward<Args>(args)...);
     IterateTuple<I + 1>(std::forward<Tup>(tup), std::forward<F>(f),
                         std::forward<Args>(args)...);
   }
