@@ -21,8 +21,8 @@ FROM fedora:${DISTRO_VERSION}
 RUN dnf makecache && \
     dnf install -y clang clang-tools-extra cmake doxygen findutils gcc-c++ git \
         grpc-devel grpc-plugins libcxx-devel libcxxabi-devel libcurl-devel \
-        make openssl-devel pkgconfig protobuf-compiler python-pip tar wget \
-        zlib-devel
+        make openssl-devel pkgconfig protobuf-compiler python-pip ShellCheck \
+        tar wget zlib-devel
 
 # Install the the buildifier tool, which does not compile with the default
 # golang compiler for Ubuntu 16.04 and Ubuntu 18.04.
