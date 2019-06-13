@@ -132,10 +132,10 @@ class Value {
   Value& operator=(Value&&) = default;
 
   /// Constructs a non-null instance with the specified type and value.
-  explicit Value(bool v);
-  explicit Value(std::int64_t v);
-  explicit Value(double v);
-  explicit Value(std::string v);
+  explicit Value(bool v) : Value(PrivateConstructor{}, v) {}
+  explicit Value(std::int64_t v) : Value(PrivateConstructor{}, v) {}
+  explicit Value(double v) : Value(PrivateConstructor{}, v) {}
+  explicit Value(std::string v) : Value(PrivateConstructor{}, std::move(v)) {}
 
   /**
    * Constructs a non-null instance from common C++ literal types that closely,
@@ -152,19 +152,17 @@ class Value {
    *     spanner::Value v2("hello");
    *     assert(v2.is<std::string>());
    */
-  explicit Value(int v);
+  explicit Value(int v) : Value(PrivateConstructor{}, v) {}
   /// @copydoc Value(int)
-  explicit Value(char const* v);
+  explicit Value(char const* v) : Value(PrivateConstructor{}, v) {}
 
   /**
    * Constructs a non-null instance if `opt` has a value, otherwise constructs
    * a null instance.
    */
   template <typename T>
-  explicit Value(optional<T> const& opt) {
-    type_ = MakeTypeProto(T{});
-    value_ = MakeValueProto(opt);
-  }
+  explicit Value(optional<T> const& opt)
+      : Value(PrivateConstructor{}, std::move(opt)) {}
 
   /**
    * Constructs an instance from a Spanner ARRAY of the specified type and
@@ -179,11 +177,10 @@ class Value {
    * names results in undefined behavior.
    */
   template <typename T>
-  explicit Value(std::vector<T> const& v) {
+  explicit Value(std::vector<T> const& v)
+      : Value(PrivateConstructor{}, std::move(v)) {
     static_assert(!is_vector<typename std::decay<T>::type>::value,
                   "vector of vector not allowed. See value.h documentation.");
-    type_ = MakeTypeProto(v);
-    value_ = MakeValueProto(v);
   }
 
   /**
@@ -194,10 +191,8 @@ class Value {
    * `std::pair<std::string, T>`.
    */
   template <typename... Ts>
-  explicit Value(std::tuple<Ts...> const& tup) {
-    type_ = MakeTypeProto(tup);
-    value_ = MakeValueProto(tup);
-  }
+  explicit Value(std::tuple<Ts...> const& tup)
+      : Value(PrivateConstructor{}, std::move(tup)) {}
 
   friend bool operator==(Value const& a, Value const& b);
   friend bool operator!=(Value const& a, Value const& b) { return !(a == b); }
@@ -508,6 +503,18 @@ class Value {
 
   static bool EqualTypeProtoIgnoringNames(google::spanner::v1::Type const& a,
                                           google::spanner::v1::Type const& b);
+
+  // A private templated constructor that is called by all the public
+  // constructors to set the type_ and value_ members. The `PrivateConstructor`
+  // type is used so that this overload is never chosen for
+  // non-member/non-friend callers. Otherwise, since visibility restrictions
+  // apply after overload resolution, users could get weird error messages if
+  // this constructor matched their arguments best.
+  struct PrivateConstructor {};
+  template <typename T>
+  explicit Value(PrivateConstructor, T&& t)
+      : type_(MakeTypeProto(std::forward<T>(t))),
+        value_(MakeValueProto(std::forward<T>(t))) {}
 
   google::spanner::v1::Type type_;
   google::protobuf::Value value_;
