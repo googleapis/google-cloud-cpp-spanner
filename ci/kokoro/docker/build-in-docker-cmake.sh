@@ -48,6 +48,10 @@ cmake_flags=()
 if [[ "${CLANG_TIDY:-}" = "yes" ]]; then
   cmake_flags+=("-DGOOGLE_CLOUD_CPP_CLANG_TIDY=yes")
 fi
+if [[ "${GOOGLE_CLOUD_CPP_CXX_STANDARD:-}" != "" ]]; then
+  cmake_flags+=(
+    "-DGOOGLE_CLOUD_CPP_CXX_STANDARD=${GOOGLE_CLOUD_CPP_CXX_STANDARD}")
+fi
 
 cmake "-H${SOURCE_DIR}" "-B${BINARY_DIR}" "${cmake_flags[@]}"
 cmake --build "${BINARY_DIR}" -- -j "$(nproc)"
