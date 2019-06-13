@@ -103,9 +103,9 @@ inline namespace SPANNER_CLIENT_NS {
  * Spanner structs are represented in C++ as instances of `std::tuple` holding
  * zero or more of the allowed Spanner types, such as `bool`, `std::int64_t`,
  * `std::vector`, and even other `std::tuple` objects. Each tuple element
- * corresponds to a single field in a Spanner Struct.
+ * corresponds to a single field in a Spanner STRUCT.
  *
- * Spanner struct fields may optionally contain a string indicating the field's
+ * Spanner STRUCT fields may optionally contain a string indicating the field's
  * name. Fields names may be empty, unique, or repeated. A named field may be
  * specified as a tuple element of type `std::pair<std::string, T>`, where the
  * pair's `.first` member indicate's the field's name, and the `.second` member
@@ -118,7 +118,7 @@ inline namespace SPANNER_CLIENT_NS {
  *     assert(s == *v.get<Struct>());
  *
  * NOTE: While a struct's (optional) field names are not part of its C++ type,
- * they are part of its Spanner struct type. Array's (i.e., `std::vector`)
+ * they are part of its Spanner STRUCT type. Array's (i.e., `std::vector`)
  * must contain a single element type, therefore it is an error to construct
  * a `std::vector` of `std::tuple` objects with differently named fields.
  */
@@ -158,7 +158,7 @@ class Value {
    * NOTE: If `T` is a `std::tuple` with field names (i.e., at least one of its
    * element types is a `std::pair<std::string, T>`) then, all of the vector's
    * elements must have exactly the same field names. Any mismatch in in field
-   * names results in undefined bhavior.
+   * names results in undefined behavior.
    */
   template <typename T>  // TODO(#59): add an enabler to disallow T==vector
   explicit Value(std::vector<T> const& v) {
