@@ -171,10 +171,10 @@ TEST(Value, SpannerArray) {
   EXPECT_TRUE(ve.is<ArrayInt64>());
   EXPECT_FALSE(ve.is_null<ArrayInt64>());
   EXPECT_FALSE(ve.is<ArrayDouble>());
-  EXPECT_EQ(empty, static_cast<ArrayInt64>(ve));
   EXPECT_TRUE(ve.get<ArrayInt64>().ok());
   EXPECT_FALSE(ve.get<ArrayDouble>().ok());
   EXPECT_EQ(empty, *ve.get<ArrayInt64>());
+  EXPECT_EQ(empty, static_cast<ArrayInt64>(ve));
 
   ArrayInt64 const ai = {1, 2, 3};
   Value const vi(ai);
@@ -182,10 +182,10 @@ TEST(Value, SpannerArray) {
   EXPECT_TRUE(vi.is<ArrayInt64>());
   EXPECT_FALSE(vi.is_null<ArrayInt64>());
   EXPECT_FALSE(vi.is<ArrayDouble>());
-  EXPECT_EQ(ai, static_cast<ArrayInt64>(vi));
   EXPECT_TRUE(vi.get<ArrayInt64>().ok());
   EXPECT_FALSE(vi.get<ArrayDouble>().ok());
   EXPECT_EQ(ai, *vi.get<ArrayInt64>());
+  EXPECT_EQ(ai, static_cast<ArrayInt64>(vi));
 
   ArrayDouble const ad = {1.0, 2.0, 3.0};
   Value const vd(ad);
@@ -194,9 +194,9 @@ TEST(Value, SpannerArray) {
   EXPECT_TRUE(vd.is<ArrayDouble>());
   EXPECT_FALSE(vd.is_null<ArrayDouble>());
   EXPECT_FALSE(vd.is<ArrayInt64>());
-  EXPECT_EQ(ad, static_cast<ArrayDouble>(vd));
   EXPECT_TRUE(vd.get<ArrayDouble>().ok());
   EXPECT_EQ(ad, *vd.get<ArrayDouble>());
+  EXPECT_EQ(ad, static_cast<ArrayDouble>(vd));
 
   Value const null_vi = MakeNullValue<ArrayInt64>();
   EXPECT_EQ(null_vi, null_vi);
@@ -215,7 +215,7 @@ TEST(Value, SpannerArray) {
 }
 
 TEST(Value, SpannerStruct) {
-  // Using declarations to shorten the tests making them more readable.
+  // Using declarations to shorten the tests, making them more readable.
   using std::int64_t;
   using std::make_pair;
   using std::make_tuple;
@@ -282,9 +282,9 @@ TEST(Value, SpannerStruct) {
   EXPECT_NE(v2, v_null);
 
   auto array_struct = std::vector<T3>{
-      {false, {"age", 1}},
-      {true, {"age", 2}},
-      {false, {"age", 3}},
+      T3{false, {"age", 1}},
+      T3{true, {"age", 2}},
+      T3{false, {"age", 3}},
   };
   using T4 = decltype(array_struct);
   Value v4(array_struct);

@@ -50,7 +50,7 @@ inline namespace SPANNER_CLIENT_NS {
  * FLOAT64      | `double`
  * STRING       | `std::string`
  * ARRAY        | `std::vector<T>`  // [1]
- * STRUCT       | `std::tuple<Ts...>
+ * STRUCT       | `std::tuple<Ts...>`
  *
  * [1] The type `T` may be any of the other supported types, except for
  *     ARRAY/`std::vector`.
@@ -87,7 +87,7 @@ inline namespace SPANNER_CLIENT_NS {
  *
  * Spanner arrays are represented in C++ as a `std::vector<T>`, where the type
  * `T` may be any of the other allowed Spanner types, such as `bool`,
- * `std::int64_t`, etc. The only exception is that a arrays may not directly
+ * `std::int64_t`, etc. The only exception is that arrays may not directly
  * contain another array; to achieve a similar result you could create an array
  * of a 1-element struct holding an array. The following examples show usage of
  * arrays.
@@ -336,8 +336,7 @@ class Value {
   static google::spanner::v1::Type MakeTypeProto(std::tuple<Ts...> const& tup) {
     google::spanner::v1::Type t;
     t.set_code(google::spanner::v1::TypeCode::STRUCT);
-    AddStructTypes f;
-    IterateTuple(tup, f, *t.mutable_struct_type());
+    IterateTuple(tup, AddStructTypes{}, *t.mutable_struct_type());
     return t;
   }
 
@@ -383,8 +382,7 @@ class Value {
   template <typename... Ts>
   static google::protobuf::Value MakeValueProto(std::tuple<Ts...> const& tup) {
     google::protobuf::Value v;
-    AddStructValues f;
-    IterateTuple(tup, f, *v.mutable_list_value());
+    IterateTuple(tup, AddStructValues{}, *v.mutable_list_value());
     return v;
   }
 
