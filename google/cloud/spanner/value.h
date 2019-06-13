@@ -116,7 +116,7 @@ inline namespace SPANNER_CLIENT_NS {
  *     assert(v.is<Struct>());
  *     assert(s == *v.get<Struct>());
  *
- * NOTE: While a struct's (optional) field names are not part of its C++ type,
+ * NOTE: While a STRUCT's (optional) field names are not part of its C++ type,
  * they are part of its Spanner STRUCT type. Array's (i.e., `std::vector`)
  * must contain a single element type, therefore it is an error to construct
  * a `std::vector` of `std::tuple` objects with differently named fields.
@@ -169,7 +169,7 @@ class Value {
    * Constructs an instance from a Spanner STRUCT with a type and values
    * matching the given `std::tuple`.
    *
-   * Any struct field may optionally have a name, which is specified as
+   * Any STRUCT field may optionally have a name, which is specified as
    * `std::pair<std::string, T>`.
    */
   template <typename... Ts>
