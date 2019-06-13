@@ -322,7 +322,6 @@ class Value {
     google::spanner::v1::Type t;
     t.set_code(google::spanner::v1::TypeCode::ARRAY);
     *t.mutable_array_element_type() = MakeTypeProto(v.empty() ? T{} : v[0]);
-#ifndef NDEBUG
     // Checks that vector elements have exactly the same proto Type, which
     // includes field names. This is documented UB.
     for (auto const& e : v) {
@@ -331,7 +330,6 @@ class Value {
         internal::ThrowInvalidArgument("Mismatched types");
       }
     }
-#endif
     return t;
   }
   template <typename... Ts>
