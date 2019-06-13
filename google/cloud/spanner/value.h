@@ -43,13 +43,14 @@ inline namespace SPANNER_CLIENT_NS {
  * with how they map to the Spanner types
  * (https://cloud.google.com/spanner/docs/data-types):
  *
- * Spanner Type | C++ Type
- * ------------ | --------
+ * Spanner Type | C++ Type `T`
+ * ------------ | ------------
  * BOOL         | `bool`
  * INT64        | `std::int64_t`
  * FLOAT64      | `double`
  * STRING       | `std::string`
  * ARRAY        | `std::vector<T>`  // [1]
+ * STRUCT       | `std::tuple<Ts...>
  *
  * [1] The type `T` may be any of the other supported types, except for
  *     ARRAY/`std::vector`.
@@ -81,6 +82,45 @@ inline namespace SPANNER_CLIENT_NS {
  *     assert(!i.ok());  // Can't get the value becuase v is null
  *     StatusOr<optional<std::int64_t> j = v.get<optional<std::int64_t>>();
  *     assert(j.ok());  // OK because an empty option can represent the null
+ *
+ * # Spanner Arrays (i.e., `std::vector<T>`)
+ *
+ * Spanner arrays are represented in C++ as a `std::vector<T>`, where the type
+ * `T` may be any of the other allowed Spanner types, such as `bool`,
+ * `std::int64_t`, etc. The only exception is that a arrays may not directly
+ * contain another array; to achieve a similar result you could create an array
+ * of a 1-element struct holding an array. The following examples show usage of
+ * arrays.
+ *
+ *     std::vector<std::int64_t> vec = {1, 2, 3, 4, 5};
+ *     spanner::Value v(vec);
+ *     assert(v.is<std::vector<std::int64_t>>());
+ *     auto copy = *v.get<std::vector<std::int64_t>>();
+ *     assert(vec == copy);
+ *
+ * # Spanner Structs (i.e., `std::tuple<Ts...>`)
+ *
+ * Spanner structs are represented in C++ as instances of `std::tuple` holding
+ * zero or more of the allowed Spanner types, such as `bool`, `std::int64_t`,
+ * `std::vector`, and even other `std::tuple` objects. Each tuple element
+ * corresponds to a single field in a Spanner Struct.
+ *
+ * Spanner struct fields may optionally contain a string indicating the field's
+ * name. Fields names may be empty, unique, or repeated. A named field may be
+ * specified as a tuple element of type `std::pair<std::string, T>`, where the
+ * pair's `.first` member indicate's the field's name, and the `.second` member
+ * is any valid Spanner type `T`.
+ *
+ *     using Struct = std::tuple<bool, std::pair<std::string, std::int64_t>>;
+ *     Struct s  = {true, {"Foo", 42}};
+ *     spanner::Value v(s);
+ *     assert(v.is<Struct>());
+ *     assert(s == *v.get<Struct>());
+ *
+ * NOTE: While a struct's (optional) field names are not part of its C++ type,
+ * they are part of its Spanner struct type. Array's (i.e., `std::vector`)
+ * must contain a single element type, therefore it is an error to construct
+ * a `std::vector` of `std::tuple` objects with differently named fields.
  */
 class Value {
  public:
@@ -114,6 +154,11 @@ class Value {
    *
    * The type `T` may be any valid type shown above, except vectors of vectors
    * are not allowed.
+   *
+   * NOTE: If `T` is a `std::tuple` with field names (i.e., at least one of its
+   * element types is a `std::pair<std::string, T>`) then, all of the vector's
+   * elements must have exactly the same field names. Any mismatch in in field
+   * names results in undefined bhavior.
    */
   template <typename T>  // TODO(#59): add an enabler to disallow T==vector
   explicit Value(std::vector<T> const& v) {
@@ -121,6 +166,13 @@ class Value {
     value_ = MakeValueProto(v);
   }
 
+  /**
+   * Constructs an instance from a Spanner STRUCT with a type and values
+   * matching the given `std::tuple`.
+   *
+   * Any struct field may optionally have a name, which is specified as
+   * `std::pair<std::string, T>`.
+   */
   template <typename... Ts>
   explicit Value(std::tuple<Ts...> const& tup) {
     type_ = MakeTypeProto(tup);
@@ -270,40 +322,42 @@ class Value {
     google::spanner::v1::Type t;
     t.set_code(google::spanner::v1::TypeCode::ARRAY);
     *t.mutable_array_element_type() = MakeTypeProto(v.empty() ? T{} : v[0]);
-
+#ifndef NDEBUG
+    // Checks that vector elements have exactly the same proto Type, which
+    // includes field names. This is documented UB.
     for (auto const& e : v) {
       if (!google::protobuf::util::MessageDifferencer::Equals(
               MakeTypeProto(e), t.array_element_type())) {
         internal::ThrowInvalidArgument("Mismatched types");
       }
     }
-
+#endif
     return t;
   }
   template <typename... Ts>
   static google::spanner::v1::Type MakeTypeProto(std::tuple<Ts...> const& tup) {
     google::spanner::v1::Type t;
     t.set_code(google::spanner::v1::TypeCode::STRUCT);
-    AddStructTypes call;
-    IterateTuple(tup, call, *t.mutable_struct_type());
+    AddStructTypes f;
+    IterateTuple(tup, f, *t.mutable_struct_type());
     return t;
   }
 
-  // A functor to be used with IterateTuple (see below) to add a type protos
-  // for all the elements of a tuple.
+  // A functor to be used with IterateTuple (see below) to add type protos for
+  // all the elements of a tuple.
   struct AddStructTypes {
     template <typename T>
-    void operator()(T const&,
+    void operator()(T const& t,
                     google::spanner::v1::StructType& struct_type) const {
       auto* field = struct_type.add_fields();
-      *field->mutable_type() = MakeTypeProto(T{});
+      *field->mutable_type() = MakeTypeProto(t);
     }
     template <typename T>
     void operator()(std::pair<std::string, T> const& p,
                     google::spanner::v1::StructType& struct_type) const {
       auto* field = struct_type.add_fields();
       field->set_name(p.first);
-      *field->mutable_type() = MakeTypeProto(T{});
+      *field->mutable_type() = MakeTypeProto(p.second);
     }
   };
 
@@ -331,8 +385,8 @@ class Value {
   template <typename... Ts>
   static google::protobuf::Value MakeValueProto(std::tuple<Ts...> const& tup) {
     google::protobuf::Value v;
-    AddStructValues call;
-    IterateTuple(tup, call, *v.mutable_list_value());
+    AddStructValues f;
+    IterateTuple(tup, f, *v.mutable_list_value());
     return v;
   }
 
@@ -382,8 +436,8 @@ class Value {
                                     google::protobuf::Value const& pv,
                                     google::spanner::v1::Type const& pt) {
     std::tuple<Ts...> tup;
-    ExtractTupleValues call{0, pv.list_value(), pt};
-    IterateTuple(tup, call);
+    ExtractTupleValues f{0, pv.list_value(), pt};
+    IterateTuple(tup, f);
     return tup;
   }
 
@@ -407,8 +461,8 @@ class Value {
   };
 
   // A helper to iterate the elements of the tuple, calling the given functor
-  // `f` with each tuple element and the `out` pointer. Typically `F` should be
-  // a functor type with a templated operator() so that it can handle the
+  // `f` with each tuple element and any optional `args`. Typically `F` should
+  // be a functor type with a templated operator() so that it can handle the
   // various types in the tuple.
   template <std::size_t I = 0, typename Tup, typename F, typename... Args>
   static typename std::enable_if<
