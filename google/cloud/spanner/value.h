@@ -139,6 +139,24 @@ class Value {
   explicit Value(std::string v);
 
   /**
+   * Constructs a non-null instance from common C++ literal types that closely,
+   * though not exactly, match supported Spanner types.
+   *
+   * An integer literal in C++ is of type `int`, which is not exactly an
+   * allowed Spanner type. This will be allowed but it will be implcitly up
+   * converted to a `std::int64_t`. Similarly, a C++ string literal will be
+   * implicitly converted to a `std::string`. For example:
+   *
+   *     spanner::Value v1(42);
+   *     assert(v1.is<std::int64_t>());
+   *
+   *     spanner::Value v2("hello");
+   *     assert(v2.is<std::string>());
+   */
+  explicit Value(int v);
+  explicit Value(char const* v);
+
+  /**
    * Constructs a non-null instance if `opt` has a value, otherwise constructs
    * a null instance.
    */
@@ -313,6 +331,8 @@ class Value {
   static google::spanner::v1::Type MakeTypeProto(std::int64_t);
   static google::spanner::v1::Type MakeTypeProto(double);
   static google::spanner::v1::Type MakeTypeProto(std::string const&);
+  static google::spanner::v1::Type MakeTypeProto(int);
+  static google::spanner::v1::Type MakeTypeProto(char const*);
   template <typename T>
   static google::spanner::v1::Type MakeTypeProto(optional<T> const&) {
     return MakeTypeProto(T{});
@@ -364,6 +384,8 @@ class Value {
   static google::protobuf::Value MakeValueProto(std::int64_t i);
   static google::protobuf::Value MakeValueProto(double d);
   static google::protobuf::Value MakeValueProto(std::string s);
+  static google::protobuf::Value MakeValueProto(int i);
+  static google::protobuf::Value MakeValueProto(char const* s);
   template <typename T>
   static google::protobuf::Value MakeValueProto(optional<T> const& opt) {
     if (opt.has_value()) return MakeValueProto(*opt);
