@@ -77,6 +77,13 @@ elif [[ "${BUILD_NAME}" = "gcc-4.8" ]]; then
   # (and its commercial cousin: RHEL 7).
   export DISTRO=centos
   export DISTRO_VERSION=7
+elif [[ "${BUILD_NAME}" = "cxx17" ]]; then
+  export GOOGLE_CLOUD_CPP_CXX_STANDARD=17
+  export DISTRO=fedora-install
+  export DISTRO_VERSION=30
+  export CC=gcc
+  export CXX=g++
+  in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 else
   echo "Unknown BUILD_NAME (${BUILD_NAME}). Fix the Kokoro .cfg file."
   exit 1
@@ -172,6 +179,9 @@ docker_flags=(
     # invalid links to functions or types). Currently only the CMake builds use
     # this flag.
     "--env" "GENERATE_DOCS=${GENERATE_DOCS:-}"
+
+    # If set, pass -DGOOGLE_CLOUD_CPP_CXX_STANDARD=<value> to CMake.
+    "--env" "GOOGLE_CLOUD_CPP_CXX_STANDARD=${GOOGLE_CLOUD_CPP_CXX_STANDARD:-}"
 
     # When running the integration tests this directory contains the
     # configuration files needed to run said tests. Make it available inside
