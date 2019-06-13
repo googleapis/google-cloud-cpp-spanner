@@ -20,7 +20,6 @@
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/status_or.h"
 #include <google/protobuf/struct.pb.h>
-#include <google/protobuf/util/field_comparator.h>
 #include <google/protobuf/util/message_differencer.h>
 #include <google/spanner/v1/type.pb.h>
 #include <ostream>
@@ -200,11 +199,8 @@ class Value {
    */
   template <typename T>
   bool is() const {
-    google::protobuf::util::MessageDifferencer diff;
-    auto const* field = google::spanner::v1::StructType::Field::descriptor();
     // Ignores the name field because it is never set on the incoming `T`.
-    diff.IgnoreField(field->FindFieldByName("name"));
-    return diff.Compare(type_, MakeTypeProto(T{}));
+    return EqualTypeProtoIgnoringNames(type_, MakeTypeProto(T{}));
   }
 
   /**
@@ -474,6 +470,9 @@ class Value {
   static typename std::enable_if<
       I == std::tuple_size<typename std::decay<Tup>::type>::value, void>::type
   IterateTuple(Tup&&, F&&, Args&&...) {}
+
+  static bool EqualTypeProtoIgnoringNames(google::spanner::v1::Type const& a,
+                                          google::spanner::v1::Type const& b);
 
   google::spanner::v1::Type type_;
   google::protobuf::Value value_;
