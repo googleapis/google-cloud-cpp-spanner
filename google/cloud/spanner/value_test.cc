@@ -131,6 +131,12 @@ TEST(Value, ConstructionFromLiterals) {
   std::tuple<char const*, char const*> tup = std::make_tuple("foo", "bar");
   Value v_tup(tup);
   EXPECT_TRUE((v_tup.is<std::tuple<std::string, std::string>>()));
+
+  auto named_field = std::make_tuple(false, std::make_pair("f1", 42));
+  Value v_named_field(named_field);
+  EXPECT_TRUE(
+      (v_named_field
+           .is<std::tuple<bool, std::pair<std::string, std::int64_t>>>()));
 }
 
 TEST(Value, MixingTypes) {

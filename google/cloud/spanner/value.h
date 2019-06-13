@@ -142,7 +142,7 @@ class Value {
    * though not exactly, match supported Spanner types.
    *
    * An integer literal in C++ is of type `int`, which is not exactly an
-   * allowed Spanner type. This will be allowed but it will be implcitly up
+   * allowed Spanner type. This will be allowed but it will be implicitly up
    * converted to a `std::int64_t`. Similarly, a C++ string literal will be
    * implicitly converted to a `std::string`. For example:
    *
@@ -153,6 +153,7 @@ class Value {
    *     assert(v2.is<std::string>());
    */
   explicit Value(int v);
+  /// @copydoc Value(int)
   explicit Value(char const* v);
 
   /**
@@ -373,8 +374,10 @@ class Value {
       auto* field = struct_type.add_fields();
       *field->mutable_type() = MakeTypeProto(t);
     }
-    template <typename T>
-    void operator()(std::pair<std::string, T> const& p,
+    template <typename S, typename T,
+              typename std::enable_if<
+                  std::is_convertible<S, std::string>::value, int>::type = 0>
+    void operator()(std::pair<S, T> const& p,
                     google::spanner::v1::StructType& struct_type) const {
       auto* field = struct_type.add_fields();
       field->set_name(p.first);
@@ -419,8 +422,10 @@ class Value {
     void operator()(T const& t, google::protobuf::ListValue& list_value) const {
       *list_value.add_values() = MakeValueProto(t);
     }
-    template <typename T>
-    void operator()(std::pair<std::string, T> const& p,
+    template <typename S, typename T,
+              typename std::enable_if<
+                  std::is_convertible<S, std::string>::value, int>::type = 0>
+    void operator()(std::pair<S, T> const& p,
                     google::protobuf::ListValue& list_value) const {
       *list_value.add_values() = MakeValueProto(p.second);
     }
