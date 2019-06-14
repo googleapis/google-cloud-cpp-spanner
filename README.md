@@ -19,6 +19,35 @@ This library is under active development, it is known to be incomplete,
 and is subject to change without notice. We do not recommend that you use
 this library for experimental code, nor for production workloads.
 
+[![Kokoro CI status][kokoro-integration-shield]][kokoro-integration-link]
+[![Kokoro CI status][kokoro-clang-tidy-shield]][kokoro-clang-tidy-link]
+[![Kokoro CI status][kokoro-cmake-shield]][kokoro-cmake-link]
+[![Kokoro CI status][kokoro-asan-shield]][kokoro-asan-link]
+[![Kokoro CI status][kokoro-tsan-shield]][kokoro-tsan-link]
+[![Kokoro CI status][kokoro-msan-shield]][kokoro-msan-link]
+[![Kokoro CI status][kokoro-ubsan-shield]][kokoro-ubsan-link]
+[![Kokoro CI status][kokoro-cxx17-shield]][kokoro-cxx17-link]
+[![Kokoro CI status][kokoro-gcc48-shield]][kokoro-gcc48-link]
+
+[kokoro-integration-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-integration.svg
+[kokoro-integration-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-integration-link.html
+[kokoro-clang-tidy-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-clang-tidy.svg
+[kokoro-clang-tidy-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-clang-tidy-link.html
+[kokoro-cmake-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-cmake.svg
+[kokoro-cmake-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-cmake-link.html
+[kokoro-asan-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-asan.svg
+[kokoro-asan-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-asan-link.html
+[kokoro-tsan-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-tsan.svg
+[kokoro-tsan-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-tsan-link.html
+[kokoro-msan-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-msan.svg
+[kokoro-msan-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-msan-link.html
+[kokoro-ubsan-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-ubsan.svg
+[kokoro-ubsan-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-ubsan-link.html
+[kokoro-cxx17-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-cxx17.svg
+[kokoro-cxx17-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-cxx17-link.html
+[kokoro-gcc48-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-gcc48.svg
+[kokoro-gcc48-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-gcc48-link.html
+
 ## Documentation
 
 * Please consult the [Cloud Spanner website][cloud-spanner-docs] for
