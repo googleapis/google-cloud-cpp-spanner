@@ -48,6 +48,13 @@ TEST(SqlStatementTest, ParamNotEqual) {
   EXPECT_TRUE(s1 != s2);
 }
 
+TEST(SqlStatementTest, ParamNotEqualCardinality) {
+  SqlStatement s1("SELECT * FROM TABLE SCMODS;", {{"last", Value("Blues")},
+    {"first", Value("Elwood")}});
+  SqlStatement s2("select * from table scmods;", {{"last", Value("Blues")}});
+  EXPECT_TRUE(s1 != s2);
+}
+
 TEST(SqlStatementTest, SqlAccessor) {
   const char* statement = "select * from foo";
   SqlStatement stmt(statement);
