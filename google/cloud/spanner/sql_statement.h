@@ -23,14 +23,35 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
-
+/**
+ * The SqlStatement class representis a SQL statement, that may or may not be
+ * parameterized.
+ *
+ * Parameter placeholders are specified by @<param name> in the SQL string.
+ * Values for parameters are a collection of std::pair<std::string,
+ * google::cloud:spanner::Value>.
+ * Example:
+ *   google::cloud::spanner::SqlStatement stmt("select * from scmods where
+ *   last_name = @param1", {{"param1", Value("Blues")}});
+ */
 class SqlStatement {
  public:
+  /// Type alias for parameter collection.
   using param_type = std::unordered_map<std::string, Value>;
+
+  /// Copy and move.
+  SqlStatement(SqlStatement const&) = default;
+  SqlStatement(SqlStatement&&) = default;
+  SqlStatement& operator=(SqlStatement const&) = default;
+  SqlStatement& operator=(SqlStatement&&) = default;
+
+  /// Constructs a SqlStatement without parameters.
   explicit SqlStatement(std::string statement) : statement_(std::move(statement)) {}
-  SqlStatement(std::string statement, param_type params) : 
+  /// Constructs a SqlStatement with specified parameters.
+  SqlStatement(std::string statement, param_type params) :
     statement_(std::move(statement)), params_(std::move(params)) {}
 
+  /// Relational operators.
   friend bool operator==(SqlStatement const& lhs, SqlStatement const& rhs);
   friend bool operator!=(SqlStatement const& lhs, SqlStatement const& rhs);
 
