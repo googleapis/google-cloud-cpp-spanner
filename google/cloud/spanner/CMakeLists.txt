@@ -30,6 +30,8 @@ add_library(spanner_client
             ${CMAKE_BINARY_DIR}/google/cloud/spanner/version_info.h
             sql_statement.cc
             sql_statement.h
+            row.cc
+            row.h
             value.cc
             value.h
             version.cc
@@ -78,7 +80,7 @@ function (spanner_client_define_tests)
     # the GTest::gmock target, and the target names are also weird.
     find_package(GTest CONFIG REQUIRED)
 
-    set(spanner_client_unit_tests sql_statement_test.cc spanner_version_test.cc
+    set(spanner_client_unit_tests row_test.cc sql_statement_test.cc spanner_version_test.cc
                                   value_test.cc)
     # Export the list of unit tests to a .bzl file so we do not need to maintain
     # the list in two places.

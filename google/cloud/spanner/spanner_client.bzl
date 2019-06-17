@@ -18,12 +18,14 @@
 
 spanner_client_hdrs = [
     "sql_statement.h",
+    "row.h",
     "value.h",
     "version.h",
 ]
 
 spanner_client_srcs = [
     "sql_statement.cc",
+    "row.cc",
     "value.cc",
     "version.cc",
 ]
