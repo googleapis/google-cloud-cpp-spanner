@@ -23,12 +23,10 @@ inline namespace SPANNER_CLIENT_NS {
 bool operator==(SqlStatement const& lhs, SqlStatement const& rhs) {
   std::string s1 = lhs.statement_;
   std::string s2 = rhs.statement_;
-  std::transform(std::begin(s1), std::end(s1), std::begin(s1), 
-                  [](unsigned char c){return std::tolower(c);}
-                  );
+  std::transform(std::begin(s1), std::end(s1), std::begin(s1),
+                 [](unsigned char c) { return std::tolower(c); });
   std::transform(std::begin(s2), std::end(s2), std::begin(s2),
-                 [](unsigned char c){return std::tolower(c);}
-                 );
+                 [](unsigned char c) { return std::tolower(c); });
   return s1 == s2 && lhs.params_ == rhs.params_;
 }
 

@@ -46,17 +46,18 @@ class SqlStatement {
   SqlStatement& operator=(SqlStatement&&) = default;
 
   /// Constructs a SqlStatement without parameters.
-  explicit SqlStatement(std::string statement) : statement_(std::move(statement)) {}
+  explicit SqlStatement(std::string statement)
+      : statement_(std::move(statement)) {}
   /// Constructs a SqlStatement with specified parameters.
-  SqlStatement(std::string statement, param_type params) :
-    statement_(std::move(statement)), params_(std::move(params)) {}
+  SqlStatement(std::string statement, param_type params)
+      : statement_(std::move(statement)), params_(std::move(params)) {}
 
   /// Relational operators.
   friend bool operator==(SqlStatement const& lhs, SqlStatement const& rhs);
   friend bool operator!=(SqlStatement const& lhs, SqlStatement const& rhs);
 
-  std::string const& sql() const {return statement_;}
-  param_type const& params() const {return params_;}
+  std::string const& sql() const { return statement_; }
+  param_type const& params() const { return params_; }
 
  private:
   std::string statement_;
