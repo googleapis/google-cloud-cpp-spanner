@@ -12,28 +12,124 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_VALUE_H_
-#define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_VALUE_H_
+#ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_ROW_H_
+#define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_ROW_H_
 
 #include <tuple>
+#include <utility>
 
 namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
+/**
+ * The `Row<Ts...>` class template represents a heterogeneous set of C++ values.
+ *
+ * The values stored in a row may have any of the valid Spanner types described
+ * in value.h. Each value in a row is identified by its column index, with the
+ * first value corresponding to column 0. The number of columns in the row is
+ * can be accessed by the `Row::size()` member function (This exactly matches
+ * the number of types the Row was created with).
+ *
+ * A `Row<Ts...>` is a regular C++ type, supporting default construction, copy,
+ * assignment, move, and equality as expected. It should typically be
+ * constructed with values using the non-member `spanner::MakeRow(Ts...)`
+ * function template (see below). Once an instance is created, you can access
+ * the values in the row using the `Row::get()` overloaded functions.
+ *
+ * Example:
+ *
+ *     spanner::Row<bool, std::int64_t, std::string> row;
+ *     row = spanner::MakeRow(true, 42, "hello");
+ *     static_assert(row.size() == 3, "Created with three types");
+ *
+ *     // Gets all values as a std::tuple
+ *     std::tuple<bool, std::int64_t, std::string> tup = row.get();
+ *
+ *     // Gets one value at the specified column index
+ *     std::int64_t i = row.get<1>();
+ *
+ *     // Gets the values from the specified columns (any order), and returns a
+ *     // tuple. Since C++17, this tuple will work with structured bindings to
+ *     // allow assigning to individually  named variables.
+ *     auto [name, age] = row.get<2, 1>();
+ *
+ */
+template <typename... Types>
+class Row {
+  template <std::size_t I>
+  using ColumnType = typename std::tuple_element<I, std::tuple<Types...>>::type;
+
+ public:
+  /// Regular value type, supporting copy, assign, move, etc.
+  Row() = default;
+  Row(Row const&) = default;
+  Row& operator=(Row const&) = default;
+  Row(Row&) = default;
+  Row& operator=(Row&&) = default;
+
+  /**
+   * Constructs a Row from the specified values.
+   *
+   * See also the MakeRow() helper function template for a convenient way to
+   * make rows without having to also specify the value's types.
+   */
+  template <typename... Ts,
+            typename std::enable_if<(sizeof...(Ts) == sizeof...(Types)),
+                                    int>::type = 0>
+  explicit Row(Ts... ts) : values_(std::forward<Types>(ts)...) {}
+
+  /// Returns the number of columns in this row.
+  constexpr std::size_t size() const { return sizeof...(Types); }
+
+  /// Returns the value at position `I`.
+  template <std::size_t I>
+  ColumnType<I> get() const {
+    return std::get<I>(values_);
+  }
+
+  /// Returns a std::tuple of the values at the specified positions.
+  template <std::size_t... I,
+            typename std::enable_if<(sizeof...(I) > 1), int>::type = 0>
+  std::tuple<ColumnType<I>...> get() const {
+    return std::make_tuple(get<I>()...);
+  }
+
+  /// Returns a std::tuple containing all the values in the row.
+  std::tuple<Types...> get() const { return values_; }
+
+  /// Equality operators.
+  friend bool operator==(Row const& a, Row const& b) {
+    return a.values_ == b.values_;
+  }
+  friend bool operator!=(Row const& a, Row const& b) { return !(a == b); }
+
+ private:
+  std::tuple<Types...> values_;
+};
+
+namespace internal {
+// A helper metafunction that promots some C++ literal types to the types
+// required by Cloud Spanner. For example, a literal 42 is of type int, but
+// this will promote it to type std::int64_t. Similarly, a C++ string literal
+// will be "promoted" to type std::string.
+template <typename T>
+constexpr T PromoteLiteralImpl(T);
+constexpr std::string PromoteLiteralImpl(char const*);
+constexpr std::int64_t PromoteLiteralImpl(int);
+template <typename T>
+using PromoteLiteral = decltype(PromoteLiteralImpl(std::declval<T>()));
+}  // namespace internal
 
 template <typename... Ts>
-class Row {
- public:
-   using TupleType = std::tuple<Ts...>;
- private:
-  std::tuple<Ts...> tup_;
-};
+Row<internal::PromoteLiteral<Ts>...> MakeRow(Ts&&... ts) {
+  return Row<internal::PromoteLiteral<Ts>...>{std::forward<Ts>(ts)...};
+}
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
 }  // namespace cloud
 }  // namespace google
 
-#endif  // GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_VALUE_H_
+#endif  // GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_ROW_H_
