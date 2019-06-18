@@ -60,7 +60,7 @@ TEST(SqlStatementTest, ParamNotEqualCardinality) {
 TEST(SqlStatementTest, SqlAccessor) {
   const char* statement = "select * from foo";
   SqlStatement stmt(statement);
-  EXPECT_STREQ(statement, stmt.sql().c_str());
+  EXPECT_EQ(statement, stmt.sql());
 }
 
 TEST(SqlStatementTest, ParamsAccessor) {
