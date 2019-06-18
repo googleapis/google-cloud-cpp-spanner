@@ -32,6 +32,12 @@ TEST(SqlStatementTest, NonParamNotEqual) {
   EXPECT_TRUE(s1 != s2);
 }
 
+TEST(SqlStatementTest, NonParamNotEqualLength) {
+  SqlStatement s1("SELECT * FROM TABLE FOO;");
+  SqlStatement s2("select * from table fo;");
+  EXPECT_TRUE(s1 != s2);
+}
+
 TEST(SqlStatementTest, ParamEqual) {
   SqlStatement stmt1(
       "SELECT * FROM TABLE SCMODS where last = @last and first = @first;",
@@ -64,10 +70,17 @@ TEST(SqlStatementTest, SqlAccessor) {
 }
 
 TEST(SqlStatementTest, ParamsAccessor) {
-  SqlStatement::param_type params = {{"last", Value("Blues")},
-                                     {"first", Value("Elwood")}};
+  SqlStatement::ParamType params = {{"last", Value("Blues")},
+                                    {"first", Value("Elwood")}};
   SqlStatement stmt("select * from foo", params);
   EXPECT_TRUE(params == stmt.params());
+}
+
+TEST(SqlStatementTest, OStreamOperatorNoParams) {
+  SqlStatement s1("SELECT * FROM TABLE FOO;");
+  std::stringstream ss;
+  ss << s1;
+  EXPECT_EQ(s1.sql(), ss.str());
 }
 
 }  // namespace SPANNER_CLIENT_NS

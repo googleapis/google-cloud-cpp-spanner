@@ -19,21 +19,39 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
+namespace {
+bool CaseInsensitiveStringCompare(std::string const& lhs,
+                                  std::string const& rhs) {
+  if (lhs.size() == rhs.size()) {
+    for (int i = 0; i < static_cast<int>(lhs.size()); ++i) {
+      if (std::tolower(lhs[i]) != std::tolower(rhs[i])) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
+}
+}  // namespace
 
 bool operator==(SqlStatement const& lhs, SqlStatement const& rhs) {
-  std::string s1 = lhs.statement_;
-  std::string s2 = rhs.statement_;
-  std::transform(std::begin(s1), std::end(s1), std::begin(s1),
-                 [](unsigned char c) { return std::tolower(c); });
-  std::transform(std::begin(s2), std::end(s2), std::begin(s2),
-                 [](unsigned char c) { return std::tolower(c); });
-  return s1 == s2 && lhs.params_ == rhs.params_;
+  return CaseInsensitiveStringCompare(lhs.statement_, rhs.statement_) &&
+         lhs.params_ == rhs.params_;
 }
 
 bool operator!=(SqlStatement const& lhs, SqlStatement const& rhs) {
   return !(lhs == rhs);
 }
 
+std::ostream& operator<<(std::ostream& os, SqlStatement const& stmt) {
+  os << stmt.statement_;
+  for (auto const& param : stmt.params_) {
+    os << "{" << param.first << ", "
+       << "Parameter Value stringification not yet implemented"
+       << "}";
+  }
+  return os;
+}
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
 }  // namespace cloud
