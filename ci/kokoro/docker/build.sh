@@ -33,7 +33,8 @@ elif [[ -n "${KOKORO_JOB_NAME:-}" ]]; then
   # files `$foo.cfg` for continuous builds and `$foo-presubmit.cfg` for
   # presubmit builds. Here we extract the value of "foo" and use it as the build
   # name.
-  export BUILD_NAME="$(basename "${KOKORO_JOB_NAME}" "-presubmit")"
+  BUILD_NAME="$(basename "${KOKORO_JOB_NAME}" "-presubmit")"
+  export BUILD_NAME
 else
  echo "Aborting build as the build name is not defined."
  echo "If you are invoking this script via the command line use:"
@@ -263,5 +264,7 @@ if [[ "${exit_status}" != 0 ]]; then
   "${PROJECT_ROOT}/ci/kokoro/dump-logs.sh"
   echo "================================================================"
 fi
+
+"${PROJECT_ROOT}/ci/kokoro/docker/upload-docs.sh"
 
 exit ${exit_status}
