@@ -37,7 +37,7 @@ inline namespace SPANNER_CLIENT_NS {
 class SqlStatement {
  public:
   /// Type alias for parameter collection.
-  using param_type = std::unordered_map<std::string, Value>;
+  using ParamType = std::unordered_map<std::string, Value>;
 
   /// Copy and move.
   SqlStatement(SqlStatement const&) = default;
@@ -45,11 +45,12 @@ class SqlStatement {
   SqlStatement& operator=(SqlStatement const&) = default;
   SqlStatement& operator=(SqlStatement&&) = default;
 
+  SqlStatement() = default;
   /// Constructs a SqlStatement without parameters.
   explicit SqlStatement(std::string statement)
       : statement_(std::move(statement)) {}
   /// Constructs a SqlStatement with specified parameters.
-  SqlStatement(std::string statement, param_type params)
+  SqlStatement(std::string statement, ParamType params)
       : statement_(std::move(statement)), params_(std::move(params)) {}
 
   /// Relational operators.
@@ -57,11 +58,13 @@ class SqlStatement {
   friend bool operator!=(SqlStatement const& lhs, SqlStatement const& rhs);
 
   std::string const& sql() const { return statement_; }
-  param_type const& params() const { return params_; }
+  ParamType const& params() const { return params_; }
+
+  friend std::ostream& operator<<(std::ostream& os, SqlStatement const& stmt);
 
  private:
   std::string statement_;
-  param_type params_;
+  ParamType params_;
 };
 
 }  // namespace SPANNER_CLIENT_NS
