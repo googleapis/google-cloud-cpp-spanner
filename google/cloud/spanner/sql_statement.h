@@ -24,15 +24,15 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 /**
- * The SqlStatement class representis a SQL statement, that may or may not be
+ * The SqlStatement class represents an SQL statement, that may or may not be
  * parameterized.
  *
- * Parameter placeholders are specified by @<param name> in the SQL string.
- * Values for parameters are a collection of std::pair<std::string,
- * google::cloud:spanner::Value>.
- * Example:
- *   google::cloud::spanner::SqlStatement stmt("select * from scmods where
- *   last_name = @param1", {{"param1", Value("Blues")}});
+ * Parameter placeholders are specified by `@<param name>` in the SQL string.
+ * Values for parameters are a collection of `std::pair<std::string,
+ * google::cloud:spanner::Value>`.
+ * @par Example:
+ *     google::cloud::spanner::SqlStatement stmt("select * from scmods where
+ *     last_name = @param1", {{"param1", Value("Blues")}});
  */
 class SqlStatement {
  public:
