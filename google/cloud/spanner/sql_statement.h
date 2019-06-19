@@ -27,7 +27,7 @@ inline namespace SPANNER_CLIENT_NS {
  * @brief Represents a potentially parameterized SQL statement.
  *
  * Details on case sensitivity for SQL statements and string values can be 
- * found here: <a href="https://cloud.google.com/spanner/docs/lexical#case-sensitivity">Case Sensitivity</a>/
+ * found here: <a href="https://cloud.google.com/spanner/docs/lexical#case-sensitivity">Case Sensitivity</a>.
  *
  * Parameter placeholders are specified by `@<param name>` in the SQL string.
  * Values for parameters are a collection of `std::pair<std::string const,
