@@ -20,49 +20,6 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
-TEST(SqlStatementTest, NonParamEqual) {
-  SqlStatement stmt1("SELECT * FROM TABLE FOO;");
-  SqlStatement stmt2("select * from table foo;");
-  EXPECT_TRUE(stmt1 == stmt2);
-}
-
-TEST(SqlStatementTest, NonParamNotEqual) {
-  SqlStatement s1("SELECT * FROM TABLE FOO;");
-  SqlStatement s2("select * from table bar;");
-  EXPECT_TRUE(s1 != s2);
-}
-
-TEST(SqlStatementTest, NonParamNotEqualLength) {
-  SqlStatement s1("SELECT * FROM TABLE FOO;");
-  SqlStatement s2("select * from table fo;");
-  EXPECT_TRUE(s1 != s2);
-}
-
-TEST(SqlStatementTest, ParamEqual) {
-  SqlStatement stmt1(
-      "SELECT * FROM TABLE SCMODS where last = @last and first = @first;",
-      {{"last", Value("Blues")}, {"first", Value("Elwood")}});
-  SqlStatement stmt2(
-      "select * from table scmods where last = @last and first = @first;",
-      {{"first", Value("Elwood")}, {"last", Value("Blues")}});
-  EXPECT_TRUE(stmt1 == stmt2);
-}
-
-TEST(SqlStatementTest, ParamNotEqual) {
-  SqlStatement s1("SELECT * FROM TABLE SCMODS;",
-                  {{"last", Value("Blues")}, {"first", Value("Elwood")}});
-  SqlStatement s2("select * from table scmods;",
-                  {{"last", Value("Blues")}, {"first", Value("Jake")}});
-  EXPECT_TRUE(s1 != s2);
-}
-
-TEST(SqlStatementTest, ParamNotEqualCardinality) {
-  SqlStatement s1("SELECT * FROM TABLE SCMODS;",
-                  {{"last", Value("Blues")}, {"first", Value("Elwood")}});
-  SqlStatement s2("select * from table scmods;", {{"last", Value("Blues")}});
-  EXPECT_TRUE(s1 != s2);
-}
-
 TEST(SqlStatementTest, SqlAccessor) {
   const char* statement = "select * from foo";
   SqlStatement stmt(statement);

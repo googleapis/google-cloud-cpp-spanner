@@ -28,7 +28,7 @@ inline namespace SPANNER_CLIENT_NS {
  * parameterized.
  *
  * Parameter placeholders are specified by `@<param name>` in the SQL string.
- * Values for parameters are a collection of `std::pair<std::string,
+ * Values for parameters are a collection of `std::pair<std::string const,
  * google::cloud:spanner::Value>`.
  * @par Example:
  *     google::cloud::spanner::SqlStatement stmt("select * from scmods where
@@ -52,10 +52,6 @@ class SqlStatement {
   /// Constructs a SqlStatement with specified parameters.
   SqlStatement(std::string statement, ParamType params)
       : statement_(std::move(statement)), params_(std::move(params)) {}
-
-  /// Relational operators.
-  friend bool operator==(SqlStatement const& lhs, SqlStatement const& rhs);
-  friend bool operator!=(SqlStatement const& lhs, SqlStatement const& rhs);
 
   std::string const& sql() const { return statement_; }
   ParamType const& params() const { return params_; }
