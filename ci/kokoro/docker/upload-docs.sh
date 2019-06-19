@@ -42,9 +42,21 @@ if [[ ! -r "${KOKORO_GFILE_DIR}/github-io-upload-token" ]]; then
   exit 0
 fi
 
-readonly GH_TOKEN="$(cat "${KOKORO_GFILE_DIR}/github-io-upload-token")"
+GH_TOKEN="$(cat "${KOKORO_GFILE_DIR}/github-io-upload-token")"
+readonly GH_TOKEN
 
-readonly BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+# Because Kokoro checks out the code in `detached HEAD` mode there is no easy
+# way to discover what is the current branch (and Kokoro does not expose the
+# branch as an enviroment variable, like other CI systems do). We use the
+# following trick:
+# - Find out the current commit using git rev-parse HEAD.
+# - Find out what branches contain that commit.
+# - Exclude "HEAD detached" branches (they are not really branches).
+# - Typically this is the single branch that was checked out by Kokoro.
+BRANCH="$(git branch --no-color --contains "$(git rev-parse HEAD)" | \
+    grep -v 'HEAD detached' || exit 0)"
+BRANCH="${BRANCH/  /}"
+readonly BRANCH
 
 case "${BRANCH:-}" in
   master)
@@ -64,7 +76,8 @@ echo "Uploading generated Doxygen docs to github.io $(date)."
 # We first do some general git configuration:
 
 # Clone the gh-pages branch into a staging directory.
-readonly REPO_URL=$(git config remote.origin.url)
+REPO_URL="$(git config remote.origin.url)"
+readonly REPO_URL
 if [[ ! -d cmake-out/github-io-staging ]]; then
   git clone -b gh-pages "${REPO_URL}" cmake-out/github-io-staging
 else
