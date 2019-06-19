@@ -31,8 +31,9 @@ inline namespace SPANNER_CLIENT_NS {
  * Values for parameters are a collection of `std::pair<std::string const,
  * google::cloud:spanner::Value>`.
  * @par Example:
- *         google::cloud::spanner::SqlStatement stmt("select * from scmods where
- *         last_name = @param1", {{"param1", Value("Blues")}});
+ *
+ *     google::cloud::spanner::SqlStatement stmt("select * from scmods where
+ *     last_name = @param1", {{"param1", Value("Blues")}});
  */
 class SqlStatement {
  public:
