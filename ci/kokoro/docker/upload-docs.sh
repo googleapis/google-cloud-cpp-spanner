@@ -51,6 +51,7 @@ case "${BRANCH:-}" in
     ;;
   *)
     # For now, only generate documentation on pushes to `master`.
+    echo "Will not upload documents as the branch (${BRANCH}) is not 'master'."
     exit 0
     ;;
 esac
@@ -89,6 +90,7 @@ git config user.email "google-cloud-cpp-bot@users.noreply.github.com"
 git add --all "latest"
 
 if git diff --quiet HEAD; then
+  echo "No changes to the documentation, skipping upload."
   exit 0
 fi
 
