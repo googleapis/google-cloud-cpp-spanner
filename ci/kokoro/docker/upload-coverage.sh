@@ -85,10 +85,6 @@ docker_flags+=(
     "--env" "CI_JOB_ID=${KOKORO_BUILD_NUMBER:-}"
 )
 
-echo "DEBUG DO NOT MERGE ====================================================="
-echo "${docker_flags[@]}"
-echo "DEBUG DO NOT MERGE ====================================================="
-
 echo -n "Uploading code coverage to codecov.io..."
 # Run the upload script from codecov.io within a Docker container. Save the log
 # to a file because it can be very large (multiple MiB in size).
