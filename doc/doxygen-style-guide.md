@@ -48,4 +48,4 @@ intended as guidelines for developers in the project, they are not hard rules.
 * The Doxygen website has detailed information on how to format
   [docblocks][docblocks-link].
 
-[doblocks-link]: http://www.doxygen.nl/manual/docblocks.html
+[docblocks-link]: http://www.doxygen.nl/manual/docblocks.html
