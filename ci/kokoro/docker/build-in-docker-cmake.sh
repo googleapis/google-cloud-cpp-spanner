@@ -53,6 +53,11 @@ if [[ "${GOOGLE_CLOUD_CPP_CXX_STANDARD:-}" != "" ]]; then
     "-DGOOGLE_CLOUD_CPP_CXX_STANDARD=${GOOGLE_CLOUD_CPP_CXX_STANDARD}")
 fi
 
+if [[ "${CODE_COVERAGE:-}" == "yes" ]]; then
+  cmake_flags+=(
+    "-DCMAKE_BUILD_TYPE=Coverage")
+fi
+
 cmake "-H${SOURCE_DIR}" "-B${BINARY_DIR}" "${cmake_flags[@]}"
 cmake --build "${BINARY_DIR}" -- -j "$(nproc)"
 

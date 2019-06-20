@@ -111,6 +111,11 @@ elif [[ "${BUILD_NAME}" = "cxx17" ]]; then
   export CC=gcc
   export CXX=g++
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
+elif [[ "${BUILD_NAME}" = "coverage" ]]; then
+  export CODE_COVERAGE=yes
+  export DISTRO=fedora-install
+  export DISTRO_VERSION=30
+  in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 else
   echo "Unknown BUILD_NAME (${BUILD_NAME}). Fix the Kokoro .cfg file."
   exit 1
@@ -207,6 +212,10 @@ docker_flags=(
     # this flag.
     "--env" "GENERATE_DOCS=${GENERATE_DOCS:-}"
 
+    # If set to 'yes', run compile with code coverage flags. Currently only the
+    # CMake builds use this flag.
+    "--env" "CODE_COVERAGE=${CODE_COVERAGE:-}"
+
     # If set, pass -DGOOGLE_CLOUD_CPP_CXX_STANDARD=<value> to CMake.
     "--env" "GOOGLE_CLOUD_CPP_CXX_STANDARD=${GOOGLE_CLOUD_CPP_CXX_STANDARD:-}"
 
@@ -240,6 +249,16 @@ docker_flags=(
     # project) as `/v` inside the docker image, and move to that directory.
     "--volume" "${PWD}:/v"
     "--workdir" "/v"
+
+    # Mask any other builds that may exist at the same time. That is, these
+    # directories appear as empty inside the Docker container, this prevents the
+    # container from writing into other builds, or to get confused by the output
+    # of other builds. In the CI system this does not matter, as each build runs
+    # on a completely separate VM. This is useful when running multiple builds
+    # in your workstation.
+    "--volume" "/v/cmake-out/home"
+    "--volume" "/v/cmake-out"
+    "--volume" "${PWD}/${BUILD_OUTPUT}:/v/${BUILD_OUTPUT}"
 )
 
 # When running the builds from the command-line they get a tty, and the scripts
@@ -266,5 +285,7 @@ if [[ "${exit_status}" != 0 ]]; then
 fi
 
 "${PROJECT_ROOT}/ci/kokoro/docker/upload-docs.sh"
+
+"${PROJECT_ROOT}/ci/kokoro/docker/upload-coverage.sh" "${docker_flags[@]}"
 
 exit ${exit_status}
