@@ -84,36 +84,37 @@ class Row {
   constexpr std::size_t size() const { return sizeof...(Types); }
 
   /**
-   *  Returns a reference to the const value at position `I`.
+   *  Returns a reference to the value at position `I`.
+   *
+   *  If value category of the returned reference matches the value category of
+   *  `this`. That is, calling `get<I>()` on an non-const lvalue, returns a
+   *  non-const lvalue. Calling `get<I>()` on an rvalue, returns an rvalue,
+   *  etc.
    *
    *  Example:
    *
    *      auto row = MakeRow(true, "foo");
    *      assert(row.get<0>() == true);
    *      assert(row.get<1>() == "foo");
+   *
+   *      Row<bool, std::string> F();
+   *      std::string x = F().get<1>();
    */
   template <std::size_t I>
-  ColumnType<I> const& get() const {
+  ColumnType<I>& get() & {
     return std::get<I>(values_);
   }
-
-  /**
-   *  Returns a reference to the non-const value at position `I`.
-   *
-   *  This overload can be useful if the caller wants to "set" the value at
-   *  position `I`, or if the caller wants to move the value at position `I`
-   *  out of the Row.
-   *
-   *  Example:
-   *
-   *      auto row = MakeRow(true, "foo");
-   *      assert(row.get<1>() == "foo");
-   *      row.get<1>() = "bar";
-   *      assert(row.get<1>() == "bar");
-   */
   template <std::size_t I>
-  ColumnType<I>& get() {
+  ColumnType<I> const& get() const& {
     return std::get<I>(values_);
+  }
+  template <std::size_t I>
+  ColumnType<I>&& get() && {
+    return std::get<I>(std::move(values_));
+  }
+  template <std::size_t I>
+  ColumnType<I> const&& get() const&& {
+    return std::get<I>(std::move(values_));
   }
 
   /**

@@ -126,6 +126,15 @@ TEST(Row, SetUsingNonConstGet) {
   EXPECT_EQ("hello", row.get<0>());
 }
 
+Row<bool, std::string> F() {
+  return MakeRow(true, "hello");
+}
+
+TEST(Row, RvalueGet) {
+  EXPECT_TRUE(F().get<0>());
+  EXPECT_EQ("hello", F().get<1>());
+}
+
 TEST(Row, GetAllRefOverloads) {
   // Note: This test relies on unspecified moved-from behavior of std::string.
   // See the comment in "MoveFromNonConstGet" for more details.
