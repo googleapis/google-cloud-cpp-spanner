@@ -15,6 +15,7 @@
 #ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_ROW_H_
 #define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_ROW_H_
 
+#include "google/cloud/spanner/version.h"
 #include <cstdint>
 #include <string>
 #include <tuple>
