@@ -78,13 +78,13 @@ class Row {
    * make rows without having to also specify the value's types.
    */
   template <typename... Ts>
-  explicit Row(Ts... ts) : values_(std::forward<Types>(ts)...) {}
+  explicit Row(Ts&&... ts) : values_(std::forward<Ts>(ts)...) {}
 
   /// Returns the number of columns in this row.
   constexpr std::size_t size() const { return sizeof...(Types); }
 
   /**
-   *  Returns the value at position `I`.
+   *  Returns a reference to the const value at position `I`.
    *
    *  Example:
    *
@@ -93,7 +93,26 @@ class Row {
    *      assert(row.get<1>() == "foo");
    */
   template <std::size_t I>
-  ColumnType<I> get() const {
+  ColumnType<I> const& get() const {
+    return std::get<I>(values_);
+  }
+
+  /**
+   *  Returns a reference to the non-const value at position `I`.
+   *
+   *  This overload can be useful if the caller wants to "set" the value at
+   *  position `I`, or if the caller wants to move the value at position `I`
+   *  out of the Row.
+   *
+   *  Example:
+   *
+   *      auto row = MakeRow(true, "foo");
+   *      assert(row.get<1>() == "foo");
+   *      row.get<1>() = "bar";
+   *      assert(row.get<1>() == "bar");
+   */
+  template <std::size_t I>
+  ColumnType<I>& get() {
     return std::get<I>(values_);
   }
 
@@ -118,7 +137,11 @@ class Row {
   }
 
   /**
-   * Returns a std::tuple containing all the values in the row.
+   * Returns a reference to the const std::tuple containing all the values in
+   * the row.
+   *
+   * This function is const/non-const x lvalue/rvalue overloaded. This enables
+   * a caller to move the returned tuple out of the Row.
    *
    *  Example:
    *
@@ -128,8 +151,14 @@ class Row {
    *      assert(std::get<0>(tup) == true);
    *      assert(std::get<1>(tup) == "foo");
    *      assert(std::get<2>(tup) == 42);
+   *
+   *      auto moved_tup = std::move(row).get();
+   *      assert(moved_tup == tup);
    */
-  std::tuple<Types...> get() const { return values_; }
+  std::tuple<Types...>& get() & { return values_; }
+  std::tuple<Types...> const& get() const& { return values_; }
+  std::tuple<Types...>&& get() && { return std::move(values_); }
+  std::tuple<Types...> const&& get() const&& { return std::move(values_); }
 
   /// Equality operators.
   friend bool operator==(Row const& a, Row const& b) {

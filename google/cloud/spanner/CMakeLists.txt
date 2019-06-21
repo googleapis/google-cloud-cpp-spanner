@@ -81,8 +81,8 @@ function (spanner_client_define_tests)
 
     set(spanner_client_unit_tests
         row_test.cc
-        sql_statement_test.cc
         spanner_version_test.cc
+        sql_statement_test.cc
         value_test.cc)
     # Export the list of unit tests to a .bzl file so we do not need to maintain
     # the list in two places.

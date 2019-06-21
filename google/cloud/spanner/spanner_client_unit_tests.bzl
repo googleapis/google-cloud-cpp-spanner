@@ -18,7 +18,7 @@
 
 spanner_client_unit_tests = [
     "row_test.cc",
-    "sql_statement_test.cc",
     "spanner_version_test.cc",
+    "sql_statement_test.cc",
     "value_test.cc",
 ]

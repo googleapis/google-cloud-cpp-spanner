@@ -24,6 +24,7 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
+namespace {
 template <typename... Ts>
 void VerifyRegularType(Ts&&... ts) {
   auto const row = MakeRow(std::forward<Ts>(ts)...);
@@ -48,7 +49,7 @@ TEST(Row, RegularType) {
 }
 
 TEST(Row, ZeroTypes) {
-  Row<> row;
+  Row<> const row;
   EXPECT_EQ(0, row.size());
   EXPECT_EQ(std::tuple<>{}, row.get());
 }
@@ -62,7 +63,7 @@ TEST(Row, OneType) {
 }
 
 TEST(Row, TwoTypes) {
-  Row<bool, std::int64_t> row(true, 42);
+  Row<bool, std::int64_t> const row(true, 42);
   EXPECT_EQ(2, row.size());
   EXPECT_EQ(true, row.get<0>());
   EXPECT_EQ(42, row.get<1>());
@@ -72,7 +73,7 @@ TEST(Row, TwoTypes) {
 }
 
 TEST(Row, ThreeTypes) {
-  Row<bool, std::int64_t, std::string> row(true, 42, "hello");
+  Row<bool, std::int64_t, std::string> const row(true, 42, "hello");
   EXPECT_EQ(3, row.size());
   EXPECT_EQ(true, row.get<0>());
   EXPECT_EQ(42, row.get<1>());
@@ -84,6 +85,61 @@ TEST(Row, ThreeTypes) {
   EXPECT_EQ(std::int64_t{42}, (row.get<1>()));
 }
 
+TEST(Row, Equality) {
+  EXPECT_EQ(MakeRow(), MakeRow());
+  EXPECT_EQ(MakeRow(true, 42), MakeRow(true, 42));
+  EXPECT_NE(MakeRow(true, 42), MakeRow(false, 42));
+  EXPECT_NE(MakeRow(true, 42), MakeRow(true, 99));
+}
+
+TEST(Row, MoveFromNonConstGet) {
+  // This test relies on common, but unspecified behavior of std::string.
+  // Specifically this test creates a string that is bigger than the SSO so it
+  // will likely be heap allocated, and it "moves" that string, which will
+  // likely leave the original string empty. This is all valid code (it's not
+  // UB), but it's also not specified that a string *must* leave the moved-from
+  // string in an "empty" state (any valid state would be OK). So if this test
+  // becomes flaky, we may want to disable it. But until then, it's probably
+  // worth having.
+  std::string const long_string = "12345678901234567890";
+  auto row = MakeRow(long_string, long_string, long_string);
+  auto const copy = row;
+  EXPECT_EQ(row, copy);
+
+  std::string col0 = std::move(row.get<0>());
+  EXPECT_EQ(col0, long_string);
+
+  EXPECT_NE(row.get<0>(), long_string);  // Unspecified behvaior
+  EXPECT_NE(row, copy);  // The two original Rows are no longer equal
+}
+
+TEST(Row, SetUsingNonConstGet) {
+  std::string const data = "data";
+  auto row = MakeRow(data, data, data);
+  auto const copy = row;
+  EXPECT_EQ(row, copy);
+
+  // "Sets" the value at column 0.
+  row.get<0>() = "hello";
+  EXPECT_NE(row, copy);
+
+  EXPECT_EQ("hello", row.get<0>());
+}
+
+TEST(Row, GetAllRefOverloads) {
+  // Note: This test relies on unspecified moved-from behavior of std::string.
+  // See the comment in "MoveFromNonConstGet" for more details.
+  std::string const long_string = "12345678901234567890";
+  auto const row_const = MakeRow(long_string, long_string);
+  auto row_mut = row_const;
+  EXPECT_EQ(row_const, row_mut);
+
+  auto tup_const = row_const.get();
+  auto tup_moved = std::move(row_mut).get();
+  EXPECT_EQ(tup_const, tup_moved);
+  EXPECT_NE(row_const, row_mut);
+}
+
 TEST(Row, MakeRowTypePromotion) {
   auto row = MakeRow(true, 42, "hello");
   static_assert(
@@ -91,6 +147,16 @@ TEST(Row, MakeRowTypePromotion) {
       "Promotes int -> std::int64_t and char const* -> std::string");
 }
 
+TEST(Row, MakeRowCVQualifications) {
+  std::string const s = "hello";
+  static_assert(std::is_same<std::string const, decltype(s)>::value,
+                "s is an lvalue const string");
+  auto row = MakeRow(s);
+  static_assert(std::is_same<Row<std::string>, decltype(row)>::value,
+                "row holds a non-const string value");
+}
+
+}  // namespace
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
 }  // namespace cloud
