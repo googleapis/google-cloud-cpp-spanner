@@ -126,9 +126,7 @@ TEST(Row, SetUsingNonConstGet) {
   EXPECT_EQ("hello", row.get<0>());
 }
 
-Row<bool, std::string> F() {
-  return MakeRow(true, "hello");
-}
+Row<bool, std::string> F() { return MakeRow(true, "hello"); }
 
 TEST(Row, RvalueGet) {
   EXPECT_TRUE(F().get<0>());
