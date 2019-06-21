@@ -101,6 +101,9 @@ class Row {
    * Returns a std::tuple of the values at the specified positions (specified
    * in any order).
    *
+   * This overload is only available if 2 or more index template arguments are
+   * specified, thus the result is returned as a std::tuple.
+   *
    *  Example:
    *
    *      auto row = MakeRow(true, "foo", 42);
@@ -108,10 +111,10 @@ class Row {
    *      assert(std::get<0>(tup) == 42);
    *      assert(std::get<1>(tup) == true);
    */
-  template <std::size_t... I,
-            typename std::enable_if<(sizeof...(I) > 1), int>::type = 0>
-  std::tuple<ColumnType<I>...> get() const {
-    return std::make_tuple(get<I>()...);
+  template <std::size_t... Is,
+            typename std::enable_if<(sizeof...(Is) > 1), int>::type = 0>
+  std::tuple<ColumnType<Is>...> get() const {
+    return std::make_tuple(get<Is>()...);
   }
 
   /**
