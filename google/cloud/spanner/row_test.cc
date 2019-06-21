@@ -143,7 +143,6 @@ TEST(Row, GetAllRefOverloads) {
   auto tup_const = row_const.get();
   auto tup_moved = std::move(row_mut).get();
   EXPECT_EQ(tup_const, tup_moved);
-  EXPECT_NE(row_const, row_mut);
 }
 
 TEST(Row, MakeRowTypePromotion) {
