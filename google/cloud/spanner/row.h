@@ -28,11 +28,11 @@ inline namespace SPANNER_CLIENT_NS {
 /**
  * The `Row<Ts...>` class template represents a heterogeneous set of C++ values.
  *
- * The values stored in a row may have any of the valid Spanner types described
- * in value.h. Each value in a row is identified by its column index, with the
- * first value corresponding to column 0. The number of columns in the row is
- * given by the `Row::size()` member function (This exactly matches the number
- * of types the Row was created with).
+ * The values stored in a row may have any of the valid Spanner types that can
+ * be stored in `Value`. Each value in a row is identified by its column index,
+ * with the first value corresponding to column 0. The number of columns in the
+ * row is given by the `Row::size()` member function (This exactly matches the
+ * number of types the `Row` was created with).
  *
  * A `Row<Ts...>` is a regular C++ type, supporting default construction, copy,
  * assignment, move, and equality as expected. It should typically be
