@@ -25,7 +25,6 @@ spanner_client_hdrs = [
 
 spanner_client_srcs = [
     "sql_statement.cc",
-    "row.cc",
     "value.cc",
     "version.cc",
 ]

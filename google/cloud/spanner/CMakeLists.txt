@@ -30,7 +30,6 @@ add_library(spanner_client
             ${CMAKE_BINARY_DIR}/google/cloud/spanner/version_info.h
             sql_statement.cc
             sql_statement.h
-            row.cc
             row.h
             value.cc
             value.h
