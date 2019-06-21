@@ -83,8 +83,12 @@ TEST(Row, ThreeTypes) {
   EXPECT_EQ(std::int64_t{42}, (row.get<1>()));
 }
 
-struct Foo {};
-TEST(Row, BadTypes) { Row<Foo> row; }
+TEST(Row, MakeRowTypePromotion) {
+  auto row = MakeRow(true, 42, "hello");
+  static_assert(
+      std::is_same<Row<bool, std::int64_t, std::string>, decltype(row)>::value,
+      "Promotes int -> std::int64_t and char const* -> std::string");
+}
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
