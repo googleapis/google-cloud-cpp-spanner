@@ -65,7 +65,7 @@ class Row {
 
  public:
   /// Regular value type, supporting copy, assign, move, etc.
-  Row() = default;
+  Row() {}
   Row(Row const&) = default;
   Row& operator=(Row const&) = default;
   Row(Row&) = default;
