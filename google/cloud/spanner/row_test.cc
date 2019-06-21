@@ -29,7 +29,7 @@ void VerifyRegularType(Ts&&... ts) {
   auto const row = MakeRow(std::forward<Ts>(ts)...);
   EXPECT_EQ(row, row);
 
-  auto const copy = row;
+  auto copy = row;
   EXPECT_EQ(copy, row);
 
   using RowType = typename std::decay<decltype(row)>::type;
