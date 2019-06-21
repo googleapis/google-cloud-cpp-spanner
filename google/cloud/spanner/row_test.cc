@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/row.h"
-#include "google/cloud/spanner/version.h"
 #include <gmock/gmock.h>
 #include <cstdint>
 #include <string>
