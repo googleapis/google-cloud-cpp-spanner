@@ -28,6 +28,10 @@ include(EnableDoxygen)
 configure_file(version_info.h.in version_info.h)
 add_library(spanner_client
             ${CMAKE_BINARY_DIR}/google/cloud/spanner/version_info.h
+            client_options.cc
+            client_options.h
+            internal/database_admin_stub.cc
+            internal/database_admin_stub.h
             row.h
             sql_statement.cc
             sql_statement.h
@@ -80,6 +84,7 @@ function (spanner_client_define_tests)
     find_package(GTest CONFIG REQUIRED)
 
     set(spanner_client_unit_tests
+        client_options_test.cc
         row_test.cc
         spanner_version_test.cc
         sql_statement_test.cc
