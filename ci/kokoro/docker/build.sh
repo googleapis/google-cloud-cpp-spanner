@@ -113,6 +113,7 @@ elif [[ "${BUILD_NAME}" = "cxx17" ]]; then
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "coverage" ]]; then
   export CODE_COVERAGE=yes
+  export RUN_INTEGRATION_TESTS=yes
   export DISTRO=fedora-install
   export DISTRO_VERSION=30
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"

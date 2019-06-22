@@ -79,6 +79,28 @@ if [[ "${GENERATE_DOCS:-}" = "yes" ]]; then
   echo "================================================================"
 fi
 
+if [[ ${RUN_INTEGRATION_TESTS} == "yes" ]]; then
+  echo "================================================================"
+  echo "Running the integration tests $(date)"
+  echo "================================================================"
+  # shellcheck disable=SC1091
+  source /c/spanner-integration-tests-config.sh
+  export GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json
+  readonly DATABASE_NAME="test-db-${RANDOM}-${RANDOM}"
+  echo "Running create-database"
+  "${BINARY_DIR}/google/cloud/spanner/spanner_tool" \
+      create-database "${PROJECT_ID}" "${SPANNER_INSTANCE_ID}" "${DATABASE_NAME}"
+  echo "Running list-databases [1]"
+  "${BINARY_DIR}/google/cloud/spanner/spanner_tool" \
+      list-databases "${PROJECT_ID}" "${SPANNER_INSTANCE_ID}"
+  echo "Running drop-database"
+  "${BINARY_DIR}/google/cloud/spanner/spanner_tool" \
+      drop-database "${PROJECT_ID}" "${SPANNER_INSTANCE_ID}" "${DATABASE_NAME}"
+  echo "Running list-databases [2]"
+  "${BINARY_DIR}/google/cloud/spanner/spanner_tool" \
+      list-databases "${PROJECT_ID}" "${SPANNER_INSTANCE_ID}"
+fi
+
 echo "================================================================"
 echo "Build finished at $(date)"
 echo "================================================================"
