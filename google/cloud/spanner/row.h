@@ -167,6 +167,20 @@ class Row {
   }
   friend bool operator!=(Row const& a, Row const& b) { return !(a == b); }
 
+  /// Relational operators.
+  friend bool operator<(Row const& a, Row const& b) {
+    return a.values_ < b.values_;
+  }
+  friend bool operator<=(Row const& a, Row const& b) {
+    return std::rel_ops::operator<=(a.values_, b.values_);
+  }
+  friend bool operator>(Row const& a, Row const& b) {
+    return std::rel_ops::operator>(a.values_, b.values_);
+  }
+  friend bool operator>=(Row const& a, Row const& b) {
+    return std::rel_ops::operator>=(a.values_, b.values_);
+  }
+
  private:
   std::tuple<Types...> values_;
 };
