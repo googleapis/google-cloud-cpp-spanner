@@ -83,7 +83,14 @@ namespace {
 // A duration capable of holding subsecond values at high precision.
 using femtoseconds = std::chrono::duration<std::int64_t, std::femto>;
 
+
 // Convert a std::time_t into a Zulu std::tm.
+// 
+// See http://howardhinnant.github.io/date_algorithms.html for an explanation
+// of the calendrical arithmetic in ZTime() and TimeZ().  For quick reference,
+// March 1st is used as the first day of the year (so that any leap day occurs
+// at year's end), there are 146097 days in the 400-year Gregorian cycle (an
+// era), and there are 719468 days between 0000-03-01 and 1970-01-01.
 std::tm ZTime(std::time_t const t) {
   std::time_t sec = t % (24 * 60 * 60);
   std::time_t day = t / (24 * 60 * 60);
@@ -91,7 +98,8 @@ std::tm ZTime(std::time_t const t) {
     sec += 24 * 60 * 60;
     day -= 1;
   }
-  day += 719468;  // since 1970-01-01
+
+  day += 719468;
   std::time_t const era = (day >= 0 ? day : day - 146096) / 146097;
   std::time_t const doe = day - era * 146097;
   std::time_t const yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
@@ -100,13 +108,14 @@ std::tm ZTime(std::time_t const t) {
   std::time_t const mp = (5 * doy + 2) / 153;
   std::time_t const d = doy - (153 * mp + 2) / 5 + 1;
   std::time_t const m = mp + (mp < 10 ? 3 : -9);
+
   std::tm tm;
   tm.tm_year = static_cast<int>(y + (m <= 2 ? 1 : 0) - 1900);
-  tm.tm_mon = m - 1;
-  tm.tm_mday = d;
-  tm.tm_hour = sec / (60 * 60);
-  tm.tm_min = (sec / 60) % 60;
-  tm.tm_sec = sec % 60;
+  tm.tm_mon = static_cast<int>(m - 1);
+  tm.tm_mday = static_cast<int>(d);
+  tm.tm_hour = static_cast<int>(sec / (60 * 60));
+  tm.tm_min = static_cast<int>((sec / 60) % 60);
+  tm.tm_sec = static_cast<int>(sec % 60);
   return tm;
 }
 
@@ -115,12 +124,14 @@ std::time_t TimeZ(std::tm const& tm) {
   std::time_t const y = tm.tm_year + 1900L;
   std::time_t const m = tm.tm_mon + 1;
   std::time_t const d = tm.tm_mday;
+
   std::time_t const eyear = (m <= 2) ? y - 1 : y;
   std::time_t const era = (eyear >= 0 ? eyear : eyear - 399) / 400;
   std::time_t const yoe = eyear - era * 400;
   std::time_t const doy = (153 * (m + (m > 2 ? -3 : 9)) + 2) / 5 + d - 1;
   std::time_t const doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
-  std::time_t const day = era * 146097 + doe - 719468;  // since 1970-01-01
+  std::time_t const day = era * 146097 + doe - 719468;
+
   return (((day * 24) + tm.tm_hour) * 60 + tm.tm_min) * 60 + tm.tm_sec;
 }
 
@@ -162,7 +173,7 @@ std::string TimestampToString(time_point tp) {
     }
     output << '.' << std::setfill('0') << std::setw(width) << ss;
   }
-  output << 'Z';  // Zulu
+  output << 'Z';
   return output.str();
 }
 
@@ -195,8 +206,8 @@ time_point TimestampFromString(std::string const& s) {
     ss = femtoseconds(v * scale);
   }
 
-  if (pos == len || s[pos] != 'Z') return kBadTimestamp;  // no Zulu
-  if (++pos != len) return kBadTimestamp;                 // trailing garbage
+  if (pos == len || s[pos] != 'Z') return kBadTimestamp;
+  if (++pos != len) return kBadTimestamp;  // trailing garbage
 
   return CombineTime(tm, ss);
 }
