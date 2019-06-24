@@ -14,54 +14,21 @@
 
 #include "google/cloud/spanner/database_admin_client.h"
 #include "google/cloud/bigtable/internal/grpc_error_delegate.h"
+#include <algorithm>
 
 namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
-// TODO(#...) - refactor to some common place. Note that this different from
+// TODO(#126) - refactor to some common place. Note that this different from
 // the MakeStatusFromGrpcError function,
 namespace {
 StatusCode MapStatusCode(std::int32_t code) {
-  switch (code) {
-    case static_cast<int>(StatusCode::kOk):
-      return StatusCode::kOk;
-    case static_cast<int>(StatusCode::kCancelled):
-      return StatusCode::kCancelled;
-    case static_cast<int>(StatusCode::kUnknown):
-      return StatusCode::kUnknown;
-    case static_cast<int>(StatusCode::kInvalidArgument):
-      return StatusCode::kInvalidArgument;
-    case static_cast<int>(StatusCode::kDeadlineExceeded):
-      return StatusCode::kDeadlineExceeded;
-    case static_cast<int>(StatusCode::kNotFound):
-      return StatusCode::kNotFound;
-    case static_cast<int>(StatusCode::kAlreadyExists):
-      return StatusCode::kAlreadyExists;
-    case static_cast<int>(StatusCode::kPermissionDenied):
-      return StatusCode::kPermissionDenied;
-    case static_cast<int>(StatusCode::kUnauthenticated):
-      return StatusCode::kUnauthenticated;
-    case static_cast<int>(StatusCode::kResourceExhausted):
-      return StatusCode::kResourceExhausted;
-    case static_cast<int>(StatusCode::kFailedPrecondition):
-      return StatusCode::kFailedPrecondition;
-    case static_cast<int>(StatusCode::kAborted):
-      return StatusCode::kAborted;
-    case static_cast<int>(StatusCode::kOutOfRange):
-      return StatusCode::kOutOfRange;
-    case static_cast<int>(StatusCode::kUnimplemented):
-      return StatusCode::kUnimplemented;
-    case static_cast<int>(StatusCode::kInternal):
-      return StatusCode::kInternal;
-    case static_cast<int>(StatusCode::kUnavailable):
-      return StatusCode::kUnavailable;
-    case static_cast<int>(StatusCode::kDataLoss):
-      return StatusCode::kDataLoss;
-    default:
-      return StatusCode::kUnknown;
+  if (code < 0 || code > static_cast<std::int32_t>(StatusCode::kDataLoss)) {
+    return StatusCode::kUnknown;
   }
+  return static_cast<StatusCode>(code);
 }
 }  // namespace
 
@@ -91,7 +58,7 @@ future<StatusOr<gcsa::Database>> DatabaseAdminClient::CreateDatabase(
         StatusOr<gcsa::Database>(operation.status()));
   }
 
-  // TODO(#...) - use the (implicit) completion queue to run this loop.
+  // TODO(#127) - use the (implicit) completion queue to run this loop.
   struct Polling {
     google::cloud::promise<StatusOr<gcsa::Database>> promise;
     google::longrunning::Operation operation;
@@ -102,7 +69,7 @@ future<StatusOr<gcsa::Database>> DatabaseAdminClient::CreateDatabase(
 
   auto f = polling_state.promise.get_future();
 
-  // TODO(#...) - introduce a polling policy to control the polling loop.
+  // TODO(#128) - introduce a polling policy to control the polling loop.
   std::thread t(
       [](std::shared_ptr<internal::DatabaseAdminStub> const& stub,
          Polling ps) mutable {
@@ -110,7 +77,11 @@ future<StatusOr<gcsa::Database>> DatabaseAdminClient::CreateDatabase(
             std::chrono::system_clock::now() + std::chrono::minutes(30);
         while (!ps.operation.done() &&
                std::chrono::system_clock::now() < deadline) {
-          std::this_thread::sleep_for(std::chrono::seconds(ps.wait_time));
+          auto remaining = deadline - std::chrono::system_clock::now();
+          auto sleep = (std::min)(
+              remaining,
+              std::chrono::duration_cast<decltype(remaining)>(ps.wait_time));
+          std::this_thread::sleep_for(sleep);
           grpc::ClientContext poll_context;
           google::longrunning::GetOperationRequest poll_request;
           poll_request.set_name(ps.operation.name());
