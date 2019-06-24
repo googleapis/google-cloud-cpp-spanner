@@ -32,6 +32,7 @@ spanner_client_srcs = [
     "client_options.cc",
     "database_admin_client.cc",
     "internal/database_admin_stub.cc",
+    "internal/spanner_stub.cc",
     "internal/time_format.cc",
     "sql_statement.cc",
     "value.cc",
