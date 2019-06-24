@@ -88,6 +88,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html">ClientOptions</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The configuration parameters for spanner clients.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html">DatabaseAdminClient</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> class template represents a heterogeneous set of C++ values.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -100,6 +102,8 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a082ded12c2b6a6a1c823f6b232a4f1f9"><td class="memItemLeft" align="right" valign="top">google::cloud::Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a082ded12c2b6a6a1c823f6b232a4f1f9">ToGoogleCloudStatus</a> (google::rpc::Status const &amp;status)</td></tr>
+<tr class="separator:a082ded12c2b6a6a1c823f6b232a4f1f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af19702e3242db4899b9e2d8f974565af"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
 <tr class="memitem:af19702e3242db4899b9e2d8f974565af"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0_1_1internal.html#a99e83721940f18c168af0899ddff8720">internal::PromoteLiteral</a>&lt; Ts &gt;... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a> (Ts &amp;&amp;... ts)</td></tr>
 <tr class="memdesc:af19702e3242db4899b9e2d8f974565af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper factory function to construct <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> objects holding the specified values.  <a href="#af19702e3242db4899b9e2d8f974565af">More...</a><br /></td></tr>
@@ -275,6 +279,26 @@ static_assert(
 <dl class="section warning"><dt>Warning</dt><dd>This is intended for debugging and human consumption only, not machine consumption as the output format may change without notice. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00093">93</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
+
+</div>
+</div>
+<a id="a082ded12c2b6a6a1c823f6b232a4f1f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a082ded12c2b6a6a1c823f6b232a4f1f9">&#9670;&nbsp;</a></span>ToGoogleCloudStatus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">google::cloud::Status google::cloud::spanner::v0::ToGoogleCloudStatus </td>
+          <td>(</td>
+          <td class="paramtype">google::rpc::Status const &amp;&#160;</td>
+          <td class="paramname"><em>status</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="database__admin__client_8cc_source.html#l00035">35</a> of file <a class="el" href="database__admin__client_8cc_source.html">database_admin_client.cc</a>.</p>
 
 </div>
 </div>
