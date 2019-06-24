@@ -34,11 +34,6 @@ namespace internal {
 google::protobuf::Duration ToProto(std::chrono::nanoseconds ns);
 
 /**
- * Convert a std::chrono::nanoseconds to a google::protobuf::Duration.
- */
-void ToProto(std::chrono::nanoseconds ns, google::protobuf::Duration* proto);
-
-/**
  * Convert a google::protobuf::Duration to a std::chrono::nanoseconds.
  */
 std::chrono::nanoseconds FromProto(google::protobuf::Duration const& proto);
@@ -47,12 +42,6 @@ std::chrono::nanoseconds FromProto(google::protobuf::Duration const& proto);
  * Convert a system_clock::time_point to a google::protobuf::Timestamp.
  */
 google::protobuf::Timestamp ToProto(std::chrono::system_clock::time_point tp);
-
-/**
- * Convert a system_clock::time_point to a google::protobuf::Timestamp.
- */
-void ToProto(std::chrono::system_clock::time_point tp,
-             google::protobuf::Timestamp* proto);
 
 /**
  * Convert a google::protobuf::Timestamp to a system_clock::time_point.

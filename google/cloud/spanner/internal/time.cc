@@ -48,10 +48,6 @@ google::protobuf::Duration ToProto(nanoseconds ns) {
   return proto;
 }
 
-void ToProto(nanoseconds ns, google::protobuf::Duration* proto) {
-  *proto = ToProto(ns);
-}
-
 nanoseconds FromProto(google::protobuf::Duration const& proto) {
   nanoseconds ns(proto.nanos());
   ns += seconds(proto.seconds());
@@ -74,10 +70,6 @@ google::protobuf::Timestamp ToProto(time_point tp) {
   proto.set_seconds(t);
   proto.set_nanos(ss.count());
   return proto;
-}
-
-void ToProto(time_point tp, google::protobuf::Timestamp* proto) {
-  *proto = ToProto(tp);
 }
 
 time_point FromProto(google::protobuf::Timestamp const& proto) {
