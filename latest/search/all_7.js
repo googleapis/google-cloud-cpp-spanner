@@ -6,6 +6,7 @@ var searchData=
   ['version',['version',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a2dadbb63905b7368cb4798ab33461940',1,'google::cloud::spanner::v0']]],
   ['version_2ecc',['version.cc',['../version_8cc.html',1,'']]],
   ['version_2eh',['version.h',['../version_8h.html',1,'']]],
+  ['version_5finfo_2eh',['version_info.h',['../version__info_8h.html',1,'']]],
   ['version_5fmajor',['version_major',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af1abccbadf7315acfe49eb262f13c68e',1,'google::cloud::spanner::v0']]],
   ['version_5fminor',['version_minor',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a6c300f108b25b972ea5ef7035b49916e',1,'google::cloud::spanner::v0']]],
   ['version_5fpatch',['version_patch',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a67a3ae06b6a8288ce7fd28fa1725d01e',1,'google::cloud::spanner::v0']]],

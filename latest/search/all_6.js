@@ -2,6 +2,9 @@ var searchData=
 [
   ['size',['size',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a74c306bb6fe6a5df1a1e5caed2d5b0bf',1,'google::cloud::spanner::v0::Row']]],
   ['spanner_5fclient_5fns',['SPANNER_CLIENT_NS',['../version_8h.html#a313bc0c726caf781fb59a7140610468e',1,'version.h']]],
+  ['spanner_5fclient_5fversion_5fmajor',['SPANNER_CLIENT_VERSION_MAJOR',['../version__info_8h.html#abc552bef200fc39843dbbbebf7f35117',1,'version_info.h']]],
+  ['spanner_5fclient_5fversion_5fminor',['SPANNER_CLIENT_VERSION_MINOR',['../version__info_8h.html#a1888b70b41e630903849bc631f4aa602',1,'version_info.h']]],
+  ['spanner_5fclient_5fversion_5fpatch',['SPANNER_CLIENT_VERSION_PATCH',['../version__info_8h.html#af18819ff4c77e2b496811a6aab5726fe',1,'version_info.h']]],
   ['spanner_5ftool_2ecc',['spanner_tool.cc',['../spanner__tool_8cc.html',1,'']]],
   ['sql',['sql',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#a343718204cd2967a769230668343db87',1,'google::cloud::spanner::v0::SqlStatement']]],
   ['sql_5fstatement_2ecc',['sql_statement.cc',['../sql__statement_8cc.html',1,'']]],
