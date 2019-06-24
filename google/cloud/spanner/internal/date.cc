@@ -43,7 +43,7 @@ std::string DateToString(Date d) {
 }
 
 Date DateFromString(std::string const& s) {
-  std::tm tm;
+  std::tm tm{};
   std::istringstream input(s);
   input >> std::get_time(&tm, kDateFormat);
   if (!input || input.tellg() >= 0) {
