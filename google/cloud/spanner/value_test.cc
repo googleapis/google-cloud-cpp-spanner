@@ -14,6 +14,8 @@
 
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/optional.h"
+#include "google/cloud/spanner/internal/date.h"
+#include "google/cloud/spanner/internal/time.h"
 #include <gmock/gmock.h>
 #include <cmath>
 #include <limits>
@@ -101,6 +103,48 @@ TEST(Value, BasicSemantics) {
     TestBasicSemantics(x);
     TestBasicSemantics(std::vector<std::string>(5, x));
     std::vector<optional<std::string>> v(5, x);
+    v.resize(10, x);
+    TestBasicSemantics(v);
+  }
+
+  for (time_t t : {
+           -9223372035L,  // near the limit of 64-bit/ns system_clock
+           -2147483649L,  // below min 32-bit int
+           -2147483648L,  // min 32-bit int
+           -1L, 0L, 1L,   // around the unix epoch
+           1561147549L,   // contemporary
+           2147483647L,   // max 32-bit int
+           2147483648L,   // above max 32-bit int
+           9223372036L    // near the limit of 64-bit/ns system_clock
+       }) {
+    auto tp = std::chrono::system_clock::from_time_t(t);
+    for (auto nanos : {-1, 0, 1}) {
+      auto ts = tp + std::chrono::nanoseconds(nanos);
+      SCOPED_TRACE("Testing: std::chrono::system_clock::time_point " +
+                   internal::TimestampToString(ts));
+      TestBasicSemantics(ts);
+      std::vector<std::chrono::system_clock::time_point> v(5, ts);
+      TestBasicSemantics(v);
+      std::vector<optional<std::chrono::system_clock::time_point>> ov(5, ts);
+      ov.resize(10, ts);
+      TestBasicSemantics(ov);
+    }
+  }
+
+  for (auto x : {
+           Date(1582, 10, 15),  // start of Gregorian calendar
+           Date(1677, 9, 21),   // before system_clock limit
+           Date(1901, 12, 13),  // around min 32-bit seconds limit
+           Date(1970, 1, 1),    // the unix epoch
+           Date(2019, 6, 21),   // contemporary
+           Date(2038, 1, 19),   // around max 32-bit seconds limit
+           Date(2262, 4, 12)    // after system_clock limit
+       }) {
+    SCOPED_TRACE("Testing: google::cloud::spanner::Date " +
+                 internal::DateToString(x));
+    TestBasicSemantics(x);
+    TestBasicSemantics(std::vector<Date>(5, x));
+    std::vector<optional<Date>> v(5, x);
     v.resize(10, x);
     TestBasicSemantics(v);
   }
