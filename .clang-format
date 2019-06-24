@@ -9,6 +9,8 @@ PointerAlignment: Left
 
 IncludeBlocks: Merge
 IncludeCategories:
+- Regex: '^\"google/cloud/spanner'
+  Priority: 500
 - Regex: '^\"google/cloud/'
   Priority: 1500
 - Regex: '^\"'
