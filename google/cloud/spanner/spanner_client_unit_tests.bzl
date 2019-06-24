@@ -26,6 +26,7 @@ spanner_client_unit_tests = [
     "internal/time_test.cc",
     "internal/tuple_utils_test.cc",
     "row_test.cc",
+    "row_parser_test.cc",
     "spanner_version_test.cc",
     "sql_statement_test.cc",
     "value_test.cc",
