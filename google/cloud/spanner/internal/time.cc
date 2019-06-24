@@ -83,9 +83,8 @@ namespace {
 // A duration capable of holding subsecond values at high precision.
 using femtoseconds = std::chrono::duration<std::int64_t, std::femto>;
 
-
 // Convert a std::time_t into a Zulu std::tm.
-// 
+//
 // See http://howardhinnant.github.io/date_algorithms.html for an explanation
 // of the calendrical arithmetic in ZTime() and TimeZ().  For quick reference,
 // March 1st is used as the first day of the year (so that any leap day occurs

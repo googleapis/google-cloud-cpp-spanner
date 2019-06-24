@@ -13,9 +13,9 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/value.h"
-#include "google/cloud/optional.h"
 #include "google/cloud/spanner/internal/date.h"
 #include "google/cloud/spanner/internal/time.h"
+#include "google/cloud/optional.h"
 #include <gmock/gmock.h>
 #include <cmath>
 #include <limits>
