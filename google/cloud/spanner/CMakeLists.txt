@@ -32,6 +32,8 @@ add_library(spanner_client
             database_admin_client.h
             internal/database_admin_stub.cc
             internal/database_admin_stub.h
+            internal/spanner_stub.cc
+            internal/spanner_stub.h
             row.h
             sql_statement.cc
             sql_statement.h
@@ -81,6 +83,7 @@ function (spanner_client_define_tests)
 
     set(spanner_client_unit_tests
         client_options_test.cc
+        internal/spanner_stub_test.cc
         row_test.cc
         spanner_version_test.cc
         sql_statement_test.cc
