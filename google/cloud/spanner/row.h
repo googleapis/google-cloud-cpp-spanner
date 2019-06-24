@@ -166,7 +166,7 @@ class Row {
     return a.values_ == b.values_;
   }
   friend bool operator!=(Row const& a, Row const& b) {
-    return !(a == b);
+    return a.values_ != b.values_;
   }
 
   /// Relational operators.
