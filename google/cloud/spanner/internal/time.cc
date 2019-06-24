@@ -175,7 +175,7 @@ std::string TimestampToString(time_point tp) {
 }
 
 time_point TimestampFromString(std::string const& s) {
-  std::tm tm;
+  std::tm tm{};
   std::istringstream input(s);
   input >> std::get_time(&tm, kTimeFormat);
   if (!input || input.tellg() < 0) {
