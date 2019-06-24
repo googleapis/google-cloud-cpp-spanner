@@ -24,11 +24,12 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
 /**
- * Represents a date in the proleptic Gregorian calendar.
+ * Represents a date in the proleptic Gregorian calendar as a triple of
+ * year, month (1-12), and day (1-31).
  *
  * Standard C++11 lacks a good "date" abstraction, so we supply a simple
  * implementation of a YMD triple. There is no range checking or field
- * normalization. No calendar arithmetic is provided.
+ * normalization, and no operations. You get what you give.
  */
 class Date {
  public:
