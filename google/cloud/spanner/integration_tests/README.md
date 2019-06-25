@@ -2,7 +2,7 @@
 
 This directory contains integration tests for the Cloud Spanner C++ client
 library. These tests are written using the Google Test framework, but can only
-execute when the environment properly configured.
+execute when the environment is properly configured.
 
 ## Google Cloud Platform Project
 
