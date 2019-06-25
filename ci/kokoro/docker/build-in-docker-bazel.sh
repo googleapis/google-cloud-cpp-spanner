@@ -57,8 +57,9 @@ fi
 echo "================================================================"
 echo "Compiling and running unit tests $(date)"
 echo "================================================================"
+# Note that we exclude the integration tests from this run.
 "${BAZEL_BIN}" test \
-    "${bazel_args[@]}" \
+    "${bazel_args[@]}" "--test_tag_filters=-integration-tests" \
     -- //google/cloud/...:all
 
 echo "================================================================"
@@ -77,19 +78,16 @@ if [[ ${RUN_INTEGRATION_TESTS} == "yes" ]]; then
   # shellcheck disable=SC1091
   source /c/spanner-integration-tests-config.sh
   export GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json
-  readonly DATABASE_NAME="test-db-${RANDOM}-${RANDOM}"
-  echo "Running create-database"
-  "$("${BAZEL_BIN}" info bazel-bin)/google/cloud/spanner/spanner_tool" \
-      create-database "${PROJECT_ID}" "${SPANNER_INSTANCE_ID}" "${DATABASE_NAME}"
-  echo "Running list-databases [1]"
-  "$("${BAZEL_BIN}" info bazel-bin)/google/cloud/spanner/spanner_tool" \
-      list-databases "${PROJECT_ID}" "${SPANNER_INSTANCE_ID}"
-  echo "Running drop-database"
-  "$("${BAZEL_BIN}" info bazel-bin)/google/cloud/spanner/spanner_tool" \
-      drop-database "${PROJECT_ID}" "${SPANNER_INSTANCE_ID}" "${DATABASE_NAME}"
-  echo "Running list-databases [2]"
-  "$("${BAZEL_BIN}" info bazel-bin)/google/cloud/spanner/spanner_tool" \
-      list-databases "${PROJECT_ID}" "${SPANNER_INSTANCE_ID}"
+
+  # Run the interation tests using Bazel to drive them.
+  "${BAZEL_BIN}" test \
+      "${bazel_args[@]}" \
+      "--spawn_strategy=local" \
+      "--test_env=GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS}" \
+      "--test_env=GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}" \
+      "--test_env=GOOGLE_CLOUD_CPP_SPANNER_INSTANCE=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}" \
+      "--test_tag_filters=integration-tests" \
+      -- //google/cloud/...:all
 fi
 
 echo "================================================================"
