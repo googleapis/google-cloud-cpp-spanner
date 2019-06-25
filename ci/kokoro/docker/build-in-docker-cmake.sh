@@ -68,7 +68,9 @@ if [[ -r "${BINARY_DIR}/CTestTestfile.cmake" ]]; then
   # It is Okay to skip the tests in this case because the super build
   # automatically runs them.
   echo "Running the unit tests $(date)"
-  env -C "${BINARY_DIR}" ctest --output-on-failure -j "$(nproc)"
+  env -C "${BINARY_DIR}" ctest \
+      -LE integration-tests \
+      --output-on-failure -j "$(nproc)"
   echo "================================================================"
 fi
 
@@ -86,19 +88,12 @@ if [[ ${RUN_INTEGRATION_TESTS} == "yes" ]]; then
   # shellcheck disable=SC1091
   source /c/spanner-integration-tests-config.sh
   export GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json
-  readonly DATABASE_NAME="test-db-${RANDOM}-${RANDOM}"
-  echo "Running create-database"
-  "${BINARY_DIR}/google/cloud/spanner/spanner_tool" \
-      create-database "${PROJECT_ID}" "${SPANNER_INSTANCE_ID}" "${DATABASE_NAME}"
-  echo "Running list-databases [1]"
-  "${BINARY_DIR}/google/cloud/spanner/spanner_tool" \
-      list-databases "${PROJECT_ID}" "${SPANNER_INSTANCE_ID}"
-  echo "Running drop-database"
-  "${BINARY_DIR}/google/cloud/spanner/spanner_tool" \
-      drop-database "${PROJECT_ID}" "${SPANNER_INSTANCE_ID}" "${DATABASE_NAME}"
-  echo "Running list-databases [2]"
-  "${BINARY_DIR}/google/cloud/spanner/spanner_tool" \
-      list-databases "${PROJECT_ID}" "${SPANNER_INSTANCE_ID}"
+
+  # Run the integration tests too.
+  env -C "${BINARY_DIR}" ctest \
+      -L integration-tests \
+      --output-on-failure
+  echo "================================================================"
 fi
 
 echo "================================================================"
