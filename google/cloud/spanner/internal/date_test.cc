@@ -27,14 +27,14 @@ TEST(Date, DateToString) {
 }
 
 TEST(Date, DateFromString) {
-  EXPECT_EQ(Date(2019, 6, 21), DateFromString("2019-06-21"));
+  EXPECT_EQ(Date(2019, 6, 21), DateFromString("2019-06-21").value());
 }
 
 TEST(Date, DateFromStringFailure) {
-  EXPECT_EQ(Date(), DateFromString(""));  // empty
-  EXPECT_EQ(Date(), DateFromString("garbage in"));
-  EXPECT_EQ(Date(), DateFromString("2018-13-02"));  // month out of range
-  EXPECT_EQ(Date(), DateFromString("2019-06-32"));  // day out of range
+  EXPECT_FALSE(DateFromString("").ok());
+  EXPECT_FALSE(DateFromString("garbage in").ok());
+  EXPECT_FALSE(DateFromString("2018-13-02").ok());
+  EXPECT_FALSE(DateFromString("2019-06-32").ok());
 }
 
 }  // namespace
