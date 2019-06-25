@@ -17,6 +17,7 @@
 
 #include "google/cloud/spanner/date.h"
 #include "google/cloud/spanner/version.h"
+#include "google/cloud/status_or.h"
 #include <string>
 
 namespace google {
@@ -33,9 +34,9 @@ std::string DateToString(Date d);
 /**
  * Convert an RFC3339 "full-date" to a Date.
  *
- * Returns a default-constructed date if the input cannot be parsed.
+ * Returns a a non-OK Status if the input cannot be parsed.
  */
-Date DateFromString(std::string const& s);
+StatusOr<Date> DateFromString(std::string const& s);
 
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS

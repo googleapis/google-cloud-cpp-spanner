@@ -155,9 +155,6 @@ time_point CombineTime(std::tm const& tm, femtoseconds ss) {
 // RFC3339 "date-time" prefix (no "time-secfrac" or "time-offset").
 const char* const kTimeFormat = "%Y-%m-%dT%H:%M:%S";
 
-// Returned by TimestampFromString() when the string fails to parse.
-time_point const kBadTimestamp = time_point::min();
-
 }  // namespace
 
 std::string TimestampToString(time_point tp) {
@@ -176,13 +173,13 @@ std::string TimestampToString(time_point tp) {
   return output.str();
 }
 
-time_point TimestampFromString(std::string const& s) {
+StatusOr<time_point> TimestampFromString(std::string const& s) {
   std::tm tm{};
   std::istringstream input(s);
   input >> std::get_time(&tm, kTimeFormat);
   if (!input || input.tellg() < 0) {
-    // Failed to match kTimeFormat, or consumed the entire string.
-    return kBadTimestamp;
+    return Status(StatusCode::kInvalidArgument,
+                  s + ": Failed to match RFC3339 date-time");
   }
   std::string::size_type pos = input.tellg();
   auto const len = s.size();
@@ -201,12 +198,21 @@ time_point TimestampFromString(std::string const& s) {
       v *= 10;
       v += dp - k_digits;
     }
-    if (pos == fpos) return kBadTimestamp;  // one digit is required
+    if (pos == fpos) {
+      return Status(StatusCode::kInvalidArgument,
+                    s + ": RFC3339 time-secfrac must include a digit");
+    }
     ss = femtoseconds(v * scale);
   }
 
-  if (pos == len || s[pos] != 'Z') return kBadTimestamp;
-  if (++pos != len) return kBadTimestamp;  // trailing garbage
+  if (pos == len || s[pos] != 'Z') {
+    return Status(StatusCode::kInvalidArgument,
+                  s + ": Missing RFC3339 time-offset 'Z'");
+  }
+  if (++pos != len) {
+    return Status(StatusCode::kInvalidArgument,
+                  s + ": Extra data after RFC3339 date-time");
+  }
 
   return CombineTime(tm, ss);
 }

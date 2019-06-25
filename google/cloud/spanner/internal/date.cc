@@ -23,8 +23,6 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
-// All the civil-time code assumes the proleptic Gregorian calendar.
-
 namespace {
 
 // RFC3339 "full-date".
@@ -42,15 +40,19 @@ std::string DateToString(Date d) {
   return output.str();
 }
 
-Date DateFromString(std::string const& s) {
+StatusOr<Date> DateFromString(std::string const& s) {
   std::tm tm{};
   std::istringstream input(s);
   input >> std::get_time(&tm, kDateFormat);
-  if (!input || input.tellg() >= 0) {
-    // Failed to match kDateFormat, or did not consumed the entire string.
-    return Date{};
+  if (!input) {
+    return Status(StatusCode::kInvalidArgument,
+                  s + ": Failed to match RFC3339 full-date");
   }
-  return {tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday};
+  if (input.tellg() >= 0) {
+    return Status(StatusCode::kInvalidArgument,
+                  s + ": Extra data after RFC3339 full-date");
+  }
+  return Date(tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
 }
 
 }  // namespace internal
