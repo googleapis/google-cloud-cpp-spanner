@@ -35,6 +35,7 @@ TEST(Date, DateFromStringFailure) {
   EXPECT_FALSE(DateFromString("garbage in"));
   EXPECT_FALSE(DateFromString("2018-13-02"));
   EXPECT_FALSE(DateFromString("2019-06-32"));
+  EXPECT_FALSE(DateFromString("2019-06-21x"));
 }
 
 }  // namespace
