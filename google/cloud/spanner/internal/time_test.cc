@@ -276,53 +276,52 @@ TEST(Time, TimestampToStringLimit) {
 
 TEST(Time, TimestampFromString) {
   time_point tp = system_clock::from_time_t(1561135942);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22Z").value());
   tp += nanoseconds(9);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.000000009Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.000000009Z").value());
   tp += nanoseconds(80);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.000000089Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.000000089Z").value());
   tp += nanoseconds(700);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.000000789Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.000000789Z").value());
   tp += nanoseconds(6000);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.000006789Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.000006789Z").value());
   tp += nanoseconds(50000);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.000056789Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.000056789Z").value());
   tp += nanoseconds(400000);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.000456789Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.000456789Z").value());
   tp += nanoseconds(3000000);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.003456789Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.003456789Z").value());
   tp += nanoseconds(20000000);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.023456789Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.023456789Z").value());
   tp += nanoseconds(100000000);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.123456789Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.123456789Z").value());
   tp -= nanoseconds(9);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.12345678Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.12345678Z").value());
   tp -= nanoseconds(80);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.1234567Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.1234567Z").value());
   tp -= nanoseconds(700);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.123456Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.123456Z").value());
   tp -= nanoseconds(6000);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.12345Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.12345Z").value());
   tp -= nanoseconds(50000);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.1234Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.1234Z").value());
   tp -= nanoseconds(400000);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.123Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.123Z").value());
   tp -= nanoseconds(3000000);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.12Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.12Z").value());
   tp -= nanoseconds(20000000);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.1Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22.1Z").value());
   tp -= nanoseconds(100000000);
-  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22Z"));
+  EXPECT_EQ(tp, TimestampFromString("2019-06-21T16:52:22Z").value());
 }
 
 TEST(Time, TimestampFromStringFailure) {
-  time_point const bad = time_point::min();
-  EXPECT_EQ(bad, TimestampFromString(""));  // empty
-  EXPECT_EQ(bad, TimestampFromString("garbage in"));
-  EXPECT_EQ(bad, TimestampFromString("2019-06-21T16:52:22"));    // no Z
-  EXPECT_EQ(bad, TimestampFromString("2019-06-21T16:52:22.9"));  // no Z
-  EXPECT_EQ(bad, TimestampFromString("2019-06-21T16:52:22.Z"));  // no frac dig
-  EXPECT_EQ(bad, TimestampFromString("2019-06-21T16:52:22ZX"));  // trailing
+  EXPECT_FALSE(TimestampFromString("").ok());
+  EXPECT_FALSE(TimestampFromString("garbage in").ok());
+  EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:22").ok());
+  EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:22.9").ok());
+  EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:22.Z").ok());
+  EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:22ZX").ok());
 }
 
 }  // namespace

@@ -262,12 +262,12 @@ std::string Value::GetValue(std::string const&,
 std::chrono::system_clock::time_point Value::GetValue(
     time_point, google::protobuf::Value const& pv,
     google::spanner::v1::Type const&) {
-  return internal::TimestampFromString(pv.string_value());
+  return internal::TimestampFromString(pv.string_value()).value();
 }
 
 Date Value::GetValue(Date, google::protobuf::Value const& pv,
                      google::spanner::v1::Type const&) {
-  return internal::DateFromString(pv.string_value());
+  return internal::DateFromString(pv.string_value()).value();
 }
 
 bool Value::EqualTypeProtoIgnoringNames(google::spanner::v1::Type const& a,

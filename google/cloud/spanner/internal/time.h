@@ -16,6 +16,7 @@
 #define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_INTERNAL_TIME_H_
 
 #include "google/cloud/spanner/version.h"
+#include "google/cloud/status_or.h"
 #include <google/protobuf/duration.pb.h>
 #include <google/protobuf/timestamp.pb.h>
 #include <chrono>
@@ -57,9 +58,10 @@ std::string TimestampToString(std::chrono::system_clock::time_point tp);
 /**
  * Convert an RFC3339 "date-time" to a system_clock::time_point.
  *
- * Returns system_clock::time_point::min() if the input cannot be parsed.
+ * Returns a a non-OK Status if the input cannot be parsed.
  */
-std::chrono::system_clock::time_point TimestampFromString(std::string const& s);
+StatusOr<std::chrono::system_clock::time_point> TimestampFromString(
+    std::string const& s);
 
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS
