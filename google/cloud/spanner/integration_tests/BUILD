@@ -20,8 +20,8 @@ load(":spanner_client_integration_tests.bzl", "spanner_client_integration_tests"
 
 [cc_test(
     name = "spanner_client_" + test.replace("/", "_").replace(".cc", ""),
-    tags = ["integration-tests"],
     srcs = [test],
+    tags = ["integration-tests"],
     deps = [
         "//google/cloud/spanner:spanner_client",
         "@com_github_googleapis_google_cloud_cpp//google/cloud:google_cloud_cpp_common",

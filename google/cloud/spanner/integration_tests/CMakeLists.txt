@@ -24,13 +24,12 @@ function (spanner_client_define_integration_tests)
     # the GTest::gmock target, and the target names are also weird.
     find_package(GTest CONFIG REQUIRED)
 
-    set(spanner_client_integration_tests
-            database_admin_integration_test.cc)
+    set(spanner_client_integration_tests database_admin_integration_test.cc)
 
     # Export the list of unit tests to a .bzl file so we do not need to maintain
     # the list in two places.
     export_list_to_bazel("spanner_client_integration_tests.bzl"
-            "spanner_client_integration_tests")
+                         "spanner_client_integration_tests")
 
     # Create a custom target so we can say "build all the tests"
     add_custom_target(spanner-client-integration-tests)
@@ -38,19 +37,19 @@ function (spanner_client_define_integration_tests)
     # Generate a target for each unit test.
     foreach (fname ${spanner_client_integration_tests})
         string(REPLACE "/"
-                "_"
-                target
-                ${fname})
+                       "_"
+                       target
+                       ${fname})
         string(REPLACE ".cc"
-                ""
-                target
-                ${target})
+                       ""
+                       target
+                       ${target})
         add_executable(${target} ${fname})
         target_link_libraries(${target}
-                PRIVATE googleapis-c++::spanner_client
-                GTest::gmock_main
-                GTest::gmock
-                GTest::gtest)
+                              PRIVATE googleapis-c++::spanner_client
+                                      GTest::gmock_main
+                                      GTest::gmock
+                                      GTest::gtest)
         google_cloud_cpp_add_clang_tidy(${target})
         google_cloud_cpp_add_common_options(${target})
 

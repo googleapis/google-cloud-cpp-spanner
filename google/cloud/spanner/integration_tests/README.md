@@ -11,7 +11,7 @@ The Google Cloud Platform project for the tests must be configured using the
 
 ## Credentials
 
-The environment must be configured such that `grpc::GoogleDefaultCredentials` 
+The environment must be configured such that `grpc::GoogleDefaultCredentials`
 returns a valid credential with `roles/spanner.admin` permissions on the project
 configured via the `GOOGLE_CLOUD_PROJECT` environment variable.
 
