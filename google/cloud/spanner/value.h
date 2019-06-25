@@ -448,9 +448,7 @@ class Value {
   static optional<T> GetValue(optional<T> const&,
                               google::protobuf::Value const& pv,
                               google::spanner::v1::Type const& pt) {
-    if (pv.kind_case() == google::protobuf::Value::kNullValue) {
-      return optional<T>{};
-    }
+    if (pv.kind_case() == google::protobuf::Value::kNullValue) return {};
     return GetValue(T{}, pv, pt);
   }
   template <typename T>
