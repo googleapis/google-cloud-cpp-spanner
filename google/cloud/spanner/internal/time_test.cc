@@ -316,12 +316,12 @@ TEST(Time, TimestampFromString) {
 }
 
 TEST(Time, TimestampFromStringFailure) {
-  EXPECT_FALSE(TimestampFromString("").ok());
-  EXPECT_FALSE(TimestampFromString("garbage in").ok());
-  EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:22").ok());
-  EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:22.9").ok());
-  EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:22.Z").ok());
-  EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:22ZX").ok());
+  EXPECT_FALSE(TimestampFromString(""));
+  EXPECT_FALSE(TimestampFromString("garbage in"));
+  EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:22"));
+  EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:22.9"));
+  EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:22.Z"));
+  EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:22ZX"));
 }
 
 }  // namespace

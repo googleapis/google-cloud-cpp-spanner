@@ -31,10 +31,10 @@ TEST(Date, DateFromString) {
 }
 
 TEST(Date, DateFromStringFailure) {
-  EXPECT_FALSE(DateFromString("").ok());
-  EXPECT_FALSE(DateFromString("garbage in").ok());
-  EXPECT_FALSE(DateFromString("2018-13-02").ok());
-  EXPECT_FALSE(DateFromString("2019-06-32").ok());
+  EXPECT_FALSE(DateFromString(""));
+  EXPECT_FALSE(DateFromString("garbage in"));
+  EXPECT_FALSE(DateFromString("2018-13-02"));
+  EXPECT_FALSE(DateFromString("2019-06-32"));
 }
 
 }  // namespace
