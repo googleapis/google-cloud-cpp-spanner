@@ -203,7 +203,7 @@ assert(v.is&lt;Struct&gt;());
 assert(s == *v.get&lt;Struct&gt;());
 </pre><p>NOTE: While a STRUCT's (optional) field names are not part of its C++ type, they are part of its Spanner STRUCT type. Array's (i.e., <code>std::vector</code>) must contain a single element type, therefore it is an error to construct a <code>std::vector</code> of <code>std::tuple</code> objects with differently named fields. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00131">131</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00132">132</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a0d1175012d31fe9452996fa2a019c9de"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0d1175012d31fe9452996fa2a019c9de">&#9670;&nbsp;</a></span>Value() <span class="overload">[1/12]</span></h2>
@@ -310,7 +310,7 @@ assert(s == *v.get&lt;Struct&gt;());
 
 <p>Constructs a non-null instance with the specified type and value. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00142">142</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00143">143</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -338,7 +338,7 @@ assert(s == *v.get&lt;Struct&gt;());
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00143">143</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00144">144</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -366,7 +366,7 @@ assert(s == *v.get&lt;Struct&gt;());
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00144">144</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00145">145</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -394,7 +394,7 @@ assert(s == *v.get&lt;Struct&gt;());
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00145">145</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00146">146</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -429,7 +429,7 @@ assert(v1.is&lt;std::int64_t&gt;());
 spanner::Value v2("hello");
 assert(v2.is&lt;std::string&gt;());
 </pre> 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00162">162</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00163">163</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -464,7 +464,7 @@ assert(v1.is&lt;std::int64_t&gt;());
 spanner::Value v2("hello");
 assert(v2.is&lt;std::string&gt;());
 </pre> 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00164">164</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00165">165</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -496,7 +496,7 @@ template&lt;typename T &gt; </div>
 
 <p>Constructs a non-null instance if <code>opt</code> has a value, otherwise constructs a null instance. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00171">171</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00172">172</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -530,7 +530,7 @@ template&lt;typename T &gt; </div>
 <p>The type <code>T</code> may be any valid type shown above, except vectors of vectors are not allowed.</p>
 <p>NOTE: If <code>T</code> is a <code>std::tuple</code> with field names (i.e., at least one of its element types is a <code>std::pair&lt;std::string, T&gt;</code>) then, all of the vector's elements must have exactly the same field names. Any mismatch in in field names results in undefined behavior. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00187">187</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00188">188</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -563,7 +563,7 @@ template&lt;typename... Ts&gt; </div>
 <p>Constructs an instance from a Spanner STRUCT with a type and values matching the given <code>std::tuple</code>. </p>
 <p>Any STRUCT field may optionally have a name, which is specified as <code>std::pair&lt;std::string, T&gt;</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00200">200</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00201">201</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -613,7 +613,7 @@ StatusOr&lt;optional&lt;std::int64_t&gt;&gt; j = v.get&lt;optional&lt;std::int64
 assert(j.ok());  // Since we know the types match in this example
 assert(!v-&gt;has_value());  // Since we know v was null in this example
 </pre> 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00280">280</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00281">281</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -652,7 +652,7 @@ spanner::Value null_v = spanner::MakeNullValue&lt;bool&gt;();
 assert(v.is&lt;bool&gt;());  // Same as the following
 assert(v.is&lt;optional&lt;bool&gt;&gt;());
 </pre> 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00223">223</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00224">224</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -693,7 +693,7 @@ assert(v.is_null&lt;optional&lt;bool&gt;&gt;());
 assert(!v.is_null&lt;std::int64_t&gt;());  // Same as the following
 assert(!v.is_null&lt;optional&lt;std::int64_t&gt;&gt;());
 </pre> 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00247">247</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00248">248</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -732,7 +732,7 @@ spanner::Value null_v = spanner::MakeNullValue&lt;std::int64_t&gt;();
 std::int64_t i = static_cast&lt;std::int64_t&gt;(null_v);  // UB! null
 bool bad = static_cast&lt;bool&gt;(null_v);  // UB! wrong type
 </pre> 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00308">308</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00309">309</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -885,7 +885,7 @@ bool bad = static_cast&lt;bool&gt;(null_v);  // UB! wrong type
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00204">204</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00205">205</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -923,7 +923,7 @@ bool bad = static_cast&lt;bool&gt;(null_v);  // UB! wrong type
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00101">101</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00105">105</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
 
 </div>
 </div>
@@ -964,7 +964,7 @@ bool bad = static_cast&lt;bool&gt;(null_v);  // UB! wrong type
 <p>Allows Google Test to print internal debugging information when test assertions fail. </p>
 <dl class="section warning"><dt>Warning</dt><dd>This is intended for debugging and human consumption only, not machine consumption as the output format may change without notice. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00105">105</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00109">109</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
 
 </div>
 </div>
