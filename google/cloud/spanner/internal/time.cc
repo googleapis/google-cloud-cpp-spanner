@@ -73,9 +73,9 @@ google::protobuf::Timestamp ToProto(time_point tp) {
 }
 
 time_point FromProto(google::protobuf::Timestamp const& proto) {
-  time_point tp = system_clock::from_time_t(proto.seconds());
-  tp += nanoseconds(proto.nanos());
-  return tp;
+  nanoseconds ss(proto.nanos());
+  auto sub = std::chrono::duration_cast<system_clock::duration>(ss);
+  return system_clock::from_time_t(proto.seconds()) + sub;
 }
 
 namespace {

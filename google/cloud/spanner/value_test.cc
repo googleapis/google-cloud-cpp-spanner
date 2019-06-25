@@ -118,8 +118,8 @@ TEST(Value, BasicSemantics) {
            9223372036L    // near the limit of 64-bit/ns system_clock
        }) {
     auto tp = std::chrono::system_clock::from_time_t(t);
-    for (auto nanos : {-1, 0, 1}) {
-      auto ts = tp + std::chrono::nanoseconds(nanos);
+    for (auto micros : {-1, 0, 1}) {
+      auto ts = tp + std::chrono::microseconds(micros);
       SCOPED_TRACE("Testing: std::chrono::system_clock::time_point " +
                    internal::TimestampToString(ts));
       TestBasicSemantics(ts);
