@@ -27,6 +27,10 @@ TEST(SpannerStub, CreateDefaultStub) {
   EXPECT_NE(stub, nullptr);
 }
 
+// TODO(#141) There aren't a lot of sensible unit tests we can write for this
+// class, but once Client is checked in, we should use integration tests to
+// cover its functionality.
+
 }  // namespace
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS
