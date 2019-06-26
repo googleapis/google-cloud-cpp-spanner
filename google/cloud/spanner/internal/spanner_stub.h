@@ -30,12 +30,15 @@ inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
 /**
- * SpannerStub is a thin stub layer that avoids exposing the underlying
- * transport stub directly (similar to what GAPIC will generate).
+ * SpannerStub is a thin stub layer over the Cloud Spanner API to avoid
+ * exposing the underlying transport stub (gRPC, etc.) directly.
+ *
+ * The API is defined in:
+ * https://github.com/googleapis/googleapis/blob/master/google/spanner/v1/spanner.proto
  */
 class SpannerStub {
  public:
-  virtual ~SpannerStub() = 0;
+  virtual ~SpannerStub() = default;
 
   /// Not copyable or moveable.
   SpannerStub(SpannerStub const&) = delete;

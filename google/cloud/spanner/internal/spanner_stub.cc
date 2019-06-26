@@ -82,7 +82,9 @@ class DefaultSpannerStub : public SpannerStub {
   std::unique_ptr<spanner_proto::Spanner::StubInterface> grpc_stub_;
 };
 
-Status GRPCStatusToStatus(const grpc::Status& grpc_status) {
+// TODO(googleapis/google-cloud-cpp#2807) update this to use the generic
+// common method when available.
+Status GRPCStatusToStatus(grpc::Status const& grpc_status) {
   return Status(static_cast<StatusCode>(grpc_status.error_code()),
                 grpc_status.error_message());
 }
@@ -122,6 +124,7 @@ StatusOr<spanner_proto::ListSessionsResponse> DefaultSpannerStub::ListSessions(
   }
   return response;
 }
+
 Status DefaultSpannerStub::DeleteSession(
     grpc::ClientContext& client_context,
     spanner_proto::DeleteSessionRequest const& request) {
@@ -240,13 +243,10 @@ StatusOr<spanner_proto::PartitionResponse> DefaultSpannerStub::PartitionRead(
 
 }  // namespace
 
-SpannerStub::~SpannerStub() = default;
-
 std::shared_ptr<SpannerStub> CreateDefaultSpannerStub(
     ClientOptions const& options) {
-  auto channel =
-      grpc::CreateChannel(options.admin_endpoint(), options.credentials());
-  auto spanner_grpc_stub = spanner_proto::Spanner::NewStub(channel);
+  auto spanner_grpc_stub = spanner_proto::Spanner::NewStub(
+      grpc::CreateChannel(options.admin_endpoint(), options.credentials()));
   return std::make_shared<DefaultSpannerStub>(std::move(spanner_grpc_stub));
 }
 
