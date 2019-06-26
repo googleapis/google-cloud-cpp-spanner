@@ -26,7 +26,7 @@ namespace internal {
 namespace {
 
 // RFC3339 "full-date".
-const char* const kDateFormat = "%Y-%m-%d";
+constexpr auto kDateFormat = "%Y-%m-%d";
 
 }  // namespace
 

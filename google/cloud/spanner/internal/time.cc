@@ -153,7 +153,7 @@ time_point CombineTime(std::tm const& tm, femtoseconds ss) {
 }
 
 // RFC3339 "date-time" prefix (no "time-secfrac" or "time-offset").
-const char* const kTimeFormat = "%Y-%m-%dT%H:%M:%S";
+constexpr auto kTimeFormat = "%Y-%m-%dT%H:%M:%S";
 
 }  // namespace
 
@@ -190,13 +190,13 @@ StatusOr<time_point> TimestampFromString(std::string const& s) {
     auto scale = std::femto::den;
     auto fpos = pos + 1;  // start of fractional part
     while (++pos != len) {
-      static const char* const k_digits = "0123456789";
-      char const* dp = std::strchr(k_digits, s[pos]);
+      static constexpr auto kDigits = "0123456789";
+      char const* dp = std::strchr(kDigits, s[pos]);
       if (dp == nullptr || *dp == '\0') break;  // non-digit
       if (scale == 1) continue;                 // drop insignificant digits
       scale /= 10;
       v *= 10;
-      v += dp - k_digits;
+      v += dp - kDigits;
     }
     if (pos == fpos) {
       return Status(StatusCode::kInvalidArgument,
