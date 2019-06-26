@@ -50,6 +50,7 @@ class Date {
 inline bool operator==(Date const& a, Date const& b) {
   return a.year() == b.year() && a.month() == b.month() && a.day() == b.day();
 }
+
 inline bool operator!=(Date const& a, Date const& b) { return !(a == b); }
 
 }  // namespace SPANNER_CLIENT_NS

@@ -18,15 +18,15 @@
 #if !defined(_XOPEN_SOURCE)
 #define _XOPEN_SOURCE
 #endif
-#include <time.h>  // <ctime> doesn't have to declare strptime()
-#else
-#define HAVE_GET_TIME
-#define HAVE_PUT_TIME
 #endif
 
 #include "google/cloud/spanner/internal/time_format.h"
+#if !defined(__clang__) && defined(__GNUC__) && __GNUC__ < 5
+#include <time.h>  // <ctime> doesn't have to declare strptime()
+#else
 #include <iomanip>
 #include <sstream>
+#endif
 
 namespace google {
 namespace cloud {
@@ -35,11 +35,7 @@ inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
 std::string FormatTime(char const* fmt, std::tm const& tm) {
-#if defined(HAVE_PUT_TIME)
-  std::ostringstream output;
-  output << std::put_time(&tm, fmt);
-  return output.str();
-#else
+#if !defined(__clang__) && defined(__GNUC__) && __GNUC__ < 5
   std::string s;
   s.resize(64);
   for (;;) {
@@ -50,24 +46,28 @@ std::string FormatTime(char const* fmt, std::tm const& tm) {
     s.resize(s.size() * 2);
   }
   return s;
+#else
+  std::ostringstream output;
+  output << std::put_time(&tm, fmt);
+  return output.str();
 #endif
 }
 
 std::string::size_type ParseTime(char const* fmt, std::string const& s,
                                  std::tm* tm) {
-#if defined(HAVE_GET_TIME)
+#if !defined(__clang__) && defined(__GNUC__) && __GNUC__ < 5
+  char const* const bp = s.c_str();
+  if (char* const ep = strptime(bp, fmt, tm)) {
+    return ep - bp;
+  }
+  return std::string::npos;
+#else
   std::istringstream input(s);
   input >> std::get_time(tm, fmt);
   if (!input) return std::string::npos;
   auto const pos = input.tellg();
   if (pos >= 0) return pos;
   return s.size();
-#else
-  char const* const bp = s.c_str();
-  if (char* const ep = strptime(bp, fmt, tm)) {
-    return ep - bp;
-  }
-  return std::string::npos;
 #endif
 }
 
