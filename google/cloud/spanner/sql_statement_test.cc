@@ -82,10 +82,10 @@ TEST(SqlStatementTest, OStreamOperatorWithParams) {
       "select * from foo\n"
       "[param]: {value}\t[first]: {code: STRING; string_value: \"Elwood\"}\n"
       "[param]: {value}\t[last]: {code: STRING; string_value: \"Blues\"}");
-   std::string expected2(
-    "select * from foo\n"
-    "[param]: {value}\t[last]: {code: STRING; string_value: \"Blues\"}\n"
-    "[param]: {value}\t[first]: {code: STRING; string_value: \"Elwood\"}");
+  std::string expected2(
+      "select * from foo\n"
+      "[param]: {value}\t[last]: {code: STRING; string_value: \"Blues\"}\n"
+      "[param]: {value}\t[first]: {code: STRING; string_value: \"Elwood\"}");
   std::stringstream ss;
   ss << stmt;
   EXPECT_THAT(ss.str(), AnyOf(Eq(expected1), Eq(expected2)));
