@@ -19,15 +19,34 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
+
+std::vector<std::string> SqlStatement::ParameterNames() const {
+  std::vector<std::string> keys;
+  for (auto const& p : params_) {
+    keys.push_back(p.first);
+  }
+  return keys;
+}
+
+google::cloud::StatusOr<Value> SqlStatement::GetParameter(
+    std::string const& parameter_name) const {
+  auto iter = params_.find(parameter_name);
+  if (iter != params_.end()) {
+    return {iter->second};
+  }
+  return Status(StatusCode::kNotFound, "No such parameter.");
+}
+
 std::ostream& operator<<(std::ostream& os, SqlStatement const& stmt) {
   os << stmt.statement_;
   for (auto const& param : stmt.params_) {
-    os << "{" << param.first << ", "
-       << "Parameter Value stringification not yet implemented"
-       << "}";
+    os << "\n[param]: {value}\t[" << param.first << "]: {";
+    PrintTo(param.second, &os);
+    os << "}";
   }
   return os;
 }
+
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
 }  // namespace cloud
