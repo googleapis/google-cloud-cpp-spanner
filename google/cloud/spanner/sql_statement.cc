@@ -35,7 +35,7 @@ google::cloud::StatusOr<Value> SqlStatement::GetParameter(
   if (iter != params_.end()) {
     return iter->second;
   }
-  return Status(StatusCode::kNotFound, "No such parameter.");
+  return Status(StatusCode::kNotFound, "No such parameter: " + parameter_name);
 }
 
 std::ostream& operator<<(std::ostream& os, SqlStatement const& stmt) {

@@ -64,6 +64,7 @@ TEST(SqlStatementTest, GetParameterNotExist) {
   auto results = stmt.GetParameter("middle");
   ASSERT_FALSE(results.ok());
   EXPECT_EQ(StatusCode::kNotFound, results.status().code());
+  EXPECT_EQ("No such parameter: middle", results.status().message());
 }
 
 TEST(SqlStatementTest, OStreamOperatorNoParams) {
