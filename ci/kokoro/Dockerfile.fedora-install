@@ -54,9 +54,9 @@ RUN ldconfig
 
 # Download and compile google-cloud-cpp from source too:
 WORKDIR /var/tmp/build
-RUN wget -q https://github.com/googleapis/google-cloud-cpp/archive/75b62d0bb931d475137342d2d3932e588161fe95.tar.gz
-RUN tar -xf 75b62d0bb931d475137342d2d3932e588161fe95.tar.gz
-WORKDIR /var/tmp/build/google-cloud-cpp-75b62d0bb931d475137342d2d3932e588161fe95
+RUN wget -q https://github.com/googleapis/google-cloud-cpp/archive/4ef0f689b284f4f721ca72a50e39da4106c95852.tar.gz
+RUN tar -xf 4ef0f689b284f4f721ca72a50e39da4106c95852.tar.gz
+WORKDIR /var/tmp/build/google-cloud-cpp-4ef0f689b284f4f721ca72a50e39da4106c95852
 # Compile without the tests because we are testing spanner, not the base
 # libraries
 RUN cmake -H. -Bcmake-out \
