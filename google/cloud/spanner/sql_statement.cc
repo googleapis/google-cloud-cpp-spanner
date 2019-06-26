@@ -22,6 +22,7 @@ inline namespace SPANNER_CLIENT_NS {
 
 std::vector<std::string> SqlStatement::ParameterNames() const {
   std::vector<std::string> keys;
+  keys.reserve(params_.size());
   for (auto const& p : params_) {
     keys.push_back(p.first);
   }
@@ -32,7 +33,7 @@ google::cloud::StatusOr<Value> SqlStatement::GetParameter(
     std::string const& parameter_name) const {
   auto iter = params_.find(parameter_name);
   if (iter != params_.end()) {
-    return {iter->second};
+    return iter->second;
   }
   return Status(StatusCode::kNotFound, "No such parameter.");
 }
