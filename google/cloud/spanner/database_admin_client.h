@@ -71,7 +71,7 @@ inline namespace SPANNER_CLIENT_NS {
  *
  * @par Long running operations
  *
- * Some operations in this class can take minutes to complete. In this class the
+ * Some operations in this class can take minutes to complete. In this case the
  * class returns a `google::cloud::future<StatusOr<T>>`, the application can
  * then poll the `future` or associate a callback to be invoked when the
  * operation completes:
