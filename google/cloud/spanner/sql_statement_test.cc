@@ -20,6 +20,7 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
+using ::testing::AnyOf;
 using ::testing::Eq;
 using ::testing::UnorderedPointwise;
 
@@ -76,13 +77,17 @@ TEST(SqlStatementTest, OStreamOperatorWithParams) {
   SqlStatement::ParamType params = {{"last", Value("Blues")},
                                     {"first", Value("Elwood")}};
   SqlStatement stmt("select * from foo", params);
-  std::string expected(
+  std::string expected1(
       "select * from foo\n"
       "[param]: {value}\t[first]: {code: STRING; string_value: \"Elwood\"}\n"
       "[param]: {value}\t[last]: {code: STRING; string_value: \"Blues\"}");
+   std::string expected2(
+    "select * from foo\n"
+    "[param]: {value}\t[last]: {code: STRING; string_value: \"Blues\"}\n"
+    "[param]: {value}\t[first]: {code: STRING; string_value: \"Elwood\"}");
   std::stringstream ss;
   ss << stmt;
-  EXPECT_EQ(expected, ss.str());
+  EXPECT_THAT(ss.str(), AnyOf(Eq(expected1), Eq(expected2)));
 }
 
 }  // namespace SPANNER_CLIENT_NS
