@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/internal/time.h"
+#include "google/cloud/spanner/internal/time_format.h"
 #include <chrono>
 #include <cstdint>
 #include <cstring>
@@ -88,8 +89,8 @@ using femtoseconds = std::chrono::duration<std::int64_t, std::femto>;
 // See http://howardhinnant.github.io/date_algorithms.html for an explanation
 // of the calendrical arithmetic in ZTime() and TimeZ().  For quick reference,
 // March 1st is used as the first day of the year (so that any leap day occurs
-// at year's end), there are 146097 days in the 400-year Gregorian cycle (an
-// era), and there are 719468 days between 0000-03-01 and 1970-01-01.
+// at year's end), there are 719468 days between 0000-03-01 and 1970-01-01,
+// and there are 146097 days in the 400-year Gregorian cycle (an era).
 std::tm ZTime(std::time_t const t) {
   std::time_t sec = t % (24 * 60 * 60);
   std::time_t day = t / (24 * 60 * 60);
@@ -158,9 +159,9 @@ constexpr auto kTimeFormat = "%Y-%m-%dT%H:%M:%S";
 }  // namespace
 
 std::string TimestampToString(time_point tp) {
-  auto bd = SplitTime(tp);
   std::ostringstream output;
-  output << std::put_time(&bd.first, kTimeFormat);
+  auto bd = SplitTime(tp);
+  output << FormatTime(kTimeFormat, bd.first);
   if (auto ss = bd.second.count()) {  // femtoseconds
     int width = 15;                   // log10(std::femto::den)
     while (ss % 10 == 0) {
@@ -174,15 +175,13 @@ std::string TimestampToString(time_point tp) {
 }
 
 StatusOr<time_point> TimestampFromString(std::string const& s) {
-  std::tm tm{};
-  std::istringstream input(s);
-  input >> std::get_time(&tm, kTimeFormat);
-  if (!input || input.tellg() < 0) {
+  std::tm tm;
+  auto const len = s.size();
+  auto pos = ParseTime(kTimeFormat, s, &tm);
+  if (pos == std::string::npos || pos == len) {
     return Status(StatusCode::kInvalidArgument,
                   s + ": Failed to match RFC3339 date-time");
   }
-  std::string::size_type pos = input.tellg();
-  auto const len = s.size();
 
   femtoseconds ss(0);
   if (s[pos] == '.') {

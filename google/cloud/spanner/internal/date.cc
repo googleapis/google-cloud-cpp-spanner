@@ -13,9 +13,8 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/internal/date.h"
+#include "google/cloud/spanner/internal/time_format.h"
 #include <ctime>
-#include <iomanip>
-#include <sstream>
 
 namespace google {
 namespace cloud {
@@ -35,20 +34,17 @@ std::string DateToString(Date d) {
   tm.tm_year = static_cast<int>(d.year() - 1900);
   tm.tm_mon = d.month() - 1;
   tm.tm_mday = d.day();
-  std::ostringstream output;
-  output << std::put_time(&tm, kDateFormat);
-  return output.str();
+  return FormatTime(kDateFormat, tm);
 }
 
 StatusOr<Date> DateFromString(std::string const& s) {
-  std::tm tm{};
-  std::istringstream input(s);
-  input >> std::get_time(&tm, kDateFormat);
-  if (!input) {
+  std::tm tm;
+  auto pos = ParseTime(kDateFormat, s, &tm);
+  if (pos == std::string::npos) {
     return Status(StatusCode::kInvalidArgument,
                   s + ": Failed to match RFC3339 full-date");
   }
-  if (input.tellg() >= 0) {
+  if (pos != s.size()) {
     return Status(StatusCode::kInvalidArgument,
                   s + ": Extra data after RFC3339 full-date");
   }

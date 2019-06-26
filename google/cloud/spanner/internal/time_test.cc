@@ -21,7 +21,7 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
-inline namespace {
+namespace {
 
 using Duration = google::protobuf::Duration;
 using Timestamp = google::protobuf::Timestamp;

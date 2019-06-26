@@ -12,35 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "google/cloud/spanner/internal/date.h"
-#include <gmock/gmock.h>
+#ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_INTERNAL_TIME_FORMAT_H_
+#define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_INTERNAL_TIME_FORMAT_H_
+
+#include "google/cloud/spanner/version.h"
+#include <ctime>
+#include <string>
 
 namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
-namespace {
 
-TEST(Date, DateToString) {
-  EXPECT_EQ("2019-06-21", DateToString(Date(2019, 6, 21)));
-}
+/**
+ * Format the date/time information from `tm` into a string according to
+ * format string `fmt`.
+ */
+std::string FormatTime(char const* fmt, std::tm const& tm);
 
-TEST(Date, DateFromString) {
-  EXPECT_EQ(Date(2019, 6, 21), DateFromString("2019-06-21").value());
-}
+/**
+ * Parse the date/time string `s` according to format string `fmt`, storing
+ * the result in the std::tm addressed by `tm`.
+ */
+std::string::size_type ParseTime(char const* fmt, std::string const& s,
+                                 std::tm* tm);
 
-TEST(Date, DateFromStringFailure) {
-  EXPECT_FALSE(DateFromString(""));
-  EXPECT_FALSE(DateFromString("garbage in"));
-  EXPECT_FALSE(DateFromString("2018-13-02"));
-  EXPECT_FALSE(DateFromString("2019-06-32"));
-  EXPECT_FALSE(DateFromString("2019-06-21x"));
-}
-
-}  // namespace
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
 }  // namespace cloud
 }  // namespace google
+
+#endif  // GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_INTERNAL_TIME_FORMAT_H_
