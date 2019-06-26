@@ -31,11 +31,11 @@ def google_cloud_cpp_spanner_deps():
     if "com_github_googleapis_google_cloud_cpp" not in native.existing_rules():
         http_archive(
             name = "com_github_googleapis_google_cloud_cpp",
-            strip_prefix = "google-cloud-cpp-0126fe419e92ceef5c35cc0452adfd1224190393",
+            strip_prefix = "google-cloud-cpp-4ef0f689b284f4f721ca72a50e39da4106c95852",
             urls = [
-                "https://github.com/googleapis/google-cloud-cpp/archive/0126fe419e92ceef5c35cc0452adfd1224190393.tar.gz",
+                "https://github.com/googleapis/google-cloud-cpp/archive/4ef0f689b284f4f721ca72a50e39da4106c95852.tar.gz",
             ],
-            sha256 = "8329bdbe0571e92646f80d587d828c857b5276f4583bead50d3e0db112b9dfc1",
+            sha256 = "bf7be246d67406eaafbc9fcb74f113ee5c9bb76b4058b6693367f7a21b7c1323",
         )
 
     # Load a newer version of google test than what gRPC does.
