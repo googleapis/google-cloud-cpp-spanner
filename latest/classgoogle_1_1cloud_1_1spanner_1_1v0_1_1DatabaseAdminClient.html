@@ -89,6 +89,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a91faa307a79abe7867622e310d249ad9"><td class="memItemLeft" align="right" valign="top">Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#a91faa307a79abe7867622e310d249ad9">DropDatabase</a> (std::string const &amp;project_id, std::string const &amp;instance_id, std::string const &amp;database_id)</td></tr>
 <tr class="memdesc:a91faa307a79abe7867622e310d249ad9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Drops (deletes) an existing Cloud Spanner database.  <a href="#a91faa307a79abe7867622e310d249ad9">More...</a><br /></td></tr>
 <tr class="separator:a91faa307a79abe7867622e310d249ad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c97182b1d2d562a7f09c42599e31275"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#a6c97182b1d2d562a7f09c42599e31275">DatabaseAdminClient</a> (std::shared_ptr&lt; internal::DatabaseAdminStub &gt; s)</td></tr>
+<tr class="memdesc:a6c97182b1d2d562a7f09c42599e31275"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new client with the given stub. For testing only.  <a href="#a6c97182b1d2d562a7f09c42599e31275">More...</a><br /></td></tr>
+<tr class="separator:a6c97182b1d2d562a7f09c42599e31275"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Performs database administration operations on Spanner. </p>
@@ -105,7 +108,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="database__admin__client_8h_source.html#l00106">106</a> of file <a class="el" href="database__admin__client_8h_source.html">database_admin_client.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abdd9620e892e6be196c2abc1840eb40f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abdd9620e892e6be196c2abc1840eb40f">&#9670;&nbsp;</a></span>DatabaseAdminClient()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abdd9620e892e6be196c2abc1840eb40f">&#9670;&nbsp;</a></span>DatabaseAdminClient() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -129,6 +132,36 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="database__admin__client_8cc_source.html#l00041">41</a> of file <a class="el" href="database__admin__client_8cc_source.html">database_admin_client.cc</a>.</p>
+
+</div>
+</div>
+<a id="a6c97182b1d2d562a7f09c42599e31275"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c97182b1d2d562a7f09c42599e31275">&#9670;&nbsp;</a></span>DatabaseAdminClient() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">google::cloud::spanner::v0::DatabaseAdminClient::DatabaseAdminClient </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; internal::DatabaseAdminStub &gt;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create a new client with the given stub. For testing only. </p>
+
+<p class="definition">Definition at line <a class="el" href="database__admin__client_8h_source.html#l00151">151</a> of file <a class="el" href="database__admin__client_8h_source.html">database_admin_client.h</a>.</p>
 
 </div>
 </div>
