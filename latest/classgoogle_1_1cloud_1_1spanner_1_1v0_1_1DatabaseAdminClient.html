@@ -74,6 +74,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Performs database administration operations on Spanner.  
+ <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="database__admin__client_8h_source.html">google/cloud/spanner/database_admin_client.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -81,13 +84,25 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abdd9620e892e6be196c2abc1840eb40f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#abdd9620e892e6be196c2abc1840eb40f">DatabaseAdminClient</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html">ClientOptions</a> const &amp;client_options=<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html">ClientOptions</a>())</td></tr>
 <tr class="separator:abdd9620e892e6be196c2abc1840eb40f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1f7de8302b4e31067b75ba97872f0ad"><td class="memItemLeft" align="right" valign="top">future&lt; StatusOr&lt; google::spanner::admin::database::v1::Database &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#ab1f7de8302b4e31067b75ba97872f0ad">CreateDatabase</a> (std::string const &amp;project_id, std::string const &amp;instance_id, std::string const &amp;database_id, std::vector&lt; std::string &gt; const &amp;extra_statements={})</td></tr>
+<tr class="memdesc:ab1f7de8302b4e31067b75ba97872f0ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new Cloud Spanner database in the given project and instance.  <a href="#ab1f7de8302b4e31067b75ba97872f0ad">More...</a><br /></td></tr>
 <tr class="separator:ab1f7de8302b4e31067b75ba97872f0ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91faa307a79abe7867622e310d249ad9"><td class="memItemLeft" align="right" valign="top">Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#a91faa307a79abe7867622e310d249ad9">DropDatabase</a> (std::string const &amp;project_id, std::string const &amp;instance_id, std::string const &amp;database_id)</td></tr>
+<tr class="memdesc:a91faa307a79abe7867622e310d249ad9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Drops (deletes) an existing Cloud Spanner database.  <a href="#a91faa307a79abe7867622e310d249ad9">More...</a><br /></td></tr>
 <tr class="separator:a91faa307a79abe7867622e310d249ad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="database__admin__client_8h_source.html#l00028">28</a> of file <a class="el" href="database__admin__client_8h_source.html">database_admin_client.h</a>.</p>
+<div class="textblock"><p>Performs database administration operations on Spanner. </p>
+<p>Applications use this class to perform administrative operations on spanner <a href="https://cloud.google.com/spanner/docs/schema-and-data-model">Databases</a>.</p>
+<dl class="section user"><dt>Performance</dt><dd></dd></dl>
+<p>Creating a new <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html" title="Performs database administration operations on Spanner.">DatabaseAdminClient</a></code> is a relatively expensive operation, new objects establish new connections to the service. In contrast, copying or moving an existing <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html" title="Performs database administration operations on Spanner.">DatabaseAdminClient</a></code> object is a relatively cheap operation. Copied clients share the underlying resources.</p>
+<dl class="section user"><dt>Thread Safety</dt><dd></dd></dl>
+<p>Instances of this class created via copy-construction or copy-assignment share the underlying pool of connections. Access to these copies via multiple threads is guaranteed to work. Two threads operating on the same instance of this class is not guaranteed to work.</p>
+<dl class="section user"><dt>Error Handling</dt><dd></dd></dl>
+<p>This class uses <code>StatusOr&lt;T&gt;</code> to report errors. When an operation fails to perform its work the returned <code>StatusOr&lt;T&gt;</code> contains the error details. If the <code>ok()</code> member function in the <code>StatusOr&lt;T&gt;</code> returns <code>true</code> then it contains the expected result. Please consult the <a href="#google::cloud::v0::StatusOr"><code>StatusOr&lt;T&gt;</code> documentation</a> for more details.</p>
+<div class="fragment"><div class="line"><span class="keyword">namespace </span>cs = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">google::cloud::spanner</a>;</div><div class="line"><span class="keyword">using</span> google::cloud::StatusOr;</div><div class="line">cs::DatabaseAdminClient client = ...;</div><div class="line">StatusOr&lt;google::spanner::admin::database::v1::Database&gt; db =</div><div class="line">    client.CreateDatabase(...).get();</div><div class="line"></div><div class="line"><span class="keywordflow">if</span> (!db) {</div><div class="line">  std::cerr &lt;&lt; <span class="stringliteral">&quot;Error in CreateDatabase: &quot;</span> &lt;&lt; db.status() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div><div class="line">  <span class="keywordflow">return</span>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// Use `db` as a smart pointer here, e.g.:</span></div><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;The database fully qualified name is: &quot;</span> &lt;&lt; db-&gt;name() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div></div><!-- fragment --><dl class="section user"><dt>Long running operations</dt><dd></dd></dl>
+<p>Some operations in this class can take minutes to complete. In this case the class returns a <code>google::cloud::future&lt;StatusOr&lt;T&gt;&gt;</code>, the application can then poll the <code>future</code> or associate a callback to be invoked when the operation completes:</p>
+<div class="fragment"><div class="line"><span class="keyword">namespace </span>cs = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">google::cloud::spanner</a>;</div><div class="line">cs::DatabaseAdminClient client = ...;</div><div class="line"><span class="comment">// Make example less verbose.</span></div><div class="line"><span class="keyword">using</span> google::cloud::future;</div><div class="line"><span class="keyword">using</span> google::cloud::StatusOr;</div><div class="line"><span class="keyword">using</span> std::chrono::chrono_literals; <span class="comment">// C++14</span></div><div class="line"></div><div class="line"><span class="keyword">auto</span> database = client.CreateDatabase(...);</div><div class="line"><span class="keywordflow">if</span> (database.wait_for(5m) == std::future_state::ready) {</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Database created in under 5 minutes, yay!\n&quot;</span>;</div><div class="line">  <span class="keywordflow">return</span>;</div><div class="line">}</div><div class="line"><span class="comment">// Too slow, setup a callback instead:</span></div><div class="line">database.then([](<span class="keyword">auto</span> f) {</div><div class="line">  StatusOr&lt;google::spanner::admin::database::v1::Database&gt; db = f.get();</div><div class="line">  <span class="keywordflow">if</span> (!db) {</div><div class="line">      std::cout &lt;&lt; <span class="stringliteral">&quot;Database created!\n&quot;</span>;</div><div class="line">      <span class="keywordflow">return</span>;</div><div class="line">  }</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Database created!\n&quot;</span>;</div><div class="line">});</div></div><!-- fragment --> 
+<p class="definition">Definition at line <a class="el" href="database__admin__client_8h_source.html#l00106">106</a> of file <a class="el" href="database__admin__client_8h_source.html">database_admin_client.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abdd9620e892e6be196c2abc1840eb40f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abdd9620e892e6be196c2abc1840eb40f">&#9670;&nbsp;</a></span>DatabaseAdminClient()</h2>
@@ -156,6 +171,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Creates a new Cloud Spanner database in the given project and instance. </p>
+<p>This function creates a database (using the "CREATE DATABASE" DDL statement) in the given Google Cloud Project and Cloud Spanner instance. The application can provide an optional list of additional DDL statements to atomically create tables and indices as well as the new database.</p>
+<p>Note that the database id must be between 2 and 30 characters long, it must start with a lowercase letter (<code>[a-z]</code>), it must end with a lowercase letter or a number (<code>[a-z0-9]</code>) and any characters between the beginning and ending characters must be lower case letters, numbers, underscore ('_<code>) or dashes (</code>-<code>), that is, they must belong to the</code>[a-z0-9_-]`.</p>
+<dl class="section return"><dt>Returns</dt><dd>A <code>google::cloud::future</code> that becomes satisfied when the operation completes on the service. Note that this can take minutes in some cases.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://cloud.google.com/spanner/docs/data-definition-language">https://cloud.google.com/spanner/docs/data-definition-language</a> for a full list of the DDL operations</dd>
+<dd>
+<a href="https://cloud.google.com/spanner/docs/data-definition-language#create_database">https://cloud.google.com/spanner/docs/data-definition-language#create_database</a> for the regular expression that must be satisfied by the database id. </dd></dl>
+
 <p class="definition">Definition at line <a class="el" href="database__admin__client_8cc_source.html#l00044">44</a> of file <a class="el" href="database__admin__client_8cc_source.html">database_admin_client.cc</a>.</p>
 
 </div>
@@ -191,6 +214,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Drops (deletes) an existing Cloud Spanner database. </p>
+<dl class="section warning"><dt>Warning</dt><dd>Dropping a database deletes all the tables and other data in the database. This is an unrecoverable operation. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="database__admin__client_8cc_source.html#l00136">136</a> of file <a class="el" href="database__admin__client_8cc_source.html">database_admin_client.cc</a>.</p>
 
