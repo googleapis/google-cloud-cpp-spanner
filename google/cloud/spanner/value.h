@@ -449,62 +449,89 @@ class Value {
 
   // Tag-dispatch overloads to extract a C++ value from a `Value` protobuf. The
   // first argument type is the tag, the first argument value is ignored.
-  static bool GetValue(bool, google::protobuf::Value const&,
-                       google::spanner::v1::Type const&);
-  static std::int64_t GetValue(std::int64_t, google::protobuf::Value const&,
-                               google::spanner::v1::Type const&);
-  static double GetValue(double, google::protobuf::Value const&,
-                         google::spanner::v1::Type const&);
-  static std::string GetValue(std::string const&,
-                              google::protobuf::Value const&,
-                              google::spanner::v1::Type const&);
-  static time_point GetValue(time_point, google::protobuf::Value const&,
-                             google::spanner::v1::Type const&);
-  static Date GetValue(Date, google::protobuf::Value const&,
-                       google::spanner::v1::Type const&);
+  static StatusOr<bool> GetValue(bool, google::protobuf::Value const&,
+                                 google::spanner::v1::Type const&);
+  static StatusOr<std::int64_t> GetValue(std::int64_t,
+                                         google::protobuf::Value const&,
+                                         google::spanner::v1::Type const&);
+  static StatusOr<double> GetValue(double, google::protobuf::Value const&,
+                                   google::spanner::v1::Type const&);
+  static StatusOr<std::string> GetValue(std::string const&,
+                                        google::protobuf::Value const&,
+                                        google::spanner::v1::Type const&);
+  static StatusOr<time_point> GetValue(time_point,
+                                       google::protobuf::Value const&,
+                                       google::spanner::v1::Type const&);
+  static StatusOr<Date> GetValue(Date, google::protobuf::Value const&,
+                                 google::spanner::v1::Type const&);
   template <typename T>
-  static optional<T> GetValue(optional<T> const&,
-                              google::protobuf::Value const& pv,
-                              google::spanner::v1::Type const& pt) {
-    if (pv.kind_case() == google::protobuf::Value::kNullValue) return {};
-    return GetValue(T{}, pv, pt);
+  static StatusOr<optional<T>> GetValue(optional<T> const&,
+                                        google::protobuf::Value const& pv,
+                                        google::spanner::v1::Type const& pt) {
+    if (pv.kind_case() == google::protobuf::Value::kNullValue) {
+      return optional<T>{};
+    }
+    auto value = GetValue(T{}, pv, pt);
+    if (!value) return std::move(value).status();
+    return {*std::move(value)};
   }
   template <typename T>
-  static std::vector<T> GetValue(std::vector<T> const&,
-                                 google::protobuf::Value const& pv,
-                                 google::spanner::v1::Type const& pt) {
+  static StatusOr<std::vector<T>> GetValue(
+      std::vector<T> const&, google::protobuf::Value const& pv,
+      google::spanner::v1::Type const& pt) {
+    if (pv.kind_case() == google::protobuf::Value::kNullValue) {
+      return Status(StatusCode::kInvalidArgument, "value null");
+    }
     std::vector<T> v;
     for (auto const& e : pv.list_value().values()) {
-      v.push_back(GetValue(T{}, e, pt.array_element_type()));
+      auto value = GetValue(T{}, e, pt.array_element_type());
+      if (!value) return std::move(value).status();
+      v.push_back(*std::move(value));
     }
     return v;
   }
   template <typename... Ts>
-  static std::tuple<Ts...> GetValue(std::tuple<Ts...> const&,
-                                    google::protobuf::Value const& pv,
-                                    google::spanner::v1::Type const& pt) {
+  static StatusOr<std::tuple<Ts...>> GetValue(
+      std::tuple<Ts...> const&, google::protobuf::Value const& pv,
+      google::spanner::v1::Type const& pt) {
+    if (pv.kind_case() == google::protobuf::Value::kNullValue) {
+      return Status(StatusCode::kInvalidArgument, "value null");
+    }
     std::tuple<Ts...> tup;
-    ExtractTupleValues f{0, pv.list_value(), pt};
+    Status status;
+    ExtractTupleValues f{status, 0, pv.list_value(), pt};
     internal::ForEach(tup, f);
+    if (!status.ok()) return status;
     return tup;
   }
 
   // A functor to be used with internal::ForEach (see below) to extract C++
   // types from a ListValue proto and store then in a tuple.
   struct ExtractTupleValues {
+    Status& status;
     std::size_t i;
     google::protobuf::ListValue const& list_value;
     google::spanner::v1::Type const& type;
     template <typename T>
     void operator()(T& t) {
-      t = GetValue(T{}, list_value.values(i), type);
+      auto value = GetValue(T{}, list_value.values(i), type);
       ++i;
+      if (!value) {
+        status = std::move(value).status();
+      } else {
+        t = *std::move(value);
+      }
     }
     template <typename T>
     void operator()(std::pair<std::string, T>& p) {
       p.first = type.struct_type().fields(i).name();
-      p.second = GetValue(T{}, list_value.values(i), type);
+      auto value = GetValue(T{}, list_value.values(i), type);
       ++i;
+      if (!value) {
+        status = std::move(value).status();
+      } else {
+        p.second = *std::move(value);
+      }
     }
   };
 

@@ -218,56 +218,77 @@ google::protobuf::Value Value::MakeValueProto(char const* s) {
 // Value::GetValue
 //
 
-bool Value::GetValue(bool, google::protobuf::Value const& pv,
-                     google::spanner::v1::Type const&) {
+StatusOr<bool> Value::GetValue(bool, google::protobuf::Value const& pv,
+                               google::spanner::v1::Type const&) {
+  if (pv.kind_case() == google::protobuf::Value::kNullValue) {
+    return Status(StatusCode::kInvalidArgument, "value null");
+  }
   return pv.bool_value();
 }
 
-std::int64_t Value::GetValue(std::int64_t, google::protobuf::Value const& pv,
-                             google::spanner::v1::Type const&) {
+StatusOr<std::int64_t> Value::GetValue(std::int64_t,
+                                       google::protobuf::Value const& pv,
+                                       google::spanner::v1::Type const&) {
+  if (pv.kind_case() == google::protobuf::Value::kNullValue) {
+    return Status(StatusCode::kInvalidArgument, "value null");
+  }
   auto const& s = pv.string_value();
   char* end = nullptr;
   errno = 0;
   long long x = std::strtoll(s.c_str(), &end, 10);
   if (errno != 0) {
-    GCP_LOG(FATAL) << std::strerror(errno) << ": \"" << s << "\"";
+    auto const err = std::string(std::strerror(errno));
+    return Status(StatusCode::kUnknown, err + ": \"" + s + "\"");
   }
   if (end == s.c_str()) {
-    GCP_LOG(FATAL) << "No numeric conversion: \"" << s << "\"";
+    return Status(StatusCode::kUnknown, "No numeric conversion: \"" + s + "\"");
   }
   if (*end != '\0') {
-    GCP_LOG(FATAL) << "Trailing non-numeric data: \"" << s << "\"";
+    return Status(StatusCode::kUnknown, "Trailing data: \"" + s + "\"");
   }
   return x;
 }
 
-double Value::GetValue(double, google::protobuf::Value const& pv,
-                       google::spanner::v1::Type const&) {
+StatusOr<double> Value::GetValue(double, google::protobuf::Value const& pv,
+                                 google::spanner::v1::Type const&) {
+  if (pv.kind_case() == google::protobuf::Value::kNullValue) {
+    return Status(StatusCode::kInvalidArgument, "value null");
+  }
   if (pv.kind_case() == google::protobuf::Value::kStringValue) {
     std::string const& s = pv.string_value();
     auto const inf = std::numeric_limits<double>::infinity();
     if (s == "-Infinity") return -inf;
     if (s == "Infinity") return inf;
-    return std::nan(s.c_str());
+    if (s == "NaN") return std::nan("");
+    return Status(StatusCode::kUnknown, "Bad FLOAT64 data: \"" + s + "\"");
   }
   return pv.number_value();
 }
 
-std::string Value::GetValue(std::string const&,
-                            google::protobuf::Value const& pv,
-                            google::spanner::v1::Type const&) {
+StatusOr<std::string> Value::GetValue(std::string const&,
+                                      google::protobuf::Value const& pv,
+                                      google::spanner::v1::Type const&) {
+  if (pv.kind_case() == google::protobuf::Value::kNullValue) {
+    return Status(StatusCode::kInvalidArgument, "value null");
+  }
   return pv.string_value();
 }
 
-std::chrono::system_clock::time_point Value::GetValue(
+StatusOr<std::chrono::system_clock::time_point> Value::GetValue(
     time_point, google::protobuf::Value const& pv,
     google::spanner::v1::Type const&) {
-  return internal::TimestampFromString(pv.string_value()).value();
+  if (pv.kind_case() == google::protobuf::Value::kNullValue) {
+    return Status(StatusCode::kInvalidArgument, "value null");
+  }
+  return internal::TimestampFromString(pv.string_value());
 }
 
-Date Value::GetValue(Date, google::protobuf::Value const& pv,
-                     google::spanner::v1::Type const&) {
-  return internal::DateFromString(pv.string_value()).value();
+StatusOr<Date> Value::GetValue(Date, google::protobuf::Value const& pv,
+                               google::spanner::v1::Type const&) {
+  if (pv.kind_case() == google::protobuf::Value::kNullValue) {
+    return Status(StatusCode::kInvalidArgument, "value null");
+  }
+  return internal::DateFromString(pv.string_value());
 }
 
 bool Value::EqualTypeProtoIgnoringNames(google::spanner::v1::Type const& a,
