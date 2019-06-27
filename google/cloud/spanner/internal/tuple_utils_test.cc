@@ -22,20 +22,59 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
+TEST(TupleUtils, NumElements) {
+  EXPECT_EQ(internal::NumElements<std::vector<int>>::value, 2);
+  EXPECT_EQ(internal::NumElements<std::tuple<>>::value, 0);
+  EXPECT_EQ(internal::NumElements<std::tuple<int>>::value, 1);
+  EXPECT_EQ((internal::NumElements<std::tuple<int, int>>::value), 2);
+}
+
+// Helper functor used to test the `ForEach` function. Uses a templated
+// `operator()`.
 struct Stringify {
   template <typename T>
-  void operator()(T& t, std::vector<std::string>& out) const {
+  void operator()(T const& t, std::vector<std::string>& out) const {
     out.push_back(std::to_string(t));
   }
 };
 
-TEST(TupleUtils, ForEach) {
+TEST(TupleUtils, ForEachMultipleTypes) {
   auto tup = std::make_tuple(true, 42);
   std::vector<std::string> v;
   internal::ForEach(tup, Stringify{}, v);
   EXPECT_THAT(v, testing::ElementsAre("1", "42"));
 }
 
+TEST(TupleUtils, ForEachMutate) {
+  auto add_one = [](int& x) { x += 1; };
+  auto tup = std::make_tuple(1, 2, 3);
+  internal::ForEach(tup, add_one);
+  EXPECT_EQ(tup, std::make_tuple(2, 3, 4));
+}
+
+namespace ns {
+// A type that looks like a tuple (i.e., a heterogeneous container), but is not
+// a tuple. This will verify that `ForEach` works with tuple-like types. In a
+// separate namespace to make sure that `ForEach` works with types in another
+// namespace.
+template <typename... Ts>
+struct NotATuple {
+  std::tuple<Ts...> data;
+};
+// Overload of a `get<I>(T)` function, which can be found via ADL.
+template <std::size_t I, typename... Ts>
+typename std::tuple_element<I, std::tuple<Ts...>>::type& get(
+    NotATuple<Ts...>& nat) {
+  return std::get<I>(nat.data);
+}
+}  // namespace ns
+
+TEST(TupleUtils, ForEachStruct) {
+  auto not_a_tuple = ns::NotATuple<bool, int>{{true, 42}};
+  std::vector<std::string> v;
+  internal::ForEach(not_a_tuple, Stringify{}, v);
+  EXPECT_THAT(v, testing::ElementsAre("1", "42"));
+}
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
