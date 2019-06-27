@@ -14,8 +14,8 @@
 
 #include "google/cloud/spanner/row.h"
 #include <gmock/gmock.h>
-#include <cstdint>
 #include <array>
+#include <cstdint>
 #include <string>
 #include <tuple>
 #include <type_traits>

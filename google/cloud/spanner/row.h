@@ -15,13 +15,13 @@
 #ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_ROW_H_
 #define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_ROW_H_
 
+#include "google/cloud/spanner/internal/tuple_utils.h"
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/spanner/version.h"
-#include "google/cloud/spanner/internal/tuple_utils.h"
 #include "google/cloud/internal/disjunction.h"
 #include "google/cloud/status_or.h"
-#include <cstdint>
 #include <array>
+#include <cstdint>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -199,7 +199,7 @@ class Row {
   std::tuple<Types...> values_;
 };
 
-// Overload of a `get<I>(T)` function, which can be found via ADL. Allowing 
+// Overload of a `get<I>(T)` function, which can be found via ADL. Allowing
 template <std::size_t I, typename... Ts>
 auto get(Row<Ts...>& row) -> decltype(row.template get<I>()) {
   return row.template get<I>();
