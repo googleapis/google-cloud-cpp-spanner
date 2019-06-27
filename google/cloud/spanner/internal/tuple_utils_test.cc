@@ -63,7 +63,7 @@ struct NotATuple {
 };
 // Overload of a `get<I>(T)` function, which can be found via ADL.
 template <std::size_t I, typename... Ts>
-typename std::tuple_element<I, std::tuple<Ts...>>::type& get(
+typename std::tuple_element<I, std::tuple<Ts...>>::type& get(  // NOLINT
     NotATuple<Ts...>& nat) {
   return std::get<I>(nat.data);
 }
