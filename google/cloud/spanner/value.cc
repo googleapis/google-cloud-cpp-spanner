@@ -220,8 +220,8 @@ google::protobuf::Value Value::MakeValueProto(char const* s) {
 
 StatusOr<bool> Value::GetValue(bool, google::protobuf::Value const& pv,
                                google::spanner::v1::Type const&) {
-  if (pv.kind_case() == google::protobuf::Value::kNullValue) {
-    return Status(StatusCode::kInvalidArgument, "value null");
+  if (pv.kind_case() != google::protobuf::Value::kBoolValue) {
+    return Status(StatusCode::kUnknown, "missing BOOL");
   }
   return pv.bool_value();
 }
@@ -229,8 +229,8 @@ StatusOr<bool> Value::GetValue(bool, google::protobuf::Value const& pv,
 StatusOr<std::int64_t> Value::GetValue(std::int64_t,
                                        google::protobuf::Value const& pv,
                                        google::spanner::v1::Type const&) {
-  if (pv.kind_case() == google::protobuf::Value::kNullValue) {
-    return Status(StatusCode::kInvalidArgument, "value null");
+  if (pv.kind_case() != google::protobuf::Value::kStringValue) {
+    return Status(StatusCode::kUnknown, "missing INT64");
   }
   auto const& s = pv.string_value();
   char* end = nullptr;
@@ -251,25 +251,25 @@ StatusOr<std::int64_t> Value::GetValue(std::int64_t,
 
 StatusOr<double> Value::GetValue(double, google::protobuf::Value const& pv,
                                  google::spanner::v1::Type const&) {
-  if (pv.kind_case() == google::protobuf::Value::kNullValue) {
-    return Status(StatusCode::kInvalidArgument, "value null");
+  if (pv.kind_case() == google::protobuf::Value::kNumberValue) {
+    return pv.number_value();
   }
-  if (pv.kind_case() == google::protobuf::Value::kStringValue) {
-    std::string const& s = pv.string_value();
-    auto const inf = std::numeric_limits<double>::infinity();
-    if (s == "-Infinity") return -inf;
-    if (s == "Infinity") return inf;
-    if (s == "NaN") return std::nan("");
-    return Status(StatusCode::kUnknown, "Bad FLOAT64 data: \"" + s + "\"");
+  if (pv.kind_case() != google::protobuf::Value::kStringValue) {
+    return Status(StatusCode::kUnknown, "missing FLOAT64");
   }
-  return pv.number_value();
+  std::string const& s = pv.string_value();
+  auto const inf = std::numeric_limits<double>::infinity();
+  if (s == "-Infinity") return -inf;
+  if (s == "Infinity") return inf;
+  if (s == "NaN") return std::nan("");
+  return Status(StatusCode::kUnknown, "bad FLOAT64 data: \"" + s + "\"");
 }
 
 StatusOr<std::string> Value::GetValue(std::string const&,
                                       google::protobuf::Value const& pv,
                                       google::spanner::v1::Type const&) {
-  if (pv.kind_case() == google::protobuf::Value::kNullValue) {
-    return Status(StatusCode::kInvalidArgument, "value null");
+  if (pv.kind_case() != google::protobuf::Value::kStringValue) {
+    return Status(StatusCode::kUnknown, "missing STRING");
   }
   return pv.string_value();
 }
@@ -277,16 +277,16 @@ StatusOr<std::string> Value::GetValue(std::string const&,
 StatusOr<std::chrono::system_clock::time_point> Value::GetValue(
     time_point, google::protobuf::Value const& pv,
     google::spanner::v1::Type const&) {
-  if (pv.kind_case() == google::protobuf::Value::kNullValue) {
-    return Status(StatusCode::kInvalidArgument, "value null");
+  if (pv.kind_case() != google::protobuf::Value::kStringValue) {
+    return Status(StatusCode::kUnknown, "missing TIMESTAMP");
   }
   return internal::TimestampFromString(pv.string_value());
 }
 
 StatusOr<Date> Value::GetValue(Date, google::protobuf::Value const& pv,
                                google::spanner::v1::Type const&) {
-  if (pv.kind_case() == google::protobuf::Value::kNullValue) {
-    return Status(StatusCode::kInvalidArgument, "value null");
+  if (pv.kind_case() != google::protobuf::Value::kStringValue) {
+    return Status(StatusCode::kUnknown, "missing DATE");
   }
   return internal::DateFromString(pv.string_value());
 }

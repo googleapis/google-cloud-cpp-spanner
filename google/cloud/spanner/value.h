@@ -419,8 +419,9 @@ class Value {
   template <typename T>
   static google::protobuf::Value MakeValueProto(std::vector<T> vec) {
     google::protobuf::Value v;
+    auto& list = *v.mutable_list_value();
     for (auto&& e : vec) {
-      *v.mutable_list_value()->add_values() = MakeValueProto(std::move(e));
+      *list.add_values() = MakeValueProto(std::move(e));
     }
     return v;
   }
@@ -473,14 +474,14 @@ class Value {
     }
     auto value = GetValue(T{}, pv, pt);
     if (!value) return std::move(value).status();
-    return {*std::move(value)};
+    return optional<T>{*std::move(value)};
   }
   template <typename T>
   static StatusOr<std::vector<T>> GetValue(
       std::vector<T> const&, google::protobuf::Value const& pv,
       google::spanner::v1::Type const& pt) {
-    if (pv.kind_case() == google::protobuf::Value::kNullValue) {
-      return Status(StatusCode::kInvalidArgument, "value null");
+    if (pv.kind_case() != google::protobuf::Value::kListValue) {
+      return Status(StatusCode::kUnknown, "missing ARRAY");
     }
     std::vector<T> v;
     for (auto const& e : pv.list_value().values()) {
@@ -494,8 +495,8 @@ class Value {
   static StatusOr<std::tuple<Ts...>> GetValue(
       std::tuple<Ts...> const&, google::protobuf::Value const& pv,
       google::spanner::v1::Type const& pt) {
-    if (pv.kind_case() == google::protobuf::Value::kNullValue) {
-      return Status(StatusCode::kInvalidArgument, "value null");
+    if (pv.kind_case() != google::protobuf::Value::kListValue) {
+      return Status(StatusCode::kInvalidArgument, "missing STRUCT");
     }
     std::tuple<Ts...> tup;
     Status status;
