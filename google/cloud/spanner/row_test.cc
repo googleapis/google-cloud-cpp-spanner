@@ -174,7 +174,32 @@ TEST(Row, MakeRowCVQualifications) {
                 "row holds a non-const string value");
 }
 
-TEST(Row, ParseRow) {
+TEST(Row, ParseRowEmpty) {
+  std::array<Value, 0> const array;
+  auto const row = ParseRow(array);
+  EXPECT_TRUE(row.ok());
+  EXPECT_EQ(MakeRow(), *row);
+}
+
+TEST(Row, ParseRowOneValue) {
+  std::array<Value, 1> const array = {Value(42)};
+  auto const row = ParseRow<std::int64_t>(array);
+  EXPECT_TRUE(row.ok());
+  EXPECT_EQ(MakeRow(42), *row);
+
+  // Tests parsing the Value with the wrong type.
+  auto const error_row = ParseRow<double>(array);
+  EXPECT_FALSE(row.ok());
+}
+
+TEST(Row, ParseRowThree) {
+  std::array<Value, 3> three = {Value(true), Value(42), Value("hello")};
+  auto row = ParseRow<bool, std::int64_t, std::string>(three);
+  EXPECT_TRUE(row.ok());
+  EXPECT_EQ(MakeRow(true, 42, "hello"), *row);
+}
+
+TEST(Row, ParseRowError) {
   std::array<Value, 3> array = {Value(true), Value(42), Value("hello")};
   auto row = ParseRow<bool, std::int64_t, std::string>(array);
   EXPECT_TRUE(row.ok());

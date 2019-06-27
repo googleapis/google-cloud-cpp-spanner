@@ -199,9 +199,10 @@ class Row {
   std::tuple<Types...> values_;
 };
 
-// Overload of a `get<I>(T)` function, which can be found via ADL. Allowing
+// Returns the row-element at column `I`. This function will be found via ADL
+// to make `Row<Ts...>` work with `internal::ForEach`.
 template <std::size_t I, typename... Ts>
-auto get(Row<Ts...>& row) -> decltype(row.template get<I>()) {
+auto GetElement(Row<Ts...>& row) -> decltype(row.template get<I>()) {
   return row.template get<I>();
 }
 
@@ -219,11 +220,15 @@ using PromoteLiteral = decltype(PromoteLiteralImpl(std::declval<T>()));
 
 //
 struct ExtractValue {
+  Status& status;
   template <typename T, typename It>
   void operator()(T& t, It& it) const {
-    auto x = it->template get<T>();
-    t = *x;
-    ++it;
+    auto x = it++->template get<T>();
+    if (x) {
+      t = *std::move(x);
+      return;
+    }
+    status = std::move(x).status();
   }
 };
 }  // namespace internal
@@ -253,8 +258,10 @@ StatusOr<Row<internal::PromoteLiteral<Ts>...>> ParseRow(
     std::array<Value, sizeof...(Ts)> const& array) {
   Row<internal::PromoteLiteral<Ts>...> row;
   auto it = array.begin();
-  internal::ForEach(row, internal::ExtractValue{}, it);
-  return row;
+  Status status;
+  internal::ForEach(row, internal::ExtractValue{status}, it);
+  if (status.ok()) return row;
+  return status;
 }
 
 }  // namespace SPANNER_CLIENT_NS
