@@ -34,9 +34,9 @@ add_library(spanner_client
             internal/database_admin_stub.h
             internal/spanner_stub.cc
             internal/spanner_stub.h
-            internal/tuple_utils.h
             internal/time_format.cc
             internal/time_format.h
+            internal/tuple_utils.h
             row.h
             sql_statement.cc
             sql_statement.h
