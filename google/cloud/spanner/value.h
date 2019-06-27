@@ -287,10 +287,10 @@ class Value {
    */
   template <typename T>
   StatusOr<T> get() const {
-    if (!is<T>()) return Status(StatusCode::kInvalidArgument, "wrong type");
+    if (!is<T>()) return Status(StatusCode::kUnknown, "wrong type");
     if (value_.kind_case() == google::protobuf::Value::kNullValue) {
       if (is_optional<T>::value) return T{};
-      return Status(StatusCode::kInvalidArgument, "null value");
+      return Status(StatusCode::kUnknown, "null value");
     }
     return GetValue(T{}, value_, type_);
   }
@@ -496,7 +496,7 @@ class Value {
       std::tuple<Ts...> const&, google::protobuf::Value const& pv,
       google::spanner::v1::Type const& pt) {
     if (pv.kind_case() != google::protobuf::Value::kListValue) {
-      return Status(StatusCode::kInvalidArgument, "missing STRUCT");
+      return Status(StatusCode::kUnknown, "missing STRUCT");
     }
     std::tuple<Ts...> tup;
     Status status;  // OK
