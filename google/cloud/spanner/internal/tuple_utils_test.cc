@@ -70,7 +70,7 @@ typename std::tuple_element<I, std::tuple<Ts...>>::type& get(
 }  // namespace ns
 
 TEST(TupleUtils, ForEachStruct) {
-  auto not_a_tuple = ns::NotATuple<bool, int>{{true, 42}};
+  auto not_a_tuple = ns::NotATuple<bool, int>{std::make_tuple(true, 42)};
   std::vector<std::string> v;
   internal::ForEach(not_a_tuple, Stringify{}, v);
   EXPECT_THAT(v, testing::ElementsAre("1", "42"));
