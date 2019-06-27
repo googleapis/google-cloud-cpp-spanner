@@ -557,8 +557,18 @@ void SetProtoKind(Value& v, bool x) {
   v = internal::FromProto(p.first, p.second);
 }
 
+void ClearProtoKind(Value& v) {
+  auto p = internal::ToProto(v);
+  p.second.clear_kind();
+  v = internal::FromProto(p.first, p.second);
+}
+
 TEST(Value, GetBadBool) {
   Value v(true);
+  ClearProtoKind(v);
+  EXPECT_TRUE(v.is<bool>());
+  EXPECT_FALSE(v.get<bool>().ok());
+
   SetProtoKind(v, google::protobuf::NULL_VALUE);
   EXPECT_TRUE(v.is<bool>());
   EXPECT_FALSE(v.get<bool>().ok());
@@ -574,6 +584,10 @@ TEST(Value, GetBadBool) {
 
 TEST(Value, GetBadDouble) {
   Value v(0.0);
+  ClearProtoKind(v);
+  EXPECT_TRUE(v.is<double>());
+  EXPECT_FALSE(v.get<double>().ok());
+
   SetProtoKind(v, google::protobuf::NULL_VALUE);
   EXPECT_TRUE(v.is<double>());
   EXPECT_FALSE(v.get<double>().ok());
@@ -589,6 +603,10 @@ TEST(Value, GetBadDouble) {
 
 TEST(Value, GetBadString) {
   Value v("hello");
+  ClearProtoKind(v);
+  EXPECT_TRUE(v.is<std::string>());
+  EXPECT_FALSE(v.get<std::string>().ok());
+
   SetProtoKind(v, google::protobuf::NULL_VALUE);
   EXPECT_TRUE(v.is<std::string>());
   EXPECT_FALSE(v.get<std::string>().ok());
@@ -604,6 +622,10 @@ TEST(Value, GetBadString) {
 
 TEST(Value, GetBadInt) {
   Value v(42);
+  ClearProtoKind(v);
+  EXPECT_TRUE(v.is<std::int64_t>());
+  EXPECT_FALSE(v.get<std::int64_t>().ok());
+
   SetProtoKind(v, google::protobuf::NULL_VALUE);
   EXPECT_TRUE(v.is<std::int64_t>());
   EXPECT_FALSE(v.get<std::int64_t>().ok());
@@ -632,6 +654,10 @@ TEST(Value, GetBadInt) {
 TEST(Value, GetBadTimestamp) {
   using time_point = std::chrono::system_clock::time_point;
   Value v(time_point{});
+  ClearProtoKind(v);
+  EXPECT_TRUE(v.is<time_point>());
+  EXPECT_FALSE(v.get<time_point>().ok());
+
   SetProtoKind(v, google::protobuf::NULL_VALUE);
   EXPECT_TRUE(v.is<time_point>());
   EXPECT_FALSE(v.get<time_point>().ok());
@@ -651,6 +677,10 @@ TEST(Value, GetBadTimestamp) {
 
 TEST(Value, GetBadDate) {
   Value v(Date{});
+  ClearProtoKind(v);
+  EXPECT_TRUE(v.is<Date>());
+  EXPECT_FALSE(v.get<Date>().ok());
+
   SetProtoKind(v, google::protobuf::NULL_VALUE);
   EXPECT_TRUE(v.is<Date>());
   EXPECT_FALSE(v.get<Date>().ok());
@@ -668,8 +698,27 @@ TEST(Value, GetBadDate) {
   EXPECT_FALSE(v.get<Date>().ok());
 }
 
+TEST(Value, GetBadOptional) {
+  Value v(optional<double>{});
+  ClearProtoKind(v);
+  EXPECT_TRUE(v.is<optional<double>>());
+  EXPECT_FALSE(v.get<optional<double>>().ok());
+
+  SetProtoKind(v, true);
+  EXPECT_TRUE(v.is<optional<double>>());
+  EXPECT_FALSE(v.get<optional<double>>().ok());
+
+  SetProtoKind(v, "blah");
+  EXPECT_TRUE(v.is<optional<double>>());
+  EXPECT_FALSE(v.get<optional<double>>().ok());
+}
+
 TEST(Value, GetBadArray) {
   Value v(std::vector<double>{});
+  ClearProtoKind(v);
+  EXPECT_TRUE(v.is<std::vector<double>>());
+  EXPECT_FALSE(v.get<std::vector<double>>().ok());
+
   SetProtoKind(v, google::protobuf::NULL_VALUE);
   EXPECT_TRUE(v.is<std::vector<double>>());
   EXPECT_FALSE(v.get<std::vector<double>>().ok());
@@ -689,6 +738,10 @@ TEST(Value, GetBadArray) {
 
 TEST(Value, GetBadStruct) {
   Value v(std::tuple<bool>{});
+  ClearProtoKind(v);
+  EXPECT_TRUE(v.is<std::tuple<bool>>());
+  EXPECT_FALSE(v.get<std::tuple<bool>>().ok());
+
   SetProtoKind(v, google::protobuf::NULL_VALUE);
   EXPECT_TRUE(v.is<std::tuple<bool>>());
   EXPECT_FALSE(v.get<std::tuple<bool>>().ok());

@@ -499,7 +499,7 @@ class Value {
       return Status(StatusCode::kInvalidArgument, "missing STRUCT");
     }
     std::tuple<Ts...> tup;
-    Status status;
+    Status status;  // OK
     ExtractTupleValues f{status, 0, pv.list_value(), pt};
     internal::ForEach(tup, f);
     if (!status.ok()) return status;
