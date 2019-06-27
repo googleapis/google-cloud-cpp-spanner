@@ -34,6 +34,7 @@ add_library(spanner_client
             internal/database_admin_stub.h
             internal/spanner_stub.cc
             internal/spanner_stub.h
+            internal/tuple_utils.h
             internal/time_format.cc
             internal/time_format.h
             row.h
@@ -81,6 +82,7 @@ function (spanner_client_define_tests)
         database_admin_client_test.cc
         internal/spanner_stub_test.cc
         internal/time_format_test.cc
+        internal/tuple_utils_test.cc
         row_test.cc
         spanner_version_test.cc
         sql_statement_test.cc

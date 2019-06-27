@@ -21,6 +21,7 @@ spanner_client_unit_tests = [
     "database_admin_client_test.cc",
     "internal/spanner_stub_test.cc",
     "internal/time_format_test.cc",
+    "internal/tuple_utils_test.cc",
     "row_test.cc",
     "spanner_version_test.cc",
     "sql_statement_test.cc",
