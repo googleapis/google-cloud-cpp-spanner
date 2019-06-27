@@ -15,6 +15,7 @@
 #include "google/cloud/spanner/row.h"
 #include <gmock/gmock.h>
 #include <cstdint>
+#include <array>
 #include <string>
 #include <tuple>
 #include <type_traits>
@@ -171,6 +172,13 @@ TEST(Row, MakeRowCVQualifications) {
   auto row = MakeRow(s);
   static_assert(std::is_same<Row<std::string>, decltype(row)>::value,
                 "row holds a non-const string value");
+}
+
+TEST(Row, ParseRow) {
+  std::array<Value, 3> array = {Value(true), Value(42), Value("hello")};
+  auto row = ParseRow<bool, std::int64_t, std::string>(array);
+  EXPECT_TRUE(row.ok());
+  EXPECT_EQ(MakeRow(true, 42, "hello"), *row);
 }
 
 }  // namespace

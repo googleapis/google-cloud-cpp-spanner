@@ -15,9 +15,13 @@
 #ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_ROW_H_
 #define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_ROW_H_
 
+#include "google/cloud/spanner/value.h"
 #include "google/cloud/spanner/version.h"
+#include "google/cloud/spanner/internal/tuple_utils.h"
 #include "google/cloud/internal/disjunction.h"
+#include "google/cloud/status_or.h"
 #include <cstdint>
+#include <array>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -195,6 +199,12 @@ class Row {
   std::tuple<Types...> values_;
 };
 
+// Overload of a `get<I>(T)` function, which can be found via ADL. Allowing 
+template <std::size_t I, typename... Ts>
+auto get(Row<Ts...>& row) -> decltype(row.template get<I>()) {
+  return row.template get<I>();
+}
+
 namespace internal {
 // A helper metafunction that promots some C++ literal types to the types
 // required by Cloud Spanner. For example, a literal 42 is of type int, but
@@ -206,6 +216,16 @@ constexpr std::string PromoteLiteralImpl(char const*);
 constexpr std::int64_t PromoteLiteralImpl(int);
 template <typename T>
 using PromoteLiteral = decltype(PromoteLiteralImpl(std::declval<T>()));
+
+//
+struct ExtractValue {
+  template <typename T, typename It>
+  void operator()(T& t, It& it) const {
+    auto x = it->template get<T>();
+    t = *x;
+    ++it;
+  }
+};
 }  // namespace internal
 
 /**
@@ -226,6 +246,15 @@ using PromoteLiteral = decltype(PromoteLiteralImpl(std::declval<T>()));
 template <typename... Ts>
 Row<internal::PromoteLiteral<Ts>...> MakeRow(Ts&&... ts) {
   return Row<internal::PromoteLiteral<Ts>...>{std::forward<Ts>(ts)...};
+}
+
+template <typename... Ts>
+StatusOr<Row<internal::PromoteLiteral<Ts>...>> ParseRow(
+    std::array<Value, sizeof...(Ts)> const& array) {
+  Row<internal::PromoteLiteral<Ts>...> row;
+  auto it = array.begin();
+  internal::ForEach(row, internal::ExtractValue{}, it);
+  return row;
 }
 
 }  // namespace SPANNER_CLIENT_NS
