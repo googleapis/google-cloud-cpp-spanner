@@ -35,10 +35,10 @@ TEST(RowParser, SuccessEmptyInput) {
 
 TEST(RowParser, SuccessOneColumn) {
   std::vector<Value> const values = {
-      Value(0),  //
-      Value(1),  //
-      Value(2),  //
-      Value(3),  //
+      Value(0),  // Row 0
+      Value(1),  // Row 1
+      Value(2),  // Row 2
+      Value(3),  // Row 3
   };
   std::int64_t expected_value = 0;
   for (auto row : MakeRowParser<std::int64_t>(values)) {
@@ -66,7 +66,7 @@ TEST(RowParser, SuccessTwoColumns) {
 
 TEST(RowParser, FailOneIncompleteRow) {
   std::vector<Value> const values = {
-      Value(true)  // Row 0 (incomplete
+      Value(true)  // Row 0 (incomplete)
   };
   auto rp = MakeRowParser<bool, std::int64_t>(values);
   auto it = rp.begin();
