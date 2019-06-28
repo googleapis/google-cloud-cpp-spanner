@@ -69,6 +69,7 @@ std::pair<google::spanner::v1::Type, google::protobuf::Value> ToProto(Value v);
  *
  * Value is a regular C++ value type with support for copy, move, equality,
  * etc. A default-constructed Value represents an empty value with no type.
+ *
  * Callers may create instances by passing any of the supported values (shown
  * in the table above) to the constructor. "Null" values are created using the
  * `MakeNullValue<T>()` factory function or by passing an empty `optional<T>`
