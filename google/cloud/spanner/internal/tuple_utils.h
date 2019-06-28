@@ -50,7 +50,8 @@ using NumElements = NumElementsImpl<typename std::decay<T>::type>;
 // simply forwards to `std::get`.
 template <std::size_t I, typename Tup>
 auto GetElement(Tup&& tup) -> decltype(std::get<I>(std::forward<Tup>(tup))) {
-  return std::get<I>(std::forward<Tup>(tup));
+  using std::get;
+  return get<I>(std::forward<Tup>(tup));
 }
 
 // Base case of `ForEach` that is called at the end of iterating a tuple.
