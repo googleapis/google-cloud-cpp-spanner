@@ -25,10 +25,10 @@ if (NOT TARGET google-cloud-cpp-project)
     # downloaded from GitHub.
     set(
         GOOGLE_CLOUD_CPP_URL
-        "https://github.com/googleapis/google-cloud-cpp/archive/4ef0f689b284f4f721ca72a50e39da4106c95852.tar.gz"
+        "https://github.com/googleapis/google-cloud-cpp/archive/4772b916d66b2b1108294ec2812b9dd63bdba352.tar.gz"
         )
     set(GOOGLE_CLOUD_CPP_SHA256
-        "bf7be246d67406eaafbc9fcb74f113ee5c9bb76b4058b6693367f7a21b7c1323")
+        "1e775dd56acbfe387333ad9e21f1a24ce8db4a28df72cdb56798e2a33469ca8b")
     set(
         GOOGLEAPIS_URL
         "https://github.com/google/googleapis/archive/a8ee1416f4c588f2ab92da72e7c1f588c784d3e6.zip"
