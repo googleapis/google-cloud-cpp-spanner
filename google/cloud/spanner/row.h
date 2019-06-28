@@ -226,10 +226,10 @@ struct ExtractValue {
   template <typename T, typename It>
   void operator()(T& t, It& it) const {
     auto x = it++->template get<T>();
-    if (x) {
-      t = *std::move(x);
-    } else {
+    if (!x) {
       status = std::move(x).status();
+    } else {
+      t = *std::move(x);
     }
   }
 };
@@ -275,8 +275,8 @@ StatusOr<Row<internal::PromoteLiteral<Ts>...>> ParseRow(
   auto it = array.begin();
   Status status;
   internal::ForEach(row, internal::ExtractValue{status}, it);
-  if (status.ok()) return row;
-  return status;
+  if (!status.ok()) return status;
+  return row;
 }
 
 }  // namespace SPANNER_CLIENT_NS
