@@ -175,7 +175,7 @@ TEST(Row, MakeRowCVQualifications) {
 }
 
 TEST(Row, ParseRowEmpty) {
-  std::array<Value, 0> const array;
+  std::array<Value, 0> const array = {};
   auto const row = ParseRow(array);
   EXPECT_TRUE(row.ok());
   EXPECT_EQ(MakeRow(), *row);
