@@ -186,24 +186,19 @@ TEST(Row, ParseRowOneValue) {
   auto const row = ParseRow<std::int64_t>(array);
   EXPECT_TRUE(row.ok());
   EXPECT_EQ(MakeRow(42), *row);
-
   // Tests parsing the Value with the wrong type.
   auto const error_row = ParseRow<double>(array);
   EXPECT_FALSE(row.ok());
 }
 
 TEST(Row, ParseRowThree) {
-  std::array<Value, 3> three = {Value(true), Value(42), Value("hello")};
-  auto row = ParseRow<bool, std::int64_t, std::string>(three);
-  EXPECT_TRUE(row.ok());
-  EXPECT_EQ(MakeRow(true, 42, "hello"), *row);
-}
-
-TEST(Row, ParseRowError) {
   std::array<Value, 3> array = {Value(true), Value(42), Value("hello")};
   auto row = ParseRow<bool, std::int64_t, std::string>(array);
   EXPECT_TRUE(row.ok());
   EXPECT_EQ(MakeRow(true, 42, "hello"), *row);
+  // Tests parsing the Value with the wrong type.
+  auto const error_row = ParseRow<bool, double, std::string>(array);
+  EXPECT_FALSE(row.ok());
 }
 
 }  // namespace

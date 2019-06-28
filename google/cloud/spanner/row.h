@@ -200,7 +200,8 @@ class Row {
 };
 
 // Returns the row-element at column `I`. This function will be found via ADL
-// to make `Row<Ts...>` work with `internal::ForEach`.
+// to make `Row<Ts...>` work with `internal::ForEach`. Users should not call
+// this function directly; instead, simply call `row.get<I>()`.
 template <std::size_t I, typename... Ts>
 auto GetElement(Row<Ts...>& row) -> decltype(row.template get<I>()) {
   return row.template get<I>();
@@ -218,7 +219,8 @@ constexpr std::int64_t PromoteLiteralImpl(int);
 template <typename T>
 using PromoteLiteral = decltype(PromoteLiteralImpl(std::declval<T>()));
 
-//
+// A helper functor to be used with `internal::ForEach` to iterate the columns
+// of a `Row<Ts...>` in the ParseRow() function.
 struct ExtractValue {
   Status& status;
   template <typename T, typename It>
@@ -226,9 +228,9 @@ struct ExtractValue {
     auto x = it++->template get<T>();
     if (x) {
       t = *std::move(x);
-      return;
+    } else {
+      status = std::move(x).status();
     }
-    status = std::move(x).status();
   }
 };
 }  // namespace internal
@@ -253,6 +255,19 @@ Row<internal::PromoteLiteral<Ts>...> MakeRow(Ts&&... ts) {
   return Row<internal::PromoteLiteral<Ts>...>{std::forward<Ts>(ts)...};
 }
 
+/**
+ * Parses a `std::array` of `Value` objects into the specified C++ types and
+ * returns a `Row<Ts...>` with all the parsed values. If the specified C++ type
+ * is unable to be extracted from a `Value`, an error `Status` is returned. The
+ * given array size must exactly match the number of specified C++ types.
+ *
+ * Example:
+ *
+ *     std::array<Value, 3> array = {Value(true), Value(42), Value("hello")};
+ *     auto row = ParseRow<bool, std::int64_t, std::string>(array);
+ *     assert(row.ok());
+ *     assert(MakeRow(true, 42, "hello"), *row);
+ */
 template <typename... Ts>
 StatusOr<Row<internal::PromoteLiteral<Ts>...>> ParseRow(
     std::array<Value, sizeof...(Ts)> const& array) {
