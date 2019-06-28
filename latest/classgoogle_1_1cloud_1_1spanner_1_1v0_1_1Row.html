@@ -166,7 +166,7 @@ std::int64_t i = row.get&lt;1&gt;();
 // allow assigning to individually  named variables.
 auto [name, age] = row.get&lt;2, 1&gt;();
 </pre> 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00063">63</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00067">67</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a90e49e0d45aa1b281e963792880b3b56"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a90e49e0d45aa1b281e963792880b3b56">&#9670;&nbsp;</a></span>Row() <span class="overload">[1/4]</span></h2>
@@ -195,7 +195,7 @@ template&lt;typename... Types&gt; </div>
 
 <p>Regular value type, supporting copy, assign, move, etc. </p>
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00069">69</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00073">73</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -287,7 +287,7 @@ template&lt;typename... Ts, typename std::enable_if&lt; !google::cloud::internal
 <p>See also the <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af" title="Helper factory function to construct Row&lt;Ts...&gt; objects holding the specified values.">MakeRow()</a></code> helper function template for a convenient way to make rows without having to also specify the value's types.</p>
 <p>This constructor is disabled if any of the specified types is <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a></code>, which prevents this constructor from taking over copy construction. </p>
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00089">89</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00093">93</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -328,7 +328,7 @@ assert(row.get&lt;1&gt;() == "foo");
 Row&lt;bool, std::string&gt; F();
 std::string x = F().get&lt;1&gt;();
 </pre> 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00112">112</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00116">116</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -359,7 +359,7 @@ template&lt;std::size_t I&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00116">116</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00120">120</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -390,7 +390,7 @@ template&lt;std::size_t I&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00120">120</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00124">124</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -421,7 +421,7 @@ template&lt;std::size_t I&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00124">124</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00128">128</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -459,7 +459,7 @@ std::tuple&lt;std::int64_t, bool&gt; tup = row.get&lt;2, 0&gt;();
 assert(std::get&lt;0&gt;(tup) == 42);
 assert(std::get&lt;1&gt;(tup) == true);
 </pre> 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00144">144</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00148">148</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -500,7 +500,7 @@ assert(std::get&lt;2&gt;(tup) == 42);
 auto moved_tup = std::move(row).get();
 assert(moved_tup == tup);
 </pre> 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00167">167</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00171">171</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -529,7 +529,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00168">168</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00172">172</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -558,7 +558,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00169">169</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00173">173</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -587,7 +587,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00170">170</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00174">174</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -674,7 +674,7 @@ template&lt;typename... Types&gt; </div>
 
 <p>Returns the number of columns in this row. </p>
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00092">92</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00096">96</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -715,7 +715,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00176">176</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00180">180</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -757,7 +757,7 @@ template&lt;typename... Types&gt; </div>
 
 <p>Relational operators. </p>
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00181">181</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00185">185</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -797,7 +797,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00184">184</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00188">188</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -839,7 +839,7 @@ template&lt;typename... Types&gt; </div>
 
 <p>Equality operators. </p>
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00173">173</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00177">177</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -879,7 +879,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00187">187</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00191">191</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -919,7 +919,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00190">190</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00194">194</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
