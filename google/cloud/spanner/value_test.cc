@@ -68,10 +68,11 @@ void TestBasicSemantics(T init) {
   EXPECT_TRUE(not_null.is<T>());
   EXPECT_FALSE(not_null.is_null<T>());
   EXPECT_TRUE(not_null.get<T>().ok());
+  EXPECT_EQ(init, *not_null.get<T>());
   EXPECT_TRUE(not_null.is<optional<T>>());
   EXPECT_FALSE(not_null.is_null<optional<T>>());
   EXPECT_TRUE(not_null.get<optional<T>>().ok());
-  EXPECT_EQ(optional<T>(init), *not_null.get<optional<T>>());
+  EXPECT_EQ(init, **not_null.get<optional<T>>());
 }
 
 TEST(Value, BasicSemantics) {
