@@ -188,7 +188,7 @@ TEST(Row, ParseRowOneValue) {
   EXPECT_EQ(MakeRow(42), *row);
   // Tests parsing the Value with the wrong type.
   auto const error_row = ParseRow<double>(array);
-  EXPECT_FALSE(row.ok());
+  EXPECT_FALSE(error_row.ok());
 }
 
 TEST(Row, ParseRowThree) {
@@ -198,7 +198,7 @@ TEST(Row, ParseRowThree) {
   EXPECT_EQ(MakeRow(true, 42, "hello"), *row);
   // Tests parsing the Value with the wrong type.
   auto const error_row = ParseRow<bool, double, std::string>(array);
-  EXPECT_FALSE(row.ok());
+  EXPECT_FALSE(error_row.ok());
 }
 
 }  // namespace
