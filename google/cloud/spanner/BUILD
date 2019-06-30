@@ -24,7 +24,7 @@ cc_library(
     hdrs = spanner_client_hdrs,
     deps = [
         "@com_github_googleapis_google_cloud_cpp//google/cloud:google_cloud_cpp_common",
-        "@com_github_googleapis_google_cloud_cpp//google/cloud/bigtable:bigtable_client",
+        "@com_github_googleapis_google_cloud_cpp//google/cloud/grpc_utils:google_cloud_cpp_grpc_utils",
         "@com_google_googleapis//:bigtable_protos",
         "@com_google_googleapis//:spanner_protos",
     ],
