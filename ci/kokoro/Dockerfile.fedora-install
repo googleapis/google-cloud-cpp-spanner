@@ -61,7 +61,8 @@ WORKDIR /var/tmp/build/google-cloud-cpp-1427c68c0ccf697ae514ff899a141b75bcacfb83
 # libraries
 RUN cmake -H. -Bcmake-out \
     -DGOOGLE_CLOUD_CPP_DEPENDENCY_PROVIDER=package \
-    -DBUILD_TESTING=OFF
+    -DBUILD_TESTING=OFF \
+    -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON
 RUN cmake --build cmake-out -- -j $(nproc)
 RUN cmake --build cmake-out --target install
 
