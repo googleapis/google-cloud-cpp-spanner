@@ -45,13 +45,12 @@ ExternalProject_Add(
                -DCMAKE_PREFIX_PATH=${GOOGLE_CLOUD_CPP_PREFIX_PATH}
                -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
                -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-    BUILD_COMMAND ${CMAKE_COMMAND}
-                  --build
-                  <BINARY_DIR>
-                  TEST_COMMAND
-                  ${CMAKE_CTEST_COMMAND}
-                  --output-on-failure
-                  # TODO(#23) - Use this when install is implemented.
+    BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR>
+    TEST_COMMAND ${CMAKE_CTEST_COMMAND}
+                 --output-on-failure
+                 -LE
+                 integration-tests
+                 # TODO(#23) - Use this when install is implemented.
     INSTALL_COMMAND ""
     LOG_DOWNLOAD OFF
     LOG_CONFIGURE OFF
