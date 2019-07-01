@@ -92,6 +92,17 @@ cc_library(
 # END SPANNER PROTOS
 ####################
 
+cc_library(
+    name = "grpc_utils_protos",
+    includes = [
+        ".",
+    ],
+    deps = [
+        "@com_github_grpc_grpc//:grpc++",
+        "//google/rpc:status_cc_proto"
+    ],
+)
+
 # TODO(googleapis/google-cloud-cpp#2807) - will not need these.
 cc_proto_library(
     name = "bigtableadmin_cc_proto",
