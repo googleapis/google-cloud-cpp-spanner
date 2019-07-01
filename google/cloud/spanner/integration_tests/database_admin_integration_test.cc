@@ -55,12 +55,12 @@ TEST(DatabaseAdminClient, DatabaseBasicCRUD) {
   auto database_future =
       client.CreateDatabase(project_id, instance_id, database_id);
   auto database = database_future.get();
-  EXPECT_STATUS_OK(database.status());
+  EXPECT_STATUS_OK(database);
 
   EXPECT_THAT(database->name(), ::testing::EndsWith(database_id));
 
   auto drop_status = client.DropDatabase(project_id, instance_id, database_id);
-  EXPECT_STATUS_OK(database.status());
+  EXPECT_STATUS_OK(drop_status);
 }
 
 }  // namespace
