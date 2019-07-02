@@ -31,7 +31,7 @@ def google_cloud_cpp_spanner_deps():
     if "com_github_googleapis_google_cloud_cpp" not in native.existing_rules():
         http_archive(
             name = "com_github_googleapis_google_cloud_cpp",
-            strip_prefix = "google-cloud-cpp-21656366887eb2a3286d6be79d8e67fb3a4e004a",
+            strip_prefix = "google-cloud-cpp-da7749bcbf603431bc441c94d90e30cbc0d52c62",
             urls = [
                 "https://github.com/googleapis/google-cloud-cpp/archive/da7749bcbf603431bc441c94d90e30cbc0d52c62.tar.gz",
             ],
