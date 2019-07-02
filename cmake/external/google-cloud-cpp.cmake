@@ -25,10 +25,10 @@ if (NOT TARGET google-cloud-cpp-project)
     # downloaded from GitHub.
     set(
         GOOGLE_CLOUD_CPP_URL
-        "https://github.com/googleapis/google-cloud-cpp/archive/1427c68c0ccf697ae514ff899a141b75bcacfb83.tar.gz"
+        "https://github.com/googleapis/google-cloud-cpp/archive/da7749bcbf603431bc441c94d90e30cbc0d52c62.tar.gz"
         )
     set(GOOGLE_CLOUD_CPP_SHA256
-        "a888d0dd66bfab6c37d8544f29f5d983242e34074b39531a2d0146898caf6e83")
+        "e36feaa46dc858059cedf9c04d8be978f17d69ab42840adf64dcfd8fbef58205")
     set(
         GOOGLEAPIS_URL
         "https://github.com/google/googleapis/archive/a8ee1416f4c588f2ab92da72e7c1f588c784d3e6.zip"
@@ -51,6 +51,7 @@ if (NOT TARGET google-cloud-cpp-project)
                    -DGOOGLE_CLOUD_CPP_DEPENDENCY_PROVIDER=package
                    -DGOOGLE_CLOUD_CPP_GOOGLEAPIS_URL=${GOOGLEAPIS_URL}
                    -DGOOGLE_CLOUD_CPP_GOOGLEAPIS_SHA256=${GOOGLEAPIS_SHA256}
+                   -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON
                    -DCMAKE_PREFIX_PATH=${GOOGLE_CLOUD_CPP_PREFIX_PATH}
                    -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
                    -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
