@@ -16,6 +16,7 @@
 
 find_package(google_cloud_cpp_common CONFIG REQUIRED)
 find_package(google_cloud_cpp_grpc_utils CONFIG REQUIRED)
+find_package(bigtable_client CONFIG REQUIRED)
 
 include(EnableClangTidy)
 include(EnableWerror)
@@ -50,6 +51,8 @@ add_library(spanner_client
             retry_policy.h
             row.h
             row_parser.h
+            sql_partition.cc
+            sql_partition.h
             sql_statement.cc
             sql_statement.h
             timestamp.h
@@ -65,7 +68,7 @@ target_include_directories(spanner_client
 target_link_libraries(spanner_client
                       PUBLIC google_cloud_cpp_grpc_utils google_cloud_cpp_common
                              googleapis-c++::spanner_protos)
-set_target_properties(spanner_client
+ set_target_properties(spanner_client
                       PROPERTIES VERSION
                                  "${SPANNER_CLIENT_VERSION}"
                                  SOVERSION
@@ -79,8 +82,6 @@ add_library(googleapis-c++::spanner_client ALIAS spanner_client)
 # file.
 include(CreateBazelConfig)
 create_bazel_config(spanner_client)
-
-find_package(google_cloud_cpp_common CONFIG REQUIRED)
 
 # Define the tests in a function so we have a new scope for variable names.
 function (spanner_client_define_tests)
@@ -105,6 +106,7 @@ function (spanner_client_define_tests)
         retry_policy_test.cc
         row_test.cc
         row_parser_test.cc
+        sql_partition_test.cc
         spanner_version_test.cc
         sql_statement_test.cc
         value_test.cc)
