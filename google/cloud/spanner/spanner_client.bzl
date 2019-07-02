@@ -29,6 +29,7 @@ spanner_client_hdrs = [
     "internal/time.h",
     "internal/time_format.h",
     "internal/tuple_utils.h",
+    "polling_policy.h",
     "retry_policy.h",
     "row.h",
     "row_parser.h",
