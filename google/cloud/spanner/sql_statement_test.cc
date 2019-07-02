@@ -92,6 +92,7 @@ TEST(SqlStatementTest, OStreamOperatorWithParams) {
 //    "[param]: {value}\t[last]: {code: STRING; string_value: \"Blues\"}\n"
 //    "[param]: {value}\t[first]: {code: STRING; string_value: \"Elwood\"}");
 //>>>>>>> Fix ordering dependence in unit test
+=======
   std::stringstream ss;
   ss << stmt;
   EXPECT_THAT(ss.str(), AnyOf(Eq(expected1), Eq(expected2)));
