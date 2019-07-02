@@ -93,8 +93,7 @@ auto RetryLoopImpl(std::unique_ptr<RetryPolicy> retry_policy,
       // way, exit the loop.
       break;
     }
-    auto delay = backoff_policy->OnCompletion();
-    sleeper(delay);
+    sleeper(backoff_policy->OnCompletion());
   }
   if (!retry_policy->IsExhausted()) {
     // The last error cannot be retried, but it is not because the retry

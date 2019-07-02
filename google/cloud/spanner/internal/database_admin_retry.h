@@ -62,11 +62,8 @@ class DatabaseAdminRetry : public DatabaseAdminStub {
 
  private:
   void OverridePolicy(RetryPolicy const& p) { retry_policy_ = p.clone(); }
-
   void OverridePolicy(BackoffPolicy const& p) { backoff_policy_ = p.clone(); }
-
   void OverridePolicies() {}
-
   template <typename Policy, typename... Policies>
   void OverridePolicies(Policy&& p, Policies&&... policies) {
     OverridePolicy(std::forward<Policy>(p));
