@@ -152,10 +152,6 @@ Friends</h2></td></tr>
 <tr class="memitem:a0a7a7c7991836200e205946a7abceed1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#a0a7a7c7991836200e205946a7abceed1">PrintTo</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> const &amp;v, std::ostream *os)</td></tr>
 <tr class="memdesc:a0a7a7c7991836200e205946a7abceed1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows Google Test to print internal debugging information when test assertions fail.  <a href="#a0a7a7c7991836200e205946a7abceed1">More...</a><br /></td></tr>
 <tr class="separator:a0a7a7c7991836200e205946a7abceed1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6816dad4dd0b007619c4656e4c60495"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#ae6816dad4dd0b007619c4656e4c60495">internal::FromProto</a> (google::spanner::v1::Type, google::protobuf::Value)</td></tr>
-<tr class="separator:ae6816dad4dd0b007619c4656e4c60495"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf06b642dd96a3fad36a06f6425c244a"><td class="memItemLeft" align="right" valign="top">std::pair&lt; google::spanner::v1::Type, google::protobuf::Value &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#adf06b642dd96a3fad36a06f6425c244a">internal::ToProto</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>)</td></tr>
-<tr class="separator:adf06b642dd96a3fad36a06f6425c244a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a> class represents a type-safe, nullable Spanner value. </p>
@@ -858,68 +854,6 @@ bool bad = static_cast&lt;bool&gt;(null_v);  // UB! wrong type
 </div>
 </div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a id="ae6816dad4dd0b007619c4656e4c60495"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6816dad4dd0b007619c4656e4c60495">&#9670;&nbsp;</a></span>internal::FromProto</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0_1_1internal.html#a8deaaaaca7ec1adae539d9eece758055">internal::FromProto</a> </td>
-          <td>(</td>
-          <td class="paramtype">google::spanner::v1::Type&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">google::protobuf::Value&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="adf06b642dd96a3fad36a06f6425c244a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf06b642dd96a3fad36a06f6425c244a">&#9670;&nbsp;</a></span>internal::ToProto</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::pair&lt;google::spanner::v1::Type, google::protobuf::Value&gt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0_1_1internal.html#ab22a644f06ffaf023e1b79c132ab6052">internal::ToProto</a> </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a60e123bc2bfa61732d17a90cc7365e10"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a60e123bc2bfa61732d17a90cc7365e10">&#9670;&nbsp;</a></span>operator!=</h2>
 

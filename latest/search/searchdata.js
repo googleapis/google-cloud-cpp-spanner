@@ -1,14 +1,13 @@
 var indexSectionsWithContent =
 {
-  0: "acdefgimoprstvy",
-  1: "cdersv",
+  0: "abcdegilmoprstvy",
+  1: "cdrsv",
   2: "g",
-  3: "cdrsv",
-  4: "acdfgimoprstvy",
-  5: "s",
-  6: "p",
-  7: "iop",
-  8: "s"
+  3: "bcdrsv",
+  4: "acdgimoprstvy",
+  5: "belpr",
+  6: "op",
+  7: "s"
 };
 
 var indexSectionNames =
@@ -18,10 +17,9 @@ var indexSectionNames =
   2: "namespaces",
   3: "files",
   4: "functions",
-  5: "variables",
-  6: "typedefs",
-  7: "related",
-  8: "defines"
+  5: "typedefs",
+  6: "related",
+  7: "defines"
 };
 
 var indexSectionLabels =
@@ -31,9 +29,8 @@ var indexSectionLabels =
   2: "Namespaces",
   3: "Files",
   4: "Functions",
-  5: "Variables",
-  6: "Typedefs",
-  7: "Friends",
-  8: "Macros"
+  5: "Typedefs",
+  6: "Friends",
+  7: "Macros"
 };
 

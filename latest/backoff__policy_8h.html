@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Google Cloud Spanner C++ Client: database_admin_client.cc File Reference</title>
+<title>Google Cloud Spanner C++ Client: backoff_policy.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,17 +64,15 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle">
-<div class="title">database_admin_client.cc File Reference</div>  </div>
+<div class="title">backoff_policy.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="database__admin__client_8h_source.html">google/cloud/spanner/database_admin_client.h</a>&quot;</code><br />
-<code>#include &quot;google/cloud/spanner/internal/database_admin_retry.h&quot;</code><br />
-<code>#include &quot;google/cloud/grpc_utils/grpc_error_delegate.h&quot;</code><br />
-<code>#include &lt;algorithm&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="version_8h_source.html">google/cloud/spanner/version.h</a>&quot;</code><br />
+<code>#include &quot;google/cloud/internal/backoff_policy.h&quot;</code><br />
 </div>
-<p><a href="database__admin__client_8cc_source.html">Go to the source code of this file.</a></p>
+<p><a href="backoff__policy_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -89,10 +87,14 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespacegoogle_1_1cloud_1_1spanner_1_1v0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The inlined, versioned namespace for the Cloud spanner C++ client APIs. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a082ded12c2b6a6a1c823f6b232a4f1f9"><td class="memItemLeft" align="right" valign="top">google::cloud::Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a082ded12c2b6a6a1c823f6b232a4f1f9">google::cloud::spanner::v0::ToGoogleCloudStatus</a> (google::rpc::Status const &amp;status)</td></tr>
-<tr class="separator:a082ded12c2b6a6a1c823f6b232a4f1f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a9ad3c388cccb2c4d92c8299ac178af8a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9ad3c388cccb2c4d92c8299ac178af8a">google::cloud::spanner::v0::BackoffPolicy</a> = google::cloud::internal::BackoffPolicy</td></tr>
+<tr class="memdesc:a9ad3c388cccb2c4d92c8299ac178af8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The base class for spanner's backoff policies.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9ad3c388cccb2c4d92c8299ac178af8a">More...</a><br /></td></tr>
+<tr class="separator:a9ad3c388cccb2c4d92c8299ac178af8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada6ef35eea8a9d9c239e32683a823010"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ada6ef35eea8a9d9c239e32683a823010">google::cloud::spanner::v0::ExponentialBackoffPolicy</a> = google::cloud::internal::ExponentialBackoffPolicy</td></tr>
+<tr class="memdesc:ada6ef35eea8a9d9c239e32683a823010"><td class="mdescLeft">&#160;</td><td class="mdescRight">A truncated exponential backoff policy with randomized periods.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ada6ef35eea8a9d9c239e32683a823010">More...</a><br /></td></tr>
+<tr class="separator:ada6ef35eea8a9d9c239e32683a823010"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

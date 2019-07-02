@@ -5,7 +5,6 @@ var searchData=
   ['getelement',['GetElement',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a76a64d3ee14907e69b4f3d415a4c3ab5',1,'google::cloud::spanner::v0']]],
   ['getparameter',['GetParameter',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#a7c1e332dfc551c06e28fc05afcea0eff',1,'google::cloud::spanner::v0::SqlStatement']]],
   ['google',['google',['../namespacegoogle.html',1,'']]],
-  ['internal',['internal',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0_1_1internal.html',1,'google::cloud::spanner::v0']]],
   ['spanner',['spanner',['../namespacegoogle_1_1cloud_1_1spanner.html',1,'google::cloud']]],
   ['v0',['v0',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html',1,'google::cloud::spanner']]]
 ];

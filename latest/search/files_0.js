@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['client_5foptions_2ecc',['client_options.cc',['../client__options_8cc.html',1,'']]],
-  ['client_5foptions_2eh',['client_options.h',['../client__options_8h.html',1,'']]]
+  ['backoff_5fpolicy_2eh',['backoff_policy.h',['../backoff__policy_8h.html',1,'']]]
 ];
