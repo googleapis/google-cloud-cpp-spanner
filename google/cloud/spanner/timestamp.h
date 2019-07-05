@@ -17,7 +17,6 @@
 
 #include "google/cloud/spanner/version.h"
 #include <chrono>
-#include <cstdint>
 
 namespace google {
 namespace cloud {
