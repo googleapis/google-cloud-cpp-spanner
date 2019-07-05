@@ -86,8 +86,8 @@ Timestamp CombineTime(std::chrono::seconds s, Timestamp::duration ss) {
 // 24-hour days divided into 60-minute hours and 60-second minutes.
 std::tm ZTime(std::chrono::seconds s) {
   using rep = std::chrono::seconds::rep;
-  constexpr auto secs_per_day = std::chrono::hours::period::num * 24;
-  using days = std::chrono::duration<rep, std::ratio<secs_per_day>>;  // C++20
+  constexpr auto kSecsPerDay = std::chrono::hours::period::num * 24;
+  using days = std::chrono::duration<rep, std::ratio<kSecsPerDay>>;  // C++20
 
   auto day = std::chrono::duration_cast<days>(s);
   auto sec = s - std::chrono::duration_cast<std::chrono::seconds>(day);
