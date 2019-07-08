@@ -60,10 +60,61 @@ inline namespace SPANNER_CLIENT_NS {
  */
 template <typename ValueIterator, typename... Ts>
 class RowParser {
-  class RowIterator;  // Defined in private section below.
-
  public:
-  using iterator = RowIterator;
+  /// A single-pass input iterator that coalesces multiple `Value` results into
+  /// a `Row<Ts...>`.
+  class iterator {
+   public:
+    using RowType = Row<Ts...>;
+    using iterator_category = std::input_iterator_tag;
+    using value_type = StatusOr<RowType>;
+    using difference_type = std::ptrdiff_t;
+    using pointer = value_type*;
+    using reference = value_type&;
+
+    reference operator*() { return curr_; }
+    pointer operator->() { return &curr_; }
+
+    iterator& operator++() {
+      curr_ = value_type{};
+      if (it_ == end_) return *this;
+      std::array<Value, RowType::size()> values;
+      for (auto& e : values) {
+        if (it_ == end_) {
+          curr_ = Status(StatusCode::kUnknown, "incomplete row");
+          return *this;
+        }
+        e = *it_++;
+      }
+      curr_ = ParseRow<Ts...>(values);
+      return *this;
+    }
+
+    iterator operator++(int) {
+      auto const old = *this;
+      operator++();
+      return old;
+    }
+
+    friend bool operator==(iterator const& a, iterator const& b) {
+      return std::tie(a.curr_, a.it_, a.end_) ==
+             std::tie(b.curr_, b.it_, b.end_);
+    }
+    friend bool operator!=(iterator const& a, iterator const& b) {
+      return !(a == b);
+    }
+
+   private:
+    friend RowParser;
+    explicit iterator(ValueIterator begin, ValueIterator end)
+        : it_(begin), end_(end) {
+      operator++();  // Parse the first row
+    }
+
+    value_type curr_;
+    ValueIterator it_;
+    ValueIterator end_;
+  };
 
   /// Constructs a `RowParser` for the given range of `Value`s.
   template <typename Range>
@@ -84,60 +135,6 @@ class RowParser {
   iterator end() { return iterator(end_, end_); }
 
  private:
-  // The RowParser's interator type. Models InputIterator so it can only
-  // iterate forward and can only do so once.
-  class RowIterator {
-   public:
-    using RowType = Row<Ts...>;
-    using iterator_category = std::input_iterator_tag;
-    using value_type = StatusOr<RowType>;
-    using difference_type = std::ptrdiff_t;
-    using pointer = value_type*;
-    using reference = value_type&;
-
-    explicit RowIterator(ValueIterator begin, ValueIterator end)
-        : it_(begin), end_(end) {
-      operator++();  // Parse the first row
-    }
-
-    reference operator*() { return curr_; }
-    pointer operator->() { return &curr_; }
-
-    RowIterator& operator++() {
-      curr_ = value_type{};
-      if (it_ == end_) return *this;
-      std::array<Value, RowType::size()> values;
-      for (auto& e : values) {
-        if (it_ == end_) {
-          curr_ = Status(StatusCode::kUnknown, "incomplete row");
-          return *this;
-        }
-        e = *it_++;
-      }
-      curr_ = ParseRow<Ts...>(values);
-      return *this;
-    }
-
-    RowIterator operator++(int) {
-      auto const old = *this;
-      operator++();
-      return old;
-    }
-
-    friend bool operator==(RowIterator const& a, RowIterator const& b) {
-      return std::tie(a.curr_, a.it_, a.end_) ==
-             std::tie(b.curr_, b.it_, b.end_);
-    }
-    friend bool operator!=(RowIterator const& a, RowIterator const& b) {
-      return !(a == b);
-    }
-
-   private:
-    value_type curr_;
-    ValueIterator it_;
-    ValueIterator end_;
-  };
-
   ValueIterator it_;
   ValueIterator end_;
 };
