@@ -30,8 +30,8 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
 /**
- * A RowParser takes a range of `Value` objects and parses them into range of
- * `Row` objects with the specified types.
+ * A RowParser takes a range of `Value` objects and a list of types, and it
+ * parses the values into a range of `Row` objects with the specified types.
  *
  * Callers should create instances of this class with the `MakeRowParser()`
  * function (defined below), which takes an input range and a list of types
@@ -60,7 +60,30 @@ inline namespace SPANNER_CLIENT_NS {
  */
 template <typename ValueIterator, typename... Ts>
 class RowParser {
+  class RowIterator;  // Defined in private section below.
+
  public:
+  using iterator = RowIterator;
+
+  /// Constructs a `RowParser` for the given range of `Value`s.
+  template <typename Range>
+  explicit RowParser(Range&& range)
+      : it_(std::begin(std::forward<Range>(range))),
+        end_(std::end(std::forward<Range>(range))) {}
+
+  /// Copy and assignable.
+  RowParser(RowParser const&) = default;
+  RowParser& operator=(RowParser const&) = default;
+  RowParser(RowParser&&) = default;
+  RowParser& operator=(RowParser&&) = default;
+
+  /// Returns the begin iterator.
+  iterator begin() { return iterator(it_, end_); }
+
+  /// Returns the end iterator.
+  iterator end() { return iterator(end_, end_); }
+
+ private:
   // The RowParser's interator type. Models InputIterator so it can only
   // iterate forward and can only do so once.
   class RowIterator {
@@ -72,9 +95,8 @@ class RowParser {
     using pointer = value_type*;
     using reference = value_type&;
 
-    enum class Type { kNormal, kEnd };
-    explicit RowIterator(ValueIterator begin, ValueIterator end, Type type)
-        : it_(begin), end_(end), type_(type) {
+    explicit RowIterator(ValueIterator begin, ValueIterator end)
+        : it_(begin), end_(end) {
       operator++();  // Parse the first row
     }
 
@@ -82,12 +104,8 @@ class RowParser {
     pointer operator->() { return &curr_; }
 
     RowIterator& operator++() {
-      if (it_ == end_) {
-        // We're done so *this needs to become an end iterator.
-        curr_ = value_type{};
-        type_ = Type::kEnd;
-        return *this;
-      }
+      curr_ = value_type{};
+      if (it_ == end_) return *this;
       std::array<Value, RowType::size()> values;
       for (auto& e : values) {
         if (it_ == end_) {
@@ -107,8 +125,8 @@ class RowParser {
     }
 
     friend bool operator==(RowIterator const& a, RowIterator const& b) {
-      return std::tie(a.curr_, a.it_, a.end_, a.type_) ==
-             std::tie(b.curr_, b.it_, b.end_, b.type_);
+      return std::tie(a.curr_, a.it_, a.end_) ==
+             std::tie(b.curr_, b.it_, b.end_);
     }
     friend bool operator!=(RowIterator const& a, RowIterator const& b) {
       return !(a == b);
@@ -118,30 +136,8 @@ class RowParser {
     value_type curr_;
     ValueIterator it_;
     ValueIterator end_;
-    Type type_;
   };
 
-  using iterator = RowIterator;
-
-  /// Constructs a `RowParser` for the given range of `Value`s.
-  template <typename Range>
-  explicit RowParser(Range&& range)
-      : it_(std::begin(std::forward<Range>(range))),
-        end_(std::end(std::forward<Range>(range))) {}
-
-  /// Copy and assignable.
-  RowParser(RowParser const&) = default;
-  RowParser& operator=(RowParser const&) = default;
-  RowParser(RowParser&&) = default;
-  RowParser& operator=(RowParser&&) = default;
-
-  /// Returns the begin iterator.
-  iterator begin() { return iterator(it_, end_, iterator::Type::kNormal); }
-
-  /// Returns the end iterator.
-  iterator end() { return iterator(end_, end_, iterator::Type::kEnd); }
-
- private:
   ValueIterator it_;
   ValueIterator end_;
 };
