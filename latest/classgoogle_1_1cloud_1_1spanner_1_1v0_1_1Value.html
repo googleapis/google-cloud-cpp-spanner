@@ -104,8 +104,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1489c12a5692d8bef05afaa7851cbbb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5bade47553cfba6f104dc24f2fb6c3ef"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#a5bade47553cfba6f104dc24f2fb6c3ef">Value</a> (std::string v)</td></tr>
 <tr class="separator:a5bade47553cfba6f104dc24f2fb6c3ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58c1aded88a61af806685bac1a395fdf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#a58c1aded88a61af806685bac1a395fdf">Value</a> (std::chrono::system_clock::time_point v)</td></tr>
-<tr class="separator:a58c1aded88a61af806685bac1a395fdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31be733bafc002766bf2bdbf1045251f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#a31be733bafc002766bf2bdbf1045251f">Value</a> (<a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9711d66cf02a8305d987474ac7c5efca">Timestamp</a> v)</td></tr>
+<tr class="separator:a31be733bafc002766bf2bdbf1045251f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea1cdd0a637b91a643800353dbc40e25"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#aea1cdd0a637b91a643800353dbc40e25">Value</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> v)</td></tr>
 <tr class="separator:aea1cdd0a637b91a643800353dbc40e25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1f1ea80d77af34d7da496cd69d14308"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#aa1f1ea80d77af34d7da496cd69d14308">Value</a> (int v)</td></tr>
@@ -168,7 +168,7 @@ Friends</h2></td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">STRING  </td><td class="markdownTableBodyNone"><code>std::string</code>   </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">TIMESTAMP  </td><td class="markdownTableBodyNone"><code>std::chrono::system_clock::time_point</code>   </td></tr>
+<td class="markdownTableBodyNone">TIMESTAMP  </td><td class="markdownTableBodyNone"><code>google::cloud::spanner::Timestamp</code>   </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">DATE  </td><td class="markdownTableBodyNone"><code>google::cloud::spanner::Date</code>   </td></tr>
 <tr class="markdownTableRowOdd">
@@ -209,7 +209,7 @@ assert(v.is&lt;Struct&gt;());
 assert(s == *v.get&lt;Struct&gt;());
 </pre><p>NOTE: While a STRUCT's (optional) field names are not part of its C++ type, they are part of its Spanner STRUCT type. Array's (i.e., <code>std::vector</code>) must contain a single element type, therefore it is an error to construct a <code>std::vector</code> of <code>std::tuple</code> objects with differently named fields. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00138">138</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00139">139</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aacc02c80956a52a83a4fb0e513d2d243"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aacc02c80956a52a83a4fb0e513d2d243">&#9670;&nbsp;</a></span>Value() <span class="overload">[1/14]</span></h2>
@@ -319,7 +319,7 @@ assert(s == *v.get&lt;Struct&gt;());
 
 <p>Constructs a non-null instance with the specified type and value. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00155">155</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00156">156</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -347,7 +347,7 @@ assert(s == *v.get&lt;Struct&gt;());
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00156">156</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00157">157</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -375,7 +375,7 @@ assert(s == *v.get&lt;Struct&gt;());
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00157">157</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00158">158</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -403,12 +403,12 @@ assert(s == *v.get&lt;Struct&gt;());
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00158">158</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00159">159</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
-<a id="a58c1aded88a61af806685bac1a395fdf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58c1aded88a61af806685bac1a395fdf">&#9670;&nbsp;</a></span>Value() <span class="overload">[8/14]</span></h2>
+<a id="a31be733bafc002766bf2bdbf1045251f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31be733bafc002766bf2bdbf1045251f">&#9670;&nbsp;</a></span>Value() <span class="overload">[8/14]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -419,7 +419,7 @@ assert(s == *v.get&lt;Struct&gt;());
         <tr>
           <td class="memname">google::cloud::spanner::v0::Value::Value </td>
           <td>(</td>
-          <td class="paramtype">std::chrono::system_clock::time_point&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9711d66cf02a8305d987474ac7c5efca">Timestamp</a>&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
           <td></td>
         </tr>
@@ -431,7 +431,7 @@ assert(s == *v.get&lt;Struct&gt;());
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00159">159</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00160">160</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
