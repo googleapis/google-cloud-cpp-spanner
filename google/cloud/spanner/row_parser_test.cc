@@ -33,6 +33,14 @@ TEST(RowParser, SuccessEmptyInput) {
   EXPECT_EQ(it, end);
 }
 
+TEST(RowParser, SuccessEmptyInputWithRowTypes) {
+  std::vector<Value> const values = {};
+  auto rp = MakeRowParser<std::int64_t>(values);
+  auto it = rp.begin();
+  auto end = rp.end();
+  EXPECT_EQ(it, end);
+}
+
 TEST(RowParser, SuccessOneColumn) {
   std::vector<Value> const values = {
       Value(0),  // Row 0
