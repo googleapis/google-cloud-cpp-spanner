@@ -40,22 +40,22 @@ google::protobuf::Duration ToProto(std::chrono::nanoseconds ns);
 std::chrono::nanoseconds FromProto(google::protobuf::Duration const& proto);
 
 /**
- * Convert a system_clock::time_point to a google::protobuf::Timestamp.
+ * Convert a google::cloud::spanner::Timestamp to a google::protobuf::Timestamp.
  */
 google::protobuf::Timestamp ToProto(Timestamp ts);
 
 /**
- * Convert a google::protobuf::Timestamp to a system_clock::time_point.
+ * Convert a google::protobuf::Timestamp to a google::cloud::spanner::Timestamp.
  */
 Timestamp FromProto(google::protobuf::Timestamp const& proto);
 
 /**
- * Convert a system_clock::time_point to an RFC3339 "date-time".
+ * Convert a google::cloud::spanner::Timestamp to an RFC3339 "date-time".
  */
 std::string TimestampToString(Timestamp ts);
 
 /**
- * Convert an RFC3339 "date-time" to a system_clock::time_point.
+ * Convert an RFC3339 "date-time" to a google::cloud::spanner::Timestamp.
  *
  * Returns a a non-OK Status if the input cannot be parsed.
  */
