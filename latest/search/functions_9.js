@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['set_5fadmin_5fendpoint',['set_admin_endpoint',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#ad4bd11fc3e5123fa9de0e4bc1b168f60',1,'google::cloud::spanner::v0::ClientOptions']]],
-  ['set_5fcredentials',['set_credentials',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#a7a64cb7363cf6878ad89d05054ffc896',1,'google::cloud::spanner::v0::ClientOptions']]],
-  ['size',['size',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ab683b2a27b1d53af35a0e1311f448cbe',1,'google::cloud::spanner::v0::Row']]],
-  ['sql',['sql',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#a343718204cd2967a769230668343db87',1,'google::cloud::spanner::v0::SqlStatement']]],
-  ['sqlstatement',['SqlStatement',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#aa5e263798c4042731bf5cba96ed79350',1,'google::cloud::spanner::v0::SqlStatement::SqlStatement()=default'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#a2f8d2449742d5418984f97becfe56eb1',1,'google::cloud::spanner::v0::SqlStatement::SqlStatement(std::string statement)'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#a3eec1e4fd82e6329eb74b203b8390c04',1,'google::cloud::spanner::v0::SqlStatement::SqlStatement(std::string statement, ParamType params)'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#a0b0a1e8c46594f344b74615ede8e7208',1,'google::cloud::spanner::v0::SqlStatement::SqlStatement(SqlStatement const &amp;)=default'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#a40a3240abf6c77ad0179bcd218f2aea4',1,'google::cloud::spanner::v0::SqlStatement::SqlStatement(SqlStatement &amp;&amp;)=default']]]
+  ['parameternames',['ParameterNames',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#a7991c035508b3974ba86f472076abe39',1,'google::cloud::spanner::v0::SqlStatement']]],
+  ['params',['params',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#a1f2f5bda056f807a3f5410a0b10c5f5c',1,'google::cloud::spanner::v0::SqlStatement']]],
+  ['parserow',['ParseRow',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a6a6319e9526591fe4496f5e0876c99ec',1,'google::cloud::spanner::v0']]],
+  ['printto',['PrintTo',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#afeeb8397799463d7cf6386cd1315013e',1,'google::cloud::spanner::v0']]]
 ];

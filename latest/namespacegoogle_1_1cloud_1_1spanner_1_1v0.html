@@ -92,6 +92,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> class template represents a heterogeneous set of C++ values.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser takes a range of Value objects and a list of types, and it parses the values into a range...">RowParser</a> takes a range of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects and a list of types, and it parses the values into a range of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a></code> objects with the specified types.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a potentially parameterized SQL statement.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,6 +142,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a6a6319e9526591fe4496f5e0876c99ec"><td class="memTemplItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; internal::PromoteLiteral&lt; Ts &gt;... &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a6a6319e9526591fe4496f5e0876c99ec">ParseRow</a> (std::array&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>, sizeof...(Ts)&gt; const &amp;array)</td></tr>
 <tr class="memdesc:a6a6319e9526591fe4496f5e0876c99ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a <code>std::array</code> of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects into the specified C++ types and returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> with all the parsed values.  <a href="#a6a6319e9526591fe4496f5e0876c99ec">More...</a><br /></td></tr>
 <tr class="separator:a6a6319e9526591fe4496f5e0876c99ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add996042aa194cecfa865f332dcd4181"><td class="memTemplParams" colspan="2">template&lt;typename... Ts, typename Range &gt; </td></tr>
+<tr class="memitem:add996042aa194cecfa865f332dcd4181"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#add996042aa194cecfa865f332dcd4181">MakeRowParser</a> (Range &amp;&amp;range) -&gt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt; decltype(std::begin(std::forward&lt; Range &gt;(range))), Ts... &gt;</td></tr>
+<tr class="memdesc:add996042aa194cecfa865f332dcd4181"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory function to create a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser takes a range of Value objects and a list of types, and it parses the values into a range...">RowParser</a></code> for the given range of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>s.  <a href="#add996042aa194cecfa865f332dcd4181">More...</a><br /></td></tr>
+<tr class="separator:add996042aa194cecfa865f332dcd4181"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a782a4a4617b9017586334db8e1eb6ff6"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a782a4a4617b9017586334db8e1eb6ff6">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;stmt)</td></tr>
 <tr class="separator:a782a4a4617b9017586334db8e1eb6ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8859ae3327162cdab57cbafd2bd92727"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a8859ae3327162cdab57cbafd2bd92727">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> const &amp;b)</td></tr>
@@ -353,6 +360,38 @@ static_assert(
     "");
 </pre> 
 <p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00254">254</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+
+</div>
+</div>
+<a id="add996042aa194cecfa865f332dcd4181"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add996042aa194cecfa865f332dcd4181">&#9670;&nbsp;</a></span>MakeRowParser()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Ts, typename Range &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">auto google::cloud::spanner::v0::MakeRowParser </td>
+          <td>(</td>
+          <td class="paramtype">Range &amp;&amp;&#160;</td>
+          <td class="paramname"><em>range</em></td><td>)</td>
+          <td> -&gt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt;decltype(std::begin(std::forward&lt;Range&gt;(range))), Ts...&gt; </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Factory function to create a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser takes a range of Value objects and a list of types, and it parses the values into a range...">RowParser</a></code> for the given range of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>s. </p>
+<p>See the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser takes a range of Value objects and a list of types, and it parses the values into a range...">RowParser</a></code> documentation above for an example usage.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Ts...</td><td>the column types for each <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a></code>. </td></tr>
+    <tr><td class="paramname">Range</td><td>the input range </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="row__parser_8h_source.html#l00151">151</a> of file <a class="el" href="row__parser_8h_source.html">row_parser.h</a>.</p>
 
 </div>
 </div>

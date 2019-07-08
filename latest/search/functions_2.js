@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['databaseadminclient',['DatabaseAdminClient',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#abdd9620e892e6be196c2abc1840eb40f',1,'google::cloud::spanner::v0::DatabaseAdminClient::DatabaseAdminClient(ClientOptions const &amp;client_options=ClientOptions())'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#a6c97182b1d2d562a7f09c42599e31275',1,'google::cloud::spanner::v0::DatabaseAdminClient::DatabaseAdminClient(std::shared_ptr&lt; internal::DatabaseAdminStub &gt; s)']]],
-  ['date',['Date',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html#aee96fb4664e22cad5a1927aade88e43a',1,'google::cloud::spanner::v0::Date::Date()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html#a1c3ace1b2fbf93fcbdc20e234d9ffabb',1,'google::cloud::spanner::v0::Date::Date(std::int64_t year, int month, int day)']]],
-  ['day',['day',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html#a45aa5e22c824b5ad02b81ccc58efc4ae',1,'google::cloud::spanner::v0::Date']]],
-  ['dropdatabase',['DropDatabase',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#a91faa307a79abe7867622e310d249ad9',1,'google::cloud::spanner::v0::DatabaseAdminClient']]]
+  ['clientoptions',['ClientOptions',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#ae97202f5b605eb64cdafd36d0b711e43',1,'google::cloud::spanner::v0::ClientOptions::ClientOptions()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#a1ef5cafb8727405a0c4c76ad9c4feeb1',1,'google::cloud::spanner::v0::ClientOptions::ClientOptions(std::shared_ptr&lt; grpc::ChannelCredentials &gt; c)']]],
+  ['createdatabase',['CreateDatabase',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#ab1f7de8302b4e31067b75ba97872f0ad',1,'google::cloud::spanner::v0::DatabaseAdminClient']]],
+  ['credentials',['credentials',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#a3dd8f218a33418ed16cd996e022f5d98',1,'google::cloud::spanner::v0::ClientOptions']]]
 ];
