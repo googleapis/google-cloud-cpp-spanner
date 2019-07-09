@@ -38,15 +38,19 @@ inline namespace SPANNER_CLIENT_NS {
  * returned. If there was no error, but the source is empty, an OK `Status`
  * with an empty `optional<Value>` should be returned.
  *
+ * @par Example
+ *
  * The following example shows how to create a `ValueSource` from a vector:
  *
- *     ValueSource MakeValueSource(std::vector<Value> const& v) {
- *       std::size_t i = 0;
- *       return [=]() mutable -> StatusOr<optional<Value>> {
- *           if (i == v.size()) return optional<Value>{};
- *           return {v[i++]};
- *       };
- *     }
+ * @code
+ * ValueSource MakeValueSource(std::vector<Value> const& v) {
+ *   std::size_t i = 0;
+ *   return [=]() mutable -> StatusOr<optional<Value>> {
+ *       if (i == v.size()) return optional<Value>{};
+ *       return {v[i++]};
+ *   };
+ * }
+ * @endcode
  */
 using ValueSource = std::function<StatusOr<optional<Value>>()>;
 
@@ -58,21 +62,23 @@ using ValueSource = std::function<StatusOr<optional<Value>>()>;
  * `ResultSet::rows<Ts...>` member function. Callers should iterate `RowParser`
  * using a range-for loop as follows.
  *
+ * @par Example
  *
- * Example:
+ * @code
+ * ValueSource vs = ...
+ * RowParser<bool, std::int64_t> rp(std::move(vs));
+ * for (auto row : rp) {
+ *   if (!row) {
+ *     // handle error
+ *     break;
+ *   }
+ *   bool b = row->get<0>();
+ *   std::int64_t i = row->get<1>();
  *
- *     ValueSource vs = ...
- *     RowParser<bool, std::int64_t> rp(std::move(vs));
- *     for (auto row : rp) {
- *       if (!row) {
- *         // handle error
- *       }
- *       bool b = row->get<0>();
- *       std::int64_t i = row->get<1>();
- *
- *       // Using C++17 structured bindings
- *       auto [b2, i2] = row->get();
- *     }
+ *   // Using C++17 structured bindings
+ *   auto [b2, i2] = row->get();
+ * }
+ * @endcode
  *
  * @tparam T the C++ type of the first column in each `Row` (required)
  * @tparam Ts... the types of the remaining columns in each `Row` (optional)
@@ -107,12 +113,11 @@ class RowParser {
           return *this;
         }
         if (!*v) {
-          if (i == 0) {
-            // No more Values, we've reached the end.
+          if (i == 0) {  // We've successfully reached the end.
             value_source_ = nullptr;
-          } else {
-            curr_ = Status(StatusCode::kUnknown, "incomplete row");
+            return *this;
           }
+          curr_ = Status(StatusCode::kUnknown, "incomplete row");
           return *this;
         }
         values[i] = **std::move(v);
@@ -128,8 +133,8 @@ class RowParser {
     }
 
     friend bool operator==(iterator const& a, iterator const& b) {
-      // Input iterators may only be compared to themselves and end.
-      // https://en.cppreference.com/w/cpp/named_req/InputIterator
+      // Input iterators may only be compared to (copies of) themselves and
+      // end. See https://en.cppreference.com/w/cpp/named_req/InputIterator
       return !a.value_source_ == !b.value_source_;  // Both end, or both not end
     }
     friend bool operator!=(iterator const& a, iterator const& b) {
@@ -152,7 +157,7 @@ class RowParser {
   /// Constructs a `RowParser` for the given `ValueSource`.
   explicit RowParser(ValueSource vs) : value_source_(std::move(vs)) {}
 
-  /// Copy and assignable.
+  // Copy and assignable.
   RowParser(RowParser const&) = default;
   RowParser& operator=(RowParser const&) = default;
   RowParser(RowParser&&) = default;
