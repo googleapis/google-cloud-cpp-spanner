@@ -65,7 +65,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle">
 <div class="title">row_parser.h File Reference</div>  </div>
 </div><!--header-->
@@ -76,6 +76,7 @@ $(function() {
 <code>#include &quot;google/cloud/status.h&quot;</code><br />
 <code>#include &quot;google/cloud/status_or.h&quot;</code><br />
 <code>#include &lt;array&gt;</code><br />
+<code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;tuple&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
 </div>
@@ -83,10 +84,10 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser&lt; ValueIterator, Ts &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser takes a range of Value objects and a list of types, and it parses the values into a range...">RowParser</a> takes a range of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects and a list of types, and it parses the values into a range of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a></code> objects with the specified types.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser&lt; T, Ts &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of Row&lt;Ts....">RowParser</a></code> converts the given <code>ValueSource</code> into a single-pass iterable range of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> objects.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html">google::cloud::spanner::v0::RowParser&lt; ValueIterator, Ts &gt;::iterator</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html">google::cloud::spanner::v0::RowParser&lt; T, Ts &gt;::iterator</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single-pass input iterator that coalesces multiple <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> results into a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code>.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -103,12 +104,11 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespacegoogle_1_1cloud_1_1spanner_1_1v0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The inlined, versioned namespace for the Cloud spanner C++ client APIs. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:add996042aa194cecfa865f332dcd4181"><td class="memTemplParams" colspan="2">template&lt;typename... Ts, typename Range &gt; </td></tr>
-<tr class="memitem:add996042aa194cecfa865f332dcd4181"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#add996042aa194cecfa865f332dcd4181">google::cloud::spanner::v0::MakeRowParser</a> (Range &amp;&amp;range) -&gt; RowParser&lt; decltype(std::begin(std::forward&lt; Range &gt;(range))), Ts... &gt;</td></tr>
-<tr class="memdesc:add996042aa194cecfa865f332dcd4181"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory function to create a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser takes a range of Value objects and a list of types, and it parses the values into a range...">RowParser</a></code> for the given range of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>s.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#add996042aa194cecfa865f332dcd4181">More...</a><br /></td></tr>
-<tr class="separator:add996042aa194cecfa865f332dcd4181"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a24c2736cb64e83e464aa7fff4bde52fb"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a24c2736cb64e83e464aa7fff4bde52fb">google::cloud::spanner::v0::ValueSource</a> = std::function&lt; StatusOr&lt; optional&lt; Value &gt; &gt;()&gt;</td></tr>
+<tr class="memdesc:a24c2736cb64e83e464aa7fff4bde52fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">A functor that consumes and yields a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> object from some source.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a24c2736cb64e83e464aa7fff4bde52fb">More...</a><br /></td></tr>
+<tr class="separator:a24c2736cb64e83e464aa7fff4bde52fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
