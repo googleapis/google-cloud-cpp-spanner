@@ -140,9 +140,9 @@ std::pair<google::spanner::v1::Type, google::protobuf::Value> ToProto(Value v);
  * @endcode
  *
  * @note While a STRUCT's (optional) field names are not part of its C++ type,
- * they are part of its Spanner STRUCT type. Array's (i.e., `std::vector`)
- * must contain a single element type, therefore it is an error to construct
- * a `std::vector` of `std::tuple` objects with differently named fields.
+ *   they are part of its Spanner STRUCT type. Array's (i.e., `std::vector`)
+ *   must contain a single element type, therefore it is an error to construct
+ *   a `std::vector` of `std::tuple` objects with differently named fields.
  */
 class Value {
  public:
@@ -210,9 +210,9 @@ class Value {
    * are not allowed.
    *
    * @warning If `T` is a `std::tuple` with field names (i.e., at least one of
-   * its element types is a `std::pair<std::string, T>`) then, all of the
-   * vector's elements must have exactly the same field names. Any mismatch in
-   * in field names results in undefined behavior.
+   *   its element types is a `std::pair<std::string, T>`) then, all of the
+   *   vector's elements must have exactly the same field names. Any mismatch
+   *   in in field names results in undefined behavior.
    */
   template <typename T>
   explicit Value(std::vector<T> v) : Value(PrivateConstructor{}, std::move(v)) {
@@ -348,11 +348,13 @@ class Value {
     return *get<T>();
   }
 
-  // Allows Google Test to print internal debugging information when test
-  // assertions fail.
-  //
-  // @warning This is intended for debugging and human consumption only, not
-  // machine consumption as the output format may change without notice.
+  /**
+   * Allows Google Test to print internal debugging information when test
+   * assertions fail.
+   *
+   * @warning This is intended for debugging and human consumption only, not
+   *   machine consumption as the output format may change without notice.
+   */
   friend void PrintTo(Value const& v, std::ostream* os);
 
  private:

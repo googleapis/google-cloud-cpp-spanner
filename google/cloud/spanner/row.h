@@ -183,15 +183,18 @@ class Row {
   std::tuple<Types...>&& get() && { return std::move(values_); }
   std::tuple<Types...> const&& get() const&& { return std::move(values_); }
 
-  // Equality operators.
+  /// @name Equality operators
+  ///@{
   friend bool operator==(Row const& a, Row const& b) {
     return a.values_ == b.values_;
   }
   friend bool operator!=(Row const& a, Row const& b) {
     return a.values_ != b.values_;
   }
+  ///@}
 
-  // Relational operators.
+  /// @name Relational operators
+  ///@{
   friend bool operator<(Row const& a, Row const& b) {
     return a.values_ < b.values_;
   }
@@ -204,6 +207,7 @@ class Row {
   friend bool operator>=(Row const& a, Row const& b) {
     return a.values_ >= b.values_;
   }
+  ///@}
 
  private:
   std::tuple<Types...> values_;
