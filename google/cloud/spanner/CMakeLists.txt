@@ -16,7 +16,6 @@
 
 find_package(google_cloud_cpp_common CONFIG REQUIRED)
 find_package(google_cloud_cpp_grpc_utils CONFIG REQUIRED)
-find_package(bigtable_client CONFIG REQUIRED)
 
 include(EnableClangTidy)
 include(EnableWerror)
