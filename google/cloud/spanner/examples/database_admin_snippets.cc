@@ -40,12 +40,11 @@ void CreateDatabase(std::vector<std::string> const& argv) {
   }
 
   //! [create-database] [START spanner_create_database]
-  namespace cs = google::cloud::spanner;
   using google::cloud::future;
   using google::cloud::StatusOr;
   [](std::string const& project_id, std::string const& instance_id,
      std::string const& database_id) {
-    cs::DatabaseAdminClient client;
+    google::cloud::spanner::DatabaseAdminClient client;
     future<StatusOr<google::spanner::admin::database::v1::Database>> future =
         client.CreateDatabase(project_id, instance_id, database_id,
                               {R"""(
@@ -78,10 +77,9 @@ void DropDatabase(std::vector<std::string> const& argv) {
   }
 
   //! [drop-database] [START spanner_drop_database]
-  namespace cs = google::cloud::spanner;
   [](std::string const& project_id, std::string const& instance_id,
      std::string const& database_id) {
-    cs::DatabaseAdminClient client;
+    google::cloud::spanner::DatabaseAdminClient client;
     google::cloud::Status status =
         client.DropDatabase(project_id, instance_id, database_id);
     if (!status.ok()) {
@@ -126,8 +124,8 @@ int RunOneCommand(std::vector<std::string> argv) {
     return 1;
   }
   std::string command_name = argv[1];
-  argv.erase(argv.begin());
-  argv.erase(argv.begin());
+  argv.erase(argv.begin());  // remove the program name from the list.
+  argv.erase(argv.begin());  // remove the command name from the list.
 
   auto command = commands.find(command_name);
   if (commands.end() == command) {
