@@ -22,23 +22,19 @@ inline namespace SPANNER_CLIENT_NS {
 class SqlPartitionTester {
  public:
   SqlPartitionTester() = default;
-  SqlPartitionTester(SqlPartition partition) :
-    partition_(std::move(partition)) {}
+  SqlPartitionTester(SqlPartition partition)
+      : partition_(std::move(partition)) {}
   SqlStatement const& sql_statement() const {
     return partition_.sql_statement();
   }
   std::string const& partition_token() const {
     return partition_.partition_token();
   }
-  std::string const& session_id() const {
-    return partition_.session_id();
-  }
+  std::string const& session_id() const { return partition_.session_id(); }
   std::string const& transaction_id() const {
     return partition_.transaction_id();
   }
-  SqlPartition partition() const {
-    return partition_;
-  }
+  SqlPartition partition() const { return partition_; }
 
  private:
   SqlPartition partition_;
@@ -56,8 +52,8 @@ TEST_F(SqlPartitionTest, MakeSqlPartition) {
   std::string session_id("session");
   std::string transaction_id("foo");
 
-  actual_partition_ = internal::MakeSqlPartition(transaction_id,
-      session_id, partition_token, SqlStatement(stmt, params));
+  actual_partition_ = internal::MakeSqlPartition(
+      transaction_id, session_id, partition_token, SqlStatement(stmt, params));
   EXPECT_EQ(stmt, actual_partition_.sql_statement().sql());
   EXPECT_EQ(params, actual_partition_.sql_statement().params());
   EXPECT_EQ(partition_token, actual_partition_.partition_token());
@@ -72,8 +68,8 @@ TEST_F(SqlPartitionTest, Constructor) {
   std::string session_id("session");
   std::string transaction_id("foo");
 
-  actual_partition_ = internal::MakeSqlPartition(transaction_id,
-      session_id, partition_token, SqlStatement(stmt, params));
+  actual_partition_ = internal::MakeSqlPartition(
+      transaction_id, session_id, partition_token, SqlStatement(stmt, params));
   EXPECT_EQ(stmt, actual_partition_.sql_statement().sql());
   EXPECT_EQ(params, actual_partition_.sql_statement().params());
   EXPECT_EQ(partition_token, actual_partition_.partition_token());
@@ -86,16 +82,15 @@ TEST_F(SqlPartitionTest, SerializeDeserialize) {
       "foo", "session", "token",
       SqlStatement("select * from foo where name = @name",
                    {{"name", Value("Bob")}})));
-  StatusOr<SqlPartition> partition =
-      DeserializeSqlPartition(SerializeSqlPartition(
-          expected_partition.partition()));
+  StatusOr<SqlPartition> partition = DeserializeSqlPartition(
+      SerializeSqlPartition(expected_partition.partition()));
 
   ASSERT_TRUE(partition.ok());
   actual_partition_ = SqlPartitionTester(*partition);
   EXPECT_EQ(expected_partition.partition_token(),
             actual_partition_.partition_token());
   EXPECT_EQ(expected_partition.transaction_id(),
-      actual_partition_.transaction_id());
+            actual_partition_.transaction_id());
   EXPECT_EQ(expected_partition.session_id(), actual_partition_.session_id());
   EXPECT_EQ(expected_partition.sql_statement().sql(),
             actual_partition_.sql_statement().sql());

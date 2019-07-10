@@ -68,7 +68,7 @@ target_include_directories(spanner_client
 target_link_libraries(spanner_client
                       PUBLIC google_cloud_cpp_grpc_utils google_cloud_cpp_common
                              googleapis-c++::spanner_protos)
- set_target_properties(spanner_client
+set_target_properties(spanner_client
                       PROPERTIES VERSION
                                  "${SPANNER_CLIENT_VERSION}"
                                  SOVERSION
