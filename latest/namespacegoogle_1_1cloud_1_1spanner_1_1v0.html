@@ -326,7 +326,7 @@ template&lt;std::size_t I, typename... Ts&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00206">206</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00220">220</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -350,7 +350,7 @@ template&lt;typename T &gt; </div>
 <p>Factory to construct a "null" <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a> of the specified type <code>T</code>. </p>
 <p>This is equivalent to passing an <code>optional&lt;T&gt;</code> without a value to the constructor, though this factory may be easier to invoke and result in clearer code at the call site. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00577">577</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00600">600</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -374,12 +374,9 @@ template&lt;typename... Ts&gt; </div>
 
 <p>Helper factory function to construct <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> objects holding the specified values. </p>
 <p>This is helpful because it deduces the types of the arguments, and it promotes integer and string literals to the necessary Spanner types <code>std::int64_t</code> and <code>std::string</code>, respectively.</p>
-<p>Example: </p><pre class="fragment">auto row = MakeRow(42, "hello");
-static_assert(
-    std::is_same&lt;Row&lt;std::int64_t, std::string&gt;, decltype(row)&gt;::value,
-    "");
-</pre> 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00254">254</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<dl class="section user"><dt>Example</dt><dd></dd></dl>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> row = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(42, <span class="stringliteral">&quot;hello&quot;</span>);</div><div class="line">static_assert(</div><div class="line">    std::is_same&lt;Row&lt;std::int64_t, std::string&gt;, decltype(row)&gt;::value, <span class="stringliteral">&quot;&quot;</span>);</div></div><!-- fragment --> 
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00269">269</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -539,12 +536,9 @@ template&lt;typename... Ts&gt; </div>
 
 <p>Parses a <code>std::array</code> of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects into the specified C++ types and returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> with all the parsed values. </p>
 <p>If the specified C++ type is unable to be extracted from a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>, an error <code>Status</code> is returned. The given array size must exactly match the number of specified C++ types.</p>
-<p>Example: </p><pre class="fragment">std::array&lt;Value, 3&gt; array = {Value(true), Value(42), Value("hello")};
-auto row = ParseRow&lt;bool, std::int64_t, std::string&gt;(array);
-assert(row.ok());
-assert(MakeRow(true, 42, "hello"), *row);
-</pre> 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00272">272</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<dl class="section user"><dt>Example</dt><dd></dd></dl>
+<div class="fragment"><div class="line">std::array&lt;Value, 3&gt; array = {Value(<span class="keyword">true</span>), Value(42), Value(<span class="stringliteral">&quot;hello&quot;</span>)};</div><div class="line"><span class="keyword">auto</span> row = ParseRow&lt;bool, std::int64_t, std::string&gt;(array);</div><div class="line">assert(row.ok());</div><div class="line">assert(<a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(<span class="keyword">true</span>, 42, <span class="stringliteral">&quot;hello&quot;</span>), *row);</div></div><!-- fragment --> 
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00289">289</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
