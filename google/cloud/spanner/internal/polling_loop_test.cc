@@ -50,6 +50,7 @@ TEST(PollingLoopTest, ImmediateSuccess) {
           [](grpc::ClientContext&,
              google::longrunning::GetOperationRequest const&) {
             // The polling operation should not be called for requests
+            // FAIL() fails here (he he) because it has an embedded `return;`
             EXPECT_TRUE(false);
             return make_status_or(google::longrunning::Operation{});
           },
