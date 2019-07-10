@@ -78,6 +78,7 @@ if [[ ${RUN_INTEGRATION_TESTS} == "yes" ]]; then
   # shellcheck disable=SC1091
   source /c/spanner-integration-tests-config.sh
   export GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json
+  export GOOGLE_CLOUD_CPP_AUTO_RUN_EXAMPLES=yes
 
   # Run the interation tests using Bazel to drive them.
   "${BAZEL_BIN}" test \
