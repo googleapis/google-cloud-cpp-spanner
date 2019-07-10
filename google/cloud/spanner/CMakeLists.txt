@@ -38,6 +38,7 @@ add_library(spanner_client
             internal/database_admin_stub.h
             internal/date.cc
             internal/date.h
+            internal/polling_loop.h
             internal/retry_loop.cc
             internal/retry_loop.h
             internal/spanner_stub.cc
