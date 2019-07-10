@@ -16,7 +16,6 @@
 #define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_SQL_PARTITION_H_
 
 #include "google/cloud/spanner/sql_statement.h"
-#include "google/cloud/spanner/transaction.h"
 #include <google/cloud/status_or.h>
 #include <memory>
 #include <string>
