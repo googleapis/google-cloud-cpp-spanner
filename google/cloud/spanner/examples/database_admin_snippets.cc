@@ -93,41 +93,7 @@ void DropDatabase(std::vector<std::string> const& argv) {
   (argv[0], argv[1], argv[2]);
 }
 
-void RunAll() {
-  auto project_id =
-      google::cloud::internal::GetEnv("GOOGLE_CLOUD_PROJECT").value_or("");
-  auto instance_id =
-      google::cloud::internal::GetEnv("GOOGLE_CLOUD_CPP_SPANNER_INSTANCE")
-          .value_or("");
-
-  if (project_id.empty()) {
-    throw std::runtime_error("GOOGLE_CLOUD_PROJECT is not set or is empty");
-  }
-  if (instance_id.empty()) {
-    throw std::runtime_error(
-        "GOOGLE_CLOUD_CPP_SPANNER_INSTANCE is not set or is empty");
-  }
-  auto generator = google::cloud::internal::MakeDefaultPRNG();
-  std::string database_id = RandomDatabaseName(generator);
-
-  CreateDatabase({project_id, instance_id, database_id});
-  DropDatabase({project_id, instance_id, database_id});
-}
-
-bool AutoRun() {
-  return google::cloud::internal::GetEnv("GOOGLE_CLOUD_CPP_AUTO_RUN_EXAMPLES")
-             .value_or("") == "yes";
-}
-
-}  // namespace
-
-int main(int ac, char* av[]) try {
-  if (AutoRun()) {
-    RunAll();
-    return 0;
-  }
-
-  std::vector<std::string> argv(av, av + ac);
+int RunOneCommand(std::vector<std::string> argv) {
   using CommandType = std::function<void(std::vector<std::string> const&)>;
 
   std::map<std::string, CommandType> commands = {
@@ -172,7 +138,44 @@ int main(int ac, char* av[]) try {
 
   // Run the command.
   command->second(argv);
+  return 0;
+}
 
+void RunAll() {
+  auto project_id =
+      google::cloud::internal::GetEnv("GOOGLE_CLOUD_PROJECT").value_or("");
+  auto instance_id =
+      google::cloud::internal::GetEnv("GOOGLE_CLOUD_CPP_SPANNER_INSTANCE")
+          .value_or("");
+
+  if (project_id.empty()) {
+    throw std::runtime_error("GOOGLE_CLOUD_PROJECT is not set or is empty");
+  }
+  if (instance_id.empty()) {
+    throw std::runtime_error(
+        "GOOGLE_CLOUD_CPP_SPANNER_INSTANCE is not set or is empty");
+  }
+  auto generator = google::cloud::internal::MakeDefaultPRNG();
+  std::string database_id = RandomDatabaseName(generator);
+
+  RunOneCommand({"", "create-database", project_id, instance_id, database_id});
+  RunOneCommand({"", "drop-database", project_id, instance_id, database_id});
+}
+
+bool AutoRun() {
+  return google::cloud::internal::GetEnv("GOOGLE_CLOUD_CPP_AUTO_RUN_EXAMPLES")
+             .value_or("") == "yes";
+}
+
+}  // namespace
+
+int main(int ac, char* av[]) try {
+  if (AutoRun()) {
+    RunAll();
+    return 0;
+  }
+
+  return RunOneCommand({av, av + ac});
 } catch (std::exception const& ex) {
   std::cerr << ex.what() << "\n";
   return 1;
