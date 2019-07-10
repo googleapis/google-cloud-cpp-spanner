@@ -26,10 +26,10 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 class SqlPartition;
 namespace internal {
-SqlPartition MakeSqlPartition(std::string transaction_id,
-                              std::string session_id,
-                              std::string partition_token,
-                              SqlStatement sql_statement);
+SqlPartition MakeSqlPartition(std::string const& transaction_id,
+                              std::string const& session_id,
+                              std::string const& partition_token,
+                              SqlStatement const& sql_statement);
 }  // namespace internal
 
 /**
@@ -62,10 +62,10 @@ class SqlPartition {
 
  private:
   friend class SqlPartitionTester;
-  friend SqlPartition internal::MakeSqlPartition(std::string transaction_id,
-                                                 std::string session_id,
-                                                 std::string partition_token,
-                                                 SqlStatement sql_statement);
+  friend SqlPartition internal::MakeSqlPartition(std::string const& transaction_id,
+                                                 std::string const& session_id,
+                                                 std::string const& partition_token,
+                                                 SqlStatement const& sql_statement);
   friend std::string SerializeSqlPartition(SqlPartition const& sql_partition);
   friend google::cloud::StatusOr<SqlPartition> DeserializeSqlPartition(
       std::string const& serialized_sql_partition);

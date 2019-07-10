@@ -86,10 +86,10 @@ google::cloud::StatusOr<SqlPartition> DeserializeSqlPartition(
   return {sql_partition};
 }
 namespace internal {
-SqlPartition MakeSqlPartition(std::string transaction_id,
-                              std::string session_id,
-                              std::string partition_token,
-                              SqlStatement sql_statement) {
+SqlPartition MakeSqlPartition(std::string const& transaction_id,
+                              std::string const& session_id,
+                              std::string const& partition_token,
+                              SqlStatement const& sql_statement) {
   return SqlPartition(transaction_id, session_id, partition_token,
                       sql_statement);
 }
