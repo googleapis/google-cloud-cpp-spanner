@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['onfailure',['OnFailure',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1PollingPolicy.html#a92ca9c4de2b03633f9bd49cb79f618d7',1,'google::cloud::spanner::v0::PollingPolicy::OnFailure()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1GenericPollingPolicy.html#ae62739a58c103a4f0d3d3a533ce870a4',1,'google::cloud::spanner::v0::GenericPollingPolicy::OnFailure()']]],
   ['operator_20t',['operator T',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#a08507d428612a190be8d09d3cef858b0',1,'google::cloud::spanner::v0::Value']]],
   ['operator_21_3d',['operator!=',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#abbbd3a1a1a5c20188bc5bb5a45be280f',1,'google::cloud::spanner::v0::Row::operator!=()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html#a1f76f6902f2d084a4219bac5dbc12ed9',1,'google::cloud::spanner::v0::RowParser::iterator::operator!=()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#a60e123bc2bfa61732d17a90cc7365e10',1,'google::cloud::spanner::v0::Value::operator!=()'],['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a303b93745482b9d4430e07a05502da07',1,'google::cloud::spanner::v0::operator!=()']]],
   ['operator_2a',['operator*',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html#a672c959e955e4dfa27d49e87c75893e3',1,'google::cloud::spanner::v0::RowParser::iterator']]],
