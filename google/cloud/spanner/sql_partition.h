@@ -24,8 +24,52 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
+
 class SqlPartition;
+/**
+ * Serializes an instance of `SqlPartition` for transmission to another process.
+ *
+ * @param sql_partition - instance to be serialized.
+ *
+ * @par Example
+ *
+ * @code
+ * spanner::SqlStatement stmt("select * from Albums");
+ * std::vector<spanner::SqlPartition> partitions =
+ *   spanner_client.PartitionSql(stmt);
+ * for (auto const& partition : partitions) {
+ *   auto serialized_partition = spanner::SerializeSqlPartition(partition);
+ *   if (serialized_partition.ok()) {
+ *     SendToRemoteMachine(*serialized_partition);
+ *   }
+ * }
+ * @endcode
+ */
+StatusOr<std::string> SerializeSqlPartition(SqlPartition const& sql_partition);
+
+/**
+ * Deserialized the provided string into a `SqlPartition`, if able.
+ *
+ * Returned `Status` should be checked to determine if deserialization was
+ * successful.
+ *
+ * @param serialized_sql_partition
+ *
+ * @par Example
+ *
+ * @code
+ * std::string serialized_partition = ReceiveFromRemoteMachine();
+ * spanner::SqlPartition partition =
+ *   spanner::DeserializeSqlPartition(serialized_partition);
+ * auto rows = spanner_client.ExecuteSql(partition);
+ * @endcode
+ */
+StatusOr<SqlPartition> DeserializeSqlPartition(
+    std::string const& serialized_sql_partition);
+
+// Internal implementation details that callers should not use.
 namespace internal {
+
 SqlPartition MakeSqlPartition(std::string const& transaction_id,
                               std::string const& session_id,
                               std::string const& partition_token,
@@ -56,7 +100,6 @@ class SqlPartition {
 
   /**
    * Accessor for the `SqlStatement` associated with this `SqlPartition`.
-   * @return SqlStatement
    */
   SqlStatement const& sql_statement() const { return sql_statement_; }
 
@@ -65,8 +108,9 @@ class SqlPartition {
   friend SqlPartition internal::MakeSqlPartition(
       std::string const& transaction_id, std::string const& session_id,
       std::string const& partition_token, SqlStatement const& sql_statement);
-  friend std::string SerializeSqlPartition(SqlPartition const& sql_partition);
-  friend google::cloud::StatusOr<SqlPartition> DeserializeSqlPartition(
+  friend StatusOr<std::string> SerializeSqlPartition(
+      SqlPartition const& sql_partition);
+  friend StatusOr<SqlPartition> DeserializeSqlPartition(
       std::string const& serialized_sql_partition);
 
   explicit SqlPartition(std::string transaction_id, std::string session_id,
@@ -83,45 +127,6 @@ class SqlPartition {
   std::string partition_token_;
   SqlStatement sql_statement_;
 };
-
-/**
- * Serializes an instance of `SqlPartition` for transmission to another process.
- * @param sql_partition - instance to be serialized.
- * @return `std::string`
- *
- * @par Example:
- *
- * @code
- * spanner::SqlStatement stmt("select * from Albums");
- * std::vector<spanner::SqlPartition> partitions =
- *   spanner_client.PartitionSql(stmt);
- * for (auto const& partition : partitions) {
- *   SendToRemoteMachine(spanner::SerializeSqlPartition(partition));
- * }
- * @endcode
- */
-std::string SerializeSqlPartition(SqlPartition const& sql_partition);
-
-/**
- * Deserialized the provided string into a `SqlPartition`, if able.
- *
- * Returned `Status` should be checked to determine if deserialization was
- * successful.
- *
- * @param serialized_sql_partition
- * @return `google::cloud::StatusOr<SqlPartition>`
- *
- * @par Example:
- *
- * @code
- * std::string serialized_partition = ReceiveFromRemoteMachine();
- * spanner::SqlPartition partition =
- *   spanner::DeserializeSqlPartition(serialized_partition);
- * auto rows = spanner_client.ExecuteSql(partition);
- * @endcode
- */
-google::cloud::StatusOr<SqlPartition> DeserializeSqlPartition(
-    std::string const& serialized_sql_partition);
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner

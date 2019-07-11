@@ -29,7 +29,7 @@ SqlPartition::SqlPartition(std::string transaction_id, std::string session_id,
       partition_token_(std::move(partition_token)),
       sql_statement_(std::move(sql_statement)) {}
 
-std::string SerializeSqlPartition(SqlPartition const& sql_partition) {
+StatusOr<std::string> SerializeSqlPartition(SqlPartition const& sql_partition) {
   google::spanner::v1::ExecuteSqlRequest proto;
   proto.set_partition_token(sql_partition.partition_token());
   proto.set_session(sql_partition.session_id());
@@ -37,29 +37,34 @@ std::string SerializeSqlPartition(SqlPartition const& sql_partition) {
   proto.set_sql(sql_partition.sql_statement_.sql());
 
   for (auto const& param : sql_partition.sql_statement_.params()) {
-    auto param_name = param.first;
-    auto type_value = internal::ToProto(param.second);
+    auto const& param_name = param.first;
+    auto const& type_value = internal::ToProto(param.second);
     (*proto.mutable_params()->mutable_fields())[param_name] = type_value.second;
     (*proto.mutable_param_types())[param_name] = type_value.first;
   }
   std::string serialized_proto;
-  proto.SerializeToString(&serialized_proto);
-  return serialized_proto;
+  if (proto.SerializeToString(&serialized_proto)) {
+    return serialized_proto;
+  }
+  return Status(StatusCode::kUnknown, "Failed to serialize SqlPartition");
 }
 
-google::cloud::StatusOr<SqlPartition> DeserializeSqlPartition(
+StatusOr<SqlPartition> DeserializeSqlPartition(
     std::string const& serialized_sql_partition) {
   google::spanner::v1::ExecuteSqlRequest proto;
-  proto.ParseFromString(serialized_sql_partition);
+  if (!proto.ParseFromString(serialized_sql_partition)) {
+    return Status(StatusCode::kUnknown,
+        "Failed to deserialize into SqlPartition");
+  }
 
   SqlStatement::ParamType sql_parameters;
   if (proto.has_params()) {
-    auto param_types = proto.param_types();
+    auto const& param_types = proto.param_types();
     for (auto const& param : proto.params().fields()) {
-      auto param_name = param.first;
+      auto const& param_name = param.first;
       auto iter = param_types.find(param_name);
       if (iter != param_types.end()) {
-        auto param_type = iter->second;
+        auto const& param_type = iter->second;
         sql_parameters.insert(std::make_pair(
             param_name, internal::FromProto(param_type, param.second)));
       }
@@ -69,8 +74,9 @@ google::cloud::StatusOr<SqlPartition> DeserializeSqlPartition(
   SqlPartition sql_partition(proto.transaction().id(), proto.session(),
                              proto.partition_token(),
                              SqlStatement(proto.sql(), sql_parameters));
-  return {sql_partition};
+  return sql_partition;
 }
+
 namespace internal {
 SqlPartition MakeSqlPartition(std::string const& transaction_id,
                               std::string const& session_id,
