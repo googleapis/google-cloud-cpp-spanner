@@ -29,20 +29,6 @@ SqlPartition::SqlPartition(std::string transaction_id, std::string session_id,
       partition_token_(std::move(partition_token)),
       sql_statement_(std::move(sql_statement)) {}
 
-std::string const& SqlPartition::PartitionToken() const {
-  return partition_token_;
-}
-
-SqlStatement const& SqlPartition::sql_statement() const {
-  return sql_statement_;
-}
-
-// std::string const& SqlPartition::transaction_id() const {
-//  return transaction_id_;
-//}
-
-std::string const& SqlPartition::session_id() const { return session_id_; }
-
 std::string SerializeSqlPartition(SqlPartition const& sql_partition) {
   google::spanner::v1::ExecuteSqlRequest proto;
   proto.set_partition_token(sql_partition.partition_token());
