@@ -33,7 +33,7 @@ class SqlPartitionTester {
   std::string const& TransactionId() const {
     return partition_.transaction_id();
   }
-  SqlPartition partition() const { return partition_; }
+  SqlPartition Partition() const { return partition_; }
 
  private:
   SqlPartition partition_;
@@ -79,7 +79,7 @@ TEST(SqlPartitionTest, SerializeDeserialize) {
       SqlStatement("select * from foo where name = @name",
                    {{"name", Value("Bob")}})));
   StatusOr<SqlPartition> partition = DeserializeSqlPartition(
-      *(SerializeSqlPartition(expected_partition.partition())));
+      *(SerializeSqlPartition(expected_partition.Partition())));
 
   ASSERT_TRUE(partition.ok());
   SqlPartitionTester actual_partition = SqlPartitionTester(*partition);
