@@ -47,7 +47,7 @@ StatusOr<std::string> SerializeSqlPartition(SqlPartition const& sql_partition) {
     return serialized_proto;
   }
   return Status(StatusCode::kInvalidArgument,
-      "Failed to serialize SqlPartition");
+                "Failed to serialize SqlPartition");
 }
 
 StatusOr<SqlPartition> DeserializeSqlPartition(
@@ -67,8 +67,8 @@ StatusOr<SqlPartition> DeserializeSqlPartition(
       if (iter != param_types.end()) {
         auto const& param_type = iter->second;
         sql_parameters.insert(std::make_pair(
-            param_name, internal::FromProto(param_type,
-                std::move(param.second))));
+            param_name,
+            internal::FromProto(param_type, std::move(param.second))));
       }
     }
   }
