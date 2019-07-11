@@ -54,7 +54,7 @@ StatusOr<SqlPartition> DeserializeSqlPartition(
   google::spanner::v1::ExecuteSqlRequest proto;
   if (!proto.ParseFromString(serialized_sql_partition)) {
     return Status(StatusCode::kUnknown,
-        "Failed to deserialize into SqlPartition");
+                  "Failed to deserialize into SqlPartition");
   }
 
   SqlStatement::ParamType sql_parameters;

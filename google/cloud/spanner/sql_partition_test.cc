@@ -25,9 +25,7 @@ class SqlPartitionTester {
   SqlPartitionTester() = default;
   SqlPartitionTester(SqlPartition partition)
       : partition_(std::move(partition)) {}
-  SqlStatement const& Statement() const {
-    return partition_.sql_statement();
-  }
+  SqlStatement const& Statement() const { return partition_.sql_statement(); }
   std::string const& PartitionToken() const {
     return partition_.partition_token();
   }
@@ -98,12 +96,12 @@ TEST(SqlPartitionTest, SerializeDeserialize) {
 
 TEST(SqlPartitionTest, FailedDeserialize) {
   std::string bad_serialized_proto("ThisIsNotTheProtoYouAreLookingFor");
-  StatusOr<SqlPartition> partition = DeserializeSqlPartition(
-      bad_serialized_proto);
+  StatusOr<SqlPartition> partition =
+      DeserializeSqlPartition(bad_serialized_proto);
   EXPECT_FALSE(partition.ok());
 }
 
-}
+}  // namespace
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
 }  // namespace cloud
