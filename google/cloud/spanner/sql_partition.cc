@@ -46,27 +46,29 @@ StatusOr<std::string> SerializeSqlPartition(SqlPartition const& sql_partition) {
   if (proto.SerializeToString(&serialized_proto)) {
     return serialized_proto;
   }
-  return Status(StatusCode::kUnknown, "Failed to serialize SqlPartition");
+  return Status(StatusCode::kInvalidArgument,
+      "Failed to serialize SqlPartition");
 }
 
 StatusOr<SqlPartition> DeserializeSqlPartition(
     std::string const& serialized_sql_partition) {
   google::spanner::v1::ExecuteSqlRequest proto;
   if (!proto.ParseFromString(serialized_sql_partition)) {
-    return Status(StatusCode::kUnknown,
+    return Status(StatusCode::kInvalidArgument,
                   "Failed to deserialize into SqlPartition");
   }
 
   SqlStatement::ParamType sql_parameters;
   if (proto.has_params()) {
     auto const& param_types = proto.param_types();
-    for (auto const& param : proto.params().fields()) {
+    for (auto& param : proto.params().fields()) {
       auto const& param_name = param.first;
       auto iter = param_types.find(param_name);
       if (iter != param_types.end()) {
         auto const& param_type = iter->second;
         sql_parameters.insert(std::make_pair(
-            param_name, internal::FromProto(param_type, param.second)));
+            param_name, internal::FromProto(param_type,
+                std::move(param.second))));
       }
     }
   }

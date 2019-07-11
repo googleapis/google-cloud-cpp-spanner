@@ -48,7 +48,7 @@ class SqlPartition;
 StatusOr<std::string> SerializeSqlPartition(SqlPartition const& sql_partition);
 
 /**
- * Deserialized the provided string into a `SqlPartition`, if able.
+ * Deserializes the provided string into a `SqlPartition`, if able.
  *
  * Returned `Status` should be checked to determine if deserialization was
  * successful.
