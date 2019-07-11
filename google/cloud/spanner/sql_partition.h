@@ -58,7 +58,7 @@ class SqlPartition {
    * Accessor for the `SqlStatement` associated with this `SqlPartition`.
    * @return SqlStatement
    */
-  SqlStatement const& sql_statement() const {return sql_statement_;}
+  SqlStatement const& sql_statement() const { return sql_statement_; }
 
  private:
   friend class SqlPartitionTester;
@@ -74,8 +74,8 @@ class SqlPartition {
                         SqlStatement sql_statement);
 
   // Accessor methods for use by friends.
-  std::string const& partition_token() const { return partition_token_;}
-  std::string const& session_id() const {return session_id_;}
+  std::string const& partition_token() const { return partition_token_; }
+  std::string const& session_id() const { return session_id_; }
   std::string const& transaction_id() const { return transaction_id_; }
 
   std::string transaction_id_;
