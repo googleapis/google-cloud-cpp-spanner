@@ -74,9 +74,9 @@ class SqlPartition {
                         SqlStatement sql_statement);
 
   // Accessor methods for use by friends.
-  std::string const& partition_token() const;
+  std::string const& PartitionToken() const;
   std::string const& session_id() const;
-  std::string const& transaction_id() const;
+  std::string const& transaction_id() const { return transaction_id_; }
 
   std::string transaction_id_;
   std::string session_id_;

@@ -29,7 +29,7 @@ SqlPartition::SqlPartition(std::string transaction_id, std::string session_id,
       partition_token_(std::move(partition_token)),
       sql_statement_(std::move(sql_statement)) {}
 
-std::string const& SqlPartition::partition_token() const {
+std::string const& SqlPartition::PartitionToken() const {
   return partition_token_;
 }
 
@@ -37,9 +37,9 @@ SqlStatement const& SqlPartition::sql_statement() const {
   return sql_statement_;
 }
 
-std::string const& SqlPartition::transaction_id() const {
-  return transaction_id_;
-}
+// std::string const& SqlPartition::transaction_id() const {
+//  return transaction_id_;
+//}
 
 std::string const& SqlPartition::session_id() const { return session_id_; }
 
