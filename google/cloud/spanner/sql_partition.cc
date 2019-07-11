@@ -61,7 +61,7 @@ StatusOr<SqlPartition> DeserializeSqlPartition(
   SqlStatement::ParamType sql_parameters;
   if (proto.has_params()) {
     auto const& param_types = proto.param_types();
-    for (auto& param : proto.mutable_params()->fields()) {
+    for (auto& param : *(proto.mutable_params()->mutable_fields())) {
       auto const& param_name = param.first;
       auto iter = param_types.find(param_name);
       if (iter != param_types.end()) {
