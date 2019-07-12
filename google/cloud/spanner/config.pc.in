@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,16 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -eu
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}/@CMAKE_INSTALL_BINDIR@
+libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
 
-# Create a Docker image with all the dependencies necessary to build the
-# project.
-if [[ -z "${PROJECT_ROOT+x}" ]]; then
-  readonly PROJECT_ROOT="$(cd "$(dirname "$0")/../.."; pwd)"
-fi
-source "${PROJECT_ROOT}/ci/kokoro/define-docker-variables.sh"
+Name: @GOOGLE_CLOUD_SPANNER_PC_NAME@
+Description: @GOOGLE_CLOUD_SPANNER_PC_DESCRIPTION@
+Requires: @GOOGLE_CLOUD_SPANNER_PC_REQUIRES@
+Version: @DOXYGEN_PROJECT_NUMBER@
 
-cd "${PROJECT_ROOT}"
-sudo docker build -t "${IMAGE}:tip" \
-     --build-arg DISTRO_VERSION="${DISTRO_VERSION}" \
-     -f "ci/kokoro/Dockerfile.${DISTRO}" .
+Libs: -L${libdir} @GOOGLE_CLOUD_SPANNER_PC_LIBS@
+Cflags: -I${includedir}

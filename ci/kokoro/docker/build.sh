@@ -55,6 +55,7 @@ if [[ "${BUILD_NAME}" = "clang-tidy" ]]; then
   export CHECK_STYLE=yes
   export GENERATE_DOCS=yes
   export CLANG_TIDY=yes
+  export TEST_INSTALL=yes
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "integration" ]]; then
   export CC=gcc
@@ -163,9 +164,14 @@ echo "================================================================"
 echo "Running the full build $(date)."
 # The default user for a Docker container has uid 0 (root). To avoid creating
 # root-owned files in the build directory we tell docker to use the current
-# user ID, if known.
-docker_uid="${UID:-0}"
-docker_user="${USER:-root}"
+# user ID, if known. TEST_INSTALL=yes builds work better as root, but other
+# builds should avoid creating root-owned files in the build directory.
+docker_uid=0
+docker_user=root
+if [ "${TEST_INSTALL:-}" != "yes" ]; then
+  docker_uid="${UID:-0}"
+  docker_user="${USER:-root}"
+fi
 docker_home_prefix="${PWD}/cmake-out/home"
 if [[ "${docker_uid}" == "0" ]]; then
   docker_home_prefix="${PWD}/cmake-out/root"
@@ -212,6 +218,10 @@ docker_flags=(
     # invalid links to functions or types). Currently only the CMake builds use
     # this flag.
     "--env" "GENERATE_DOCS=${GENERATE_DOCS:-}"
+
+    # If set, execute tests to verify `make install` works and produces working
+    # installations.
+    "--env" "TEST_INSTALL=${TEST_INSTALL:-}"
 
     # If set to 'yes', run compile with code coverage flags. Currently only the
     # CMake builds use this flag.
