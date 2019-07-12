@@ -25,4 +25,4 @@ source "${PROJECT_ROOT}/ci/kokoro/define-docker-variables.sh"
 cd "${PROJECT_ROOT}"
 sudo docker build -t "${IMAGE}:tip" \
      --build-arg DISTRO_VERSION="${DISTRO_VERSION}" \
-     -f "ci/kokoro/Dockerfile.${DISTRO}" .
+     -f "ci/kokoro/Dockerfile.${DISTRO}" ci
