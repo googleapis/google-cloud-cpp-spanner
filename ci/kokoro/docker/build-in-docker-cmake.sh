@@ -58,7 +58,8 @@ if [[ "${CODE_COVERAGE:-}" == "yes" ]]; then
     "-DCMAKE_BUILD_TYPE=Coverage")
 fi
 
-cmake "-H${SOURCE_DIR}" "-B${BINARY_DIR}" "${cmake_flags[@]}"
+cmake "-DCMAKE_INSTALL_PREFIX=$HOME/staging" \
+      "-H${SOURCE_DIR}" "-B${BINARY_DIR}" "${cmake_flags[@]}"
 cmake --build "${BINARY_DIR}" -- -j "$(nproc)"
 
 # When user a super-build the tests are hidden in a subdirectory. We can tell
@@ -95,6 +96,13 @@ if [[ ${RUN_INTEGRATION_TESTS} == "yes" ]]; then
       -L integration-tests \
       --output-on-failure
   echo "================================================================"
+fi
+
+if [[ "${TEST_INSTALL:-}" = "yes" ]]; then
+    echo "================================================================"
+    echo "Running the test install $(date)"
+    echo "================================================================"
+    cmake --build "${BINARY_DIR}" --target install || echo "FAILED"
 fi
 
 echo "================================================================"

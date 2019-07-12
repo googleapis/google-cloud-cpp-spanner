@@ -55,6 +55,7 @@ if [[ "${BUILD_NAME}" = "clang-tidy" ]]; then
   export CHECK_STYLE=yes
   export GENERATE_DOCS=yes
   export CLANG_TIDY=yes
+  export TEST_INSTALL=yes
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "integration" ]]; then
   export CC=gcc
@@ -212,6 +213,10 @@ docker_flags=(
     # invalid links to functions or types). Currently only the CMake builds use
     # this flag.
     "--env" "GENERATE_DOCS=${GENERATE_DOCS:-}"
+
+    # If set, execute tests to verify `make install` works and produces working
+    # installations.
+    "--env" "TEST_INSTALL=${TEST_INSTALL:-}"
 
     # If set to 'yes', run compile with code coverage flags. Currently only the
     # CMake builds use this flag.
