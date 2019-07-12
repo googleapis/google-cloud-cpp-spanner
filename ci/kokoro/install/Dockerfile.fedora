@@ -20,7 +20,7 @@ FROM fedora:${DISTRO_VERSION} AS devtools
 # tools to compile the dependencies:
 RUN dnf makecache && \
     dnf install -y cmake gcc-c++ git make grpc-devel grpc-plugins \
-        libcurl-devel openssl-devel pkgconfig protobuf-compiler \ 
+        libcurl-devel openssl-devel pkgconfig protobuf-compiler \
         tar wget zlib-devel
 
 # There is no Fedora package for CRC32C, download and install from source.
