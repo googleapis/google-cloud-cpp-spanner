@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ARG DISTRO_VERSION=30
-FROM fedora:${DISTRO_VERSION}
+FROM fedora:${DISTRO_VERSION} AS devtools
 
 # Fedora includes packages for gRPC, libcurl, and OpenSSL that are recent enough
 # for `google-cloud-cpp`. Install these packages and additional development
@@ -60,6 +60,8 @@ RUN cmake -H. -Bcmake-out \
     -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON
 RUN cmake --build cmake-out -- -j $(nproc)
 RUN cmake --build cmake-out --target install
+
+FROM devtools AS install
 
 WORKDIR /home/build/google-cloud-cpp-spanner
 COPY . /home/build/google-cloud-cpp-spanner
