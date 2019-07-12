@@ -19,23 +19,9 @@ FROM fedora:${DISTRO_VERSION}
 # for `google-cloud-cpp`. Install these packages and additional development
 # tools to compile the dependencies:
 RUN dnf makecache && \
-    dnf install -y clang clang-tools-extra cmake doxygen findutils gcc-c++ git \
-        grpc-devel grpc-plugins libcxx-devel libcxxabi-devel libcurl-devel \
-        make openssl-devel pkgconfig protobuf-compiler python-pip ShellCheck \
+    dnf install -y cmake gcc-c++ git make grpc-devel grpc-plugins \
+        libcurl-devel openssl-devel pkgconfig protobuf-compiler \ 
         tar wget zlib-devel
-
-# Install the the buildifier tool, which does not compile with the default
-# golang compiler for Ubuntu 16.04 and Ubuntu 18.04.
-RUN wget -q -O /usr/bin/buildifier https://github.com/bazelbuild/buildtools/releases/download/0.17.2/buildifier
-RUN chmod 755 /usr/bin/buildifier
-
-# Install cmake_format to automatically format the CMake list files.
-#     https://github.com/cheshirekow/cmake_format
-# Pin this to an specific version because the formatting changes when the
-# "latest" version is updated, and we do not want the builds to break just
-# because some third party changed something.
-RUN pip install --upgrade pip
-RUN pip install numpy cmake_format==0.5.1
 
 # There is no Fedora package for CRC32C, download and install from source.
 WORKDIR /var/tmp/build
