@@ -65,7 +65,8 @@ FROM devtools AS install
 
 WORKDIR /home/build/google-cloud-cpp-spanner
 COPY . /home/build/google-cloud-cpp-spanner
-RUN cmake -H. -Bcmake-out
+RUN cmake -DCMAKE_INSTALL_PREFIX=/home/build/google-cloud-spanner-install \
+    -H. -Bcmake-out
 RUN cmake --build cmake-out -- -j $(nproc)
 WORKDIR /home/build/google-cloud-cpp-spanner/cmake-out
 RUN ctest -LE integration-tests --output-on-failure
@@ -73,6 +74,9 @@ RUN cmake --build . --target install
 
 # Verify that the installed files are actually usable
 WORKDIR /home/build/test-install-cmake
+ENV LD_LIBRARY_PATH=/home/build/google-cloud-spanner-install/lib64
 COPY ci/test-install /home/build/test-install-cmake
-RUN env -u PKG_CONFIG_PATH cmake -H. -Bcmake-out
+RUN env -u PKG_CONFIG_PATH cmake \
+    -DCMAKE_PREFIX_PATH=/home/build/google-cloud-spanner-install \
+    -H. -Bcmake-out
 RUN cmake --build cmake-out -- -j $(nproc)
