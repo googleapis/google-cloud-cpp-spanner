@@ -18,7 +18,7 @@ include(EnableClangTidy)
 include(EnableWerror)
 
 function (spanner_client_define_samples)
-    set(spanner_client_samples database_admin_snippets.cc)
+    set(spanner_client_samples database_admin_samples.cc)
 
     # Export the list of unit tests to a .bzl file so we do not need to maintain
     # the list in two places.
