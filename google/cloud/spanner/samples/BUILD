@@ -18,7 +18,7 @@ package(default_visibility = ["//visibility:public"])
 
 licenses(["notice"])  # Apache 2.0
 
-load(":spanner_client_examples.bzl", "spanner_client_examples")
+load(":spanner_client_samples.bzl", "spanner_client_samples")
 
 [cc_test(
     name = "spanner_client_" + test.replace("/", "_").replace(".cc", ""),
@@ -28,4 +28,4 @@ load(":spanner_client_examples.bzl", "spanner_client_examples")
         "//google/cloud/spanner:spanner_client",
         "@com_github_googleapis_google_cloud_cpp//google/cloud:google_cloud_cpp_common",
     ],
-) for test in spanner_client_examples]
+) for test in spanner_client_samples]
