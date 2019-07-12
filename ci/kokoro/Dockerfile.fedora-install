@@ -74,17 +74,3 @@ RUN cmake -H. -Bcmake-out \
     -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON
 RUN cmake --build cmake-out -- -j $(nproc)
 RUN cmake --build cmake-out --target install
-
-WORKDIR /home/build/google-cloud-cpp-spanner
-COPY . /home/build/google-cloud-cpp-spanner
-RUN cmake -H. -Bcmake-out
-RUN cmake --build cmake-out -- -j $(nproc)
-WORKDIR /home/build/google-cloud-cpp-spanner/cmake-out
-RUN ctest -LE integration-tests --output-on-failure
-RUN cmake --build . --target install
-
-# Verify that the installed files are actually usable
-WORKDIR /home/build/test-install-cmake
-COPY ci/test-install /home/build/test-install-cmake
-RUN env -u PKG_CONFIG_PATH cmake -H. -Bcmake-out
-RUN cmake --build cmake-out -- -j $(nproc)
