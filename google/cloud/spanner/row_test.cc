@@ -183,6 +183,7 @@ TEST(Row, ParseRowEmpty) {
   auto const row = ParseRow(array);
   EXPECT_TRUE(row.ok());
   EXPECT_EQ(MakeRow(), *row);
+  EXPECT_EQ(array, row->values());
 }
 
 TEST(Row, ParseRowOneValue) {
@@ -190,6 +191,7 @@ TEST(Row, ParseRowOneValue) {
   auto const row = ParseRow<std::int64_t>(array);
   EXPECT_TRUE(row.ok());
   EXPECT_EQ(MakeRow(42), *row);
+  EXPECT_EQ(array, row->values());
   // Tests parsing the Value with the wrong type.
   auto const error_row = ParseRow<double>(array);
   EXPECT_FALSE(error_row.ok());
@@ -200,9 +202,26 @@ TEST(Row, ParseRowThree) {
   auto row = ParseRow<bool, std::int64_t, std::string>(array);
   EXPECT_TRUE(row.ok());
   EXPECT_EQ(MakeRow(true, 42, "hello"), *row);
+  EXPECT_EQ(array, row->values());
   // Tests parsing the Value with the wrong type.
   auto const error_row = ParseRow<bool, double, std::string>(array);
   EXPECT_FALSE(error_row.ok());
+}
+
+template <typename... Ts>
+void RoundTripRow(Row<Ts...> const& row) {
+  auto array = row.values();
+  auto parsed = ParseRow<Ts...>(array);
+  EXPECT_TRUE(parsed.ok());
+  EXPECT_EQ(row, *parsed);
+}
+
+TEST(Row, UnparseRow) {
+  RoundTripRow(MakeRow());
+  RoundTripRow(MakeRow(42));
+  RoundTripRow(MakeRow(42, 42));
+  RoundTripRow(MakeRow(42, "hello"));
+  RoundTripRow(MakeRow(42, "hello", 3.14));
 }
 
 }  // namespace
