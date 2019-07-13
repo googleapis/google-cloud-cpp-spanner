@@ -14,4 +14,3 @@ cmake-out/
 # here change a lot, but do not change the image, so they trigger image rebuids
 # without any benefit.
 ci/kokoro/
-ci/test-readme/
