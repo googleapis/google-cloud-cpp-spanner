@@ -157,8 +157,8 @@ struct ReplaceOp {
 /**
  * A helper class to construct "insert" mutations.
  *
- * @see #Mutation for a description of the `Mutation` abstractions
- *   in the Cloud Spanner C++ client.
+ * @see The Mutation class documentation for an overview of the Cloud Spanner
+ *   mutation API
  *
  * @see https://cloud.google.com/spanner/docs/modify-mutation-api
  *   for more information about the Cloud Spanner mutation API.
@@ -193,8 +193,8 @@ Mutation MakeInsertMutation(Ts&&... values) {
 /**
  * A helper class to construct "update" mutations.
  *
- * @see #Mutation for a description of the `Mutation` abstractions
- *   in the Cloud Spanner C++ client.
+ * @see The Mutation class documentation for an overview of the Cloud Spanner
+ *   mutation API
  *
  * @see https://cloud.google.com/spanner/docs/modify-mutation-api
  *   for more information about the Cloud Spanner mutation API.
