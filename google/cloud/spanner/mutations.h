@@ -60,6 +60,15 @@ class Mutation {
   /// Convert the mutation to the underlying proto.
   google::spanner::v1::Mutation as_proto() && { return std::move(m_); }
 
+  /**
+   * Allows Google Test to print internal debugging information when test
+   * assertions fail.
+   *
+   * @warning This is intended for debugging and human consumption only, not
+   *   machine consumption as the output format may change without notice.
+   */
+  friend void PrintTo(Mutation const& m, std::ostream* os);
+
  private:
   friend class InsertMutationBuilder;
   friend class UpdateMutationBuilder;
@@ -101,7 +110,7 @@ class WriteMutationBuilder {
     }
   }
 
-  google::spanner::v1::Mutation Build() const & { return m_; }
+  google::spanner::v1::Mutation Build() const& { return m_; }
   google::spanner::v1::Mutation Build() && { return std::move(m_); }
 
   template <typename... Ts>
@@ -163,7 +172,7 @@ class InsertMutationBuilder {
       : builder_(std::move(column_names)) {}
 
   Mutation Build() && { return Mutation(std::move(builder_).Build()); }
-  Mutation Build() const & { return Mutation(builder_.Build()); }
+  Mutation Build() const& { return Mutation(builder_.Build()); }
 
   template <typename... Ts>
   InsertMutationBuilder& AddRow(Ts&&... values) {
@@ -199,7 +208,7 @@ class UpdateMutationBuilder {
       : builder_(std::move(column_names)) {}
 
   Mutation Build() && { return Mutation(std::move(builder_).Build()); }
-  Mutation Build() const & { return Mutation(builder_.Build()); }
+  Mutation Build() const& { return Mutation(builder_.Build()); }
 
   template <typename... Ts>
   UpdateMutationBuilder& AddRow(Ts&&... values) {

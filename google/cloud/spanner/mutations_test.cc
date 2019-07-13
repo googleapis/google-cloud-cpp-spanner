@@ -23,9 +23,20 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace {
 
+using ::testing::HasSubstr;
+
 TEST(MutationsTest, Default) {
   Mutation actual;
   EXPECT_EQ(actual, actual);
+}
+
+TEST(MutationsTest, PrintTo) {
+  Mutation insert = MakeInsertMutation(std::string("test-string"));
+  std::ostringstream os;
+  PrintTo(insert, &os);
+  auto actual = std::move(os).str();
+  EXPECT_THAT(actual, HasSubstr("test-string"));
+  EXPECT_THAT(actual, HasSubstr("Mutation={"));
 }
 
 TEST(MutationsTest, InsertSimple) {
@@ -61,11 +72,12 @@ TEST(MutationsTest, InsertSimple) {
 
 TEST(MutationsTest, InsertComplex) {
   Mutation empty;
-  Mutation insert =
-      InsertMutationBuilder({"col1", "col2", "col3"})
-      .AddRow(std::int64_t(42), std::string("foo"), false)
-      .AddRow(optional<std::int64_t>(), "bar", optional<bool>{})
-      .Build();
+  auto builder = InsertMutationBuilder({"col1", "col2", "col3"})
+                     .AddRow(std::int64_t(42), std::string("foo"), false)
+                     .AddRow(optional<std::int64_t>(), "bar", optional<bool>{});
+  Mutation insert = builder.Build();
+  Mutation moved = std::move(builder).Build();
+  EXPECT_EQ(insert, moved);
 
   auto actual = std::move(insert).as_proto();
   google::spanner::v1::Mutation expected;
@@ -138,11 +150,13 @@ TEST(MutationsTest, UpdateSimple) {
 
 TEST(MutationsTest, UpdateComplex) {
   Mutation empty;
-  Mutation update =
+  auto builder =
       UpdateMutationBuilder({"col_a", "col_b"})
           .AddRow(std::vector<std::string>{}, 7.0)
-          .AddRow(std::vector<std::string>{"a", "b"}, optional<double>{})
-          .Build();
+          .AddRow(std::vector<std::string>{"a", "b"}, optional<double>{});
+  Mutation update = builder.Build();
+  Mutation moved = std::move(builder).Build();
+  EXPECT_EQ(update, moved);
 
   auto actual = std::move(update).as_proto();
   google::spanner::v1::Mutation expected;

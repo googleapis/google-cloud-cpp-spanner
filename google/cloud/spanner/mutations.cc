@@ -14,6 +14,7 @@
 
 #include "google/cloud/spanner/mutations.h"
 #include <google/protobuf/util/message_differencer.h>
+#include <iostream>
 
 namespace google {
 namespace cloud {
@@ -23,6 +24,10 @@ inline namespace SPANNER_CLIENT_NS {
 bool operator==(Mutation const& lhs, Mutation const& rhs) {
   google::protobuf::util::MessageDifferencer diff;
   return diff.Compare(lhs.m_, rhs.m_);
+}
+
+void PrintTo(Mutation const& m, std::ostream* os) {
+  *os << "Mutation={" << m.m_.DebugString() << "}";
 }
 
 }  // namespace SPANNER_CLIENT_NS
