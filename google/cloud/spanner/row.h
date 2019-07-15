@@ -207,6 +207,7 @@ class Row {
     internal::ForEach(values_, InsertValue{array, 0});
     return array;
   }
+  /// @copydoc values()
   std::array<Value, size()> values() && {
     std::array<Value, size()> array;
     internal::ForEach(std::move(values_), InsertValue{array, 0});
