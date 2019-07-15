@@ -72,7 +72,7 @@ class SqlStatement {
   }
   friend bool operator!=(SqlStatement const& a, SqlStatement const& b) {
     return !(a == b);
-  };
+  }
 
  private:
   friend std::ostream& operator<<(std::ostream& os, SqlStatement const& stmt);
