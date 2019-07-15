@@ -67,6 +67,13 @@ class SqlStatement {
   google::cloud::StatusOr<Value> GetParameter(
       std::string const& parameter_name) const;
 
+  friend bool operator==(SqlStatement const& a, SqlStatement const& b) {
+    return a.statement_ == b.statement_ && a.params_ == b.params_;
+  }
+  friend bool operator!=(SqlStatement const& a, SqlStatement const& b) {
+    return !(a == b);
+  };
+
  private:
   friend std::ostream& operator<<(std::ostream& os, SqlStatement const& stmt);
 
