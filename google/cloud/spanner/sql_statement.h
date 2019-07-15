@@ -31,6 +31,7 @@ inline namespace SPANNER_CLIENT_NS {
  * found here: <a
  * href="https://cloud.google.com/spanner/docs/lexical#case-sensitivity">Case
  * Sensitivity</a>.
+ * @note `SqlStatement` supports case-sensitive equality comparisons.
  *
  * Parameter placeholders are specified by `@<param name>` in the SQL string.
  * Values for parameters are a collection of `std::pair<std::string const,
@@ -41,6 +42,8 @@ inline namespace SPANNER_CLIENT_NS {
  *     using google::cloud::spanner::Value;
  *     SqlStatement stmt("select * from scmods where last_name = @param1",
  *       {{"param1", Value("Blues")}});
+ *     SqlStatement copy = stmt;
+ *     assert(copy == stmt);
  */
 class SqlStatement {
  public:
