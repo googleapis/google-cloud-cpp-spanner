@@ -67,6 +67,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row-members.html">List of all members</a>  </div>
@@ -122,6 +123,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a098f97c428cb57e76057b12640c049c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b12644424391ebad1db1f8a558b08bb"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; Types... &gt; const  &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a0b12644424391ebad1db1f8a558b08bb">get</a> () const &amp;&amp;</td></tr>
 <tr class="separator:a0b12644424391ebad1db1f8a558b08bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e9617543ccc136ae1ce5347e448ea22"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ab683b2a27b1d53af35a0e1311f448cbe">size</a>()&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a0e9617543ccc136ae1ce5347e448ea22">values</a> () const &amp;</td></tr>
+<tr class="memdesc:a0e9617543ccc136ae1ce5347e448ea22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a std::array of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects holding all the items in this row.  <a href="#a0e9617543ccc136ae1ce5347e448ea22">More...</a><br /></td></tr>
+<tr class="separator:a0e9617543ccc136ae1ce5347e448ea22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae193fc8c5092e97ac396e6bd7749d45c"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ab683b2a27b1d53af35a0e1311f448cbe">size</a>()&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ae193fc8c5092e97ac396e6bd7749d45c">values</a> () &amp;&amp;</td></tr>
+<tr class="memdesc:ae193fc8c5092e97ac396e6bd7749d45c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a std::array of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects holding all the items in this row.  <a href="#ae193fc8c5092e97ac396e6bd7749d45c">More...</a><br /></td></tr>
+<tr class="separator:ae193fc8c5092e97ac396e6bd7749d45c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -661,6 +668,72 @@ template&lt;typename... Types&gt; </div>
 
 </div>
 </div>
+<a id="a0e9617543ccc136ae1ce5347e448ea22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e9617543ccc136ae1ce5347e448ea22">&#9670;&nbsp;</a></span>values() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Types&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ab683b2a27b1d53af35a0e1311f448cbe">size</a>()&gt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::values </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a std::array of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects holding all the items in this row. </p>
+<dl class="section note"><dt>Note</dt><dd>: If the <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>'s values are large, it may be move efficient to "move" them into the returned array.</dd></dl>
+<dl class="section user"><dt>Example</dt><dd></dd></dl>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> row = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(<span class="keyword">true</span>, <span class="stringliteral">&quot;foo&quot;</span>, 42);</div><div class="line">std::array&lt;Value, 3&gt; a = row.values();</div><div class="line">assert(a[0].get&lt;bool&gt;() == <span class="keyword">true</span>);</div><div class="line">assert(a[1].get&lt;std::string&gt;() == <span class="stringliteral">&quot;foo&quot;</span>);</div><div class="line">assert(a[2].get&lt;std::int64_t&gt;() == 42);</div><div class="line"></div><div class="line"><span class="comment">// Potentially more efficient if `row` is no longer needed.</span></div><div class="line">std::array&lt;Value, 3&gt; b = std::move(row).values();</div></div><!-- fragment --> 
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00205">205</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+
+</div>
+</div>
+<a id="ae193fc8c5092e97ac396e6bd7749d45c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae193fc8c5092e97ac396e6bd7749d45c">&#9670;&nbsp;</a></span>values() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Types&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ab683b2a27b1d53af35a0e1311f448cbe">size</a>()&gt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::values </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> &amp;&amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a std::array of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects holding all the items in this row. </p>
+<dl class="section note"><dt>Note</dt><dd>: If the <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>'s values are large, it may be move efficient to "move" them into the returned array.</dd></dl>
+<dl class="section user"><dt>Example</dt><dd></dd></dl>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> row = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(<span class="keyword">true</span>, <span class="stringliteral">&quot;foo&quot;</span>, 42);</div><div class="line">std::array&lt;Value, 3&gt; a = row.values();</div><div class="line">assert(a[0].get&lt;bool&gt;() == <span class="keyword">true</span>);</div><div class="line">assert(a[1].get&lt;std::string&gt;() == <span class="stringliteral">&quot;foo&quot;</span>);</div><div class="line">assert(a[2].get&lt;std::int64_t&gt;() == 42);</div><div class="line"></div><div class="line"><span class="comment">// Potentially more efficient if `row` is no longer needed.</span></div><div class="line">std::array&lt;Value, 3&gt; b = std::move(row).values();</div></div><!-- fragment --> 
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00211">211</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
 <a id="abbbd3a1a1a5c20188bc5bb5a45be280f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abbbd3a1a1a5c20188bc5bb5a45be280f">&#9670;&nbsp;</a></span>operator!=</h2>
@@ -698,7 +771,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00191">191</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00222">222</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -738,7 +811,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00198">198</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00229">229</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -778,7 +851,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00201">201</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00232">232</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -818,7 +891,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00188">188</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00219">219</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -858,7 +931,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00204">204</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00235">235</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -898,7 +971,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00207">207</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00238">238</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>

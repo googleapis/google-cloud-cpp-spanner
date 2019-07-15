@@ -4,6 +4,7 @@ var searchData=
   ['value_2ecc',['value.cc',['../value_8cc.html',1,'']]],
   ['value_2eh',['value.h',['../value_8h.html',1,'']]],
   ['value_5ftype',['value_type',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html#acef9a590f1b72ef381bc7573da744a77',1,'google::cloud::spanner::v0::RowParser::iterator']]],
+  ['values',['values',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a0e9617543ccc136ae1ce5347e448ea22',1,'google::cloud::spanner::v0::Row::values() const &amp;'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ae193fc8c5092e97ac396e6bd7749d45c',1,'google::cloud::spanner::v0::Row::values() &amp;&amp;']]],
   ['valuesource',['ValueSource',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a24c2736cb64e83e464aa7fff4bde52fb',1,'google::cloud::spanner::v0']]],
   ['version',['version',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a2dadbb63905b7368cb4798ab33461940',1,'google::cloud::spanner::v0']]],
   ['version_2ecc',['version.cc',['../version_8cc.html',1,'']]],
