@@ -31,6 +31,7 @@ inline namespace SPANNER_CLIENT_NS {
  * found here: <a
  * href="https://cloud.google.com/spanner/docs/lexical#case-sensitivity">Case
  * Sensitivity</a>.
+ *
  * @note `SqlStatement` supports case-sensitive equality comparisons.
  *
  * Parameter placeholders are specified by `@<param name>` in the SQL string.
