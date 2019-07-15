@@ -32,6 +32,23 @@ class Client {
 
 namespace {
 
+TEST(TransactionOptions, Construction) {
+  Timestamp read_timestamp{};
+  std::chrono::nanoseconds staleness{};
+
+  Transaction::ReadOnlyOptions strong;
+  Transaction::ReadOnlyOptions exact_ts(read_timestamp);
+  Transaction::ReadOnlyOptions exact_dur(staleness);
+
+  Transaction::ReadWriteOptions none;
+
+  Transaction::SingleUseOptions su_strong(strong);
+  Transaction::SingleUseOptions su_exact_ts(exact_ts);
+  Transaction::SingleUseOptions su_exact_dur(exact_dur);
+  Transaction::SingleUseOptions su_bounded_ts(read_timestamp);
+  Transaction::SingleUseOptions su_bounded_dur(staleness);
+}
+
 TEST(Transaction, RegularSemantics) {
   Transaction::ReadOnlyOptions strong;
   Transaction a(strong);

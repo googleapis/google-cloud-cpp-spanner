@@ -39,6 +39,13 @@ class ResultSet {};
 // operation that does nothing but track the expected transaction callbacks.
 class Client {
  public:
+  enum class Mode {
+    kReadSucceeds,
+    kReadFails,
+  };
+
+  explicit Client(Mode mode) : mode_(mode) {}
+
   // Set the `read_timestamp` we expect to see, and the `txn_id` we want to
   // use during the upcoming `Read()` calls.
   void Reset(Timestamp read_timestamp, std::string txn_id) {
@@ -62,13 +69,22 @@ class Client {
         [this, &table, &keys, &columns](TransactionSelector& selector) {
           return this->Read(selector, table, keys, columns);
         };
-    return txn->Visit(std::move(read));
+#if __EXCEPTIONS
+    try {
+#endif
+      return txn->Visit(std::move(read));
+#if __EXCEPTIONS
+    } catch (char const* e) {
+      return {};
+    }
+#endif
   }
 
  private:
   ResultSet Read(TransactionSelector& selector, std::string const& table,
                  KeySet const& keys, std::vector<std::string> const& columns);
 
+  Mode mode_;
   Timestamp read_timestamp_;
   std::string txn_id_;
   std::mutex mu_;
@@ -87,15 +103,38 @@ ResultSet Client::Read(TransactionSelector& selector, std::string const&,
         auto const& proto = selector.begin().read_only().read_timestamp();
         if (internal::FromProto(proto) == read_timestamp_) {
           std::unique_lock<std::mutex> lock(mu_);
-          if (valid_visits_ == 0) ++valid_visits_;  // first visit only
+          switch (mode_) {
+            case Mode::kReadSucceeds:
+              if (valid_visits_ == 0) ++valid_visits_;  // first visit valid
+              break;
+            case Mode::kReadFails:
+              ++valid_visits_;  // always `begin`, always valid
+              break;
+          }
         }
       }
     }
-    selector.set_id(txn_id_);  // begin -> id
+    switch (mode_) {
+      case Mode::kReadSucceeds:  // `begin` -> `id`, calls now parallelized
+        selector.set_id(txn_id_);
+        break;
+      case Mode::kReadFails:  // leave as `begin`, calls stay serialized
+#if __EXCEPTIONS
+        throw "Client::Read() failure";
+#else
+        break;
+#endif
+    }
   } else {
     if (selector.id() == txn_id_) {
       std::unique_lock<std::mutex> lock(mu_);
-      if (valid_visits_ != 0) ++valid_visits_;  // subsequent visits only
+      switch (mode_) {
+        case Mode::kReadSucceeds:  // non-initial visits valid
+          if (valid_visits_ != 0) ++valid_visits_;
+          break;
+        case Mode::kReadFails:  // visits never valid
+          break;
+      }
     }
   }
   return {};
@@ -142,8 +181,15 @@ int MultiThreadedRead(int n_threads, Client* client, std::time_t read_time,
   return client->ValidVisits();  // should be n_threads
 }
 
-TEST(InternalTransaction, MultiThreadedRead) {
-  Client client;
+TEST(InternalTransaction, ReadSucceeds) {
+  Client client(Client::Mode::kReadSucceeds);
+  EXPECT_EQ(1, MultiThreadedRead(1, &client, 1562359982, "id-0"));
+  EXPECT_EQ(64, MultiThreadedRead(64, &client, 1562360571, "id-1"));
+  EXPECT_EQ(128, MultiThreadedRead(128, &client, 1562361252, "id-2"));
+}
+
+TEST(InternalTransaction, ReadFails) {
+  Client client(Client::Mode::kReadFails);
   EXPECT_EQ(1, MultiThreadedRead(1, &client, 1562359982, "id-0"));
   EXPECT_EQ(64, MultiThreadedRead(64, &client, 1562360571, "id-1"));
   EXPECT_EQ(128, MultiThreadedRead(128, &client, 1562361252, "id-2"));
