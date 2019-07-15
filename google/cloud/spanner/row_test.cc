@@ -224,6 +224,20 @@ TEST(Row, UnparseRow) {
   RoundTripRow(MakeRow(42, "hello", 3.14));
 }
 
+TEST(Row, ValuesAccessorRvalue) {
+  // There's no good way to test that move semantics actually *work* when using
+  // types that you don't own. So this test just verifies that properly written
+  // move-the-values-from-the-row code compiles and produces the results users
+  // should expect. In particular, we do not verify that the items were
+  // actually *moved-from* as opposed to copied.
+  constexpr auto data = "12345678901234567890";
+  auto row = MakeRow(data);
+  auto array = std::move(row).values();
+  auto v = array[0].get<std::string>();
+  EXPECT_TRUE(v.ok());
+  EXPECT_EQ(data, *v);
+}
+
 }  // namespace
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner

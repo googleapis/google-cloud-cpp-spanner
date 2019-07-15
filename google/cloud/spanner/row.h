@@ -186,6 +186,9 @@ class Row {
   /**
    * Returns a std::array of `Value` objects holding all the items in this row.
    *
+   * @note: If the Row's values are large, it may be move efficient to "move"
+   *     them into the returned array.
+   *
    * @par Example
    *
    * @code
@@ -194,11 +197,19 @@ class Row {
    * assert(a[0].get<bool>() == true);
    * assert(a[1].get<std::string>() == "foo");
    * assert(a[2].get<std::int64_t>() == 42);
+   *
+   * // Potentially more efficient if `row` is no longer needed.
+   * std::array<Value, 3> b = std::move(row).values();
    * @endcode
    */
-  std::array<Value, size()> values() const {
+  std::array<Value, size()> values() const& {
     std::array<Value, size()> array;
     internal::ForEach(values_, InsertValue{array, 0});
+    return array;
+  }
+  std::array<Value, size()> values() && {
+    std::array<Value, size()> array;
+    internal::ForEach(std::move(values_), InsertValue{array, 0});
     return array;
   }
 
@@ -235,8 +246,8 @@ class Row {
     std::array<Value, size()>& array;
     std::size_t i;
     template <typename T>
-    void operator()(T const& t) {
-      array[i++] = Value(t);
+    void operator()(T&& t) {
+      array[i++] = Value(std::forward<T>(t));
     }
   };
 
