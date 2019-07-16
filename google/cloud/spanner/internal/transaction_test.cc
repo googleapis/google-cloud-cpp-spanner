@@ -98,6 +98,7 @@ class Client {
 ResultSet Client::Read(TransactionSelector& selector, std::string const&,
                        KeySet const&, std::vector<std::string> const&) {
   if (selector.has_begin()) {
+    bool fail_with_throw = false;
     if (selector.begin().has_read_only()) {
       if (selector.begin().read_only().has_read_timestamp()) {
         auto const& proto = selector.begin().read_only().read_timestamp();
@@ -109,6 +110,7 @@ ResultSet Client::Read(TransactionSelector& selector, std::string const&,
               break;
             case Mode::kReadFails:
               ++valid_visits_;  // always `begin`, always valid
+              fail_with_throw = (valid_visits_ % 2 == 0);
               break;
           }
         }
@@ -120,10 +122,9 @@ ResultSet Client::Read(TransactionSelector& selector, std::string const&,
         break;
       case Mode::kReadFails:  // leave as `begin`, calls stay serialized
 #if __EXCEPTIONS
-        throw "Client::Read() failure";
-#else
-        break;
+        if (fail_with_throw) throw "1202 Program Alarm";
 #endif
+        break;
     }
   } else {
     if (selector.id() == txn_id_) {
