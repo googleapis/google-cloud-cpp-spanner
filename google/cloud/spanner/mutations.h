@@ -24,6 +24,11 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
+namespace internal {
+template <typename Op>
+class WriteMutationBuilder;
+}  // namespace internal
+
 /**
  * A wrapper for Cloud Spanner mutations.
  *
@@ -70,9 +75,9 @@ class Mutation {
   friend void PrintTo(Mutation const& m, std::ostream* os);
 
  private:
-  friend class InsertMutationBuilder;
-  friend class UpdateMutationBuilder;
-  explicit Mutation(google::spanner::v1::Mutation&& m) : m_(std::move(m)) {}
+  template <typename Op>
+  friend class internal::WriteMutationBuilder;
+  explicit Mutation(google::spanner::v1::Mutation m) : m_(std::move(m)) {}
 
   google::spanner::v1::Mutation m_;
 };
@@ -110,15 +115,17 @@ class WriteMutationBuilder {
     }
   }
 
-  google::spanner::v1::Mutation Build() const& { return m_; }
-  google::spanner::v1::Mutation Build() && { return std::move(m_); }
+  Mutation Build() const& { return Mutation(m_); }
+  Mutation Build() && { return Mutation(std::move(m_)); }
 
   template <typename... Ts>
-  void AddRow(Ts&&... values) {
+  WriteMutationBuilder& AddRow(Ts&&... values) {
     google::protobuf::ListValue lv;
     internal::PopulateListValue(lv, std::forward<Ts>(values)...);
     *Op::mutable_field(m_).add_values() = std::move(lv);
+    return *this;
   }
+  // TODO(#222) - consider an overload on `Row<Ts>`.
 
  private:
   google::spanner::v1::Mutation m_;
@@ -138,6 +145,7 @@ struct UpdateOp {
   }
 };
 
+// TODO(#198) - use them in the (future) InsertOrUpdateMutationBuilder.
 struct InsertOrUpdateOp {
   static google::spanner::v1::Mutation::Write& mutable_field(
       google::spanner::v1::Mutation& m) {
@@ -145,6 +153,7 @@ struct InsertOrUpdateOp {
   }
 };
 
+// TODO(#198) - use them in the (future) ReplaceMutationBuilder.
 struct ReplaceOp {
   static google::spanner::v1::Mutation::Write& mutable_field(
       google::spanner::v1::Mutation& m) {
@@ -163,26 +172,8 @@ struct ReplaceOp {
  * @see https://cloud.google.com/spanner/docs/modify-mutation-api
  *   for more information about the Cloud Spanner mutation API.
  */
-class InsertMutationBuilder {
- public:
-  InsertMutationBuilder() = default;
-
-  /// Constructor with explicit column names.
-  explicit InsertMutationBuilder(std::vector<std::string> column_names)
-      : builder_(std::move(column_names)) {}
-
-  Mutation Build() && { return Mutation(std::move(builder_).Build()); }
-  Mutation Build() const& { return Mutation(builder_.Build()); }
-
-  template <typename... Ts>
-  InsertMutationBuilder& AddRow(Ts&&... values) {
-    builder_.AddRow(std::forward<Ts>(values)...);
-    return *this;
-  }
-
- private:
-  internal::WriteMutationBuilder<internal::InsertOp> builder_;
-};
+using InsertMutationBuilder =
+    internal::WriteMutationBuilder<internal::InsertOp>;
 
 /// Creates a simple insert mutation for the values in @p row.
 template <typename... Ts>
@@ -199,32 +190,16 @@ Mutation MakeInsertMutation(Ts&&... values) {
  * @see https://cloud.google.com/spanner/docs/modify-mutation-api
  *   for more information about the Cloud Spanner mutation API.
  */
-class UpdateMutationBuilder {
- public:
-  UpdateMutationBuilder() = default;
-
-  /// Constructor with explicit column names.
-  explicit UpdateMutationBuilder(std::vector<std::string> column_names)
-      : builder_(std::move(column_names)) {}
-
-  Mutation Build() && { return Mutation(std::move(builder_).Build()); }
-  Mutation Build() const& { return Mutation(builder_.Build()); }
-
-  template <typename... Ts>
-  UpdateMutationBuilder& AddRow(Ts&&... values) {
-    builder_.AddRow(std::forward<Ts>(values)...);
-    return *this;
-  }
-
- private:
-  internal::WriteMutationBuilder<internal::UpdateOp> builder_;
-};
+using UpdateMutationBuilder =
+    internal::WriteMutationBuilder<internal::UpdateOp>;
 
 /// Creates a simple insert mutation for the values in @p row.
 template <typename... Ts>
 Mutation MakeUpdateMutation(Ts&&... values) {
   return UpdateMutationBuilder().AddRow(std::forward<Ts>(values)...).Build();
 }
+
+// TODO(#198 & #202) - Implement DeleteMutationBuilder.
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
