@@ -22,6 +22,7 @@
 #include "google/cloud/status_or.h"
 #include <array>
 #include <functional>
+#include <memory>
 #include <tuple>
 #include <utility>
 
@@ -65,7 +66,7 @@ using ValueSource = std::function<StatusOr<optional<Value>>()>;
  * @par Example
  *
  * @code
- * ValueSource vs = ...
+ * std::shared_ptr<ValueSource> vs = ...
  * RowParser<bool, std::int64_t> rp(std::move(vs));
  * for (auto row : rp) {
  *   if (!row) {
@@ -107,7 +108,7 @@ class RowParser {
       }
       std::array<Value, RowType::size()> values;
       for (std::size_t i = 0; i < values.size(); ++i) {
-        StatusOr<optional<Value>> v = value_source_();
+        StatusOr<optional<Value>> v = (*value_source_)();
         if (!v) {
           curr_ = std::move(v).status();
           return *this;
@@ -143,25 +144,28 @@ class RowParser {
 
    private:
     friend RowParser;
-    explicit iterator(ValueSource f)
+    explicit iterator(std::shared_ptr<ValueSource> f)
         : value_source_(std::move(f)), curr_(RowType{}) {
       if (value_source_) {
         operator++();  // Parse the first row
       }
     }
 
-    ValueSource value_source_;  // nullptr means end
+    std::shared_ptr<ValueSource> value_source_;  // nullptr means end
     value_type curr_;
   };
 
   /// Constructs a `RowParser` for the given `ValueSource`.
-  explicit RowParser(ValueSource vs) : value_source_(std::move(vs)) {}
+  explicit RowParser(std::shared_ptr<ValueSource> vs)
+      : value_source_(std::move(vs)) {}
 
-  // Copy and assignable.
-  RowParser(RowParser const&) = default;
-  RowParser& operator=(RowParser const&) = default;
-  RowParser(RowParser&&) = default;
+  /// @name Move-only type
+  ///@{
+  RowParser(RowParser const&) = delete;
+  RowParser& operator=(RowParser const&) = delete;
+  RowParser(RowParser&& rp) = default;
   RowParser& operator=(RowParser&&) = default;
+  ///@}
 
   /// Returns the begin iterator.
   iterator begin() { return iterator(value_source_); }
@@ -170,7 +174,7 @@ class RowParser {
   iterator end() { return iterator(nullptr); }
 
  private:
-  ValueSource value_source_;
+  std::shared_ptr<ValueSource> value_source_;
 };
 
 }  // namespace SPANNER_CLIENT_NS
