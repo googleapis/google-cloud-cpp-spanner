@@ -50,6 +50,7 @@ add_library(spanner_client
             internal/time_format.h
             internal/tuple_utils.h
             polling_policy.h
+            result_set.h
             retry_policy.h
             row.h
             row_parser.h
@@ -106,6 +107,7 @@ function (spanner_client_define_tests)
         internal/time_format_test.cc
         internal/time_test.cc
         internal/tuple_utils_test.cc
+        result_set_test.cc
         retry_policy_test.cc
         row_test.cc
         row_parser_test.cc
