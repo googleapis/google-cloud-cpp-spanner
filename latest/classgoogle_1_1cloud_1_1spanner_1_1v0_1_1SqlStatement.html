@@ -117,19 +117,26 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
+<tr class="memitem:acf0b3c40ed00e12ab8ef22dcfaa847c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#acf0b3c40ed00e12ab8ef22dcfaa847c6">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;b)</td></tr>
+<tr class="separator:acf0b3c40ed00e12ab8ef22dcfaa847c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8c636041a80167386951a85212b16f5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#ac8c636041a80167386951a85212b16f5">operator!=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;b)</td></tr>
+<tr class="separator:ac8c636041a80167386951a85212b16f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fee1b326dbcd97d221f1f8fe75e3dbb"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#a2fee1b326dbcd97d221f1f8fe75e3dbb">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;stmt)</td></tr>
 <tr class="separator:a2fee1b326dbcd97d221f1f8fe75e3dbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a potentially parameterized SQL statement. </p>
 <p>Details on case sensitivity for SQL statements and string values can be found here: <a href="https://cloud.google.com/spanner/docs/lexical#case-sensitivity">Case Sensitivity</a>.</p>
+<dl class="section note"><dt>Note</dt><dd><code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html" title="Represents a potentially parameterized SQL statement.">SqlStatement</a></code> supports case-sensitive equality comparisons.</dd></dl>
 <p>Parameter placeholders are specified by <code>@&lt;param name&gt;</code> in the SQL string. Values for parameters are a collection of <code>std::pair&lt;std::string const, google::cloud:spanner::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a>&gt;</code>. </p><dl class="section user"><dt>Example:</dt><dd><pre class="fragment">using google::cloud::spanner::SqlStatement;
 using google::cloud::spanner::Value;
 SqlStatement stmt("select * from scmods where last_name = @param1",
   {{"param1", Value("Blues")}});
+SqlStatement copy = stmt;
+assert(copy == stmt);
 </pre> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="sql__statement_8h_source.html#l00045">45</a> of file <a class="el" href="sql__statement_8h_source.html">sql_statement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sql__statement_8h_source.html#l00049">49</a> of file <a class="el" href="sql__statement_8h_source.html">sql_statement.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="aac057a4f7b0d17caa6622b42565567ee"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aac057a4f7b0d17caa6622b42565567ee">&#9670;&nbsp;</a></span>ParamType</h2>
@@ -145,7 +152,7 @@ SqlStatement stmt("select * from scmods where last_name = @param1",
 
 <p>Type alias for parameter collection. </p>
 
-<p class="definition">Definition at line <a class="el" href="sql__statement_8h_source.html#l00048">48</a> of file <a class="el" href="sql__statement_8h_source.html">sql_statement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sql__statement_8h_source.html#l00052">52</a> of file <a class="el" href="sql__statement_8h_source.html">sql_statement.h</a>.</p>
 
 </div>
 </div>
@@ -201,7 +208,7 @@ SqlStatement stmt("select * from scmods where last_name = @param1",
 
 <p>Constructs a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html" title="Represents a potentially parameterized SQL statement.">SqlStatement</a> without parameters. </p>
 
-<p class="definition">Definition at line <a class="el" href="sql__statement_8h_source.html#l00052">52</a> of file <a class="el" href="sql__statement_8h_source.html">sql_statement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sql__statement_8h_source.html#l00056">56</a> of file <a class="el" href="sql__statement_8h_source.html">sql_statement.h</a>.</p>
 
 </div>
 </div>
@@ -241,7 +248,7 @@ SqlStatement stmt("select * from scmods where last_name = @param1",
 
 <p>Constructs a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html" title="Represents a potentially parameterized SQL statement.">SqlStatement</a> with specified parameters. </p>
 
-<p class="definition">Definition at line <a class="el" href="sql__statement_8h_source.html#l00055">55</a> of file <a class="el" href="sql__statement_8h_source.html">sql_statement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sql__statement_8h_source.html#l00059">59</a> of file <a class="el" href="sql__statement_8h_source.html">sql_statement.h</a>.</p>
 
 </div>
 </div>
@@ -414,7 +421,7 @@ SqlStatement stmt("select * from scmods where last_name = @param1",
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sql__statement_8h_source.html#l00065">65</a> of file <a class="el" href="sql__statement_8h_source.html">sql_statement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sql__statement_8h_source.html#l00069">69</a> of file <a class="el" href="sql__statement_8h_source.html">sql_statement.h</a>.</p>
 
 </div>
 </div>
@@ -441,11 +448,49 @@ SqlStatement stmt("select * from scmods where last_name = @param1",
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sql__statement_8h_source.html#l00064">64</a> of file <a class="el" href="sql__statement_8h_source.html">sql_statement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sql__statement_8h_source.html#l00068">68</a> of file <a class="el" href="sql__statement_8h_source.html">sql_statement.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="ac8c636041a80167386951a85212b16f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8c636041a80167386951a85212b16f5">&#9670;&nbsp;</a></span>operator!=</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator!= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="sql__statement_8h_source.html#l00077">77</a> of file <a class="el" href="sql__statement_8h_source.html">sql_statement.h</a>.</p>
+
+</div>
+</div>
 <a id="a2fee1b326dbcd97d221f1f8fe75e3dbb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2fee1b326dbcd97d221f1f8fe75e3dbb">&#9670;&nbsp;</a></span>operator&lt;&lt;</h2>
 
@@ -481,6 +526,44 @@ SqlStatement stmt("select * from scmods where last_name = @param1",
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="sql__statement_8cc_source.html#l00041">41</a> of file <a class="el" href="sql__statement_8cc_source.html">sql_statement.cc</a>.</p>
+
+</div>
+</div>
+<a id="acf0b3c40ed00e12ab8ef22dcfaa847c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf0b3c40ed00e12ab8ef22dcfaa847c6">&#9670;&nbsp;</a></span>operator==</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator== </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="sql__statement_8h_source.html#l00074">74</a> of file <a class="el" href="sql__statement_8h_source.html">sql_statement.h</a>.</p>
 
 </div>
 </div>
