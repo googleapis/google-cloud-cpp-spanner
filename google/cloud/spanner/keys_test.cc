@@ -184,6 +184,18 @@ TEST(KeySetBuilderTest, AddKeyRangeToNonEmptyKeySetBuilder) {
   EXPECT_TRUE(ks.key_ranges()[1].end().IsOpen());
 }
 
+TEST(KeySetBuilderTest, Build) {
+  auto ksb = KeySetBuilder<Row<std::string, std::string>>(
+      KeyRange<Row<std::string, std::string>>(MakeRow("start00", "start01"),
+                                              MakeRow("end00", "end01")));
+  auto range = KeyRange<Row<std::string, std::string>>(
+      MakeBoundOpen(MakeRow("start10", "start11")),
+      MakeBoundOpen(MakeRow("end10", "end11")));
+  ksb.Add(range);
+
+  KeySet ks = ksb.Build();
+}
+
 }  // namespace
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner

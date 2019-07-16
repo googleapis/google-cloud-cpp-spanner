@@ -109,6 +109,8 @@ add_library(spanner_client
             internal/database_admin_stub.h
             internal/date.cc
             internal/date.h
+            internal/keys.cc
+            internal/keys.h
             internal/merge_chunk.cc
             internal/merge_chunk.h
             internal/partial_result_set_reader.cc
@@ -211,6 +213,7 @@ function (spanner_client_define_tests)
         internal/compiler_info_test.cc
         internal/connection_impl_test.cc
         internal/date_test.cc
+        internal/keys_test.cc
         internal/merge_chunk_test.cc
         internal/partial_result_set_reader_test.cc
         internal/polling_loop_test.cc
