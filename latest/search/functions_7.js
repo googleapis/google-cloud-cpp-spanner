@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['main',['main',['../database__admin__samples_8cc.html#adacbe0175a79dff748855d8c9839f82b',1,'database_admin_samples.cc']]],
+  ['main',['main',['../samples_8cc.html#adacbe0175a79dff748855d8c9839f82b',1,'samples.cc']]],
   ['makeinsertmutation',['MakeInsertMutation',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af77b5f3c1a45e35f626398888df17610',1,'google::cloud::spanner::v0']]],
   ['makeinsertorupdatemutation',['MakeInsertOrUpdateMutation',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7170284d5638df130d97ec16318e9dac',1,'google::cloud::spanner::v0']]],
   ['makenullvalue',['MakeNullValue',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ae3b5712ab2b1add6e7e610effc5f35b4',1,'google::cloud::spanner::v0']]],

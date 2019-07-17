@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['samples_2ecc',['samples.cc',['../samples_8cc.html',1,'']]],
   ['serializesqlpartition',['SerializeSqlPartition',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html#a32bdda468521da932f070859ade7d1ca',1,'google::cloud::spanner::v0::SqlPartition::SerializeSqlPartition()'],['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a0330dd31b70a1d74509675d046dc450f',1,'google::cloud::spanner::v0::SerializeSqlPartition()']]],
   ['set_5fadmin_5fendpoint',['set_admin_endpoint',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#ad4bd11fc3e5123fa9de0e4bc1b168f60',1,'google::cloud::spanner::v0::ClientOptions']]],
   ['set_5fcredentials',['set_credentials',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#a7a64cb7363cf6878ad89d05054ffc896',1,'google::cloud::spanner::v0::ClientOptions']]],
