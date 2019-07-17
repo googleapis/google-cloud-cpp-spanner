@@ -76,7 +76,7 @@ TEST(MutationsTest, InsertComplex) {
   Mutation empty;
   auto builder = InsertMutationBuilder("table-name", {"col1", "col2", "col3"})
           .AddRow(MakeRow(std::int64_t(42), std::string("foo"), false))
-          .AddValues(optional<std::int64_t>(), "bar", optional<bool>{});
+          .EmplaceRow(optional<std::int64_t>(), "bar", optional<bool>{});
   Mutation insert = builder.Build();
   Mutation moved = std::move(builder).Build();
   EXPECT_EQ(insert, moved);
@@ -157,7 +157,7 @@ TEST(MutationsTest, UpdateComplex) {
   auto builder =
       UpdateMutationBuilder("table-name", {"col_a", "col_b"})
           .AddRow(MakeRow(std::vector<std::string>{}, 7.0))
-          .AddValues(std::vector<std::string>{"a", "b"}, optional<double>{});
+          .EmplaceRow(std::vector<std::string>{"a", "b"}, optional<double>{});
   Mutation update = builder.Build();
   Mutation moved = std::move(builder).Build();
   EXPECT_EQ(update, moved);
@@ -238,7 +238,7 @@ TEST(MutationsTest, InsertOrUpdateComplex) {
   Mutation empty;
   auto builder = InsertOrUpdateMutationBuilder("table-name", {"col_a", "col_b"})
                      .AddRow(MakeRow(std::make_tuple("a", 7.0)))
-                     .AddValues(std::make_tuple("b", 8.0));
+                     .EmplaceRow(std::make_tuple("b", 8.0));
   Mutation update = builder.Build();
   Mutation moved = std::move(builder).Build();
   EXPECT_EQ(update, moved);
@@ -318,7 +318,7 @@ TEST(MutationsTest, ReplaceComplex) {
   Mutation empty;
   auto builder =
       ReplaceMutationBuilder("table-name", {"col_a", "col_b"})
-                     .AddValues("a", 7.0)
+                     .EmplaceRow("a", 7.0)
                      .AddRow(MakeRow("b", 8.0));
   Mutation update = builder.Build();
   Mutation moved = std::move(builder).Build();

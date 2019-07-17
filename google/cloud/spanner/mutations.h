@@ -122,7 +122,7 @@ class WriteMutationBuilder {
   Mutation Build() && { return Mutation(std::move(m_)); }
 
   template <typename... Ts>
-  WriteMutationBuilder& AddValues(Ts&&... values) {
+  WriteMutationBuilder& EmplaceRow(Ts&&... values) {
     google::protobuf::ListValue lv;
     internal::PopulateListValue(lv, std::forward<Ts>(values)...);
     *Op::mutable_field(m_).add_values() = std::move(lv);
@@ -190,7 +190,7 @@ using InsertMutationBuilder =
 template <typename... Ts>
 Mutation MakeInsertMutation(std::string table_name, Ts&&... values) {
   return InsertMutationBuilder(std::move(table_name))
-      .AddValues(std::forward<Ts>(values)...)
+      .EmplaceRow(std::forward<Ts>(values)...)
       .Build();
 }
 
@@ -210,7 +210,7 @@ using UpdateMutationBuilder =
 template <typename... Ts>
 Mutation MakeUpdateMutation(std::string table_name, Ts&&... values) {
   return UpdateMutationBuilder(std::move(table_name))
-      .AddValues(std::forward<Ts>(values)...)
+      .EmplaceRow(std::forward<Ts>(values)...)
       .Build();
 }
 
@@ -230,7 +230,7 @@ using InsertOrUpdateMutationBuilder =
 template <typename... Ts>
 Mutation MakeInsertOrUpdateMutation(std::string table_name, Ts&&... values) {
   return InsertOrUpdateMutationBuilder(std::move(table_name))
-      .AddValues(std::forward<Ts>(values)...)
+      .EmplaceRow(std::forward<Ts>(values)...)
       .Build();
 }
 
@@ -250,7 +250,7 @@ using ReplaceMutationBuilder =
 template <typename... Ts>
 Mutation MakeReplaceMutation(std::string table_name, Ts&&... values) {
   return ReplaceMutationBuilder(std::move(table_name))
-      .AddValues(std::forward<Ts>(values)...)
+      .EmplaceRow(std::forward<Ts>(values)...)
       .Build();
 }
 
