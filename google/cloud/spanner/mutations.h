@@ -116,7 +116,7 @@ class WriteMutationBuilder {
 
   template <typename... Ts>
   WriteMutationBuilder& EmplaceRow(Ts&&... values) {
-    return AddRow(MakeRow<Ts...>(std::forward<Ts>(values)...));
+    return AddRow(MakeRow(std::forward<Ts>(values)...));
   }
 
  private:
