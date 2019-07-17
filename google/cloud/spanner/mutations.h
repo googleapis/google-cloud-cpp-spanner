@@ -16,8 +16,8 @@
 #define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_MUTATIONS_H_
 
 #include "google/cloud/spanner/internal/tuple_utils.h"
+#include "google/cloud/spanner/row.h"
 #include "google/cloud/spanner/value.h"
-#include "google/cloud/spanner/version.h"
 #include <google/spanner/v1/mutation.pb.h>
 
 namespace google {
@@ -119,13 +119,23 @@ class WriteMutationBuilder {
   Mutation Build() && { return Mutation(std::move(m_)); }
 
   template <typename... Ts>
-  WriteMutationBuilder& AddRow(Ts&&... values) {
+  WriteMutationBuilder& AddValues(Ts&&... values) {
     google::protobuf::ListValue lv;
     internal::PopulateListValue(lv, std::forward<Ts>(values)...);
     *Op::mutable_field(m_).add_values() = std::move(lv);
     return *this;
   }
-  // TODO(#222) - consider an overload on `Row<Ts>`.
+
+  template <typename... Ts>
+  WriteMutationBuilder& AddRow(Row<Ts...> row) {
+    auto values = std::move(row).values();
+    google::protobuf::ListValue lv;
+    for (auto& v : values) {
+      internal::PopulateListValue(lv, std::move(v));
+    }
+    *Op::mutable_field(m_).add_values() = std::move(lv);
+    return *this;
+  }
 
  private:
   google::spanner::v1::Mutation m_;
@@ -176,7 +186,7 @@ using InsertMutationBuilder =
 /// Creates a simple insert mutation for the values in @p values.
 template <typename... Ts>
 Mutation MakeInsertMutation(Ts&&... values) {
-  return InsertMutationBuilder().AddRow(std::forward<Ts>(values)...).Build();
+  return InsertMutationBuilder().AddValues(std::forward<Ts>(values)...).Build();
 }
 
 /**
@@ -194,7 +204,7 @@ using UpdateMutationBuilder =
 /// Creates a simple update mutation for the values in @p values.
 template <typename... Ts>
 Mutation MakeUpdateMutation(Ts&&... values) {
-  return UpdateMutationBuilder().AddRow(std::forward<Ts>(values)...).Build();
+  return UpdateMutationBuilder().AddValues(std::forward<Ts>(values)...).Build();
 }
 
 /**
@@ -213,7 +223,7 @@ using InsertOrUpdateMutationBuilder =
 template <typename... Ts>
 Mutation MakeInsertOrUpdateMutation(Ts&&... values) {
   return InsertOrUpdateMutationBuilder()
-      .AddRow(std::forward<Ts>(values)...)
+      .AddValues(std::forward<Ts>(values)...)
       .Build();
 }
 
@@ -232,7 +242,9 @@ using ReplaceMutationBuilder =
 /// Creates a simple "replace" mutation for the values in @p values.
 template <typename... Ts>
 Mutation MakeReplaceMutation(Ts&&... values) {
-  return ReplaceMutationBuilder().AddRow(std::forward<Ts>(values)...).Build();
+  return ReplaceMutationBuilder()
+      .AddValues(std::forward<Ts>(values)...)
+      .Build();
 }
 
 // TODO(#198 & #202) - Implement DeleteMutationBuilder.

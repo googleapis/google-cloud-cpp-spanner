@@ -72,9 +72,10 @@ TEST(MutationsTest, InsertSimple) {
 
 TEST(MutationsTest, InsertComplex) {
   Mutation empty;
-  auto builder = InsertMutationBuilder({"col1", "col2", "col3"})
-                     .AddRow(std::int64_t(42), std::string("foo"), false)
-                     .AddRow(optional<std::int64_t>(), "bar", optional<bool>{});
+  auto builder =
+      InsertMutationBuilder({"col1", "col2", "col3"})
+          .AddRow(MakeRow(std::int64_t(42), std::string("foo"), false))
+          .AddValues(optional<std::int64_t>(), "bar", optional<bool>{});
   Mutation insert = builder.Build();
   Mutation moved = std::move(builder).Build();
   EXPECT_EQ(insert, moved);
@@ -152,8 +153,8 @@ TEST(MutationsTest, UpdateComplex) {
   Mutation empty;
   auto builder =
       UpdateMutationBuilder({"col_a", "col_b"})
-          .AddRow(std::vector<std::string>{}, 7.0)
-          .AddRow(std::vector<std::string>{"a", "b"}, optional<double>{});
+          .AddRow(MakeRow(std::vector<std::string>{}, 7.0))
+          .AddValues(std::vector<std::string>{"a", "b"}, optional<double>{});
   Mutation update = builder.Build();
   Mutation moved = std::move(builder).Build();
   EXPECT_EQ(update, moved);
@@ -231,7 +232,8 @@ TEST(MutationsTest, InsertOrUpdateSimple) {
 TEST(MutationsTest, InsertOrUpdateComplex) {
   Mutation empty;
   auto builder = InsertOrUpdateMutationBuilder({"col_a", "col_b"})
-                     .AddRow(std::make_tuple("a", 7.0));
+                     .AddRow(MakeRow(std::make_tuple("a", 7.0)))
+                     .AddValues(std::make_tuple("b", 8.0));
   Mutation update = builder.Build();
   Mutation moved = std::move(builder).Build();
   EXPECT_EQ(update, moved);
@@ -250,6 +252,18 @@ TEST(MutationsTest, InsertOrUpdateComplex) {
                       }
                       values {
                         number_value: 7.0
+                      }
+                    }
+                  }
+                }
+                values {
+                  values {
+                    list_value: {
+                      values {
+                        string_value: "b"
+                      }
+                      values {
+                        number_value: 8.0
                       }
                     }
                   }
@@ -295,7 +309,9 @@ TEST(MutationsTest, ReplaceSimple) {
 
 TEST(MutationsTest, ReplaceComplex) {
   Mutation empty;
-  auto builder = ReplaceMutationBuilder({"col_a", "col_b"}).AddRow("a", 7.0);
+  auto builder = ReplaceMutationBuilder({"col_a", "col_b"})
+                     .AddValues("a", 7.0)
+                     .AddRow(MakeRow("b", 8.0));
   Mutation update = builder.Build();
   Mutation moved = std::move(builder).Build();
   EXPECT_EQ(update, moved);
@@ -312,6 +328,14 @@ TEST(MutationsTest, ReplaceComplex) {
                   }
                   values {
                     number_value: 7.0
+                  }
+                }
+                values {
+                  values {
+                    string_value: "b"
+                  }
+                  values {
+                    number_value: 8.0
                   }
                 }
               })""",
