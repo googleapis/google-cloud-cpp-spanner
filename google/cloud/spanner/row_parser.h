@@ -159,13 +159,11 @@ class RowParser {
   explicit RowParser(std::shared_ptr<ValueSource> vs)
       : value_source_(std::move(vs)) {}
 
-  /// @name Move-only type
-  ///@{
-  RowParser(RowParser const&) = delete;
-  RowParser& operator=(RowParser const&) = delete;
-  RowParser(RowParser&& rp) = default;
+  // Copy and assignable.
+  RowParser(RowParser const&) = default;
+  RowParser& operator=(RowParser const&) = default;
+  RowParser(RowParser&&) = default;
   RowParser& operator=(RowParser&&) = default;
-  ///@}
 
   /// Returns the begin iterator.
   iterator begin() { return iterator(value_source_); }
