@@ -173,7 +173,7 @@ struct ReplaceOp {
 using InsertMutationBuilder =
     internal::WriteMutationBuilder<internal::InsertOp>;
 
-/// Creates a simple insert mutation for the values in @p row.
+/// Creates a simple insert mutation for the values in @p values.
 template <typename... Ts>
 Mutation MakeInsertMutation(Ts&&... values) {
   return InsertMutationBuilder().AddRow(std::forward<Ts>(values)...).Build();
@@ -191,7 +191,7 @@ Mutation MakeInsertMutation(Ts&&... values) {
 using UpdateMutationBuilder =
     internal::WriteMutationBuilder<internal::UpdateOp>;
 
-/// Creates a simple update mutation for the values in @p row.
+/// Creates a simple update mutation for the values in @p values.
 template <typename... Ts>
 Mutation MakeUpdateMutation(Ts&&... values) {
   return UpdateMutationBuilder().AddRow(std::forward<Ts>(values)...).Build();
@@ -209,7 +209,7 @@ Mutation MakeUpdateMutation(Ts&&... values) {
 using InsertOrUpdateMutationBuilder =
     internal::WriteMutationBuilder<internal::InsertOrUpdateOp>;
 
-/// Creates a simple "insert or update" mutation for the values in @p row.
+/// Creates a simple "insert or update" mutation for the values in @p values.
 template <typename... Ts>
 Mutation MakeInsertOrUpdateMutation(Ts&&... values) {
   return InsertOrUpdateMutationBuilder()
@@ -229,7 +229,7 @@ Mutation MakeInsertOrUpdateMutation(Ts&&... values) {
 using ReplaceMutationBuilder =
     internal::WriteMutationBuilder<internal::ReplaceOp>;
 
-/// Creates a simple "replace" mutation for the values in @p row.
+/// Creates a simple "replace" mutation for the values in @p values.
 template <typename... Ts>
 Mutation MakeReplaceMutation(Ts&&... values) {
   return ReplaceMutationBuilder().AddRow(std::forward<Ts>(values)...).Build();
