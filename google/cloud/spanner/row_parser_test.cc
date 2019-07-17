@@ -111,6 +111,12 @@ TEST(RowParser, SuccessMovedRowParser) {
   EXPECT_NE(it2, end2);
   row = *it2;
   EXPECT_TRUE(row.ok());
+  EXPECT_EQ(1, row->get<0>());
+
+  ++it2;
+  EXPECT_NE(it2, end2);
+  row = *it2;
+  EXPECT_TRUE(row.ok());
   EXPECT_EQ(2, row->get<0>());
 
   ++it2;
