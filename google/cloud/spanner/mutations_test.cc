@@ -74,7 +74,8 @@ TEST(MutationsTest, InsertSimple) {
 
 TEST(MutationsTest, InsertComplex) {
   Mutation empty;
-  auto builder = InsertMutationBuilder("table-name", {"col1", "col2", "col3"})
+  auto builder =
+      InsertMutationBuilder("table-name", {"col1", "col2", "col3"})
           .AddRow(MakeRow(std::int64_t(42), std::string("foo"), false))
           .EmplaceRow(optional<std::int64_t>(), "bar", optional<bool>{});
   Mutation insert = builder.Build();
@@ -316,8 +317,7 @@ TEST(MutationsTest, ReplaceSimple) {
 
 TEST(MutationsTest, ReplaceComplex) {
   Mutation empty;
-  auto builder =
-      ReplaceMutationBuilder("table-name", {"col_a", "col_b"})
+  auto builder = ReplaceMutationBuilder("table-name", {"col_a", "col_b"})
                      .EmplaceRow("a", 7.0)
                      .AddRow(MakeRow("b", 8.0));
   Mutation update = builder.Build();
