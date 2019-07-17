@@ -100,13 +100,12 @@ void AddColumn(std::vector<std::string> const& argv) {
   (argv[0], argv[1], argv[2]);
 }
 
-void QueryWithStruct(std::vector<std::string> const& argv) {
-  // TODO(tmatsuo): Add querying part once data client is ready.
+void QueryWithStruct(std::vector<std::string> const&) {
+  // TODO(#188): Add querying part once data client is ready.
   // [START spanner_create_struct_with_data]
   auto singer_info = std::make_tuple(std::make_pair("FirstName", "Elena"),
                                      std::make_pair("LastName", "Campbell"));
   // [END spanner_create_struct_with_data]
-  (void)argv;
   std::cout << "Struct created with the following data:\n"
             << std::get<0>(singer_info).first << ":"
             << std::get<0>(singer_info).second << "\n"
