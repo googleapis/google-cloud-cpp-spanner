@@ -243,12 +243,6 @@ TEST(Row, UnparseRow) {
   RoundTripRow(MakeRow(Value(42), Value("hello"), Value(3.14)));
 }
 
-TEST(Row, ParseValues) {
-  std::array<Value, 3> array = {Value(42), Value("hello"), Value(3.14)};
-  auto parsed = ParseRow<Value, Value, Value>(array);
-  EXPECT_TRUE(parsed.ok());
-}
-
 TEST(Row, ValuesAccessorRvalue) {
   // There's no good way to test that move semantics actually *work* when using
   // types that you don't own. So this test just verifies that properly written
