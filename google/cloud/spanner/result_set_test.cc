@@ -33,11 +33,11 @@ using ::testing::Return;
 class MockResultSetValueSource : public internal::ResultSetValueSource {
  public:
   // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD0(GetNextValue, StatusOr<optional<Value>>());
+  MOCK_METHOD0(NextValue, StatusOr<optional<Value>>());
   // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD0(GetMetadata, optional<spanner_proto::ResultSetMetadata>());
+  MOCK_METHOD0(Metadata, optional<spanner_proto::ResultSetMetadata>());
   // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD0(GetStats, optional<spanner_proto::ResultSetStats>());
+  MOCK_METHOD0(Stats, optional<spanner_proto::ResultSetStats>());
 };
 
 TEST(ResultSet, IterateNoRows) {
@@ -45,9 +45,9 @@ TEST(ResultSet, IterateNoRows) {
   ResultSet result_set{
       std::unique_ptr<internal::ResultSetValueSource>(mock_source)};
 
-  EXPECT_CALL(*mock_source, GetNextValue()).WillOnce(Return(optional<Value>()));
+  EXPECT_CALL(*mock_source, NextValue()).WillOnce(Return(optional<Value>()));
   int num_rows = 0;
-  for (auto const& row : result_set.rows<bool>()) {
+  for (auto const& row : result_set.Rows<bool>()) {
     static_cast<void>(row);
     ++num_rows;
   }
@@ -59,7 +59,7 @@ TEST(ResultSet, IterateOverRows) {
   ResultSet result_set{
       std::unique_ptr<internal::ResultSetValueSource>(mock_source)};
 
-  EXPECT_CALL(*mock_source, GetNextValue())
+  EXPECT_CALL(*mock_source, NextValue())
       .WillOnce(Return(optional<Value>(5)))
       .WillOnce(Return(optional<Value>(true)))
       .WillOnce(Return(optional<Value>("foo")))
@@ -69,7 +69,7 @@ TEST(ResultSet, IterateOverRows) {
       .WillOnce(Return(optional<Value>()));
 
   int num_rows = 0;
-  for (auto const& row : result_set.rows<std::int64_t, bool, std::string>()) {
+  for (auto const& row : result_set.Rows<std::int64_t, bool, std::string>()) {
     EXPECT_TRUE(row.ok());
     switch (num_rows++) {
       case 0:
@@ -85,7 +85,7 @@ TEST(ResultSet, IterateOverRows) {
         break;
 
       default:
-        EXPECT_TRUE(false);
+        ADD_FAILURE() << "Unexpected row number " << num_rows;
         break;
     }
   }
@@ -97,7 +97,7 @@ TEST(ResultSet, IterateError) {
   ResultSet result_set{
       std::unique_ptr<internal::ResultSetValueSource>(mock_source)};
 
-  EXPECT_CALL(*mock_source, GetNextValue())
+  EXPECT_CALL(*mock_source, NextValue())
       .WillOnce(Return(optional<Value>(5)))
       .WillOnce(Return(optional<Value>(true)))
       .WillOnce(Return(optional<Value>("foo")))
@@ -105,7 +105,7 @@ TEST(ResultSet, IterateError) {
       .WillOnce(Return(Status(StatusCode::kUnknown, "oops")));
 
   int num_rows = 0;
-  for (auto const& row : result_set.rows<std::int64_t, bool, std::string>()) {
+  for (auto const& row : result_set.Rows<std::int64_t, bool, std::string>()) {
     switch (num_rows++) {
       case 0:
         EXPECT_TRUE(row.ok());
@@ -116,10 +116,12 @@ TEST(ResultSet, IterateError) {
 
       case 1:
         EXPECT_FALSE(row.ok());
+        EXPECT_EQ(row.status().code(), StatusCode::kUnknown);
+        EXPECT_EQ(row.status().message(), "oops");
         break;
 
       default:
-        EXPECT_TRUE(false);
+        ADD_FAILURE() << "Unexpected row number " << num_rows;
         break;
     }
   }
@@ -132,8 +134,8 @@ TEST(ResultSet, TimestampNoTransaction) {
       std::unique_ptr<internal::ResultSetValueSource>(mock_source)};
 
   spanner_proto::ResultSetMetadata no_transaction;
-  EXPECT_CALL(*mock_source, GetMetadata()).WillOnce(Return(no_transaction));
-  EXPECT_FALSE(result_set.read_timestamp().has_value());
+  EXPECT_CALL(*mock_source, Metadata()).WillOnce(Return(no_transaction));
+  EXPECT_FALSE(result_set.ReadTimestamp().has_value());
 }
 
 TEST(ResultSet, TimestampNotPresent) {
@@ -144,9 +146,9 @@ TEST(ResultSet, TimestampNotPresent) {
   spanner_proto::ResultSetMetadata transaction_no_timestamp;
   transaction_no_timestamp.mutable_transaction()->set_id("dummy");
 
-  EXPECT_CALL(*mock_source, GetMetadata())
+  EXPECT_CALL(*mock_source, Metadata())
       .WillOnce(Return(transaction_no_timestamp));
-  EXPECT_FALSE(result_set.read_timestamp().has_value());
+  EXPECT_FALSE(result_set.ReadTimestamp().has_value());
 }
 
 TEST(ResultSet, TimestampPresent) {
@@ -160,21 +162,21 @@ TEST(ResultSet, TimestampPresent) {
   *transaction_with_timestamp.mutable_transaction()->mutable_read_timestamp() =
       internal::ToProto(timestamp);
 
-  EXPECT_CALL(*mock_source, GetMetadata())
+  EXPECT_CALL(*mock_source, Metadata())
       .WillOnce(Return(transaction_with_timestamp));
 
-  EXPECT_EQ(*result_set.read_timestamp(), timestamp);
+  EXPECT_EQ(*result_set.ReadTimestamp(), timestamp);
 }
 
 TEST(ResultSet, Stats) {
   // TODO(#217) this test is a placeholder until we decide on what type to
-  // return from GetStats().
+  // return from Stats().
   auto* mock_source = new MockResultSetValueSource;
   ResultSet result_set{
       std::unique_ptr<internal::ResultSetValueSource>(mock_source)};
-  EXPECT_CALL(*mock_source, GetStats())
+  EXPECT_CALL(*mock_source, Stats())
       .WillOnce(Return(spanner_proto::ResultSetStats()));
-  auto stats = result_set.GetStats();
+  auto stats = result_set.Stats();
   EXPECT_TRUE(stats.has_value());
 }
 

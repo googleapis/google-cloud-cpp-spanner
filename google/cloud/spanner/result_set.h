@@ -31,14 +31,22 @@ class ResultSetValueSource {
  public:
   virtual ~ResultSetValueSource() = default;
   // Returns OK Status with no Value to indicate end-of-stream.
-  virtual StatusOr<optional<Value>> GetNextValue() = 0;
-  virtual optional<google::spanner::v1::ResultSetMetadata> GetMetadata() = 0;
-  virtual optional<google::spanner::v1::ResultSetStats> GetStats() = 0;
+  virtual StatusOr<optional<Value>> NextValue() = 0;
+  virtual optional<google::spanner::v1::ResultSetMetadata> Metadata() = 0;
+  virtual optional<google::spanner::v1::ResultSetStats> Stats() = 0;
 };
 }  // namespace internal
 
 /**
- * ResultSet is returned from "query" operations (`Read`, `ExecuteSql`).
+ * Represents the result of a query operation, such as `SpannerClient::Read()`
+ * or `SpannerClient::ExecuteSql()`.
+ *
+ * This class encapsulates the result of a Cloud Spanner query, including all
+ * DML operations, i.e., `UPDATE` and `DELETE` also return a `ResultSet`.
+ *
+ * Note that a `ResultSet` returns both the data for the operation, as a
+ * single-pass, input range returned by `rows()`, as well as the metadata for
+ * the results, and execution statistics (if requested).
  */
 class ResultSet {
  public:
@@ -54,9 +62,8 @@ class ResultSet {
    * Return a `RowParser` which can be used to iterate through the results.
    */
   template <typename... Ts>
-  RowParser<Ts...> rows() {
-    return RowParser<Ts...>(
-        [this]() mutable { return source_->GetNextValue(); });
+  RowParser<Ts...> Rows() {
+    return RowParser<Ts...>([this]() mutable { return source_->NextValue(); });
   }
 
   /**
@@ -65,8 +72,8 @@ class ResultSet {
    * Only available if a read-only transaction was used, and the timestamp
    * was requested by setting `return_read_timestamp` true.
    */
-  optional<Timestamp> read_timestamp() const {
-    auto metadata = source_->GetMetadata();
+  optional<Timestamp> ReadTimestamp() const {
+    auto metadata = source_->Metadata();
     if (metadata.has_value() && metadata->has_transaction() &&
         metadata->transaction().has_read_timestamp()) {
       return internal::FromProto(metadata->transaction().read_timestamp());
@@ -83,8 +90,8 @@ class ResultSet {
    *
    * TODO(#217) Determine what type we should return from this method.
    */
-  optional<google::spanner::v1::ResultSetStats> GetStats() {
-    return source_->GetStats();
+  optional<google::spanner::v1::ResultSetStats> Stats() {
+    return source_->Stats();
   }
 
  private:
