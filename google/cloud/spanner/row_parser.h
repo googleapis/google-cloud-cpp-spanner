@@ -100,8 +100,8 @@ class RowParser {
     using pointer = value_type*;
     using reference = value_type&;
 
-    reference operator*() { return *parser_->curr_; }
-    pointer operator->() { return &*parser_->curr_; }
+    reference operator*() { return parser_->curr_; }
+    pointer operator->() { return &parser_->curr_; }
 
     iterator& operator++() {
       parser_->Advance();
@@ -121,9 +121,10 @@ class RowParser {
       // Note: An "end" iterator has two representations that must compare equal.
       //   1. When iterator::parser_ is nullptr_
       //   2. When iterator::parser_::curr_ is nullptr_
-      if (a.parser_ && b.parser_) return a.parser_->curr_ == b.parser_->curr_;
-      if (!a.parser_ && b.parser_) return !b.parser_->curr_;
-      if (a.parser_ && !b.parser_) return !a.parser_->curr_;
+      if (a.parser_ && b.parser_)
+        return !a.parser_->value_source_ == !b.parser_->value_source_;
+      if (!a.parser_ && b.parser_) return !b.parser_->value_source_;
+      if (a.parser_ && !b.parser_) return !a.parser_->value_source_;
       return true;  // both end with parser_ == nullptr
     }
     friend bool operator!=(iterator const& a, iterator const& b) {
@@ -163,34 +164,32 @@ class RowParser {
   // Consumes Values from value_source_ and stores the consumed row in curr_.
   // Used by iterator::operator++().
   void Advance() {
-    if (!curr_) {
-      curr_ = std::unique_ptr<value_type>(new value_type);
-    } else if (!*curr_) {  // Last row was an error; jump to end
-      curr_ = nullptr;
+    if (!curr_) {  // Last row was an error; jump to end
+      value_source_ = nullptr;
       return;
     }
     std::array<Value, RowType::size()> values;
     for (std::size_t i = 0; i < values.size(); ++i) {
       StatusOr<optional<Value>> v = (*value_source_)();
       if (!v) {
-        *curr_ = std::move(v).status();
+        curr_ = std::move(v).status();
         return;
       }
       if (!*v) {
         if (i == 0) {  // We've successfully reached the end.
-          curr_ = nullptr;
+          value_source_ = nullptr;
           return;
         }
-        *curr_ = Status(StatusCode::kUnknown, "incomplete row");
+        curr_ = Status(StatusCode::kUnknown, "incomplete row");
         return;
       }
       values[i] = **std::move(v);
     }
-    *curr_ = ParseRow<T, Ts...>(values);
+    curr_ = ParseRow<T, Ts...>(values);
   }
 
-  std::shared_ptr<ValueSource> value_source_;
-  std::unique_ptr<value_type> curr_;  // nullptr means end
+  std::shared_ptr<ValueSource> value_source_;  // nullpr is end
+  value_type curr_ = RowType{};
 };
 
 }  // namespace SPANNER_CLIENT_NS
