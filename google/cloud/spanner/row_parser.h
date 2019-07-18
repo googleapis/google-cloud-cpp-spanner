@@ -117,16 +117,7 @@ class RowParser {
     }
 
     friend bool operator==(iterator const& a, iterator const& b) {
-      // Input iterators may only be compared to (copies of) themselves and
-      // end. See https://en.cppreference.com/w/cpp/named_req/InputIterator
-      //
-      // Note: An "end" iterator has two representations that must compare
-      // equal:
-      //   1. When iterator::parser_ is nullptr_
-      //   2. When iterator::parser_::value_source_ is nullptr_
-      bool const a_is_end = !a.parser_ || !a.parser_->value_source_;
-      bool const b_is_end = !b.parser_ || !b.parser_->value_source_;
-      return a_is_end == b_is_end;
+      return a.Equals(b);
     }
     friend bool operator!=(iterator const& a, iterator const& b) {
       return !(a == b);
@@ -135,6 +126,20 @@ class RowParser {
    private:
     friend RowParser;
     explicit iterator(RowParser* p) : parser_(p) {}
+
+    bool Equals(iterator const& b) const {
+      // Input iterators may only be compared to (copies of) themselves and
+      // end. See https://en.cppreference.com/w/cpp/named_req/InputIterator
+      //
+      // Note: An "end" iterator has two representations that must compare
+      // equal:
+      //   1. When iterator::parser_ is nullptr_
+      //   2. When iterator::parser_::value_source_ is nullptr_
+      iterator const& a = *this;
+      bool const a_is_end = !a.parser_ || !a.parser_->value_source_;
+      bool const b_is_end = !b.parser_ || !b.parser_->value_source_;
+      return a_is_end == b_is_end;
+    }
 
     RowParser* parser_;  // nullptr means end
   };
