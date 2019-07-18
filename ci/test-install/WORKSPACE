@@ -45,6 +45,7 @@ switched_rules_by_language(
     grpc = True,
 )
 
+load("@com_github_googleapis_google_cloud_cpp//bazel:google_cloud_cpp_deps.bzl", "google_cloud_cpp_deps")
 google_cloud_cpp_deps()
 
 # Have to manually call the corresponding function for gRPC:

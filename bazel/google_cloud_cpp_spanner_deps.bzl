@@ -58,7 +58,7 @@ def google_cloud_cpp_spanner_deps():
             ],
             strip_prefix = "googleapis-a8ee1416f4c588f2ab92da72e7c1f588c784d3e6",
             sha256 = "6b8a9b2bcb4476e9a5a9872869996f0d639c8d5df76dd8a893e79201f211b1cf",
-            build_file = "//bazel:googleapis.BUILD",
+            build_file = "@com_github_googleapis_google_cloud_cpp_spanner//bazel:googleapis.BUILD",
         )
 
     # Load gRPC and its dependencies, using a similar pattern to this function.
