@@ -15,7 +15,6 @@
 #include "google/cloud/spanner/row_parser.h"
 #include "google/cloud/spanner/value.h"
 #include <gmock/gmock.h>
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -36,7 +35,7 @@ ValueSource MakeValueSource(std::vector<Value> const& v) {
 
 template <typename... Ts>
 RowParser<Ts...> MakeRowParser(std::vector<Value> const& v) {
-  return RowParser<Ts...>(std::make_shared<ValueSource>(MakeValueSource(v)));
+  return RowParser<Ts...>(MakeValueSource(v));
 }
 
 TEST(RowParser, SuccessEmpty) {
