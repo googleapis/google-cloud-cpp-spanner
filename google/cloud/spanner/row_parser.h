@@ -124,11 +124,9 @@ class RowParser {
       // equal:
       //   1. When iterator::parser_ is nullptr_
       //   2. When iterator::parser_::value_source_ is nullptr_
-      if (!a.parser_ && b.parser_) return !b.parser_->value_source_;
-      if (a.parser_ && !b.parser_) return !a.parser_->value_source_;
-      if (a.parser_ && b.parser_)
-        return !a.parser_->value_source_ == !b.parser_->value_source_;
-      return true;  // both end with parser_ == nullptr
+      bool const a_is_end = !a.parser_ || !a.parser_->value_source_;
+      bool const b_is_end = !b.parser_ || !b.parser_->value_source_;
+      return a_is_end == b_is_end;
     }
     friend bool operator!=(iterator const& a, iterator const& b) {
       return !(a == b);

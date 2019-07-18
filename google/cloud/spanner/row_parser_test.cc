@@ -38,6 +38,26 @@ RowParser<Ts...> MakeRowParser(std::vector<Value> const& v) {
   return RowParser<Ts...>(MakeValueSource(v));
 }
 
+TEST(RowParser, IteratorEquality) {
+  // Empty range of values.
+  std::vector<Value> values = {};
+  auto rp = MakeRowParser<std::int64_t>(values);
+  auto it = rp.begin();
+  EXPECT_EQ(it, it);
+  auto end = rp.end();
+  EXPECT_EQ(end, end);
+  EXPECT_EQ(it, end);
+
+  // Non-empty range of values.
+  values = {Value(0), Value(1), Value(2)};
+  rp = MakeRowParser<std::int64_t>(values);
+  it = rp.begin();
+  EXPECT_EQ(it, it);
+  end = rp.end();
+  EXPECT_EQ(end, end);
+  EXPECT_NE(it, end);
+}
+
 TEST(RowParser, SuccessEmpty) {
   std::vector<Value> const values = {};
   auto rp = MakeRowParser<std::int64_t>(values);
