@@ -433,7 +433,7 @@ Functions</h2></td></tr>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <p>The following example shows how to create a <code>ValueSource</code> from a vector:</p>
 <div class="fragment"><div class="line"><a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a24c2736cb64e83e464aa7fff4bde52fb">ValueSource</a> MakeValueSource(std::vector&lt;Value&gt; <span class="keyword">const</span>&amp; v) {</div><div class="line">  std::size_t i = 0;</div><div class="line">  <span class="keywordflow">return</span> [=]() <span class="keyword">mutable</span> -&gt; StatusOr&lt;optional&lt;Value&gt;&gt; {</div><div class="line">      <span class="keywordflow">if</span> (i == v.size()) <span class="keywordflow">return</span> optional&lt;Value&gt;{};</div><div class="line">      <span class="keywordflow">return</span> {v[i++]};</div><div class="line">  };</div><div class="line">}</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="row__parser_8h_source.html#l00056">56</a> of file <a class="el" href="row__parser_8h_source.html">row_parser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row__parser_8h_source.html#l00055">55</a> of file <a class="el" href="row__parser_8h_source.html">row_parser.h</a>.</p>
 
 </div>
 </div>
