@@ -55,12 +55,15 @@ inline namespace SPANNER_CLIENT_NS {
 using ValueSource = std::function<StatusOr<optional<Value>>()>;
 
 /**
- * A `RowParser` is a move-only type that converts the given `ValueSource` into
- * a single-pass iterable range of `Row<Ts...>` objects.
+ * A `RowParser` converts the given `ValueSource` into a single-pass iterable
+ * range of `Row<Ts...>` objects.
  *
  * Instances of this class are typically obtained from the
  * `ResultSet::rows<Ts...>` member function. Callers should iterate `RowParser`
  * using a range-for loop as follows.
+ *
+ * @warning Moving a `RowParser` invalidates all iterators referring to the
+ *     moved-from instance.
  *
  * @par Example
  *
@@ -139,8 +142,7 @@ class RowParser {
   };
 
   /// Constructs a `RowParser` for the given `ValueSource`.
-  explicit RowParser(ValueSource vs)
-      : value_source_(std::move(vs)) {
+  explicit RowParser(ValueSource vs) : value_source_(std::move(vs)) {
     Advance();
   }
 
@@ -157,8 +159,8 @@ class RowParser {
   iterator end() { return iterator(nullptr); }
 
  private:
-  // Consumes Values from value_source_ and stores the consumed row in curr_.
-  // Used by iterator::operator++().
+  // Consumes Values from value_source_ and stores the consumed Row in curr_.
+  // Called by iterator::operator++().
   void Advance() {
     if (!curr_) {  // Last row was an error; jump to end
       value_source_ = nullptr;

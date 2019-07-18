@@ -99,7 +99,7 @@ TEST(RowParser, SuccessMovedRowParser) {
   EXPECT_NE(it1, end1);
   row = *it1;
   EXPECT_TRUE(row.ok());
-  EXPECT_EQ(1, row->get<0>());
+  EXPECT_EQ(1, row->get<0>());  // <-- Line (A)
 
   // Now we move the RowParser to a new object, and continue the iteration.
   // We should resume consuming where the first RowParser left off.
@@ -110,7 +110,7 @@ TEST(RowParser, SuccessMovedRowParser) {
   EXPECT_NE(it2, end2);
   row = *it2;
   EXPECT_TRUE(row.ok());
-  EXPECT_EQ(1, row->get<0>());
+  EXPECT_EQ(1, row->get<0>());  // Same value as line (A) since op++ not called
 
   ++it2;
   EXPECT_NE(it2, end2);
