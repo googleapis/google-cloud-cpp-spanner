@@ -15,7 +15,7 @@
 #include "google/cloud/spanner/result_set.h"
 #include "google/cloud/spanner/internal/time.h"
 #include "google/cloud/spanner/timestamp.h"
-#include <google/cloud/internal/make_unique.h>
+#include "google/cloud/internal/make_unique.h"
 #include <gmock/gmock.h>
 #include <chrono>
 #include <string>
