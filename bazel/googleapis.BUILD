@@ -99,7 +99,7 @@ cc_library(
     ],
     deps = [
         "@com_github_grpc_grpc//:grpc++",
-        "//google/rpc:status_cc_proto"
+        "//google/rpc:status_cc_proto",
     ],
 )
 
@@ -124,7 +124,7 @@ cc_grpc_library(
     well_known_protos = True,
     deps = [
         ":bigtableadmin_cc_proto",
-        "//google/longrunning:longrunning_cc_grpc"
+        "//google/longrunning:longrunning_cc_grpc",
     ],
 )
 
@@ -150,6 +150,6 @@ cc_library(
         ":bigtable_cc_proto",
         ":bigtableadmin_cc_grpc",
         ":bigtableadmin_cc_proto",
-        "//google/rpc:error_details_cc_proto"
+        "//google/rpc:error_details_cc_proto",
     ],
 )
