@@ -45,7 +45,7 @@ class ResultSetValueSource {
  * DML operations, i.e., `UPDATE` and `DELETE` also return a `ResultSet`.
  *
  * Note that a `ResultSet` returns both the data for the operation, as a
- * single-pass, input range returned by `rows()`, as well as the metadata for
+ * single-pass, input range returned by `Rows()`, as well as the metadata for
  * the results, and execution statistics (if requested).
  */
 class ResultSet {
@@ -59,7 +59,12 @@ class ResultSet {
   ResultSet& operator=(ResultSet&&) = default;
 
   /**
-   * Return a `RowParser` which can be used to iterate through the results.
+   * Returns a `RowParser` which can be used to iterate the returned `Row`s.
+   *
+   * It is possible to call this function more than once on the same object,
+   * but since the underlying data stream can only be iterated over once, this
+   * must be done with extreme caution. Using the returned `RowParser`s from
+   * multiple threads may result in errors or data corruption.
    */
   template <typename... Ts>
   RowParser<Ts...> Rows() {
@@ -86,7 +91,7 @@ class ResultSet {
    *
    * Statistics are only available for SQL requests with `query_mode` set to
    * `PROFILE`, and only after consuming the entire result stream (i.e.
-   * iterating through `rows()` until the end).
+   * iterating through `Rows()` until the end).
    *
    * TODO(#217) Determine what type we should return from this method.
    */
