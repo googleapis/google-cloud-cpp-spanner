@@ -39,7 +39,11 @@ should be automatically compiled when you follow said instructions.
 
 ### Configuring authentication for the C++ Client Library
 
-This library uses the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to
+Like all Google Cloud Platform (GCP) services, Cloud Spanner requires that your
+application authenticates with the service before accessing any data.
+If you are not familiar with GCP authentication please take this opportunity to
+review the [Authentication Overview][authentication-quickstart]. This library
+uses the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to
 find the credentials file. For example:
 
 | Shell              | Command                                        |
@@ -102,8 +106,6 @@ you want to use.
 In your [WORKSPACE][workspace-definition-link] file add a dependency to download
 and install the library, for example:
 
-[workspace-definition-link]: https://docs.bazel.build/versions/master/build-ref.html#packages_targets
-
 @code {.py}
 # Change the version and SHA256 hash as needed.
 http_archive(
@@ -130,7 +132,7 @@ switched_rules_by_language(
     grpc = True,
 )
 
-# Have to manually call the corresponding function for google-cloud-cpp and
+# You have to manually call the corresponding function for google-cloud-cpp and
 # gRPC:  https://github.com/bazelbuild/bazel/issues/1550
 load("@com_github_googleapis_google_cloud_cpp//bazel:google_cloud_cpp_deps.bzl", "google_cloud_cpp_deps")
 
@@ -176,15 +178,11 @@ my_program: my_program.cc
 
 ### Error Handling
 
-[status-or-header]: https://github.com/googleapis/google-cloud-cpp/blob/master/google/cloud/status_or.h
-
 This library never throws exceptions to signal error. In general, the library
 returns a [`StatusOr<T>`][status-or-header] if an error is possible. Some
-functions return objects that already have an existing error handling mechanism,
-such as types derived from `std::ostream` where the application can check the
-[state flags](https://en.cppreference.com/w/cpp/io/basic_ios/rdstate)
-to determine if there was an error. In these cases no `StatusOr` wrapper is
-used.
+functions return objects that are not wrapped in a `StatusOr<>` but will
+themselves return a `StatusOr<T>` to signal an error. For example, wrappers for
+long running operations return `future<StatusOr<T>>`.
 
 ### Retry, Backoff, and Idempotency Policies.
 
@@ -216,5 +214,10 @@ period between retries.
 
 [github-link]: https://github.com/googleapis/google-cloud-cpp-spanner 'GitHub Repository'
 [github-readme]:  https://github.com/googleapis/google-cloud-cpp-spanner/blob/master/README%2Emd
+
+[workspace-definition-link]: https://docs.bazel.build/versions/master/build-ref.html#packages_targets
+[status-or-header]: https://github.com/googleapis/google-cloud-cpp/blob/master/google/cloud/status_or.h
+
+
 
 */
