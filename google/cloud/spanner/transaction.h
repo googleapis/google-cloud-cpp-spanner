@@ -31,10 +31,11 @@ class Transaction;
 }
 
 /**
+ * The representation of a Cloud Spanner transaction.
+ *
  * A transaction is a set of reads and writes that execute atomically at a
  * single logical point in time across the columns/rows/tables in a database.
- * A google::cloud::spanner::Transaction is passed to each of those read and
- * write operations, tying them together, but is otherwise opaque to the user.
+ * Those reads and writes are grouped by passing them the same `Transaction`.
  *
  * All reads/writes in the transaction must be executed within the same
  * session, and that session may have only one transaction active at a time.
@@ -46,6 +47,8 @@ class Transaction;
  *   - ReadWrite. Supports reading and writing data at a single point in time.
  *     Uses pessimistic locking and, if necessary, two-phase commit. May abort,
  *     requiring the application to retry.
+ *   - SingleUse. A restricted form of a ReadOnly transaction where Spanner
+ *     chooses the read timestamp.
  */
 class Transaction {
  public:
@@ -140,7 +143,7 @@ class Transaction {
  private:
   friend class Client;
 
-  /// Construction of single-use transaction.
+  // Construction of a single-use transaction.
   Transaction(SingleUseOptions opts);
 
   internal::Transaction* operator->() { return txn_.get(); }

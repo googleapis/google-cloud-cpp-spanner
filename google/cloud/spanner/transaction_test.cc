@@ -59,9 +59,13 @@ TEST(Transaction, RegularSemantics) {
   EXPECT_EQ(c, b);
   EXPECT_NE(c, a);
 
+  c = a;
+  EXPECT_EQ(c, a);
+  EXPECT_NE(c, b);
+
   Transaction d(c);
   EXPECT_EQ(d, c);
-  EXPECT_EQ(d, b);
+  EXPECT_EQ(d, a);
 
   Transaction::ReadWriteOptions none;
   Transaction e(none);
