@@ -27,9 +27,9 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
 namespace internal {
-class ResultSetValueSource {
+class ResultSetSource {
  public:
-  virtual ~ResultSetValueSource() = default;
+  virtual ~ResultSetSource() = default;
   // Returns OK Status with no Value to indicate end-of-stream.
   virtual StatusOr<optional<Value>> NextValue() = 0;
   virtual optional<google::spanner::v1::ResultSetMetadata> Metadata() = 0;
@@ -51,7 +51,7 @@ class ResultSetValueSource {
 class ResultSet {
  public:
   ResultSet() = default;
-  explicit ResultSet(std::unique_ptr<internal::ResultSetValueSource> source)
+  explicit ResultSet(std::unique_ptr<internal::ResultSetSource> source)
       : source_(std::move(source)) {}
 
   // This class is moveable but not copyable.
@@ -61,10 +61,10 @@ class ResultSet {
   /**
    * Returns a `RowParser` which can be used to iterate the returned `Row`s.
    *
-   * It is possible to call this function more than once on the same object,
-   * but since the underlying data stream can only be iterated over once, this
-   * must be done with extreme caution. Using the returned `RowParser`s from
-   * multiple threads may result in errors or data corruption.
+   * Since there is a single result stream for each `ResultSet` instance, users
+   * should not use multiple `RowParser`s from the same `ResultSet` at the same
+   * time. Doing so is not thread safe, and may result in errors or data
+   * corruption.
    */
   template <typename... Ts>
   RowParser<Ts...> Rows() {
@@ -100,7 +100,7 @@ class ResultSet {
   }
 
  private:
-  std::unique_ptr<internal::ResultSetValueSource> source_;
+  std::unique_ptr<internal::ResultSetSource> source_;
 };
 
 }  // namespace SPANNER_CLIENT_NS

@@ -32,7 +32,7 @@ using ::google::cloud::internal::make_unique;
 using ::testing::Return;
 
 // NOLINTNEXTLINE(clang-analyzer-optin.cplusplus.VirtualCall)
-class MockResultSetValueSource : public internal::ResultSetValueSource {
+class MockResultSetSource : public internal::ResultSetSource {
  public:
   // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
   MOCK_METHOD0(NextValue, StatusOr<optional<Value>>());
@@ -43,11 +43,10 @@ class MockResultSetValueSource : public internal::ResultSetValueSource {
 };
 
 TEST(ResultSet, IterateNoRows) {
-  auto mock_source_unique = make_unique<MockResultSetValueSource>();
-  auto* mock_source = mock_source_unique.get();
-  ResultSet result_set(std::move(mock_source_unique));
-
+  auto mock_source = make_unique<MockResultSetSource>();
   EXPECT_CALL(*mock_source, NextValue()).WillOnce(Return(optional<Value>()));
+
+  ResultSet result_set(std::move(mock_source));
   int num_rows = 0;
   for (auto const& row : result_set.Rows<bool>()) {
     static_cast<void>(row);
@@ -57,10 +56,7 @@ TEST(ResultSet, IterateNoRows) {
 }
 
 TEST(ResultSet, IterateOverRows) {
-  auto mock_source_unique = make_unique<MockResultSetValueSource>();
-  auto* mock_source = mock_source_unique.get();
-  ResultSet result_set(std::move(mock_source_unique));
-
+  auto mock_source = make_unique<MockResultSetSource>();
   EXPECT_CALL(*mock_source, NextValue())
       .WillOnce(Return(optional<Value>(5)))
       .WillOnce(Return(optional<Value>(true)))
@@ -70,6 +66,7 @@ TEST(ResultSet, IterateOverRows) {
       .WillOnce(Return(optional<Value>("bar")))
       .WillOnce(Return(optional<Value>()));
 
+  ResultSet result_set(std::move(mock_source));
   int num_rows = 0;
   for (auto const& row : result_set.Rows<std::int64_t, bool, std::string>()) {
     EXPECT_TRUE(row.ok());
@@ -95,10 +92,7 @@ TEST(ResultSet, IterateOverRows) {
 }
 
 TEST(ResultSet, IterateError) {
-  auto mock_source_unique = make_unique<MockResultSetValueSource>();
-  auto* mock_source = mock_source_unique.get();
-  ResultSet result_set(std::move(mock_source_unique));
-
+  auto mock_source = make_unique<MockResultSetSource>();
   EXPECT_CALL(*mock_source, NextValue())
       .WillOnce(Return(optional<Value>(5)))
       .WillOnce(Return(optional<Value>(true)))
@@ -106,6 +100,7 @@ TEST(ResultSet, IterateError) {
       .WillOnce(Return(optional<Value>(10)))
       .WillOnce(Return(Status(StatusCode::kUnknown, "oops")));
 
+  ResultSet result_set(std::move(mock_source));
   int num_rows = 0;
   for (auto const& row : result_set.Rows<std::int64_t, bool, std::string>()) {
     switch (num_rows++) {
@@ -131,54 +126,47 @@ TEST(ResultSet, IterateError) {
 }
 
 TEST(ResultSet, TimestampNoTransaction) {
-  auto mock_source_unique = make_unique<MockResultSetValueSource>();
-  auto* mock_source = mock_source_unique.get();
-  ResultSet result_set(std::move(mock_source_unique));
-
+  auto mock_source = make_unique<MockResultSetSource>();
   spanner_proto::ResultSetMetadata no_transaction;
   EXPECT_CALL(*mock_source, Metadata()).WillOnce(Return(no_transaction));
+
+  ResultSet result_set(std::move(mock_source));
   EXPECT_FALSE(result_set.ReadTimestamp().has_value());
 }
 
 TEST(ResultSet, TimestampNotPresent) {
-  auto mock_source_unique = make_unique<MockResultSetValueSource>();
-  auto* mock_source = mock_source_unique.get();
-  ResultSet result_set(std::move(mock_source_unique));
-
+  auto mock_source = make_unique<MockResultSetSource>();
   spanner_proto::ResultSetMetadata transaction_no_timestamp;
   transaction_no_timestamp.mutable_transaction()->set_id("dummy");
-
   EXPECT_CALL(*mock_source, Metadata())
       .WillOnce(Return(transaction_no_timestamp));
+
+  ResultSet result_set(std::move(mock_source));
   EXPECT_FALSE(result_set.ReadTimestamp().has_value());
 }
 
 TEST(ResultSet, TimestampPresent) {
-  auto mock_source_unique = make_unique<MockResultSetValueSource>();
-  auto* mock_source = mock_source_unique.get();
-  ResultSet result_set(std::move(mock_source_unique));
-
+  auto mock_source = make_unique<MockResultSetSource>();
   spanner_proto::ResultSetMetadata transaction_with_timestamp;
   transaction_with_timestamp.mutable_transaction()->set_id("dummy2");
   Timestamp timestamp = std::chrono::system_clock::now();
   *transaction_with_timestamp.mutable_transaction()->mutable_read_timestamp() =
       internal::ToProto(timestamp);
-
   EXPECT_CALL(*mock_source, Metadata())
       .WillOnce(Return(transaction_with_timestamp));
 
+  ResultSet result_set(std::move(mock_source));
   EXPECT_EQ(*result_set.ReadTimestamp(), timestamp);
 }
 
 TEST(ResultSet, Stats) {
   // TODO(#217) this test is a placeholder until we decide on what type to
   // return from Stats().
-  auto mock_source_unique = make_unique<MockResultSetValueSource>();
-  auto* mock_source = mock_source_unique.get();
-  ResultSet result_set(std::move(mock_source_unique));
-
+  auto mock_source = make_unique<MockResultSetSource>();
   EXPECT_CALL(*mock_source, Stats())
       .WillOnce(Return(spanner_proto::ResultSetStats()));
+
+  ResultSet result_set(std::move(mock_source));
   auto stats = result_set.Stats();
   EXPECT_TRUE(stats.has_value());
 }
