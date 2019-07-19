@@ -127,6 +127,7 @@ class RowParser {
    private:
     friend RowParser;
     explicit iterator(RowParser* p) : parser_(p) {
+      /* if (parser_) parser_->Advance(); */
       if (parser_ && !parser_->curr_) parser_->Advance();
     }
 
