@@ -218,7 +218,7 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Constructs a non-null <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> that holds nothing. </p>
-<p>All calls to <code>is&lt;T&gt;()</code>, <code>is_null&lt;T&gt;()</code>, and <code>get&lt;T&gt;()</code> will return false or an error as appropriate. </p>
+<p>The constructed object is logically empty. It will compare equal only to another default constructed <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>. All calls to <code>is&lt;T&gt;()</code>, <code>is_null&lt;T&gt;()</code>, and <code>get&lt;T&gt;()</code> will return false or an error as appropriate. </p>
 
 </div>
 </div>
@@ -300,7 +300,7 @@ Friends</h2></td></tr>
 
 <p>Constructs a non-null instance with the specified type and value. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00164">164</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00166">166</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -330,7 +330,7 @@ Friends</h2></td></tr>
 
 <p>Constructs a non-null instance with the specified type and value. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00166">166</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00168">168</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -360,7 +360,7 @@ Friends</h2></td></tr>
 
 <p>Constructs a non-null instance with the specified type and value. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00168">168</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00170">170</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -390,7 +390,7 @@ Friends</h2></td></tr>
 
 <p>Constructs a non-null instance with the specified type and value. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00170">170</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00172">172</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -420,7 +420,7 @@ Friends</h2></td></tr>
 
 <p>Constructs a non-null instance with the specified type and value. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00172">172</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00174">174</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -450,7 +450,7 @@ Friends</h2></td></tr>
 
 <p>Constructs a non-null instance with the specified type and value. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00174">174</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00176">176</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -481,7 +481,7 @@ Friends</h2></td></tr>
 <p>Constructs a non-null instance from common C++ literal types that closely, though not exactly, match supported Spanner types. </p>
 <p>An integer literal in C++ is of type <code>int</code>, which is not exactly an allowed Spanner type. This will be allowed but it will be implicitly up converted to a <code>std::int64_t</code>. Similarly, a C++ string literal will be implicitly converted to a <code>std::string</code>. For example:</p>
 <div class="fragment"><div class="line">spanner::Value v1(42);</div><div class="line">assert(v1.is&lt;std::int64_t&gt;());</div><div class="line"></div><div class="line">spanner::Value v2(<span class="stringliteral">&quot;hello&quot;</span>);</div><div class="line">assert(v2.is&lt;std::string&gt;());</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00193">193</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00195">195</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -512,7 +512,7 @@ Friends</h2></td></tr>
 <p>Constructs a non-null instance from common C++ literal types that closely, though not exactly, match supported Spanner types. </p>
 <p>An integer literal in C++ is of type <code>int</code>, which is not exactly an allowed Spanner type. This will be allowed but it will be implicitly up converted to a <code>std::int64_t</code>. Similarly, a C++ string literal will be implicitly converted to a <code>std::string</code>. For example:</p>
 <div class="fragment"><div class="line">spanner::Value v1(42);</div><div class="line">assert(v1.is&lt;std::int64_t&gt;());</div><div class="line"></div><div class="line">spanner::Value v2(<span class="stringliteral">&quot;hello&quot;</span>);</div><div class="line">assert(v2.is&lt;std::string&gt;());</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00195">195</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00197">197</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -544,7 +544,7 @@ template&lt;typename T &gt; </div>
 
 <p>Constructs a non-null instance if <code>opt</code> has a value, otherwise constructs a null instance. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00202">202</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00204">204</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -578,7 +578,7 @@ template&lt;typename T &gt; </div>
 <p>The type <code>T</code> may be any valid type shown above, except vectors of vectors are not allowed.</p>
 <dl class="section warning"><dt>Warning</dt><dd>If <code>T</code> is a <code>std::tuple</code> with field names (i.e., at least one of its element types is a <code>std::pair&lt;std::string, T&gt;</code>) then, all of the vector's elements must have exactly the same field names. Any mismatch in in field names results in undefined behavior. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00218">218</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00220">220</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -611,7 +611,7 @@ template&lt;typename... Ts&gt; </div>
 <p>Constructs an instance from a Spanner STRUCT with a type and values matching the given <code>std::tuple</code>. </p>
 <p>Any STRUCT field may optionally have a name, which is specified as <code>std::pair&lt;std::string, T&gt;</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00231">231</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00233">233</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -645,7 +645,7 @@ template&lt;typename T &gt; </div>
 <p>Requires <code>is&lt;T&gt;()</code> is true, otherwise a non-OK Status will be returned. If <code>is_null&lt;T&gt;()</code> is true, a non-OK Status is returned, unless the specified type <code>T</code> is an <code>optional&lt;U&gt;</code>, in which case a valueless optional is returned to indicate the nullness.</p>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <div class="fragment"><div class="line">spanner::Value v{3.14};</div><div class="line">StatusOr&lt;double&gt; d = v.get&lt;<span class="keywordtype">double</span>&gt;();</div><div class="line"><span class="keywordflow">if</span> (d) {</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;d=&quot;</span> &lt;&lt; *d;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// Now using a &quot;null&quot; std::int64_t</span></div><div class="line">v = spanner::MakeNullValue&lt;std::int64_t&gt;();</div><div class="line">assert(v.is_null&lt;std::int64_t&gt;());</div><div class="line">StatusOr&lt;std::int64_t&gt; i = v.get&lt;std::int64_t&gt;();</div><div class="line"><span class="keywordflow">if</span> (!i) {</div><div class="line">  std::cerr &lt;&lt; <span class="stringliteral">&quot;Could not get integer: &quot;</span> &lt;&lt; i.status();</div><div class="line">}</div><div class="line"></div><div class="line">StatusOr&lt;optional&lt;std::int64_t&gt;&gt; j = v.get&lt;optional&lt;std::int64_t&gt;();</div><div class="line">assert(j.ok());  <span class="comment">// Since we know the types match in this example</span></div><div class="line">assert(!v-&gt;has_value());  <span class="comment">// Since we know v was null in this example</span></div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00317">317</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00319">319</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -678,7 +678,7 @@ template&lt;typename T &gt; </div>
 <p>All <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a> instances have some type, even null values. <code>T</code> may be an <code>optional&lt;U&gt;</code>, in which case it will return the same value as <code>is&lt;U&gt;()</code>.</p>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <div class="fragment"><div class="line">spanner::Value v{<span class="keyword">true</span>};</div><div class="line">assert(v.is&lt;<span class="keywordtype">bool</span>&gt;());  <span class="comment">// Same as the following</span></div><div class="line">assert(v.is&lt;optional&lt;bool&gt;&gt;());</div><div class="line"></div><div class="line">spanner::Value null_v = spanner::MakeNullValue&lt;bool&gt;();</div><div class="line">assert(v.is&lt;<span class="keywordtype">bool</span>&gt;());  <span class="comment">// Same as the following</span></div><div class="line">assert(v.is&lt;optional&lt;bool&gt;&gt;());</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00256">256</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00258">258</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -711,7 +711,7 @@ template&lt;typename T &gt; </div>
 <p><code>T</code> may be an <code>optional&lt;U&gt;</code>, in which case it will return the same value as <code>is_null&lt;U&gt;()</code>.</p>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <div class="fragment"><div class="line">spanner::Value v{<span class="keyword">true</span>};</div><div class="line">assert(!v.is_null&lt;<span class="keywordtype">bool</span>&gt;());  <span class="comment">// Same as the following</span></div><div class="line">assert(!v.is_null&lt;optional&lt;bool&gt;&gt;());</div><div class="line"></div><div class="line">spanner::Value null_v = spanner::MakeNullValue&lt;bool&gt;();</div><div class="line">assert(v.is_null&lt;<span class="keywordtype">bool</span>&gt;());  <span class="comment">// Same as the following</span></div><div class="line">assert(v.is_null&lt;optional&lt;bool&gt;&gt;());</div><div class="line">assert(!v.is_null&lt;std::int64_t&gt;());  <span class="comment">// Same as the following</span></div><div class="line">assert(!v.is_null&lt;optional&lt;std::int64_t&gt;&gt;());</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00282">282</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00284">284</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -745,7 +745,7 @@ template&lt;typename T &gt; </div>
 <p>This is mostly useful if writing generic code where casting is needed.</p>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <div class="fragment"><div class="line">spanner::Value v{<span class="keyword">true</span>};</div><div class="line"><span class="keywordtype">bool</span> b = static_cast&lt;bool&gt;(v);  <span class="comment">// OK: b == true</span></div><div class="line"></div><div class="line">spanner::Value null_v = spanner::MakeNullValue&lt;std::int64_t&gt;();</div><div class="line">std::int64_t i = static_cast&lt;std::int64_t&gt;(null_v);  <span class="comment">// UB! null</span></div><div class="line"><span class="keywordtype">bool</span> bad = static_cast&lt;bool&gt;(null_v);  <span class="comment">// UB! wrong type</span></div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00347">347</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00349">349</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -836,7 +836,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00235">235</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00237">237</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
