@@ -5,6 +5,7 @@ var searchData=
   ['set_5fadmin_5fendpoint',['set_admin_endpoint',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#ad4bd11fc3e5123fa9de0e4bc1b168f60',1,'google::cloud::spanner::v0::ClientOptions']]],
   ['set_5fcredentials',['set_credentials',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#a7a64cb7363cf6878ad89d05054ffc896',1,'google::cloud::spanner::v0::ClientOptions']]],
   ['size',['size',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ab683b2a27b1d53af35a0e1311f448cbe',1,'google::cloud::spanner::v0::Row']]],
+  ['spanner_2dmain_2edox',['spanner-main.dox',['../spanner-main_8dox.html',1,'']]],
   ['spanner_5fclient_5fns',['SPANNER_CLIENT_NS',['../version_8h.html#a313bc0c726caf781fb59a7140610468e',1,'version.h']]],
   ['spanner_5fclient_5fversion_5fmajor',['SPANNER_CLIENT_VERSION_MAJOR',['../version__info_8h.html#abc552bef200fc39843dbbbebf7f35117',1,'version_info.h']]],
   ['spanner_5fclient_5fversion_5fminor',['SPANNER_CLIENT_VERSION_MINOR',['../version__info_8h.html#a1888b70b41e630903849bc631f4aa602',1,'version_info.h']]],
