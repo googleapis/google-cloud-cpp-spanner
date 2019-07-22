@@ -30,15 +30,17 @@ Status MergeChunk(google::protobuf::Value& value,
       return Status(StatusCode::kInvalidArgument, "invalid type");
 
     case google::protobuf::Value::kStringValue: {
-      if (chunk.kind_case() != google::protobuf::Value::kStringValue)
+      if (chunk.kind_case() != google::protobuf::Value::kStringValue) {
         return Status(StatusCode::kInvalidArgument, "mismatched types");
+      }
       *value.mutable_string_value() += chunk.string_value();
       return Status();
     }
 
     case google::protobuf::Value::kListValue: {
-      if (chunk.kind_case() != google::protobuf::Value::kListValue)
+      if (chunk.kind_case() != google::protobuf::Value::kListValue) {
         return Status(StatusCode::kInvalidArgument, "mismatched types");
+      }
 
       auto& value_list = *value.mutable_list_value()->mutable_values();
       auto& chunk_list = *chunk.mutable_list_value()->mutable_values();
@@ -49,8 +51,9 @@ Status MergeChunk(google::protobuf::Value& value,
         auto& last = value_list[value_list.size() - 1];
         if (last.kind_case() == google::protobuf::Value::kStringValue ||
             last.kind_case() == google::protobuf::Value::kListValue) {
-          if (chunk_list.empty())
+          if (chunk_list.empty()) {
             return Status(StatusCode::kInternal, "empty chunk");
+          }
           auto& first = chunk_list[0];
           auto const status = MergeChunk(last, std::move(first));
           if (!status.ok()) return status;
