@@ -148,6 +148,18 @@ TEST(MergeChunk, EmptyString) {
 }
 
 //
+// Error cases
+//
+
+TEST(MergeChunk, ErrorMismatchedTypes) {
+  auto value = MakeProtoValue(std::vector<std::string>{"hello"});
+  auto status = MergeChunk(value, MakeProtoValue("world"));
+
+  EXPECT_FALSE(status.ok());
+  EXPECT_THAT(status.message(), testing::HasSubstr("mismatched types"));
+}
+
+//
 // Tests the unsupported cases
 //
 
@@ -160,7 +172,7 @@ TEST(MergeChunk, CannotMergeBools) {
 
   auto status = MergeChunk(bool1, std::move(bool2));
   EXPECT_FALSE(status.ok());
-  EXPECT_THAT(status.message(), testing::HasSubstr("Cannot merge"));
+  EXPECT_THAT(status.message(), testing::HasSubstr("invalid type"));
 }
 
 TEST(MergeChunk, CannotMergeNumbers) {
@@ -172,7 +184,7 @@ TEST(MergeChunk, CannotMergeNumbers) {
 
   auto status = MergeChunk(number1, std::move(number2));
   EXPECT_FALSE(status.ok());
-  EXPECT_THAT(status.message(), testing::HasSubstr("Cannot merge"));
+  EXPECT_THAT(status.message(), testing::HasSubstr("invalid type"));
 }
 
 TEST(MergeChunk, CannotMergeNull) {
@@ -184,7 +196,7 @@ TEST(MergeChunk, CannotMergeNull) {
 
   auto status = MergeChunk(null1, std::move(null2));
   EXPECT_FALSE(status.ok());
-  EXPECT_THAT(status.message(), testing::HasSubstr("Cannot merge"));
+  EXPECT_THAT(status.message(), testing::HasSubstr("invalid type"));
 }
 
 TEST(MergeChunk, CannotMergeStruct) {
@@ -196,7 +208,7 @@ TEST(MergeChunk, CannotMergeStruct) {
 
   auto status = MergeChunk(struct1, std::move(struct2));
   EXPECT_FALSE(status.ok());
-  EXPECT_THAT(status.message(), testing::HasSubstr("Spanner should never"));
+  EXPECT_THAT(status.message(), testing::HasSubstr("invalid type"));
 }
 
 }  // namespace
