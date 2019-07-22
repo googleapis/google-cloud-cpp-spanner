@@ -29,15 +29,6 @@ Status MergeChunk(google::protobuf::Value& value,
       return Status(StatusCode::kInvalidArgument,
                     "Cannot merge values of type bool/number/null");
 
-    case google::protobuf::Value::kStringValue: {
-      if (chunk.kind_case() != google::protobuf::Value::kStringValue) {
-        return Status(StatusCode::kInvalidArgument,
-                      "Cannot merge mismatched types");
-      }
-      *value.mutable_string_value() += chunk.string_value();
-      return Status();
-    }
-
     case google::protobuf::Value::kStructValue: {
       if (chunk.kind_case() != google::protobuf::Value::kStructValue) {
         return Status(StatusCode::kInvalidArgument,
@@ -45,6 +36,15 @@ Status MergeChunk(google::protobuf::Value& value,
       }
       return Status(StatusCode::kInternal,
                     "Spanner should never return struct_value");
+    }
+
+    case google::protobuf::Value::kStringValue: {
+      if (chunk.kind_case() != google::protobuf::Value::kStringValue) {
+        return Status(StatusCode::kInvalidArgument,
+                      "Cannot merge mismatched types");
+      }
+      *value.mutable_string_value() += chunk.string_value();
+      return Status();
     }
 
     case google::protobuf::Value::kListValue: {
