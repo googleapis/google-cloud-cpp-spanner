@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_INTERNAL_DATE_H_
-#define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_INTERNAL_DATE_H_
+#ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_INTERNAL_MERGE_CHUNK_H_
+#define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_INTERNAL_MERGE_CHUNK_H_
 
-#include "google/cloud/spanner/date.h"
 #include "google/cloud/spanner/version.h"
-#include "google/cloud/status_or.h"
-#include <string>
+#include "google/cloud/status.h"
+#include <google/protobuf/struct.pb.h>
 
 namespace google {
 namespace cloud {
@@ -26,6 +25,27 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
+/**
+ * Merges @p chunk into @p value, or returns an error.
+ *
+ * The official documentation about how to "unchunk" Spanner values is at:
+ * https://github.com/googleapis/googleapis/blob/master/google/spanner/v1/result_set.proto
+ *
+ * A paraphrased summary is as follows:
+ *
+ * * bool/number/null are never chunked and therefore cannot be merged
+ * * strings should be concatenated
+ * * lists should be concatenated
+ *
+ * The above rules should be applied recursively.
+ *
+ * @note The above linked documentation explains how to "unchunk" objects,
+ *     which are `google::protobuf::Value` objects with the `struct_value`
+ *     field set. However, Spanner never returns these struct_values, so it is
+ *     therefore an error to try to merge them.
+ */
+Status MergeChunk(google::protobuf::Value& value,
+                  google::protobuf::Value&& chunk);
 
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS
@@ -33,4 +53,4 @@ namespace internal {
 }  // namespace cloud
 }  // namespace google
 
-#endif  // GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_INTERNAL_DATE_H_
+#endif  // GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_INTERNAL_MERGE_CHUNK_H_
