@@ -22,6 +22,9 @@ namespace internal {
 
 Status MergeChunk(google::protobuf::Value& value,
                   google::protobuf::Value&& chunk) {
+  if (value.kind_case() != chunk.kind_case()) {
+    return Status(StatusCode::kInvalidArgument, "mismatched types");
+  }
   switch (value.kind_case()) {
     case google::protobuf::Value::kBoolValue:
     case google::protobuf::Value::kNumberValue:
@@ -30,39 +33,31 @@ Status MergeChunk(google::protobuf::Value& value,
       return Status(StatusCode::kInvalidArgument, "invalid type");
 
     case google::protobuf::Value::kStringValue: {
-      if (chunk.kind_case() != google::protobuf::Value::kStringValue) {
-        return Status(StatusCode::kInvalidArgument, "mismatched types");
-      }
       *value.mutable_string_value() += chunk.string_value();
       return Status();
     }
 
     case google::protobuf::Value::kListValue: {
-      if (chunk.kind_case() != google::protobuf::Value::kListValue) {
-        return Status(StatusCode::kInvalidArgument, "mismatched types");
-      }
-
       auto& value_list = *value.mutable_list_value()->mutable_values();
       auto& chunk_list = *chunk.mutable_list_value()->mutable_values();
 
-      // Check if we need to recursively merge the last element in value_list
-      // with the first element in chunk_list.
-      if (!value_list.empty()) {
-        auto& last = value_list[value_list.size() - 1];
-        if (last.kind_case() == google::protobuf::Value::kStringValue ||
-            last.kind_case() == google::protobuf::Value::kListValue) {
-          if (chunk_list.empty()) {
-            return Status(StatusCode::kInternal, "empty chunk");
-          }
-          auto& first = chunk_list[0];
-          auto const status = MergeChunk(last, std::move(first));
-          if (!status.ok()) return status;
-          chunk_list.erase(chunk_list.begin());
-        }
+      if (value_list.empty() || chunk_list.empty()) {
+        return Status(StatusCode::kInternal, "empty list");
       }
+
+      // Recursively merge the last element of value_list with the first
+      // element of chunk_list if necessary.
+      auto value_it = value_list.rbegin();
+      auto chunk_it = chunk_list.begin();
+      if (value_it->kind_case() == google::protobuf::Value::kStringValue ||
+          value_it->kind_case() == google::protobuf::Value::kListValue) {
+        auto const status = MergeChunk(*value_it, std::move(*chunk_it++));
+        if (!status.ok()) return status;
+      }
+
       // Moves all the remaining elements over.
-      for (auto& e : chunk_list) {
-        *value.mutable_list_value()->add_values() = std::move(e);
+      while (chunk_it != chunk_list.end()) {
+        *value.mutable_list_value()->add_values() = std::move(*chunk_it++);
       }
 
       return Status();
