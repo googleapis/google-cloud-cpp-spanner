@@ -49,6 +49,7 @@ if (NOT TARGET curl-project)
                    -DHTTP_ONLY=ON
                    -DCMAKE_ENABLE_OPENSSL=ON
                    -DENABLE_ARES=ON
+                   -DCMAKE_PREFIX_PATH=${GOOGLE_CLOUD_CPP_PREFIX_PATH}
                    -DCMAKE_INSTALL_PATH=${GOOGLE_CLOUD_CPP_INSTALL_PATH}
                    -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
                    -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
