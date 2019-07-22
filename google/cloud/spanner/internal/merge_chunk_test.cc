@@ -88,7 +88,7 @@ TEST(MergeChunk, ExampleListOfInts) {
   std::string delta;
   google::protobuf::util::MessageDifferencer differencer;
   differencer.ReportDifferencesToString(&delta);
-  EXPECT_TRUE(differencer.Compare(a, expected)) << delta;
+  EXPECT_TRUE(differencer.Compare(a, expected)) << delta << "\na=" << a.DebugString();
 }
 
 // Example from
