@@ -40,7 +40,6 @@ Status MergeChunk(google::protobuf::Value& value,
     case google::protobuf::Value::kListValue: {
       auto& value_list = *value.mutable_list_value()->mutable_values();
       auto& chunk_list = *chunk.mutable_list_value()->mutable_values();
-
       if (value_list.empty() || chunk_list.empty()) {
         return Status(StatusCode::kInternal, "empty list");
       }
