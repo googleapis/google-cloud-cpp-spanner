@@ -29,6 +29,7 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
+namespace {
 
 using TransactionSelector = google::spanner::v1::TransactionSelector;
 
@@ -139,8 +140,6 @@ ResultSet Client::Read(TransactionSelector& selector, std::string const&,
   }
   return {};
 }
-
-namespace {
 
 // Call `client->Read()` from multiple threads in the context of a single,
 // read-only transaction with an exact-staleness timestamp, and return the
