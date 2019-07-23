@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "google/cloud/spanner/internal/transaction.h"
+#include "google/cloud/spanner/internal/transaction_impl.h"
 #include "google/cloud/spanner/internal/time.h"
 #include "google/cloud/spanner/timestamp.h"
 #include "google/cloud/spanner/transaction.h"
@@ -35,7 +35,7 @@ using TransactionSelector = google::spanner::v1::TransactionSelector;
 class KeySet {};
 class ResultSet {};
 
-// Fake `google::cloud::spanner::Client` that supports a single `Read()`
+// A fake `google::cloud::spanner::Client`, supporting a single `Read()`
 // operation that does nothing but track the expected transaction callbacks.
 class Client {
  public:
@@ -72,7 +72,7 @@ class Client {
 #if __EXCEPTIONS
     try {
 #endif
-      return txn->Visit(std::move(read));
+      return internal::Visit(std::move(txn), std::move(read));
 #if __EXCEPTIONS
     } catch (char const* e) {
       return {};

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "google/cloud/spanner/internal/transaction.h"
+#include "google/cloud/spanner/internal/transaction_impl.h"
 
 namespace google {
 namespace cloud {
@@ -20,7 +20,7 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
-Transaction::~Transaction() = default;
+TransactionImpl::~TransactionImpl() = default;
 
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS

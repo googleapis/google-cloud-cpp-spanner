@@ -19,17 +19,6 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
-
-// Pretend to be google::cloud::spanner::Client so that we can create a
-// transaction with SingleUseOptions.
-class Client {
- public:
-  static Transaction MakeSingleUseTransaction(
-      Transaction::SingleUseOptions opts) {
-    return Transaction(std::move(opts));
-  }
-};
-
 namespace {
 
 TEST(TransactionOptions, Construction) {
@@ -76,8 +65,8 @@ TEST(Transaction, RegularSemantics) {
   EXPECT_EQ(g, f);
   EXPECT_NE(g, e);
 
-  Transaction h = Client::MakeSingleUseTransaction(strong);
-  Transaction i = Client::MakeSingleUseTransaction(strong);
+  Transaction h = internal::MakeSingleUseTransaction(strong);
+  Transaction i = internal::MakeSingleUseTransaction(strong);
   EXPECT_NE(h, i);
 
   Transaction j = i;

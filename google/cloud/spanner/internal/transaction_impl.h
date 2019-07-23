@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_INTERNAL_TRANSACTION_H_
-#define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_INTERNAL_TRANSACTION_H_
+#ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_INTERNAL_TRANSACTION_IMPL_H_
+#define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_INTERNAL_TRANSACTION_IMPL_H_
 
 #include "google/cloud/spanner/version.h"
 #include <google/spanner/v1/transaction.pb.h>
@@ -30,14 +30,14 @@ namespace internal {
 /**
  * The internal representation of a google::cloud::spanner::Transaction.
  */
-class Transaction {
+class TransactionImpl {
  public:
-  Transaction(google::spanner::v1::TransactionSelector selector)
+  TransactionImpl(google::spanner::v1::TransactionSelector selector)
       : selector_(std::move(selector)) {
     state_ = selector_.has_begin() ? State::kBegin : State::kDone;
   }
 
-  ~Transaction();
+  ~TransactionImpl();
 
   // Visit the transaction with the given functor, which should use the
   // passed TransactionSelector in its Client::Read()/Client::ExecuteSql()
@@ -103,4 +103,4 @@ class Transaction {
 }  // namespace cloud
 }  // namespace google
 
-#endif  // GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_INTERNAL_TRANSACTION_H_
+#endif  // GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_INTERNAL_TRANSACTION_IMPL_H_

@@ -26,7 +26,7 @@ spanner_client_unit_tests = [
     "internal/spanner_stub_test.cc",
     "internal/time_format_test.cc",
     "internal/time_test.cc",
-    "internal/transaction_test.cc",
+    "internal/transaction_impl_test.cc",
     "internal/tuple_utils_test.cc",
     "mutations_test.cc",
     "result_set_test.cc",

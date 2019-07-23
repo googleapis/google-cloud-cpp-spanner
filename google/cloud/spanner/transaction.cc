@@ -14,7 +14,7 @@
 
 #include "google/cloud/spanner/transaction.h"
 #include "google/cloud/spanner/internal/time.h"
-#include "google/cloud/spanner/internal/transaction.h"
+#include "google/cloud/spanner/internal/transaction_impl.h"
 
 namespace google {
 namespace cloud {
@@ -76,19 +76,19 @@ Transaction::SingleUseOptions::SingleUseOptions(
 Transaction::Transaction(ReadOnlyOptions opts) {
   google::spanner::v1::TransactionSelector selector;
   *selector.mutable_begin() = MakeOpts(std::move(opts.ro_opts_));
-  txn_ = std::make_shared<internal::Transaction>(std::move(selector));
+  impl_ = std::make_shared<internal::TransactionImpl>(std::move(selector));
 }
 
 Transaction::Transaction(ReadWriteOptions opts) {
   google::spanner::v1::TransactionSelector selector;
   *selector.mutable_begin() = MakeOpts(std::move(opts.rw_opts_));
-  txn_ = std::make_shared<internal::Transaction>(std::move(selector));
+  impl_ = std::make_shared<internal::TransactionImpl>(std::move(selector));
 }
 
 Transaction::Transaction(SingleUseOptions opts) {
   google::spanner::v1::TransactionSelector selector;
   *selector.mutable_single_use() = MakeOpts(std::move(opts.ro_opts_));
-  txn_ = std::make_shared<internal::Transaction>(std::move(selector));
+  impl_ = std::make_shared<internal::TransactionImpl>(std::move(selector));
 }
 
 Transaction::~Transaction() = default;

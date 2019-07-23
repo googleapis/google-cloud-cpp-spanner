@@ -15,10 +15,12 @@
 #ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_TRANSACTION_H_
 #define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_TRANSACTION_H_
 
+#include "google/cloud/spanner/internal/transaction_impl.h"
 #include "google/cloud/spanner/timestamp.h"
 #include "google/cloud/spanner/version.h"
 #include <google/spanner/v1/transaction.pb.h>
 #include <chrono>
+#include <functional>
 #include <memory>
 
 namespace google {
@@ -26,9 +28,16 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
+class Transaction;  // defined below
+
+// Internal forward declarations to befriend.
 namespace internal {
-class Transaction;
-}
+template <typename T>
+Transaction MakeSingleUseTransaction(T&&);
+template <typename T>
+T Visit(Transaction,
+        std::function<T(google::spanner::v1::TransactionSelector&)>);
+}  // namespace internal
 
 /**
  * The representation of a Cloud Spanner transaction.
@@ -99,7 +108,7 @@ class Transaction {
   class SingleUseOptions {
    public:
     // Strong or Exact Staleness: See ReadOnlyOptions.
-    SingleUseOptions(ReadOnlyOptions opts);  // implicit conversion
+    SingleUseOptions(ReadOnlyOptions opts);  // implicitly convertible
 
     // Bounded Staleness: Executes all reads at a timestamp that is not
     // before `min_read_timestamp`.
@@ -116,8 +125,8 @@ class Transaction {
 
   /// @name Construction of read-only and read-write transactions.
   ///@{
-  Transaction(ReadOnlyOptions opts);
-  Transaction(ReadWriteOptions opts);
+  explicit Transaction(ReadOnlyOptions opts);
+  explicit Transaction(ReadWriteOptions opts);
   ///@}
 
   ~Transaction();
@@ -133,7 +142,7 @@ class Transaction {
   /// @name Equality operators
   ///@{
   friend bool operator==(Transaction const& a, Transaction const& b) {
-    return a.txn_ == b.txn_;
+    return a.impl_ == b.impl_;
   }
   friend bool operator!=(Transaction const& a, Transaction const& b) {
     return !(a == b);
@@ -141,15 +150,38 @@ class Transaction {
   ///@}
 
  private:
-  friend class Client;
+  // Friendship for access by internal helpers.
+  template <typename T>
+  friend Transaction internal::MakeSingleUseTransaction(T&&);
+  template <typename T>
+  friend T internal::Visit(
+      Transaction, std::function<T(google::spanner::v1::TransactionSelector&)>);
 
   // Construction of a single-use transaction.
-  Transaction(SingleUseOptions opts);
+  explicit Transaction(SingleUseOptions opts);
 
-  internal::Transaction* operator->() { return txn_.get(); }
-
-  std::shared_ptr<internal::Transaction> txn_;
+  std::shared_ptr<internal::TransactionImpl> impl_;
 };
+
+Transaction MakeReadOnlyTransaction(Transaction::ReadOnlyOptions opts = {});
+Transaction MakeReadWriteTransaction(Transaction::ReadWriteOptions opts = {});
+
+namespace internal {
+
+template <typename T>
+Transaction MakeSingleUseTransaction(T&& opts) {
+  // Requires that `opts` is implicitly convertible to SingleUseOptions.
+  Transaction::SingleUseOptions su_opts = std::forward<T>(opts);
+  return Transaction(std::move(su_opts));
+}
+
+template <typename T>
+T Visit(Transaction txn,
+        std::function<T(google::spanner::v1::TransactionSelector&)> f) {
+  return txn.impl_->Visit(f);
+}
+
+}  // namespace internal
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
