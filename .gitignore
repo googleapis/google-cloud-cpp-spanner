@@ -4,6 +4,9 @@ _build/
 build-output/
 cmake-out/
 
+# Ignores top-level compile_commands.json files/links
+compile_commands.json
+
 # Common bazel output directories
 bazel-*
 !bazel-dependency*.cfg
