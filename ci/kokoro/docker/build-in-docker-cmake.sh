@@ -45,9 +45,11 @@ echo "Compiling on $(date)"
 echo "================================================================"
 cd "${PROJECT_ROOT}"
 cmake_flags=()
+
 if [[ "${CLANG_TIDY:-}" = "yes" ]]; then
   cmake_flags+=("-DGOOGLE_CLOUD_CPP_CLANG_TIDY=yes")
 fi
+
 if [[ "${GOOGLE_CLOUD_CPP_CXX_STANDARD:-}" != "" ]]; then
   cmake_flags+=(
     "-DGOOGLE_CLOUD_CPP_CXX_STANDARD=${GOOGLE_CLOUD_CPP_CXX_STANDARD}")
@@ -56,6 +58,10 @@ fi
 if [[ "${CODE_COVERAGE:-}" == "yes" ]]; then
   cmake_flags+=(
     "-DCMAKE_BUILD_TYPE=Coverage")
+fi
+
+if [[ "${GENERATE_COMPILE_COMMANDS:-}" == "yes" ]]; then
+  cmake_flags+=( "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON" )
 fi
 
 cmake "-DCMAKE_INSTALL_PREFIX=$HOME/staging" \
@@ -103,6 +109,13 @@ if [[ "${TEST_INSTALL:-}" = "yes" ]]; then
     echo "Running the test install $(date)"
     echo "================================================================"
     cmake --build "${BINARY_DIR}" --target install || echo "FAILED"
+fi
+
+if [[ "${GENERATE_COMPILE_COMMANDS:-}" == "yes" ]]; then
+    echo "================================================================"
+    echo "Fixing paths in compile_commands.json $(date)"
+    echo "================================================================"
+    sed -i -e "s,/v\>,${OLD_PWD},g" "${BINARY_DIR}/compile_commands.json"
 fi
 
 echo "================================================================"
