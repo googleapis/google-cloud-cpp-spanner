@@ -123,6 +123,17 @@ TEST(Value, BasicSemantics) {
     TestBasicSemantics(v);
   }
 
+  for (auto const& x : std::vector<Value::Bytes>{
+           Value::Bytes{""}, Value::Bytes{"f"}, Value::Bytes{"foo"},
+           Value::Bytes{"12345678901234567"}}) {
+    SCOPED_TRACE("Testing: Value::Bytes " + std::string(x.data));
+    TestBasicSemantics(x);
+    TestBasicSemantics(std::vector<Value::Bytes>(5, x));
+    std::vector<optional<Value::Bytes>> v(5, x);
+    v.resize(10);
+    TestBasicSemantics(v);
+  }
+
   for (time_t t : {
            -9223372035L,  // near the limit of 64-bit/ns system_clock
            -2147483649L,  // below min 32-bit int
