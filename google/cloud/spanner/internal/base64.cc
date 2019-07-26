@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/internal/base64.h"
+#include <array>
 #include <climits>
 #include <string>
 
@@ -25,15 +26,15 @@ namespace {
 
 constexpr char kPadding = '=';
 
-// NOLINTNEXTLINE(modernize-avoid-c-arrays)
-constexpr char kIndexToChar[64 + 1] =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    "abcdefghijklmnopqrstuvwxyz"
-    "0123456789"
-    "+/";
+constexpr std::array<char, 64> kIndexToChar = {
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/',
+};
 
-// NOLINTNEXTLINE(modernize-avoid-c-arrays)
-constexpr unsigned char kCharToIndexExcessOne[UCHAR_MAX + 1] = {
+constexpr std::array<unsigned char, UCHAR_MAX + 1> kCharToIndexExcessOne = {
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  63, 0,  0,  0,  64, 53, 54, 55, 56, 57, 58,
@@ -43,12 +44,13 @@ constexpr unsigned char kCharToIndexExcessOne[UCHAR_MAX + 1] = {
     38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52,
 };
 
+// UCHAR_MAX is required to be at least 255, meaning std::string::value_type
+// can always hold an octet. If UCHAR_MAX > 255, however, we have no way to
+// base64 encode large values. So, we demand exactly 255.
+static_assert(UCHAR_MAX == 255, "required by Base64Encode()");
+
 }  // namespace
 
-// NOTE: If `UCHAR_MAX` > 255 we have no way to indicate that a `bytes[i]`
-// value is not representable in 8-bits, and that is why we may be better
-// off using `std::vector<std::uint8_t> const& bytes` for binary blobs.
-// For now, we let the extra bits fall where they may.
 std::string Base64Encode(std::string const& bytes) {
   std::string encoded;
   auto* p = reinterpret_cast<unsigned char const*>(bytes.data());
