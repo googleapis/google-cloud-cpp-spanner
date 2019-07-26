@@ -73,6 +73,11 @@ elif [[ "${BUILD_NAME}" = "tsan" ]]; then
   export BAZEL_CONFIG=tsan
   export CC=clang
   export CXX=clang++
+elif [[ "${BUILD_NAME}" = "noex" ]]; then
+  export DISTRO=fedora-install
+  export DISTRO_VERSION=30
+  export CMAKE_FLAGS="-DGOOGLE_CLOUD_CPP_ENABLE_CXX_EXCEPTIONS=no"
+  in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "msan" ]]; then
   # We use Fedora for this build because (1) I was able to find instructions on
   # how to build libc++ with msan for that distribution, (2) Fedora has a
