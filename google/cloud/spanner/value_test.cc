@@ -191,6 +191,24 @@ TEST(Value, DoubleNaN) {
   EXPECT_NE(v, v);
 }
 
+TEST(Value, BytesDecodingError) {
+  Value const v(Value::Bytes("some data"));
+  auto p = internal::ToProto(v);
+  EXPECT_EQ(v, internal::FromProto(p.first, p.second));
+
+  // Now we corrupt the Value proto so that it cannot be decoded.
+  p.second.set_string_value("not base64 encoded data");
+  Value bad = internal::FromProto(p.first, p.second);
+  EXPECT_NE(v, bad);
+
+  // We know the type is Bytes, but we cannot get a value out of it because the
+  // base64 decoding will fail.
+  EXPECT_TRUE(bad.is<Value::Bytes>());
+  StatusOr<Value::Bytes> bytes = bad.get<Value::Bytes>();
+  EXPECT_FALSE(bytes.ok());
+  EXPECT_THAT(bytes.status().message(), testing::HasSubstr("Invalid base64"));
+}
+
 TEST(Value, ConstructionFromLiterals) {
   Value v_int64(42);
   EXPECT_TRUE(v_int64.is<std::int64_t>());

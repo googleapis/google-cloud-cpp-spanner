@@ -202,7 +202,7 @@ google::protobuf::Value Value::MakeValueProto(std::string s) {
   return v;
 }
 
-google::protobuf::Value Value::MakeValueProto(Value::Bytes bytes) {
+google::protobuf::Value Value::MakeValueProto(Value::Bytes const& bytes) {
   google::protobuf::Value v;
   v.set_string_value(internal::Base64Encode(bytes.data));
   return v;
