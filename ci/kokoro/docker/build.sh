@@ -85,7 +85,6 @@ elif [[ "${BUILD_NAME}" = "msan" ]]; then
 elif [[ "${BUILD_NAME}" = "cmake" ]]; then
   export DISTRO=fedora-install
   export DISTRO_VERSION=30
-  export GENERATE_COMPILE_COMMANDS=yes
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "cmake-super" ]]; then
   export CMAKE_SOURCE_DIR="ci/super"
@@ -218,17 +217,6 @@ docker_flags=(
     # invalid links to functions or types). Currently only the CMake builds use
     # this flag.
     "--env" "GENERATE_DOCS=${GENERATE_DOCS:-}"
-
-    # If set to 'yes', the build will output a "compile_commands.json" file in
-    # the build's output directory. This file is used by some external tools,
-    # such as clangd. Currently, only cmake knows how to generate this file.
-    "--env" "GENERATE_COMPILE_COMMANDS=${GENERATE_COMPILE_COMMANDS:-}"
-
-    # When a compile_commands.json file is generated inside a docker image, it
-    # will contain include paths that are relative to "/v". This will not work
-    # when used outside of docker. So there's a post-processing step that will
-    # replace those paths with ${OLD_PWD}.
-    "--env" "OLD_PWD=${PWD}"
 
     # If set, execute tests to verify `make install` works and produces working
     # installations.
