@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/value.h"
+#include "google/cloud/spanner/internal/base64.h"
 #include "google/cloud/spanner/internal/date.h"
 #include "google/cloud/spanner/internal/time.h"
 #include "google/cloud/optional.h"
@@ -506,6 +507,18 @@ TEST(Value, ProtoConversionString) {
   }
 }
 
+TEST(Value, ProtoConversionBytes) {
+  for (auto const& x : std::vector<Value::Bytes>{
+           Value::Bytes(""), Value::Bytes("f"), Value::Bytes("foo"),
+           Value::Bytes("12345678901234567890")}) {
+    Value const v(x);
+    auto const p = internal::ToProto(v);
+    EXPECT_EQ(v, internal::FromProto(p.first, p.second));
+    EXPECT_EQ(google::spanner::v1::TypeCode::BYTES, p.first.code());
+    EXPECT_EQ(internal::Base64Encode(x.data), p.second.string_value());
+  }
+}
+
 TEST(Value, ProtoConversionTimestamp) {
   for (time_t t : {
            -9223372035L,  // near the limit of 64-bit/ns system_clock
@@ -664,6 +677,25 @@ TEST(Value, GetBadString) {
   SetProtoKind(v, 0.0);
   EXPECT_TRUE(v.is<std::string>());
   EXPECT_FALSE(v.get<std::string>().ok());
+}
+
+TEST(Value, GetBadBytes) {
+  Value v(Value::Bytes("hello"));
+  ClearProtoKind(v);
+  EXPECT_TRUE(v.is<Value::Bytes>());
+  EXPECT_FALSE(v.get<Value::Bytes>().ok());
+
+  SetProtoKind(v, google::protobuf::NULL_VALUE);
+  EXPECT_TRUE(v.is<Value::Bytes>());
+  EXPECT_FALSE(v.get<Value::Bytes>().ok());
+
+  SetProtoKind(v, true);
+  EXPECT_TRUE(v.is<Value::Bytes>());
+  EXPECT_FALSE(v.get<Value::Bytes>().ok());
+
+  SetProtoKind(v, 0.0);
+  EXPECT_TRUE(v.is<Value::Bytes>());
+  EXPECT_FALSE(v.get<Value::Bytes>().ok());
 }
 
 TEST(Value, GetBadInt) {
