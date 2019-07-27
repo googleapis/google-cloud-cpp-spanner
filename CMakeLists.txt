@@ -26,7 +26,12 @@ set(CMAKE_CXX_STANDARD "${GOOGLE_CLOUD_CPP_CXX_STANDARD}")
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+
+# If possible, enable a code coverage build type.
 include(EnableCoverage)
+
+# C++ Exceptions are enabled by default, but allow the user to turn them off.
+include(EnableCxxExceptions)
 
 # Set this variable to a true value for branches that are releases. That will
 # remove the "+dev" suffix (technically "build metadata" according to

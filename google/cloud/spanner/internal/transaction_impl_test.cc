@@ -124,6 +124,9 @@ ResultSet Client::Read(TransactionSelector& selector, std::string const&,
 #if __EXCEPTIONS
         if (fail_with_throw) throw "1202 Program Alarm";
 #endif
+        // Quiets a compiler warning about an unused variable (when exceptions
+        // are disabled).
+        (void)fail_with_throw;
         break;
     }
   } else {
