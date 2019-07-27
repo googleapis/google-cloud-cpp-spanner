@@ -59,7 +59,7 @@ if [[ "${CODE_COVERAGE:-}" == "yes" ]]; then
 fi
 
 cmake "-DCMAKE_INSTALL_PREFIX=$HOME/staging" \
-      "${CMAKE_FLAGS:-}" \
+      ${CMAKE_FLAGS:-} \
       "-H${SOURCE_DIR}" "-B${BINARY_DIR}" "${cmake_flags[@]}"
 cmake --build "${BINARY_DIR}" -- -j "$(nproc)"
 
