@@ -179,11 +179,11 @@ endif (BUILD_TESTING)
 
 add_subdirectory(integration_tests)
 
-# Only compile the samples if we're building with exceptions enabled.
-# They require exceptions to keep them simple and idiomatic.
+# Only compile the samples if we're building with exceptions enabled. They
+# require exceptions to keep them simple and idiomatic.
 if (GOOGLE_CLOUD_CPP_SPANNER_ENABLE_CXX_EXCEPTIONS)
     add_subdirectory(samples)
-endif(GOOGLE_CLOUD_CPP_SPANNER_ENABLE_CXX_EXCEPTIONS)
+endif (GOOGLE_CLOUD_CPP_SPANNER_ENABLE_CXX_EXCEPTIONS)
 
 # Get the destination directories based on the GNU recommendations.
 include(GNUInstallDirs)
