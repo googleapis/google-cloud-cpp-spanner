@@ -30,6 +30,7 @@ namespace internal {
 namespace {
 
 // TODO(#264) Factor this matcher out into a reusable location.
+// NOLINTNEXTLINE
 MATCHER_P(IsProtoEqual, value, "") {
   std::string delta;
   google::protobuf::util::MessageDifferencer differencer;
