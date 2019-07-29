@@ -355,7 +355,7 @@ class Value {
     if (!is<T>()) return Status(StatusCode::kUnknown, "wrong type");
     if (value_.kind_case() == google::protobuf::Value::kNullValue) {
       if (is_optional<T>::value) return T{};
-      throw "TESTING the 'noex' build, DO NOT COMMIT";
+      throw "TESTING the 'noex' build, DO NOT COMMIT (rebuild)";
       return Status(StatusCode::kUnknown, "null value");
     }
     return GetValue(T{}, value_, type_);
