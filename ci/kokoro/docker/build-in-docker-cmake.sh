@@ -58,6 +58,9 @@ if [[ "${CODE_COVERAGE:-}" == "yes" ]]; then
     "-DCMAKE_BUILD_TYPE=Coverage")
 fi
 
+# We disable the shellcheck warning because we want ${CMAKE_FLAGS} to expand as
+# separate arguments.
+# shellcheck disable=SC2086
 cmake "-DCMAKE_INSTALL_PREFIX=$HOME/staging" \
       ${CMAKE_FLAGS:-} \
       "-H${SOURCE_DIR}" "-B${BINARY_DIR}" "${cmake_flags[@]}"
