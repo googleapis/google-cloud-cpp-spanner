@@ -106,7 +106,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of Row&lt;Ts....">RowParser</a></code> converts the given <code>ValueSource</code> into a single-pass iterable range of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> objects.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html">SqlPartition</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html" title="The SqlPartition class is a semi-regular type that represents a single slice of a parallel SQL read.">SqlPartition</a></code> class is a semi-regular type that represents a single slice of a parallel SQL read.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html" title="The SqlPartition class is a regular type that represents a single slice of a parallel SQL read.">SqlPartition</a></code> class is a regular type that represents a single slice of a parallel SQL read.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a potentially parameterized SQL statement.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#details">More...</a><br /></td></tr>
@@ -191,11 +191,13 @@ Functions</h2></td></tr>
 <tr class="memitem:a6a6319e9526591fe4496f5e0876c99ec"><td class="memTemplItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; internal::PromoteLiteral&lt; Ts &gt;... &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a6a6319e9526591fe4496f5e0876c99ec">ParseRow</a> (std::array&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>, sizeof...(Ts)&gt; const &amp;array)</td></tr>
 <tr class="memdesc:a6a6319e9526591fe4496f5e0876c99ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a <code>std::array</code> of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects into the specified C++ types and returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> with all the parsed values.  <a href="#a6a6319e9526591fe4496f5e0876c99ec">More...</a><br /></td></tr>
 <tr class="separator:a6a6319e9526591fe4496f5e0876c99ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abef4b6fb2e4adb795966eb18a8bcf3a0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#abef4b6fb2e4adb795966eb18a8bcf3a0">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html">SqlPartition</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html">SqlPartition</a> const &amp;b)</td></tr>
+<tr class="separator:abef4b6fb2e4adb795966eb18a8bcf3a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0330dd31b70a1d74509675d046dc450f"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a0330dd31b70a1d74509675d046dc450f">SerializeSqlPartition</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html">SqlPartition</a> const  &amp;sql_partition)</td></tr>
-<tr class="memdesc:a0330dd31b70a1d74509675d046dc450f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serializes an instance of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html" title="The SqlPartition class is a semi-regular type that represents a single slice of a parallel SQL read.">SqlPartition</a></code> for transmission to another process.  <a href="#a0330dd31b70a1d74509675d046dc450f">More...</a><br /></td></tr>
+<tr class="memdesc:a0330dd31b70a1d74509675d046dc450f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serializes an instance of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html" title="The SqlPartition class is a regular type that represents a single slice of a parallel SQL read.">SqlPartition</a></code> for transmission to another process.  <a href="#a0330dd31b70a1d74509675d046dc450f">More...</a><br /></td></tr>
 <tr class="separator:a0330dd31b70a1d74509675d046dc450f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0a97e4a5530bb2ddb8a26e4ed4998d0"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html">SqlPartition</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aa0a97e4a5530bb2ddb8a26e4ed4998d0">DeserializeSqlPartition</a> (std::string const  &amp;serialized_sql_partition)</td></tr>
-<tr class="memdesc:aa0a97e4a5530bb2ddb8a26e4ed4998d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserializes the provided string into a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html" title="The SqlPartition class is a semi-regular type that represents a single slice of a parallel SQL read.">SqlPartition</a></code>, if able.  <a href="#aa0a97e4a5530bb2ddb8a26e4ed4998d0">More...</a><br /></td></tr>
+<tr class="memdesc:aa0a97e4a5530bb2ddb8a26e4ed4998d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserializes the provided string into a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html" title="The SqlPartition class is a regular type that represents a single slice of a parallel SQL read.">SqlPartition</a></code>, if able.  <a href="#aa0a97e4a5530bb2ddb8a26e4ed4998d0">More...</a><br /></td></tr>
 <tr class="separator:aa0a97e4a5530bb2ddb8a26e4ed4998d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a782a4a4617b9017586334db8e1eb6ff6"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a782a4a4617b9017586334db8e1eb6ff6">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;stmt)</td></tr>
 <tr class="separator:a782a4a4617b9017586334db8e1eb6ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -464,7 +466,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Deserializes the provided string into a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html" title="The SqlPartition class is a semi-regular type that represents a single slice of a parallel SQL read.">SqlPartition</a></code>, if able. </p>
+<p>Deserializes the provided string into a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html" title="The SqlPartition class is a regular type that represents a single slice of a parallel SQL read.">SqlPartition</a></code>, if able. </p>
 <p>Returned <code>Status</code> should be checked to determine if deserialization was successful.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -474,7 +476,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <div class="fragment"><div class="line">std::string serialized_partition = ReceiveFromRemoteMachine();</div><div class="line">spanner::SqlPartition partition =</div><div class="line">  <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aa0a97e4a5530bb2ddb8a26e4ed4998d0">spanner::DeserializeSqlPartition</a>(serialized_partition);</div><div class="line"><span class="keyword">auto</span> rows = spanner_client.ExecuteSql(partition);</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="sql__partition_8cc_source.html#l00053">53</a> of file <a class="el" href="sql__partition_8cc_source.html">sql_partition.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sql__partition_8cc_source.html#l00060">60</a> of file <a class="el" href="sql__partition_8cc_source.html">sql_partition.cc</a>.</p>
 
 </div>
 </div>
@@ -815,7 +817,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="ab5c8b49c00862cef780069b5a70cec74"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5c8b49c00862cef780069b5a70cec74">&#9670;&nbsp;</a></span>operator==() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5c8b49c00862cef780069b5a70cec74">&#9670;&nbsp;</a></span>operator==() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -844,8 +846,38 @@ template&lt;typename... Ts&gt; </div>
 
 </div>
 </div>
+<a id="abef4b6fb2e4adb795966eb18a8bcf3a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abef4b6fb2e4adb795966eb18a8bcf3a0">&#9670;&nbsp;</a></span>operator==() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool google::cloud::spanner::v0::operator== </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html">SqlPartition</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html">SqlPartition</a> const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="sql__partition_8cc_source.html#l00032">32</a> of file <a class="el" href="sql__partition_8cc_source.html">sql_partition.cc</a>.</p>
+
+</div>
+</div>
 <a id="ab2a19481df4a3e725aa2cc13f112abd2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2a19481df4a3e725aa2cc13f112abd2">&#9670;&nbsp;</a></span>operator==() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2a19481df4a3e725aa2cc13f112abd2">&#9670;&nbsp;</a></span>operator==() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -883,7 +915,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a8859ae3327162cdab57cbafd2bd92727"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8859ae3327162cdab57cbafd2bd92727">&#9670;&nbsp;</a></span>operator==() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8859ae3327162cdab57cbafd2bd92727">&#9670;&nbsp;</a></span>operator==() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1016,7 +1048,7 @@ template&lt;typename... Ts&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Serializes an instance of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html" title="The SqlPartition class is a semi-regular type that represents a single slice of a parallel SQL read.">SqlPartition</a></code> for transmission to another process. </p>
+<p>Serializes an instance of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html" title="The SqlPartition class is a regular type that represents a single slice of a parallel SQL read.">SqlPartition</a></code> for transmission to another process. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">sql_partition</td><td>- instance to be serialized.</td></tr>
@@ -1025,7 +1057,7 @@ template&lt;typename... Ts&gt; </div>
 </dl>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <div class="fragment"><div class="line">spanner::SqlStatement stmt(<span class="stringliteral">&quot;select * from Albums&quot;</span>);</div><div class="line">std::vector&lt;spanner::SqlPartition&gt; partitions =</div><div class="line">  spanner_client.PartitionSql(stmt);</div><div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> <span class="keyword">const</span>&amp; partition : partitions) {</div><div class="line">  <span class="keyword">auto</span> serialized_partition = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a0330dd31b70a1d74509675d046dc450f">spanner::SerializeSqlPartition</a>(partition);</div><div class="line">  <span class="keywordflow">if</span> (serialized_partition.ok()) {</div><div class="line">    SendToRemoteMachine(*serialized_partition);</div><div class="line">  }</div><div class="line">}</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="sql__partition_8cc_source.html#l00032">32</a> of file <a class="el" href="sql__partition_8cc_source.html">sql_partition.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sql__partition_8cc_source.html#l00039">39</a> of file <a class="el" href="sql__partition_8cc_source.html">sql_partition.cc</a>.</p>
 
 </div>
 </div>
