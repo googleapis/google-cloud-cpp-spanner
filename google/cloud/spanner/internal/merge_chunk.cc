@@ -39,9 +39,15 @@ Status MergeChunk(google::protobuf::Value& value,
 
     case google::protobuf::Value::kListValue: {
       auto& value_list = *value.mutable_list_value()->mutable_values();
+      if (value_list.empty()) {
+        value = std::move(chunk);
+        return Status();
+      }
+
       auto& chunk_list = *chunk.mutable_list_value()->mutable_values();
-      if (value_list.empty() || chunk_list.empty()) {
-        return Status(StatusCode::kInternal, "empty list");
+      if (chunk_list.empty()) {
+        // There's nothing to merge.
+        return Status();
       }
 
       // Recursively merge the last element of value_list with the first

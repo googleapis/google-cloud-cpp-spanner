@@ -27,6 +27,16 @@ inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 namespace {
 
+// TODO(#264) Factor this matcher out into a reusable location.
+MATCHER_P(IsProtoEqual, value, "") {
+  std::string delta;
+  google::protobuf::util::MessageDifferencer differencer;
+  differencer.ReportDifferencesToString(&delta);
+  auto const result = differencer.Compare(arg, value);
+  *result_listener << "\n" << delta;
+  return result;
+}
+
 //
 // MakeProtoValue() is an overloaded helper function for creating
 // google::protobuf::Value protos from convenient user-supplied arguments.
@@ -69,10 +79,7 @@ TEST(MergeChunk, ExampleStrings) {
   ASSERT_STATUS_OK(MergeChunk(a, std::move(b)));
 
   auto expected = MakeProtoValue("foobar");
-  std::string delta;
-  google::protobuf::util::MessageDifferencer differencer;
-  differencer.ReportDifferencesToString(&delta);
-  EXPECT_TRUE(differencer.Compare(a, expected)) << delta;
+  EXPECT_THAT(a, IsProtoEqual(expected));
 }
 
 // Example from
@@ -85,10 +92,7 @@ TEST(MergeChunk, ExampleListOfInts) {
   ASSERT_STATUS_OK(MergeChunk(a, std::move(b)));
 
   auto expected = MakeProtoValue(std::vector<double>{2, 3, 4});
-  std::string delta;
-  google::protobuf::util::MessageDifferencer differencer;
-  differencer.ReportDifferencesToString(&delta);
-  EXPECT_TRUE(differencer.Compare(a, expected)) << delta;
+  EXPECT_THAT(a, IsProtoEqual(expected));
 }
 
 // Example from
@@ -101,10 +105,7 @@ TEST(MergeChunk, ExampleListOfStrings) {
   ASSERT_STATUS_OK(MergeChunk(a, std::move(b)));
 
   auto expected = MakeProtoValue(std::vector<std::string>{"a", "bc", "d"});
-  std::string delta;
-  google::protobuf::util::MessageDifferencer differencer;
-  differencer.ReportDifferencesToString(&delta);
-  EXPECT_TRUE(differencer.Compare(a, expected)) << delta;
+  EXPECT_THAT(a, IsProtoEqual(expected));
 }
 
 // Example from
@@ -121,30 +122,44 @@ TEST(MergeChunk, ExampleListsOfListOfString) {
   auto expected = MakeProtoValue(std::vector<Value>{
       Value("a"), Value(std::vector<std::string>{"b", "cd"}), Value("e")});
 
-  std::string delta;
-  google::protobuf::util::MessageDifferencer differencer;
-  differencer.ReportDifferencesToString(&delta);
-  EXPECT_TRUE(differencer.Compare(a, expected)) << delta;
+  EXPECT_THAT(a, IsProtoEqual(expected));
 }
 
 //
 // Tests some edge cases that we think should probably work.
 //
 
-TEST(MergeChunk, EmptyString) {
+TEST(MergeChunk, EmptyStringFirst) {
+  auto empty = MakeProtoValue("");
+  ASSERT_STATUS_OK(MergeChunk(empty, MakeProtoValue("foo")));
+  EXPECT_THAT(empty, IsProtoEqual(MakeProtoValue("foo")));
+}
+
+TEST(MergeChunk, EmptyStringSecond) {
   auto value = MakeProtoValue("foo");
   ASSERT_STATUS_OK(MergeChunk(value, MakeProtoValue("")));
+  EXPECT_THAT(value, IsProtoEqual(MakeProtoValue("foo")));
+}
 
-  std::string delta;
-  google::protobuf::util::MessageDifferencer differencer;
-  differencer.ReportDifferencesToString(&delta);
-  EXPECT_TRUE(differencer.Compare(value, MakeProtoValue("foo"))) << delta;
+TEST(MergeChunk, EmptyListFirst) {
+  google::protobuf::Value empty_list;
+  empty_list.mutable_list_value();
 
-  auto empty = MakeProtoValue("");
-  ASSERT_STATUS_OK(MergeChunk(empty, MakeProtoValue("bar")));
+  auto b = MakeProtoValue(std::vector<std::string>{"a", "b"});
+  auto const expected = b;
+  ASSERT_STATUS_OK(MergeChunk(empty_list, std::move(b)));
+  EXPECT_THAT(empty_list, IsProtoEqual(expected));
+}
 
-  delta.clear();
-  EXPECT_TRUE(differencer.Compare(empty, MakeProtoValue("bar"))) << delta;
+TEST(MergeChunk, EmptyListSecond) {
+  auto a = MakeProtoValue(std::vector<std::string>{"a", "b"});
+  auto const expected = a;
+  google::protobuf::Value empty_list;
+
+  empty_list.mutable_list_value();
+
+  ASSERT_STATUS_OK(MergeChunk(a, std::move(empty_list)));
+  EXPECT_THAT(a, IsProtoEqual(expected));
 }
 
 //
