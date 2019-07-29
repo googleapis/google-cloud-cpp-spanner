@@ -69,7 +69,7 @@ Status MergeChunk(google::protobuf::Value& value,
     }
 
     default:
-      return Status(StatusCode::kUnknown, "unknown Value type");
+      break;
   }
   return Status(StatusCode::kUnknown, "unknown Value type");
 }
