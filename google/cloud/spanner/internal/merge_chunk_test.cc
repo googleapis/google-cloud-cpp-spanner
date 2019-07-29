@@ -19,6 +19,8 @@
 #include <google/protobuf/text_format.h>
 #include <google/protobuf/util/message_differencer.h>
 #include <gmock/gmock.h>
+#include <string>
+#include <vector>
 
 namespace google {
 namespace cloud {
@@ -121,7 +123,6 @@ TEST(MergeChunk, ExampleListsOfListOfString) {
 
   auto expected = MakeProtoValue(std::vector<Value>{
       Value("a"), Value(std::vector<std::string>{"b", "cd"}), Value("e")});
-
   EXPECT_THAT(a, IsProtoEqual(expected));
 }
 
