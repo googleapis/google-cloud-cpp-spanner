@@ -17,5 +17,6 @@
 """Automatically generated unit tests list - DO NOT EDIT."""
 
 spanner_client_samples = [
-    "samples.cc",
+    "database_admin_samples.cc",
+    "data_client_samples.cc",
 ]

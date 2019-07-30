@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#ifndef GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_SAMPLES_SAMPLES_UTILS_H_
+#define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_SAMPLES_SAMPLES_UTILS_H_
+
+#include "google/cloud/spanner/samples/sample_utils.h"
 #include "google/cloud/spanner/database_admin_client.h"
 #include "google/cloud/internal/getenv.h"
 #include "google/cloud/internal/random.h"
@@ -19,7 +23,10 @@
 #include <tuple>
 #include <utility>
 
-namespace {
+namespace google {
+namespace cloud {
+namespace spanner {
+namespace samples {
 
 std::string RandomDatabaseName(
     google::cloud::internal::DefaultPRNG& generator) {
@@ -72,47 +79,6 @@ void CreateDatabase(std::vector<std::string> const& argv) {
   (argv[0], argv[1], argv[2]);
 }
 
-void AddColumn(std::vector<std::string> const& argv) {
-  if (argv.size() != 3) {
-    throw std::runtime_error(
-        "add-column <project-id> <instance-id> <database-id>");
-  }
-
-  //! [update-database] [START spanner_add_column]
-  using google::cloud::future;
-  using google::cloud::StatusOr;
-  [](std::string const& project_id, std::string const& instance_id,
-     std::string const& database_id) {
-    google::cloud::spanner::DatabaseAdminClient client;
-    future<StatusOr<
-        google::spanner::admin::database::v1::UpdateDatabaseDdlMetadata>>
-        future = client.UpdateDatabase(
-            project_id, instance_id, database_id,
-            {"ALTER TABLE Albums ADD COLUMN MarketingBudget INT64"});
-    StatusOr<google::spanner::admin::database::v1::UpdateDatabaseDdlMetadata>
-        metadata = future.get();
-    if (!metadata) {
-      throw std::runtime_error(metadata.status().message());
-    }
-    std::cout << "Added MarketingBudget column\n";
-  }
-  //! [update-database] [END spanner_add_column]
-  (argv[0], argv[1], argv[2]);
-}
-
-void QueryWithStruct(std::vector<std::string> const&) {
-  // TODO(#188): Add querying part once data client is ready.
-  // [START spanner_create_struct_with_data]
-  auto singer_info = std::make_tuple(std::make_pair("FirstName", "Elena"),
-                                     std::make_pair("LastName", "Campbell"));
-  // [END spanner_create_struct_with_data]
-  std::cout << "Struct created with the following data:\n"
-            << std::get<0>(singer_info).first << ":"
-            << std::get<0>(singer_info).second << "\n"
-            << std::get<1>(singer_info).first << ":"
-            << std::get<1>(singer_info).second << "\n";
-}
-
 void DropDatabase(std::vector<std::string> const& argv) {
   if (argv.size() != 3) {
     throw std::runtime_error(
@@ -134,17 +100,22 @@ void DropDatabase(std::vector<std::string> const& argv) {
   (argv[0], argv[1], argv[2]);
 }
 
-int RunOneCommand(std::vector<std::string> argv) {
-  using CommandType = std::function<void(std::vector<std::string> const&)>;
-
-  std::map<std::string, CommandType> commands = {
+SampleSuite::SampleSuite(std::vector<CommandPairType> command_pairs) {
+  commands_ = {
       {"create-database", &CreateDatabase},
-      {"add-column", &AddColumn},
-      {"query-with-struct", &QueryWithStruct},
       {"drop-database", &DropDatabase},
   };
+  // Wrap them with database creation
+  command_order_.push_back("create-database");
+  for (auto&& command_pair : command_pairs) {
+    command_order_.push_back(std::get<0>(command_pair));
+    commands_.insert(command_pair);
+  }
+  command_order_.push_back("drop-database");
+}
 
-  std::string usage_msg = [&argv, &commands] {
+int SampleSuite::run_one_command(std::vector<std::string> argv) {
+  std::string usage_msg = [&argv, this] {
     auto last_slash = std::string(argv[0]).find_last_of("/\\");
     auto program = argv[0].substr(last_slash + 1);
     std::string usage;
@@ -152,7 +123,7 @@ int RunOneCommand(std::vector<std::string> argv) {
     usage += program;
     usage += " <command> [arguments]\n\n";
     usage += "Commands:\n";
-    for (auto&& kv : commands) {
+    for (auto&& kv : commands_) {
       try {
         kv.second({});
       } catch (std::exception const& ex) {
@@ -172,8 +143,8 @@ int RunOneCommand(std::vector<std::string> argv) {
   argv.erase(argv.begin());  // remove the program name from the list.
   argv.erase(argv.begin());  // remove the command name from the list.
 
-  auto command = commands.find(command_name);
-  if (commands.end() == command) {
+  auto command = commands_.find(command_name);
+  if (commands_.end() == command) {
     std::cerr << "Unknown command " << command_name << "\n"
               << usage_msg << "\n";
     return 1;
@@ -184,7 +155,7 @@ int RunOneCommand(std::vector<std::string> argv) {
   return 0;
 }
 
-void RunAll() {
+void SampleSuite::run_all() {
   auto project_id =
       google::cloud::internal::GetEnv("GOOGLE_CLOUD_PROJECT").value_or("");
   auto instance_id =
@@ -201,11 +172,9 @@ void RunAll() {
   auto generator = google::cloud::internal::MakeDefaultPRNG();
   std::string database_id = RandomDatabaseName(generator);
 
-  RunOneCommand({"", "create-database", project_id, instance_id, database_id});
-  RunOneCommand({"", "add-column", project_id, instance_id, database_id});
-  RunOneCommand(
-      {"", "query-with-struct", project_id, instance_id, database_id});
-  RunOneCommand({"", "drop-database", project_id, instance_id, database_id});
+  for (auto&& command : command_order_) {
+    run_one_command({"", command, project_id, instance_id, database_id});
+  }
 }
 
 bool AutoRun() {
@@ -213,16 +182,9 @@ bool AutoRun() {
              .value_or("") == "yes";
 }
 
-}  // namespace
+}  // namespace samples
+}  // namespace spanner
+}  // namespace cloud
+}  // namespace google
 
-int main(int ac, char* av[]) try {
-  if (AutoRun()) {
-    RunAll();
-    return 0;
-  }
-
-  return RunOneCommand({av, av + ac});
-} catch (std::exception const& ex) {
-  std::cerr << ex.what() << "\n";
-  return 1;
-}
+#endif  // GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_SAMPLES_SAMPLES_UTILS_H_

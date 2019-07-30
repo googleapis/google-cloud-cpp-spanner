@@ -127,7 +127,7 @@ class DatabaseAdminClient {
    *   completes on the service. Note that this can take minutes in some cases.
    *
    * @par Example
-   * @snippet samples.cc create-database
+   * @snippet sample_utils.cc create-database
    *
    * @see https://cloud.google.com/spanner/docs/data-definition-language for a
    *     full list of the DDL operations
@@ -152,7 +152,7 @@ class DatabaseAdminClient {
    *   the statements.
    *
    * @par Example
-   * @snippet samples.cc update-database
+   * @snippet database_admin_samples.cc update-database
    *
    * @see https://cloud.google.com/spanner/docs/data-definition-language for a
    *     full list of the DDL operations
@@ -170,7 +170,7 @@ class DatabaseAdminClient {
    *   database. This is an unrecoverable operation.
    *
    * @par Example
-   * @snippet samples.cc drop-database
+   * @snippet sample_utils.cc drop-database
    */
   Status DropDatabase(std::string const& project_id,
                       std::string const& instance_id,

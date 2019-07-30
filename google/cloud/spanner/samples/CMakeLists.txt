@@ -18,7 +18,14 @@ include(EnableClangTidy)
 include(EnableWerror)
 
 function (spanner_client_define_samples)
-    set(spanner_client_samples samples.cc)
+    add_library(spanner_sample_utils sample_utils.cc sample_utils.h)
+    target_link_libraries(spanner_sample_utils
+                          PRIVATE googleapis-c++::spanner_client)
+    target_include_directories(spanner_sample_utils
+                               PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
+                                      $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
+                                      $<INSTALL_INTERFACE:include>)
+    set(spanner_client_samples database_admin_samples.cc data_client_samples.cc)
 
     # Export the list of unit tests to a .bzl file so we do not need to maintain
     # the list in two places.
@@ -35,7 +42,9 @@ function (spanner_client_define_samples)
                        target
                        ${target})
         add_executable(${target} ${fname})
-        target_link_libraries(${target} PRIVATE googleapis-c++::spanner_client)
+        target_link_libraries(${target}
+                              PRIVATE googleapis-c++::spanner_client
+                                      spanner_sample_utils)
         google_cloud_cpp_add_clang_tidy(${target})
         google_cloud_cpp_add_common_options(${target})
         add_test(NAME ${target} COMMAND ${target})
