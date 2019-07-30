@@ -27,7 +27,6 @@ inline namespace SPANNER_CLIENT_NS {
  * The result of Committing a Transaction.
  */
 struct CommitResult {
- public:
   /// The Cloud Spanner timestamp at which the transaction committed.
   Timestamp commit_timestamp;
 };
