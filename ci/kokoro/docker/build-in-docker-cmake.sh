@@ -98,7 +98,8 @@ if [[ ${RUN_INTEGRATION_TESTS} == "yes" ]]; then
   # Run the integration tests too.
   env -C "${BINARY_DIR}" ctest \
       -L integration-tests \
-      --output-on-failure
+      --output-on-failure \
+      -j 4
   echo "================================================================"
 fi
 
