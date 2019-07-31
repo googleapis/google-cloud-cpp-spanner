@@ -53,15 +53,11 @@ if [[ "${GOOGLE_CLOUD_CPP_CXX_STANDARD:-}" != "" ]]; then
     "-DGOOGLE_CLOUD_CPP_CXX_STANDARD=${GOOGLE_CLOUD_CPP_CXX_STANDARD}")
 fi
 
-if [[ "${CODE_COVERAGE:-}" == "yes" ]]; then
-  cmake_flags+=(
-    "-DCMAKE_BUILD_TYPE=Coverage")
-fi
-
 # We disable the shellcheck warning because we want ${CMAKE_FLAGS} to expand as
 # separate arguments.
 # shellcheck disable=SC2086
 cmake "-DCMAKE_INSTALL_PREFIX=$HOME/staging" \
+      -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
       ${CMAKE_FLAGS:-} \
       "-H${SOURCE_DIR}" "-B${BINARY_DIR}" "${cmake_flags[@]}"
 cmake --build "${BINARY_DIR}" -- -j "$(nproc)"
