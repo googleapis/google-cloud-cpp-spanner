@@ -39,8 +39,8 @@ function (google_cloud_cpp_spanner_initialize_git_head var)
         if (GOOGLE_CLOUD_CPP_SPANNER_GIT_PROGRAM)
             # Run `git rev-parse --short HEAD` and capture the output in a
             # variable.
-            execute_process(COMMAND "${GOOGLE_CLOUD_CPP_SPANNER_GIT_PROGRAM}" rev-parse
-                                    --short HEAD
+            execute_process(COMMAND "${GOOGLE_CLOUD_CPP_SPANNER_GIT_PROGRAM}"
+                                    rev-parse --short HEAD
                             OUTPUT_VARIABLE GIT_HEAD_LOG
                             ERROR_VARIABLE GIT_HEAD_LOG)
             string(REPLACE "\n"
@@ -60,14 +60,16 @@ if (NOT "${GOOGLE_CLOUD_CPP_SPANNER_BUILD_METADATA}" STREQUAL "")
     # -DGOOGLE_CLOUD_CPP_SPANNER_METADATA=value in the command line, and when
     # GOOGLE_CLOUD_CPP_SPANNER_METADATA has a cached value
     set(GOOGLE_CLOUD_CPP_SPANNER_GIT_HEAD "unused")
-else()
-    google_cloud_cpp_spanner_initialize_git_head(GOOGLE_CLOUD_CPP_SPANNER_GIT_HEAD)
+else ()
+    google_cloud_cpp_spanner_initialize_git_head(
+        GOOGLE_CLOUD_CPP_SPANNER_GIT_HEAD)
 endif ()
 
 # Define a CMake configuration option to set the build metadata. By default this
 # is initialized from `git rev-parse --short HEAD`, but the developer (or the
 # script building via CMake) can override the value.
-set(GOOGLE_CLOUD_CPP_SPANNER_BUILD_METADATA "${GOOGLE_CLOUD_CPP_SPANNER_GIT_HEAD}"
+set(GOOGLE_CLOUD_CPP_SPANNER_BUILD_METADATA
+    "${GOOGLE_CLOUD_CPP_SPANNER_GIT_HEAD}"
     CACHE STRING "Append build metadata to the library version number")
 # This option is rarely needed. Mark it as "advanced" to remove it from the
 # default CMake UIs.
@@ -83,6 +85,7 @@ configure_file(internal/build_info.cc.in internal/build_info.cc)
 
 configure_file(version_info.h.in ${CMAKE_CURRENT_SOURCE_DIR}/version_info.h)
 add_library(spanner_client
+            ${CMAKE_CURRENT_BINARY_DIR}/internal/build_info.cc
             backoff_policy.h
             client.cc
             client.h
@@ -95,7 +98,6 @@ add_library(spanner_client
             internal/base64.cc
             internal/base64.h
             internal/build_info.h
-            ${CMAKE_CURRENT_BINARY_DIR}/internal/build_info.cc
             internal/database_admin_retry.cc
             internal/database_admin_retry.h
             internal/database_admin_stub.cc
