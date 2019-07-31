@@ -20,8 +20,6 @@
 #include "google/cloud/internal/getenv.h"
 #include "google/cloud/internal/random.h"
 #include <sstream>
-#include <tuple>
-#include <utility>
 
 namespace google {
 namespace cloud {

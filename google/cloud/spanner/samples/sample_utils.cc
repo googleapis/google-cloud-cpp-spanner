@@ -16,12 +16,6 @@
 #define GOOGLE_CLOUD_CPP_GOOGLE_CLOUD_SPANNER_SAMPLES_SAMPLES_UTILS_H_
 
 #include "google/cloud/spanner/samples/sample_utils.h"
-#include "google/cloud/spanner/database_admin_client.h"
-#include "google/cloud/internal/getenv.h"
-#include "google/cloud/internal/random.h"
-#include <sstream>
-#include <tuple>
-#include <utility>
 
 namespace google {
 namespace cloud {
