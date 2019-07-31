@@ -43,7 +43,7 @@ std::string LanguageVersion() {
   static std::string const* const kLanguageVersion = [] {
     auto* v = new auto(CompilerVersion());
     for (char& c : *v) {
-      if (std::isspace(static_cast<unsigned char>(c))) c = '-';
+      if (std::isspace(static_cast<unsigned char>(c)) != 0) c = '-';
     }
 #if GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
     *v += "-ex";
@@ -73,6 +73,7 @@ std::string LanguageVersion() {
 
 bool IsRelease() {
   static bool const kIsRelease = []() -> bool {
+    // NOLINTNEXTLINE(readability-redundant-string-init)
     std::string value = R"""(@GOOGLE_CLOUD_CPP_SPANNER_IS_RELEASE@)""";
     for (char& c : value) {
       c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
