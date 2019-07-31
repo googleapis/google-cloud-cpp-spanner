@@ -26,7 +26,7 @@ END {
 # Reset the state at the beginning of each file.
 BEGINFILE {
     # The guard must begin with the name of the project.
-    guard_prefix="GOOGLE_CLOUD_CPP_"
+    guard_prefix="GOOGLE_CLOUD_CPP_SPANNER_"
     # The guard must end with "_"
     guard_suffix="_"
     # The guard name is the filename (including path from the root of the
@@ -54,7 +54,7 @@ ENDFILE {
         matches++;
     } else {
         printf("%s:\n", FILENAME)
-        printf("expected: #ifndef %s\n", FILENAME, guard)
+        printf("expected: #ifndef %s\n", guard)
         printf("   found: %s\n", $0);
     }
 }
