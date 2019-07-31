@@ -40,8 +40,8 @@ TEST(BuildInfo, LanguageVersion) {
   EXPECT_THAT(lv, ::testing::AnyOf(HasSubstr("-noex-"), HasSubstr("-ex-")));
   EXPECT_THAT(lv, Not(HasSubstr(" ")));
 #ifndef _WIN32
-  // Brackets for regex don't work on windows.
-  EXPECT_THAT(lv, MatchesRegex(R"([0-9A-Za-z_.-]+)"));
+  // Brackets don't work with MatchesRegex() on Windows.
+  EXPECT_THAT(lv, MatchesRegex(R"([0-9A-Za-z/()_.-]+)"));
 #endif
 }
 
