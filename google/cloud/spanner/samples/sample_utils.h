@@ -14,7 +14,7 @@
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_SAMPLES_SAMPLE_UTILS_H_
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_SAMPLES_SAMPLE_UTILS_H_
-x
+
 #include "google/cloud/spanner/database_admin_client.h"
 #include "google/cloud/spanner/samples/sample_utils.h"
 #include "google/cloud/internal/getenv.h"
