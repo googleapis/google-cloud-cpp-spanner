@@ -22,37 +22,49 @@ inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 namespace {
 
-using ::testing::HasSubstr;
-using ::testing::MatchesRegex;
+TEST(BuildInfo, CompilerName) {
+  auto cn = CompilerName();
+  EXPECT_FALSE(cn.empty());
+  EXPECT_THAT(cn, ::testing::Not(::testing::HasSubstr("@")));
+}
 
 TEST(BuildInfo, CompilerVersion) {
   auto cv = CompilerVersion();
   EXPECT_FALSE(cv.empty());
+  EXPECT_THAT(cv, ::testing::Not(::testing::HasSubstr("@")));
+#ifndef _WIN32  // gMock's regex brackets don't work on Windows.
+  // Look for something that looks vaguely like an X.Y version number.
+  EXPECT_THAT(cv, ::testing::ContainsRegex(R"([0-9].[0-9])"));
+#endif
 }
 
 TEST(BuildInfo, CompilerFlags) {
   auto cf = CompilerFlags();
   EXPECT_FALSE(cf.empty());
+  EXPECT_THAT(cf, ::testing::Not(::testing::HasSubstr("@")));
 }
 
 TEST(BuildInfo, LanguageVersion) {
+  using ::testing::HasSubstr;
   auto lv = LanguageVersion();
-  EXPECT_THAT(lv, ::testing::AnyOf(HasSubstr("-noex-"), HasSubstr("-ex-")));
+  EXPECT_THAT(lv, ::testing::AnyOf(HasSubstr("-noex"), HasSubstr("-ex")));
   EXPECT_THAT(lv, Not(HasSubstr(" ")));
-#ifndef _WIN32
-  // Brackets don't work with MatchesRegex() on Windows.
-  EXPECT_THAT(lv, MatchesRegex(R"([0-9A-Za-z/()_.-]+)"));
+  EXPECT_THAT(lv, ::testing::Not(::testing::HasSubstr("@")));
+#ifndef _WIN32  // gMock's regex brackets don't work on Windows.
+  EXPECT_THAT(lv, ::testing::MatchesRegex(R"([0-9A-Za-z/()_.-]+)"));
 #endif
 }
 
 TEST(BuildInfo, IsRelease) {
   bool const b = IsRelease();
+  // We want to test this, but either value is fine.
   EXPECT_TRUE(b || !b);
 }
 
 TEST(BuildInfo, BuildMetadata) {
   auto const md = BuildMetadata();
-  EXPECT_FALSE(md.empty());
+  EXPECT_THAT(md, ::testing::MatchesRegex(R"(sha\..+)"));
+  EXPECT_THAT(md, ::testing::Not(::testing::HasSubstr("@")));
 }
 
 }  // namespace

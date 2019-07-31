@@ -28,11 +28,10 @@ include(EnableDoxygen)
 # Define a function to fetch the current git revision. Using a function creates
 # a new scope, so the CMake variables do not leak to the global namespace.
 function (google_cloud_cpp_spanner_initialize_git_head var)
-    set(result "")
+    set(result "unknown")
     # If we cannot find a `.git` directory do not even try to guess the git
     # revision.
     if (IS_DIRECTORY ${PROJECT_SOURCE_DIR}/.git)
-        set(result "unknown-commit")
         # We need `git` to find the revision.
         find_program(GOOGLE_CLOUD_CPP_SPANNER_GIT_PROGRAM NAMES git)
         mark_as_advanced(GOOGLE_CLOUD_CPP_SPANNER_GIT_PROGRAM)

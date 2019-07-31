@@ -24,12 +24,37 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
+std::string CompilerName() {
+  static auto const* const kName = [] {
+    auto* s = new std::string(R"""(@CMAKE_CXX_COMPILER@)""");
+    auto pos = s->rfind('/');
+    if (pos != std::string::npos) s->erase(0, pos + 1);
+    for (char& c : *s) {
+      if (c == '+') c = 'x';
+    }
+    return s;
+  }();
+  return *kName;
+}
+
 std::string CompilerVersion() {
-  return R"""(@CMAKE_CXX_COMPILER_ID@ @CMAKE_CXX_COMPILER_VERSION@)""";
+  static auto const* const kVersion = [] {
+    auto* s = new std::string(R"""(@CMAKE_CXX_COMPILER_VERSION@)""");
+    auto illegal_punct = [](unsigned char c) -> bool {
+      if (c == '.' || c == '-') return false;  // allowed
+      return std::ispunct(c) != 0;
+    };
+    s->erase(std::remove_if(s->begin(), s->end(), illegal_punct), s->end());
+    for (char& c : *s) {
+      if (std::isspace(static_cast<unsigned char>(c)) != 0) c = '-';
+    }
+    return s;
+  }();
+  return *kVersion;
 }
 
 std::string CompilerFlags() {
-  static std::string const* const kFlags = [] {
+  static auto const* const kFlags = [] {
     auto* flags = new std::string(R"""(@CMAKE_CXX_FLAGS@)""");
     if (!flags->empty()) *flags += ' ';
     *flags +=
@@ -40,33 +65,30 @@ std::string CompilerFlags() {
 }
 
 std::string LanguageVersion() {
-  static std::string const* const kLanguageVersion = [] {
-    auto* v = new auto(CompilerVersion());
-    for (char& c : *v) {
-      if (std::isspace(static_cast<unsigned char>(c)) != 0) c = '-';
-    }
-#if GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
-    *v += "-ex";
-#else
-    *v += "-noex";
-#endif  // GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
+  static auto const* const kLanguageVersion = [] {
+    auto* s = new std::string;
     switch (__cplusplus) {
       case 199711L:
-        *v += "-98";
+        *s += "98";
         break;
       case 201103L:
-        *v += "-2011";
+        *s += "2011";
         break;
       case 201402L:
-        *v += "-2014";
+        *s += "2014";
         break;
       case 201703L:
-        *v += "-2017";
+        *s += "2017";
         break;
       default:
-        *v += "-unknown";
+        *s += "unknown";
     }
-    return v;
+#if GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
+    *s += "-ex";
+#else
+    *s += "-noex";
+#endif  // GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
+    return s;
   }();
   return *kLanguageVersion;
 }
@@ -80,12 +102,11 @@ bool IsRelease() {
     }
     return value == "yes" || value == "1" || value == "true";
   }();
-
   return kIsRelease;
 }
 
 std::string BuildMetadata() {
-  return R"""(@GOOGLE_CLOUD_CPP_SPANNER_BUILD_METADATA@)""";
+  return R"""(sha.@GOOGLE_CLOUD_CPP_SPANNER_BUILD_METADATA@)""";
 }
 
 }  // namespace internal
