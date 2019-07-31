@@ -25,12 +25,12 @@ genrule(
     cmd = """
 CC_COMPILER_VERSION=$$($(CC) --version | head -1);
 V=$$(git rev-parse --short HEAD 2>/dev/null || echo "unknown");
-sed -e "s;@CMAKE_CXX_COMPILER_ID@;$(C_COMPILER);" \
+sed -e "s;@CMAKE_CXX_COMPILER@;$$(basename $(CC));" \
     -e "s;@CMAKE_CXX_COMPILER_VERSION@;$${CC_COMPILER_VERSION};" \
     -e "s;@CMAKE_CXX_FLAGS@;$(CC_FLAGS);" \
-    -e "s;\\$${CMAKE_CXX_FLAGS_.*};$(COMPILATION_MODE);" \
+    -e "s;\\$${CMAKE_CXX_FLAGS_.*};-c $(COMPILATION_MODE);" \
     -e "s;@GOOGLE_CLOUD_CPP_SPANNER_IS_RELEASE@;%s;" \
-    -e "s;@GOOGLE_CLOUD_CPP_GIT_HEAD@;$${V};" < $< > $@
+    -e "s;@GOOGLE_CLOUD_CPP_SPANNER_BUILD_METADATA@;$${V};" < $< > $@
   """ % (GOOGLE_CLOUD_CPP_SPANNER_IS_RELEASE),
     toolchains = [
         "@bazel_tools//tools/cpp:current_cc_toolchain",
