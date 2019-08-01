@@ -24,8 +24,8 @@ genrule(
     outs = ["internal/build_info.cc"],
     cmd = """
 V=$$(git rev-parse --short HEAD 2>/dev/null || echo "unknown");
-CC_VERSION=$$(bazel/compiler_version.sh $(CC));
-CC_ID=$$(bazel/compiler_id.sh $(CC));
+CC_VERSION=$$($(location //bazel:compiler_version.sh) $(CC));
+CC_ID=$$($(location //bazel:compiler_id.sh) $(CC));
 sed -e "s;@CMAKE_CXX_COMPILER_ID@;$${CC_ID};" \
     -e "s;@CMAKE_CXX_COMPILER_VERSION@;$${CC_VERSION};" \
     -e "s;@CMAKE_CXX_FLAGS@;$(CC_FLAGS);" \
