@@ -9,7 +9,7 @@ if [[ ! -e "${1}" ]]; then
   exit 1
 fi
 
-version="$(${1} --version 2> /dev/null \
+version="$("${1}" --version 2> /dev/null \
   | head -1 \
   | tr '[:upper:]' '[:lower:]')"
 

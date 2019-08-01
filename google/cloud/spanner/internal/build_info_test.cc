@@ -22,8 +22,8 @@ inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 namespace {
 
-TEST(BuildInfo, CompilerName) {
-  auto cn = CompilerName();
+TEST(BuildInfo, CompilerId) {
+  auto cn = CompilerId();
   EXPECT_FALSE(cn.empty());
   EXPECT_THAT(cn, ::testing::Not(::testing::HasSubstr("@")));
 }
@@ -40,13 +40,13 @@ TEST(BuildInfo, CompilerVersion) {
 
 TEST(BuildInfo, CompilerFlags) {
   auto cf = CompilerFlags();
-  EXPECT_FALSE(cf.empty());
   EXPECT_THAT(cf, ::testing::Not(::testing::HasSubstr("@")));
 }
 
 TEST(BuildInfo, CompilerFeatures) {
   using ::testing::Eq;
   auto cf = CompilerFeatures();
+  EXPECT_FALSE(cf.empty());
   EXPECT_THAT(cf, ::testing::AnyOf(Eq("noex"), Eq("ex")));
 }
 
@@ -79,7 +79,7 @@ TEST(BuildInfo, ApiClientHeader) {
   // desired format.
 
   std::string const api_client_header = "gl-cpp/" +                 //
-                                        CompilerName() + '-' +      //
+                                        CompilerId() + '-' +        //
                                         CompilerVersion() + '-' +   //
                                         CompilerFeatures() + '-' +  //
                                         LanguageVersion();
