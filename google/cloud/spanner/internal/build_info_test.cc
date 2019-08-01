@@ -51,7 +51,7 @@ TEST(BuildInfo, LanguageVersion) {
   EXPECT_THAT(lv, Not(HasSubstr(" ")));
   EXPECT_THAT(lv, ::testing::Not(::testing::HasSubstr("@")));
 #ifndef _WIN32  // gMock's regex brackets don't work on Windows.
-  EXPECT_THAT(lv, ::testing::MatchesRegex(R"([0-9A-Za-z/()_.-]+)"));
+  EXPECT_THAT(lv, ::testing::MatchesRegex(R"([0-9A-Za-z_.-]+)"));
 #endif
 }
 
