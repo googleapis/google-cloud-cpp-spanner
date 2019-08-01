@@ -52,6 +52,7 @@ spanner_client_hdrs = [
 spanner_client_srcs = [
     "client_options.cc",
     "database_admin_client.cc",
+    "date.cc",
     "internal/base64.cc",
     "internal/database_admin_retry.cc",
     "internal/database_admin_stub.cc",
