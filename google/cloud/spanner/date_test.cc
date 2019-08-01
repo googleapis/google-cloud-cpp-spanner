@@ -36,58 +36,31 @@ TEST(Date, Basics) {
 
 TEST(Date, Normalization) {
   // Non-leap-year day overflow.
-  Date d(2019, 2, 29);
-  EXPECT_EQ(2019, d.year());
-  EXPECT_EQ(3, d.month());
-  EXPECT_EQ(1, d.day());
+  EXPECT_EQ(Date(2019, 3, 1), Date(2019, 2, 29));
 
   // Non-leap-year day underflow.
-  d = Date(2019, 3, 0);
-  EXPECT_EQ(2019, d.year());
-  EXPECT_EQ(2, d.month());
-  EXPECT_EQ(28, d.day());
+  EXPECT_EQ(Date(2019, 2, 28), Date(2019, 3, 0));
 
   // Leap-year day overflow.
-  d = Date(2020, 2, 30);
-  EXPECT_EQ(2020, d.year());
-  EXPECT_EQ(3, d.month());
-  EXPECT_EQ(1, d.day());
+  EXPECT_EQ(Date(2020, 3, 1), Date(2020, 2, 30));
 
   // Leap-year day underflow.
-  d = Date(2020, 3, 0);
-  EXPECT_EQ(2020, d.year());
-  EXPECT_EQ(2, d.month());
-  EXPECT_EQ(29, d.day());
+  EXPECT_EQ(Date(2020, 2, 29), Date(2020, 3, 0));
 
   // Month overflow.
-  d = Date(2016, 25, 28);
-  EXPECT_EQ(2018, d.year());
-  EXPECT_EQ(1, d.month());
-  EXPECT_EQ(28, d.day());
+  EXPECT_EQ(Date(2018, 1, 28), Date(2016, 25, 28));
 
   // Month underflow.
-  d = Date(2016, -25, 28);
-  EXPECT_EQ(2013, d.year());
-  EXPECT_EQ(11, d.month());
-  EXPECT_EQ(28, d.day());
+  EXPECT_EQ(Date(2013, 11, 28), Date(2016, -25, 28));
 
   // Four-century overflow.
-  d = Date(2016, 1, 292195);
-  EXPECT_EQ(2816, d.year());
-  EXPECT_EQ(1, d.month());
-  EXPECT_EQ(1, d.day());
+  EXPECT_EQ(Date(2816, 1, 1), Date(2016, 1, 292195));
 
   // Four-century underflow.
-  d = Date(2016, 1, -292195);
-  EXPECT_EQ(1215, d.year());
-  EXPECT_EQ(12, d.month());
-  EXPECT_EQ(30, d.day());
+  EXPECT_EQ(Date(1215, 12, 30), Date(2016, 1, -292195));
 
   // Mixed.
-  d = Date(2016, -42, 122);
-  EXPECT_EQ(2012, d.year());
-  EXPECT_EQ(9, d.month());
-  EXPECT_EQ(30, d.day());
+  EXPECT_EQ(Date(2012, 9, 30), Date(2016, -42, 122));
 }
 
 }  // namespace

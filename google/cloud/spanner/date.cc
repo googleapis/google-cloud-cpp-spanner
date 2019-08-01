@@ -37,13 +37,13 @@ int DaysPerMonth(std::int64_t y, int m) {
 
 Date::Date(std::int64_t year, int month, int day)
     : year_(year), month_(month), day_(day) {
-  year_ += month_ / 12;
+  year_ += month_ / 12;  // 12 months == 1 year
   month_ %= 12;
   if (month_ <= 0) {
     year_ -= 1;
     month_ += 12;
   }
-  year_ += (day_ / 146097) * 400;
+  year_ += (day_ / 146097) * 400;  // 146097 days == 400 years
   day_ %= 146097;
   if (day_ <= 0) {
     year_ -= 400;
