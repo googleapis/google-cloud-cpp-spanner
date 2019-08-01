@@ -50,29 +50,7 @@ struct ReadOptions {
    * Limit on the number of rows to yield, or 0 for no limit.
    * A limit cannot be specified when calling`PartitionRead`.
    */
-  int64_t limit = 0;
-};
-
-/// Options passed to `ExecuteSql` or `PartitionQuery`.
-struct ExecuteSqlOptions {
-  using QueryMode = google::spanner::v1::ExecuteSqlRequest::QueryMode;
-
-  /// Mode in which the statement must be processed.
-  QueryMode query_mode;
-
-  /**
-   * A per-transaction sequence number used to identify each request. This makes
-   * each request idempotent such that if the request is received multiple
-   * times, at most one will succeed.
-   *
-   * The sequence number must be monotonically increasing within the
-   * transaction. If a request arrives for the first time with an out-of-order
-   * sequence number, the transaction may be aborted. Replays of previously
-   * handled requests will yield the same response as the first execution.
-   *
-   * Required for DML statements. Ignored for queries.
-   */
-  int64_t seqno = 0;
+  std::int64_t limit = 0;
 };
 
 /// Options passed to `PartitionRead` or `PartitionQuery`
@@ -120,7 +98,7 @@ struct KeySet {};
  * if (!result) {
  *   return result.status();
  * }
- * for (auto row : result.Rows()) { ... }
+ * for (auto row : result.Rows<std::int64_t, std::string>()) { ... }
  * @endcode
  *
  * [spanner-doc-link]:
@@ -128,9 +106,6 @@ struct KeySet {};
  */
 class Client {
  public:
-  /// Factory method to create a `Client` with the given `client_options`.
-  static StatusOr<Client> MakeClient(ClientOptions const& client_options = {});
-
   //@{
   /**
    * Reads rows from the database using key lookups and scans, as a simple
@@ -235,7 +210,6 @@ class Client {
    * is used.
    *
    * @param statement The SQL statement to execute.
-   * @param sql_options `ExecuteSqlOptions` used for this query.
    *
    * - *transaction_options Execute this query in a single-use transaction with
    *                        these options.*
@@ -245,14 +219,12 @@ class Client {
    * No individual row in the `ResultSet` can exceed 100 MiB, and no column
    * value can exceed 10 MiB.
    */
-  StatusOr<ResultSet> ExecuteSql(SqlStatement const& statement,
-                                 ExecuteSqlOptions const& sql_options = {});
+  StatusOr<ResultSet> ExecuteSql(SqlStatement const& statement);
   StatusOr<ResultSet> ExecuteSql(
       Transaction::SingleUseOptions const& transaction_options,
-      SqlStatement const& statement, ExecuteSqlOptions const& sql_options = {});
+      SqlStatement const& statement);
   StatusOr<ResultSet> ExecuteSql(Transaction const& transaction,
-                                 SqlStatement const& statement,
-                                 ExecuteSqlOptions const& sql_options = {});
+                                 SqlStatement const& statement);
   //@}
 
   /**
@@ -281,7 +253,6 @@ class Client {
    * @param transaction The transaction to execute the operation in.
    *                    **Must** be a read-only snapshot transaction.
    * @param statement The SQL statement to execute.
-   * @param sql_options `ExecuteSqlOptions` used for this query.
    * @param partition_options `PartitionOptions` used for this request.
    *
    * @returns A `StatusOr` containing a vector of `SqlPartition`s or error
@@ -289,7 +260,6 @@ class Client {
    */
   StatusOr<std::vector<SqlPartition>> PartitionQuery(
       Transaction const& transaction, SqlStatement const& statement,
-      ExecuteSqlOptions const& sql_options = {},
       PartitionOptions const& partition_options = {});
 
   /**
@@ -307,8 +277,6 @@ class Client {
    *                   statement must be a DML statement. Execution will stop
    *                   at the first failed statement; the remaining statements
    *                   will not run. Must not be empty.
-   * @param seqno A per-transaction sequence number used to identify this
-   *              request. See the description in `ExecuteSqlOptions`.
    *
    * @returns A vector of `StatusOr` corresponding to each statement in
    * `statements`. Statements that were successfully executed return statistics.
@@ -317,7 +285,7 @@ class Client {
    */
   std::vector<StatusOr<google::spanner::v1::ResultSetStats>> ExecuteBatchDml(
       Transaction const& transaction,
-      std::vector<SqlStatement> const& statements, int64_t seqno);
+      std::vector<SqlStatement> const& statements);
 
   /**
    * Executes single Partitioned DML statement. Partitions the key space and
@@ -329,7 +297,7 @@ class Client {
    * @returns A `StatusOr` containing a lower bound on the number of modified
    * rows or error status on failure.
    */
-  StatusOr<int64_t> ExecutePartitionedDml(SqlStatement const& statement);
+  StatusOr<std::int64_t> ExecutePartitionedDml(SqlStatement const& statement);
 
   /**
    * Commits a transaction.
@@ -361,15 +329,20 @@ class Client {
    */
   Status Rollback(Transaction const& transaction);
 
-  /// Create a new client with the given stub. **Exposed for testing only.**
+  /**
+   * Create a new client with the given stub.
+   * **Do not call this directly** (it's exposed for testing only), call
+   * `MakeClient()` instead.
+   */
   explicit Client(std::shared_ptr<internal::SpannerStub> s)
       : stub_(std::move(s)) {}
 
  private:
-  Status BeginTransaction(Transaction& transaction);
-
   std::shared_ptr<internal::SpannerStub> stub_;
 };
+
+/// Factory method to create a `Client` with the given `client_options`.
+StatusOr<Client> MakeClient(ClientOptions const& client_options = {});
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner

@@ -24,10 +24,6 @@ inline namespace SPANNER_CLIENT_NS {
 
 namespace spanner_proto = ::google::spanner::v1;
 
-StatusOr<Client> Client::MakeClient(ClientOptions const& client_options) {
-  return Client(internal::CreateDefaultSpannerStub(client_options));
-}
-
 StatusOr<ResultSet> Client::Read(std::string const& /*table*/,
                                  KeySet const& /*keys*/,
                                  std::vector<std::string> const& /*columns*/,
@@ -64,22 +60,18 @@ StatusOr<std::vector<SqlPartition>> Client::PartitionRead(
   return Status(StatusCode::kUnimplemented, "not implemented");
 }
 
-StatusOr<ResultSet> Client::ExecuteSql(
-    SqlStatement const& /*statement*/,
-    ExecuteSqlOptions const& /*sql_options*/) {
+StatusOr<ResultSet> Client::ExecuteSql(SqlStatement const& /*statement*/) {
   return Status(StatusCode::kUnimplemented, "not implemented");
 }
 
 StatusOr<ResultSet> Client::ExecuteSql(
     Transaction::SingleUseOptions const& /*transaction_options*/,
-    SqlStatement const& /*statement*/,
-    ExecuteSqlOptions const& /*sql_options*/) {
+    SqlStatement const& /*statement*/) {
   return Status(StatusCode::kUnimplemented, "not implemented");
 }
 
-StatusOr<ResultSet> Client::ExecuteSql(
-    Transaction const& /*transaction*/, SqlStatement const& /*statement*/,
-    ExecuteSqlOptions const& /*sql_options*/) {
+StatusOr<ResultSet> Client::ExecuteSql(Transaction const& /*transaction*/,
+                                       SqlStatement const& /*statement*/) {
   return Status(StatusCode::kUnimplemented, "not implemented");
 }
 
@@ -89,19 +81,18 @@ StatusOr<ResultSet> Client::ExecuteSql(SqlPartition const& /* partition */) {
 
 StatusOr<std::vector<SqlPartition>> Client::PartitionQuery(
     Transaction const& /*transaction*/, SqlStatement const& /*statement*/,
-    ExecuteSqlOptions const& /*sql_options*/,
     PartitionOptions const& /*partition_options*/) {
   return Status(StatusCode::kUnimplemented, "not implemented");
 }
 
 std::vector<StatusOr<spanner_proto::ResultSetStats>> Client::ExecuteBatchDml(
     Transaction const& /*transaction*/,
-    std::vector<SqlStatement> const& /*statements*/, int64_t /*seqno*/) {
+    std::vector<SqlStatement> const& /*statements*/) {
   return {Status(StatusCode::kUnimplemented, "not implemented")};
 }
 
 // returns a lower bound on the number of modified rows
-StatusOr<int64_t> Client::ExecutePartitionedDml(
+StatusOr<std::int64_t> Client::ExecutePartitionedDml(
     SqlStatement const& /*statement*/) {
   return Status(StatusCode::kUnimplemented, "not implemented");
 }
@@ -116,8 +107,8 @@ Status Client::Rollback(Transaction const& /*transaction*/) {
   return Status(StatusCode::kUnimplemented, "not implemented");
 }
 
-Status Client::BeginTransaction(Transaction& /*transaction*/) {
-  return Status(StatusCode::kUnimplemented, "not implemented");
+StatusOr<Client> MakeClient(ClientOptions const& client_options) {
+  return Client(internal::CreateDefaultSpannerStub(client_options));
 }
 
 }  // namespace SPANNER_CLIENT_NS
