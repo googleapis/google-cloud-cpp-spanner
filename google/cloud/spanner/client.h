@@ -117,22 +117,21 @@ class Client {
    * is used.
    *
    * @param table The name of the table in the database to be read.
-   * @param keys Identifies the rows to be yielded. If
-   *             `read_options.index_name` is set, names keys in that index;
-   *             otherwise names keys in the primary index of `table`. It is
-   *             not an error for `keys` to name rows that do not exist in the
-   *             database; `Read` yields nothing for nonexistent rows.
+   * @param keys Identifies the rows to be yielded. If `read_options.index_name`
+   *     is set, names keys in that index; otherwise names keys in the primary
+   *     index of `table`. It is not an error for `keys` to name rows that do
+   *     not exist in the database; `Read` yields nothing for nonexistent rows.
    * @param columns The columns of `table` to be returned for each row matching
-   *                this request.
+   *     this request.
    * @param read_options `ReadOptions` used for this request.
    *
    * - *transaction_options Execute this read in a single-use transaction with
-   *                        these options.*
+   *     these options.*
    * - *transaction Execute this read as part of an existing transaction.*
    *
-   * @returns A `StatusOr` containing a `ResultSet` or error status on failure.
-   * No individual row in the `ResultSet` can exceed 100 MiB, and  no column
-   * value can exceed 10 MiB.
+   * @return A `StatusOr` containing a `ResultSet` or error status on failure.
+   *     No individual row in the `ResultSet` can exceed 100 MiB, and no column
+   *     value can exceed 10 MiB.
    */
   StatusOr<ResultSet> Read(std::string const& table, KeySet const& keys,
                            std::vector<std::string> const& columns,
@@ -155,9 +154,9 @@ class Client {
    *
    * @param partition A `SqlPartition`, obtained by calling `PartitionRead`.
    *
-   * @returns A `StatusOr` containing a `ResultSet` or error status on failure.
-   * No individual row in the `ResultSet` can exceed 100 MiB, and no column
-   * value can exceed 10 MiB.
+   * @return A `StatusOr` containing a `ResultSet` or error status on failure.
+   *     No individual row in the `ResultSet` can exceed 100 MiB, and no column
+   *     value can exceed 10 MiB.
    */
   StatusOr<ResultSet> Read(SqlPartition const& partition);
 
@@ -175,21 +174,20 @@ class Client {
    * any of these happen, it is not possible to resume the read, and the whole
    * operation must be restarted from the beginning.
    *
-   * @param transaction The transaction to execute the operation in. **Must**
-   *                    be a read-only snapshot transaction.
+   * @param transaction The transaction to execute the operation in.
+   *     **Must** be a read-only snapshot transaction.
    * @param table The name of the table in the database to be read.
-   * @param keys Identifies the rows to be yielded. If
-   *             `read_options.index_name` is set, names keys in that index;
-   *             otherwise names keys in the primary index of `table`. It is
-   *             not an error for `keys` to name rows that do not exist in the
-   *             database; `Read` yields nothing for nonexistent rows.
+   * @param keys Identifies the rows to be yielded. If `read_options.index_name`
+   *     is set, names keys in that index; otherwise names keys in the primary
+   *     index of `table`. It is not an error for `keys` to name rows that do
+   *     not exist in the database; `Read` yields nothing for nonexistent rows.
    * @param columns The columns of `table` to be returned for each row matching
-   *                this request.
+   *     this request.
    * @param read_options `ReadOptions` used for this request.
    * @param partition_options `PartitionOptions` used for this request.
    *
-   * @returns A `StatusOr` containing a vector of `SqlPartition` or error
-   * status on failure.
+   * @return A `StatusOr` containing a vector of `SqlPartition` or error
+   *     status on failure.
    */
   StatusOr<std::vector<SqlPartition>> PartitionRead(
       Transaction const& transaction, std::string const& table,
@@ -212,12 +210,12 @@ class Client {
    * @param statement The SQL statement to execute.
    *
    * - *transaction_options Execute this query in a single-use transaction with
-   *                        these options.*
+   *     these options.*
    * - *transaction Execute this query as part of an existing transaction.*
    *
-   * @returns A `StatusOr` containing a `ResultSet` or error status on failure.
-   * No individual row in the `ResultSet` can exceed 100 MiB, and no column
-   * value can exceed 10 MiB.
+   * @return A `StatusOr` containing a `ResultSet` or error status on failure.
+   *     No individual row in the `ResultSet` can exceed 100 MiB, and no column
+   *     value can exceed 10 MiB.
    */
   StatusOr<ResultSet> ExecuteSql(SqlStatement const& statement);
   StatusOr<ResultSet> ExecuteSql(
@@ -234,9 +232,9 @@ class Client {
    *
    * @param partition A `SqlPartition`, obtained by calling `PartitionRead`.
    *
-   * @returns A `StatusOr` containing a `ResultSet` or error status on failure.
-   * No individual row in the `ResultSet` can exceed 100 MiB, and no column
-   * value can exceed 10 MiB.
+   * @return A `StatusOr` containing a `ResultSet` or error status on failure.
+   *     No individual row in the `ResultSet` can exceed 100 MiB, and no column
+   *     value can exceed 10 MiB.
    */
   StatusOr<ResultSet> ExecuteSql(SqlPartition const& partition);
 
@@ -251,12 +249,12 @@ class Client {
    * operation must be restarted from the beginning.
    *
    * @param transaction The transaction to execute the operation in.
-   *                    **Must** be a read-only snapshot transaction.
+   *     **Must** be a read-only snapshot transaction.
    * @param statement The SQL statement to execute.
    * @param partition_options `PartitionOptions` used for this request.
    *
-   * @returns A `StatusOr` containing a vector of `SqlPartition`s or error
-   * status on failure.
+   * @return A `StatusOr` containing a vector of `SqlPartition`s or error
+   *     status on failure.
    */
   StatusOr<std::vector<SqlPartition>> PartitionQuery(
       Transaction const& transaction, SqlStatement const& statement,
@@ -272,16 +270,16 @@ class Client {
    *
    * @param transaction The transaction to execute the operation in.
    * @param statements The list of statements to execute in this batch.
-   *                   Statements are executed serially, such that the effects
-   *                   of statement i are visible to statement i+1. Each
-   *                   statement must be a DML statement. Execution will stop
-   *                   at the first failed statement; the remaining statements
-   *                   will not run. Must not be empty.
+   *     Statements are executed serially, such that the effects of statement i
+   *     are visible to statement i+1. Each statement must be a DML statement.
+   *     Execution will stop at the first failed statement; the remaining
+   *     statements will not run. Must not be empty.
    *
-   * @returns A vector of `StatusOr` corresponding to each statement in
-   * `statements`. Statements that were successfully executed return statistics.
-   * If a statement fails, its error status is returned and entries for
-   * subsequent statements are not present in the returned vector.
+   * @return A vector of `StatusOr` corresponding to each statement in
+   *     `statements`. Statements that were successfully executed return
+   *     statistics. If a statement fails, its error status is returned and
+   *     entries for subsequent statements are not present in the returned
+   *     vector.
    */
   std::vector<StatusOr<google::spanner::v1::ResultSetStats>> ExecuteBatchDml(
       Transaction const& transaction,
@@ -294,8 +292,8 @@ class Client {
    *
    * @param statement The SQL DML statement to execute.
    *
-   * @returns A `StatusOr` containing a lower bound on the number of modified
-   * rows or error status on failure.
+   * @return A `StatusOr` containing a lower bound on the number of modified
+   *     rows or error status on failure.
    */
   StatusOr<std::int64_t> ExecutePartitionedDml(SqlStatement const& statement);
 
@@ -310,11 +308,11 @@ class Client {
    *
    * @param transaction The transaction to commit.
    * @param mutations The mutations to be executed when this transaction
-   *                  commits. All mutations are applied atomically, in the
-   *                  order they appear in this list.
+   *     commits. All mutations are applied atomically, in the order they appear
+   *     in this list.
    *
-   * @returns A `StatusOr` containing the result of the commit or error status
-   * on failure.
+   * @return A `StatusOr` containing the result of the commit or error status
+   *     on failure.
    */
   StatusOr<CommitResult> Commit(Transaction const& transaction,
                                 std::vector<Mutation> const& mutations);
@@ -325,14 +323,14 @@ class Client {
    *
    * @param transaction The transaction to roll back.
    *
-   * @returns The error status of the rollback.
+   * @return The error status of the rollback.
    */
   Status Rollback(Transaction const& transaction);
 
   /**
    * Create a new client with the given stub.
-   * **Do not call this directly** (it's exposed for testing only), call
-   * `MakeClient()` instead.
+   * @warning Do not call this directly (it's exposed for testing only); call
+   *     `MakeClient()` instead.
    */
   explicit Client(std::shared_ptr<internal::SpannerStub> s)
       : stub_(std::move(s)) {}
