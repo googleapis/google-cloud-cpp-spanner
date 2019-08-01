@@ -28,6 +28,8 @@ include(EnableDoxygen)
 configure_file(version_info.h.in ${CMAKE_CURRENT_SOURCE_DIR}/version_info.h)
 add_library(spanner_client
             backoff_policy.h
+            client.cc
+            client.h
             client_options.cc
             client_options.h
             commit_result.h
