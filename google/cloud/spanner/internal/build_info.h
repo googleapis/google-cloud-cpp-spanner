@@ -24,20 +24,17 @@ inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
 /**
- * Returns the compiler.
+ * Returns the compiler ID.
  *
- * This is usually the basename of the compile command that was used. For
- * example, "clang" or "gcc". In the case of "g++" or "clang++", they will be
- * rewritten to "gxx" and "clangxx" since '+' is an illegal character for the
- * server-side fields that look at these values.
+ * The Compiler ID is a string like "GNU" or "Clang", as described by
+ * https://cmake.org/cmake/help/v3.5/variable/CMAKE_LANG_COMPILER_ID.html
  */
 std::string CompilerName();
 
 /**
  * Returns the compiler version.
  *
- * This string may be something simple like "9.1.1" or it may be something more
- * verbose like "clang-version-8.0.0-Fedora-8.0.0-1.fc30".
+ * This string will be something like "9.1.1".
  */
 std::string CompilerVersion();
 
@@ -49,13 +46,15 @@ std::string CompilerVersion();
 std::string CompilerFlags();
 
 /**
- * Returns the 4-digit year of the C++ language standard along with an
- * exception indicator.
+ * Returns certain interesting compiler features.
  *
- * The returned string is suffixed with "-ex" or "-noex" to indicate whether or
- * not the code was compiled with exceptions enabled.
- *
- * Example return values: "2011-ex", "2017-noex" "unknown-ex"
+ * Currently this returns one of "ex" or "noex" to indicate whether or not
+ * C++ exceptions are enabled.
+ */
+std::string CompilerFeatures();
+
+/**
+ * Returns the 4-digit year of the C++ language standard.
  */
 std::string LanguageVersion();
 
