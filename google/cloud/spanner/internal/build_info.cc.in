@@ -40,14 +40,15 @@ std::string CompilerName() {
 std::string CompilerVersion() {
   static auto const* const kVersion = [] {
     auto* s = new std::string(R"""(@CMAKE_CXX_COMPILER_VERSION@)""");
-    auto illegal_punct = [](unsigned char c) -> bool {
-      if (c == '.' || c == '-') return false;  // allowed
-      return std::ispunct(c) != 0;
-    };
-    s->erase(std::remove_if(s->begin(), s->end(), illegal_punct), s->end());
+    if (s->empty()) *s = "unknown";  // should never be empty.
     for (char& c : *s) {
-      if (std::isspace(static_cast<unsigned char>(c)) != 0) c = '-';
+      if (c != '.' && c != '-' && !std::isalnum(static_cast<unsigned char>(c)))
+        c = '-';
     }
+    std::unique(s->begin(), s->end(), [](char a, char b) -> bool {
+      return std::ispunct(a) && std::ispunct(b);
+    });
+    if (s->back() == '-') s->pop_back();
     return s;
   }();
   return *kVersion;
