@@ -40,7 +40,7 @@ sed -e "s;@CMAKE_CXX_COMPILER_ID@;$${CC_ID};" \
     tools = [
         "//bazel:compiler_id.sh",
         "//bazel:compiler_version.sh",
-    ]
+    ],
 )
 
 load(":spanner_client.bzl", "spanner_client_hdrs", "spanner_client_srcs")
