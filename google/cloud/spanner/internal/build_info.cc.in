@@ -24,7 +24,7 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
-std::string CompilerName() { return R"""(@CMAKE_CXX_COMPILER_ID@)"""; }
+std::string CompilerId() { return R"""(@CMAKE_CXX_COMPILER_ID@)"""; }
 
 std::string CompilerVersion() { return R"""(@CMAKE_CXX_COMPILER_VERSION@)"""; }
 

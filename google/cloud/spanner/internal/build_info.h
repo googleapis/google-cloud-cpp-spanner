@@ -29,7 +29,7 @@ namespace internal {
  * The Compiler ID is a string like "GNU" or "Clang", as described by
  * https://cmake.org/cmake/help/v3.5/variable/CMAKE_LANG_COMPILER_ID.html
  */
-std::string CompilerName();
+std::string CompilerId();
 
 /**
  * Returns the compiler version.
