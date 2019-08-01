@@ -44,11 +44,16 @@ TEST(BuildInfo, CompilerFlags) {
   EXPECT_THAT(cf, ::testing::Not(::testing::HasSubstr("@")));
 }
 
+TEST(BuildInfo, CompilerFeatures) {
+  using ::testing::Eq;
+  auto cf = CompilerFeatures();
+  EXPECT_THAT(cf, ::testing::AnyOf(Eq("noex"), Eq("ex")));
+}
+
 TEST(BuildInfo, LanguageVersion) {
   using ::testing::HasSubstr;
   auto lv = LanguageVersion();
-  EXPECT_THAT(lv, ::testing::AnyOf(HasSubstr("-noex"), HasSubstr("-ex")));
-  EXPECT_THAT(lv, Not(HasSubstr(" ")));
+  EXPECT_FALSE(lv.empty());
   EXPECT_THAT(lv, ::testing::Not(::testing::HasSubstr("@")));
 #ifndef _WIN32  // gMock's regex brackets don't work on Windows.
   EXPECT_THAT(lv, ::testing::MatchesRegex(R"([0-9A-Za-z_.-]+)"));
@@ -65,6 +70,26 @@ TEST(BuildInfo, BuildMetadata) {
   auto const md = BuildMetadata();
   EXPECT_THAT(md, ::testing::MatchesRegex(R"(sha\..+)"));
   EXPECT_THAT(md, ::testing::Not(::testing::HasSubstr("@")));
+}
+
+TEST(BuildInfo, ApiClientHeader) {
+  // The build info is used to generate the "API Client Header", which is a
+  // gRPC metadata attribute with the name 'x-goog-api-client'. This test
+  // generates that whole string as a sanity check that it will contain the
+  // desired format.
+
+  std::string const api_client_header = "gl-cpp/" +                 //
+                                        CompilerName() + '-' +      //
+                                        CompilerVersion() + '-' +   //
+                                        CompilerFeatures() + '-' +  //
+                                        LanguageVersion();
+  EXPECT_THAT(api_client_header, ::testing::Not(::testing::HasSubstr("@")));
+
+#ifndef _WIN32  // gMock's regex brackets don't work on Windows.
+  EXPECT_THAT(api_client_header,
+              ::testing::MatchesRegex(
+                  R"(gl-cpp/(Clang|GNU)-[0-9.+-]+-(no)?ex-20[1-9][0-9])"));
+#endif
 }
 
 }  // namespace

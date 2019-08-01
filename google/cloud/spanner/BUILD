@@ -23,10 +23,11 @@ genrule(
     srcs = ["internal/build_info.cc.in"],
     outs = ["internal/build_info.cc"],
     cmd = """
-CC_COMPILER_VERSION=$$($(CC) --version | head -1);
 V=$$(git rev-parse --short HEAD 2>/dev/null || echo "unknown");
-sed -e "s;@CMAKE_CXX_COMPILER@;$$(basename $(CC));" \
-    -e "s;@CMAKE_CXX_COMPILER_VERSION@;$${CC_COMPILER_VERSION};" \
+CC_VERSION=$$(bazel/compiler_version.sh $(CC));
+CC_ID=$$(bazel/compiler_id.sh $(CC));
+sed -e "s;@CMAKE_CXX_COMPILER_ID@;$${CC_ID};" \
+    -e "s;@CMAKE_CXX_COMPILER_VERSION@;$${CC_VERSION};" \
     -e "s;@CMAKE_CXX_FLAGS@;$(CC_FLAGS);" \
     -e "s;\\$${CMAKE_CXX_FLAGS_.*};-c $(COMPILATION_MODE);" \
     -e "s;@GOOGLE_CLOUD_CPP_SPANNER_IS_RELEASE@;%s;" \
@@ -36,6 +37,10 @@ sed -e "s;@CMAKE_CXX_COMPILER@;$$(basename $(CC));" \
         "@bazel_tools//tools/cpp:current_cc_toolchain",
         "@bazel_tools//tools/cpp:cc_flags",
     ],
+    tools = [
+        "//bazel:compiler_id.sh",
+        "//bazel:compiler_version.sh",
+    ]
 )
 
 load(":spanner_client.bzl", "spanner_client_hdrs", "spanner_client_srcs")

@@ -15,3 +15,8 @@
 licenses(["notice"])  # Apache v2
 
 package(default_visibility = ["//:__subpackages__"])
+
+exports_files([
+    "compiler_id.sh",
+    "compiler_version.sh",
+])
