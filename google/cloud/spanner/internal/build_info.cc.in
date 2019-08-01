@@ -24,35 +24,9 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
-std::string CompilerName() {
-  static auto const* const kName = [] {
-    auto* s = new std::string(R"""(@CMAKE_CXX_COMPILER@)""");
-    auto pos = s->rfind('/');
-    if (pos != std::string::npos) s->erase(0, pos + 1);
-    for (char& c : *s) {
-      if (c == '+') c = 'x';
-    }
-    return s;
-  }();
-  return *kName;
-}
+std::string CompilerName() { return R"""(@CMAKE_CXX_COMPILER_ID@)"""; }
 
-std::string CompilerVersion() {
-  static auto const* const kVersion = [] {
-    auto* s = new std::string(R"""(@CMAKE_CXX_COMPILER_VERSION@)""");
-    if (s->empty()) *s = "unknown";  // should never be empty.
-    for (char& c : *s) {
-      if (c != '.' && c != '-' && !std::isalnum(static_cast<unsigned char>(c)))
-        c = '-';
-    }
-    std::unique(s->begin(), s->end(), [](char a, char b) -> bool {
-      return std::ispunct(a) && std::ispunct(b);
-    });
-    if (s->back() == '-') s->pop_back();
-    return s;
-  }();
-  return *kVersion;
-}
+std::string CompilerVersion() { return R"""(@CMAKE_CXX_COMPILER_VERSION@)"""; }
 
 std::string CompilerFlags() {
   static auto const* const kFlags = [] {
@@ -63,6 +37,14 @@ std::string CompilerFlags() {
     return flags;
   }();
   return *kFlags;
+}
+
+std::string CompilerFeatures() {
+#if GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
+    return "ex";
+#else
+    return "noex";
+#endif  // GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
 }
 
 std::string LanguageVersion() {
@@ -84,11 +66,6 @@ std::string LanguageVersion() {
       default:
         *s += "unknown";
     }
-#if GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
-    *s += "-ex";
-#else
-    *s += "-noex";
-#endif  // GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
     return s;
   }();
   return *kLanguageVersion;
