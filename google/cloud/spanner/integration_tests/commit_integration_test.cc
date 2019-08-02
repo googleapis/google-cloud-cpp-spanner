@@ -100,9 +100,10 @@ TEST(CommitIntegrationTest, Insert) {
     EXPECT_STATUS_OK(parsed_row);
   }
 
-  EXPECT_THAT(returned_rows, ::testing::UnorderedElementsAre(
-      RowType(1, "test-first-name-1", "test-last-name-1"),
-      RowType(2, "test-first-name-2", "test-last-name-2")));
+  EXPECT_THAT(returned_rows,
+              ::testing::UnorderedElementsAre(
+                  RowType(1, "test-first-name-1", "test-last-name-1"),
+                  RowType(2, "test-first-name-2", "test-last-name-2")));
 
   auto drop_status =
       admin_client.DropDatabase(project_id, instance_id, database_id);
