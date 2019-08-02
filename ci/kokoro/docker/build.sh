@@ -52,6 +52,7 @@ if [[ "${BUILD_NAME}" = "clang-tidy" ]]; then
   export DISTRO_VERSION=30
   export CC=clang
   export CXX=clang++
+  export BUILD_TYPE=Debug
   export CHECK_STYLE=yes
   export GENERATE_DOCS=yes
   export CLANG_TIDY=yes
@@ -118,7 +119,7 @@ elif [[ "${BUILD_NAME}" = "cxx17" ]]; then
   export CXX=g++
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "coverage" ]]; then
-  export CODE_COVERAGE=yes
+  export BUILD_TYPE=Coverage
   export RUN_INTEGRATION_TESTS=yes
   export DISTRO=fedora-install
   export DISTRO_VERSION=30
@@ -227,12 +228,11 @@ docker_flags=(
     # installations.
     "--env" "TEST_INSTALL=${TEST_INSTALL:-}"
 
-    # If set to 'yes', run compile with code coverage flags. Currently only the
-    # CMake builds use this flag.
-    "--env" "CODE_COVERAGE=${CODE_COVERAGE:-}"
-
     # If set, pass -DGOOGLE_CLOUD_CPP_CXX_STANDARD=<value> to CMake.
     "--env" "GOOGLE_CLOUD_CPP_CXX_STANDARD=${GOOGLE_CLOUD_CPP_CXX_STANDARD:-}"
+
+    # The type of the build for CMake
+    "--env" "BUILD_TYPE=${BUILD_TYPE:-Release}"
 
     # Additional flags to enable CMake features.
     "--env" "CMAKE_FLAGS=${CMAKE_FLAGS:-}"
