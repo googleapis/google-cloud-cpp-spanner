@@ -109,8 +109,10 @@ Status Client::Rollback(Transaction const& /*transaction*/) {
   return Status(StatusCode::kUnimplemented, "not implemented");
 }
 
-StatusOr<Client> MakeClient(ClientOptions const& client_options) {
-  return Client(internal::CreateDefaultSpannerStub(client_options));
+StatusOr<Client> MakeClient(std::string database_name,
+                            ClientOptions const& client_options) {
+  return Client(std::move(database_name),
+                internal::CreateDefaultSpannerStub(client_options));
 }
 
 }  // namespace SPANNER_CLIENT_NS

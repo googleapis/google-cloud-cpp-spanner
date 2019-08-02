@@ -110,7 +110,7 @@ class MockSpannerStub : public internal::SpannerStub {
 TEST(SpannerClientTest, ReadTest) {
   auto mock = std::make_shared<MockSpannerStub>();
 
-  Client client(mock);
+  Client client("database-name", mock);
   EXPECT_EQ(StatusCode::kUnimplemented,
             client.Read("table", KeySet(), {"column"}).status().code());
 }
