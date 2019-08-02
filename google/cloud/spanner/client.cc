@@ -114,11 +114,9 @@ StatusOr<CommitResult> Client::Commit(Transaction const& transaction,
   using F = std::function<int(spanner_proto::TransactionSelector&)>;
   internal::Visit(
       transaction, F([&request](spanner_proto::TransactionSelector& s) {
-        if (s.has_single_use()) {
-          request.set_allocated_single_use_transaction(s.release_single_use());
-        } else if (!s.id().empty()) {
-          request.set_allocated_transaction_id(s.release_id());
-        }
+        // TODO(#...) - Use the proper transaction selector.
+        *request.mutable_single_use_transaction() = s.single_use();
+        // TODO(#...) - Make Visit() work with functions that return `void`.
         return 0;
       }));
   auto response = stub_->Commit(context, request);

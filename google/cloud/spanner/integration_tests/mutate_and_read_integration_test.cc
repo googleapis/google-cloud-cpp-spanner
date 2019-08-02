@@ -53,7 +53,7 @@ TEST(CommitIntegrationTest, Insert) {
   auto database = database_future.get();
   ASSERT_STATUS_OK(database);
 
-  // TODO(#...) - Once Read() is implemented we can stop using SpannerStub.
+  // TODO(#283) - Stop using SpannerStub once Client::Read() is implemented.
   auto stub = internal::CreateDefaultSpannerStub(ClientOptions());
 
   auto database_name = MakeDatabaseName(project_id, instance_id, database_id);
