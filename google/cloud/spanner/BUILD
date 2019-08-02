@@ -22,8 +22,9 @@ genrule(
     name = "generate_build_info",
     srcs = ["internal/build_info.cc.in"],
     outs = ["internal/build_info.cc"],
+    stamp = 1,
     cmd = """
-V=$$(git rev-parse --short HEAD 2>/dev/null || echo "unknown");
+V=$$(grep STABLE_GIT_COMMIT bazel-out/stable-status.txt | cut -f2 -d' ');
 CC_VERSION=$$($(location //bazel:compiler_version.sh) $(CC));
 CC_ID=$$($(location //bazel:compiler_id.sh) $(CC));
 sed -e "s;@CMAKE_CXX_COMPILER_ID@;$${CC_ID};" \
@@ -54,6 +55,9 @@ cc_library(
         "@com_github_googleapis_google_cloud_cpp//google/cloud/grpc_utils:google_cloud_cpp_grpc_utils",
         "@com_google_googleapis//:bigtable_protos",
         "@com_google_googleapis//:spanner_protos",
+    ],
+    data = [
+        ":generate_build_info",
     ],
 )
 
