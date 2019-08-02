@@ -265,6 +265,9 @@ class Client {
    * to be run with lower latency than submitting them sequentially with
    * `ExecuteSql`.
    *
+   * @warning This method is not supported in the alpha release and will return
+   *     "Unimplemented" status.
+   *
    * Statements are executed in order, sequentially. Execution will stop at
    * the first failed statement; the remaining statements will not run.
    *
