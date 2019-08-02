@@ -28,8 +28,6 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace {
 
-using ::testing::EndsWith;
-
 /// @test Verify the basic insert operations for transaction commits.
 TEST(CommitIntegrationTest, Insert) {
   auto project_id =
@@ -61,7 +59,7 @@ TEST(CommitIntegrationTest, Insert) {
   Client client(stub);
 
   auto commit_result = client.Commit(
-      MakeReadWriteTransaction(Transaction::ReadWriteOptions()),
+      Transaction(Transaction::ReadWriteOptions()),
       {InsertMutationBuilder("Singers", {"SingerId", "FirstName", "LastName"})
            .EmplaceRow(1, "test-first-name-1", "test-last-name-1")
            .EmplaceRow(2, "test-first-name-2", "test-last-name-2")
