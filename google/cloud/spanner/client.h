@@ -90,7 +90,7 @@ struct KeySet {};
  * @code
  * namespace cs = ::google::cloud::spanner;
  * using ::google::cloud::StatusOr;
- * auto client = cs::MakeClient("my-database");
+ * auto client = cs::MakeClient("database_name");
  * if (!client) {
  *   return client.status();
  * }
@@ -353,6 +353,7 @@ class Client {
    *     `MakeClient()` instead.
    *
    * @param database_name The name of the Spanner database to use.
+   *     See `MakeClient` for restrictions on the format of the name.
    * @param stub The stub used to connect to the spanner service.
    */
   explicit Client(std::string database_name,
@@ -366,7 +367,12 @@ class Client {
 
 /**
  * Factory method to create a `Client` with the given `client_options`.
+ *
  * @param database_name The name of the Spanner database to use.
+ *     The database name must conform to the regular expression
+ *     `[a-z][a-z0-9_\-]*[a-z0-9]` and be between 2 and 30 characters in length.
+ *     If the database name is a reserved word or contains a hyphen, it must
+ *     be enclosed in backticks (\`).
  * @param client_options `ClientOptions` used when creating the client.
  *
  * @return A `Client` that can be used to perform operations on `database_name`,
