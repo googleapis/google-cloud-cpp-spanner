@@ -38,9 +38,9 @@ TEST(BuildInfo, CompilerVersion) {
 #endif
 }
 
-TEST(BuildInfo, CompilerFlags) {
-  auto cf = CompilerFlags();
-  EXPECT_THAT(cf, ::testing::Not(::testing::HasSubstr("@")));
+TEST(BuildInfo, BuildFlags) {
+  auto bf = BuildFlags();
+  EXPECT_THAT(bf, ::testing::Not(::testing::HasSubstr("@")));
 }
 
 TEST(BuildInfo, CompilerFeatures) {

@@ -39,11 +39,11 @@ std::string CompilerId();
 std::string CompilerVersion();
 
 /**
- * Returns the compiler flags.
+ * Returns the build flags.
  *
  * Examples include "-c fastbuild" or "-O2 -DNDEBUG".
  */
-std::string CompilerFlags();
+std::string BuildFlags();
 
 /**
  * Returns certain interesting compiler features.

@@ -28,7 +28,7 @@ std::string CompilerId() { return R"""(@CMAKE_CXX_COMPILER_ID@)"""; }
 
 std::string CompilerVersion() { return R"""(@CMAKE_CXX_COMPILER_VERSION@)"""; }
 
-std::string CompilerFlags() {
+std::string BuildFlags() {
   static auto const* const kFlags = [] {
     auto* flags = new std::string(R"""(@CMAKE_CXX_FLAGS@)""");
     if (!flags->empty()) *flags += ' ';
