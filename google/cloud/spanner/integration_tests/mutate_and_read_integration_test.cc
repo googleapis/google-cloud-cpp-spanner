@@ -56,7 +56,8 @@ TEST(CommitIntegrationTest, Insert) {
   // TODO(#...) - Once Read() is implemented we can stop using SpannerStub.
   auto stub = internal::CreateDefaultSpannerStub(ClientOptions());
 
-  Client client(stub);
+  auto database_name = MakeDatabaseName(project_id, instance_id, database_id);
+  Client client(database_name, stub);
 
   auto commit_result = client.Commit(
       Transaction(Transaction::ReadWriteOptions()),
@@ -66,9 +67,10 @@ TEST(CommitIntegrationTest, Insert) {
            .Build()});
   EXPECT_STATUS_OK(commit_result);
 
-  // TODO(#...) - Use Client::Read() when available...
+  // TODO(#283) - Use Client::Read() when available...
   grpc::ClientContext session_context;
   google::spanner::v1::CreateSessionRequest session_request;
+  session_request.set_database(database_name);
   auto session = stub->CreateSession(session_context, session_request);
   EXPECT_STATUS_OK(session);
 

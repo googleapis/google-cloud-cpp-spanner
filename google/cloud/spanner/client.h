@@ -362,8 +362,26 @@ class Client {
       : database_name_(std::move(database_name)), stub_(std::move(stub)) {}
 
  private:
+  class SessionHolder {
+   public:
+    SessionHolder(std::string session, Client* client) noexcept;
+    ~SessionHolder();
+
+    std::string const& session_name() const { return session_; }
+
+   private:
+    std::string session_;
+    Client* client_;
+  };
+  friend class SessionHolder;
+  StatusOr<SessionHolder> GetSession();
+
   std::string database_name_;
   std::shared_ptr<internal::SpannerStub> stub_;
+
+  // The current session pool.
+  // TODO(#...) - improve session refresh and expiration.
+  std::vector<std::string> sessions_;
 };
 
 /**

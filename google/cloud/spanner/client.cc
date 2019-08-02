@@ -99,14 +99,63 @@ StatusOr<std::int64_t> Client::ExecutePartitionedDml(
   return Status(StatusCode::kUnimplemented, "not implemented");
 }
 
-StatusOr<CommitResult> Client::Commit(
-    Transaction const& /*transaction*/,
-    std::vector<Mutation> const& /*mutations*/) {
-  return Status(StatusCode::kUnimplemented, "not implemented");
+StatusOr<CommitResult> Client::Commit(Transaction const& transaction,
+                                      std::vector<Mutation> const& mutations) {
+  auto session = GetSession();
+  if (!session) {
+    return std::move(session).status();
+  }
+  grpc::ClientContext context;
+  google::spanner::v1::CommitRequest request;
+  request.set_session(session->session_name());
+  for (auto const& m : mutations) {
+    *request.add_mutations() = m.as_proto();
+  }
+  using F = std::function<int(spanner_proto::TransactionSelector&)>;
+  internal::Visit(
+      transaction, F([&request](spanner_proto::TransactionSelector& s) {
+        if (s.has_single_use()) {
+          request.set_allocated_single_use_transaction(s.release_single_use());
+        } else if (!s.id().empty()) {
+          request.set_allocated_transaction_id(s.release_id());
+        }
+        return 0;
+      }));
+  auto response = stub_->Commit(context, request);
+  if (!response) {
+    return std::move(response).status();
+  }
+  CommitResult r;
+  r.commit_timestamp = internal::FromProto(response->commit_timestamp());
+  return r;
 }
 
 Status Client::Rollback(Transaction const& /*transaction*/) {
   return Status(StatusCode::kUnimplemented, "not implemented");
+}
+
+Client::SessionHolder::SessionHolder(std::string session,
+                                     Client* client) noexcept
+    : session_(std::move(session)), client_(client) {}
+
+Client::SessionHolder::~SessionHolder() {
+  client_->sessions_.emplace_back(std::move(session_));
+}
+
+StatusOr<Client::SessionHolder> Client::GetSession() {
+  if (!sessions_.empty()) {
+    std::string session = sessions_.back();
+    sessions_.pop_back();
+    return SessionHolder(std::move(session), this);
+  }
+  grpc::ClientContext context;
+  google::spanner::v1::CreateSessionRequest request;
+  request.set_database(database_name_);
+  auto response = stub_->CreateSession(context, request);
+  if (!response) {
+    return response.status();
+  }
+  return SessionHolder(std::move(*response->mutable_name()), this);
 }
 
 StatusOr<Client> MakeClient(std::string database_name,
