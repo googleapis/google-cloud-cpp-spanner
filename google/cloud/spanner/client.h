@@ -90,7 +90,8 @@ struct KeySet {};
  * @code
  * namespace cs = ::google::cloud::spanner;
  * using ::google::cloud::StatusOr;
- * auto client = cs::MakeClient("database_name");
+ * auto client = cs::MakeClient(
+ *     cs::MakeDatabaseName("my_project", "my_instance", "my_database_id"));
  * if (!client) {
  *   return client.status();
  * }
@@ -369,10 +370,9 @@ class Client {
  * Factory method to create a `Client` with the given `client_options`.
  *
  * @param database_name The name of the Spanner database to use.
- *     The database name must conform to the regular expression
- *     `[a-z][a-z0-9_\-]*[a-z0-9]` and be between 2 and 30 characters in length.
- *     If the database name is a reserved word or contains a hyphen, it must
- *     be enclosed in backticks (\`).
+ *     The database name must conform to the format:
+ *     `projects/<project>/instances/<instance>/databases/<database_id>`.
+ *     You can use the `MakeDatabaseName` helper to properly format the name.
  * @param client_options `ClientOptions` used when creating the client.
  *
  * @return A `Client` that can be used to perform operations on `database_name`,
@@ -380,6 +380,11 @@ class Client {
  */
 StatusOr<Client> MakeClient(std::string database_name,
                             ClientOptions const& client_options = {});
+
+/// Format a database name given the `project`, `instance`, and `database_id`.
+std::string MakeDatabaseName(std::string const& project,
+                             std::string const& instance,
+                             std::string const& database_id);
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
