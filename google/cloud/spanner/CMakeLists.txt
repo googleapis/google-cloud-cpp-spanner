@@ -97,6 +97,7 @@ add_library(spanner_client
             internal/base64.cc
             internal/base64.h
             internal/build_info.h
+            internal/compiler_version.cc
             internal/database_admin_retry.cc
             internal/database_admin_retry.h
             internal/database_admin_stub.cc

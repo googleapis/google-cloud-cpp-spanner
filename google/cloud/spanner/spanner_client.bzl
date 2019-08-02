@@ -56,6 +56,7 @@ spanner_client_srcs = [
     "client_options.cc",
     "database_admin_client.cc",
     "internal/base64.cc",
+    "internal/compiler_version.cc",
     "internal/database_admin_retry.cc",
     "internal/database_admin_stub.cc",
     "internal/date.cc",
