@@ -21,7 +21,7 @@ fi
 source "${PROJECT_ROOT}/ci/kokoro/define-docker-variables.sh"
 source "${PROJECT_ROOT}/ci/define-dump-log.sh"
 
-if [[ "${CODE_COVERAGE:-}" != "yes" ]]; then
+if [[ "${BUILD_NAME:-}" != "coverage" ]]; then
   # Not a code coverage build, exit silently.
   exit 0
 fi
