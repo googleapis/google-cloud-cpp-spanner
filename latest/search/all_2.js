@@ -1,9 +1,13 @@
 var searchData=
 [
+  ['client',['Client',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html',1,'google::cloud::spanner::v0::Client'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a72684bd53ad2f46adc8652b215dad297',1,'google::cloud::spanner::v0::Client::Client()']]],
+  ['client_2ecc',['client.cc',['../client_8cc.html',1,'']]],
+  ['client_2eh',['client.h',['../client_8h.html',1,'']]],
   ['client_5foptions_2ecc',['client_options.cc',['../client__options_8cc.html',1,'']]],
   ['client_5foptions_2eh',['client_options.h',['../client__options_8h.html',1,'']]],
   ['clientoptions',['ClientOptions',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html',1,'google::cloud::spanner::v0::ClientOptions'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#ae97202f5b605eb64cdafd36d0b711e43',1,'google::cloud::spanner::v0::ClientOptions::ClientOptions()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#a1ef5cafb8727405a0c4c76ad9c4feeb1',1,'google::cloud::spanner::v0::ClientOptions::ClientOptions(std::shared_ptr&lt; grpc::ChannelCredentials &gt; c)']]],
   ['clone',['clone',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1PollingPolicy.html#a84ec286d5ba523c4c9816dc95efc4ff3',1,'google::cloud::spanner::v0::PollingPolicy::clone()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1GenericPollingPolicy.html#a34768dd99b02713cbc62d4e0608d045e',1,'google::cloud::spanner::v0::GenericPollingPolicy::clone()']]],
+  ['commit',['Commit',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a99b8b8ec5092e7fe35059add0ea7c5ed',1,'google::cloud::spanner::v0::Client']]],
   ['commit_5fresult_2eh',['commit_result.h',['../commit__result_8h.html',1,'']]],
   ['commit_5ftimestamp',['commit_timestamp',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html#a66fb3611f13e6fba76c31e8680d90419',1,'google::cloud::spanner::v0::CommitResult']]],
   ['commitresult',['CommitResult',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html',1,'google::cloud::spanner::v0']]],
