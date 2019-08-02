@@ -26,7 +26,9 @@ function (spanner_client_define_integration_tests)
 
     find_package(google_cloud_cpp_testing CONFIG REQUIRED)
 
-    set(spanner_client_integration_tests database_admin_integration_test.cc)
+    set(spanner_client_integration_tests
+            commit_integration_test.cc
+            database_admin_integration_test.cc)
 
     # Export the list of unit tests to a .bzl file so we do not need to maintain
     # the list in two places.
