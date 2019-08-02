@@ -33,7 +33,7 @@ inline namespace SPANNER_CLIENT_NS {
 class Date {
  public:
   Date(std::int64_t year, int month, int day);  // Fields will be normalized.
-  Date() : Date(1879, 3, 14) {}                 // Long live impudence!
+  Date() : Date(1970, 1, 1) {}
 
   std::int64_t year() const { return year_; }
   int month() const { return month_; }
