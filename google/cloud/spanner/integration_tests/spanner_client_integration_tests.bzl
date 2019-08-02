@@ -17,6 +17,6 @@
 """Automatically generated unit tests list - DO NOT EDIT."""
 
 spanner_client_integration_tests = [
-    "commit_integration_test.cc",
     "database_admin_integration_test.cc",
+    "mutate_and_read_integration_test.cc",
 ]
