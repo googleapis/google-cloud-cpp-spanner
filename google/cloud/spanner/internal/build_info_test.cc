@@ -88,7 +88,7 @@ TEST(BuildInfo, ApiClientHeader) {
 #ifndef _WIN32  // gMock's regex brackets don't work on Windows.
   EXPECT_THAT(api_client_header,
               ::testing::MatchesRegex(
-                  R"(gl-cpp/(Clang|GNU)-[0-9.+-]+-(no)?ex-20[1-9][0-9])"));
+                  R"(gl-cpp/[A-Za-z0-9]+-[0-9.+-]+-(no)?ex-20[1-9][0-9])"));
 #endif
 }
 
