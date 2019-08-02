@@ -170,9 +170,12 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:adc0acf77f6208e0a3054ff0d7a34e999"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#adc0acf77f6208e0a3054ff0d7a34e999">MakeClient</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html">ClientOptions</a> const  &amp;client_options={})</td></tr>
-<tr class="memdesc:adc0acf77f6208e0a3054ff0d7a34e999"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory method to create a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> with the given <code>client_options</code>.  <a href="#adc0acf77f6208e0a3054ff0d7a34e999">More...</a><br /></td></tr>
-<tr class="separator:adc0acf77f6208e0a3054ff0d7a34e999"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a881d52f2d6576d7a036cffce8409eab4"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a881d52f2d6576d7a036cffce8409eab4">MakeClient</a> (std::string database_name, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html">ClientOptions</a> const  &amp;client_options={})</td></tr>
+<tr class="memdesc:a881d52f2d6576d7a036cffce8409eab4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory method to create a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> with the given <code>client_options</code>.  <a href="#a881d52f2d6576d7a036cffce8409eab4">More...</a><br /></td></tr>
+<tr class="separator:a881d52f2d6576d7a036cffce8409eab4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a653353319d59ae9642467e3a399eb1e8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a653353319d59ae9642467e3a399eb1e8">MakeDatabaseName</a> (std::string const  &amp;project, std::string const  &amp;instance, std::string const  &amp;database_id)</td></tr>
+<tr class="memdesc:a653353319d59ae9642467e3a399eb1e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Format a database name given the <code>project</code>, <code>instance</code>, and <code>database_id</code>.  <a href="#a653353319d59ae9642467e3a399eb1e8">More...</a><br /></td></tr>
+<tr class="separator:a653353319d59ae9642467e3a399eb1e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2a19481df4a3e725aa2cc13f112abd2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ab2a19481df4a3e725aa2cc13f112abd2">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;b)</td></tr>
 <tr class="separator:ab2a19481df4a3e725aa2cc13f112abd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a303b93745482b9d4430e07a05502da07"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a303b93745482b9d4430e07a05502da07">operator!=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;b)</td></tr>
@@ -537,8 +540,8 @@ template&lt;std::size_t I, typename... Ts&gt; </div>
 
 </div>
 </div>
-<a id="adc0acf77f6208e0a3054ff0d7a34e999"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc0acf77f6208e0a3054ff0d7a34e999">&#9670;&nbsp;</a></span>MakeClient()</h2>
+<a id="a881d52f2d6576d7a036cffce8409eab4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a881d52f2d6576d7a036cffce8409eab4">&#9670;&nbsp;</a></span>MakeClient()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -546,16 +549,72 @@ template&lt;std::size_t I, typename... Ts&gt; </div>
         <tr>
           <td class="memname">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a> &gt; google::cloud::spanner::v0::MakeClient </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html">ClientOptions</a> const &amp;&#160;</td>
-          <td class="paramname"><em>client_options</em></td><td>)</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>database_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html">ClientOptions</a> const &amp;&#160;</td>
+          <td class="paramname"><em>client_options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Factory method to create a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> with the given <code>client_options</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">database_name</td><td>The name of the Spanner database to use. The database name must conform to the format: <code>projects/&lt;project&gt;/instances/&lt;instance&gt;/databases/&lt;database_id&gt;</code>. You can use the <code>MakeDatabaseName</code> helper to properly format the name. </td></tr>
+    <tr><td class="paramname">client_options</td><td><code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html" title="The configuration parameters for spanner clients.">ClientOptions</a></code> used when creating the client.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> that can be used to perform operations on <code>database_name</code>, or error status on failure. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00112">112</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+
+</div>
+</div>
+<a id="a653353319d59ae9642467e3a399eb1e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a653353319d59ae9642467e3a399eb1e8">&#9670;&nbsp;</a></span>MakeDatabaseName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string google::cloud::spanner::v0::MakeDatabaseName </td>
+          <td>(</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>project</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>instance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>database_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Format a database name given the <code>project</code>, <code>instance</code>, and <code>database_id</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00118">118</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>

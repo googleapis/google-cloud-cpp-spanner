@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['client',['Client',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html',1,'google::cloud::spanner::v0::Client'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a72684bd53ad2f46adc8652b215dad297',1,'google::cloud::spanner::v0::Client::Client()']]],
+  ['client',['Client',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html',1,'google::cloud::spanner::v0::Client'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a153c83ce6ead6ee3a4560957b772069c',1,'google::cloud::spanner::v0::Client::Client()']]],
   ['client_2ecc',['client.cc',['../client_8cc.html',1,'']]],
   ['client_2eh',['client.h',['../client_8h.html',1,'']]],
   ['client_5foptions_2ecc',['client_options.cc',['../client__options_8cc.html',1,'']]],
