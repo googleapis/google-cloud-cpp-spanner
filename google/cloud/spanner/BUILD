@@ -23,7 +23,7 @@ genrule(
     srcs = ["internal/build_info.cc.in"],
     outs = ["internal/build_info.cc"],
     cmd = """
-V=$$(grep STABLE_GIT_COMMIT bazel-out/stable-status.txt | cut -f2 -d' ');
+V="unknown";
 CC_VERSION=$$($(location //bazel:compiler_version.sh) $(CC));
 CC_ID=$$($(location //bazel:compiler_id.sh) $(CC));
 sed -e "s;@CMAKE_CXX_COMPILER_ID@;$${CC_ID};" \
@@ -33,7 +33,6 @@ sed -e "s;@CMAKE_CXX_COMPILER_ID@;$${CC_ID};" \
     -e "s;@GOOGLE_CLOUD_CPP_SPANNER_IS_RELEASE@;%s;" \
     -e "s;@GOOGLE_CLOUD_CPP_SPANNER_BUILD_METADATA@;$${V};" < $< > $@
   """ % (GOOGLE_CLOUD_CPP_SPANNER_IS_RELEASE),
-    stamp = 1,
     toolchains = [
         "@bazel_tools//tools/cpp:current_cc_toolchain",
         "@bazel_tools//tools/cpp:cc_flags",

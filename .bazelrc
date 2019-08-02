@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-build --workspace_status_command=bazel/workspace_status.sh
-
 # Clang Sanitizers, use with (for example):
 #
 # --client_env=CXX=clang++ --client_env=CC=clang --config asan
