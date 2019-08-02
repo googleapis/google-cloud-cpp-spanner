@@ -120,7 +120,6 @@ elif [[ "${BUILD_NAME}" = "cxx17" ]]; then
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "coverage" ]]; then
   export BUILD_TYPE=Coverage
-  export CODE_COVERAGE=yes
   export RUN_INTEGRATION_TESTS=yes
   export DISTRO=fedora-install
   export DISTRO_VERSION=30
@@ -228,10 +227,6 @@ docker_flags=(
     # If set, execute tests to verify `make install` works and produces working
     # installations.
     "--env" "TEST_INSTALL=${TEST_INSTALL:-}"
-
-    # If set to 'yes', run compile with code coverage flags. Currently only the
-    # CMake builds use this flag.
-    "--env" "CODE_COVERAGE=${CODE_COVERAGE:-}"
 
     # If set, pass -DGOOGLE_CLOUD_CPP_CXX_STANDARD=<value> to CMake.
     "--env" "GOOGLE_CLOUD_CPP_CXX_STANDARD=${GOOGLE_CLOUD_CPP_CXX_STANDARD:-}"
