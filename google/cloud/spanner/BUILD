@@ -22,7 +22,6 @@ genrule(
     name = "generate_build_info",
     srcs = ["internal/build_info.cc.in"],
     outs = ["internal/build_info.cc"],
-    stamp = 1,
     cmd = """
 V=$$(grep STABLE_GIT_COMMIT bazel-out/stable-status.txt | cut -f2 -d' ');
 CC_VERSION=$$($(location //bazel:compiler_version.sh) $(CC));
@@ -34,6 +33,7 @@ sed -e "s;@CMAKE_CXX_COMPILER_ID@;$${CC_ID};" \
     -e "s;@GOOGLE_CLOUD_CPP_SPANNER_IS_RELEASE@;%s;" \
     -e "s;@GOOGLE_CLOUD_CPP_SPANNER_BUILD_METADATA@;$${V};" < $< > $@
   """ % (GOOGLE_CLOUD_CPP_SPANNER_IS_RELEASE),
+    stamp = 1,
     toolchains = [
         "@bazel_tools//tools/cpp:current_cc_toolchain",
         "@bazel_tools//tools/cpp:cc_flags",
@@ -50,14 +50,14 @@ cc_library(
     name = "spanner_client",
     srcs = spanner_client_srcs + ["internal/build_info.cc"],
     hdrs = spanner_client_hdrs,
+    data = [
+        ":generate_build_info",
+    ],
     deps = [
         "@com_github_googleapis_google_cloud_cpp//google/cloud:google_cloud_cpp_common",
         "@com_github_googleapis_google_cloud_cpp//google/cloud/grpc_utils:google_cloud_cpp_grpc_utils",
         "@com_google_googleapis//:bigtable_protos",
         "@com_google_googleapis//:spanner_protos",
-    ],
-    data = [
-        ":generate_build_info",
     ],
 )
 
