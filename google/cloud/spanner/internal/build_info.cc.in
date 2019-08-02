@@ -84,7 +84,7 @@ bool IsRelease() {
 }
 
 std::string BuildMetadata() {
-  return R"""(sha.@GOOGLE_CLOUD_CPP_SPANNER_BUILD_METADATA@)""";
+  return R"""(@GOOGLE_CLOUD_CPP_SPANNER_BUILD_METADATA@)""";
 }
 
 }  // namespace internal

@@ -68,7 +68,7 @@ TEST(BuildInfo, IsRelease) {
 
 TEST(BuildInfo, BuildMetadata) {
   auto const md = BuildMetadata();
-  EXPECT_THAT(md, ::testing::MatchesRegex(R"(sha\..+)"));
+  EXPECT_FALSE(md.empty());
   EXPECT_THAT(md, ::testing::Not(::testing::HasSubstr("@")));
 }
 

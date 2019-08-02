@@ -66,9 +66,9 @@ bool IsRelease();
 /**
  * Returns the metadata injected by the build system.
  *
- * The returned info is the string "sha." followed by a short commit hash. See
- * https://semver.org/#spec-item-10 for more details about the use and format
- * of build metadata.
+ * See https://semver.org/#spec-item-10 for more details about the use and
+ * format of build metadata. Typically, the the value returned here is a hash
+ * indicating a git commit.
  */
 std::string BuildMetadata();
 
