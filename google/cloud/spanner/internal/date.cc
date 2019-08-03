@@ -46,7 +46,7 @@ StatusOr<Date> DateFromString(std::string const& s) {
                     s + ": Failed to match RFC3339 full-date");
   }
   Date date(year, month, day);
-  if (date.year() != year || date.month() != month || date.day() != day) {
+  if (date.month() != month || date.day() != day) {
     return Status(StatusCode::kInvalidArgument,
                   s + ": RFC3339 full-date field out of range");
   }
