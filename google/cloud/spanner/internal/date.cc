@@ -24,7 +24,7 @@ inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
 std::string DateToString(Date d) {
-  std::array<char, sizeof "-9223372036854775807-01-01"> buf;
+  std::array<char, sizeof "-9223372036854775808-01-01"> buf;
   std::snprintf(buf.data(), buf.size(), "%" PRId64 "-%02d-%02d", d.year(),
                 d.month(), d.day());
   return std::string(buf.data());
