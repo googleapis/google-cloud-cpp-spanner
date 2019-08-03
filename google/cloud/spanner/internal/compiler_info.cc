@@ -77,6 +77,29 @@ std::string CompilerVersion() {
   return "Unknown";
 }
 
+std::string CompilerFeatures() {
+#if GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
+  return "ex";
+#else
+  return "noex";
+#endif  // GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
+}
+
+std::string LanguageVersion() {
+  switch (__cplusplus) {
+    case 199711L:
+      return "98";
+    case 201103L:
+      return "2011";
+    case 201402L:
+      return "2014";
+    case 201703L:
+      return "2017";
+    default:
+      return "unknown";
+  }
+}
+
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
