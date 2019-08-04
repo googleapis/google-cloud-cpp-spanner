@@ -66,9 +66,9 @@ std::string CompilerVersion() {
   os << _MSC_VER % 100;
 #if defined(_MSC_FULL_VER)
 #if _MSC_VER >= 1400
-  out << "." << _MSC_FULL_VER % 100000;
+  os << "." << _MSC_FULL_VER % 100000;
 #else
-  out << "." << _MSC_FULL_VER % 10000;
+  os << "." << _MSC_FULL_VER % 10000;
 #endif
 #endif
   return std::move(os).str();
