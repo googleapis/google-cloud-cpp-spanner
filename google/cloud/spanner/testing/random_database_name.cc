@@ -29,7 +29,7 @@ std::string RandomDatabaseName(
          google::cloud::internal::Sample(
              generator, size, "abcdefghijlkmnopqrstuvwxyz012345689_-") +
          google::cloud::internal::Sample(
-             generator, 1, "abcdefghijlkmnopqrstuvwxyz01234567890");
+             generator, 1, "abcdefghijlkmnopqrstuvwxyz0123456789");
 }
 
 }  // namespace SPANNER_CLIENT_NS
