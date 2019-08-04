@@ -27,7 +27,7 @@ TEST(CompilerInfo, CompilerId) {
   EXPECT_FALSE(cn.empty());
   EXPECT_THAT(cn, ::testing::Not(::testing::HasSubstr("@")));
 #ifndef _WIN32  // gMock's regex brackets don't work on Windows.
-  EXPECT_THAT(cn, ::testing::ContainsRegex(R"([A-Z]+)"));
+  EXPECT_THAT(cn, ::testing::ContainsRegex(R"([A-Za-z]+)"));
 #endif
 }
 
