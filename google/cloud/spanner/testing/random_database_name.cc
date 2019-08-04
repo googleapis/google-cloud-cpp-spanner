@@ -18,7 +18,6 @@ namespace google {
 namespace cloud {
 namespace spanner_testing {
 inline namespace SPANNER_CLIENT_NS {
-
 std::string RandomDatabaseName(
     google::cloud::internal::DefaultPRNG& generator) {
   // A database ID must be between 2 and 30 characters, fitting the regular
@@ -29,8 +28,8 @@ std::string RandomDatabaseName(
   return prefix +
          google::cloud::internal::Sample(
              generator, size, "abcdefghijlkmnopqrstuvwxyz012345689_-") +
-         google::cloud::internal::Sample(generator, 1,
-                                         "abcdefghijlkmnopqrstuvwxyz");
+         google::cloud::internal::Sample(
+             generator, 1, "abcdefghijlkmnopqrstuvwxyz01234567890");
 }
 
 }  // namespace SPANNER_CLIENT_NS
