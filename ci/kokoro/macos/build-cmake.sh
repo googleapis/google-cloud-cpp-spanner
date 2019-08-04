@@ -16,7 +16,7 @@
 
 set -eu
 
-if [[ $# != 3 ]]; then
+if [[ $# -ne 3 ]]; then
   echo "Usage: $(basename "$0") <project-root> <source-directory> <binary-directory>"
   exit 1
 fi
@@ -29,10 +29,6 @@ NCPU="$(sysctl -n hw.logicalcpu)"
 readonly NCPU
 
 source "${PROJECT_ROOT}/ci/colors.sh"
-
-echo
-echo "${COLOR_YELLOW}Starting docker build $(date) with $(nproc) cores${COLOR_RESET}"
-echo
 
 echo "================================================================"
 echo "Compiling on $(date) with ${NCPU} cpus"

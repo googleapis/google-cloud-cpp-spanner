@@ -16,7 +16,7 @@
 
 set -eu
 
-if [[ $# != 1 ]]; then
+if [[ $# -ne 1 ]]; then
   echo "Usage: $(basename "$0") <project-root>"
   exit 1
 fi
@@ -55,8 +55,6 @@ if [[ -n "${BAZEL_CONFIG}" ]]; then
     bazel_args+=("--config" "${BAZEL_CONFIG}")
 fi
 
-# The -DGRPC_BAZEL_BUILD is needed because gRPC does not compile on macOS unless
-# it is set.
 echo
 echo "================================================================"
 echo "Build and run unit tests at $(date)."
