@@ -25,7 +25,6 @@ namespace {
 TEST(CompilerInfo, CompilerId) {
   auto cn = CompilerId();
   EXPECT_FALSE(cn.empty());
-  EXPECT_THAT(cn, ::testing::Not(::testing::HasSubstr("@")));
 #ifndef _WIN32  // gMock's regex brackets don't work on Windows.
   EXPECT_THAT(cn, ::testing::ContainsRegex(R"([A-Za-z]+)"));
 #endif
@@ -34,7 +33,6 @@ TEST(CompilerInfo, CompilerId) {
 TEST(CompilerInfo, CompilerVersion) {
   auto cv = CompilerVersion();
   EXPECT_FALSE(cv.empty());
-  EXPECT_THAT(cv, ::testing::Not(::testing::HasSubstr("@")));
 #ifndef _WIN32  // gMock's regex brackets don't work on Windows.
   // Look for something that looks vaguely like an X.Y version number.
   EXPECT_THAT(cv, ::testing::ContainsRegex(R"([0-9]+.[0-9]+)"));
@@ -52,7 +50,6 @@ TEST(CompilerInfo, LanguageVersion) {
   using ::testing::HasSubstr;
   auto lv = LanguageVersion();
   EXPECT_FALSE(lv.empty());
-  EXPECT_THAT(lv, ::testing::Not(::testing::HasSubstr("@")));
 #ifndef _WIN32  // gMock's regex brackets don't work on Windows.
   EXPECT_THAT(lv, ::testing::MatchesRegex(R"([0-9]+)"));
 #endif
