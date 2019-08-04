@@ -22,56 +22,39 @@ inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 namespace {
 
-TEST(BuildInfo, CompilerId) {
+TEST(CompilerInfo, CompilerId) {
   auto cn = CompilerId();
   EXPECT_FALSE(cn.empty());
   EXPECT_THAT(cn, ::testing::Not(::testing::HasSubstr("@")));
+#ifndef _WIN32  // gMock's regex brackets don't work on Windows.
+  EXPECT_THAT(cn, ::testing::ContainsRegex(R"([A-Z]+)"));
+#endif
 }
 
-TEST(BuildInfo, CompilerVersion) {
+TEST(CompilerInfo, CompilerVersion) {
   auto cv = CompilerVersion();
   EXPECT_FALSE(cv.empty());
   EXPECT_THAT(cv, ::testing::Not(::testing::HasSubstr("@")));
 #ifndef _WIN32  // gMock's regex brackets don't work on Windows.
   // Look for something that looks vaguely like an X.Y version number.
-  EXPECT_THAT(cv, ::testing::ContainsRegex(R"([0-9].[0-9])"));
+  EXPECT_THAT(cv, ::testing::ContainsRegex(R"([0-9]+.[0-9]+)"));
 #endif
 }
 
-TEST(BuildInfo, CompilerFeatures) {
+TEST(CompilerInfo, CompilerFeatures) {
   using ::testing::Eq;
   auto cf = CompilerFeatures();
   EXPECT_FALSE(cf.empty());
   EXPECT_THAT(cf, ::testing::AnyOf(Eq("noex"), Eq("ex")));
 }
 
-TEST(BuildInfo, LanguageVersion) {
+TEST(CompilerInfo, LanguageVersion) {
   using ::testing::HasSubstr;
   auto lv = LanguageVersion();
   EXPECT_FALSE(lv.empty());
   EXPECT_THAT(lv, ::testing::Not(::testing::HasSubstr("@")));
 #ifndef _WIN32  // gMock's regex brackets don't work on Windows.
-  EXPECT_THAT(lv, ::testing::MatchesRegex(R"([0-9A-Za-z_.-]+)"));
-#endif
-}
-
-TEST(BuildInfo, ApiClientHeader) {
-  // The build info is used to generate the "API Client Header", which is a
-  // gRPC metadata attribute with the name 'x-goog-api-client'. This test
-  // generates that whole string as a sanity check that it will contain the
-  // desired format.
-
-  std::string const api_client_header = "gl-cpp/" +                 //
-                                        CompilerId() + '-' +        //
-                                        CompilerVersion() + '-' +   //
-                                        CompilerFeatures() + '-' +  //
-                                        LanguageVersion();
-  EXPECT_THAT(api_client_header, ::testing::Not(::testing::HasSubstr("@")));
-
-#ifndef _WIN32  // gMock's regex brackets don't work on Windows.
-  EXPECT_THAT(api_client_header,
-              ::testing::MatchesRegex(
-                  R"(gl-cpp/[A-Za-z0-9]+-[0-9.+-]+-(no)?ex-20[1-9][0-9])"));
+  EXPECT_THAT(lv, ::testing::MatchesRegex(R"([0-9]+)"));
 #endif
 }
 

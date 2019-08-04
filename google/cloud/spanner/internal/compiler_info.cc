@@ -1,4 +1,4 @@
-// Copyright 2019 Google Inc.
+// Copyright 2019 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,17 +30,17 @@ namespace internal {
  * https://gitlab.kitware.com/cmake/cmake/tree/v3.5.0/Modules/Compiler/\*-DetermineCompiler.cmake
  * We do not care to detect every single compiler possible and only target the
  * most popular ones.
+ *
+ * Order is significant as some compilers can define the same macros.
  */
 std::string CompilerId() {
-#if defined(__GNUC__)
-  return "GNU";
-#endif
-
-#if defined(__clang__)
+#if defined(__apple_build_version__) && defined(__clang__)
+  return "AppleClang";
+#elif defined(__clang__)
   return "Clang";
-#endif
-
-#if defined(_MSC_VER)
+#elif defined(__GNUC__)
+  return "GNU";
+#elif defined(_MSC_VER)
   return "MSVC";
 #endif
 
@@ -50,18 +50,18 @@ std::string CompilerId() {
 std::string CompilerVersion() {
   std::ostringstream os;
 
-#if defined(__GNUC__)
-  os << __GNUC__ << "." << __GNUC_MINOR__ << "." << __GNUC_PATCHLEVEL__;
+#if defined(__apple_build_version__) && defined(__clang__)
+  os << __clang_major__ << "." << __clang_minor__ << "." << __clang_patchlevel__
+     << "." << __apple_build_version__;
   return std::move(os).str();
-#endif
-
-#if defined(__clang__)
+#elif defined(__clang__)
   os << __clang_major__ << "." << __clang_minor__ << "."
      << __clang_patchlevel__;
   return std::move(os).str();
-#endif
-
-#if defined(_MSC_VER)
+#elif defined(__GNUC__)
+  os << __GNUC__ << "." << __GNUC_MINOR__ << "." << __GNUC_PATCHLEVEL__;
+  return std::move(os).str();
+#elif defined(_MSC_VER)
   os << _MSC_VER / 100 << ".";
   os << _MSC_VER % 100;
 #if defined(_MSC_FULL_VER)
