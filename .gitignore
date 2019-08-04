@@ -20,3 +20,6 @@ github-io-staging/
 
 google/cloud/storage/testbench/__pycache__/
 google/cloud/storage/testbench/*.pyc
+
+# Ignore Visual Studio Code files.
+.vscode/
