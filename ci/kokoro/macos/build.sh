@@ -17,6 +17,7 @@
 set -eu
 
 export BAZEL_CONFIG=""
+export RUN_INTEGRATION_TESTS="no"
 driver_script="ci/kokoro/macos/build-bazel.sh"
 
 if [[ $# -eq 1 ]]; then

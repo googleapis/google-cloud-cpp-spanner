@@ -68,11 +68,6 @@ if [[ ${RUN_INTEGRATION_TESTS} == "yes" ]]; then
 fi
 
 echo "================================================================"
-echo "Testing the install target $(date)"
-echo "================================================================"
-cmake --build "${BINARY_DIR}" --target install || echo "FAILED"
-
-echo "================================================================"
 echo "Build finished at $(date)"
 echo "================================================================"
 
