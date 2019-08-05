@@ -47,7 +47,7 @@ bazel_args=(
     # We need this environment variable because on macOS gRPC crashes if it
     # cannot find the credentials, even if you do not use them. Some of the
     # unit tests do exactly that.
-    --action_env=GOOGLE_APPLICATION_CREDENTIALS="${GOOGLE_APPLICATION_CREDENTIALS}"
+    "--action_env=GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS}"
     "--test_output=errors"
     "--verbose_failures=true"
     "--keep_going")
