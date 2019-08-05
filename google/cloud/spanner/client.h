@@ -380,7 +380,7 @@ class Client {
   std::shared_ptr<internal::SpannerStub> stub_;
 
   // The current session pool.
-  // TODO(#...) - improve session refresh and expiration.
+  // TODO(#307) - improve session refresh and expiration.
   std::vector<std::string> sessions_;
 };
 

@@ -121,7 +121,7 @@ StatusOr<CommitResult> Client::Commit(Transaction const& transaction,
         } else if (s.has_single_use()) {
           *request.mutable_single_use_transaction() = s.single_use();
         }
-        // TODO(#...) - Make Visit() work with functions that return `void`.
+        // TODO(#306) - Make Visit() work with functions that return `void`.
         return 0;
       }));
   auto response = stub_->Commit(context, request);
