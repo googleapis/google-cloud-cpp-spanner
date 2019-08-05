@@ -146,7 +146,7 @@ TEST(SpannerClientTest, Commit_GetSessionFailure) {
   EXPECT_THAT(commit.status().message(), HasSubstr("uh-oh in GetSession"));
 }
 
-/// @test Verify that errors when creating sessions are reported.
+/// @test Verify that errors when committing transactions are reported.
 TEST(SpannerClientTest, Commit_CommitFailure) {
   auto mock = std::make_shared<MockSpannerStub>();
 
