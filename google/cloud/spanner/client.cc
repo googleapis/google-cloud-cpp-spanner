@@ -99,38 +99,15 @@ StatusOr<std::int64_t> Client::ExecutePartitionedDml(
   return Status(StatusCode::kUnimplemented, "not implemented");
 }
 
-StatusOr<CommitResult> Client::Commit(Transaction const& transaction,
+StatusOr<CommitResult> Client::Commit(Transaction transaction,
                                       std::vector<Mutation> const& mutations) {
-  auto session = GetSession();
-  if (!session) {
-    return std::move(session).status();
-  }
-  google::spanner::v1::CommitRequest request;
-  request.set_session(session->session_name());
-  for (auto const& m : mutations) {
-    *request.add_mutations() = m.as_proto();
-  }
-  std::function<StatusOr<CommitResult>(spanner_proto::TransactionSelector&)>
-      commit([&request, this](spanner_proto::TransactionSelector& s)
-                 -> StatusOr<CommitResult> {
-        if (!s.id().empty()) {
-          request.set_transaction_id(s.id());
-        } else if (s.has_begin()) {
-          *request.mutable_single_use_transaction() = s.begin();
-        } else if (s.has_single_use()) {
-          *request.mutable_single_use_transaction() = s.single_use();
-        }
-        grpc::ClientContext context;
-        auto response = stub_->Commit(context, request);
-        if (!response) {
-          return std::move(response).status();
-        }
-        CommitResult r;
-        r.commit_timestamp = internal::FromProto(response->commit_timestamp());
-        return r;
-      });
-
-  return internal::Visit(transaction, std::move(commit));
+  using F = std::function<StatusOr<CommitResult>(
+      spanner_proto::TransactionSelector&)>;
+  return internal::Visit(
+      std::move(transaction),
+      F([this, &mutations](spanner_proto::TransactionSelector& s) {
+        return this->Commit(s, mutations);
+      }));
 }
 
 Status Client::Rollback(Transaction const& /*transaction*/) {
@@ -159,6 +136,35 @@ StatusOr<Client::SessionHolder> Client::GetSession() {
     return response.status();
   }
   return SessionHolder(std::move(*response->mutable_name()), this);
+}
+
+StatusOr<CommitResult> Client::Commit(
+    google::spanner::v1::TransactionSelector& s,
+    std::vector<Mutation> const& mutations) {
+  auto session = GetSession();
+  if (!session) {
+    return std::move(session).status();
+  }
+  google::spanner::v1::CommitRequest request;
+  request.set_session(session->session_name());
+  for (auto const& m : mutations) {
+    *request.add_mutations() = m.as_proto();
+  }
+  if (!s.id().empty()) {
+    request.set_transaction_id(s.id());
+  } else if (s.has_begin()) {
+    *request.mutable_single_use_transaction() = s.begin();
+  } else if (s.has_single_use()) {
+    *request.mutable_single_use_transaction() = s.single_use();
+  }
+  grpc::ClientContext context;
+  auto response = stub_->Commit(context, request);
+  if (!response) {
+    return std::move(response).status();
+  }
+  CommitResult r;
+  r.commit_timestamp = internal::FromProto(response->commit_timestamp());
+  return r;
 }
 
 StatusOr<Client> MakeClient(std::string database_name,

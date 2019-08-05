@@ -334,7 +334,7 @@ class Client {
    * @return A `StatusOr` containing the result of the commit or error status
    *     on failure.
    */
-  StatusOr<CommitResult> Commit(Transaction const& transaction,
+  StatusOr<CommitResult> Commit(Transaction transaction,
                                 std::vector<Mutation> const& mutations);
 
   /**
@@ -375,6 +375,10 @@ class Client {
   };
   friend class SessionHolder;
   StatusOr<SessionHolder> GetSession();
+
+  /// Implementation details for Commit.
+  StatusOr<CommitResult> Commit(google::spanner::v1::TransactionSelector& s,
+                                std::vector<Mutation> const& mutations);
 
   std::string database_name_;
   std::shared_ptr<internal::SpannerStub> stub_;
