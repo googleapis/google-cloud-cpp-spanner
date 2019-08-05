@@ -204,9 +204,9 @@ TEST(SpannerClientTest, Commit_TransactionId) {
   auto txn = MakeReadWriteTransaction();
   using F = std::function<int(spanner_proto::TransactionSelector&)>;
   internal::Visit(txn, F([](spanner_proto::TransactionSelector& s) -> int {
-    s.set_id("test-txn-id");
-    return 0;
-  }));
+                    s.set_id("test-txn-id");
+                    return 0;
+                  }));
 
   auto commit = client.Commit(txn, {});
   EXPECT_EQ(StatusCode::kPermissionDenied, commit.status().code());
