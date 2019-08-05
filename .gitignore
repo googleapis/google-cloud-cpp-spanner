@@ -6,7 +6,6 @@ cmake-out/
 
 # Common bazel output directories
 bazel-*
-!bazel-dependency*.cfg
 !bazel-*.cfg
 
 # Backup files for Emacs
