@@ -105,15 +105,14 @@ StatusOr<CommitResult> Client::Commit(Transaction const& transaction,
   if (!session) {
     return std::move(session).status();
   }
-  grpc::ClientContext context;
   google::spanner::v1::CommitRequest request;
   request.set_session(session->session_name());
   for (auto const& m : mutations) {
     *request.add_mutations() = m.as_proto();
   }
-  using F = std::function<int(spanner_proto::TransactionSelector&)>;
-  internal::Visit(
-      transaction, F([&request](spanner_proto::TransactionSelector& s) {
+  std::function<StatusOr<CommitResult>(spanner_proto::TransactionSelector&)>
+      commit([&request, this](spanner_proto::TransactionSelector& s)
+                 -> StatusOr<CommitResult> {
         if (!s.id().empty()) {
           request.set_transaction_id(s.id());
         } else if (s.has_begin()) {
@@ -121,16 +120,17 @@ StatusOr<CommitResult> Client::Commit(Transaction const& transaction,
         } else if (s.has_single_use()) {
           *request.mutable_single_use_transaction() = s.single_use();
         }
-        // TODO(#306) - Make Visit() work with functions that return `void`.
-        return 0;
-      }));
-  auto response = stub_->Commit(context, request);
-  if (!response) {
-    return std::move(response).status();
-  }
-  CommitResult r;
-  r.commit_timestamp = internal::FromProto(response->commit_timestamp());
-  return r;
+        grpc::ClientContext context;
+        auto response = stub_->Commit(context, request);
+        if (!response) {
+          return std::move(response).status();
+        }
+        CommitResult r;
+        r.commit_timestamp = internal::FromProto(response->commit_timestamp());
+        return r;
+      });
+
+  return internal::Visit(transaction, std::move(commit));
 }
 
 Status Client::Rollback(Transaction const& /*transaction*/) {
