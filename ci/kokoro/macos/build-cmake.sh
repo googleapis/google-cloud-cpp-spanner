@@ -31,9 +31,14 @@ readonly NCPU
 source "${PROJECT_ROOT}/ci/colors.sh"
 
 echo "================================================================"
+echo "Update or install dependencies at $(date)."
+brew install libressl
+
+echo "================================================================"
 echo "Compiling on $(date) with ${NCPU} cpus"
 echo "================================================================"
 cd "${PROJECT_ROOT}"
+export OPENSSL_ROOT_DIR=/usr/local/opt/libressl
 cmake_flags=("-DCMAKE_INSTALL_PREFIX=$HOME/staging")
 
 cmake "-H${SOURCE_DIR}" "-B${BINARY_DIR}" "${cmake_flags[@]}"
