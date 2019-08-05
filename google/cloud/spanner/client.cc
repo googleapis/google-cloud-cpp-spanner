@@ -114,8 +114,13 @@ StatusOr<CommitResult> Client::Commit(Transaction const& transaction,
   using F = std::function<int(spanner_proto::TransactionSelector&)>;
   internal::Visit(
       transaction, F([&request](spanner_proto::TransactionSelector& s) {
-        // TODO(#...) - Use the proper transaction selector.
-        *request.mutable_single_use_transaction() = s.single_use();
+        if (!s.id().empty()) {
+          request.set_transaction_id(s.id());
+        } else if (s.has_begin()) {
+          *request.mutable_single_use_transaction() = s.begin();
+        } else if (s.has_single_use()) {
+          *request.mutable_single_use_transaction() = s.single_use();
+        }
         // TODO(#...) - Make Visit() work with functions that return `void`.
         return 0;
       }));
