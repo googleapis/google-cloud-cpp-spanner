@@ -60,7 +60,7 @@ TEST(CommitIntegrationTest, Insert) {
   Client client(database_name, stub);
 
   auto commit_result = client.Commit(
-      Transaction(Transaction::ReadWriteOptions()),
+      MakeReadWriteTransaction(),
       {InsertMutationBuilder("Singers", {"SingerId", "FirstName", "LastName"})
            .EmplaceRow(1, "test-first-name-1", "test-last-name-1")
            .EmplaceRow(2, "test-first-name-2", "test-last-name-2")
@@ -81,6 +81,7 @@ TEST(CommitIntegrationTest, Insert) {
   *request.add_columns() = "SingerId";
   *request.add_columns() = "FirstName";
   *request.add_columns() = "LastName";
+  request.mutable_key_set()->set_all(true);
   auto result_set = stub->Read(read_context, request);
   EXPECT_STATUS_OK(result_set);
 
@@ -98,6 +99,7 @@ TEST(CommitIntegrationTest, Insert) {
         internal::FromProto(result_set->metadata().row_type().fields(2).type(),
                             row.values(2))});
     EXPECT_STATUS_OK(parsed_row);
+    returned_rows.emplace_back(*parsed_row);
   }
 
   EXPECT_THAT(returned_rows,
