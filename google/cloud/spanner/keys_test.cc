@@ -25,17 +25,18 @@ TEST(KeyRangeTest, ConstructorBoundModeUnspecified) {
   std::string start_value("key0");
   std::string end_value("key1");
   KeyRange<Row<std::string>> closed_range =
-      KeyRange<Row<std::string>>(MakeRow(start_value), MakeRow(end_value));
-  EXPECT_EQ(start_value, closed_range.StartKey().get<0>());
-  EXPECT_TRUE(closed_range.IsStartClosed());
-  EXPECT_EQ(end_value, closed_range.EndKey().get<0>());
-  EXPECT_TRUE(closed_range.IsEndClosed());
+    MakeKeyRange(MakeRow(start_value), MakeRow(end_value));
+
+  EXPECT_EQ(start_value, closed_range.start().key().get<0>());
+  EXPECT_TRUE(closed_range.start().IsClosed());
+  EXPECT_EQ(end_value, closed_range.end().key().get<0>());
+  EXPECT_TRUE(closed_range.end().IsClosed());
 }
 
 TEST(KeyRangeBoundTest, MakeKeyRangeBoundClosed) {
   std::string key_value("key0");
   auto bound = MakeKeyRangeBoundClosed(key_value);
-  EXPECT_EQ(key_value, bound.Key().get<0>());
+  EXPECT_EQ(key_value, bound.key().get<0>());
   EXPECT_TRUE(bound.IsClosed());
 }
 
@@ -43,8 +44,8 @@ TEST(KeyRangeBoundTest, MakeKeyRangeBoundOpen) {
   std::string key_value_0("key0");
   std::int64_t key_value_1(42);
   auto bound = MakeKeyRangeBoundOpen(key_value_0, key_value_1);
-  EXPECT_EQ(key_value_0, bound.Key().get<0>());
-  EXPECT_EQ(key_value_1, bound.Key().get<1>());
+  EXPECT_EQ(key_value_0, bound.key().get<0>());
+  EXPECT_EQ(key_value_1, bound.key().get<1>());
   EXPECT_TRUE(bound.IsOpen());
 }
 
@@ -53,11 +54,11 @@ TEST(KeyRangeTest, ConstructorClosedClosed) {
   std::string end_value("key1");
   auto start_bound = MakeKeyRangeBoundClosed(start_value);
   auto end_bound = MakeKeyRangeBoundClosed(end_value);
-  auto closed_range = KeyRange<Row<std::string>>(start_bound, end_bound);
-  EXPECT_EQ(start_value, closed_range.StartKey().get<0>());
-  EXPECT_TRUE(closed_range.IsStartClosed());
-  EXPECT_EQ(end_value, closed_range.EndKey().get<0>());
-  EXPECT_TRUE(closed_range.IsEndClosed());
+  auto closed_range = MakeKeyRange(start_bound, end_bound);
+  EXPECT_EQ(start_value, closed_range.start().key().get<0>());
+  EXPECT_TRUE(closed_range.start().IsClosed());
+  EXPECT_EQ(end_value, closed_range.end().key().get<0>());
+  EXPECT_TRUE(closed_range.end().IsClosed());
 }
 
 TEST(KeyRangeTest, ConstructorClosedOpen) {
@@ -65,10 +66,10 @@ TEST(KeyRangeTest, ConstructorClosedOpen) {
   std::string end_value("key1");
   auto range = KeyRange<Row<std::string>>(MakeKeyRangeBoundClosed(start_value),
                                           MakeKeyRangeBoundOpen(end_value));
-  EXPECT_EQ(start_value, range.StartKey().get<0>());
-  EXPECT_TRUE(range.IsStartClosed());
-  EXPECT_EQ(end_value, range.EndKey().get<0>());
-  EXPECT_TRUE(range.IsEndOpen());
+  EXPECT_EQ(start_value, range.start().key().get<0>());
+  EXPECT_TRUE(range.start().IsClosed());
+  EXPECT_EQ(end_value, range.end().key().get<0>());
+  EXPECT_TRUE(range.end().IsOpen());
 }
 
 TEST(KeyRangeTest, ConstructorOpenClosed) {
@@ -76,10 +77,10 @@ TEST(KeyRangeTest, ConstructorOpenClosed) {
   std::string end_value("key1");
   auto range = KeyRange<Row<std::string>>(MakeKeyRangeBoundOpen(start_value),
                                           MakeKeyRangeBoundClosed(end_value));
-  EXPECT_EQ(start_value, range.StartKey().get<0>());
-  EXPECT_TRUE(range.IsStartOpen());
-  EXPECT_EQ(end_value, range.EndKey().get<0>());
-  EXPECT_TRUE(range.IsEndClosed());
+  EXPECT_EQ(start_value, range.start().key().get<0>());
+  EXPECT_TRUE(range.start().IsOpen());
+  EXPECT_EQ(end_value, range.end().key().get<0>());
+  EXPECT_TRUE(range.end().IsClosed());
 }
 
 TEST(KeyRangeTest, ConstructorOpenOpen) {
@@ -87,10 +88,10 @@ TEST(KeyRangeTest, ConstructorOpenOpen) {
   std::string end_value("key1");
   auto range = KeyRange<Row<std::string>>(MakeKeyRangeBoundOpen(start_value),
                                           MakeKeyRangeBoundOpen(end_value));
-  EXPECT_EQ(start_value, range.StartKey().get<0>());
-  EXPECT_TRUE(range.IsStartOpen());
-  EXPECT_EQ(end_value, range.EndKey().get<0>());
-  EXPECT_TRUE(range.IsEndOpen());
+  EXPECT_EQ(start_value, range.start().key().get<0>());
+  EXPECT_TRUE(range.start().IsOpen());
+  EXPECT_EQ(end_value, range.end().key().get<0>());
+  EXPECT_TRUE(range.end().IsOpen());
 }
 
 TEST(KeySetTest, ConstructorSingleKey) {
@@ -106,10 +107,10 @@ TEST(KeySetTest, ConstructorKeyRange) {
   auto ks = KeySet<Row<std::string>>(
       KeyRange<Row<std::string>>(MakeKeyRangeBoundClosed(start_value),
                                  MakeKeyRangeBoundClosed(end_value)));
-  EXPECT_EQ(start_value, ks.key_ranges()[0].StartKey().get<0>());
-  EXPECT_TRUE(ks.key_ranges()[0].IsStartClosed());
-  EXPECT_EQ(end_value, ks.key_ranges()[0].EndKey().get<0>());
-  EXPECT_TRUE(ks.key_ranges()[0].IsEndClosed());
+  EXPECT_EQ(start_value, ks.key_ranges()[0].start().key().get<0>());
+  EXPECT_TRUE(ks.key_ranges()[0].start().IsClosed());
+  EXPECT_EQ(end_value, ks.key_ranges()[0].end().key().get<0>());
+  EXPECT_TRUE(ks.key_ranges()[0].end().IsClosed());
 }
 
 TEST(KeySetTest, AddKeyToEmptyKeySet) {
@@ -134,12 +135,12 @@ TEST(KeySetTest, AddKeyRangeToEmptyKeySet) {
       MakeKeyRangeBoundClosed("start00", "start01"),
       MakeKeyRangeBoundClosed("end00", "end01"));
   ks.Add(range);
-  EXPECT_EQ("start00", ks.key_ranges()[0].StartKey().get<0>());
-  EXPECT_EQ("start01", ks.key_ranges()[0].StartKey().get<1>());
-  EXPECT_EQ("end00", ks.key_ranges()[0].EndKey().get<0>());
-  EXPECT_EQ("end01", ks.key_ranges()[0].EndKey().get<1>());
-  EXPECT_TRUE(ks.key_ranges()[0].IsStartClosed());
-  EXPECT_TRUE(ks.key_ranges()[0].IsEndClosed());
+  EXPECT_EQ("start00", ks.key_ranges()[0].start().key().get<0>());
+  EXPECT_EQ("start01", ks.key_ranges()[0].start().key().get<1>());
+  EXPECT_EQ("end00", ks.key_ranges()[0].end().key().get<0>());
+  EXPECT_EQ("end01", ks.key_ranges()[0].end().key().get<1>());
+  EXPECT_TRUE(ks.key_ranges()[0].start().IsClosed());
+  EXPECT_TRUE(ks.key_ranges()[0].end().IsClosed());
 }
 
 TEST(KeySetTest, AddKeyRangeToNonEmptyKeySet) {
@@ -150,18 +151,18 @@ TEST(KeySetTest, AddKeyRangeToNonEmptyKeySet) {
       MakeKeyRangeBoundOpen("start10", "start11"),
       MakeKeyRangeBoundOpen("end10", "end11"));
   ks.Add(range);
-  EXPECT_EQ("start00", ks.key_ranges()[0].StartKey().get<0>());
-  EXPECT_EQ("start01", ks.key_ranges()[0].StartKey().get<1>());
-  EXPECT_EQ("end00", ks.key_ranges()[0].EndKey().get<0>());
-  EXPECT_EQ("end01", ks.key_ranges()[0].EndKey().get<1>());
-  EXPECT_TRUE(ks.key_ranges()[0].IsStartClosed());
-  EXPECT_TRUE(ks.key_ranges()[0].IsEndClosed());
-  EXPECT_EQ("start10", ks.key_ranges()[1].StartKey().get<0>());
-  EXPECT_EQ("start11", ks.key_ranges()[1].StartKey().get<1>());
-  EXPECT_EQ("end10", ks.key_ranges()[1].EndKey().get<0>());
-  EXPECT_EQ("end11", ks.key_ranges()[1].EndKey().get<1>());
-  EXPECT_TRUE(ks.key_ranges()[1].IsStartOpen());
-  EXPECT_TRUE(ks.key_ranges()[1].IsEndOpen());
+  EXPECT_EQ("start00", ks.key_ranges()[0].start().key().get<0>());
+  EXPECT_EQ("start01", ks.key_ranges()[0].start().key().get<1>());
+  EXPECT_EQ("end00", ks.key_ranges()[0].end().key().get<0>());
+  EXPECT_EQ("end01", ks.key_ranges()[0].end().key().get<1>());
+  EXPECT_TRUE(ks.key_ranges()[0].start().IsClosed());
+  EXPECT_TRUE(ks.key_ranges()[0].end().IsClosed());
+  EXPECT_EQ("start10", ks.key_ranges()[1].start().key().get<0>());
+  EXPECT_EQ("start11", ks.key_ranges()[1].start().key().get<1>());
+  EXPECT_EQ("end10", ks.key_ranges()[1].end().key().get<0>());
+  EXPECT_EQ("end11", ks.key_ranges()[1].end().key().get<1>());
+  EXPECT_TRUE(ks.key_ranges()[1].start().IsOpen());
+  EXPECT_TRUE(ks.key_ranges()[1].end().IsOpen());
 }
 
 }  // namespace

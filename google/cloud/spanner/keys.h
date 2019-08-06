@@ -19,7 +19,6 @@
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/status_or.h"
-#include "google/cloud/version.h"
 #include <string>
 #include <vector>
 
@@ -27,6 +26,9 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
+
+template <typename KeyType>
+class KeyRange;
 
 /**
  * The `Bound` class is a regular type that represents one endpoint of an
@@ -37,7 +39,8 @@ inline namespace SPANNER_CLIENT_NS {
  * specified as `Open`, which will exclude the Bounds from
  * the results.
  *
- * @tparam KeyType
+ * @tparam KeyType spanner::Row<Types...> that corresponds to the desired index
+ * definition.
  */
 template <typename KeyType>
 class Bound {
@@ -51,7 +54,7 @@ class Bound {
   Bound(Bound&& key_range) = default;
   Bound& operator=(Bound&& rhs) = default;
 
-  KeyType const& Key() const { return key_; }
+  KeyType const& key() const { return key_; }
   bool IsClosed() const { return mode_ == Mode::CLOSED; }
   bool IsOpen() const { return mode_ == Mode::OPEN; }
 
@@ -62,6 +65,11 @@ class Bound {
     return !(lhs == rhs);
   }
 
+ private:
+  enum class Mode { CLOSED, OPEN };
+
+  Bound(KeyType key, Mode mode) : key_(std::move(key)), mode_(mode) {}
+
   template <typename... ValueTypes>
   friend Bound<Row<internal::PromoteLiteral<ValueTypes>...>>
   MakeKeyRangeBoundClosed(ValueTypes... values);
@@ -70,10 +78,9 @@ class Bound {
   friend Bound<Row<internal::PromoteLiteral<ValueTypes>...>>
   MakeKeyRangeBoundOpen(ValueTypes... values);
 
- private:
-  enum class Mode { CLOSED, OPEN };
+  template<typename RowType>
+  friend KeyRange<RowType> MakeKeyRange(RowType start, RowType end);
 
-  Bound(KeyType key, Mode mode) : key_(std::move(key)), mode_(mode) {}
 
   KeyType key_;
   Mode mode_;
@@ -81,7 +88,11 @@ class Bound {
 
 /**
  * The `KeyRange` class is a regular type that represents the pair of `Bound`s
- * necessary to uniquely identify a contiguous group of key `Row`s in its index.
+ * necessary to uniquely identify a contiguous group of key `spanner::Row`s in
+ * its index.
+ *
+ * @tparam KeyType spanner::Row<Types...> that corresponds to the desired index
+ * definition.
  */
 template <typename KeyType>
 class KeyRange {
@@ -94,19 +105,16 @@ class KeyRange {
 
   /**
    * Constructs a `KeyRange` with closed `Bound`s on the keys provided.
-   * @param start
-   * @param end
    */
   explicit KeyRange(Bound<KeyType> start, Bound<KeyType> end)
-      : start_(start), end_(end) {}
+      : start_(std::move(start)), end_(std::move(end)) {}
 
   /**
    * Constructs a `KeyRange` closed on both `Bound`s.
-   * @param start
-   * @param end
    */
   explicit KeyRange(KeyType start, KeyType end)
-      : KeyRange(Bound<KeyType>(start), Bound<KeyType>(end)) {}
+      : KeyRange(std::move(Bound<KeyType>(start)),
+          std::move(Bound<KeyType>(end))) {}
 
   // Copy and move constructors and assignment operators.
   KeyRange(KeyRange const& key_range) = default;
@@ -114,13 +122,8 @@ class KeyRange {
   KeyRange(KeyRange&& key_range) = default;
   KeyRange& operator=(KeyRange&& rhs) = default;
 
-  bool IsStartClosed() const { return start_.IsClosed(); }
-  bool IsStartOpen() const { return start_.IsOpen(); }
-  bool IsEndClosed() const { return end_.IsClosed(); }
-  bool IsEndOpen() const { return end_.IsOpen(); }
-
-  KeyType const& StartKey() const { return start_.Key(); }
-  KeyType const& EndKey() const { return end_.Key(); }
+  Bound<KeyType> const& start() const { return start_; }
+  Bound<KeyType> const& end() const { return end_; }
 
  private:
   friend bool operator==(KeyRange const& lhs, KeyRange const& rhs) {
@@ -135,10 +138,12 @@ class KeyRange {
 };
 
 /**
- * The `KeySet` class is a regular type that represents the collection of `Row`s
- * necessary to uniquely identify a arbitrary group of rows in its index.
+ * The `KeySet` class is a regular type that represents the collection of
+ * `spanner::Row`s necessary to uniquely identify a arbitrary group of rows in
+ * its index.
  *
- * A `KeySet` can consist of multiple `KeyRange` and/or `Row` instances.
+ * A `KeySet` can consist of multiple `KeyRange` and/or `spanner::Row`
+ * instances.
  */
 template <typename KeyType>
 class KeySet {
@@ -149,7 +154,7 @@ class KeySet {
   KeySet() = default;
 
   /**
-   * Constructs a `KeySet` with a single key `Row`.
+   * Constructs a `KeySet` with a single key `spanner::Row`.
    * @param key
    */
   explicit KeySet(KeyType key) : keys_(), key_ranges_() {
@@ -165,21 +170,21 @@ class KeySet {
   }
 
   /**
-   * Returns the key `Row`s in the `KeySet`.
+   * Returns the key `spanner::Row`s in the `KeySet`.
    * These keys are separate from the collection of `KeyRange`s.
    */
   std::vector<KeyType> const& keys() const { return keys_; }
 
   /**
    * Returns the `KeyRange`s in the `KeySet`.
-   * These are separate from the collection of individual key `Row`s.
+   * These are separate from the collection of individual key `spanner::Row`s.
    */
   std::vector<KeyRange<KeyType>> const& key_ranges() const {
     return key_ranges_;
   }
 
   /**
-   * Adds a key `Row` to the `KeySet`.
+   * Adds a key `spanner::Row` to the `KeySet`.
    *
    * @param key
    */
@@ -195,7 +200,8 @@ class KeySet {
   }
 
   /**
-   * Creates a key `Row` from the values provided and adds it to the `KeySet`.
+   * Creates a key `spanner::Row` from the values provided and adds it to the
+   * `KeySet`.
    *
    * @tparam ValueTypes
    * @param values
@@ -241,6 +247,35 @@ Bound<Row<internal::PromoteLiteral<ValueTypes>...>> MakeKeyRangeBoundOpen(
   return Bound<Row<internal::PromoteLiteral<ValueTypes>...>>(
       MakeRow(values...),
       Bound<Row<internal::PromoteLiteral<ValueTypes>...>>::Mode::OPEN);
+}
+
+/**
+ * Helper function to create a `KeyRange` between two keys `spanner::Row`s with
+ * both `Bound`s closed.
+ *
+ * @tparam RowType
+ * @param start
+ * @param end
+ * @return
+ */
+template<typename RowType>
+KeyRange<RowType> MakeKeyRange(RowType start, RowType end) {
+  return KeyRange<RowType>(
+      std::move(Bound<RowType>(start, Bound<RowType>::Mode::CLOSED)),
+      std::move(Bound<RowType>(end, Bound<RowType>::Mode::CLOSED)));
+}
+
+/**
+ * Helper function to create a `KeyRange` between the `Bound`s provided.
+ *
+ * @tparam RowType
+ * @param start
+ * @param end
+ * @return
+ */
+template<typename RowType>
+KeyRange<RowType> MakeKeyRange(Bound<RowType> start, Bound<RowType> end) {
+  return KeyRange<RowType>(std::move(start), std::move(end));
 }
 
 }  // namespace SPANNER_CLIENT_NS
