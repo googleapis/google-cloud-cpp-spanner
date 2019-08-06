@@ -113,7 +113,7 @@ TEST(Row, WorksWithOptional) {
   EXPECT_FALSE(row_null.get<0>().has_value());
   auto values = row_null.values();
   EXPECT_EQ(1, values.size());
-  EXPECT_TRUE(values[0].is_null<std::string>());
+  EXPECT_TRUE(values[0].get<optional<std::string>>().ok());
 
   auto row_not_null = MakeRow(optional<std::string>{"hello"});
   EXPECT_EQ(1, row_not_null.size());
@@ -121,7 +121,7 @@ TEST(Row, WorksWithOptional) {
   EXPECT_EQ("hello", *row_not_null.get<0>());
   values = row_not_null.values();
   EXPECT_EQ(1, values.size());
-  EXPECT_FALSE(values[0].is_null<std::string>());
+  EXPECT_TRUE(values[0].get<std::string>().ok());
   EXPECT_EQ("hello", *values[0].get<std::string>());
 }
 

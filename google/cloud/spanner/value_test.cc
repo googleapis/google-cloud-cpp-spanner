@@ -34,12 +34,10 @@ inline namespace SPANNER_CLIENT_NS {
 template <typename T>
 void TestBasicSemantics(T init) {
   Value const default_ctor{};
-  EXPECT_FALSE(default_ctor.is_null<T>());
   EXPECT_FALSE(default_ctor.get<T>().ok());
 
   Value const v{init};
 
-  EXPECT_FALSE(v.is_null<T>());
   EXPECT_STATUS_OK(v.get<T>());
   EXPECT_EQ(init, *v.get<T>());
 
@@ -51,9 +49,7 @@ void TestBasicSemantics(T init) {
   // Tests a null Value of type `T`.
   Value const null = MakeNullValue<T>();
 
-  EXPECT_TRUE(null.is_null<T>());
   EXPECT_FALSE(null.get<T>().ok());
-  EXPECT_TRUE(null.is_null<optional<T>>());
   EXPECT_STATUS_OK(null.get<optional<T>>());
   EXPECT_EQ(optional<T>{}, *null.get<optional<T>>());
 
@@ -67,10 +63,8 @@ void TestBasicSemantics(T init) {
   EXPECT_EQ(v, internal::FromProto(protos.first, protos.second));
 
   Value const not_null{optional<T>(init)};
-  EXPECT_FALSE(not_null.is_null<T>());
   EXPECT_STATUS_OK(not_null.get<T>());
   EXPECT_EQ(init, *not_null.get<T>());
-  EXPECT_FALSE(not_null.is_null<optional<T>>());
   EXPECT_STATUS_OK(not_null.get<optional<T>>());
   EXPECT_EQ(init, **not_null.get<optional<T>>());
 }
@@ -176,7 +170,6 @@ TEST(Value, BasicSemantics) {
 TEST(Value, DoubleNaN) {
   double const nan = std::nan("NaN");
   Value v{nan};
-  EXPECT_FALSE(v.is_null<double>());
   EXPECT_TRUE(std::isnan(*v.get<double>()));
 
   // Since IEEE 754 defines that nan is not equal to itself, then a Value with
@@ -229,34 +222,26 @@ TEST(Value, MixingTypes) {
   using B = std::int64_t;
 
   Value a(A{});
-  EXPECT_FALSE(a.is_null<A>());
   EXPECT_TRUE(a.get<A>().ok());
   EXPECT_FALSE(a.get<B>().ok());
-  EXPECT_FALSE(a.is_null<B>());
   EXPECT_FALSE(a.get<B>().ok());
 
   Value null_a = MakeNullValue<A>();
-  EXPECT_TRUE(null_a.is_null<A>());
   EXPECT_FALSE(null_a.get<A>().ok());
-  EXPECT_FALSE(null_a.is_null<B>());
   EXPECT_FALSE(null_a.get<B>().ok());
 
   EXPECT_NE(null_a, a);
 
   Value b(B{});
-  EXPECT_FALSE(b.is_null<B>());
   EXPECT_TRUE(b.get<B>().ok());
   EXPECT_FALSE(b.get<A>().ok());
-  EXPECT_FALSE(b.is_null<A>());
   EXPECT_FALSE(b.get<A>().ok());
 
   EXPECT_NE(b, a);
   EXPECT_NE(b, null_a);
 
   Value null_b = MakeNullValue<B>();
-  EXPECT_TRUE(null_b.is_null<B>());
   EXPECT_FALSE(null_b.get<B>().ok());
-  EXPECT_FALSE(null_b.is_null<A>());
   EXPECT_FALSE(null_b.get<A>().ok());
 
   EXPECT_NE(null_b, b);
@@ -272,7 +257,6 @@ TEST(Value, SpannerArray) {
   Value const ve(empty);
   EXPECT_EQ(ve, ve);
   EXPECT_TRUE(ve.get<ArrayInt64>().ok());
-  EXPECT_FALSE(ve.is_null<ArrayInt64>());
   EXPECT_FALSE(ve.get<ArrayDouble>().ok());
   EXPECT_EQ(empty, *ve.get<ArrayInt64>());
 
@@ -280,7 +264,6 @@ TEST(Value, SpannerArray) {
   Value const vi(ai);
   EXPECT_EQ(vi, vi);
   EXPECT_TRUE(vi.get<ArrayInt64>().ok());
-  EXPECT_FALSE(vi.is_null<ArrayInt64>());
   EXPECT_FALSE(vi.get<ArrayDouble>().ok());
   EXPECT_EQ(ai, *vi.get<ArrayInt64>());
 
@@ -288,7 +271,6 @@ TEST(Value, SpannerArray) {
   Value const vd(ad);
   EXPECT_EQ(vd, vd);
   EXPECT_NE(vi, vd);
-  EXPECT_FALSE(vd.is_null<ArrayDouble>());
   EXPECT_FALSE(vd.get<ArrayInt64>().ok());
   EXPECT_TRUE(vd.get<ArrayDouble>().ok());
   EXPECT_EQ(ad, *vd.get<ArrayDouble>());
@@ -321,7 +303,6 @@ TEST(Value, SpannerStruct) {
   auto tup1 = make_tuple(false, int64_t{123});
   using T1 = decltype(tup1);
   Value v1(tup1);
-  EXPECT_FALSE(v1.is_null<T1>());
   EXPECT_STATUS_OK(v1.get<T1>());
   EXPECT_EQ(tup1, *v1.get<T1>());
   EXPECT_EQ(v1, v1);
@@ -344,7 +325,6 @@ TEST(Value, SpannerStruct) {
   auto tup2 = make_tuple(false, make_pair(string("f2"), int64_t{123}));
   using T2 = decltype(tup2);
   Value v2(tup2);
-  EXPECT_FALSE(v2.is_null<T2>());
   EXPECT_STATUS_OK(v2.get<T2>());
   EXPECT_EQ(tup2, *v2.get<T2>());
   EXPECT_EQ(v2, v2);
@@ -357,7 +337,6 @@ TEST(Value, SpannerStruct) {
   auto tup3 = make_tuple(false, make_pair(string("Other"), int64_t{123}));
   using T3 = decltype(tup3);
   Value v3(tup3);
-  EXPECT_FALSE(v3.is_null<T3>());
   EXPECT_STATUS_OK(v3.get<T3>());
   EXPECT_EQ(tup3, *v3.get<T3>());
   EXPECT_EQ(v3, v3);
@@ -369,13 +348,11 @@ TEST(Value, SpannerStruct) {
   // v1 != v2, yet T2 works with v1 and vice versa
   EXPECT_NE(v1, v2);
   EXPECT_STATUS_OK(v1.get<T2>());
-  EXPECT_FALSE(v1.is_null<T2>());
   EXPECT_STATUS_OK(v2.get<T1>());
-  EXPECT_FALSE(v2.is_null<T1>());
 
   Value v_null(optional<T1>{});
-  EXPECT_TRUE(v_null.is_null<T1>());
-  EXPECT_TRUE(v_null.is_null<T2>());
+  EXPECT_FALSE(v_null.get<optional<T1>>()->has_value());
+  EXPECT_FALSE(v_null.get<optional<T2>>()->has_value());
 
   EXPECT_NE(v1, v_null);
   EXPECT_NE(v2, v_null);
@@ -392,7 +369,6 @@ TEST(Value, SpannerStruct) {
   EXPECT_FALSE(v4.get<T2>().ok());
   EXPECT_FALSE(v4.get<T1>().ok());
 
-  EXPECT_FALSE(v4.is_null<T4>());
   EXPECT_STATUS_OK(v4.get<T4>());
   EXPECT_EQ(array_struct, *v4.get<T4>());
 
@@ -404,7 +380,6 @@ TEST(Value, SpannerStruct) {
   EXPECT_EQ(v5, v5);
   EXPECT_NE(v5, v4);
 
-  EXPECT_FALSE(v5.is_null<T5>());
   EXPECT_STATUS_OK(v5.get<T5>());
   EXPECT_EQ(empty, *v5.get<T5>());
 
@@ -416,7 +391,6 @@ TEST(Value, SpannerStruct) {
   EXPECT_EQ(v6, v6);
   EXPECT_NE(v6, v5);
 
-  EXPECT_FALSE(v6.is_null<T6>());
   EXPECT_STATUS_OK(v6.get<T6>());
   EXPECT_EQ(crazy, *v6.get<T6>());
 }
