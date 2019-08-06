@@ -78,9 +78,8 @@ class Bound {
   friend Bound<Row<internal::PromoteLiteral<ValueTypes>...>>
   MakeKeyRangeBoundOpen(ValueTypes... values);
 
-  template<typename RowType>
+  template <typename RowType>
   friend KeyRange<RowType> MakeKeyRange(RowType start, RowType end);
-
 
   KeyType key_;
   Mode mode_;
@@ -114,7 +113,7 @@ class KeyRange {
    */
   explicit KeyRange(KeyType start, KeyType end)
       : KeyRange(std::move(Bound<KeyType>(start)),
-          std::move(Bound<KeyType>(end))) {}
+                 std::move(Bound<KeyType>(end))) {}
 
   // Copy and move constructors and assignment operators.
   KeyRange(KeyRange const& key_range) = default;
@@ -258,7 +257,7 @@ Bound<Row<internal::PromoteLiteral<ValueTypes>...>> MakeKeyRangeBoundOpen(
  * @param end
  * @return
  */
-template<typename RowType>
+template <typename RowType>
 KeyRange<RowType> MakeKeyRange(RowType start, RowType end) {
   return KeyRange<RowType>(
       std::move(Bound<RowType>(start, Bound<RowType>::Mode::CLOSED)),
@@ -273,7 +272,7 @@ KeyRange<RowType> MakeKeyRange(RowType start, RowType end) {
  * @param end
  * @return
  */
-template<typename RowType>
+template <typename RowType>
 KeyRange<RowType> MakeKeyRange(Bound<RowType> start, Bound<RowType> end) {
   return KeyRange<RowType>(std::move(start), std::move(end));
 }

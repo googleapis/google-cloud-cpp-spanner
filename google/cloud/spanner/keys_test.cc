@@ -25,7 +25,7 @@ TEST(KeyRangeTest, ConstructorBoundModeUnspecified) {
   std::string start_value("key0");
   std::string end_value("key1");
   KeyRange<Row<std::string>> closed_range =
-    MakeKeyRange(MakeRow(start_value), MakeRow(end_value));
+      MakeKeyRange(MakeRow(start_value), MakeRow(end_value));
 
   EXPECT_EQ(start_value, closed_range.start().key().get<0>());
   EXPECT_TRUE(closed_range.start().IsClosed());
