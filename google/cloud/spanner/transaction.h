@@ -26,6 +26,7 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
+
 class Transaction;  // defined below
 
 // Internal forward declarations to befriend.
