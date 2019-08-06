@@ -108,7 +108,8 @@ std::pair<google::spanner::v1::Type, google::protobuf::Value> ToProto(Value v);
  *
  * Nulls can be retrieved from a `Value::get<T>` by specifying the type `T` as
  * a `optional<U>`. The returned optional will either be empty (indicating
- * null) or it will contain the actual value.
+ * null) or it will contain the actual value. See the documentation for
+ * `Value::get<T>` below for more details.
  *
  * @par Spanner Arrays (i.e., `std::vector<T>`)
  *
@@ -279,7 +280,7 @@ class Value {
    *
    * Returns a non-OK status IFF:
    *
-   * * There contained value is "null", and `T` is not an `optional`.
+   * * The contained value is "null", and `T` is not an `optional`.
    * * There is an error converting the contained value to `T`.
    *
    * @par Example
