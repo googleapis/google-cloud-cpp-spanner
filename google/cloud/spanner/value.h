@@ -106,9 +106,9 @@ std::pair<google::spanner::v1::Type, google::protobuf::Value> ToProto(Value v);
  * 1. Passing an `optional<T>()` with no value to `Value`'s constructor.
  * 2. Using the `MakeNullValue<T>()` helper function (defined below).
  *
- * Nulls can be retried from a `Value::get<T>` by specifying the type `T` as a
- * `optional<U>`. The returned optional will either be empty (indicating null)
- * or it will contain the actual value.
+ * Nulls can be retrieved from a `Value::get<T>` by specifying the type `T` as
+ * a `optional<U>`. The returned optional will either be empty (indicating
+ * null) or it will contain the actual value.
  *
  * @par Spanner Arrays (i.e., `std::vector<T>`)
  *
@@ -277,11 +277,10 @@ class Value {
   /**
    * Returns the contained value wrapped in a `google::cloud::StatusOr<T>`.
    *
-   * If the contained value cannot be converted to the specified type `T`, a
-   * non-OK Status will be returned. If the `Value` represents a null value
-   * then a non-OK Status will be returned, unless the the specified type `T`
-   * is an `optional<U>`, in which case a valueless optional is returned to
-   * indicate the nullness.
+   * Returns a non-OK status IFF:
+   *
+   * * There contained value is "null", and `T` is not an `optional`.
+   * * There is an error converting the contained value to `T`.
    *
    * @par Example
    *
