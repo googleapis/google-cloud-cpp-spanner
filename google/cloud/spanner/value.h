@@ -277,9 +277,9 @@ class Value {
   /**
    * Returns the contained value wrapped in a `google::cloud::StatusOr<T>`.
    *
-   * Returns a non-OK status IFF:
+   * Returns a non-OK status (i.e., an error) if and only if:
    *
-   * * There contained value is "null", and `T` is not an `optional`.
+   * * The contained value is "null", and `T` is not an `optional`.
    * * There is an error converting the contained value to `T`.
    *
    * @par Example
@@ -293,7 +293,7 @@ class Value {
    *
    * // Now using a "null" std::int64_t
    * v = spanner::MakeNullValue<std::int64_t>();
-   * StatusOr<std::int64_t> i = v.get<std::int64_t>();
+   * StatusOr<std::int64_t> i = v.get<std::int64_t>();  // Returns non-OK
    * if (!i) {
    *   std::cerr << "Could not get integer: " << i.status();
    * }
