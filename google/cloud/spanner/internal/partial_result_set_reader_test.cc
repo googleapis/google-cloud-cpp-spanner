@@ -16,6 +16,7 @@
 #include "google/cloud/spanner/testing/matchers.h"
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/internal/make_unique.h"
+#include "google/cloud/testing_util/assert_ok.h"
 #include <google/protobuf/text_format.h>
 #include <gmock/gmock.h>
 #include <array>
@@ -43,11 +44,10 @@ using ::testing::SetArgPointee;
  * A gmock Matcher that verifies a value returned from PartialResultSetReader
  * is valid and equals an expected value.
  */
-template <typename T>
 class ReaderValueMatcher
     : public testing::MatcherInterface<StatusOr<optional<Value>> const&> {
  public:
-  ReaderValueMatcher(T expected) : expected_(std::move(expected)) {}
+  ReaderValueMatcher(Value expected) : expected_(std::move(expected)) {}
 
   bool MatchAndExplain(StatusOr<optional<Value>> const& actual,
                        testing::MatchResultListener* listener) const override {
@@ -59,38 +59,25 @@ class ReaderValueMatcher
       *listener << "reader value is empty";
       return false;
     }
-    if (!(*actual)->is<T>()) {
-      *listener << "value is not the expected type";
-      return false;
-    }
-    if ((*actual)->is_null<T>()) {
-      *listener << "value is null";
-      return false;
-    }
-    auto final_value = (*actual)->get<T>();
-    if (!final_value.ok()) {
-      *listener << "Value::get() failed: " << final_value.status();
-      return false;
-    }
-    if (*final_value != expected_) {
-      *listener << *final_value << " does not equal " << expected_;
+    if (**actual != expected_) {
+      *listener << testing::PrintToString(**actual) << " does not equal "
+                << testing::PrintToString(expected_);
       return false;
     }
     return true;
   }
 
-  void DescribeTo(::std::ostream* os) const override {
-    *os << "is valid and equals " << expected_;
+  void DescribeTo(std::ostream* os) const override {
+    *os << "is valid and equals " << testing::PrintToString(expected_);
   }
 
  private:
-  T expected_;
+  Value expected_;
 };
 
-template <typename T>
 testing::Matcher<StatusOr<optional<Value>> const&> IsValidAndEquals(
-    T expected) {
-  return testing::MakeMatcher(new ReaderValueMatcher<T>(std::move(expected)));
+    Value expected) {
+  return testing::MakeMatcher(new ReaderValueMatcher(std::move(expected)));
 }
 
 // gmock makes clang-tidy very angry, disable a few warnings that we have no
@@ -111,8 +98,8 @@ class MockGRpcReader : public PartialResultSetReader::GRpcReader {
   MOCK_METHOD0(WaitForInitialMetadata, void());
 };
 
-/// @test Verify the behavior when Read() fails.
-TEST(PartialResultSetReaderTest, ReadReturnsFalse) {
+/// @test Verify the behavior when the initial `Read()` fails.
+TEST(PartialResultSetReaderTest, InitialReadFailure) {
   auto grpc_reader = make_unique<MockGRpcReader>();
   EXPECT_CALL(*grpc_reader, Read(_)).WillOnce(Return(false));
   grpc::Status finish_status(grpc::StatusCode::INVALID_ARGUMENT, "invalid");
@@ -121,6 +108,39 @@ TEST(PartialResultSetReaderTest, ReadReturnsFalse) {
   auto reader = PartialResultSetReader::Create(std::move(grpc_reader));
   EXPECT_FALSE(reader.status().ok());
   EXPECT_EQ(reader.status().code(), StatusCode::kInvalidArgument);
+}
+
+/**
+ * @test Verify the behavior when we have a successful `Read()` followed by a
+ * failed `Read()`.
+ */
+TEST(PartialResultSetReaderTest, ReadSuccessThenFailure) {
+  auto grpc_reader = make_unique<MockGRpcReader>();
+  spanner_proto::PartialResultSet response;
+  ASSERT_TRUE(TextFormat::ParseFromString(R"""(
+    metadata: {
+      row_type: {
+        fields: [
+          { name: "AnInt", type: { code: INT64 } }
+        ]
+      }
+    }
+    values: [ { string_value: "80" } ]
+  )""",
+                                          &response));
+  EXPECT_CALL(*grpc_reader, Read(_))
+      .WillOnce(DoAll(SetArgPointee<0>(response), Return(true)))
+      .WillOnce(Return(false));
+  grpc::Status finish_status(grpc::StatusCode::CANCELLED, "cancelled");
+  EXPECT_CALL(*grpc_reader, Finish()).WillOnce(Return(finish_status));
+
+  // The first call to NextValue() yields a value but the second gives an error.
+  auto reader = PartialResultSetReader::Create(std::move(grpc_reader));
+  EXPECT_STATUS_OK(reader.status());
+  EXPECT_THAT((*reader)->NextValue(),
+              IsValidAndEquals(Value(std::int64_t{80})));
+  auto value = (*reader)->NextValue();
+  EXPECT_EQ(value.status().code(), StatusCode::kCancelled);
 }
 
 /// @test Verify the behavior when the first response does not contain metadata.
@@ -191,7 +211,7 @@ TEST(PartialResultSetReaderTest, SingleResponse) {
   EXPECT_CALL(*grpc_reader, Finish()).WillOnce(Return(grpc::Status()));
 
   auto reader = PartialResultSetReader::Create(std::move(grpc_reader));
-  EXPECT_TRUE(reader.status().ok());
+  EXPECT_STATUS_OK(reader.status());
 
   // Verify the returned metadata is correct.
   spanner_proto::ResultSetMetadata expected_metadata;
@@ -209,12 +229,14 @@ TEST(PartialResultSetReaderTest, SingleResponse) {
   EXPECT_THAT(*actual_metadata, IsProtoEqual(expected_metadata));
 
   // Verify the returned values are correct.
-  EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(std::int64_t{10}));
-  EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(std::string{"user10"}));
+  EXPECT_THAT((*reader)->NextValue(),
+              IsValidAndEquals(Value(std::int64_t{10})));
+  EXPECT_THAT((*reader)->NextValue(),
+              IsValidAndEquals(Value(std::string{"user10"})));
 
   // At end of stream, we get an 'ok' response with no value.
   auto eos = (*reader)->NextValue();
-  EXPECT_TRUE(eos.ok());
+  EXPECT_STATUS_OK(eos);
   EXPECT_FALSE(eos->has_value());
 
   // Verify the returned stats are correct.
@@ -283,20 +305,25 @@ TEST(PartialResultSetReaderTest, MultipleResponses) {
   EXPECT_CALL(*grpc_reader, Finish()).WillOnce(Return(grpc::Status()));
 
   auto reader = PartialResultSetReader::Create(std::move(grpc_reader));
-  EXPECT_TRUE(reader.status().ok());
+  EXPECT_STATUS_OK(reader.status());
 
   // Verify the returned values are correct.
-  EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(std::int64_t{10}));
-  EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(std::string{"user10"}));
-  EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(std::int64_t{22}));
-  EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(std::string{"user22"}));
-  EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(std::int64_t{99}));
   EXPECT_THAT((*reader)->NextValue(),
-              IsValidAndEquals(std::string{"99user99"}));
+              IsValidAndEquals(Value(std::int64_t{10})));
+  EXPECT_THAT((*reader)->NextValue(),
+              IsValidAndEquals(Value(std::string{"user10"})));
+  EXPECT_THAT((*reader)->NextValue(),
+              IsValidAndEquals(Value(std::int64_t{22})));
+  EXPECT_THAT((*reader)->NextValue(),
+              IsValidAndEquals(Value(std::string{"user22"})));
+  EXPECT_THAT((*reader)->NextValue(),
+              IsValidAndEquals(Value(std::int64_t{99})));
+  EXPECT_THAT((*reader)->NextValue(),
+              IsValidAndEquals(Value(std::string{"99user99"})));
 
   // At end of stream, we get an 'ok' response with no value.
   auto eos = (*reader)->NextValue();
-  EXPECT_TRUE(eos.ok());
+  EXPECT_STATUS_OK(eos);
   EXPECT_FALSE(eos->has_value());
 }
 

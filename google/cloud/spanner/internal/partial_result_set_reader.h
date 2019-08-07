@@ -58,7 +58,6 @@ class PartialResultSetReader : public internal::ResultSetSource {
   PartialResultSetReader(std::unique_ptr<GRpcReader> grpc_reader)
       : grpc_reader_(std::move(grpc_reader)) {}
 
-  Status Initialize();
   Status ReadFromStream();
 
   std::unique_ptr<GRpcReader> grpc_reader_;
