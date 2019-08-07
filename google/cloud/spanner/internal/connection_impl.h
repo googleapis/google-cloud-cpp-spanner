@@ -28,8 +28,13 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
+// A concrete `Connection` subclass that uses gRPC to actually talk to a real
+// Spanner instance. See `MakeConnection()` for a factory function that creates
+// and returns instances of this class.
 class ConnectionImpl : public Connection {
  public:
+  // Creates a ConnectionImpl that will talk to the specified `database` using
+  // the given `stub`. We can test this class by injecting in a mock `stub`.
   explicit ConnectionImpl(std::string database,
                           std::shared_ptr<internal::SpannerStub> stub)
       : database_(std::move(database)), stub_(std::move(stub)) {}
