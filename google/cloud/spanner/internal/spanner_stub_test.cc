@@ -23,9 +23,8 @@ namespace internal {
 namespace {
 
 TEST(SpannerStub, CreateDefaultStub) {
-  ClientOptions opts;
   auto stub =
-      CreateDefaultSpannerStub(opts.credentials(), opts.admin_endpoint());
+      CreateDefaultSpannerStub(grpc::GoogleDefaultCredentials(), "localhost");
   EXPECT_NE(stub, nullptr);
 }
 
