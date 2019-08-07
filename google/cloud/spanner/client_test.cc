@@ -78,7 +78,6 @@ TEST(ClientTest, CommitSuccess) {
   EXPECT_EQ(ts, commit->commit_timestamp);
 }
 
-
 TEST(ClientTest, CommitError) {
   auto conn = std::make_shared<MockConnection>();
 
