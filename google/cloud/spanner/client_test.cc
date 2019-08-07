@@ -35,87 +35,44 @@ class MockConnection : public Connection {
   MOCK_METHOD1(Commit, StatusOr<CommitResult>(CommitParams));
 };
 
-// gmock makes clang-tidy very angry, disable a few warnings that we have no
-// control over.
-// NOLINTNEXTLINE(clang-analyzer-optin.cplusplus.VirtualCall)
-class MockSpannerStub : public internal::SpannerStub {
- public:
-  // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD2(CreateSession, StatusOr<spanner_proto::Session>(
-                                  grpc::ClientContext&,
-                                  spanner_proto::CreateSessionRequest const&));
+TEST(ClientTest, CopyAndMove) {
+  auto conn1 = std::make_shared<MockConnection>();
+  auto conn2 = std::make_shared<MockConnection>();
 
-  // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD2(GetSession, StatusOr<spanner_proto::Session>(
-                               grpc::ClientContext&,
-                               spanner_proto::GetSessionRequest const&));
+  Client c1(conn1);
+  Client c2(conn2);
+  EXPECT_NE(c1, c2);
 
-  // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD2(ListSessions, StatusOr<spanner_proto::ListSessionsResponse>(
-                                 grpc::ClientContext&,
-                                 spanner_proto::ListSessionsRequest const&));
+  // Copy construction
+  Client c3 = c1;
+  EXPECT_EQ(c3, c1);
 
-  // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD2(DeleteSession,
-               Status(grpc::ClientContext&,
-                      spanner_proto::DeleteSessionRequest const&));
+  // Copy assignment
+  c3 = c2;
+  EXPECT_EQ(c3, c2);
 
-  // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD2(ExecuteSql, StatusOr<spanner_proto::ResultSet>(
-                               grpc::ClientContext&,
-                               spanner_proto::ExecuteSqlRequest const&));
+  // Move construction
+  Client c4 = std::move(c3);
+  EXPECT_EQ(c4, c2);
 
-  // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD2(
-      ExecuteStreamingSql,
-      std::unique_ptr<
-          grpc::ClientReaderInterface<spanner_proto::PartialResultSet>>(
-          grpc::ClientContext&, spanner_proto::ExecuteSqlRequest const&));
+  // Move assignment
+  c1 = std::move(c4);
+  EXPECT_EQ(c1, c2);
+}
 
-  // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD2(ExecuteBatchDml,
-               StatusOr<spanner_proto::ExecuteBatchDmlResponse>(
-                   grpc::ClientContext&,
-                   spanner_proto::ExecuteBatchDmlRequest const&));
+TEST(ClientTest, Commit) {
+  auto conn = std::make_shared<MockConnection>();
 
-  // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD2(Read,
-               StatusOr<spanner_proto::ResultSet>(
-                   grpc::ClientContext&, spanner_proto::ReadRequest const&));
+  Client client(conn);
+  EXPECT_CALL(*conn, Commit(_))
+      .WillOnce(
+          ::testing::Return(Status(StatusCode::kPermissionDenied, "blah")));
 
-  // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD2(
-      StreamingRead,
-      std::unique_ptr<
-          grpc::ClientReaderInterface<spanner_proto::PartialResultSet>>(
-          grpc::ClientContext&, spanner_proto::ReadRequest const&));
-
-  // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD2(BeginTransaction,
-               StatusOr<spanner_proto::Transaction>(
-                   grpc::ClientContext&,
-                   spanner_proto::BeginTransactionRequest const&));
-
-  // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD2(Commit,
-               StatusOr<spanner_proto::CommitResponse>(
-                   grpc::ClientContext&, spanner_proto::CommitRequest const&));
-
-  // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD2(Rollback, Status(grpc::ClientContext&,
-                                spanner_proto::RollbackRequest const&));
-
-  // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD2(PartitionQuery,
-               StatusOr<spanner_proto::PartitionResponse>(
-                   grpc::ClientContext&,
-                   spanner_proto::PartitionQueryRequest const&));
-
-  // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD2(PartitionRead, StatusOr<spanner_proto::PartitionResponse>(
-                                  grpc::ClientContext&,
-                                  spanner_proto::PartitionReadRequest const&));
-};
+  auto txn = MakeReadWriteTransaction();
+  auto commit = client.Commit(txn, {});
+  EXPECT_EQ(StatusCode::kPermissionDenied, commit.status().code());
+  EXPECT_THAT(commit.status().message(), HasSubstr("blah"));
+}
 
 TEST(ClientTest, MakeDatabaseName) {
   EXPECT_EQ(
@@ -124,18 +81,15 @@ TEST(ClientTest, MakeDatabaseName) {
       MakeDatabaseName("dummy_project", "dummy_instance", "dummy_database_id"));
 }
 
-TEST(ClientTest, Commit) {
-  auto mock = std::make_shared<MockConnection>();
+TEST(ClientTest, MakeConnectionOptionalArguments) {
+  auto conn = MakeConnection("foo");
+  EXPECT_NE(conn, nullptr);
 
-  Client client(mock);
-  EXPECT_CALL(*mock, Commit(_))
-      .WillOnce(
-          ::testing::Return(Status(StatusCode::kPermissionDenied, "blah")));
+  conn = MakeConnection("foo", grpc::GoogleDefaultCredentials());
+  EXPECT_NE(conn, nullptr);
 
-  auto txn = MakeReadWriteTransaction();
-  auto commit = client.Commit(txn, {});
-  EXPECT_EQ(StatusCode::kPermissionDenied, commit.status().code());
-  EXPECT_THAT(commit.status().message(), HasSubstr("blah"));
+  conn = MakeConnection("foo", grpc::GoogleDefaultCredentials(), "localhost");
+  EXPECT_NE(conn, nullptr);
 }
 
 }  // namespace

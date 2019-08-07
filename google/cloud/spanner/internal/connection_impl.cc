@@ -29,7 +29,7 @@ StatusOr<CommitResult> ConnectionImpl::Commit(Connection::CommitParams cp) {
   return internal::Visit(
       std::move(cp.transaction),
       [this, &mutations](spanner_proto::TransactionSelector& s) {
-        return this->Commit(s, mutations);
+        return this->Commit(s, std::move(mutations));
       });
 }
 
@@ -51,15 +51,15 @@ StatusOr<ConnectionImpl::SessionHolder> ConnectionImpl::GetSession() {
 
 StatusOr<CommitResult> ConnectionImpl::Commit(
     google::spanner::v1::TransactionSelector& s,
-    std::vector<Mutation> const& mutations) {
+    std::vector<Mutation> mutations) {
   auto session = GetSession();
   if (!session) {
     return std::move(session).status();
   }
   google::spanner::v1::CommitRequest request;
   request.set_session(session->session_name());
-  for (auto const& m : mutations) {
-    *request.add_mutations() = m.as_proto();
+  for (auto&& m : mutations) {
+    *request.add_mutations() = std::move(m).as_proto();
   }
   if (!s.id().empty()) {
     request.set_transaction_id(s.id());
