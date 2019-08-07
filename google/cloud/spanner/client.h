@@ -15,16 +15,13 @@
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CLIENT_H_
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CLIENT_H_
 
-#include "google/cloud/spanner/client_options.h"
 #include "google/cloud/spanner/commit_result.h"
 #include "google/cloud/spanner/connection.h"
-#include "google/cloud/spanner/internal/spanner_stub.h"
 #include "google/cloud/spanner/mutations.h"
 #include "google/cloud/spanner/result_set.h"
 #include "google/cloud/spanner/sql_partition.h"
 #include "google/cloud/spanner/sql_statement.h"
 #include "google/cloud/spanner/transaction.h"
-#include "google/cloud/spanner/value.h"
 #include "google/cloud/optional.h"
 #include "google/cloud/status.h"
 #include "google/cloud/status_or.h"

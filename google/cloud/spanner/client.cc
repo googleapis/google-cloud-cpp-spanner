@@ -15,9 +15,6 @@
 #include "google/cloud/spanner/client.h"
 #include "google/cloud/spanner/internal/connection_impl.h"
 #include "google/cloud/spanner/internal/spanner_stub.h"
-#include "google/cloud/spanner/value.h"
-#include "google/cloud/grpc_utils/grpc_error_delegate.h"
-#include "google/cloud/log.h"
 #include <grpcpp/grpcpp.h>
 
 namespace google {

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/client.h"
-#include "google/cloud/spanner/internal/spanner_stub.h"
+#include "google/cloud/spanner/connection.h"
 #include <gmock/gmock.h>
 
 namespace google {
