@@ -20,12 +20,20 @@
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/status_or.h"
 #include <string>
+#include <type_traits>
 #include <vector>
 
 namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
+namespace internal {
+template <typename T>
+struct IsRow : std::false_type {};
+
+template <typename... Ts>
+struct IsRow<Row<Ts...>> : std::true_type {};
+}  // namespace internal
 
 template <typename KeyType>
 class KeyRange;
@@ -45,8 +53,17 @@ class KeyRange;
 template <typename KeyType>
 class Bound {
  public:
-  Bound() = default;
-  explicit Bound(KeyType key) : key_(std::move(key)), mode_(Mode::CLOSED) {}
+  static_assert(internal::IsRow<KeyType>::value,
+      "KeyType must be of type spanner::Row<>.");
+  /**
+   * Constructs a closed `Bound` with a default constructed key of `KeyType`.
+   */
+  Bound() : Bound(KeyType(), Mode::MODE_CLOSED) {}
+  /**
+   * Constructs a closed `Bound` with the provided key.
+   * @param key spanner::Row<Types...>
+   */
+  explicit Bound(KeyType key) : Bound(std::move(key), Mode::MODE_CLOSED) {}
 
   // Copy and move constructors and assignment operators.
   Bound(Bound const& key_range) = default;
@@ -55,8 +72,8 @@ class Bound {
   Bound& operator=(Bound&& rhs) = default;
 
   KeyType const& key() const { return key_; }
-  bool IsClosed() const { return mode_ == Mode::CLOSED; }
-  bool IsOpen() const { return mode_ == Mode::OPEN; }
+  bool IsClosed() const { return mode_ == Mode::MODE_CLOSED; }
+  bool IsOpen() const { return mode_ == Mode::MODE_OPEN; }
 
   friend bool operator==(Bound const& lhs, Bound const& rhs) {
     return lhs.key_ == rhs.key_ && lhs.mode_ == rhs.mode_;
@@ -66,17 +83,15 @@ class Bound {
   }
 
  private:
-  enum class Mode { CLOSED, OPEN };
+  enum class Mode { MODE_CLOSED, MODE_OPEN };
 
   Bound(KeyType key, Mode mode) : key_(std::move(key)), mode_(mode) {}
 
-  template <typename... ValueTypes>
-  friend Bound<Row<internal::PromoteLiteral<ValueTypes>...>>
-  MakeKeyRangeBoundClosed(ValueTypes... values);
+  template <typename RowType>
+  friend Bound<RowType> MakeKeyRangeBoundClosed(RowType key);
 
-  template <typename... ValueTypes>
-  friend Bound<Row<internal::PromoteLiteral<ValueTypes>...>>
-  MakeKeyRangeBoundOpen(ValueTypes... values);
+  template <typename RowType>
+  friend Bound<RowType> MakeKeyRangeBoundOpen(RowType key);
 
   template <typename RowType>
   friend KeyRange<RowType> MakeKeyRange(RowType start, RowType end);
@@ -96,8 +111,10 @@ class Bound {
 template <typename KeyType>
 class KeyRange {
  public:
+  static_assert(internal::IsRow<KeyType>::value,
+      "KeyType must be of type spanner::Row<>.");
   /**
-   * Constructs and empty `KeyRange`.
+   * Constructs an empty `KeyRange`.
    */
   KeyRange() : start_(), end_() {}
   ~KeyRange() = default;
@@ -143,10 +160,45 @@ class KeyRange {
  *
  * A `KeySet` can consist of multiple `KeyRange` and/or `spanner::Row`
  * instances.
+ *
+ * If the same key is specified multiple times in the `KeySet` (for example if
+ * two `KeyRange`s, two keys, or a key and a `KeyRange` overlap), Cloud Spanner
+ * behaves as if the key were only specified once.
+ *
+ * @tparam KeyType spanner::Row<Types...> that corresponds to the desired index
+ * definition.
+ *
+ * @par Example
+ *
+ * @code
+ * // EmployeeTable has a primary key on EmployeeID.
+ * using EmployeeTablePrimaryKey = Row<std::int64_t>;
+ *
+ * // A KeySet where EmployeeID is between 1 and 10.
+ * auto first_ten_employees =
+ *   KeySet<EmployeeTablePrimaryKey>(
+ *     MakeKeyRangeBoundClosed(MakeRow(1)),
+ *     MakeKeyRangeBoundClosed(MakeRow(10)));
+ *
+ * // EmployeeTable also has an index on LastName, FirstName.
+ * using EmployeeNameKey = Row<std::string, std::string>;
+ *
+ * // A KeySet where LastName, FirstName is ("Smith", "John").
+ * auto all_employees_named_john_smith =
+ *   KeySet<EmployeeNameKey> = KeySet<EmployeeNameKey>(
+ *     MakeRow("Smith", "John"));
+ *
+ * @endcode
  */
 template <typename KeyType>
 class KeySet {
  public:
+  static_assert(internal::IsRow<KeyType>::value,
+      "KeyType must be of type spanner::Row<>.");
+
+  static KeySet<KeyType> All() {
+    return KeySet<KeyType>(true);
+  }
   /**
    * Constructs an empty `KeySet`.
    */
@@ -154,17 +206,15 @@ class KeySet {
 
   /**
    * Constructs a `KeySet` with a single key `spanner::Row`.
-   * @param key
    */
-  explicit KeySet(KeyType key) : keys_(), key_ranges_() {
+  explicit KeySet(KeyType key) : all_(false), keys_(), key_ranges_() {
     keys_.emplace_back(std::move(key));
   }
 
   /**
    * Constructs a `KeySet` with a single `KeyRange`.
-   * @param key_range
    */
-  explicit KeySet(KeyRange<KeyType> key_range) : keys_(), key_ranges_() {
+  explicit KeySet(KeyRange<KeyType> key_range) : all_(false), keys_(), key_ranges_() {
     key_ranges_.emplace_back(std::move(key_range));
   }
 
@@ -184,96 +234,94 @@ class KeySet {
 
   /**
    * Adds a key `spanner::Row` to the `KeySet`.
-   *
-   * @param key
    */
   void Add(KeyType key) { keys_.emplace_back(std::move(key)); }
 
   /**
    * Adds a `KeyRange` to the `KeySet`.
-   *
-   * @param key_range
    */
   void Add(KeyRange<KeyType> key_range) {
     key_ranges_.emplace_back(std::move(key_range));
   }
 
   /**
-   * Creates a key `spanner::Row` from the values provided and adds it to the
-   * `KeySet`.
-   *
-   * @tparam ValueTypes
-   * @param values
+   * Does the `KeySet` represent all keys for an index.
    */
-  template <typename... ValueTypes>
-  void AddKey(ValueTypes... values) {
-    keys_.emplace_back(std::move(MakeRow(values...)));
-  }
+  bool IsAll() const {return all_;}
 
-  // TODO(sdhart): Add methods to insert ranges of Keys and KeyRanges.
-  // TODO(sdhart): Add methods to remove Keys or KeyRanges.
+  // TODO(#322): Add methods to insert ranges of Keys and KeyRanges.
+  // TODO(#323): Add methods to remove Keys or KeyRanges.
 
  private:
+  explicit KeySet(bool all) : all_(all), keys_(), key_ranges_() {}
+  bool all_;
   std::vector<KeyType> keys_;
   std::vector<KeyRange<KeyType>> key_ranges_;
 };
 
 /**
- * Helper function to create a closed `Bound` on the values provided.
+ * Helper function to create a closed `Bound` on the key `spanner::Row`
+ * provided.
  *
- * @tparam ValueTypes
- * @param values
- * @return Bound<Row<ValueTypes>>
+ * @tparam RowType spanner::Row<Types...> that corresponds to the desired index
+ * definition.
+ * @param key spanner::Row<Types...>
+ * @return Bound<RowType>
  */
-template <typename... ValueTypes>
-Bound<Row<internal::PromoteLiteral<ValueTypes>...>> MakeKeyRangeBoundClosed(
-    ValueTypes... values) {
-  return Bound<Row<internal::PromoteLiteral<ValueTypes>...>>(
-      MakeRow(values...),
-      Bound<Row<internal::PromoteLiteral<ValueTypes>...>>::Mode::CLOSED);
+template <typename RowType>
+Bound<RowType> MakeKeyRangeBoundClosed(RowType key) {
+  static_assert(internal::IsRow<RowType>::value,
+      "RowType must be of type spanner::Row<>.");
+  return Bound<RowType>(key, Bound<RowType>::Mode::MODE_CLOSED);
 }
 
 /**
- * Helper function to create an open `Bound` on the values provided.
+ * Helper function to create an open `Bound` on the key `spanner::Row` provided.
  *
- * @tparam ValueTypes
- * @param values
- * @return Bound<Row<ValueTypes>>
+ * @tparam RowType spanner::Row<Types...> that corresponds to the desired index
+ * definition.
+ * @param key spanner::Row<Types...>
+ * @return Bound<RowType>
  */
-template <typename... ValueTypes>
-Bound<Row<internal::PromoteLiteral<ValueTypes>...>> MakeKeyRangeBoundOpen(
-    ValueTypes... values) {
-  return Bound<Row<internal::PromoteLiteral<ValueTypes>...>>(
-      MakeRow(values...),
-      Bound<Row<internal::PromoteLiteral<ValueTypes>...>>::Mode::OPEN);
+template <typename RowType>
+Bound<RowType> MakeKeyRangeBoundOpen(RowType key) {
+  static_assert(internal::IsRow<RowType>::value,
+      "RowType must be of type spanner::Row<>.");
+  return Bound<RowType>(key, Bound<RowType>::Mode::MODE_OPEN);
 }
 
 /**
  * Helper function to create a `KeyRange` between two keys `spanner::Row`s with
  * both `Bound`s closed.
  *
- * @tparam RowType
- * @param start
- * @param end
- * @return
+ * @tparam RowType spanner::Row<Types...> that corresponds to the desired index
+ * definition.
+ * @param start spanner::Row<Types...> of the starting key.
+ * @param end spanner::Row<Types...> of the ending key.
+ * @return KeyRange<RowType>
  */
 template <typename RowType>
 KeyRange<RowType> MakeKeyRange(RowType start, RowType end) {
+  static_assert(internal::IsRow<RowType>::value,
+      "RowType must be of type spanner::Row<>.");
   return KeyRange<RowType>(
-      std::move(Bound<RowType>(start, Bound<RowType>::Mode::CLOSED)),
-      std::move(Bound<RowType>(end, Bound<RowType>::Mode::CLOSED)));
+      std::move(Bound<RowType>(start, Bound<RowType>::Mode::MODE_CLOSED)),
+      std::move(Bound<RowType>(end, Bound<RowType>::Mode::MODE_CLOSED)));
 }
 
 /**
  * Helper function to create a `KeyRange` between the `Bound`s provided.
  *
- * @tparam RowType
- * @param start
- * @param end
- * @return
+ * @tparam RowType spanner::Row<Types...> that corresponds to the desired index
+ * definition.
+ * @param start spanner::Row<Types...> of the starting key.
+ * @param end spanner::Row<Types...> of the ending key.
+ * @return KeyRange<RowType>
  */
 template <typename RowType>
 KeyRange<RowType> MakeKeyRange(Bound<RowType> start, Bound<RowType> end) {
+  static_assert(internal::IsRow<RowType>::value,
+    "RowType must be of type spanner::Row<>.");
   return KeyRange<RowType>(std::move(start), std::move(end));
 }
 
