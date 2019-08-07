@@ -90,6 +90,7 @@ add_library(spanner_client
             client.h
             client_options.cc
             client_options.h
+            connection.h
             commit_result.h
             database_admin_client.cc
             database_admin_client.h
