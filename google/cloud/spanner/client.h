@@ -109,7 +109,12 @@ struct KeySet {};
  */
 class Client {
  public:
-  // XXX
+  /**
+   * Constructs a `Client` object that will use the specified `Connection`.
+   *
+   * See `MakeConnection()` (defined below) for how to create a connection to
+   * Spanner.
+   */
   explicit Client(std::shared_ptr<Connection> conn) : conn_(std::move(conn)) {}
 
   //@{
@@ -362,9 +367,11 @@ std::string MakeDatabaseName(std::string const& project,
                              std::string const& instance,
                              std::string const& database_id);
 
-// XXX
+
 std::shared_ptr<Connection> MakeConnection(
-    std::string database, std::shared_ptr<grpc::ChannelCredentials> creds,
+    std::string database,
+    std::shared_ptr<grpc::ChannelCredentials> creds =
+        grpc::GoogleDefaultCredentials(),
     std::string endpoint = "spanner.googleapis.com");
 
 }  // namespace SPANNER_CLIENT_NS
