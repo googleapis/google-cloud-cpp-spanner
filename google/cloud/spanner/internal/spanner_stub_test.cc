@@ -23,7 +23,9 @@ namespace internal {
 namespace {
 
 TEST(SpannerStub, CreateDefaultStub) {
-  auto stub = CreateDefaultSpannerStub(ClientOptions());
+  ClientOptions opts;
+  auto stub =
+      CreateDefaultSpannerStub(opts.admin_endpoint(), opts.credentials());
   EXPECT_NE(stub, nullptr);
 }
 

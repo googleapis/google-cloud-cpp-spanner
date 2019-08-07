@@ -12,16 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CLIENT_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CLIENT_H_
+#ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CONNECTION_H__
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CONNECTION_H__
 
 #include "google/cloud/spanner/commit_result.h"
 #include "google/cloud/spanner/mutations.h"
 #include "google/cloud/spanner/transaction.h"
-#include "google/cloud/status.h"
+#include "google/cloud/spanner/version.h"
 #include "google/cloud/status_or.h"
-#include <google/spanner/v1/spanner.pb.h>
-#include <string>
 #include <vector>
 
 namespace google {
@@ -30,9 +28,12 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
 /**
+ * XXX
  */
 class Connection {
  public:
+  virtual ~Connection() = default;
+
   /**
    * Commits a transaction.
    *
@@ -54,4 +55,4 @@ class Connection {
 }  // namespace cloud
 }  // namespace google
 
-#endif  // GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CLIENT_H_
+#endif  // GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CONNECTION_H__

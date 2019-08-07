@@ -17,6 +17,7 @@
 
 #include "google/cloud/spanner/client_options.h"
 #include "google/cloud/spanner/commit_result.h"
+#include "google/cloud/spanner/connection.h"
 #include "google/cloud/spanner/internal/spanner_stub.h"
 #include "google/cloud/spanner/mutations.h"
 #include "google/cloud/spanner/result_set.h"
@@ -28,6 +29,7 @@
 #include "google/cloud/status.h"
 #include "google/cloud/status_or.h"
 #include <google/spanner/v1/spanner.pb.h>
+#include <grpcpp/grpcpp.h>
 #include <memory>
 #include <string>
 #include <vector>
@@ -107,6 +109,9 @@ struct KeySet {};
  */
 class Client {
  public:
+  // XXX
+  explicit Client(std::shared_ptr<Connection> conn) : conn_(std::move(conn)) {}
+
   //@{
   /**
    * Reads rows from the database using key lookups and scans, as a simple
@@ -348,65 +353,19 @@ class Client {
    */
   Status Rollback(Transaction const& transaction);
 
-  /**
-   * Create a new client with the given stub.
-   * @warning Do not call this directly (it's exposed for testing only); call
-   *     `MakeClient()` instead.
-   *
-   * @param database_name The name of the Spanner database to use.
-   *     See `MakeClient` for restrictions on the format of the name.
-   * @param stub The stub used to connect to the spanner service.
-   */
-  explicit Client(std::string database_name,
-                  std::shared_ptr<internal::SpannerStub> stub)
-      : database_name_(std::move(database_name)), stub_(std::move(stub)) {}
-
  private:
-  class SessionHolder {
-   public:
-    SessionHolder(std::string session, Client* client) noexcept;
-    ~SessionHolder();
-
-    std::string const& session_name() const { return session_; }
-
-   private:
-    std::string session_;
-    Client* client_;
-  };
-  friend class SessionHolder;
-  StatusOr<SessionHolder> GetSession();
-
-  /// Implementation details for Commit.
-  StatusOr<CommitResult> Commit(google::spanner::v1::TransactionSelector& s,
-                                std::vector<Mutation> const& mutations);
-
-  std::string database_name_;
-  std::shared_ptr<internal::SpannerStub> stub_;
-
-  // The current session pool.
-  // TODO(#307) - improve session refresh and expiration.
-  std::vector<std::string> sessions_;
+  std::shared_ptr<Connection> conn_;
 };
-
-/**
- * Factory method to create a `Client` with the given `client_options`.
- *
- * @param database_name The name of the Spanner database to use.
- *     The database name must conform to the format:
- *     `projects/<project>/instances/<instance>/databases/<database_id>`.
- *     You can use the `MakeDatabaseName` helper to properly format the name.
- * @param client_options `ClientOptions` used when creating the client.
- *
- * @return A `Client` that can be used to perform operations on `database_name`,
- *     or error status on failure.
- */
-StatusOr<Client> MakeClient(std::string database_name,
-                            ClientOptions const& client_options = {});
 
 /// Format a database name given the `project`, `instance`, and `database_id`.
 std::string MakeDatabaseName(std::string const& project,
                              std::string const& instance,
                              std::string const& database_id);
+
+// XXX
+std::shared_ptr<Connection> MakeConnection(
+    std::string database, std::shared_ptr<grpc::ChannelCredentials> creds,
+    std::string endpoint = "spanner.googleapis.com");
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
