@@ -203,12 +203,18 @@ class Value {
     Bytes& operator=(Bytes&&) = default;
     ///@}
 
-    /// @name Equality
+    /// @name Relational operators
     ///@{
     friend bool operator==(Bytes const& a, Bytes const& b) {
       return a.data == b.data;
     }
     friend bool operator!=(Bytes const& a, Bytes const& b) { return !(a == b); }
+    friend bool operator<(Bytes const& a, Bytes const& b) {
+      return a.data < b.data;
+    }
+    friend bool operator<=(Bytes const& a, Bytes const& b) { return !(b < a); }
+    friend bool operator>=(Bytes const& a, Bytes const& b) { return !(a < b); }
+    friend bool operator>(Bytes const& a, Bytes const& b) { return b < a; }
     ///@}
   };
   /// Constructs an instance with the specicified bytes.

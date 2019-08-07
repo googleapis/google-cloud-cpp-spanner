@@ -195,6 +195,21 @@ TEST(Value, BytesDecodingError) {
   EXPECT_THAT(bytes.status().message(), testing::HasSubstr("Invalid base64"));
 }
 
+TEST(Value, BytesRelationalOperators) {
+  Value::Bytes b1("aaaaa");
+  Value::Bytes b2("bbbbb");
+
+  EXPECT_EQ(b1, b1);
+  EXPECT_LE(b1, b1);
+  EXPECT_GE(b1, b1);
+
+  EXPECT_NE(b1, b2);
+  EXPECT_LT(b1, b2);
+  EXPECT_LE(b1, b2);
+  EXPECT_GE(b2, b1);
+  EXPECT_GT(b2, b1);
+}
+
 TEST(Value, ConstructionFromLiterals) {
   Value v_int64(42);
   EXPECT_EQ(42, *v_int64.get<std::int64_t>());
