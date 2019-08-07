@@ -16,8 +16,8 @@
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_CONNECTION_IMPL_H_
 
 #include "google/cloud/spanner/connection.h"
-#include "google/cloud/spanner/version.h"
 #include "google/cloud/spanner/internal/spanner_stub.h"
+#include "google/cloud/spanner/version.h"
 #include "google/cloud/status_or.h"
 #include <memory>
 #include <string>

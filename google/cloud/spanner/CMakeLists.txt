@@ -90,8 +90,8 @@ add_library(spanner_client
             client.h
             client_options.cc
             client_options.h
-            connection.h
             commit_result.h
+            connection.h
             database_admin_client.cc
             database_admin_client.h
             date.cc
@@ -101,8 +101,8 @@ add_library(spanner_client
             internal/build_info.h
             internal/compiler_info.cc
             internal/compiler_info.h
-            internal/connection_impl.h
             internal/connection_impl.cc
+            internal/connection_impl.h
             internal/database_admin_retry.cc
             internal/database_admin_retry.h
             internal/database_admin_stub.cc

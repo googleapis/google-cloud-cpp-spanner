@@ -13,9 +13,9 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/client.h"
-#include "google/cloud/spanner/value.h"
 #include "google/cloud/spanner/internal/connection_impl.h"
 #include "google/cloud/spanner/internal/spanner_stub.h"
+#include "google/cloud/spanner/value.h"
 #include "google/cloud/grpc_utils/grpc_error_delegate.h"
 #include "google/cloud/log.h"
 #include <grpcpp/grpcpp.h>
@@ -119,8 +119,9 @@ std::string MakeDatabaseName(std::string const& project,
 }
 
 std::shared_ptr<Connection> MakeConnection(
-    std::string database, std::shared_ptr<grpc::ChannelCredentials> creds,
-    std::string endpoint) {
+    std::string database,
+    std::shared_ptr<grpc::ChannelCredentials> const& creds,
+    std::string const& endpoint) {
   auto stub = internal::CreateDefaultSpannerStub(creds, endpoint);
   return std::make_shared<internal::ConnectionImpl>(std::move(database),
                                                     std::move(stub));
