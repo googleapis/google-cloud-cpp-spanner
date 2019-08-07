@@ -393,6 +393,8 @@ std::string MakeDatabaseName(std::string const& project,
  * The returned connection object should not be used directly, rather it should
  * be given to a `Client` instance, and methods should be invoked on `Client`.
  *
+ * TODO(#321): Move optional args into options struct.
+ *
  * @see `Connection`
  *
  * @param database the name of the database. See `MakeDatabaesName`.
