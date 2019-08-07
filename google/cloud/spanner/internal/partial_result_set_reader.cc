@@ -43,7 +43,7 @@ PartialResultSetReader::Create(std::unique_ptr<GrpcReader> grpc_reader) {
     return Status(StatusCode::kInternal,
                   "response metadata was missing row type information");
   }
-  return reader;
+  return {std::move(reader)};
 }
 
 StatusOr<optional<Value>> PartialResultSetReader::NextValue() {
