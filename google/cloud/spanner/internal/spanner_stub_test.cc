@@ -25,7 +25,7 @@ namespace {
 TEST(SpannerStub, CreateDefaultStub) {
   ClientOptions opts;
   auto stub =
-      CreateDefaultSpannerStub(opts.admin_endpoint(), opts.credentials());
+      CreateDefaultSpannerStub(opts.credentials(), opts.admin_endpoint());
   EXPECT_NE(stub, nullptr);
 }
 

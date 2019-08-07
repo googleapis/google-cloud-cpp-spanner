@@ -123,7 +123,7 @@ std::string MakeDatabaseName(std::string const& project,
 std::shared_ptr<Connection> MakeConnection(
     std::string database, std::shared_ptr<grpc::ChannelCredentials> creds,
     std::string endpoint) {
-  auto stub = internal::CreateDefaultSpannerStub(endpoint, creds);
+  auto stub = internal::CreateDefaultSpannerStub(creds, endpoint);
   return std::make_shared<internal::ConnectionImpl>(std::move(database),
                                                     std::move(stub));
 }

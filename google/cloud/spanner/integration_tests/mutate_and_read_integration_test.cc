@@ -53,10 +53,8 @@ TEST(CommitIntegrationTest, Insert) {
   auto database = database_future.get();
   ASSERT_STATUS_OK(database);
 
-  // TODO(#283) - Stop using SpannerStub once Client::Read() is implemented.
-  ClientOptions opts;
   auto database_name = MakeDatabaseName(project_id, instance_id, database_id);
-  auto conn = MakeConnection(database_name, opts.credentials());
+  auto conn = MakeConnection(database_name);
   Client client(std::move(conn));
 
   auto commit_result = client.Commit(
@@ -67,9 +65,10 @@ TEST(CommitIntegrationTest, Insert) {
            .Build()});
   EXPECT_STATUS_OK(commit_result);
 
-  // TODO(#283) - Use Client::Read() when available...
-  auto stub = internal::CreateDefaultSpannerStub(opts.admin_endpoint(),
-                                                 opts.credentials());
+  // TODO(#283) - Stop using SpannerStub once Client::Read() is implemented.
+  ClientOptions opts;
+  auto stub = internal::CreateDefaultSpannerStub(opts.credentials(),
+                                                 opts.admin_endpoint());
   grpc::ClientContext session_context;
   google::spanner::v1::CreateSessionRequest session_request;
   session_request.set_database(database_name);
