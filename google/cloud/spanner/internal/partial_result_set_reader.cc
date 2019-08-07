@@ -26,9 +26,22 @@ StatusOr<std::unique_ptr<PartialResultSetReader>>
 PartialResultSetReader::Create(std::unique_ptr<GRpcReader> grpc_reader) {
   std::unique_ptr<PartialResultSetReader> reader(
       new PartialResultSetReader(std::move(grpc_reader)));
-  auto status = reader->Initialize();
+
+  // Do the first read so the metadata is immediately available.
+  auto status = reader->ReadFromStream();
   if (!status.ok()) {
     return status;
+  }
+
+  // The first response must contain metadata.
+  if (!reader->metadata_.has_value()) {
+    return Status(StatusCode::kInternal, "response contained no metadata");
+  }
+
+  // The metadata must contain row type information.
+  if (reader->metadata_->row_type().fields().empty()) {
+    return Status(StatusCode::kInternal,
+                  "response metadata was missing row type information");
   }
   return reader;
 }
@@ -75,27 +88,6 @@ PartialResultSetReader::~PartialResultSetReader() {
   }
 }
 
-Status PartialResultSetReader::Initialize() {
-  auto status = ReadFromStream();
-  if (!status.ok()) {
-    return status;
-  }
-
-  // The first response must contain metadata.
-  if (!metadata_.has_value()) {
-    return Status(StatusCode::kInternal, "response contained no metadata");
-  }
-
-  // The metadata must contain row type information.
-  if (metadata_->row_type().fields().empty()) {
-    return Status(StatusCode::kInternal,
-                  "response metadata was missing row type information");
-  }
-  next_value_index_ = 0;
-  next_value_type_index_ = 0;
-  return Status();
-}
-
 Status PartialResultSetReader::ReadFromStream() {
   google::spanner::v1::PartialResultSet result_set;
   if (!grpc_reader_->Read(&result_set)) {
@@ -124,7 +116,7 @@ Status PartialResultSetReader::ReadFromStream() {
 
   // TODO(#271) store and use resume_token.
   // TODO(#270) handle chunked_value.
-  values_ = std::move(*result_set.mutable_values());
+  values_.Swap(result_set.mutable_values());
   return Status();
 }
 
