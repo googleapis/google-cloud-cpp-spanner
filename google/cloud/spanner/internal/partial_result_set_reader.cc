@@ -23,7 +23,7 @@ inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
 StatusOr<std::unique_ptr<PartialResultSetReader>>
-PartialResultSetReader::Create(std::unique_ptr<GRpcReader> grpc_reader) {
+PartialResultSetReader::Create(std::unique_ptr<GrpcReader> grpc_reader) {
   std::unique_ptr<PartialResultSetReader> reader(
       new PartialResultSetReader(std::move(grpc_reader)));
 

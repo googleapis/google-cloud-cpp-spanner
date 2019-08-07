@@ -38,12 +38,12 @@ namespace internal {
  */
 class PartialResultSetReader : public internal::ResultSetSource {
  public:
-  using GRpcReader =
+  using GrpcReader =
       ::grpc::ClientReaderInterface<google::spanner::v1::PartialResultSet>;
 
   /// Factory method to create a PartialResultSetReader.
   static StatusOr<std::unique_ptr<PartialResultSetReader>> Create(
-      std::unique_ptr<GRpcReader> grpc_reader);
+      std::unique_ptr<GrpcReader> grpc_reader);
   ~PartialResultSetReader() override;
 
   StatusOr<optional<Value>> NextValue() override;
@@ -55,12 +55,12 @@ class PartialResultSetReader : public internal::ResultSetSource {
   }
 
  private:
-  PartialResultSetReader(std::unique_ptr<GRpcReader> grpc_reader)
+  PartialResultSetReader(std::unique_ptr<GrpcReader> grpc_reader)
       : grpc_reader_(std::move(grpc_reader)) {}
 
   Status ReadFromStream();
 
-  std::unique_ptr<GRpcReader> grpc_reader_;
+  std::unique_ptr<GrpcReader> grpc_reader_;
 
   google::protobuf::RepeatedPtrField<google::protobuf::Value> values_;
   optional<google::spanner::v1::ResultSetMetadata> metadata_;

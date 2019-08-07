@@ -83,7 +83,7 @@ testing::Matcher<StatusOr<optional<Value>> const&> IsValidAndEquals(
 // gmock makes clang-tidy very angry, disable a few warnings that we have no
 // control over.
 // NOLINTNEXTLINE(clang-analyzer-optin.cplusplus.VirtualCall)
-class MockGRpcReader : public PartialResultSetReader::GRpcReader {
+class MockGrpcReader : public PartialResultSetReader::GrpcReader {
  public:
   // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
   MOCK_METHOD1(Read, bool(spanner_proto::PartialResultSet*));
@@ -100,7 +100,7 @@ class MockGRpcReader : public PartialResultSetReader::GRpcReader {
 
 /// @test Verify the behavior when the initial `Read()` fails.
 TEST(PartialResultSetReaderTest, InitialReadFailure) {
-  auto grpc_reader = make_unique<MockGRpcReader>();
+  auto grpc_reader = make_unique<MockGrpcReader>();
   EXPECT_CALL(*grpc_reader, Read(_)).WillOnce(Return(false));
   grpc::Status finish_status(grpc::StatusCode::INVALID_ARGUMENT, "invalid");
   EXPECT_CALL(*grpc_reader, Finish()).WillOnce(Return(finish_status));
@@ -115,7 +115,7 @@ TEST(PartialResultSetReaderTest, InitialReadFailure) {
  * failed `Read()`.
  */
 TEST(PartialResultSetReaderTest, ReadSuccessThenFailure) {
-  auto grpc_reader = make_unique<MockGRpcReader>();
+  auto grpc_reader = make_unique<MockGrpcReader>();
   spanner_proto::PartialResultSet response;
   ASSERT_TRUE(TextFormat::ParseFromString(R"""(
     metadata: {
@@ -145,7 +145,7 @@ TEST(PartialResultSetReaderTest, ReadSuccessThenFailure) {
 
 /// @test Verify the behavior when the first response does not contain metadata.
 TEST(PartialResultSetReaderTest, MissingMetadata) {
-  auto grpc_reader = make_unique<MockGRpcReader>();
+  auto grpc_reader = make_unique<MockGrpcReader>();
   spanner_proto::PartialResultSet response;
   EXPECT_CALL(*grpc_reader, Read(_))
       .WillOnce(DoAll(SetArgPointee<0>(response), Return(true)));
@@ -162,7 +162,7 @@ TEST(PartialResultSetReaderTest, MissingMetadata) {
  * type information.
  */
 TEST(PartialResultSetReaderTest, MissingRowType) {
-  auto grpc_reader = make_unique<MockGRpcReader>();
+  auto grpc_reader = make_unique<MockGrpcReader>();
   spanner_proto::PartialResultSet response;
   ASSERT_TRUE(TextFormat::ParseFromString(R"""(metadata: {})""", &response));
   EXPECT_CALL(*grpc_reader, Read(_))
@@ -182,7 +182,7 @@ TEST(PartialResultSetReaderTest, MissingRowType) {
  * All of the data is returned in a single Read() from the gRPC reader.
  */
 TEST(PartialResultSetReaderTest, SingleResponse) {
-  auto grpc_reader = make_unique<MockGRpcReader>();
+  auto grpc_reader = make_unique<MockGrpcReader>();
   spanner_proto::PartialResultSet response;
   ASSERT_TRUE(TextFormat::ParseFromString(R"""(
     metadata: {
@@ -261,7 +261,7 @@ TEST(PartialResultSetReaderTest, SingleResponse) {
  * reader returns data across multiple Read() calls.
  */
 TEST(PartialResultSetReaderTest, MultipleResponses) {
-  auto grpc_reader = make_unique<MockGRpcReader>();
+  auto grpc_reader = make_unique<MockGrpcReader>();
   std::array<spanner_proto::PartialResultSet, 5> response;
   ASSERT_TRUE(TextFormat::ParseFromString(R"""(
     metadata: {
