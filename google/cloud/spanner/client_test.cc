@@ -14,7 +14,10 @@
 
 #include "google/cloud/spanner/client.h"
 #include "google/cloud/spanner/connection.h"
+#include "google/cloud/spanner/timestamp.h"
+#include "google/cloud/testing_util/assert_ok.h"
 #include <gmock/gmock.h>
+#include <chrono>
 
 namespace google {
 namespace cloud {
@@ -59,7 +62,24 @@ TEST(ClientTest, CopyAndMove) {
   EXPECT_EQ(c1, c2);
 }
 
-TEST(ClientTest, Commit) {
+TEST(ClientTest, CommitSuccess) {
+  auto conn = std::make_shared<MockConnection>();
+
+  auto ts = Timestamp(std::chrono::seconds(123));
+  CommitResult result;
+  result.commit_timestamp = ts;
+
+  Client client(conn);
+  EXPECT_CALL(*conn, Commit(_)).WillOnce(::testing::Return(result));
+
+  auto txn = MakeReadWriteTransaction();
+  auto commit = client.Commit(txn, {});
+  EXPECT_STATUS_OK(commit);
+  EXPECT_EQ(ts, commit->commit_timestamp);
+}
+
+
+TEST(ClientTest, CommitError) {
   auto conn = std::make_shared<MockConnection>();
 
   Client client(conn);
