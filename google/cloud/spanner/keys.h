@@ -54,7 +54,7 @@ template <typename KeyType>
 class Bound {
  public:
   static_assert(internal::IsRow<KeyType>::value,
-      "KeyType must be of type spanner::Row<>.");
+                "KeyType must be of type spanner::Row<>.");
   /**
    * Constructs a closed `Bound` with a default constructed key of `KeyType`.
    */
@@ -112,7 +112,7 @@ template <typename KeyType>
 class KeyRange {
  public:
   static_assert(internal::IsRow<KeyType>::value,
-      "KeyType must be of type spanner::Row<>.");
+                "KeyType must be of type spanner::Row<>.");
   /**
    * Constructs an empty `KeyRange`.
    */
@@ -194,11 +194,9 @@ template <typename KeyType>
 class KeySet {
  public:
   static_assert(internal::IsRow<KeyType>::value,
-      "KeyType must be of type spanner::Row<>.");
+                "KeyType must be of type spanner::Row<>.");
 
-  static KeySet<KeyType> All() {
-    return KeySet<KeyType>(true);
-  }
+  static KeySet<KeyType> All() { return KeySet<KeyType>(true); }
   /**
    * Constructs an empty `KeySet`.
    */
@@ -214,7 +212,8 @@ class KeySet {
   /**
    * Constructs a `KeySet` with a single `KeyRange`.
    */
-  explicit KeySet(KeyRange<KeyType> key_range) : all_(false), keys_(), key_ranges_() {
+  explicit KeySet(KeyRange<KeyType> key_range)
+      : all_(false), keys_(), key_ranges_() {
     key_ranges_.emplace_back(std::move(key_range));
   }
 
@@ -247,7 +246,7 @@ class KeySet {
   /**
    * Does the `KeySet` represent all keys for an index.
    */
-  bool IsAll() const {return all_;}
+  bool IsAll() const { return all_; }
 
   // TODO(#322): Add methods to insert ranges of Keys and KeyRanges.
   // TODO(#323): Add methods to remove Keys or KeyRanges.
@@ -271,7 +270,7 @@ class KeySet {
 template <typename RowType>
 Bound<RowType> MakeKeyRangeBoundClosed(RowType key) {
   static_assert(internal::IsRow<RowType>::value,
-      "RowType must be of type spanner::Row<>.");
+                "RowType must be of type spanner::Row<>.");
   return Bound<RowType>(key, Bound<RowType>::Mode::MODE_CLOSED);
 }
 
@@ -286,7 +285,7 @@ Bound<RowType> MakeKeyRangeBoundClosed(RowType key) {
 template <typename RowType>
 Bound<RowType> MakeKeyRangeBoundOpen(RowType key) {
   static_assert(internal::IsRow<RowType>::value,
-      "RowType must be of type spanner::Row<>.");
+                "RowType must be of type spanner::Row<>.");
   return Bound<RowType>(key, Bound<RowType>::Mode::MODE_OPEN);
 }
 
@@ -303,7 +302,7 @@ Bound<RowType> MakeKeyRangeBoundOpen(RowType key) {
 template <typename RowType>
 KeyRange<RowType> MakeKeyRange(RowType start, RowType end) {
   static_assert(internal::IsRow<RowType>::value,
-      "RowType must be of type spanner::Row<>.");
+                "RowType must be of type spanner::Row<>.");
   return KeyRange<RowType>(
       std::move(Bound<RowType>(start, Bound<RowType>::Mode::MODE_CLOSED)),
       std::move(Bound<RowType>(end, Bound<RowType>::Mode::MODE_CLOSED)));
@@ -321,7 +320,7 @@ KeyRange<RowType> MakeKeyRange(RowType start, RowType end) {
 template <typename RowType>
 KeyRange<RowType> MakeKeyRange(Bound<RowType> start, Bound<RowType> end) {
   static_assert(internal::IsRow<RowType>::value,
-    "RowType must be of type spanner::Row<>.");
+                "RowType must be of type spanner::Row<>.");
   return KeyRange<RowType>(std::move(start), std::move(end));
 }
 
