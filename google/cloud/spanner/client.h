@@ -66,7 +66,7 @@ struct KeySet {};
  *
  * @par Performance
  *
- * `Client` objects a cheap to create, copy, and move. However, each `Client`
+ * `Client` objects are cheap to create, copy, and move. However, each `Client`
  * object must be created with a `std::shared_ptr<Connection>`, which itself is
  * relatively expensive to create. Therefore, connection instances should be
  * shared when possible. See the `MakeConnection()` method and the `Connection`
@@ -112,8 +112,9 @@ class Client {
   /**
    * Constructs a `Client` object that will use the specified `Connection`.
    *
-   * See `MakeConnection()` (defined below) for how to create a connection to
-   * Spanner.
+   * See `MakeConnection()` for how to create a connection to Spanner. To help
+   * with unit testing, callers may create fake/mock `Connection` objects that
+   * are injected into the `Client`.
    */
   explicit Client(std::shared_ptr<Connection> conn) : conn_(std::move(conn)) {}
 
@@ -387,8 +388,7 @@ std::string MakeDatabaseName(std::string const& project,
                              std::string const& database_id);
 
 /**
- * Retuns a Connection object that can be used for talking interacting with
- * Spanner.
+ * Retuns a Connection object that can be used for interacting with Spanner.
  *
  * The returned connection object should not be used directly, rather it should
  * be given to a `Client` instance, and methods should be invoked on `Client`.
@@ -396,10 +396,8 @@ std::string MakeDatabaseName(std::string const& project,
  * @see `Connection`
  *
  * @param database the name of the database. See `MakeDatabaesName`.
- * @param creds the gRPC credentials to use.
- * @param endpoint the Spanner service to connect to.
- *
- * @return a `std::shared_ptr` to a `Connection` object.
+ * @param creds (optional) the gRPC credentials to use.
+ * @param endpoint (optional) the Spanner service to connect to.
  */
 std::shared_ptr<Connection> MakeConnection(
     std::string database,
