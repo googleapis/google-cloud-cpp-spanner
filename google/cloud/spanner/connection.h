@@ -34,7 +34,7 @@ inline namespace SPANNER_CLIENT_NS {
  * overload sets in `Client`. That is, all of `Client`'s `Read()` overloads
  * will forward to the one pure-virtual `Read()` method declared in this
  * interface. This allows users to inject custom behavior (e.g., with a Google
- * Mock object) in a `Client` object for use in their own tests. 
+ * Mock object) in a `Client` object for use in their own tests.
  *
  * To create a concrete instance that connects you to a real Spanner database,
  * see `MakeConnection()`.

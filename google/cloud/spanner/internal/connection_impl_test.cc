@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "google/cloud/spanner/client.h"
 #include "google/cloud/spanner/internal/connection_impl.h"
+#include "google/cloud/spanner/client.h"
 #include "google/cloud/spanner/internal/spanner_stub.h"
 #include <gmock/gmock.h>
 

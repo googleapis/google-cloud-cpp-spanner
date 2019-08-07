@@ -24,12 +24,11 @@ namespace {
 
 using ::testing::_;
 using ::testing::HasSubstr;
-namespace spanner_proto = ::google::spanner::v1;
 
 // NOLINTNEXTLINE(clang-analyzer-optin.cplusplus.VirtualCall)
 class MockConnection : public Connection {
  public:
-  virtual ~MockConnection() override = default;
+  ~MockConnection() override = default;
 
   // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
   MOCK_METHOD1(Commit, StatusOr<CommitResult>(CommitParams));

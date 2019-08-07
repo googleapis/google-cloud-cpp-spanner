@@ -389,9 +389,9 @@ std::string MakeDatabaseName(std::string const& project,
                              std::string const& instance,
                              std::string const& database_id);
 
-
 /**
- * Retuns a Connection object that can be used for talking interacting with Spanner.
+ * Retuns a Connection object that can be used for talking interacting with
+ * Spanner.
  *
  * The returned connection object should not be used directly, rather it should
  * be given to a `Client` instance, and methods should be invoked on `Client`.
@@ -406,9 +406,9 @@ std::string MakeDatabaseName(std::string const& project,
  */
 std::shared_ptr<Connection> MakeConnection(
     std::string database,
-    std::shared_ptr<grpc::ChannelCredentials> creds =
+    std::shared_ptr<grpc::ChannelCredentials> const& creds =
         grpc::GoogleDefaultCredentials(),
-    std::string endpoint = "spanner.googleapis.com");
+    std::string const& endpoint = "spanner.googleapis.com");
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner

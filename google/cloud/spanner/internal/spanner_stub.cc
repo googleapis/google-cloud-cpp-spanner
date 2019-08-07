@@ -238,7 +238,8 @@ StatusOr<spanner_proto::PartitionResponse> DefaultSpannerStub::PartitionRead(
 }  // namespace
 
 std::shared_ptr<SpannerStub> CreateDefaultSpannerStub(
-    std::shared_ptr<grpc::ChannelCredentials> creds, std::string endpoint) {
+    std::shared_ptr<grpc::ChannelCredentials> const& creds,
+    std::string const& endpoint) {
   auto spanner_grpc_stub =
       spanner_proto::Spanner::NewStub(grpc::CreateChannel(endpoint, creds));
   return std::make_shared<DefaultSpannerStub>(std::move(spanner_grpc_stub));
