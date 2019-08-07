@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CONNECTION_H__
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CONNECTION_H__
+#ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CONNECTION_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CONNECTION_H_
 
 #include "google/cloud/spanner/commit_result.h"
 #include "google/cloud/spanner/mutations.h"
@@ -28,7 +28,16 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
 /**
- * XXX
+ * A connection to a Spanner database instance.
+ *
+ * This interface defines pure-virtual methods for each of the user-facing
+ * overload sets in `Client`. That is, all of `Client`'s `Read()` overloads
+ * will forward to the one pure-virtual `Read()` method declared in this
+ * interface. This allows users to inject custom behavior (e.g., with a Google
+ * Mock object) in a `Client` object for use in their own tests. 
+ *
+ * To create a concrete instance that connects you to a real Spanner database,
+ * see `MakeConnection()`.
  */
 class Connection {
  public:
@@ -55,4 +64,4 @@ class Connection {
 }  // namespace cloud
 }  // namespace google
 
-#endif  // GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CONNECTION_H__
+#endif  // GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CONNECTION_H_
