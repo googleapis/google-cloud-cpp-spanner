@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/client.h"
+#include "google/cloud/spanner/internal/connection_impl.h"
 #include "google/cloud/spanner/internal/spanner_stub.h"
 #include <gmock/gmock.h>
 
@@ -20,20 +21,12 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
+namespace internal {
 namespace {
 
 using ::testing::_;
 using ::testing::HasSubstr;
 namespace spanner_proto = ::google::spanner::v1;
-
-// NOLINTNEXTLINE(clang-analyzer-optin.cplusplus.VirtualCall)
-class MockConnection : public Connection {
- public:
-  virtual ~MockConnection() override = default;
-
-  // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-  MOCK_METHOD1(Commit, StatusOr<CommitResult>(CommitParams));
-};
 
 // gmock makes clang-tidy very angry, disable a few warnings that we have no
 // control over.
@@ -117,28 +110,93 @@ class MockSpannerStub : public internal::SpannerStub {
                                   spanner_proto::PartitionReadRequest const&));
 };
 
-TEST(ClientTest, MakeDatabaseName) {
-  EXPECT_EQ(
-      "projects/dummy_project/instances/dummy_instance/databases/"
-      "dummy_database_id",
-      MakeDatabaseName("dummy_project", "dummy_instance", "dummy_database_id"));
+TEST(ConnectionImplTest, Commit_GetSessionFailure) {
+  auto mock = std::make_shared<MockSpannerStub>();
+
+  auto database_name =
+      MakeDatabaseName("dummy_project", "dummy_instance", "dummy_database_id");
+  ConnectionImpl conn(database_name, mock);
+  EXPECT_CALL(*mock, CreateSession(_, _))
+      .WillOnce(::testing::Invoke(
+          [&database_name](
+              grpc::ClientContext&,
+              google::spanner::v1::CreateSessionRequest const& request) {
+            EXPECT_EQ(database_name, request.database());
+            return Status(StatusCode::kPermissionDenied, "uh-oh in GetSession");
+          }));
+
+  auto commit = conn.Commit({MakeReadWriteTransaction(), {}});
+  EXPECT_EQ(StatusCode::kPermissionDenied, commit.status().code());
+  EXPECT_THAT(commit.status().message(), HasSubstr("uh-oh in GetSession"));
 }
 
-TEST(ClientTest, Commit) {
-  auto mock = std::make_shared<MockConnection>();
+TEST(ConnectionImplTest, Commit_CommitFailure) {
+  auto mock = std::make_shared<MockSpannerStub>();
 
-  Client client(mock);
-  EXPECT_CALL(*mock, Commit(_))
-      .WillOnce(
-          ::testing::Return(Status(StatusCode::kPermissionDenied, "blah")));
+  auto database_name =
+      MakeDatabaseName("dummy_project", "dummy_instance", "dummy_database_id");
+  ConnectionImpl conn(database_name, mock);
+  EXPECT_CALL(*mock, CreateSession(_, _))
+      .WillOnce(::testing::Invoke(
+          [&database_name](
+              grpc::ClientContext&,
+              google::spanner::v1::CreateSessionRequest const& request) {
+            EXPECT_EQ(database_name, request.database());
+            google::spanner::v1::Session session;
+            session.set_name("test-session-name");
+            return session;
+          }));
+  EXPECT_CALL(*mock, Commit(_, _))
+      .WillOnce(::testing::Invoke(
+          [](grpc::ClientContext&,
+             google::spanner::v1::CommitRequest const& request) {
+            EXPECT_EQ("test-session-name", request.session());
+            return Status(StatusCode::kPermissionDenied, "uh-oh in Commit");
+          }));
+  auto commit = conn.Commit({MakeReadWriteTransaction(), {}});
+  EXPECT_EQ(StatusCode::kPermissionDenied, commit.status().code());
+  EXPECT_THAT(commit.status().message(), HasSubstr("uh-oh in Commit"));
+}
+
+TEST(ConnectionImplTest, Commit_TransactionId) {
+  auto mock = std::make_shared<MockSpannerStub>();
+
+  auto database_name =
+      MakeDatabaseName("dummy_project", "dummy_instance", "dummy_database_id");
+  ConnectionImpl conn(database_name, mock);
+  EXPECT_CALL(*mock, CreateSession(_, _))
+      .WillOnce(::testing::Invoke(
+          [&database_name](
+              grpc::ClientContext&,
+              google::spanner::v1::CreateSessionRequest const& request) {
+            EXPECT_EQ(database_name, request.database());
+            google::spanner::v1::Session session;
+            session.set_name("test-session-name");
+            return session;
+          }));
+  EXPECT_CALL(*mock, Commit(_, _))
+      .WillOnce(::testing::Invoke(
+          [](grpc::ClientContext&,
+             google::spanner::v1::CommitRequest const& request) {
+            EXPECT_EQ("test-session-name", request.session());
+            EXPECT_EQ("test-txn-id", request.transaction_id());
+            return Status(StatusCode::kPermissionDenied, "uh-oh in Commit");
+          }));
 
   auto txn = MakeReadWriteTransaction();
-  auto commit = client.Commit(txn, {});
+  using F = std::function<int(spanner_proto::TransactionSelector&)>;
+  internal::Visit(txn, F([](spanner_proto::TransactionSelector& s) -> int {
+                    s.set_id("test-txn-id");
+                    return 0;
+                  }));
+
+  auto commit = conn.Commit({txn, {}});
   EXPECT_EQ(StatusCode::kPermissionDenied, commit.status().code());
-  EXPECT_THAT(commit.status().message(), HasSubstr("blah"));
+  EXPECT_THAT(commit.status().message(), HasSubstr("uh-oh in Commit"));
 }
 
 }  // namespace
+}  // namespace internal
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
 }  // namespace cloud

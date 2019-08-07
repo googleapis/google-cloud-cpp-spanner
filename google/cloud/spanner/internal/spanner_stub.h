@@ -101,7 +101,7 @@ class SpannerStub {
  * Factory method to create a default stub.
  */
 std::shared_ptr<SpannerStub> CreateDefaultSpannerStub(
-    ClientOptions const& options);
+    std::string endpoint, std::shared_ptr<grpc::ChannelCredentials> creds);
 
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS

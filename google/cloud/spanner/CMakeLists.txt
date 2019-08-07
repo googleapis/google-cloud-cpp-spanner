@@ -101,6 +101,8 @@ add_library(spanner_client
             internal/build_info.h
             internal/compiler_info.cc
             internal/compiler_info.h
+            internal/connection_impl.h
+            internal/connection_impl.cc
             internal/database_admin_retry.cc
             internal/database_admin_retry.h
             internal/database_admin_stub.cc
@@ -204,6 +206,7 @@ function (spanner_client_define_tests)
         internal/base64_test.cc
         internal/build_info_test.cc
         internal/compiler_info_test.cc
+        internal/connection_impl_test.cc
         internal/date_test.cc
         internal/merge_chunk_test.cc
         internal/polling_loop_test.cc
