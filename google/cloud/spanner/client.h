@@ -69,10 +69,11 @@ struct KeySet {};
  *
  * @par Performance
  *
- * Creating a new `Client` is a relatively expensive operation, new objects
- * establish new connections to the service. In contrast, copying or moving
- * an existing `Client` object is a relatively cheap operation. Copied clients
- * share the underlying resources.
+ * `Client` objects a cheap to create, copy, and move. However, each `Client`
+ * object must be created with a `std::shared_ptr<Connection>`, which itself is
+ * relatively expensive to create. Therefore, connection instances should be
+ * shared when possible. See the `MakeConnection()` method and the `Connection`
+ * interface for more details.
  *
  * @par Thread Safety
  *
@@ -92,16 +93,18 @@ struct KeySet {};
  * @code
  * namespace cs = ::google::cloud::spanner;
  * using ::google::cloud::StatusOr;
- * auto client = cs::MakeClient(
- *     cs::MakeDatabaseName("my_project", "my_instance", "my_database_id"));
- * if (!client) {
- *   return client.status();
- * }
- * StatusOr<cs::ResultSet> result = client->Read(...);
+ *
+ * auto db = cs::MakeDatabaseName("my_project", "my_instance", "my_db_id"));
+ * auto conn = cs::MakeConnection(std::move(db));
+ * auto client = cs::Client(conn);(
+ *
+ * StatusOr<cs::ResultSet> result = client.Read(...);
  * if (!result) {
  *   return result.status();
  * }
- * for (auto row : result.Rows<std::int64_t, std::string>()) { ... }
+ * for (auto const& row : result.Rows<std::int64_t, std::string>()) {
+ *   // ...
+ * }
  * @endcode
  *
  * [spanner-doc-link]:
@@ -116,6 +119,25 @@ class Client {
    * Spanner.
    */
   explicit Client(std::shared_ptr<Connection> conn) : conn_(std::move(conn)) {}
+
+  /// No default construction. Use `Client(std::shared_ptr<Connection>)`
+  Client() = delete;
+
+  //@{
+  // @name Copy and move support
+  Client(Client const&) = default;
+  Client& operator=(Client const&) = default;
+  Client(Client&&) = default;
+  Client& operator=(Client&&) = default;
+  //@}
+
+  //@{
+  // @name Equality
+  friend bool operator==(Client const& a, Client const& b) {
+    return a.conn_ == b.conn_;
+  }
+  friend bool operator!=(Client const& a, Client const& b) { return !(a == b); }
+  //@}
 
   //@{
   /**
@@ -345,7 +367,7 @@ class Client {
    *     on failure.
    */
   StatusOr<CommitResult> Commit(Transaction transaction,
-                                std::vector<Mutation> const& mutations);
+                                std::vector<Mutation> mutations);
 
   /**
    * Rolls back a transaction, releasing any locks it holds. It is a good idea
@@ -368,6 +390,20 @@ std::string MakeDatabaseName(std::string const& project,
                              std::string const& database_id);
 
 
+/**
+ * Retuns a Connection object that can be used for talking interacting with Spanner.
+ *
+ * The returned connection object should not be used directly, rather it should
+ * be given to a `Client` instance, and methods should be invoked on `Client`.
+ *
+ * @see `Connection`
+ *
+ * @param database the name of the database. See `MakeDatabaesName`.
+ * @param creds the gRPC credentials to use.
+ * @param endpoint the Spanner service to connect to.
+ *
+ * @return a `std::shared_ptr` to a `Connection` object.
+ */
 std::shared_ptr<Connection> MakeConnection(
     std::string database,
     std::shared_ptr<grpc::ChannelCredentials> creds =

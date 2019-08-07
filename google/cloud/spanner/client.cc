@@ -103,10 +103,8 @@ StatusOr<std::int64_t> Client::ExecutePartitionedDml(
 }
 
 StatusOr<CommitResult> Client::Commit(Transaction transaction,
-                                      std::vector<Mutation> const& mutations) {
-  // XXX: Copying this vector is bad
-  Connection::CommitParams cp = {std::move(transaction), mutations};
-  return conn_->Commit(std::move(cp));
+                                      std::vector<Mutation> mutations) {
+  return conn_->Commit({std::move(transaction), std::move(mutations)});
 }
 
 Status Client::Rollback(Transaction const& /*transaction*/) {

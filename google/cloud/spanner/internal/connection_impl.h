@@ -54,7 +54,7 @@ class ConnectionImpl : public Connection {
 
   /// Implementation details for Commit.
   StatusOr<CommitResult> Commit(google::spanner::v1::TransactionSelector& s,
-                                std::vector<Mutation> const& mutations);
+                                std::vector<Mutation> mutations);
   std::string database_;
   std::shared_ptr<internal::SpannerStub> stub_;
 
