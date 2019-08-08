@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['serializesqlpartition',['SerializeSqlPartition',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html#a32bdda468521da932f070859ade7d1ca',1,'google::cloud::spanner::v0::SqlPartition']]],
-  ['sqlpartitiontester',['SqlPartitionTester',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html#a2c3c0abe2f3f03cedf185a42cd572f50',1,'google::cloud::spanner::v0::SqlPartition']]]
+  ['printto',['PrintTo',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html#a83923150406f4df48162a621a6774f6d',1,'google::cloud::spanner::v0::Mutation::PrintTo()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#a0a7a7c7991836200e205946a7abceed1',1,'google::cloud::spanner::v0::Value::PrintTo()']]]
 ];
