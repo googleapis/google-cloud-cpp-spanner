@@ -170,23 +170,23 @@ class KeyRange {
  *
  * @par Example
  *
+ * // TODO(#328): use snippet for example code
  * @code
  * // EmployeeTable has a primary key on EmployeeID.
  * using EmployeeTablePrimaryKey = Row<std::int64_t>;
  *
- * // A KeySet where EmployeeID is between 1 and 10.
+ * // A KeySet where EmployeeID >= 1 and EmployeeID < 10.
  * auto first_ten_employees =
  *   KeySet<EmployeeTablePrimaryKey>(
  *     MakeKeyRangeBoundClosed(MakeRow(1)),
- *     MakeKeyRangeBoundClosed(MakeRow(10)));
+ *     MakeKeyRangeBoundOpen(MakeRow(10)));
  *
  * // EmployeeTable also has an index on LastName, FirstName.
  * using EmployeeNameKey = Row<std::string, std::string>;
  *
  * // A KeySet where LastName, FirstName is ("Smith", "John").
  * auto all_employees_named_john_smith =
- *   KeySet<EmployeeNameKey> = KeySet<EmployeeNameKey>(
- *     MakeRow("Smith", "John"));
+ *   KeySet<EmployeeNameKey>(MakeRow("Smith", "John"));
  *
  * @endcode
  */
@@ -197,6 +197,7 @@ class KeySet {
                 "KeyType must be of type spanner::Row<>.");
 
   static KeySet<KeyType> All() { return KeySet<KeyType>(true); }
+
   /**
    * Constructs an empty `KeySet`.
    */
