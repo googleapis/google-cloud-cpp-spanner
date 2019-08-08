@@ -48,8 +48,8 @@ this library for experimental code, nor for production workloads.
 [kokoro-cxx17-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-cxx17-link.html
 [kokoro-gcc48-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-gcc48.svg
 [kokoro-gcc48-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-gcc48-link.html
-[kokoro-gcc48-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-windows-bazel.svg
-[kokoro-gcc48-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-windows-bazel-link.html
+[kokoro-windows-bazel-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-windows-bazel.svg
+[kokoro-windows-bazel-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-windows-bazel-link.html
 
 ## Documentation
 
