@@ -40,6 +40,8 @@ class ConnectionImpl : public Connection {
                           std::shared_ptr<internal::SpannerStub> stub)
       : database_(std::move(database)), stub_(std::move(stub)) {}
 
+  StatusOr<ResultSet> Read(ReadParams) override;
+  StatusOr<ResultSet> ExecuteSql(ExecuteSqlParams) override;
   StatusOr<CommitResult> Commit(CommitParams) override;
   Status Rollback(RollbackParams) override;
 
@@ -59,11 +61,18 @@ class ConnectionImpl : public Connection {
   friend class SessionHolder;
   StatusOr<SessionHolder> GetSession();
 
+  /// Implementation details for Read.
+  StatusOr<ResultSet> Read(google::spanner::v1::TransactionSelector& s,
+                           ReadParams rp);
+
+  /// Implementation details for ExecuteSql
+  StatusOr<ResultSet> ExecuteSql(google::spanner::v1::TransactionSelector& s,
+                                 ExecuteSqlParams const& esp);
+
   /// Implementation details for Commit.
   StatusOr<CommitResult> Commit(google::spanner::v1::TransactionSelector& s,
-                                std::vector<Mutation> mutations);
+                                CommitParams cp);
 
-  /// Implementation details for Rollback.
   Status Rollback(google::spanner::v1::TransactionSelector& s);
 
   std::string database_;

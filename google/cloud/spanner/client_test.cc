@@ -32,7 +32,8 @@ using ::testing::Return;
 class MockConnection : public Connection {
  public:
   ~MockConnection() override = default;
-
+  MOCK_METHOD1(Read, StatusOr<ResultSet>(ReadParams));
+  MOCK_METHOD1(ExecuteSql, StatusOr<ResultSet>(ExecuteSqlParams));
   MOCK_METHOD1(Commit, StatusOr<CommitResult>(CommitParams));
   MOCK_METHOD1(Rollback, Status(RollbackParams));
 };
@@ -60,6 +61,11 @@ TEST(ClientTest, CopyAndMove) {
   // Move assignment
   c1 = std::move(c4);
   EXPECT_EQ(c1, c2);
+}
+
+TEST(ClientTest, ReadSuccess) {
+  auto conn = std::make_shared<MockConnection>();
+  Client client(conn);
 }
 
 TEST(ClientTest, CommitSuccess) {
