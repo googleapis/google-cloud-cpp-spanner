@@ -46,7 +46,7 @@ class Client {
     kReadFails,
   };
 
-  explicit Client(Mode mode) : mode_(mode), begin_seqno_(-1) {}
+  explicit Client(Mode mode) : mode_(mode), begin_seqno_(0) {}
 
   // Set the `read_timestamp` we expect to see, and the `txn_id` we want to
   // use during the upcoming `Read()` calls.
@@ -107,7 +107,7 @@ ResultSet Client::Read(TransactionSelector& selector, std::int64_t seqno,
     if (selector.begin().has_read_only() &&
         selector.begin().read_only().has_read_timestamp()) {
       auto const& proto = selector.begin().read_only().read_timestamp();
-      if (internal::FromProto(proto) == read_timestamp_ && seqno >= 0) {
+      if (internal::FromProto(proto) == read_timestamp_ && seqno > 0) {
         std::unique_lock<std::mutex> lock(mu_);
         switch (mode_) {
           case Mode::kReadSucceeds:

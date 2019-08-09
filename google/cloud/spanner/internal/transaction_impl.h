@@ -22,6 +22,7 @@
 #include <condition_variable>
 #include <cstdint>
 #include <mutex>
+#include <type_traits>
 
 namespace google {
 namespace cloud {
@@ -39,7 +40,7 @@ using VisitInvokeResult = google::cloud::internal::invoke_result_t<
 class TransactionImpl {
  public:
   TransactionImpl(google::spanner::v1::TransactionSelector selector)
-      : selector_(std::move(selector)), seqno_(-1) {
+      : selector_(std::move(selector)), seqno_(0) {
     state_ = selector_.has_begin() ? State::kBegin : State::kDone;
   }
 
@@ -51,7 +52,12 @@ class TransactionImpl {
   // allocates a transaction ID, then the functor should selector.set_id(id).
   // Otherwise the functor should not modify the selector. A monotonically-
   // increasing sequence number is also passed to the functor.
-  template <typename Functor>
+  template <typename Functor,
+            typename std::enable_if<
+                google::cloud::internal::is_invocable<
+                    Functor, google::spanner::v1::TransactionSelector&,
+                    std::int64_t>::value,
+                int>::type = 0>
   VisitInvokeResult<Functor> Visit(Functor&& f) {
     std::int64_t seqno;
     {
