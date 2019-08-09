@@ -6,12 +6,12 @@ var searchData=
   ['value_5ftype',['value_type',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#a89400e026f63aca92461c0d5cecaf4c6',1,'google::cloud::spanner::v0::RowParser::value_type()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html#a784e399c160d9c74e7d460d90ccf74ff',1,'google::cloud::spanner::v0::RowParser::iterator::value_type()']]],
   ['values',['values',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a0e9617543ccc136ae1ce5347e448ea22',1,'google::cloud::spanner::v0::Row::values() const &amp;'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ae193fc8c5092e97ac396e6bd7749d45c',1,'google::cloud::spanner::v0::Row::values() &amp;&amp;']]],
   ['valuesource',['ValueSource',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a24c2736cb64e83e464aa7fff4bde52fb',1,'google::cloud::spanner::v0']]],
-  ['version',['version',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a2dadbb63905b7368cb4798ab33461940',1,'google::cloud::spanner::v0']]],
+  ['version',['Version',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ad210165e7e3a2ee4263ad67d4c0d7db8',1,'google::cloud::spanner::v0']]],
   ['version_2ecc',['version.cc',['../version_8cc.html',1,'']]],
   ['version_2eh',['version.h',['../version_8h.html',1,'']]],
   ['version_5finfo_2eh',['version_info.h',['../version__info_8h.html',1,'']]],
-  ['version_5fmajor',['version_major',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af1abccbadf7315acfe49eb262f13c68e',1,'google::cloud::spanner::v0']]],
-  ['version_5fminor',['version_minor',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a6c300f108b25b972ea5ef7035b49916e',1,'google::cloud::spanner::v0']]],
-  ['version_5fpatch',['version_patch',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a67a3ae06b6a8288ce7fd28fa1725d01e',1,'google::cloud::spanner::v0']]],
-  ['version_5fstring',['version_string',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ab81772fabc9afd9aa58f5a8cc223c75b',1,'google::cloud::spanner::v0']]]
+  ['versionmajor',['VersionMajor',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ab4edb29a1d3225a2524d20f8906ee4af',1,'google::cloud::spanner::v0']]],
+  ['versionminor',['VersionMinor',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ab4804e9115984a46093b91a9c4f97d84',1,'google::cloud::spanner::v0']]],
+  ['versionpatch',['VersionPatch',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#abf898e9ac9d2a89ba3d41bbcb1349d87',1,'google::cloud::spanner::v0']]],
+  ['versionstring',['VersionString',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a732639c9c8132f36d40e2d9433c4054b',1,'google::cloud::spanner::v0']]]
 ];
