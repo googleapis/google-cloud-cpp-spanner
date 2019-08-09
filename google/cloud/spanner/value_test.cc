@@ -196,8 +196,10 @@ TEST(Value, BytesDecodingError) {
 }
 
 TEST(Value, BytesRelationalOperators) {
-  Value::Bytes b1("aaaaa");
-  Value::Bytes b2("bbbbb");
+  // Note that Value::Bytes inequalities should treat the bytes as unsigned.
+  // So b1 is always less than b2, independently of the signedness of char.
+  Value::Bytes b1(std::string(1, '\x00'));
+  Value::Bytes b2(std::string(1, '\xff'));
 
   EXPECT_EQ(b1, b1);
   EXPECT_LE(b1, b1);
