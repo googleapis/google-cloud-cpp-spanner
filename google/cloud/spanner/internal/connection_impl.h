@@ -20,6 +20,7 @@
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/status.h"
 #include "google/cloud/status_or.h"
+#include <cstdint>
 #include <memory>
 #include <string>
 
@@ -67,7 +68,7 @@ class ConnectionImpl : public Connection {
 
   /// Implementation details for ExecuteSql
   StatusOr<ResultSet> ExecuteSql(google::spanner::v1::TransactionSelector& s,
-                                 ExecuteSqlParams const& esp);
+                                 std::int64_t seqno, ExecuteSqlParams esp);
 
   /// Implementation details for Commit.
   StatusOr<CommitResult> Commit(google::spanner::v1::TransactionSelector& s,

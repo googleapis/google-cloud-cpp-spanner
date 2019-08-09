@@ -16,7 +16,6 @@
 #include "google/cloud/spanner/internal/partial_result_set_reader.h"
 #include "google/cloud/spanner/internal/time.h"
 #include <google/spanner/v1/spanner.pb.h>
-#include <atomic>
 
 namespace google {
 namespace cloud {
@@ -27,17 +26,19 @@ namespace internal {
 namespace spanner_proto = ::google::spanner::v1;
 
 StatusOr<ResultSet> ConnectionImpl::Read(ReadParams rp) {
-  return internal::Visit(std::move(rp.transaction),
-                         [this, &rp](spanner_proto::TransactionSelector& s) {
-                           return Read(s, std::move(rp));
-                         });
+  return internal::Visit(
+      std::move(rp.transaction),
+      [this, &rp](spanner_proto::TransactionSelector& s, std::int64_t) {
+        return Read(s, std::move(rp));
+      });
 }
 
 StatusOr<ResultSet> ConnectionImpl::ExecuteSql(ExecuteSqlParams esp) {
-  return internal::Visit(std::move(esp.transaction),
-                         [this, &esp](spanner_proto::TransactionSelector& s) {
-                           return ExecuteSql(s, esp);
-                         });
+  return internal::Visit(
+      std::move(esp.transaction),
+      [this, &esp](spanner_proto::TransactionSelector& s, std::int64_t seqno) {
+        return ExecuteSql(s, seqno, std::move(esp));
+      });
 }
 
 StatusOr<CommitResult> ConnectionImpl::Commit(Connection::CommitParams cp) {
@@ -109,7 +110,8 @@ StatusOr<ResultSet> ConnectionImpl::Read(spanner_proto::TransactionSelector& s,
 }
 
 StatusOr<ResultSet> ConnectionImpl::ExecuteSql(
-    spanner_proto::TransactionSelector& s, ExecuteSqlParams const& esp) {
+    spanner_proto::TransactionSelector& s, std::int64_t seqno,
+    ExecuteSqlParams esp) {
   auto session = GetSession();
   if (!session) {
     return std::move(session).status();
@@ -117,17 +119,12 @@ StatusOr<ResultSet> ConnectionImpl::ExecuteSql(
   spanner_proto::ExecuteSqlRequest request;
   request.set_session(session->session_name());
   *request.mutable_transaction() = s;
-  request.set_sql(esp.statement.sql());
-  for (auto const& param : esp.statement.params()) {
-    auto type_and_value = internal::ToProto(param.second);
-    request.mutable_params()->mutable_fields()->insert(
-        {param.first, type_and_value.second});
-    request.mutable_param_types()->insert({param.first, type_and_value.first});
-  }
-  // TODO(#279) implement proper sequence number management; for now just
-  // assign a globally increasing sequence number to all requests.
-  static std::atomic<std::int64_t> seqno(1);
-  request.set_seqno(seqno++);
+  auto sql_statement = internal::ToProto(std::move(esp.statement));
+  request.set_sql(std::move(*sql_statement.mutable_sql()));
+  *request.mutable_params() = std::move(*sql_statement.mutable_params());
+  *request.mutable_param_types() =
+      std::move(*sql_statement.mutable_param_types());
+  request.set_seqno(seqno);
 
   grpc::ClientContext context;
   auto reader = internal::PartialResultSetReader::Create(
