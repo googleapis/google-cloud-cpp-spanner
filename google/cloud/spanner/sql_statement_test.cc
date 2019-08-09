@@ -119,15 +119,13 @@ TEST(SqlStatementTest, ToProtoStatementOnly) {
 }
 
 TEST(SqlStatementTest, ToProtoWithParams) {
-  SqlStatement::ParamType params = {
-      {"last", Value("Blues")},
-      {"first", Value("Elwood")},
-      {"destroyed_cars", Value(std::int64_t{103})},
-  };
+  SqlStatement::ParamType params = {{"last", Value("Blues")},
+                                    {"first", Value("Elwood")},
+                                    {"destroyed_cars", Value(103)}};
 
-  const char* sql =
-      "SELECT * FROM foo WHERE last = @last AND first = @first "
-      "AND destroyed_cars >= @destroyed_cars";
+  auto sql =
+      "SELECT * FROM foo WHERE last = @last AND first = @first AND "
+      "destroyed_cars >= @destroyed_cars";
   SqlStatement stmt(sql, params);
   internal::SqlStatementProto expected;
   ASSERT_TRUE(
