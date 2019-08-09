@@ -187,6 +187,9 @@ class Value {
    * from STRINGs. The `.data` member can be set/get directly. Consructors and
    * relational operators are provided for convenience and to make `Bytes` a
    * regular type that is easy to work with.
+   *
+   * Note that the relational operators behave as if the `std::string` chars
+   * are unsigned, which is exactly how Spanner BYTES values compare.
    */
   struct Bytes {
     std::string data;
@@ -210,8 +213,6 @@ class Value {
     }
     friend bool operator!=(Bytes const& a, Bytes const& b) { return !(a == b); }
     friend bool operator<(Bytes const& a, Bytes const& b) {
-      // Note that std::string::operator<() behaves as if the chars were
-      // unsigned, which is exactly how Spanner BYTES values compare.
       return a.data < b.data;
     }
     friend bool operator<=(Bytes const& a, Bytes const& b) { return !(b < a); }
