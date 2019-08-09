@@ -193,6 +193,14 @@ Functions</h2></td></tr>
 <tr class="separator:ab2a19481df4a3e725aa2cc13f112abd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a303b93745482b9d4430e07a05502da07"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a303b93745482b9d4430e07a05502da07">operator!=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;b)</td></tr>
 <tr class="separator:a303b93745482b9d4430e07a05502da07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab087bbad8cf0782d672fcfb8d239042"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aab087bbad8cf0782d672fcfb8d239042">operator&lt;</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;b)</td></tr>
+<tr class="separator:aab087bbad8cf0782d672fcfb8d239042"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a347c44e0d9a6200555dfd57c6ea108bb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a347c44e0d9a6200555dfd57c6ea108bb">operator&lt;=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;b)</td></tr>
+<tr class="separator:a347c44e0d9a6200555dfd57c6ea108bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc34c53589307c101514333de4a9dc87"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#afc34c53589307c101514333de4a9dc87">operator&gt;=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;b)</td></tr>
+<tr class="separator:afc34c53589307c101514333de4a9dc87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a6e4819ae98b073fb3a14b6c109adfe"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7a6e4819ae98b073fb3a14b6c109adfe">operator&gt;</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;b)</td></tr>
+<tr class="separator:a7a6e4819ae98b073fb3a14b6c109adfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af83b3f827a4d9c996aed7d30bfe9ba0b"><td class="memTemplParams" colspan="2">template&lt;typename RowType &gt; </td></tr>
 <tr class="memitem:af83b3f827a4d9c996aed7d30bfe9ba0b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html">Bound</a>&lt; RowType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af83b3f827a4d9c996aed7d30bfe9ba0b">MakeBoundClosed</a> (RowType key)</td></tr>
 <tr class="memdesc:af83b3f827a4d9c996aed7d30bfe9ba0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to create a closed <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html" title="The Bound class is a regular type that represents one endpoint of an interval of keys.">Bound</a></code> on the key <code>spanner::Row</code> provided.  <a href="#af83b3f827a4d9c996aed7d30bfe9ba0b">More...</a><br /></td></tr>
@@ -926,7 +934,7 @@ template&lt;typename T &gt; </div>
 <p>Factory to construct a "null" <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a> of the specified type <code>T</code>. </p>
 <p>This is equivalent to passing an <code>optional&lt;T&gt;</code> without a value to the constructor, though this factory may be easier to invoke and result in clearer code at the call site. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00572">572</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00581">581</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -1126,7 +1134,45 @@ template&lt;typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="date_8h_source.html#l00052">52</a> of file <a class="el" href="date_8h_source.html">date.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="date_8h_source.html#l00054">54</a> of file <a class="el" href="date_8h_source.html">date.h</a>.</p>
+
+</div>
+</div>
+<a id="aab087bbad8cf0782d672fcfb8d239042"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab087bbad8cf0782d672fcfb8d239042">&#9670;&nbsp;</a></span>operator&lt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool google::cloud::spanner::v0::operator&lt; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="date_8h_source.html#l00056">56</a> of file <a class="el" href="date_8h_source.html">date.h</a>.</p>
 
 </div>
 </div>
@@ -1157,6 +1203,44 @@ template&lt;typename... Ts&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="sql__statement_8cc_source.html#l00041">41</a> of file <a class="el" href="sql__statement_8cc_source.html">sql_statement.cc</a>.</p>
+
+</div>
+</div>
+<a id="a347c44e0d9a6200555dfd57c6ea108bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a347c44e0d9a6200555dfd57c6ea108bb">&#9670;&nbsp;</a></span>operator&lt;=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool google::cloud::spanner::v0::operator&lt;= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="date_8h_source.html#l00061">61</a> of file <a class="el" href="date_8h_source.html">date.h</a>.</p>
 
 </div>
 </div>
@@ -1254,7 +1338,7 @@ template&lt;typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="date_8h_source.html#l00048">48</a> of file <a class="el" href="date_8h_source.html">date.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="date_8h_source.html#l00049">49</a> of file <a class="el" href="date_8h_source.html">date.h</a>.</p>
 
 </div>
 </div>
@@ -1285,6 +1369,82 @@ template&lt;typename... Ts&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00109">109</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
+
+</div>
+</div>
+<a id="a7a6e4819ae98b073fb3a14b6c109adfe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a6e4819ae98b073fb3a14b6c109adfe">&#9670;&nbsp;</a></span>operator&gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool google::cloud::spanner::v0::operator&gt; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="date_8h_source.html#l00065">65</a> of file <a class="el" href="date_8h_source.html">date.h</a>.</p>
+
+</div>
+</div>
+<a id="afc34c53589307c101514333de4a9dc87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc34c53589307c101514333de4a9dc87">&#9670;&nbsp;</a></span>operator&gt;=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool google::cloud::spanner::v0::operator&gt;= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="date_8h_source.html#l00063">63</a> of file <a class="el" href="date_8h_source.html">date.h</a>.</p>
 
 </div>
 </div>
