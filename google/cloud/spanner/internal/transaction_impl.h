@@ -49,7 +49,8 @@ class TransactionImpl {
   // passed TransactionSelector in its Client::Read()/Client::ExecuteSql()
   // call. If initially selector.has_begin(), and the operation successfully
   // allocates a transaction ID, then the functor should selector.set_id(id).
-  // Otherwise the functor should not modify the selector.
+  // Otherwise the functor should not modify the selector. A monotonically-
+  // increasing sequence number is also passed to the functor.
   template <typename Functor>
   VisitInvokeResult<Functor> Visit(Functor&& f) {
     std::int64_t seqno;
