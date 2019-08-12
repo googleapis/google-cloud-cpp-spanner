@@ -21,19 +21,44 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
+
 ::google::spanner::v1::KeySet ToProto(KeySet const& keyset) {
   ::google::spanner::v1::KeySet proto;
   proto.set_all(keyset.IsAll());
 
+  auto make_key = [](KeySet::ValueRow const& key) {
+    google::protobuf::ListValue lv;
+    for (Value const& v : key.column_values()) {
+      std::pair<google::spanner::v1::Type, google::protobuf::Value> p =
+          ToProto(v);
+      *lv.add_values() = std::move(p.second);
+    }
+    return lv;
+  };
+
   for (KeySet::ValueRow const& key : keyset.key_values_) {
-     google::protobuf::ListValue lv;
-     auto mlv = lv.mutable_values();
-     for (Value const& v : key.column_values()) {
-       std::pair<google::spanner::v1::Type, google::protobuf::Value> p = ToProto(v);
-       mlv->Add(std::move(p.second));
-     }
-     proto.mutable_keys()->Add(std::move(lv));
+    *proto.add_keys() = make_key(key);
   }
+
+  for (KeySet::ValueKeyRange const& range : keyset.key_ranges_) {
+    google::spanner::v1::KeyRange kr;
+    auto const& start = range.start();
+    auto const& end = range.end();
+    if (start.mode() == KeySet::ValueBound::Mode::MODE_CLOSED) {
+      *kr.mutable_start_closed() = make_key(start.key());
+    } else {
+      *kr.mutable_start_open() = make_key(start.key());
+    }
+
+    if (end.mode() == KeySet::ValueBound::Mode::MODE_CLOSED) {
+      *kr.mutable_end_closed() = make_key(end.key());
+    } else {
+      *kr.mutable_end_open() = make_key(end.key());
+    }
+
+    *proto.add_ranges() = std::move(kr);
+  }
+
   return proto;
 }
 

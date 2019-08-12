@@ -19,17 +19,16 @@
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/status_or.h"
-#include <google/spanner/v1/keys.pb.h>
 #include <string>
 #include <type_traits>
 #include <vector>
 
 namespace google {
-// namespace spanner {
-// namespace v1 {
-// class KeySet;
-//}  // namespace v1
-//}  // namespace spanner
+namespace spanner {
+namespace v1 {
+class KeySet;
+}  // namespace v1
+}  // namespace spanner
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
@@ -225,8 +224,9 @@ KeyRange<RowType> MakeKeyRange(Bound<RowType> start, Bound<RowType> end) {
  * `spanner::Row`s necessary to uniquely identify a arbitrary group of rows in
  * its index.
  *
- * @warning TODO(#202) This class is currently just a stub; it can only
- * represent "all keys" or "no keys".
+ * Unlike `KeySetBuilder`, `KeySet` stores its keys and key ranges in a type
+ * erased fashion.
+ *
  */
 class KeySet {
  public:
@@ -245,9 +245,9 @@ class KeySet {
   template <typename RowType>
   friend class KeySetBuilder;
 
-  explicit KeySet(bool all) : all_(all) {}
-
   friend ::google::spanner::v1::KeySet internal::ToProto(KeySet const& keyset);
+
+  explicit KeySet(bool all) : all_(all) {}
 
   class ValueRow {
    public:
