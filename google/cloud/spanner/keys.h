@@ -405,12 +405,7 @@ class KeySetBuilder {
    * @warning Currently returns an empty `KeySet`.
    */
   KeySet Build() const;
-
-  /**
-   * Allows implicit conversions from `KeySetBuilder` to `KeySet`.
-   */
-  operator KeySet() const;
-
+  
   // TODO(#322): Add methods to insert ranges of Keys and KeyRanges.
   // TODO(#323): Add methods to remove Keys or KeyRanges.
 
