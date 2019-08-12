@@ -105,17 +105,11 @@ TEST(KeyRangeTest, ConstructorOpenOpen) {
   EXPECT_TRUE(range.end().IsOpen());
 }
 
-TEST(KeySetBuilderTest, AllKeys) {
-  auto all_keys = KeySetBuilder<Row<std::string, std::string>>::All();
-  EXPECT_TRUE(all_keys.IsAll());
-}
-
 TEST(KeySetBuilderTest, ConstructorSingleKey) {
   std::string expected_value("key0");
   auto key = MakeRow("key0");
   auto ks = KeySetBuilder<Row<std::string>>(key);
   EXPECT_EQ(expected_value, ks.keys()[0].get<0>());
-  EXPECT_FALSE(ks.IsAll());
 }
 
 TEST(KeySetBuilderTest, ConstructorKeyRange) {
@@ -128,7 +122,6 @@ TEST(KeySetBuilderTest, ConstructorKeyRange) {
   EXPECT_TRUE(ks.key_ranges()[0].start().IsClosed());
   EXPECT_EQ(end_value, ks.key_ranges()[0].end().key().get<0>());
   EXPECT_TRUE(ks.key_ranges()[0].end().IsClosed());
-  EXPECT_FALSE(ks.IsAll());
 }
 
 TEST(KeySetBuilderTest, AddKeyToEmptyKeySetBuilder) {
@@ -136,7 +129,6 @@ TEST(KeySetBuilderTest, AddKeyToEmptyKeySetBuilder) {
   ks.Add(MakeRow(42, "key42"));
   EXPECT_EQ(42, ks.keys()[0].get<0>());
   EXPECT_EQ("key42", ks.keys()[0].get<1>());
-  EXPECT_FALSE(ks.IsAll());
 }
 
 TEST(KeySetBuilderTest, AddKeyToNonEmptyKeySetBuilder) {

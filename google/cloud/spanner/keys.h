@@ -222,7 +222,7 @@ KeyRange<RowType> MakeKeyRange(Bound<RowType> start, Bound<RowType> end) {
 /**
  * The `KeySet` class is a regular type that represents the collection of
  * `spanner::Row`s necessary to uniquely identify a arbitrary group of rows in
- * its index.
+ * its index, or all the keys in an index.
  *
  * Unlike `KeySetBuilder`, `KeySet` stores its keys and key ranges in a type
  * erased fashion.
@@ -230,7 +230,11 @@ KeyRange<RowType> MakeKeyRange(Bound<RowType> start, Bound<RowType> end) {
  */
 class KeySet {
  public:
+  /**
+   * Returns a `KeySet` that represents the set of "All" keys for the index.
+   */
   static KeySet All() { return KeySet(true); }
+
   /**
    * Constructs an empty `KeySet`.
    */
@@ -346,9 +350,6 @@ class KeySetBuilder {
  public:
   static_assert(internal::IsRow<RowType>::value,
                 "KeyType must be of type spanner::Row<>.");
-
-  static KeySetBuilder<RowType> All() { return KeySetBuilder<RowType>(true); }
-
   /**
    * Constructs an empty `KeySetBuilder`.
    */
@@ -357,15 +358,14 @@ class KeySetBuilder {
   /**
    * Constructs a `KeySetBuilder` with a single key `spanner::Row`.
    */
-  explicit KeySetBuilder(RowType key) : all_(false), keys_(), key_ranges_() {
+  explicit KeySetBuilder(RowType key) : keys_(), key_ranges_() {
     keys_.emplace_back(std::move(key));
   }
 
   /**
    * Constructs a `KeySetBuilder` with a single `KeyRange`.
    */
-  explicit KeySetBuilder(KeyRange<RowType> key_range)
-      : all_(false), keys_(), key_ranges_() {
+  explicit KeySetBuilder(KeyRange<RowType> key_range) : keys_(), key_ranges_() {
     key_ranges_.emplace_back(std::move(key_range));
   }
 
@@ -400,11 +400,6 @@ class KeySetBuilder {
   }
 
   /**
-   * Does the `KeySetBuilder` represent all keys for an index.
-   */
-  bool IsAll() const { return all_; }
-
-  /**
    * Builds a type-erased `KeySet` from the contents of the `KeySetBuilder`.
    *
    * @warning Currently returns an empty `KeySet`.
@@ -420,8 +415,6 @@ class KeySetBuilder {
   // TODO(#323): Add methods to remove Keys or KeyRanges.
 
  private:
-  explicit KeySetBuilder(bool all) : all_(all), keys_(), key_ranges_() {}
-  bool all_;
   std::vector<RowType> keys_;
   std::vector<KeyRange<RowType>> key_ranges_;
 };
@@ -429,9 +422,6 @@ class KeySetBuilder {
 template <typename RowType>
 KeySet KeySetBuilder<RowType>::Build() const {
   KeySet ks;
-  if (ks.IsAll()) {
-    ks.all_ = true;
-  }
 
   for (auto const& key : keys_) {
     ks.EmplaceKey(KeySet::ValueRow(key.values()));
