@@ -402,10 +402,9 @@ class KeySetBuilder {
   /**
    * Builds a type-erased `KeySet` from the contents of the `KeySetBuilder`.
    *
-   * @warning Currently returns an empty `KeySet`.
    */
   KeySet Build() const;
-  
+
   // TODO(#322): Add methods to insert ranges of Keys and KeyRanges.
   // TODO(#323): Add methods to remove Keys or KeyRanges.
 
