@@ -23,3 +23,6 @@ google/cloud/storage/testbench/*.pyc
 
 # Ignore Visual Studio Code files.
 .vscode/
+
+# Temporary cmake file.
+CMakeLists.txt.tmp
