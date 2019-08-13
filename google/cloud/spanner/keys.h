@@ -255,7 +255,7 @@ class KeySet {
     explicit ValueRow(std::array<Value, N> const& column_values)
         : column_values_(column_values.begin(), column_values.end()) {}
 
-    std::vector<Value> const& column_values() const { return column_values_; }
+    std::vector<Value>& mutable_column_values() { return column_values_; }
 
    private:
     std::vector<Value> column_values_;
@@ -267,8 +267,8 @@ class KeySet {
     explicit ValueBound(ValueRow key, ValueBound::Mode mode)
         : key_(std::move(key)), mode_(mode) {}
 
-    ValueRow const& key() const { return key_; }
-    Mode const& mode() const { return mode_; }
+    ValueRow& mutable_key() { return key_; }
+    Mode mode() { return mode_; }
 
    private:
     ValueRow key_;
@@ -280,8 +280,8 @@ class KeySet {
     explicit ValueKeyRange(ValueBound start, ValueBound end)
         : start_(std::move(start)), end_(std::move(end)) {}
 
-    ValueBound const& start() const { return start_; }
-    ValueBound const& end() const { return end_; }
+    ValueBound& mutable_start() { return start_; }
+    ValueBound& mutable_end() { return end_; }
 
    private:
     ValueBound start_;

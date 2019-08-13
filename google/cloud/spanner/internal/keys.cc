@@ -26,9 +26,9 @@ namespace internal {
   ::google::spanner::v1::KeySet proto;
   proto.set_all(keyset.IsAll());
 
-  auto make_key = [](KeySet::ValueRow const& key) {
+  auto make_key = [](KeySet::ValueRow key) {
     google::protobuf::ListValue lv;
-    for (Value const& v : key.column_values()) {
+    for (Value& v : key.mutable_column_values()) {
       std::pair<google::spanner::v1::Type, google::protobuf::Value> p =
           ToProto(v);
       *lv.add_values() = std::move(p.second);
@@ -36,24 +36,24 @@ namespace internal {
     return lv;
   };
 
-  for (KeySet::ValueRow const& key : keyset.key_values_) {
-    *proto.add_keys() = make_key(key);
+  for (KeySet::ValueRow& key : keyset.key_values_) {
+    *proto.add_keys() = make_key(std::move(key));
   }
 
-  for (KeySet::ValueKeyRange const& range : keyset.key_ranges_) {
+  for (KeySet::ValueKeyRange& range : keyset.key_ranges_) {
     google::spanner::v1::KeyRange kr;
-    auto const& start = range.start();
-    auto const& end = range.end();
+    auto& start = range.mutable_start();
+    auto& end = range.mutable_end();
     if (start.mode() == KeySet::ValueBound::Mode::MODE_CLOSED) {
-      *kr.mutable_start_closed() = make_key(start.key());
+      *kr.mutable_start_closed() = make_key(std::move(start.mutable_key()));
     } else {
-      *kr.mutable_start_open() = make_key(start.key());
+      *kr.mutable_start_open() = make_key(std::move(start.mutable_key()));
     }
 
     if (end.mode() == KeySet::ValueBound::Mode::MODE_CLOSED) {
-      *kr.mutable_end_closed() = make_key(end.key());
+      *kr.mutable_end_closed() = make_key(std::move(end.mutable_key()));
     } else {
-      *kr.mutable_end_open() = make_key(end.key());
+      *kr.mutable_end_open() = make_key(std::move(end.mutable_key()));
     }
 
     *proto.add_ranges() = std::move(kr);

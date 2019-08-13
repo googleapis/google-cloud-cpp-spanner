@@ -82,8 +82,6 @@ TEST(InternalKeySetTest, BuildToProtoTwoRanges) {
       MakeBoundOpen(MakeRow("end10", "end11")));
   ksb.Add(range);
 
-  KeySet ks = ksb.Build();
-
   ::google::spanner::v1::KeySet expected;
   EXPECT_TRUE(::google::protobuf::TextFormat::ParseFromString(
       R"(
@@ -130,7 +128,7 @@ ranges {
 all: false
 )",
       &expected));
-  ::google::spanner::v1::KeySet result = internal::ToProto(ks);
+  ::google::spanner::v1::KeySet result = internal::ToProto(ksb.Build());
 
   EXPECT_THAT(result, spanner_testing::IsProtoEqual(expected));
 }
