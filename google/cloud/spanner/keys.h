@@ -31,6 +31,8 @@ inline namespace SPANNER_CLIENT_NS {
 class KeySet;
 template <typename RowType>
 class KeyRange;
+template <typename RowType>
+class KeySetBuilder;
 
 namespace internal {
 ::google::spanner::v1::KeySet ToProto(KeySet keyset);
@@ -237,14 +239,33 @@ class KeySet {
   KeySet() = default;
 
   /**
+   * Constructs a `KeySet` from a `KeySetBuilder`.
+   * @tparam RowType spanner::Row<Types...> that corresponds to the desired
+   * index definition.
+   */
+  template <typename RowType>
+  KeySet(KeySetBuilder<RowType> builder) {
+    for (auto const& key : builder.keys()) {
+      key_values_.push_back(ValueRow(key.values()));
+    }
+
+    for (auto const& range : builder.key_ranges()) {
+      key_ranges_.push_back(ValueKeyRange(
+          ValueBound(ValueRow(range.start().key().values()),
+                     range.start().IsClosed() ? ValueBound::Mode::MODE_CLOSED
+                                              : ValueBound::Mode::MODE_OPEN),
+          ValueBound(ValueRow(range.end().key().values()),
+                     range.end().IsClosed() ? ValueBound::Mode::MODE_CLOSED
+                                            : ValueBound::Mode::MODE_OPEN)));
+    }
+  }
+
+  /**
    * Does the `KeySet` represent all keys for an index.
    */
   bool IsAll() const { return all_; }
 
  private:
-  template <typename RowType>
-  friend class KeySetBuilder;
-
   friend ::google::spanner::v1::KeySet internal::ToProto(KeySet keyset);
 
   explicit KeySet(bool all) : all_(all) {}
@@ -287,16 +308,6 @@ class KeySet {
     ValueBound start_;
     ValueBound end_;
   };
-
-  KeySet& AddKey(ValueRow key) {
-    key_values_.emplace_back(std::move(key));
-    return *this;
-  }
-
-  KeySet& AddKeyRange(ValueKeyRange range) {
-    key_ranges_.emplace_back(std::move(range));
-    return *this;
-  }
 
   std::vector<ValueRow> key_values_;
   std::vector<ValueKeyRange> key_ranges_;
@@ -354,14 +365,14 @@ class KeySetBuilder {
    * Constructs a `KeySetBuilder` with a single key `spanner::Row`.
    */
   explicit KeySetBuilder(RowType key) : keys_(), key_ranges_() {
-    keys_.emplace_back(std::move(key));
+    keys_.push_back(std::move(key));
   }
 
   /**
    * Constructs a `KeySetBuilder` with a single `KeyRange`.
    */
   explicit KeySetBuilder(KeyRange<RowType> key_range) : keys_(), key_ranges_() {
-    key_ranges_.emplace_back(std::move(key_range));
+    key_ranges_.push_back(std::move(key_range));
   }
 
   /**
@@ -382,7 +393,7 @@ class KeySetBuilder {
    * Adds a key `spanner::Row` to the `KeySetBuilder`.
    */
   KeySetBuilder& Add(RowType key) {
-    keys_.emplace_back(std::move(key));
+    keys_.push_back(std::move(key));
     return *this;
   }
 
@@ -390,7 +401,7 @@ class KeySetBuilder {
    * Adds a `KeyRange` to the `KeySetBuilder`.
    */
   KeySetBuilder& Add(KeyRange<RowType> key_range) {
-    key_ranges_.emplace_back(std::move(key_range));
+    key_ranges_.push_back(std::move(key_range));
     return *this;
   }
 
@@ -410,25 +421,7 @@ class KeySetBuilder {
 
 template <typename RowType>
 KeySet KeySetBuilder<RowType>::Build() const {
-  KeySet ks;
-
-  for (auto const& key : keys_) {
-    ks.AddKey(KeySet::ValueRow(key.values()));
-  }
-
-  for (auto const& key_range : key_ranges_) {
-    KeySet::ValueBound start_bound(
-        KeySet::ValueRow(key_range.start().key().values()),
-        key_range.start().IsClosed() ? KeySet::ValueBound::Mode::MODE_CLOSED
-                                     : KeySet::ValueBound::Mode::MODE_OPEN);
-    KeySet::ValueBound end_bound(
-        KeySet::ValueRow(key_range.end().key().values()),
-        key_range.end().IsClosed() ? KeySet::ValueBound::Mode::MODE_CLOSED
-                                   : KeySet::ValueBound::Mode::MODE_OPEN);
-    ks.AddKeyRange((KeySet::ValueKeyRange(start_bound, end_bound)));
-  }
-
-  return ks;
+  return KeySet(*this);
 }
 
 }  // namespace SPANNER_CLIENT_NS
