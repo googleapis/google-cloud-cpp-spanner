@@ -30,7 +30,7 @@ namespace internal {
     google::protobuf::ListValue lv;
     for (Value& v : key.mutable_column_values()) {
       std::pair<google::spanner::v1::Type, google::protobuf::Value> p =
-          ToProto(v);
+          ToProto(std::move(v));
       *lv.add_values() = std::move(p.second);
     }
     return lv;

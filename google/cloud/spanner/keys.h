@@ -244,7 +244,7 @@ class KeySet {
    * index definition.
    */
   template <typename RowType>
-  KeySet(KeySetBuilder<RowType> builder) {
+  explicit KeySet(KeySetBuilder<RowType> const& builder) {
     for (auto const& key : builder.keys()) {
       key_values_.push_back(ValueRow(key.values()));
     }
@@ -273,8 +273,9 @@ class KeySet {
   class ValueRow {
    public:
     template <std::size_t N>
-    explicit ValueRow(std::array<Value, N> const& column_values)
-        : column_values_(column_values.begin(), column_values.end()) {}
+    explicit ValueRow(std::array<Value, N> column_values)
+        : column_values_(std::make_move_iterator(column_values.begin()),
+                         std::make_move_iterator(column_values.end())) {}
 
     std::vector<Value>& mutable_column_values() { return column_values_; }
 
