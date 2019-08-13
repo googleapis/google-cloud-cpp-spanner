@@ -184,7 +184,8 @@ TEST(InternalKeySetTest, ToProtoAll) {
   ::google::spanner::v1::KeySet expected;
   EXPECT_TRUE(google::protobuf::TextFormat::ParseFromString(
       R"pb(
-        all: true)pb",
+        all: true
+      )pb",
       &expected));
 
   ::google::spanner::v1::KeySet result = internal::ToProto(ks);
@@ -209,7 +210,8 @@ TEST(InternalKeySetTest, BuildToProtoTwoKeys) {
           values: { string_value: "foo1" }
           values: { string_value: "bar1" }
         }
-        all: false)pb",
+        all: false
+      )pb",
       &expected));
   ::google::spanner::v1::KeySet result = internal::ToProto(ks);
 

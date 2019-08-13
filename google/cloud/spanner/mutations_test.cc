@@ -232,7 +232,8 @@ TEST(MutationsTest, InsertOrUpdateComplex) {
               }
             }
           }
-        })pb",
+        }
+      )pb",
       &expected));
   EXPECT_THAT(actual, IsProtoEqual(expected));
 }
@@ -290,7 +291,8 @@ TEST(MutationsTest, ReplaceComplex) {
             values: { string_value: "b" }
             values: { number_value: 8.0 }
           }
-        })pb",
+        }
+      )pb",
       &expected));
   EXPECT_THAT(actual, IsProtoEqual(expected));
 }

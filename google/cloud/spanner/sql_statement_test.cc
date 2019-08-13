@@ -155,7 +155,8 @@ TEST(SqlStatementTest, ToProtoWithParams) {
         param_types: {
           key: "first",
           value: { code: STRING }
-        })pb",
+        }
+      )pb",
       &expected));
   EXPECT_THAT(internal::ToProto(std::move(stmt)), IsProtoEqual(expected));
 }

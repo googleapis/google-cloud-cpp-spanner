@@ -118,7 +118,8 @@ TEST(PartialResultSetReaderTest, ReadSuccessThenFailure) {
             }
           }
         }
-        values: { string_value: "80" })pb",
+        values: { string_value: "80" }
+      )pb",
       &response));
   EXPECT_CALL(*grpc_reader, Read(_))
       .WillOnce(DoAll(SetArgPointee<0>(response), Return(true)))
@@ -296,16 +297,19 @@ TEST(PartialResultSetReaderTest, MultipleResponses) {
   ASSERT_TRUE(TextFormat::ParseFromString(
       R"pb(
         values: { string_value: "10" }
-        values: { string_value: "user10" })pb",
+        values: { string_value: "user10" }
+      )pb",
       &response[1]));
   ASSERT_TRUE(TextFormat::ParseFromString(
       R"pb(
         values: { string_value: "22" }
-        values: { string_value: "user22" })pb",
+        values: { string_value: "user22" }
+      )pb",
       &response[2]));
   ASSERT_TRUE(TextFormat::ParseFromString(
       R"pb(
-        values: { string_value: "99" })pb",
+        values: { string_value: "99" }
+      )pb",
       &response[3]));
   ASSERT_TRUE(TextFormat::ParseFromString(
       R"pb(
