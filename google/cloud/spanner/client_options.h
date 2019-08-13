@@ -57,9 +57,7 @@ class ClientOptions {
   std::string admin_endpoint_;
 };
 
-// XXX(salty) where to put these???
-
-/// Options passed to `Read` or `PartitionRead`.
+/// Options passed to `Client::Read` or `Client::PartitionRead`.
 struct ReadOptions {
   /**
    * If non-empty, the name of an index on a database table. This index is used
@@ -75,7 +73,7 @@ struct ReadOptions {
   std::int64_t limit = 0;
 };
 
-/// Options passed to `PartitionRead` or `PartitionQuery`
+/// Options passed to `Client::PartitionRead` or `Client::PartitionQuery`
 using PartitionOptions = google::spanner::v1::PartitionOptions;
 
 }  // namespace SPANNER_CLIENT_NS

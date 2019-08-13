@@ -15,7 +15,7 @@
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CONNECTION_H_
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CONNECTION_H_
 
-#include "google/cloud/spanner/client_options.h"  // XXX(salty)
+#include "google/cloud/spanner/client_options.h"
 #include "google/cloud/spanner/commit_result.h"
 #include "google/cloud/spanner/keys.h"
 #include "google/cloud/spanner/mutations.h"
