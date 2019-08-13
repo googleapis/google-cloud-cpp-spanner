@@ -22,7 +22,7 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
-::google::spanner::v1::KeySet ToProto(KeySet const& keyset) {
+::google::spanner::v1::KeySet ToProto(KeySet keyset) {
   ::google::spanner::v1::KeySet proto;
   proto.set_all(keyset.IsAll());
 

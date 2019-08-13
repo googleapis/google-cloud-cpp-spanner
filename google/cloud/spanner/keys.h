@@ -19,16 +19,12 @@
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/status_or.h"
+#include <google/spanner/v1/keys.pb.h>
 #include <string>
 #include <type_traits>
 #include <vector>
 
 namespace google {
-namespace spanner {
-namespace v1 {
-class KeySet;
-}  // namespace v1
-}  // namespace spanner
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
@@ -37,7 +33,7 @@ template <typename RowType>
 class KeyRange;
 
 namespace internal {
-::google::spanner::v1::KeySet ToProto(KeySet const& keyset);
+::google::spanner::v1::KeySet ToProto(KeySet keyset);
 
 template <typename T>
 struct IsRow : std::false_type {};
@@ -249,16 +245,15 @@ class KeySet {
   template <typename RowType>
   friend class KeySetBuilder;
 
-  friend ::google::spanner::v1::KeySet internal::ToProto(KeySet const& keyset);
+  friend ::google::spanner::v1::KeySet internal::ToProto(KeySet keyset);
 
   explicit KeySet(bool all) : all_(all) {}
 
   class ValueRow {
    public:
-    template <std::size_t SIZE>
-    explicit ValueRow(std::array<Value, SIZE> const& column_values)
-        : column_values_(
-              std::vector<Value>(column_values.begin(), column_values.end())) {}
+    template <std::size_t N>
+    explicit ValueRow(std::array<Value, N> const& column_values)
+        : column_values_(column_values.begin(), column_values.end()) {}
 
     std::vector<Value> const& column_values() const { return column_values_; }
 
@@ -293,12 +288,12 @@ class KeySet {
     ValueBound end_;
   };
 
-  KeySet& EmplaceKey(ValueRow key) {
+  KeySet& AddKey(ValueRow key) {
     key_values_.emplace_back(std::move(key));
     return *this;
   }
 
-  KeySet& EmplaceKeyRange(ValueKeyRange range) {
+  KeySet& AddKeyRange(ValueKeyRange range) {
     key_ranges_.emplace_back(std::move(range));
     return *this;
   }
@@ -418,7 +413,7 @@ KeySet KeySetBuilder<RowType>::Build() const {
   KeySet ks;
 
   for (auto const& key : keys_) {
-    ks.EmplaceKey(KeySet::ValueRow(key.values()));
+    ks.AddKey(KeySet::ValueRow(key.values()));
   }
 
   for (auto const& key_range : key_ranges_) {
@@ -430,7 +425,7 @@ KeySet KeySetBuilder<RowType>::Build() const {
         KeySet::ValueRow(key_range.end().key().values()),
         key_range.end().IsClosed() ? KeySet::ValueBound::Mode::MODE_CLOSED
                                    : KeySet::ValueBound::Mode::MODE_OPEN);
-    ks.EmplaceKeyRange((KeySet::ValueKeyRange(start_bound, end_bound)));
+    ks.AddKeyRange((KeySet::ValueKeyRange(start_bound, end_bound)));
   }
 
   return ks;

@@ -24,7 +24,7 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
-::google::spanner::v1::KeySet ToProto(KeySet const& keyset);
+::google::spanner::v1::KeySet ToProto(KeySet keyset);
 
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS
