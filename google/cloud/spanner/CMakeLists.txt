@@ -110,7 +110,6 @@ add_library(spanner_client
             internal/date.cc
             internal/date.h
             internal/keys.cc
-            internal/keys.h
             internal/merge_chunk.cc
             internal/merge_chunk.h
             internal/partial_result_set_reader.cc

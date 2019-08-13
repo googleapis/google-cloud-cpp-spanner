@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "google/cloud/spanner/internal/keys.h"
+#include "google/cloud/spanner/keys.h"
 #include "google/cloud/spanner/value.h"
 #include <google/spanner/v1/keys.pb.h>
 
