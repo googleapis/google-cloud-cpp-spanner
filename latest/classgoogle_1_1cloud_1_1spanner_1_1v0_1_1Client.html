@@ -106,10 +106,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a804d859e0918123b6fd706f3031017e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes single Partitioned DML statement.  <a href="#a804d859e0918123b6fd706f3031017e5">More...</a><br /></td></tr>
 <tr class="separator:a804d859e0918123b6fd706f3031017e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d534ef251845879a66a230e3ea36f51"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html">CommitResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a5d534ef251845879a66a230e3ea36f51">Commit</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> transaction, std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html">Mutation</a> &gt; mutations)</td></tr>
-<tr class="memdesc:a5d534ef251845879a66a230e3ea36f51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Commits a transaction.  <a href="#a5d534ef251845879a66a230e3ea36f51">More...</a><br /></td></tr>
+<tr class="memdesc:a5d534ef251845879a66a230e3ea36f51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Commits a read-write transaction.  <a href="#a5d534ef251845879a66a230e3ea36f51">More...</a><br /></td></tr>
 <tr class="separator:a5d534ef251845879a66a230e3ea36f51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa650df8b6fae3998b3f2fd63ca40a720"><td class="memItemLeft" align="right" valign="top">Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#aa650df8b6fae3998b3f2fd63ca40a720">Rollback</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> transaction)</td></tr>
-<tr class="memdesc:aa650df8b6fae3998b3f2fd63ca40a720"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rolls back a transaction, releasing any locks it holds.  <a href="#aa650df8b6fae3998b3f2fd63ca40a720">More...</a><br /></td></tr>
+<tr class="memdesc:aa650df8b6fae3998b3f2fd63ca40a720"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rolls back a read-write transaction, releasing any locks it holds.  <a href="#aa650df8b6fae3998b3f2fd63ca40a720">More...</a><br /></td></tr>
 <tr class="separator:aa650df8b6fae3998b3f2fd63ca40a720"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a1bf1ba0a670d69df203fd8d79abd9e05"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a1bf1ba0a670d69df203fd8d79abd9e05">Client</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a> const &amp;)=default</td></tr>
@@ -298,8 +298,9 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Commits a transaction. </p>
+<p>Commits a read-write transaction. </p>
 <p>The commit might return an <code>ABORTED</code> error. This can occur at any time; commonly, the cause is conflicts with concurrent transactions. However, it can also happen for a variety of other reasons. If <code>Commit</code> returns <code>ABORTED</code>, the caller should re-attempt the transaction from the beginning, re-using the same session.</p>
+<dl class="section warning"><dt>Warning</dt><dd>It is an error to call <code>Commit</code> with a read-only <code>transaction</code>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">transaction</td><td>The transaction to commit. </td></tr>
@@ -948,8 +949,9 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Rolls back a transaction, releasing any locks it holds. </p>
-<p>It is a good idea to call this for any transaction that includes one or more <code>Read</code> or <code>ExecuteSql</code> requests and ultimately decides not to commit.</p>
+<p>Rolls back a read-write transaction, releasing any locks it holds. </p>
+<p>At any time before <code>Commit</code>, the client can call <code>Rollback</code> to abort the transaction. It is a good idea to call this for any read-write transaction that includes one or more <code>Read</code> or <code>ExecuteSql</code> requests and ultimately decides not to commit.</p>
+<dl class="section warning"><dt>Warning</dt><dd>It is an error to call <code>Rollback</code> with a read-only <code>transaction</code>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">transaction</td><td>The transaction to roll back.</td></tr>
