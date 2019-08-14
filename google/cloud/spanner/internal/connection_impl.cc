@@ -91,8 +91,8 @@ StatusOr<ResultSet> ConnectionImpl::Read(spanner_proto::TransactionSelector& s,
 
   auto context = google::cloud::internal::make_unique<grpc::ClientContext>();
   auto rpc = stub_->StreamingRead(*context, request);
-  auto reader = internal::PartialResultSetReader::Create(
-      std::move(context), std::move(rpc));
+  auto reader = internal::PartialResultSetReader::Create(std::move(context),
+                                                         std::move(rpc));
   if (!reader.ok()) {
     return std::move(reader).status();
   }
@@ -127,8 +127,8 @@ StatusOr<ResultSet> ConnectionImpl::ExecuteSql(
 
   auto context = google::cloud::internal::make_unique<grpc::ClientContext>();
   auto rpc = stub_->ExecuteStreamingSql(*context, request);
-  auto reader = internal::PartialResultSetReader::Create(
-      std::move(context), std::move(rpc));
+  auto reader = internal::PartialResultSetReader::Create(std::move(context),
+                                                         std::move(rpc));
   if (!reader.ok()) {
     return std::move(reader).status();
   }
