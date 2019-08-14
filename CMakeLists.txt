@@ -33,12 +33,6 @@ include(EnableCoverage)
 # C++ Exceptions are enabled by default, but allow the user to turn them off.
 include(EnableCxxExceptions)
 
-# Set this variable to a true value for branches that are releases. That will
-# remove the "+dev" suffix (technically "build metadata" according to
-# semver.org) from all the build identifiers. We only want that suffix on
-# development branches.
-set(GOOGLE_CLOUD_CPP_SPANNER_CLIENT_IS_RELEASE "")
-
 # This should be included from the top level CMakeLists file
 set(SPANNER_CLIENT_VERSION_MAJOR 0)
 set(SPANNER_CLIENT_VERSION_MINOR 1)
