@@ -64,7 +64,7 @@ class Bound {
   /**
    * Constructs a closed `Bound` with a default constructed key of `KeyType`.
    */
-  Bound() : Bound(RowType(), Mode::kClosed) {}
+  Bound() : Bound({}) {}
   /**
    * Constructs a closed `Bound` with the provided key.
    * @param key spanner::Row<Types...>
@@ -149,11 +149,11 @@ class KeyRange {
   /**
    * Constructs an empty `KeyRange`.
    */
-  KeyRange() : start_(), end_() {}
+  KeyRange() = default;
   ~KeyRange() = default;
 
   /**
-   * Constructs a `KeyRange` with closed `Bound`s on the keys provided.
+   * Constructs a `KeyRange` with the given `Bound`s.
    */
   explicit KeyRange(Bound<RowType> start, Bound<RowType> end)
       : start_(std::move(start)), end_(std::move(end)) {}
@@ -174,7 +174,6 @@ class KeyRange {
   Bound<RowType> const& start() const { return start_; }
   Bound<RowType> const& end() const { return end_; }
 
- private:
   friend bool operator==(KeyRange const& lhs, KeyRange const& rhs) {
     return lhs.start_ == rhs.start_ && lhs.end_ == rhs.end_;
   }
@@ -182,6 +181,7 @@ class KeyRange {
     return !(lhs == rhs);
   }
 
+ private:
   Bound<RowType> start_;
   Bound<RowType> end_;
 };
@@ -286,7 +286,7 @@ class KeySet {
   class ValueBound {
    public:
     enum class Mode { kClosed, kOpen };
-    explicit ValueBound(ValueRow key, ValueBound::Mode mode)
+    explicit ValueBound(ValueRow key, Mode mode)
         : key_(std::move(key)), mode_(mode) {}
 
     ValueRow& mutable_key() { return key_; }
@@ -365,14 +365,12 @@ class KeySetBuilder {
   /**
    * Constructs a `KeySetBuilder` with a single key `spanner::Row`.
    */
-  explicit KeySetBuilder(RowType key) : keys_(), key_ranges_() {
-    keys_.push_back(std::move(key));
-  }
+  explicit KeySetBuilder(RowType key) { keys_.push_back(std::move(key)); }
 
   /**
    * Constructs a `KeySetBuilder` with a single `KeyRange`.
    */
-  explicit KeySetBuilder(KeyRange<RowType> key_range) : keys_(), key_ranges_() {
+  explicit KeySetBuilder(KeyRange<RowType> key_range) {
     key_ranges_.push_back(std::move(key_range));
   }
 
@@ -410,7 +408,7 @@ class KeySetBuilder {
    * Builds a type-erased `KeySet` from the contents of the `KeySetBuilder`.
    *
    */
-  KeySet Build() const;
+  KeySet Build() const { return KeySet(*this); }
 
   // TODO(#322): Add methods to insert ranges of Keys and KeyRanges.
   // TODO(#323): Add methods to remove Keys or KeyRanges.
@@ -419,11 +417,6 @@ class KeySetBuilder {
   std::vector<RowType> keys_;
   std::vector<KeyRange<RowType>> key_ranges_;
 };
-
-template <typename RowType>
-KeySet KeySetBuilder<RowType>::Build() const {
-  return KeySet(*this);
-}
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
