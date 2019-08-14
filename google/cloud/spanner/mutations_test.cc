@@ -256,7 +256,7 @@ TEST(MutationsTest, ReplaceSimple) {
 
   auto actual = std::move(replace).as_proto();
   spanner_proto::Mutation expected;
-  ASSERT_TRUE(google::protobuf::TextFormat::ParseFromString(
+  ASSERT_TRUE(TextFormat::ParseFromString(
       R"pb(
         replace: {
           table: "table-name"
@@ -316,19 +316,14 @@ TEST(MutationsTest, DeleteSimple) {
 
   auto actual = std::move(dele).as_proto();
   spanner_proto::Mutation expected;
-  ASSERT_TRUE(TextFormat::ParseFromString(R"""(
-              delete: {
-                table: "table-name"
-                key_set: {
-                  keys: {
-                    values {
-                      string_value: "key-to-delete"
-                    }
-                  }
-                }
-              }
-              )""",
-                                          &expected));
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        delete: {
+          table: "table-name"
+          key_set: { keys: { values { string_value: "key-to-delete" } } }
+        }
+      )pb",
+      &expected));
   EXPECT_THAT(actual, IsProtoEqual(expected));
 }
 
