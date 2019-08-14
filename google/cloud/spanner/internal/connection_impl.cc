@@ -85,11 +85,7 @@ StatusOr<ResultSet> ConnectionImpl::Read(spanner_proto::TransactionSelector& s,
   for (auto&& column : rp.columns) {
     request.add_columns(std::move(column));
   }
-  spanner_proto::KeySet* key_set = request.mutable_key_set();
-  // TODO(#202) update this when the final KeySet is implemented.
-  if (rp.keys.IsAll()) {
-    key_set->set_all(true);
-  }
+  *request.mutable_key_set() = internal::ToProto(std::move(rp.keys));
   request.set_limit(rp.read_options.limit);
 
   grpc::ClientContext context;

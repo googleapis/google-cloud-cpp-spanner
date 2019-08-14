@@ -313,8 +313,6 @@ class KeySet {
   std::vector<ValueRow> key_values_;
   std::vector<ValueKeyRange> key_ranges_;
   bool all_ = false;
-  // TODO(#202) this prevents performance-move-const-arg warnings
-  std::string dummy_;
 };
 
 /**
