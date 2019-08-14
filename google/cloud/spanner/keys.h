@@ -64,12 +64,12 @@ class Bound {
   /**
    * Constructs a closed `Bound` with a default constructed key of `KeyType`.
    */
-  Bound() : Bound(RowType(), Mode::MODE_CLOSED) {}
+  Bound() : Bound(RowType(), Mode::kClosed) {}
   /**
    * Constructs a closed `Bound` with the provided key.
    * @param key spanner::Row<Types...>
    */
-  explicit Bound(RowType key) : Bound(std::move(key), Mode::MODE_CLOSED) {}
+  explicit Bound(RowType key) : Bound(std::move(key), Mode::kClosed) {}
 
   // Copy and move constructors and assignment operators.
   Bound(Bound const& key_range) = default;
@@ -78,8 +78,8 @@ class Bound {
   Bound& operator=(Bound&& rhs) = default;
 
   RowType const& key() const { return key_; }
-  bool IsClosed() const { return mode_ == Mode::MODE_CLOSED; }
-  bool IsOpen() const { return mode_ == Mode::MODE_OPEN; }
+  bool IsClosed() const { return mode_ == Mode::kClosed; }
+  bool IsOpen() const { return mode_ == Mode::kOpen; }
 
   friend bool operator==(Bound const& lhs, Bound const& rhs) {
     return lhs.key_ == rhs.key_ && lhs.mode_ == rhs.mode_;
@@ -89,7 +89,7 @@ class Bound {
   }
 
  private:
-  enum class Mode { MODE_CLOSED, MODE_OPEN };
+  enum class Mode { kClosed, kOpen };
 
   Bound(RowType key, Mode mode) : key_(std::move(key)), mode_(mode) {}
 
@@ -117,7 +117,7 @@ class Bound {
  */
 template <typename RowType>
 Bound<RowType> MakeBoundClosed(RowType key) {
-  return Bound<RowType>(std::move(key), Bound<RowType>::Mode::MODE_CLOSED);
+  return Bound<RowType>(std::move(key), Bound<RowType>::Mode::kClosed);
 }
 
 /**
@@ -130,7 +130,7 @@ Bound<RowType> MakeBoundClosed(RowType key) {
  */
 template <typename RowType>
 Bound<RowType> MakeBoundOpen(RowType key) {
-  return Bound<RowType>(std::move(key), Bound<RowType>::Mode::MODE_OPEN);
+  return Bound<RowType>(std::move(key), Bound<RowType>::Mode::kOpen);
 }
 
 /**
@@ -199,8 +199,8 @@ class KeyRange {
 template <typename RowType>
 KeyRange<RowType> MakeKeyRange(RowType start, RowType end) {
   return KeyRange<RowType>(
-      Bound<RowType>(std::move(start), Bound<RowType>::Mode::MODE_CLOSED),
-      Bound<RowType>(std::move(end), Bound<RowType>::Mode::MODE_CLOSED));
+      Bound<RowType>(std::move(start), Bound<RowType>::Mode::kClosed),
+      Bound<RowType>(std::move(end), Bound<RowType>::Mode::kClosed));
 }
 
 /**
@@ -252,11 +252,11 @@ class KeySet {
     for (auto const& range : builder.key_ranges()) {
       key_ranges_.push_back(ValueKeyRange(
           ValueBound(ValueRow(range.start().key().values()),
-                     range.start().IsClosed() ? ValueBound::Mode::MODE_CLOSED
-                                              : ValueBound::Mode::MODE_OPEN),
+                     range.start().IsClosed() ? ValueBound::Mode::kClosed
+                                              : ValueBound::Mode::kOpen),
           ValueBound(ValueRow(range.end().key().values()),
-                     range.end().IsClosed() ? ValueBound::Mode::MODE_CLOSED
-                                            : ValueBound::Mode::MODE_OPEN)));
+                     range.end().IsClosed() ? ValueBound::Mode::kClosed
+                                            : ValueBound::Mode::kOpen)));
     }
   }
 
@@ -285,7 +285,7 @@ class KeySet {
 
   class ValueBound {
    public:
-    enum class Mode { MODE_CLOSED, MODE_OPEN };
+    enum class Mode { kClosed, kOpen };
     explicit ValueBound(ValueRow key, ValueBound::Mode mode)
         : key_(std::move(key)), mode_(mode) {}
 
