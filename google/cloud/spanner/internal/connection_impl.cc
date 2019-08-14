@@ -45,7 +45,7 @@ StatusOr<CommitResult> ConnectionImpl::Commit(Connection::CommitParams cp) {
   return internal::Visit(
       std::move(cp.transaction),
       [this, &cp](spanner_proto::TransactionSelector& s, std::int64_t) {
-        return this->Commit(s, std::move(cp));
+        return this->Commit(s, std::move(cp.mutations));
       });
 }
 
@@ -97,8 +97,9 @@ StatusOr<ResultSet> ConnectionImpl::Read(spanner_proto::TransactionSelector& s,
   if (s.has_begin()) {
     auto metadata = (*reader)->Metadata();
     if (!metadata || metadata->transaction().id().empty()) {
-      return Status(StatusCode::kInternal,
-                    "begin transaction requested but no transaction returned");
+      return Status(
+          StatusCode::kInternal,
+          "Begin transaction requested but no transaction returned (in Read).");
     }
     s.set_id(metadata->transaction().id());
   }
@@ -132,7 +133,8 @@ StatusOr<ResultSet> ConnectionImpl::ExecuteSql(
     auto metadata = (*reader)->Metadata();
     if (!metadata || metadata->transaction().id().empty()) {
       return Status(StatusCode::kInternal,
-                    "begin transaction requested but no transaction returned");
+                    "Begin transaction requested but no transaction returned "
+                    "(in ExecuteSql).");
     }
     s.set_id(metadata->transaction().id());
   }
@@ -140,14 +142,14 @@ StatusOr<ResultSet> ConnectionImpl::ExecuteSql(
 }
 
 StatusOr<CommitResult> ConnectionImpl::Commit(
-    spanner_proto::TransactionSelector& s, CommitParams cp) {
+    spanner_proto::TransactionSelector& s, std::vector<Mutation> mutations) {
   auto session = GetSession();
   if (!session) {
     return std::move(session).status();
   }
   spanner_proto::CommitRequest request;
   request.set_session(session->session_name());
-  for (auto&& m : cp.mutations) {
+  for (auto&& m : mutations) {
     *request.add_mutations() = std::move(m).as_proto();
   }
   if (s.has_single_use()) {

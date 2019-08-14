@@ -43,7 +43,6 @@ using ::testing::Return;
 
 class MockConnection : public Connection {
  public:
-  ~MockConnection() override = default;
   MOCK_METHOD1(Read, StatusOr<ResultSet>(ReadParams));
   MOCK_METHOD1(ExecuteSql, StatusOr<ResultSet>(ExecuteSqlParams));
   MOCK_METHOD1(Commit, StatusOr<CommitResult>(CommitParams));
@@ -52,7 +51,6 @@ class MockConnection : public Connection {
 
 class MockResultSetSource : public internal::ResultSetSource {
  public:
-  ~MockResultSetSource() override = default;
   MOCK_METHOD0(NextValue, StatusOr<optional<Value>>());
   MOCK_METHOD0(Metadata, optional<spanner_proto::ResultSetMetadata>());
   MOCK_METHOD0(Stats, optional<spanner_proto::ResultSetStats>());

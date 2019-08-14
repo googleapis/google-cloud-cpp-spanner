@@ -72,8 +72,9 @@ class ConnectionImpl : public Connection {
 
   /// Implementation details for Commit.
   StatusOr<CommitResult> Commit(google::spanner::v1::TransactionSelector& s,
-                                CommitParams cp);
+                                std::vector<Mutation> mutations);
 
+  /// Implementation details for Rollback.
   Status Rollback(google::spanner::v1::TransactionSelector& s);
 
   std::string database_;
