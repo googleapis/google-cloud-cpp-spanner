@@ -89,15 +89,20 @@ TEST(ClientTest, ReadSuccess) {
 
   auto source = make_unique<MockResultSetSource>();
   spanner_proto::ResultSetMetadata metadata;
-  ASSERT_TRUE(TextFormat::ParseFromString(R"""(
-    row_type: {
-      fields: [
-        { name: "Name", type: { code: INT64 } },
-        { name: "Id", type: { code: INT64 } }
-      ]
-    }
-  )""",
-                                          &metadata));
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        row_type: {
+          fields: {
+            name: "Name",
+            type: { code: INT64 }
+          }
+          fields: {
+            name: "Id",
+            type: { code: INT64 }
+          }
+        }
+      )pb",
+      &metadata));
   EXPECT_CALL(*source, Metadata()).WillRepeatedly(Return(metadata));
   EXPECT_CALL(*source, Stats())
       .WillRepeatedly(Return(optional<spanner_proto::ResultSetStats>()));
@@ -134,9 +139,16 @@ TEST(ClientTest, ReadFailure) {
 
   auto source = make_unique<MockResultSetSource>();
   spanner_proto::ResultSetMetadata metadata;
-  ASSERT_TRUE(TextFormat::ParseFromString(R"""(
-    row_type: { fields: [ { name: "Name", type: { code: INT64 } } ] })""",
-                                          &metadata));
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        row_type: {
+          fields: {
+            name: "Name",
+            type: { code: INT64 }
+          }
+        }
+      )pb",
+      &metadata));
   EXPECT_CALL(*source, Metadata()).WillRepeatedly(Return(metadata));
   EXPECT_CALL(*source, Stats())
       .WillRepeatedly(Return(optional<spanner_proto::ResultSetStats>()));
@@ -174,15 +186,20 @@ TEST(ClientTest, ExecuteSqlSuccess) {
 
   auto source = make_unique<MockResultSetSource>();
   spanner_proto::ResultSetMetadata metadata;
-  ASSERT_TRUE(TextFormat::ParseFromString(R"""(
-    row_type: {
-      fields: [
-        { name: "Name", type: { code: INT64 } },
-        { name: "Id", type: { code: INT64 } }
-      ]
-    }
-  )""",
-                                          &metadata));
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        row_type: {
+          fields: {
+            name: "Name",
+            type: { code: INT64 }
+          }
+          fields: {
+            name: "Id",
+            type: { code: INT64 }
+          }
+        }
+      )pb",
+      &metadata));
   EXPECT_CALL(*source, Metadata()).WillRepeatedly(Return(metadata));
   EXPECT_CALL(*source, Stats())
       .WillRepeatedly(Return(optional<spanner_proto::ResultSetStats>()));
@@ -220,9 +237,16 @@ TEST(ClientTest, ExecuteSqlFailure) {
 
   auto source = make_unique<MockResultSetSource>();
   spanner_proto::ResultSetMetadata metadata;
-  ASSERT_TRUE(TextFormat::ParseFromString(R"""(
-    row_type: { fields: [ { name: "Name", type: { code: INT64 } } ] })""",
-                                          &metadata));
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        row_type: {
+          fields: {
+            name: "Name",
+            type: { code: INT64 }
+          }
+        }
+      )pb",
+      &metadata));
   EXPECT_CALL(*source, Metadata()).WillRepeatedly(Return(metadata));
   EXPECT_CALL(*source, Stats())
       .WillRepeatedly(Return(optional<spanner_proto::ResultSetStats>()));
