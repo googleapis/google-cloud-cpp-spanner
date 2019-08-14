@@ -334,7 +334,7 @@ class Client {
    * `ABORTED`, the caller should re-attempt the transaction from the beginning,
    * re-using the same session.
    *
-   * @warning Read-only transactions are not permitted to call `Commit`.
+   * @warning It is an error to call `Commit` with a read-only `transaction`.
    *
    * @param transaction The transaction to commit.
    * @param mutations The mutations to be executed when this transaction
@@ -355,7 +355,7 @@ class Client {
    * that includes  one or more `Read` or `ExecuteSql` requests and ultimately
    * decides not to commit.
    *
-   * @warning Read-only transactions are not permitted to call `Rollback`.
+   * @warning It is an error to call `Rollback` with a read-only `transaction`.
    *
    * @param transaction The transaction to roll back.
    *
