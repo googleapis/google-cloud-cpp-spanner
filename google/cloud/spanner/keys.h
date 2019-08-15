@@ -82,13 +82,15 @@ class Bound {
   }
 
  private:
+  enum class Mode { kClosed, kOpen };
+
+  Bound(RowType key, Mode mode) : key_(std::move(key)), mode_(mode) {}
+
   template <typename T>
   friend Bound<T> MakeBoundClosed(T key);
+
   template <typename T>
   friend Bound<T> MakeBoundOpen(T key);
-
-  enum class Mode { kClosed, kOpen };
-  Bound(RowType key, Mode mode) : key_(std::move(key)), mode_(mode) {}
 
   RowType key_;
   Mode mode_;
