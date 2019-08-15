@@ -171,8 +171,8 @@ TEST(KeySetBuilderTest, AddKeyRangeToEmptyKeySetBuilder) {
 }
 
 TEST(KeySetBuilderTest, AddKeyRangeToNonEmptyKeySetBuilder) {
-  auto ks = KeySetBuilder<Row<std::string, std::string>>(
-      MakeKeyRangeClosed(MakeRow("start00", "start01"), MakeRow("end00", "end01")));
+  auto ks = KeySetBuilder<Row<std::string, std::string>>(MakeKeyRangeClosed(
+      MakeRow("start00", "start01"), MakeRow("end00", "end01")));
   auto range = MakeKeyRange(MakeBoundOpen(MakeRow("start10", "start11")),
                             MakeBoundOpen(MakeRow("end10", "end11")));
   ks.Add(range);
@@ -230,8 +230,8 @@ TEST(InternalKeySetTest, BuildToProtoTwoKeys) {
 }
 
 TEST(InternalKeySetTest, BuildToProtoTwoRanges) {
-  auto ksb = KeySetBuilder<Row<std::string, std::string>>(
-      MakeKeyRangeClosed(MakeRow("start00", "start01"), MakeRow("end00", "end01")));
+  auto ksb = KeySetBuilder<Row<std::string, std::string>>(MakeKeyRangeClosed(
+      MakeRow("start00", "start01"), MakeRow("end00", "end01")));
   auto range = MakeKeyRange(MakeBoundOpen(MakeRow("start10", "start11")),
                             MakeBoundOpen(MakeRow("end10", "end11")));
   ksb.Add(range);
