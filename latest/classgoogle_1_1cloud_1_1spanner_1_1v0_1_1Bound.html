@@ -82,12 +82,8 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abeef63c907e25bc64263863cd10fa391"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html#abeef63c907e25bc64263863cd10fa391">Bound</a> ()</td></tr>
-<tr class="memdesc:abeef63c907e25bc64263863cd10fa391"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a closed <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html" title="The Bound class is a regular type that represents one endpoint of an interval of keys.">Bound</a></code> with a default constructed key of <code>KeyType</code>.  <a href="#abeef63c907e25bc64263863cd10fa391">More...</a><br /></td></tr>
-<tr class="separator:abeef63c907e25bc64263863cd10fa391"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b983c359521a3612bada3f7bcd603d2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html#a9b983c359521a3612bada3f7bcd603d2">Bound</a> (RowType <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html#a128c338d68a598a5ebf59e96a6079e6d">key</a>)</td></tr>
-<tr class="memdesc:a9b983c359521a3612bada3f7bcd603d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a closed <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html" title="The Bound class is a regular type that represents one endpoint of an interval of keys.">Bound</a></code> with the provided key.  <a href="#a9b983c359521a3612bada3f7bcd603d2">More...</a><br /></td></tr>
-<tr class="separator:a9b983c359521a3612bada3f7bcd603d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39404e3a1bda170219dab7da6565b321"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html#a39404e3a1bda170219dab7da6565b321">Bound</a> ()=delete</td></tr>
+<tr class="separator:a39404e3a1bda170219dab7da6565b321"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f93e0c6b924a5e4ba3861d61b927848"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html#a5f93e0c6b924a5e4ba3861d61b927848">Bound</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html">Bound</a> const &amp;key_range)=default</td></tr>
 <tr class="separator:a5f93e0c6b924a5e4ba3861d61b927848"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac95ead64edf793e71507ad71ff7d4ea1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html">Bound</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html#ac95ead64edf793e71507ad71ff7d4ea1">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html">Bound</a> const &amp;rhs)=default</td></tr>
@@ -121,7 +117,7 @@ Friends</h2></td></tr>
 class google::cloud::spanner::v0::Bound&lt; RowType &gt;</h3>
 
 <p>The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html" title="The Bound class is a regular type that represents one endpoint of an interval of keys.">Bound</a></code> class is a regular type that represents one endpoint of an interval of keys. </p>
-<p><code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html" title="The Bound class is a regular type that represents one endpoint of an interval of keys.">Bound</a></code>s are <code>Closed</code> by default, meaning the row matching the <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html" title="The Bound class is a regular type that represents one endpoint of an interval of keys.">Bound</a> will be included in the result. <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html" title="The Bound class is a regular type that represents one endpoint of an interval of keys.">Bound</a></code>s can also be specified as <code>Open</code>, which will exclude the Bounds from the results.</p>
+<p><code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html" title="The Bound class is a regular type that represents one endpoint of an interval of keys.">Bound</a></code>s can be "open", meaning the matching row will be excluded from the results, or "closed" meaning the matching row will be included. <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html" title="The Bound class is a regular type that represents one endpoint of an interval of keys.">Bound</a></code> instances should be created with the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html#ad3dcc1aeb24e952a641235b460891c23">MakeBoundOpen()</a></code> or <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html#aab0f4590ad9b4069ecfd6c2112032c56">MakeBoundClosed()</a></code> factory functions.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">KeyType</td><td>spanner::Row&lt;Types...&gt; that corresponds to the desired index definition. </td></tr>
@@ -131,8 +127,8 @@ class google::cloud::spanner::v0::Bound&lt; RowType &gt;</h3>
 
 <p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00059">59</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="abeef63c907e25bc64263863cd10fa391"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abeef63c907e25bc64263863cd10fa391">&#9670;&nbsp;</a></span>Bound() <span class="overload">[1/4]</span></h2>
+<a id="a39404e3a1bda170219dab7da6565b321"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39404e3a1bda170219dab7da6565b321">&#9670;&nbsp;</a></span>Bound() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -151,57 +147,15 @@ template&lt;typename RowType&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Constructs a closed <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html" title="The Bound class is a regular type that represents one endpoint of an interval of keys.">Bound</a></code> with a default constructed key of <code>KeyType</code>. </p>
-
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00066">66</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
-
-</div>
-</div>
-<a id="a9b983c359521a3612bada3f7bcd603d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b983c359521a3612bada3f7bcd603d2">&#9670;&nbsp;</a></span>Bound() <span class="overload">[2/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename RowType&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html">google::cloud::spanner::v0::Bound</a>&lt; RowType &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html">Bound</a> </td>
-          <td>(</td>
-          <td class="paramtype">RowType&#160;</td>
-          <td class="paramname"><em>key</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Constructs a closed <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bound.html" title="The Bound class is a regular type that represents one endpoint of an interval of keys.">Bound</a></code> with the provided key. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">key</td><td>spanner::Row&lt;Types...&gt; </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00071">71</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
 <a id="a5f93e0c6b924a5e4ba3861d61b927848"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f93e0c6b924a5e4ba3861d61b927848">&#9670;&nbsp;</a></span>Bound() <span class="overload">[3/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f93e0c6b924a5e4ba3861d61b927848">&#9670;&nbsp;</a></span>Bound() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -229,7 +183,7 @@ template&lt;typename RowType&gt; </div>
 </div>
 </div>
 <a id="a4fed8fdbfb0866a67e86aa160783076b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4fed8fdbfb0866a67e86aa160783076b">&#9670;&nbsp;</a></span>Bound() <span class="overload">[4/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fed8fdbfb0866a67e86aa160783076b">&#9670;&nbsp;</a></span>Bound() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -282,7 +236,7 @@ template&lt;typename RowType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00080">80</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00074">74</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
@@ -311,7 +265,7 @@ template&lt;typename RowType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00081">81</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00075">75</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
@@ -340,7 +294,7 @@ template&lt;typename RowType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00079">79</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00073">73</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
@@ -497,7 +451,7 @@ template&lt;typename RowType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00086">86</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00080">80</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
@@ -537,7 +491,7 @@ template&lt;typename RowType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00083">83</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00077">77</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
