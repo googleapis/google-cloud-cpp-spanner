@@ -13,7 +13,10 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/internal/spanner_stub.h"
+#include "google/cloud/spanner/internal/logging_spanner_stub.h"
 #include "google/cloud/grpc_utils/grpc_error_delegate.h"
+#include "google/cloud/internal/getenv.h"
+#include "google/cloud/log.h"
 #include <google/spanner/v1/spanner.grpc.pb.h>
 
 namespace google {
@@ -235,6 +238,30 @@ StatusOr<spanner_proto::PartitionResponse> DefaultSpannerStub::PartitionRead(
   return response;
 }
 
+bool RpcTracingEnabled() {
+  auto enable_clog =
+      google::cloud::internal::GetEnv("GOOGLE_CLOUD_CPP_ENABLE_CLOG");
+  if (enable_clog.has_value()) {
+    (void)google::cloud::LogSink::EnableStdClog();
+  }
+
+  // This is overkill right now, but can be useful if we want to logging for
+  // different components.
+  auto tracing =
+      google::cloud::internal::GetEnv("GOOGLE_CLOUD_CPP_ENABLE_TRACING");
+  if (!tracing.has_value()) {
+    return false;
+  }
+  std::istringstream is{*tracing};
+  std::string token;
+  while (std::getline(is, token, ',')) {
+    if (token == "rpc") {
+      return true;
+    }
+  }
+  return false;
+}
+
 }  // namespace
 
 std::shared_ptr<SpannerStub> CreateDefaultSpannerStub(
@@ -242,7 +269,15 @@ std::shared_ptr<SpannerStub> CreateDefaultSpannerStub(
     std::string const& endpoint) {
   auto spanner_grpc_stub =
       spanner_proto::Spanner::NewStub(grpc::CreateChannel(endpoint, creds));
-  return std::make_shared<DefaultSpannerStub>(std::move(spanner_grpc_stub));
+
+  auto stub =
+      std::make_shared<DefaultSpannerStub>(std::move(spanner_grpc_stub));
+
+  if (RpcTracingEnabled()) {
+    GCP_LOG(INFO) << "Enabled logging for gRPC calls";
+    return std::make_shared<LoggingSpannerStub>(std::move(stub));
+  }
+  return stub;
 }
 
 }  // namespace internal
