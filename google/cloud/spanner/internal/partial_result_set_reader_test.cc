@@ -155,27 +155,6 @@ TEST(PartialResultSetReaderTest, MissingMetadata) {
 }
 
 /**
- * @test Verify the behavior when the received metadata does not contain row
- * type information.
- */
-TEST(PartialResultSetReaderTest, MissingRowType) {
-  auto grpc_reader = make_unique<MockGrpcReader>();
-  spanner_proto::PartialResultSet response;
-  ASSERT_TRUE(TextFormat::ParseFromString(R"pb(metadata: {})pb", &response));
-  EXPECT_CALL(*grpc_reader, Read(_))
-      .WillOnce(DoAll(SetArgPointee<0>(response), Return(true)));
-  EXPECT_CALL(*grpc_reader, Finish()).WillOnce(Return(grpc::Status()));
-
-  auto context = make_unique<grpc::ClientContext>();
-  auto reader = PartialResultSetReader::Create(std::move(context),
-                                               std::move(grpc_reader));
-  EXPECT_FALSE(reader.status().ok());
-  EXPECT_EQ(reader.status().code(), StatusCode::kInternal);
-  EXPECT_EQ(reader.status().message(),
-            "response metadata was missing row type information");
-}
-
-/**
  * @test Verify the functionality of the PartialResultSetReader, including
  * properly handling metadata, stats, and data values.
  * All of the data is returned in a single Read() from the gRPC reader.

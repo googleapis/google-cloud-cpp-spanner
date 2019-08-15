@@ -114,12 +114,13 @@ class MutateAndReadIntegrationTest : public ::testing::Test {
     client_ = google::cloud::internal::make_unique<Client>(
         MakeConnection(MakeDatabaseName(project_id, instance_id, database_id)));
 
+    auto txn = MakeReadWriteTransaction();
     auto reader =
-        client_->ExecuteSql(MakeReadWriteTransaction(),
+        client_->ExecuteSql(txn,
                             SqlStatement("DELETE FROM Singers WHERE true;"));
-    // TODO(#360) - currently this fails with:
-    //   response metadata was missing row type information [INTERNAL]
-    // EXPECT_STATUS_OK(reader);
+    EXPECT_STATUS_OK(reader);
+    auto commit = client_->Commit(txn, {});
+    EXPECT_STATUS_OK(commit);
   }
 
  protected:
@@ -163,9 +164,7 @@ TEST_F(MutateAndReadIntegrationTest, InsertAndCommit) {
 TEST_F(MutateAndReadIntegrationTest, DeleteAndCommit) {
   auto commit_result = client_->Commit(
       MakeReadWriteTransaction(),
-      // TODO(#360) - we use InsertOrUpdate() because the DELETE fails.
-      {InsertOrUpdateMutationBuilder("Singers",
-                                     {"SingerId", "FirstName", "LastName"})
+      {InsertMutationBuilder("Singers", {"SingerId", "FirstName", "LastName"})
            .EmplaceRow(1, "test-first-name-1", "test-last-name-1")
            .EmplaceRow(2, "test-first-name-2", "test-last-name-2")
            .Build()});
