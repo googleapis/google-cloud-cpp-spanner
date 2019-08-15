@@ -46,6 +46,10 @@ StatusOr<optional<Value>> PartialResultSetReader::NextValue() {
   if (finished_) {
     return optional<Value>();
   }
+  if (metadata_->row_type().fields().empty()) {
+    return Status(StatusCode::kInternal,
+                  "response metadata is missing row type information");
+  }
   if (next_value_index_ >= values_.size()) {
     // Ran out of buffered values - try to read some more from gRPC.
     next_value_index_ = 0;
