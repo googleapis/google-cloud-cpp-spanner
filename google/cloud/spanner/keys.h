@@ -250,7 +250,7 @@ class KeySet {
   }
 
   /// @name Equality
-  /// Order is of keys and key ranges in the `KeySet` is considered.
+  /// Order of keys and key ranges in the `KeySet` is considered.
   ///@{
   friend bool operator==(KeySet const& lhs, KeySet const& rhs);
   friend bool operator!=(KeySet const& lhs, KeySet const& rhs);

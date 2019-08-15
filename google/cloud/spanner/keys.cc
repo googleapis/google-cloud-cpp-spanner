@@ -23,11 +23,8 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
 bool operator==(KeySet const& lhs, KeySet const& rhs) {
-  //    std::string delta;
   google::protobuf::util::MessageDifferencer differencer;
-  //    differencer.ReportDifferencesToString(&delta);
-  auto const result = differencer.Compare(lhs.proto_, rhs.proto_);
-  return result;
+  return differencer.Compare(lhs.proto_, rhs.proto_);
 }
 
 bool operator!=(KeySet const& lhs, KeySet const& rhs) { return !(lhs == rhs); }
