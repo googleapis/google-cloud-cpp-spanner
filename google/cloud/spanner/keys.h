@@ -28,9 +28,8 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
+
 class KeySet;
-template <typename RowType>
-class KeyRange;
 template <typename RowType>
 class KeySetBuilder;
 
@@ -99,9 +98,6 @@ class Bound {
   template <typename T>
   friend Bound<T> MakeBoundOpen(T key);
 
-  template <typename T>
-  friend KeyRange<T> MakeKeyRange(T start, T end);
-
   RowType key_;
   Mode mode_;
 };
@@ -162,8 +158,8 @@ class KeyRange {
    * Constructs a `KeyRange` closed on both `Bound`s.
    */
   explicit KeyRange(RowType start, RowType end)
-      : KeyRange(std::move(Bound<RowType>(start)),
-                 std::move(Bound<RowType>(end))) {}
+      : KeyRange(MakeBoundClosed(std::move(start)),
+                 MakeBoundClosed(std::move(end))) {}
 
   // Copy and move constructors and assignment operators.
   KeyRange(KeyRange const& key_range) = default;
@@ -198,9 +194,8 @@ class KeyRange {
  */
 template <typename RowType>
 KeyRange<RowType> MakeKeyRange(RowType start, RowType end) {
-  return KeyRange<RowType>(
-      Bound<RowType>(std::move(start), Bound<RowType>::Mode::kClosed),
-      Bound<RowType>(std::move(end), Bound<RowType>::Mode::kClosed));
+  return MakeKeyRange(MakeBoundClosed(std::move(start)),
+                      MakeBoundClosed(std::move(end)));
 }
 
 /**
