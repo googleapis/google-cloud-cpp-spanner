@@ -96,6 +96,14 @@ struct ReadOptions {
    * A limit cannot be specified when calling`PartitionRead`.
    */
   std::int64_t limit = 0;
+
+  friend bool operator==(ReadOptions const& lhs, ReadOptions const& rhs) {
+    return lhs.limit == rhs.limit && lhs.index_name == rhs.index_name;
+  }
+
+  friend bool operator!=(ReadOptions const& lhs, ReadOptions const& rhs) {
+    return !(lhs == rhs);
+  }
 };
 
 /// Options passed to `Client::PartitionRead` or `Client::PartitionQuery`
