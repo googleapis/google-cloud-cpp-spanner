@@ -78,6 +78,46 @@ TEST(KeyrangeTest, Accessors) {
       std::is_same<EndType&&, decltype(std::move(range).start())>::value, "");
 }
 
+TEST(KeySetTest, EqualityEmpty) {
+  KeySet expected;
+  KeySet actual;
+  EXPECT_TRUE(expected == actual);
+}
+
+TEST(KeySetTest, EqualityAll) {
+  KeySet expected = KeySet::All();
+  KeySet empty;
+  EXPECT_TRUE(expected != empty);
+  KeySet actual = KeySet::All();
+  EXPECT_TRUE(expected == actual);
+}
+
+TEST(KeySetTest, EqualityKeys) {
+  auto ksb0 = KeySetBuilder<Row<std::string, std::string>>();
+  ksb0.Add(MakeRow("foo0", "bar0"));
+  ksb0.Add(MakeRow("foo1", "bar1"));
+
+  auto ksb1 = KeySetBuilder<Row<std::string, std::string>>();
+  ksb1.Add(MakeRow("foo0", "bar0"));
+  EXPECT_TRUE(ksb0.Build() != ksb1.Build());
+  ksb1.Add(MakeRow("foo1", "bar1"));
+  EXPECT_TRUE(ksb0.Build() == ksb1.Build());
+}
+
+TEST(KeySetTest, EqualityKeyRanges) {
+  auto range0 = MakeKeyRangeClosed(MakeRow("start00", "start01"),
+                                   MakeRow("end00", "end01"));
+  auto range1 = MakeKeyRange(MakeBoundOpen(MakeRow("start10", "start11")),
+                             MakeBoundOpen(MakeRow("end10", "end11")));
+  auto ksb0 = KeySetBuilder<Row<std::string, std::string>>();
+  ksb0.Add(range0).Add(range1);
+  auto ksb1 = KeySetBuilder<Row<std::string, std::string>>();
+  ksb1.Add(range0);
+  EXPECT_TRUE(ksb0.Build() != ksb1.Build());
+  ksb1.Add(range1);
+  EXPECT_TRUE(ksb0.Build() == ksb1.Build());
+}
+
 TEST(KeyRangeTest, ConstructorBoundModeUnspecified) {
   std::string start_value("key0");
   std::string end_value("key1");
@@ -160,65 +200,19 @@ TEST(KeySetTest, AllKeys) {
   EXPECT_EQ(internal::FromProto(expected), all_keys);
 }
 
-TEST(KeySetTest, EqualityEmpty) {
-  KeySet expected;
-  KeySet actual;
-  EXPECT_EQ(expected, actual);
-}
-
-TEST(KeySetTest, EqualityAll) {
-  KeySet expected = KeySet::All();
-  KeySet empty;
-  EXPECT_NE(expected, empty);
-  KeySet actual = KeySet::All();
-  EXPECT_EQ(expected, actual);
-}
-
-TEST(KeySetTest, EqualityKeys) {
-  auto ksb0 = KeySetBuilder<Row<std::string, std::string>>();
-  ksb0.Add(MakeRow("foo0", "bar0"));
-  ksb0.Add(MakeRow("foo1", "bar1"));
-
-  auto ksb1 = KeySetBuilder<Row<std::string, std::string>>();
-  ksb1.Add(MakeRow("foo0", "bar0"));
-  EXPECT_NE(ksb0.Build(), ksb1.Build());
-  ksb1.Add(MakeRow("foo1", "bar1"));
-  EXPECT_EQ(ksb0.Build(), ksb1.Build());
-}
-
-TEST(KeySetTest, EqualityKeyRanges) {
-  auto range0 = MakeKeyRangeClosed(MakeRow("start00", "start01"),
-                                   MakeRow("end00", "end01"));
-  auto range1 = MakeKeyRange(MakeBoundOpen(MakeRow("start10", "start11")),
-                             MakeBoundOpen(MakeRow("end10", "end11")));
-  auto ksb0 = KeySetBuilder<Row<std::string, std::string>>();
-  ksb0.Add(range0).Add(range1);
-  auto ksb1 = KeySetBuilder<Row<std::string, std::string>>();
-  ksb1.Add(range0);
-  EXPECT_NE(ksb0.Build(), ksb1.Build());
-  ksb1.Add(range1);
-  EXPECT_EQ(ksb0.Build(), ksb1.Build());
-}
-
 TEST(KeySetTest, RoundTripProtos) {
   auto test_cases = {
-      KeySetBuilder<Row<>>().Build(),                                      //
-      KeySetBuilder<Row<std::int64_t>>()                                   //
-          .Add(MakeRow(42))                                                //
-          .Build(),                                                        //
-      KeySetBuilder<Row<std::int64_t>>()                                   //
-          .Add(MakeRow(42))                                                //
-          .Add(MakeRow(123))                                               //
-          .Build(),                                                        //
-      KeySetBuilder<Row<std::int64_t, std::string>>()                      //
-          .Build(),                                                        //
-      KeySetBuilder<Row<std::int64_t, std::string>>()                      //
-          .Add(MakeRow(42, "hi"))                                          //
-          .Add(MakeRow(123, "bye"))                                        //
-          .Build(),                                                        //
-      KeySetBuilder<Row<std::int64_t, std::string>>()                      //
-          .Add(MakeKeyRangeClosed(MakeRow(42, "hi"), MakeRow(43, "bye")))  //
-          .Build(),                                                        //
+      KeySetBuilder<Row<>>().Build(),
+      KeySetBuilder<Row<std::int64_t>>().Add(MakeRow(42)).Build(),
+      KeySetBuilder<Row<std::int64_t>>()
+          .Add(MakeRow(42))
+          .Add(MakeRow(123))
+          .Build(),
+      KeySetBuilder<Row<std::int64_t, std::string>>().Build(),
+      KeySetBuilder<Row<std::int64_t, std::string>>()
+          .Add(MakeRow(42, "hi"))
+          .Add(MakeRow(123, "bye"))
+          .Build(),
   };
 
   for (auto const& tc : test_cases) {
