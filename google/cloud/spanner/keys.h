@@ -225,8 +225,8 @@ class KeySet {
   /**
    * Constructs a `KeySet` from a `spanner::v1::KeySet` protobuf.
    */
-  explicit KeySet(google::spanner::v1::KeySet key_set) :
-    proto_(std::move(key_set)) {}
+  explicit KeySet(google::spanner::v1::KeySet key_set)
+      : proto_(std::move(key_set)) {}
 
   /**
    * Constructs a `KeySet` from a `KeySetBuilder`.
@@ -255,7 +255,6 @@ class KeySet {
   friend bool operator==(KeySet const& lhs, KeySet const& rhs);
   friend bool operator!=(KeySet const& lhs, KeySet const& rhs);
   ///@}
-
 
  private:
   friend ::google::spanner::v1::KeySet internal::ToProto(KeySet keyset);
