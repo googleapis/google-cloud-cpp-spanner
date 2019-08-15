@@ -170,7 +170,7 @@ TEST(PartialResultSetReaderTest, MissingRowType) {
   auto context = make_unique<grpc::ClientContext>();
   auto reader = PartialResultSetReader::Create(std::move(context),
                                                std::move(grpc_reader));
-  EXPECT_TRUE(reader.status().ok());
+  ASSERT_STATUS_OK(reader);
   StatusOr<optional<Value>> value = reader.value()->NextValue();
   EXPECT_FALSE(value);
   EXPECT_EQ(value.status().code(), StatusCode::kInternal);
