@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_BASE64_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_BASE64_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_BAS_E64_H
 
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/status_or.h"

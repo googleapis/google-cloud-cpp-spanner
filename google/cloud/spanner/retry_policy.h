@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_RETRY_POLICY_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_RETRY_POLICY_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_RETRY_POLICY_H
 
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/internal/retry_policy.h"

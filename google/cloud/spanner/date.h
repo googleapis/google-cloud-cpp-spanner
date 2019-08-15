@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_DATE_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_DATE_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_DATE_H
 
 #include "google/cloud/spanner/version.h"
 #include <cstdint>
@@ -36,9 +36,9 @@ class Date {
   Date(std::int64_t year, int month, int day);  // Fields will be normalized.
   Date() : Date(1970, 1, 1) {}
 
-  std::int64_t year() const { return year_; }
-  int month() const { return month_; }
-  int day() const { return day_; }
+  std::int64_t Year() const { return year_; }
+  int Month() const { return month_; }
+  int Day() const { return day_; }
 
  private:
   std::int64_t year_;

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_COMMIT_RESULT_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_COMMIT_RESULT_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_COMMIT_RESULT_H
 
 #include "google/cloud/spanner/timestamp.h"
 #include "google/cloud/spanner/version.h"

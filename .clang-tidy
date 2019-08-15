@@ -20,6 +20,8 @@ Checks: >
   -readability-braces-around-statements,
   -readability-magic-numbers
 
+HeaderFilterRegex: ".*"
+
 # Turn all the warnings from the checks above into errors.
 WarningsAsErrors: "*"
 

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CLIENT_OPTIONS_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CLIENT_OPTIONS_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CLIENT_OPTIONS_H
 
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/status_or.h"
@@ -38,19 +38,19 @@ class ClientOptions {
   /// Default parameters, using an explicit credentials object.
   explicit ClientOptions(std::shared_ptr<grpc::ChannelCredentials> c);
 
-  ClientOptions& set_credentials(std::shared_ptr<grpc::ChannelCredentials> v) {
+  ClientOptions& SetCredentials(std::shared_ptr<grpc::ChannelCredentials> v) {
     credentials_ = std::move(v);
     return *this;
   }
-  std::shared_ptr<grpc::ChannelCredentials> credentials() const {
+  std::shared_ptr<grpc::ChannelCredentials> Credentials() const {
     return credentials_;
   }
 
-  ClientOptions& set_admin_endpoint(std::string v) {
+  ClientOptions& SetAdminEndpoint(std::string v) {
     admin_endpoint_ = std::move(v);
     return *this;
   }
-  std::string const& admin_endpoint() const { return admin_endpoint_; }
+  std::string const& AdminEndpoint() const { return admin_endpoint_; }
 
  private:
   std::shared_ptr<grpc::ChannelCredentials> credentials_;

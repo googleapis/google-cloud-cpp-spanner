@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_POLLING_POLICY_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_POLLING_POLICY_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_POLLING_POLICY_H
 
 #include "google/cloud/spanner/backoff_policy.h"
 #include "google/cloud/spanner/retry_policy.h"
@@ -28,7 +28,7 @@ class PollingPolicy {
  public:
   virtual ~PollingPolicy() = default;
 
-  virtual std::unique_ptr<PollingPolicy> clone() const = 0;
+  virtual std::unique_ptr<PollingPolicy> Clone() const = 0;
   virtual bool OnFailure(google::cloud::Status const& status) = 0;
   virtual std::chrono::milliseconds WaitPeriod() = 0;
 };

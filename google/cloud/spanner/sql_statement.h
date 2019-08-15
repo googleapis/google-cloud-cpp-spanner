@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_SQL_STATEMENT_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_SQL_STATEMENT_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_SQL_STATEMENT_H
 
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/status_or.h"
@@ -77,8 +77,8 @@ class SqlStatement {
   SqlStatement& operator=(SqlStatement const&) = default;
   SqlStatement& operator=(SqlStatement&&) = default;
 
-  std::string const& sql() const { return statement_; }
-  ParamType const& params() const { return params_; }
+  std::string const& Sql() const { return statement_; }
+  ParamType const& Params() const { return params_; }
   std::vector<std::string> ParameterNames() const;
   google::cloud::StatusOr<Value> GetParameter(
       std::string const& parameter_name) const;

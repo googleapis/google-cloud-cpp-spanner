@@ -46,8 +46,8 @@ void VerifyRegularType(Ts&&... ts) {
   auto const moved = std::move(assign);
   EXPECT_EQ(moved, row);
 
-  EXPECT_EQ(RowType::size(), row.size());
-  static_assert(RowType::size() == sizeof...(Ts),
+  EXPECT_EQ(RowType::Size(), row.size());
+  static_assert(RowType::Size() == sizeof...(Ts),
                 "This method must be constexpr");
 }
 

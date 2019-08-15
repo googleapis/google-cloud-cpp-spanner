@@ -18,7 +18,7 @@
 namespace google {
 namespace cloud {
 namespace spanner {
-inline namespace SPANNER_CLIENT_NS {
+inline namespace spanner_client_ns {
 namespace {
 
 TEST(TransactionOptions, Construction) {

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_TIME_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_TIME_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_TIME_H
 
 #include "google/cloud/spanner/timestamp.h"
 #include "google/cloud/spanner/version.h"
@@ -59,7 +59,7 @@ std::string TimestampToString(Timestamp ts);
  *
  * Returns a a non-OK Status if the input cannot be parsed.
  */
-StatusOr<Timestamp> TimestampFromString(std::string const& s);
+StatusOr<Timestamp> timestamp_from_string(std::string const& s);
 
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS

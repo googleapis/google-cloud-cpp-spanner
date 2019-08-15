@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_SQL_PARTITION_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_SQL_PARTITION_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_SQL_PARTITION_H
 
 #include "google/cloud/spanner/sql_statement.h"
 #include "google/cloud/status_or.h"
@@ -104,7 +104,7 @@ class SqlPartition {
   /**
    * Accessor for the `SqlStatement` associated with this `SqlPartition`.
    */
-  SqlStatement const& sql_statement() const { return sql_statement_; }
+  SqlStatement const& SqlStatement() const { return sql_statement_; }
 
   /// @name Equality
   ///@{
@@ -129,9 +129,9 @@ class SqlPartition {
                         SqlStatement sql_statement);
 
   // Accessor methods for use by friends.
-  std::string const& partition_token() const { return partition_token_; }
-  std::string const& session_id() const { return session_id_; }
-  std::string const& transaction_id() const { return transaction_id_; }
+  std::string const& PartitionToken() const { return partition_token_; }
+  std::string const& SessionId() const { return session_id_; }
+  std::string const& TransactionId() const { return transaction_id_; }
 
   std::string transaction_id_;
   std::string session_id_;

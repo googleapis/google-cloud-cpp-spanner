@@ -23,10 +23,10 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
 TEST(TupleUtils, NumElements) {
-  EXPECT_EQ(internal::NumElements<std::vector<int>>::value, 2);
-  EXPECT_EQ(internal::NumElements<std::tuple<>>::value, 0);
-  EXPECT_EQ(internal::NumElements<std::tuple<int>>::value, 1);
-  EXPECT_EQ((internal::NumElements<std::tuple<int, int>>::value), 2);
+  EXPECT_EQ(internal::NumElements<std::vector<int>>::kValue, 2);
+  EXPECT_EQ(internal::NumElements<std::tuple<>>::kValue, 0);
+  EXPECT_EQ(internal::NumElements<std::tuple<int>>::kValue, 1);
+  EXPECT_EQ((internal::NumElements<std::tuple<int, int>>::kValue), 2);
 }
 
 // Helper functor used to test the `ForEach` function. Uses a templated

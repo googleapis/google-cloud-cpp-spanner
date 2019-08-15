@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_VALUE_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_VALUE_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_VALUE_H
 
 #include "google/cloud/spanner/date.h"
 #include "google/cloud/spanner/internal/tuple_utils.h"
@@ -176,9 +176,9 @@ class Value {
   /// @copydoc Value(bool)
   explicit Value(std::string v) : Value(PrivateConstructor{}, std::move(v)) {}
   /// @copydoc Value(bool)
-  explicit Value(Timestamp v) : Value(PrivateConstructor{}, std::move(v)) {}
+  explicit Value(Timestamp v) : Value(PrivateConstructor{}, v) {}
   /// @copydoc Value(bool)
-  explicit Value(Date v) : Value(PrivateConstructor{}, std::move(v)) {}
+  explicit Value(Date v) : Value(PrivateConstructor{}, v) {}
 
   /**
    * A struct that represents a collection of bytes.
@@ -221,7 +221,7 @@ class Value {
     ///@}
   };
   /// Constructs an instance with the specicified bytes.
-  explicit Value(Bytes v) : Value(PrivateConstructor{}, std::move(v)) {}
+  explicit Value(const Bytes& v) : Value(PrivateConstructor{}, std::move(v)) {}
 
   /**
    * Constructs an instance from common C++ literal types that closely, though
@@ -266,7 +266,7 @@ class Value {
    */
   template <typename T>
   explicit Value(std::vector<T> v) : Value(PrivateConstructor{}, std::move(v)) {
-    static_assert(!is_vector<typename std::decay<T>::type>::value,
+    static_assert(!IsVector<typename std::decay<T>::type>::value,
                   "vector of vector not allowed. See value.h documentation.");
   }
 
@@ -314,12 +314,13 @@ class Value {
    * @endcode
    */
   template <typename T>
-  StatusOr<T> get() const {
+  StatusOr<T> Get() const {
     // Ignores the name field because it is never set on the incoming `T`.
-    if (!EqualTypeProtoIgnoringNames(type_, MakeTypeProto(T{})))
+    if (!EqualTypeProtoIgnoringNames(type_, MakeTypeProto(T{}))) {
       return Status(StatusCode::kUnknown, "wrong type");
+}
     if (value_.kind_case() == google::protobuf::Value::kNullValue) {
-      if (is_optional<T>::value) return T{};
+      if (IsOptional<T>::value) return T{};
       return Status(StatusCode::kUnknown, "null value");
     }
     return GetValue(T{}, value_, type_);
@@ -337,13 +338,13 @@ class Value {
  private:
   // Metafunction that returns true if `T` is an optional<U>
   template <typename T>
-  struct is_optional : std::false_type {};
+  struct IsOptional : std::false_type {};
   template <typename T>
   struct is_optional<optional<T>> : std::true_type {};
 
   // Metafunction that returns true if `T` is a std::vector<U>
   template <typename T>
-  struct is_vector : std::false_type {};
+  struct IsVector : std::false_type {};
   template <typename... Ts>
   struct is_vector<std::vector<Ts...>> : std::true_type {};
 

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_ROW_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_ROW_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_ROW_H
 
 #include "google/cloud/spanner/internal/tuple_utils.h"
 #include "google/cloud/spanner/value.h"
@@ -73,10 +73,10 @@ class Row {
 
  public:
   /// Returns the number of columns in this row.
-  static constexpr std::size_t size() { return sizeof...(Types); }
+  static constexpr std::size_t Size() { return sizeof...(Types); }
 
   // Regular value type, supporting copy, assign, move, etc.
-  Row() {}
+  Row() = default;
   Row(Row const&) = default;
   Row& operator=(Row const&) = default;
   Row(Row&&) = default;
@@ -117,19 +117,19 @@ class Row {
    * @endcode
    */
   template <std::size_t I>
-  ColumnType<I>& get() & {
+  ColumnType<I>& Get() & {
     return std::get<I>(values_);
   }
   template <std::size_t I>
-  ColumnType<I> const& get() const& {
+  ColumnType<I> const& Get() const& {
     return std::get<I>(values_);
   }
   template <std::size_t I>
-  ColumnType<I>&& get() && {
+  ColumnType<I>&& Get() && {
     return std::get<I>(std::move(values_));
   }
   template <std::size_t I>
-  ColumnType<I> const&& get() const&& {
+  ColumnType<I> const&& Get() const&& {
     return std::get<I>(std::move(values_));
   }
 
@@ -153,7 +153,7 @@ class Row {
    */
   template <std::size_t... Is,
             typename std::enable_if<(sizeof...(Is) > 1), int>::type = 0>
-  std::tuple<ColumnType<Is>...> get() const& {
+  std::tuple<ColumnType<Is>...> Get() const& {
     return std::make_tuple(get<Is>()...);
   }
 
@@ -178,10 +178,10 @@ class Row {
    * assert(moved_tup == tup);
    * @endcode
    */
-  std::tuple<Types...>& get() & { return values_; }
-  std::tuple<Types...> const& get() const& { return values_; }
-  std::tuple<Types...>&& get() && { return std::move(values_); }
-  std::tuple<Types...> const&& get() const&& { return std::move(values_); }
+  std::tuple<Types...>& Get() & { return values_; }
+  std::tuple<Types...> const& Get() const& { return values_; }
+  std::tuple<Types...>&& Get() && { return std::move(values_); }
+  std::tuple<Types...> const&& Get() const&& { return std::move(values_); }
 
   /**
    * Returns a std::array of `Value` objects holding all the items in this row.
@@ -202,14 +202,14 @@ class Row {
    * std::array<Value, 3> b = std::move(row).values();
    * @endcode
    */
-  std::array<Value, size()> values() const& {
-    std::array<Value, size()> array;
+  std::array<Value, Size()> Values() const& {
+    std::array<Value, Size()> array;
     internal::ForEach(values_, InsertValue{array, 0});
     return array;
   }
   /// @copydoc values()
-  std::array<Value, size()> values() && {
-    std::array<Value, size()> array;
+  std::array<Value, Size()> Values() && {
+    std::array<Value, Size()> array;
     internal::ForEach(std::move(values_), InsertValue{array, 0});
     return array;
   }
@@ -244,7 +244,7 @@ class Row {
   // A helper functor to be used with `internal::ForEach` that adds each
   // element of the values_ tuple to an array of `Value` objects.
   struct InsertValue {
-    std::array<Value, size()>& array;
+    std::array<Value, Size()>& array;
     std::size_t i;
     template <typename T>
     void operator()(T&& t) {

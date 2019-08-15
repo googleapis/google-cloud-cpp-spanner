@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_PARTIAL_RESULT_SET_READER_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_PARTIAL_RESULT_SET_READER_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_PARTIAL_RESULT_SET_READER_H
 
 #include "google/cloud/spanner/result_set.h"
 #include "google/cloud/spanner/value.h"
@@ -56,8 +56,8 @@ class PartialResultSetReader : public internal::ResultSetSource {
   }
 
  private:
-  PartialResultSetReader(std::unique_ptr<grpc::ClientContext> context,
-                         std::unique_ptr<GrpcReader> grpc_reader)
+  PartialResultSetReader(std::unique_ptr<grpc::ClientContext>  /*context*/,
+                         std::unique_ptr<GrpcReader>  /*grpc_reader*/)
       : context_(std::move(context)), grpc_reader_(std::move(grpc_reader)) {}
 
   Status ReadFromStream();

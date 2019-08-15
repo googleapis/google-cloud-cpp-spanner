@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_DATABASE_ADMIN_RETRY_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_DATABASE_ADMIN_RETRY_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_DATABASE_ADMIN_RETRY_H
 
 #include "google/cloud/spanner/backoff_policy.h"
 #include "google/cloud/spanner/internal/database_admin_stub.h"
@@ -31,7 +31,7 @@ namespace internal {
 class DatabaseAdminRetry : public DatabaseAdminStub {
  public:
   template <typename... PolicyOverrides>
-  explicit DatabaseAdminRetry(std::shared_ptr<DatabaseAdminStub> child,
+  explicit DatabaseAdminRetry(const std::shared_ptr<DatabaseAdminStub>& child,
                               PolicyOverrides&&... policies)
       : DatabaseAdminRetry(PrivateConstructorTag{}, std::move(child)) {
     OverridePolicies(std::forward<PolicyOverrides>(policies)...);

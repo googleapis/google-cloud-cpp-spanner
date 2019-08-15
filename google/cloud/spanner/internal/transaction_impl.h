@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_TRANSACTION_IMPL_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_TRANSACTION_IMPL_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_TRANSACTION_IMPL_H
 
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/internal/invoke_result.h"
@@ -38,7 +38,7 @@ using VisitInvokeResult = google::cloud::internal::invoke_result_t<
  */
 class TransactionImpl {
  public:
-  TransactionImpl(google::spanner::v1::TransactionSelector selector)
+  explicit TransactionImpl(const google::spanner::v1::TransactionSelector& selector)
       : selector_(std::move(selector)), seqno_(0) {
     state_ = selector_.has_begin() ? State::kBegin : State::kDone;
   }

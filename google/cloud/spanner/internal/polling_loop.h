@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_POLLING_LOOP_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_POLLING_LOOP_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_POLLING_LOOP_H
 
 #include "google/cloud/spanner/polling_policy.h"
 #include "google/cloud/grpc_utils/grpc_error_delegate.h"

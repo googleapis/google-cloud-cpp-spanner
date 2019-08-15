@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_ROW_PARSER_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_ROW_PARSER_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_ROW_PARSER_H
 
 #include "google/cloud/spanner/row.h"
 #include "google/cloud/spanner/value.h"
@@ -95,7 +95,7 @@ class RowParser {
 
   /// A single-pass input iterator that coalesces multiple `Value` results into
   /// a `Row<Ts...>`.
-  class iterator {
+  class Iterator {
    public:
     using iterator_category = std::input_iterator_tag;
     using value_type = RowParser::value_type;
@@ -106,12 +106,12 @@ class RowParser {
     reference operator*() { return *parser_->curr_; }
     pointer operator->() { return &*parser_->curr_; }
 
-    iterator& operator++() {
+    Iterator& operator++() {
       parser_->Advance();
       return *this;
     }
 
-    iterator operator++(int) {
+    Iterator operator++(int) {
       auto const old = *this;
       operator++();
       return old;
@@ -126,7 +126,7 @@ class RowParser {
 
    private:
     friend RowParser;
-    explicit iterator(RowParser* p) : parser_(p) {
+    explicit Iterator(RowParser* p) : parser_(p) {
       if (parser_ && !parser_->curr_) parser_->Advance();
     }
 
@@ -157,10 +157,10 @@ class RowParser {
   RowParser& operator=(RowParser&&) = default;
 
   /// Returns the begin iterator.
-  iterator begin() { return iterator(this); }
+  Iterator Begin() { return Iterator(this); }
 
   /// Returns the end iterator.
-  iterator end() { return iterator(nullptr); }
+  Iterator End() { return Iterator(nullptr); }
 
  private:
   // Consumes Values from value_source_ and stores the consumed Row in curr_.
@@ -170,7 +170,7 @@ class RowParser {
       value_source_ = nullptr;
       return;
     }
-    std::array<Value, RowType::size()> values;
+    std::array<Value, RowType::Size()> values;
     for (std::size_t i = 0; i < values.size(); ++i) {
       StatusOr<optional<Value>> v = value_source_();
       if (!v) {

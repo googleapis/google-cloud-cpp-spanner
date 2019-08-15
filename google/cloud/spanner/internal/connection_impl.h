@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_CONNECTION_IMPL_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_CONNECTION_IMPL_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_CONNECTION_IMPL_H
 
 #include "google/cloud/spanner/connection.h"
 #include "google/cloud/spanner/internal/spanner_stub.h"
@@ -39,7 +39,7 @@ class ConnectionImpl : public Connection {
  public:
   // Creates a ConnectionImpl that will talk to the specified `database` using
   // the given `stub`. We can test this class by injecting in a mock `stub`.
-  explicit ConnectionImpl(std::string database,
+  explicit ConnectionImpl(const std::string& database,
                           std::shared_ptr<internal::SpannerStub> stub)
       : database_(std::move(database)), stub_(std::move(stub)) {}
 
@@ -51,11 +51,11 @@ class ConnectionImpl : public Connection {
  private:
   class SessionHolder {
    public:
-    SessionHolder(std::string session, ConnectionImpl* conn) noexcept
+    SessionHolder(const std::string& session, ConnectionImpl* conn) noexcept
         : session_(std::move(session)), conn_(conn) {}
     ~SessionHolder() { conn_->sessions_.emplace_back(std::move(session_)); }
 
-    std::string const& session_name() const { return session_; }
+    std::string const& SessionName() const { return session_; }
 
    private:
     std::string session_;
@@ -66,11 +66,11 @@ class ConnectionImpl : public Connection {
 
   /// Implementation details for Read.
   StatusOr<ResultSet> Read(google::spanner::v1::TransactionSelector& s,
-                           ReadParams rp);
+                           const ReadParams& rp);
 
   /// Implementation details for ExecuteSql
   StatusOr<ResultSet> ExecuteSql(google::spanner::v1::TransactionSelector& s,
-                                 std::int64_t seqno, ExecuteSqlParams esp);
+                                 std::int64_t seqno, const ExecuteSqlParams& esp);
 
   /// Implementation details for Commit.
   StatusOr<CommitResult> Commit(google::spanner::v1::TransactionSelector& s,

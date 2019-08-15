@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_MUTATIONS_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_MUTATIONS_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_MUTATIONS_H
 
 #include "google/cloud/spanner/keys.h"
 #include "google/cloud/spanner/row.h"
@@ -64,8 +64,8 @@ class Mutation {
   }
 
   /// Convert the mutation to the underlying proto.
-  google::spanner::v1::Mutation as_proto() && { return std::move(m_); }
-  google::spanner::v1::Mutation as_proto() const& { return m_; }
+  google::spanner::v1::Mutation AsProto() && { return std::move(m_); }
+  google::spanner::v1::Mutation AsProto() const& { return m_; }
 
   /**
    * Allows Google Test to print internal debugging information when test
@@ -93,7 +93,7 @@ template <typename Op>
 class WriteMutationBuilder {
  public:
   WriteMutationBuilder(std::string table_name,
-                       std::vector<std::string> column_names) {
+                       const std::vector<std::string>& column_names) {
     auto& field = Op::mutable_field(m_);
     field.set_table(std::move(table_name));
     field.mutable_columns()->Reserve(column_names.size());
@@ -124,28 +124,28 @@ class WriteMutationBuilder {
 };
 
 struct InsertOp {
-  static google::spanner::v1::Mutation::Write& mutable_field(
+  static google::spanner::v1::Mutation::Write& MutableField(
       google::spanner::v1::Mutation& m) {
     return *m.mutable_insert();
   }
 };
 
 struct UpdateOp {
-  static google::spanner::v1::Mutation::Write& mutable_field(
+  static google::spanner::v1::Mutation::Write& MutableField(
       google::spanner::v1::Mutation& m) {
     return *m.mutable_update();
   }
 };
 
 struct InsertOrUpdateOp {
-  static google::spanner::v1::Mutation::Write& mutable_field(
+  static google::spanner::v1::Mutation::Write& MutableField(
       google::spanner::v1::Mutation& m) {
     return *m.mutable_insert_or_update();
   }
 };
 
 struct ReplaceOp {
-  static google::spanner::v1::Mutation::Write& mutable_field(
+  static google::spanner::v1::Mutation::Write& MutableField(
       google::spanner::v1::Mutation& m) {
     return *m.mutable_replace();
   }

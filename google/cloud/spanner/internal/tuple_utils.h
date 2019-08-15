@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_TUPLE_UTILS_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_TUPLE_UTILS_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_TUPLE_UTILS_H
 
 #include "google/cloud/spanner/version.h"
 #include <tuple>
@@ -37,10 +37,10 @@ template <typename T>
 struct NumElementsImpl;
 template <template <typename...> class T, typename... Ts>
 struct NumElementsImpl<T<Ts...>> {
-  static const std::size_t value = sizeof...(Ts);
+  static const std::size_t kValue = sizeof...(Ts);
 };
 template <template <typename...> class T, typename... Ts>
-std::size_t const NumElementsImpl<T<Ts...>>::value;  // Declares storage
+std::size_t const NumElementsImpl<T<Ts...>>::kValue;  // Declares storage
 template <typename T>
 using NumElements = NumElementsImpl<typename std::decay<T>::type>;
 
@@ -57,7 +57,7 @@ auto GetElement(Tup&& tup) -> decltype(std::get<I>(std::forward<Tup>(tup))) {
 // Base case of `ForEach` that is called at the end of iterating a tuple.
 // See the docs for the next overload to see how to use `ForEach`.
 template <std::size_t I = 0, typename T, typename F, typename... Args>
-typename std::enable_if<I == NumElements<T>::value, void>::type ForEach(
+typename std::enable_if<I == NumElements<T>::kValue, void>::type ForEach(
     T&&, F&&, Args&&...) {}
 
 // This function template iterates the elements of a tuple-like type, calling
@@ -84,7 +84,7 @@ typename std::enable_if<I == NumElements<T>::value, void>::type ForEach(
 //     EXPECT_THAT(v, testing::ElementsAre("1", "42"));
 //
 template <std::size_t I = 0, typename T, typename F, typename... Args>
-typename std::enable_if<(I < NumElements<T>::value), void>::type ForEach(
+typename std::enable_if<(I < NumElements<T>::kValue), void>::type ForEach(
     T&& t, F&& f, Args&&... args) {
   auto&& e = GetElement<I>(std::forward<T>(t));
   std::forward<F>(f)(std::forward<decltype(e)>(e), std::forward<Args>(args)...);

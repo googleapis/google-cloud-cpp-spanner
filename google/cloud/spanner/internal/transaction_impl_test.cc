@@ -50,7 +50,7 @@ class Client {
 
   // Set the `read_timestamp` we expect to see, and the `txn_id` we want to
   // use during the upcoming `Read()` calls.
-  void Reset(Timestamp read_timestamp, std::string txn_id) {
+  void Reset(Timestamp read_timestamp, const std::string& txn_id) {
     read_timestamp_ = read_timestamp;
     txn_id_ = std::move(txn_id);
     std::unique_lock<std::mutex> lock(mu_);
@@ -65,8 +65,7 @@ class Client {
   }
 
   // User-visible read operation.
-  ResultSet Read(Transaction txn, std::string const& table, KeySet const& keys,
-                 std::vector<std::string> const& columns) {
+  ResultSet Read(std::string const& table, KeySet const& keys) {
     auto read = [this, &table, &keys, &columns](TransactionSelector& selector,
                                                 std::int64_t seqno) {
       return this->Read(selector, seqno, table, keys, columns);
@@ -158,7 +157,7 @@ int MultiThreadedRead(int n_threads, Client* client, std::time_t read_time,
   client->Reset(read_timestamp, txn_id);
 
   Transaction::ReadOnlyOptions opts(read_timestamp);
-  Transaction txn(opts);
+  Transaction Txn(opts);
 
   // Unused Read() parameeters.
   std::string const table{};

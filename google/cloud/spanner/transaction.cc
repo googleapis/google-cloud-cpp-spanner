@@ -24,14 +24,14 @@ inline namespace SPANNER_CLIENT_NS {
 namespace {
 
 google::spanner::v1::TransactionOptions MakeOpts(
-    google::spanner::v1::TransactionOptions_ReadOnly ro_opts) {
+    const google::spanner::v1::TransactionOptions_ReadOnly& ro_opts) {
   google::spanner::v1::TransactionOptions opts;
   *opts.mutable_read_only() = std::move(ro_opts);
   return opts;
 }
 
 google::spanner::v1::TransactionOptions MakeOpts(
-    google::spanner::v1::TransactionOptions_ReadWrite rw_opts) {
+    const google::spanner::v1::TransactionOptions_ReadWrite& rw_opts) {
   google::spanner::v1::TransactionOptions opts;
   *opts.mutable_read_write() = std::move(rw_opts);
   return opts;

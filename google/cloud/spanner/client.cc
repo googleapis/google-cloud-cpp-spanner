@@ -22,11 +22,10 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
-namespace spanner_proto = ::google::spanner::v1;
 
-StatusOr<ResultSet> Client::Read(std::string table, KeySet keys,
+StatusOr<ResultSet> Client::Read(const std::string& table, const KeySet& keys,
                                  std::vector<std::string> columns,
-                                 ReadOptions read_options) {
+                                 const ReadOptions& read_options) {
   return conn_->Read(
       {internal::MakeSingleUseTransaction(Transaction::ReadOnlyOptions()),
        std::move(table), std::move(keys), std::move(columns),
@@ -34,17 +33,17 @@ StatusOr<ResultSet> Client::Read(std::string table, KeySet keys,
 }
 
 StatusOr<ResultSet> Client::Read(
-    Transaction::SingleUseOptions transaction_options, std::string table,
-    KeySet keys, std::vector<std::string> columns, ReadOptions read_options) {
+    Transaction::SingleUseOptions transaction_options, const std::string& table,
+    const KeySet& keys, std::vector<std::string> columns, const ReadOptions& read_options) {
   return conn_->Read(
       {internal::MakeSingleUseTransaction(std::move(transaction_options)),
        std::move(table), std::move(keys), std::move(columns),
        std::move(read_options)});
 }
 
-StatusOr<ResultSet> Client::Read(Transaction transaction, std::string table,
-                                 KeySet keys, std::vector<std::string> columns,
-                                 ReadOptions read_options) {
+StatusOr<ResultSet> Client::Read(Transaction transaction, const std::string& table,
+                                 const KeySet& keys, std::vector<std::string> columns,
+                                 const ReadOptions& read_options) {
   return conn_->Read({std::move(transaction), std::move(table), std::move(keys),
                       std::move(columns), std::move(read_options)});
 }
@@ -53,7 +52,7 @@ StatusOr<ResultSet> Client::Read(SqlPartition const& /*partition*/) {
   return Status(StatusCode::kUnimplemented, "not implemented");
 }
 
-StatusOr<std::vector<SqlPartition>> Client::PartitionRead(
+StatusOr<std::vector<SqlPartition>> Client::partition_read(
     Transaction const& /*transaction*/, std::string const& /*table*/,
     KeySet const& /*keys*/, std::vector<std::string> const& /*columns*/,
     ReadOptions const& /*read_options*/,

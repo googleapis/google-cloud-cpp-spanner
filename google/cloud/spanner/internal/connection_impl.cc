@@ -73,7 +73,7 @@ StatusOr<ConnectionImpl::SessionHolder> ConnectionImpl::GetSession() {
 }
 
 StatusOr<ResultSet> ConnectionImpl::Read(spanner_proto::TransactionSelector& s,
-                                         ReadParams rp) {
+                                         const ReadParams& rp) {
   auto session = GetSession();
   if (!session) {
     return std::move(session).status();
@@ -110,7 +110,7 @@ StatusOr<ResultSet> ConnectionImpl::Read(spanner_proto::TransactionSelector& s,
 
 StatusOr<ResultSet> ConnectionImpl::ExecuteSql(
     spanner_proto::TransactionSelector& s, std::int64_t seqno,
-    ExecuteSqlParams esp) {
+    const ExecuteSqlParams& esp) {
   auto session = GetSession();
   if (!session) {
     return std::move(session).status();
