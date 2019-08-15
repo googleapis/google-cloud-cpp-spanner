@@ -238,6 +238,12 @@ class KeySet {
   KeySet() = default;
 
   /**
+   * Constructs a `KeySet` from a `spanner::v1::KeySet` protobuf.
+   */
+  explicit KeySet(google::spanner::v1::KeySet key_set) :
+    proto_(std::move(key_set)) {}
+
+  /**
    * Constructs a `KeySet` from a `KeySetBuilder`.
    * @tparam RowType spanner::Row<Types...> that corresponds to the desired
    * index definition.
@@ -257,6 +263,14 @@ class KeySet {
       Append(end, std::move(range).end().key().values());
     }
   }
+
+  /// @name Equality
+  /// Order is of keys and key ranges in the `KeySet` is considered.
+  ///@{
+  friend bool operator==(KeySet const& lhs, KeySet const& rhs);
+  friend bool operator!=(KeySet const& lhs, KeySet const& rhs);
+  ///@}
+
 
  private:
   friend ::google::spanner::v1::KeySet internal::ToProto(KeySet keyset);
