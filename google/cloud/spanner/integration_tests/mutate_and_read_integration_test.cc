@@ -33,25 +33,30 @@ using ::testing::UnorderedElementsAre;
 // Use a ::testing::Environment to create the database once.
 class IntegrationTestEnvironment : public ::testing::Environment {
  public:
-  static std::string const& project_id() { return project_id_; }
-  static std::string const& instance_id() { return instance_id_; }
-  static std::string const& database_id() { return database_id_; }
+  // NOLINTNEXTLINE
+  static std::string const& project_id() { return *project_id_; }
+  // NOLINTNEXTLINE
+  static std::string const& instance_id() { return *instance_id_; }
+  // NOLINTNEXTLINE
+  static std::string const& database_id() { return *database_id_; }
 
   static std::string RandomTableName() {
-    return google::cloud::internal::Sample(generator_, 16,
+    return google::cloud::internal::Sample(*generator_, 16,
                                            "abcdefghijklmnopqrstuvwxyz");
   }
 
  protected:
   void SetUp() override {
-    project_id_ =
-        google::cloud::internal::GetEnv("GOOGLE_CLOUD_PROJECT").value_or("");
-    instance_id_ =
+    project_id_ = new std::string(
+        google::cloud::internal::GetEnv("GOOGLE_CLOUD_PROJECT").value_or(""));
+    instance_id_ = new std::string(
         google::cloud::internal::GetEnv("GOOGLE_CLOUD_CPP_SPANNER_INSTANCE")
-            .value_or("");
+            .value_or(""));
 
-    generator_ = google::cloud::internal::MakeDefaultPRNG();
-    database_id_ = spanner_testing::RandomDatabaseName(generator_);
+    generator_ = new google::cloud::internal::DefaultPRNG(
+        google::cloud::internal::MakeDefaultPRNG());
+    database_id_ =
+        new std::string(spanner_testing::RandomDatabaseName(*generator_));
 
     std::cout << "Creating database and table" << std::flush;
     DatabaseAdminClient admin_client;
@@ -86,16 +91,16 @@ class IntegrationTestEnvironment : public ::testing::Environment {
   }
 
  private:
-  static std::string project_id_;
-  static std::string instance_id_;
-  static std::string database_id_;
-  static google::cloud::internal::DefaultPRNG generator_;
+  static std::string* project_id_;
+  static std::string* instance_id_;
+  static std::string* database_id_;
+  static google::cloud::internal::DefaultPRNG* generator_;
 };
 
-std::string IntegrationTestEnvironment::project_id_;
-std::string IntegrationTestEnvironment::instance_id_;
-std::string IntegrationTestEnvironment::database_id_;
-google::cloud::internal::DefaultPRNG IntegrationTestEnvironment::generator_;
+std::string* IntegrationTestEnvironment::project_id_;
+std::string* IntegrationTestEnvironment::instance_id_;
+std::string* IntegrationTestEnvironment::database_id_;
+google::cloud::internal::DefaultPRNG* IntegrationTestEnvironment::generator_;
 
 class MutateAndReadIntegrationTest : public ::testing::Test {
  public:
