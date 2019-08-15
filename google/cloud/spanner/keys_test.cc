@@ -75,11 +75,10 @@ TEST(KeySetTest, EqualityKeys) {
 }
 
 TEST(KeySetTest, EqualityKeyRanges) {
-  auto range0 =  MakeKeyRange(MakeRow("start00", "start01"),
-                                              MakeRow("end00", "end01"));
-  auto range1 = MakeKeyRange(
-      MakeBoundOpen(MakeRow("start10", "start11")),
-      MakeBoundOpen(MakeRow("end10", "end11")));
+  auto range0 =
+      MakeKeyRange(MakeRow("start00", "start01"), MakeRow("end00", "end01"));
+  auto range1 = MakeKeyRange(MakeBoundOpen(MakeRow("start10", "start11")),
+                             MakeBoundOpen(MakeRow("end10", "end11")));
   auto ksb0 = KeySetBuilder<Row<std::string, std::string>>();
   ksb0.Add(range0).Add(range1);
   auto ksb1 = KeySetBuilder<Row<std::string, std::string>>();
@@ -232,8 +231,6 @@ TEST(KeySetBuilderTest, AddKeyRangeToNonEmptyKeySetBuilder) {
   EXPECT_TRUE(ks.key_ranges()[1].start().IsOpen());
   EXPECT_TRUE(ks.key_ranges()[1].end().IsOpen());
 }
-
-
 
 TEST(InternalKeySetTest, ToProtoAll) {
   auto ks = KeySet::All();
