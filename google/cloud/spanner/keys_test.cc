@@ -75,8 +75,8 @@ TEST(KeySetTest, EqualityKeys) {
 }
 
 TEST(KeySetTest, EqualityKeyRanges) {
-  auto range0 =
-      MakeKeyRange(MakeRow("start00", "start01"), MakeRow("end00", "end01"));
+  auto range0 = MakeKeyRangeClosed(MakeRow("start00", "start01"),
+                                   MakeRow("end00", "end01"));
   auto range1 = MakeKeyRange(MakeBoundOpen(MakeRow("start10", "start11")),
                              MakeBoundOpen(MakeRow("end10", "end11")));
   auto ksb0 = KeySetBuilder<Row<std::string, std::string>>();
