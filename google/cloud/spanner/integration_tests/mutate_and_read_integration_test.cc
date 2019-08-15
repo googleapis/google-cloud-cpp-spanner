@@ -159,7 +159,8 @@ TEST_F(MutateAndReadIntegrationTest, DeleteAndCommit) {
   auto commit_result = client_->Commit(
       MakeReadWriteTransaction(),
       // TODO(#360) - we use InsertOrUpdate() because the DELETE fails.
-      {InsertOrUpdateMutationBuilder("Singers", {"SingerId", "FirstName", "LastName"})
+      {InsertOrUpdateMutationBuilder("Singers",
+                                     {"SingerId", "FirstName", "LastName"})
            .EmplaceRow(1, "test-first-name-1", "test-last-name-1")
            .EmplaceRow(2, "test-first-name-2", "test-last-name-2")
            .Build()});
