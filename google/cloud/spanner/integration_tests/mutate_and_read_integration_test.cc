@@ -115,9 +115,8 @@ class MutateAndReadIntegrationTest : public ::testing::Test {
         MakeConnection(MakeDatabaseName(project_id, instance_id, database_id)));
 
     auto txn = MakeReadWriteTransaction();
-    auto reader =
-        client_->ExecuteSql(txn,
-                            SqlStatement("DELETE FROM Singers WHERE true;"));
+    auto reader = client_->ExecuteSql(
+        txn, SqlStatement("DELETE FROM Singers WHERE true;"));
     EXPECT_STATUS_OK(reader);
     auto commit = client_->Commit(txn, {});
     EXPECT_STATUS_OK(commit);
