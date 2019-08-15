@@ -47,10 +47,10 @@ struct IsRow<Row<Ts...>> : std::true_type {};
  * The `Bound` class is a regular type that represents one endpoint of an
  * interval of keys.
  *
- * `Bound`s are `Closed` by default, meaning the row matching
- * the Bound will be included in the result. `Bound`s can also be
- * specified as `Open`, which will exclude the Bounds from
- * the results.
+ * `Bound`s can be "open", meaning the matching row will be excluded from the
+ * results, or "closed" meaning the matching row will be included. `Bound`
+ * instances should be created with the `MakeBoundOpen()` or
+ * `MakeBoundClosed()` factory functions.
  *
  * @tparam KeyType spanner::Row<Types...> that corresponds to the desired index
  * definition.
@@ -60,15 +60,6 @@ class Bound {
  public:
   static_assert(internal::IsRow<RowType>::value,
                 "KeyType must be of type spanner::Row<>.");
-  /**
-   * Constructs a closed `Bound` with a default constructed key of `KeyType`.
-   */
-  Bound() : Bound({}) {}
-  /**
-   * Constructs a closed `Bound` with the provided key.
-   * @param key spanner::Row<Types...>
-   */
-  explicit Bound(RowType key) : Bound(std::move(key), Mode::kClosed) {}
 
   // Copy and move constructors and assignment operators.
   Bound(Bound const& key_range) = default;
@@ -88,15 +79,13 @@ class Bound {
   }
 
  private:
-  enum class Mode { kClosed, kOpen };
-
-  Bound(RowType key, Mode mode) : key_(std::move(key)), mode_(mode) {}
-
   template <typename T>
   friend Bound<T> MakeBoundClosed(T key);
-
   template <typename T>
   friend Bound<T> MakeBoundOpen(T key);
+
+  enum class Mode { kClosed, kOpen };
+  Bound(RowType key, Mode mode) : key_(std::move(key)), mode_(mode) {}
 
   RowType key_;
   Mode mode_;
