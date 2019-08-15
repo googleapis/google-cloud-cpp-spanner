@@ -337,19 +337,20 @@ class KeySet {
  * // EmployeeTable has a primary key on EmployeeID.
  * using EmployeeTablePrimaryKey = Row<std::int64_t>;
  *
- * // A KeySet where EmployeeID >= 1 and EmployeeID < 10.
+ * // A KeySet where EmployeeID >= 1 and EmployeeID <= 10.
  * auto first_ten_employees =
- *   KeySetBuilder<EmployeeTablePrimaryKey>(
- *     MakeKeyRangeBoundClosed(MakeRow(1)),
- *     MakeKeyRangeBoundOpen(MakeRow(10)));
+ *   KeySetBuilder<EmployeeTablePrimaryKey>()
+ *       .Add(MakeKeyRange(MakeRow(1), MakeRow(10))
+ *       .Build();
  *
  * // EmployeeTable also has an index on LastName, FirstName.
  * using EmployeeNameKey = Row<std::string, std::string>;
  *
  * // A KeySet where LastName, FirstName is ("Smith", "John").
  * auto all_employees_named_john_smith =
- *   KeySetBuilder<EmployeeNameKey>(MakeRow("Smith", "John"));
- *
+ *   KeySetBuilder<EmployeeNameKey>()
+ *       .Add(MakeRow("Smith", "John")))
+ *       .Build();
  * @endcode
  */
 template <typename RowType>
