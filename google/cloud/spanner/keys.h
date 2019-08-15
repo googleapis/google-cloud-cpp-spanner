@@ -296,7 +296,7 @@ class KeySet {
  * // A KeySet where EmployeeID >= 1 and EmployeeID <= 10.
  * auto first_ten_employees =
  *   KeySetBuilder<EmployeeTablePrimaryKey>()
- *       .Add(MakeKeyRange(MakeRow(1), MakeRow(10))
+ *       .Add(MakeKeyRange(MakeRow(1), MakeRow(10)))
  *       .Build();
  *
  * // EmployeeTable also has an index on LastName, FirstName.
