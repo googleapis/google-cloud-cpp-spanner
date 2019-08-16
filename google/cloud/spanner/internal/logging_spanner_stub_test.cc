@@ -60,7 +60,7 @@ class LoggingSpannerStubTest : public ::testing::Test {
 
  private:
   std::shared_ptr<google::cloud::testing_util::CaptureLogLinesBackend> backend_;
-  long logger_id_ = 0;
+  long logger_id_ = 0;  // NOLINT
 };
 
 TEST_F(LoggingSpannerStubTest, CreateSession) {
