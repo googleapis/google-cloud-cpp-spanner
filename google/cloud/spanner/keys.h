@@ -299,6 +299,12 @@ class KeySetBuilder {
    */
   KeySetBuilder() = default;
 
+  /// Copy and move constructors and assignment operators.
+  KeySetBuilder(KeySetBuilder const& key_range) = default;
+  KeySetBuilder& operator=(KeySetBuilder const& rhs) = default;
+  KeySetBuilder(KeySetBuilder&& key_range) = default;
+  KeySetBuilder& operator=(KeySetBuilder&& rhs) = default;
+
   /**
    * Constructs a `KeySetBuilder` with a single key `spanner::Row`.
    */
