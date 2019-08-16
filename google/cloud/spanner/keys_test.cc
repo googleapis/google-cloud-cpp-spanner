@@ -141,7 +141,6 @@ TEST(KeySetTest, EqualityKeys) {
   auto ksb0 = KeySetBuilder<Row<std::string, std::string>>();
   ksb0.Add(MakeRow("foo0", "bar0"));
   ksb0.Add(MakeRow("foo1", "bar1"));
-  auto ks0 = ksb0.Build();
 
   auto ksb1 = KeySetBuilder<Row<std::string, std::string>>();
   ksb1.Add(MakeRow("foo0", "bar0"));
