@@ -138,6 +138,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The representation of a Cloud Spanner transaction.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1TransactionAction.html">TransactionAction</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute a function in the context of a read-write transaction, with automatic retries if the transaction commit results in an abort.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1TransactionAction.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a> class represents a type-safe, nullable Spanner value.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,8 +193,10 @@ Functions</h2></td></tr>
 <tr class="memdesc:a653353319d59ae9642467e3a399eb1e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Format a database name given the <code>project</code>, <code>instance</code>, and <code>database_id</code>.  <a href="#a653353319d59ae9642467e3a399eb1e8">More...</a><br /></td></tr>
 <tr class="separator:a653353319d59ae9642467e3a399eb1e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1730f18e8610ddf95dc9fd72edc31d72"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html">Connection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a1730f18e8610ddf95dc9fd72edc31d72">MakeConnection</a> (std::string database, std::shared_ptr&lt; grpc::ChannelCredentials &gt; const  &amp;creds=grpc::GoogleDefaultCredentials(), std::string const  &amp;endpoint=&quot;spanner.googleapis.com&quot;)</td></tr>
-<tr class="memdesc:a1730f18e8610ddf95dc9fd72edc31d72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retuns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner.  <a href="#a1730f18e8610ddf95dc9fd72edc31d72">More...</a><br /></td></tr>
+<tr class="memdesc:a1730f18e8610ddf95dc9fd72edc31d72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner.  <a href="#a1730f18e8610ddf95dc9fd72edc31d72">More...</a><br /></td></tr>
 <tr class="separator:a1730f18e8610ddf95dc9fd72edc31d72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b6ae7089a05e31cfaa31026c5e658eb"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html">CommitResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a3b6ae7089a05e31cfaa31026c5e658eb">RunTransaction</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a> client, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1ReadWriteOptions.html">Transaction::ReadWriteOptions</a> const &amp;opts, std::function&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1TransactionAction.html">TransactionAction</a>(<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>)&gt; const &amp;f)</td></tr>
+<tr class="separator:a3b6ae7089a05e31cfaa31026c5e658eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2a19481df4a3e725aa2cc13f112abd2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ab2a19481df4a3e725aa2cc13f112abd2">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;b)</td></tr>
 <tr class="separator:ab2a19481df4a3e725aa2cc13f112abd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a303b93745482b9d4430e07a05502da07"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a303b93745482b9d4430e07a05502da07">operator!=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;b)</td></tr>
@@ -714,7 +719,7 @@ template&lt;typename RowType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Retuns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner. </p>
+<p>Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner. </p>
 <p>The returned connection object should not be used directly, rather it should be given to a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> instance, and methods should be invoked on <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code>.</p>
 <p>TODO(#321): Move optional args into options struct.</p>
 <dl class="section see"><dt>See also</dt><dd><code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code></dd></dl>
@@ -1664,6 +1669,42 @@ template&lt;typename... Ts&gt; </div>
 <dl class="section warning"><dt>Warning</dt><dd>This is intended for debugging and human consumption only, not machine consumption as the output format may change without notice. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00113">113</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
+
+</div>
+</div>
+<a id="a3b6ae7089a05e31cfaa31026c5e658eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b6ae7089a05e31cfaa31026c5e658eb">&#9670;&nbsp;</a></span>RunTransaction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">StatusOr&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html">CommitResult</a> &gt; google::cloud::spanner::v0::RunTransaction </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a>&#160;</td>
+          <td class="paramname"><em>client</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1ReadWriteOptions.html">Transaction::ReadWriteOptions</a> const &amp;&#160;</td>
+          <td class="paramname"><em>opts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1TransactionAction.html">TransactionAction</a>(<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>)&gt; const &amp;&#160;</td>
+          <td class="paramname"><em>f</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00131">131</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>

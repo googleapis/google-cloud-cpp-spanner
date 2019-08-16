@@ -153,13 +153,13 @@ Friends</h2></td></tr>
 <div class="textblock"><p>Performs database client operations on Spanner. </p>
 <p>Applications use this class to perform operations on <a href="https://cloud.google.com/spanner/docs/api-libraries-overview">Spanner Databases</a>.</p>
 <dl class="section user"><dt>Performance</dt><dd></dd></dl>
-<p><code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> objects are cheap to create, copy, and move. However, each <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> object must be created with a <code>std::shared_ptr&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a>&gt;</code>, which itself is relatively expensive to create. Therefore, connection instances should be shared when possible. See the <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a1730f18e8610ddf95dc9fd72edc31d72" title="Retuns a Connection object that can be used for interacting with Spanner.">MakeConnection()</a></code> method and the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code> interface for more details.</p>
+<p><code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> objects are cheap to create, copy, and move. However, each <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> object must be created with a <code>std::shared_ptr&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a>&gt;</code>, which itself is relatively expensive to create. Therefore, connection instances should be shared when possible. See the <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a1730f18e8610ddf95dc9fd72edc31d72" title="Returns a Connection object that can be used for interacting with Spanner.">MakeConnection()</a></code> method and the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code> interface for more details.</p>
 <dl class="section user"><dt>Thread Safety</dt><dd></dd></dl>
 <p>Instances of this class created via copy-construction or copy-assignment share the underlying pool of connections. Access to these copies via multiple threads is guaranteed to work. Two threads operating on the same instance of this class is not guaranteed to work.</p>
 <dl class="section user"><dt>Error Handling</dt><dd></dd></dl>
 <p>This class uses <code>StatusOr&lt;T&gt;</code> to report errors. When an operation fails to perform its work the returned <code>StatusOr&lt;T&gt;</code> contains the error details. If the <code>ok()</code> member function in the <code>StatusOr&lt;T&gt;</code> returns <code>true</code> then it contains the expected result. Please consult the <a href="#google::cloud::v0::StatusOr"><code>StatusOr&lt;T&gt;</code> documentation</a> for more details.</p>
 <div class="fragment"><div class="line"><span class="keyword">namespace </span>cs = ::google::cloud::spanner;</div><div class="line">using ::google::cloud::StatusOr;</div><div class="line"></div><div class="line"><span class="keyword">auto</span> db = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a653353319d59ae9642467e3a399eb1e8">cs::MakeDatabaseName</a>(<span class="stringliteral">&quot;my_project&quot;</span>, <span class="stringliteral">&quot;my_instance&quot;</span>, <span class="stringliteral">&quot;my_db_id&quot;</span>));</div><div class="line"><span class="keyword">auto</span> conn = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a1730f18e8610ddf95dc9fd72edc31d72">cs::MakeConnection</a>(std::move(db));</div><div class="line"><span class="keyword">auto</span> client = cs::Client(conn);</div><div class="line"></div><div class="line">StatusOr&lt;cs::ResultSet&gt; result = client.Read(...);</div><div class="line"><span class="keywordflow">if</span> (!result) {</div><div class="line">  <span class="keywordflow">return</span> result.status();</div><div class="line">}</div><div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> <span class="keyword">const</span>&amp; row : result.Rows&lt;std::int64_t, std::string&gt;()) {</div><div class="line">  <span class="comment">// ...</span></div><div class="line">}</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00090">90</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00091">91</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac02ff58e375cd0a5150adf7bb0698671"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac02ff58e375cd0a5150adf7bb0698671">&#9670;&nbsp;</a></span>Client() <span class="overload">[1/4]</span></h2>
@@ -186,9 +186,9 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Constructs a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> object that will use the specified <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code>. </p>
-<p>See <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a1730f18e8610ddf95dc9fd72edc31d72" title="Retuns a Connection object that can be used for interacting with Spanner.">MakeConnection()</a></code> for how to create a connection to Spanner. To help with unit testing, callers may create fake/mock <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code> objects that are injected into the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code>. </p>
+<p>See <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a1730f18e8610ddf95dc9fd72edc31d72" title="Returns a Connection object that can be used for interacting with Spanner.">MakeConnection()</a></code> for how to create a connection to Spanner. To help with unit testing, callers may create fake/mock <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code> objects that are injected into the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00099">99</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00100">100</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
 
 </div>
 </div>
@@ -999,7 +999,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00117">117</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00118">118</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
 
 </div>
 </div>
@@ -1037,7 +1037,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00114">114</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00115">115</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
 
 </div>
 </div>
