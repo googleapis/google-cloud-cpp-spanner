@@ -29,6 +29,8 @@ include(external/external-project-helpers)
 
 google_cloud_cpp_set_prefix_vars()
 
+set_external_project_build_parallel_level(PARALLEL)
+
 include(ExternalProject)
 ExternalProject_Add(
     google-cloud-cpp-spanner-as-external
@@ -45,7 +47,10 @@ ExternalProject_Add(
                -DCMAKE_PREFIX_PATH=${GOOGLE_CLOUD_CPP_PREFIX_PATH}
                -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
                -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-    BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR>
+    BUILD_COMMAND ${CMAKE_COMMAND}
+                  --build
+                  <BINARY_DIR>
+                  ${PARALLEL}
     TEST_COMMAND ${CMAKE_CTEST_COMMAND}
                  --output-on-failure
                  -LE

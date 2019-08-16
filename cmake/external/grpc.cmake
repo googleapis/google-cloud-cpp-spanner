@@ -30,6 +30,8 @@ if (NOT TARGET gprc-project)
 
     google_cloud_cpp_set_prefix_vars()
 
+    set_external_project_build_parallel_level(PARALLEL)
+
     ExternalProject_Add(
         grpc-project
         DEPENDS c-ares-project protobuf-project ssl-project

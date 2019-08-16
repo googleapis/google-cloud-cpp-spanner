@@ -30,6 +30,8 @@ if (NOT TARGET curl-project)
 
     google_cloud_cpp_set_prefix_vars()
 
+    set_external_project_build_parallel_level(PARALLEL)
+
     ExternalProject_Add(
         curl-project
         DEPENDS c-ares-project ssl-project zlib-project
@@ -53,7 +55,10 @@ if (NOT TARGET curl-project)
                    -DCMAKE_INSTALL_PATH=${GOOGLE_CLOUD_CPP_INSTALL_PATH}
                    -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
                    -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-        BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR>
+        BUILD_COMMAND ${CMAKE_COMMAND}
+                      --build
+                      <BINARY_DIR>
+                      ${PARALLEL}
         LOG_DOWNLOAD ON
         LOG_CONFIGURE ON
         LOG_BUILD ON
