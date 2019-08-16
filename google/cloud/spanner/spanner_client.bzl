@@ -50,12 +50,12 @@ spanner_client_hdrs = [
     "row_parser.h",
     "sql_partition.h",
     "sql_statement.h",
+    "testing/mock_spanner_stub.h",
     "timestamp.h",
     "transaction.h",
     "value.h",
     "version.h",
     "version_info.h",
-    "testing/mock_spanner_stub.h",
 ]
 
 spanner_client_srcs = [

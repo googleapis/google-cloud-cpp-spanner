@@ -140,6 +140,7 @@ add_library(spanner_client
             sql_partition.h
             sql_statement.cc
             sql_statement.h
+            testing/mock_spanner_stub.h
             timestamp.h
             transaction.cc
             transaction.h
@@ -147,7 +148,7 @@ add_library(spanner_client
             value.h
             version.cc
             version.h
-            version_info.h testing/mock_spanner_stub.h)
+            version_info.h)
 target_include_directories(spanner_client
                            PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
                                   $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
