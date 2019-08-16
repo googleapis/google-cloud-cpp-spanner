@@ -11,5 +11,7 @@ var searchData=
   ['deletemutationbuilder',['DeleteMutationBuilder',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a77c9d12eab5fd290cae78937806c995e',1,'google::cloud::spanner::v0']]],
   ['deserializesqlpartition',['DeserializeSqlPartition',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html#a19e08352c0dbf2edf17e70edcafc3913',1,'google::cloud::spanner::v0::SqlPartition::DeserializeSqlPartition()'],['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aa0a97e4a5530bb2ddb8a26e4ed4998d0',1,'google::cloud::spanner::v0::DeserializeSqlPartition()']]],
   ['difference_5ftype',['difference_type',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html#a1b68295eb49010300301f8b889112b9d',1,'google::cloud::spanner::v0::RowParser::iterator']]],
+  ['disable_5fclog',['disable_clog',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#af2bbc89f1030adf9966f0a27590f831c',1,'google::cloud::spanner::v0::ClientOptions']]],
+  ['disable_5ftracing',['disable_tracing',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#a729cbe4949297384b35d3a9d7cf0d1bd',1,'google::cloud::spanner::v0::ClientOptions']]],
   ['dropdatabase',['DropDatabase',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#a91faa307a79abe7867622e310d249ad9',1,'google::cloud::spanner::v0::DatabaseAdminClient']]]
 ];

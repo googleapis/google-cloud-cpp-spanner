@@ -1,8 +1,8 @@
 var searchData=
 [
   ['serializesqlpartition',['SerializeSqlPartition',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a0330dd31b70a1d74509675d046dc450f',1,'google::cloud::spanner::v0']]],
-  ['set_5fadmin_5fendpoint',['set_admin_endpoint',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#ad4bd11fc3e5123fa9de0e4bc1b168f60',1,'google::cloud::spanner::v0::ClientOptions']]],
   ['set_5fcredentials',['set_credentials',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#a7a64cb7363cf6878ad89d05054ffc896',1,'google::cloud::spanner::v0::ClientOptions']]],
+  ['set_5fendpoint',['set_endpoint',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#a6529e966e93116a2762770b340c25223',1,'google::cloud::spanner::v0::ClientOptions']]],
   ['singleuseoptions',['SingleUseOptions',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1SingleUseOptions.html#ac46357e3537a326d8806c3b0ba195b73',1,'google::cloud::spanner::v0::Transaction::SingleUseOptions::SingleUseOptions(ReadOnlyOptions opts)'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1SingleUseOptions.html#a8c7aaa7e64a7e48ae55d953ab394ad79',1,'google::cloud::spanner::v0::Transaction::SingleUseOptions::SingleUseOptions(Timestamp min_read_timestamp)'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1SingleUseOptions.html#a3e0953f5c8ba856d03e58b8fbeba0299',1,'google::cloud::spanner::v0::Transaction::SingleUseOptions::SingleUseOptions(std::chrono::nanoseconds max_staleness)']]],
   ['size',['size',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ab683b2a27b1d53af35a0e1311f448cbe',1,'google::cloud::spanner::v0::Row']]],
   ['sql',['sql',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#a343718204cd2967a769230668343db87',1,'google::cloud::spanner::v0::SqlStatement']]],
