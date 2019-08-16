@@ -14,6 +14,21 @@
 # limitations under the License.
 # ~~~
 
+function (set_external_project_build_parallel_level var_name)
+    if ("${CMAKE_GENERATOR}" STREQUAL "Unix Makefiles"
+        OR "${CMAKE_GENERATOR}" STREQUAL "Ninja")
+        if (DEFINED ENV{NCPU})
+            set(${var_name} "--" "-j" "$ENV{NCPU}" PARENT_SCOPE)
+        else()
+            include(ProcessorCount)
+            processorcount(NCPU)
+            set(${var_name} "--" "-j" "${NCPU}" PARENT_SCOPE)
+        endif ()
+    else()
+        set(${var_name} "" PARENT_SCOPE)
+    endif ()
+endfunction ()
+
 set(GOOGLE_CLOUD_CPP_EXTERNAL_PREFIX
     "${CMAKE_BINARY_DIR}/local"
     CACHE STRING "Configure where are the external projects installed.")

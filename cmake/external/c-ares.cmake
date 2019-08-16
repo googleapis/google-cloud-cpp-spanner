@@ -27,6 +27,8 @@ if (NOT TARGET c-ares-project)
 
     google_cloud_cpp_set_prefix_vars()
 
+    set_external_project_build_parallel_level(PARALLEL)
+
     ExternalProject_Add(
         c-ares-project
         EXCLUDE_FROM_ALL ON
