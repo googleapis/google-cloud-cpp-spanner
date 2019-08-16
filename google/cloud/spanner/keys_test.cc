@@ -164,7 +164,7 @@ TEST(KeySetTest, EqualityKeyRanges) {
 }
 
 TEST(KeySetTest, RoundTripProtos) {
-  KeySet const test_cases[] = {
+  auto test_cases = {
       KeySetBuilder<Row<>>().Build(),                  //
       KeySetBuilder<Row<std::int64_t>>()               //
           .Add(MakeRow(42))                            //
