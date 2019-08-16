@@ -15,6 +15,7 @@
 #include "google/cloud/spanner/internal/logging_spanner_stub.h"
 #include "google/cloud/spanner/testing/mock_spanner_stub.h"
 #include "google/cloud/log.h"
+#include "google/cloud/testing_util/assert_ok.h"
 #include "google/cloud/testing_util/capture_log_lines_backend.h"
 #include <gmock/gmock.h>
 
@@ -62,6 +63,28 @@ class LoggingSpannerStubTest : public ::testing::Test {
   std::shared_ptr<google::cloud::testing_util::CaptureLogLinesBackend> backend_;
   long logger_id_ = 0;  // NOLINT
 };
+
+/**
+ * @test Verify that the LoggingSpannerStub logs request and responses.
+ *
+ * We only run the success case for this member function, because that provides
+ * enough coverage. For the other member functions we just test with an error
+ * result, because that makes the tests easier to write.
+ */
+TEST_F(LoggingSpannerStubTest, CreateSessionSuccess) {
+  spanner_proto::Session session;
+  session.set_name("test-session-name");
+  EXPECT_CALL(*mock_, CreateSession(_, _)).WillOnce(Return(session));
+
+  LoggingSpannerStub stub(mock_);
+  grpc::ClientContext context;
+  auto status =
+      stub.CreateSession(context, spanner_proto::CreateSessionRequest());
+  EXPECT_STATUS_OK(status);
+
+  HasLogLineWith("CreateSession");
+  HasLogLineWith("test-session-name");
+}
 
 TEST_F(LoggingSpannerStubTest, CreateSession) {
   EXPECT_CALL(*mock_, CreateSession(_, _)).WillOnce(Return(TransientError()));
