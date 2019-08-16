@@ -368,12 +368,11 @@ TEST(ClientTest, RunTransactionCommit) {
                       Return(CommitResult{*timestamp})));
 
   auto mutation = MakeDeleteMutation("table", KeySet::All());
-  std::function<TransactionAction(Client, Transaction)> f =
-      [&mutation](Client client, Transaction txn) {
-        auto read = client.Read(std::move(txn), "T", KeySet::All(), {"C"});
-        if (!read) return TransactionAction{TransactionAction::kRollback, {}};
-        return TransactionAction{TransactionAction::kCommit, {mutation}};
-      };
+  auto f = [&mutation](Client client, Transaction txn) {
+    auto read = client.Read(std::move(txn), "T", KeySet::All(), {"C"});
+    if (!read) return TransactionAction{TransactionAction::kRollback, {}};
+    return TransactionAction{TransactionAction::kCommit, {mutation}};
+  };
 
   Client client(conn);
   auto result = RunTransaction(client, Transaction::ReadWriteOptions{}, f);
@@ -381,7 +380,7 @@ TEST(ClientTest, RunTransactionCommit) {
   EXPECT_EQ(*timestamp, result->commit_timestamp);
 
   EXPECT_EQ("T", actual_read_params.table);
-  EXPECT_TRUE(actual_read_params.keys.IsAll());
+  EXPECT_EQ(KeySet::All(), actual_read_params.keys);
   EXPECT_THAT(actual_read_params.columns, ElementsAre("C"));
   EXPECT_THAT(actual_commit_params.mutations, ElementsAre(mutation));
 }
@@ -397,12 +396,11 @@ TEST(ClientTest, RunTransactionRollback) {
   EXPECT_CALL(*conn, Rollback(_)).WillOnce(Return(Status()));
 
   auto mutation = MakeDeleteMutation("table", KeySet::All());
-  std::function<TransactionAction(Client, Transaction)> f =
-      [&mutation](Client client, Transaction txn) {
-        auto read = client.Read(std::move(txn), "T", KeySet::All(), {"C"});
-        if (!read) return TransactionAction{TransactionAction::kRollback, {}};
-        return TransactionAction{TransactionAction::kCommit, {mutation}};
-      };
+  auto f = [&mutation](Client client, Transaction txn) {
+    auto read = client.Read(std::move(txn), "T", KeySet::All(), {"C"});
+    if (!read) return TransactionAction{TransactionAction::kRollback, {}};
+    return TransactionAction{TransactionAction::kCommit, {mutation}};
+  };
 
   Client client(conn);
   auto result = RunTransaction(client, Transaction::ReadWriteOptions{}, f);
@@ -410,7 +408,7 @@ TEST(ClientTest, RunTransactionRollback) {
   EXPECT_EQ(Timestamp{}, result->commit_timestamp);
 
   EXPECT_EQ("T", actual_read_params.table);
-  EXPECT_TRUE(actual_read_params.keys.IsAll());
+  EXPECT_EQ(KeySet::All(), actual_read_params.keys);
   EXPECT_THAT(actual_read_params.columns, ElementsAre("C"));
 }
 
@@ -426,12 +424,11 @@ TEST(ClientTest, RunTransactionRollbackError) {
       .WillOnce(Return(Status(StatusCode::kInternal, "blah blah")));
 
   auto mutation = MakeDeleteMutation("table", KeySet::All());
-  std::function<TransactionAction(Client, Transaction)> f =
-      [&mutation](Client client, Transaction txn) {
-        auto read = client.Read(std::move(txn), "T", KeySet::All(), {"C"});
-        if (!read) return TransactionAction{TransactionAction::kRollback, {}};
-        return TransactionAction{TransactionAction::kCommit, {mutation}};
-      };
+  auto f = [&mutation](Client client, Transaction txn) {
+    auto read = client.Read(std::move(txn), "T", KeySet::All(), {"C"});
+    if (!read) return TransactionAction{TransactionAction::kRollback, {}};
+    return TransactionAction{TransactionAction::kCommit, {mutation}};
+  };
 
   Client client(conn);
   auto result = RunTransaction(client, Transaction::ReadWriteOptions{}, f);
@@ -440,7 +437,7 @@ TEST(ClientTest, RunTransactionRollbackError) {
   EXPECT_THAT(result.status().message(), HasSubstr("blah blah"));
 
   EXPECT_EQ("T", actual_read_params.table);
-  EXPECT_TRUE(actual_read_params.keys.IsAll());
+  EXPECT_EQ(KeySet::All(), actual_read_params.keys);
   EXPECT_THAT(actual_read_params.columns, ElementsAre("C"));
 }
 
@@ -452,12 +449,11 @@ TEST(ClientTest, RunTransactionException) {
   EXPECT_CALL(*conn, Rollback(_)).WillOnce(Return(Status()));
 
   auto mutation = MakeDeleteMutation("table", KeySet::All());
-  std::function<TransactionAction(Client, Transaction)> f =
-      [&mutation](Client client, Transaction txn) {
-        auto read = client.Read(std::move(txn), "T", KeySet::All(), {"C"});
-        if (!read) throw "Read() error";
-        return TransactionAction{TransactionAction::kCommit, {mutation}};
-      };
+  auto f = [&mutation](Client client, Transaction txn) {
+    auto read = client.Read(std::move(txn), "T", KeySet::All(), {"C"});
+    if (!read) throw "Read() error";
+    return TransactionAction{TransactionAction::kCommit, {mutation}};
+  };
 
   try {
     Client client(conn);
