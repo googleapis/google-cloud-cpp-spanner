@@ -13,8 +13,8 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/internal/logging_spanner_stub.h"
+#include "google/cloud/internal/invoke_result.h"
 #include "google/cloud/log.h"
-#include <google/cloud/internal/invoke_result.h>
 
 namespace google {
 namespace cloud {
