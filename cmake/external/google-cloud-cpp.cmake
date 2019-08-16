@@ -57,7 +57,10 @@ if (NOT TARGET google-cloud-cpp-project)
                    -DCMAKE_PREFIX_PATH=${GOOGLE_CLOUD_CPP_PREFIX_PATH}
                    -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
                    -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-        BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> ${PARALLEL}
+        BUILD_COMMAND ${CMAKE_COMMAND}
+                      --build
+                      <BINARY_DIR>
+                      ${PARALLEL}
         LOG_DOWNLOAD ON
         LOG_CONFIGURE OFF
         LOG_BUILD OFF
