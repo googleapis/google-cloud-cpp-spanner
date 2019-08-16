@@ -35,6 +35,10 @@ namespace internal {
   return std::move(keyset.proto_);
 }
 
+KeySet FromProto(::google::spanner::v1::KeySet keyset) {
+  return KeySet(std::move(keyset));
+}
+
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner

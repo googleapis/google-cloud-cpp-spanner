@@ -35,6 +35,7 @@ class KeySetBuilder;
 
 namespace internal {
 ::google::spanner::v1::KeySet ToProto(KeySet keyset);
+KeySet FromProto(::google::spanner::v1::KeySet keyset);
 
 template <typename T>
 struct IsRow : std::false_type {};
@@ -223,12 +224,6 @@ class KeySet {
   KeySet() = default;
 
   /**
-   * Constructs a `KeySet` from a `spanner::v1::KeySet` protobuf.
-   */
-  explicit KeySet(google::spanner::v1::KeySet key_set)
-      : proto_(std::move(key_set)) {}
-
-  /**
    * Constructs a `KeySet` from a `KeySetBuilder`.
    * @tparam RowType spanner::Row<Types...> that corresponds to the desired
    * index definition.
@@ -257,7 +252,11 @@ class KeySet {
   ///@}
 
  private:
+  explicit KeySet(google::spanner::v1::KeySet key_set)
+      : proto_(std::move(key_set)) {}
+
   friend ::google::spanner::v1::KeySet internal::ToProto(KeySet keyset);
+  friend KeySet internal::FromProto(::google::spanner::v1::KeySet keyset);
 
   template <std::size_t N>
   static void Append(google::protobuf::ListValue* lv, std::array<Value, N> a) {
