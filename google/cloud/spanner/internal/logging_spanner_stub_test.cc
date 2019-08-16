@@ -158,6 +158,7 @@ TEST_F(LoggingSpannerStubTest, ExecuteStreamingSql) {
   auto status =
       stub.ExecuteStreamingSql(context, spanner_proto::ExecuteSqlRequest());
   HasLogLineWith("ExecuteStreamingSql");
+  HasLogLineWith(" null stream");
 }
 
 TEST_F(LoggingSpannerStubTest, ExecuteBatchDml) {
@@ -194,6 +195,7 @@ TEST_F(LoggingSpannerStubTest, StreamingRead) {
   grpc::ClientContext context;
   auto status = stub.StreamingRead(context, spanner_proto::ReadRequest());
   HasLogLineWith("StreamingRead");
+  HasLogLineWith(" null stream");
 }
 
 TEST_F(LoggingSpannerStubTest, BeginTransaction) {
