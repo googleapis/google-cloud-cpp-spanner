@@ -247,7 +247,7 @@ TEST_F(MutateAndReadIntegrationTest, MultipleInserts) {
                                    RowType(4, "test-fname-4", "test-lname-4")));
 }
 
-/// @test Verify that read-write transactions with multiple statements work.
+/// @test Verify that Client::Rollback works as expected.
 TEST_F(MutateAndReadIntegrationTest, TransactionRollback) {
   auto commit_result = client_->Commit(
       MakeReadWriteTransaction(),
