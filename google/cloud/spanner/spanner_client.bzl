@@ -55,6 +55,7 @@ spanner_client_hdrs = [
     "value.h",
     "version.h",
     "version_info.h",
+    "testing/mock_spanner_stub.h",
 ]
 
 spanner_client_srcs = [

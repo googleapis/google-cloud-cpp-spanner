@@ -147,7 +147,7 @@ add_library(spanner_client
             value.h
             version.cc
             version.h
-            version_info.h)
+            version_info.h testing/mock_spanner_stub.h)
 target_include_directories(spanner_client
                            PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
                                   $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
@@ -211,6 +211,7 @@ function (spanner_client_define_tests)
         internal/compiler_info_test.cc
         internal/connection_impl_test.cc
         internal/date_test.cc
+        internal/logging_spanner_stub_test.cc
         internal/merge_chunk_test.cc
         internal/partial_result_set_reader_test.cc
         internal/polling_loop_test.cc
