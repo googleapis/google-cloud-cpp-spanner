@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/client.h"
+#include "google/cloud/spanner/database.h"
 #include "google/cloud/spanner/database_admin_client.h"
 #include "google/cloud/spanner/mutations.h"
 #include "google/cloud/spanner/testing/random_database_name.h"
@@ -33,8 +34,8 @@ using ::testing::UnorderedElementsAre;
 // Use a ::testing::Environment to create the database once.
 class IntegrationTestEnvironment : public ::testing::Environment {
  public:
-  static std::string DatabaseName() {
-    return MakeDatabaseName(*project_id_, *instance_id_, *database_id_);
+  static Database DatabaseName() {
+    return Database(*project_id_, *instance_id_, *database_id_);
   }
 
   static std::string RandomTableName() {
@@ -59,8 +60,8 @@ class IntegrationTestEnvironment : public ::testing::Environment {
 
     std::cout << "Creating database and table " << std::flush;
     DatabaseAdminClient admin_client;
-    auto database_future = admin_client.CreateDatabase(
-        *project_id_, *instance_id_, *database_id_, {R"""(CREATE TABLE Singers (
+    auto database_future =
+        admin_client.CreateDatabase(DatabaseName(), {R"""(CREATE TABLE Singers (
                                 SingerId   INT64 NOT NULL,
                                 FirstName  STRING(1024),
                                 LastName   STRING(1024)
@@ -83,8 +84,7 @@ class IntegrationTestEnvironment : public ::testing::Environment {
 
   void TearDown() override {
     DatabaseAdminClient admin_client;
-    auto drop_status =
-        admin_client.DropDatabase(*project_id_, *instance_id_, *database_id_);
+    auto drop_status = admin_client.DropDatabase(DatabaseName());
     EXPECT_STATUS_OK(drop_status);
   }
 

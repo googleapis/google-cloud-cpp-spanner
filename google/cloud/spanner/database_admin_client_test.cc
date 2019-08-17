@@ -78,7 +78,8 @@ TEST(DatabaseAdminClientTest, CreateDatabaseSuccess) {
       }));
 
   DatabaseAdminClient client(mock);
-  auto fut = client.CreateDatabase("test-project", "test-instance", "test-db");
+  Database dbase("test-project", "test-instance", "test-db");
+  auto fut = client.CreateDatabase(dbase);
   EXPECT_EQ(std::future_status::ready, fut.wait_for(std::chrono::seconds(0)));
   auto db = fut.get();
   EXPECT_STATUS_OK(db);
@@ -99,7 +100,8 @@ TEST(DatabaseAdminClientTest, HandleCreateDatabaseError) {
           }));
 
   DatabaseAdminClient client(mock);
-  auto fut = client.CreateDatabase("test-project", "test-instance", "test-db");
+  Database dbase("test-project", "test-instance", "test-db");
+  auto fut = client.CreateDatabase(dbase);
   EXPECT_EQ(std::future_status::ready, fut.wait_for(std::chrono::seconds(0)));
   auto db = fut.get();
   EXPECT_EQ(StatusCode::kPermissionDenied, db.status().code());
@@ -131,9 +133,9 @@ TEST(DatabaseAdminClientTest, UpdateDatabaseSuccess) {
       }));
 
   DatabaseAdminClient client(mock);
+  Database dbase("test-project", "test-instance", "test-db");
   auto fut = client.UpdateDatabase(
-      "test-project", "test-instance", "test-db",
-      {"ALTER TABLE Albums ADD COLUMN MarketingBudget INT64"});
+      dbase, {"ALTER TABLE Albums ADD COLUMN MarketingBudget INT64"});
   EXPECT_EQ(std::future_status::ready, fut.wait_for(std::chrono::seconds(0)));
   auto metadata = fut.get();
   EXPECT_STATUS_OK(metadata);
@@ -154,9 +156,9 @@ TEST(DatabaseAdminClientTest, HandleUpdateDatabaseError) {
           }));
 
   DatabaseAdminClient client(mock);
+  Database dbase("test-project", "test-instance", "test-db");
   auto fut = client.UpdateDatabase(
-      "test-project", "test-instance", "test-db",
-      {"ALTER TABLE Albums ADD COLUMN MarketingBudget INT64"});
+      dbase, {"ALTER TABLE Albums ADD COLUMN MarketingBudget INT64"});
   EXPECT_EQ(std::future_status::ready, fut.wait_for(std::chrono::seconds(0)));
   auto db = fut.get();
   EXPECT_EQ(StatusCode::kPermissionDenied, db.status().code());
@@ -183,7 +185,9 @@ TEST(DatabaseAdminClientTest, HandleAwaitCreateDatabaseError) {
 
   DatabaseAdminClient client(mock);
   auto db =
-      client.CreateDatabase("test-project", "test-instance", "test-db").get();
+      client
+          .CreateDatabase(Database("test-project", "test-instance", "test-db"))
+          .get();
   EXPECT_EQ(StatusCode::kAborted, db.status().code());
 }
 
@@ -209,7 +213,7 @@ TEST(DatabaseAdminClientTest, HandleAwaitUpdateDatabaseError) {
   DatabaseAdminClient client(mock);
   auto db = client
                 .UpdateDatabase(
-                    "test-project", "test-instance", "test-db",
+                    Database("test-project", "test-instance", "test-db"),
                     {"ALTER TABLE Albums ADD COLUMN MarketingBudget INT64"})
                 .get();
   EXPECT_EQ(StatusCode::kAborted, db.status().code());

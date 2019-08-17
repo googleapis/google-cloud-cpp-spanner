@@ -47,16 +47,17 @@ void CreateDatabase(std::vector<std::string> const& argv) {
   [](std::string const& project_id, std::string const& instance_id,
      std::string const& database_id) {
     google::cloud::spanner::DatabaseAdminClient client;
+    google::cloud::spanner::Database database(project_id, instance_id,
+                                              database_id);
     future<StatusOr<google::spanner::admin::database::v1::Database>> future =
-        client.CreateDatabase(project_id, instance_id, database_id,
-                              {R"""(
+        client.CreateDatabase(database, {R"""(
                         CREATE TABLE Singers (
                                 SingerId   INT64 NOT NULL,
                                 FirstName  STRING(1024),
                                 LastName   STRING(1024),
                                 SingerInfo BYTES(MAX)
                         ) PRIMARY KEY (SingerId))""",
-                               R"""(CREATE TABLE Albums (
+                                         R"""(CREATE TABLE Albums (
                                 SingerId     INT64 NOT NULL,
                                 AlbumId      INT64 NOT NULL,
                                 AlbumTitle   STRING(MAX)
@@ -84,11 +85,12 @@ void AddColumn(std::vector<std::string> const& argv) {
   [](std::string const& project_id, std::string const& instance_id,
      std::string const& database_id) {
     google::cloud::spanner::DatabaseAdminClient client;
+    google::cloud::spanner::Database database(project_id, instance_id,
+                                              database_id);
     future<StatusOr<
         google::spanner::admin::database::v1::UpdateDatabaseDdlMetadata>>
         future = client.UpdateDatabase(
-            project_id, instance_id, database_id,
-            {"ALTER TABLE Albums ADD COLUMN MarketingBudget INT64"});
+            database, {"ALTER TABLE Albums ADD COLUMN MarketingBudget INT64"});
     StatusOr<google::spanner::admin::database::v1::UpdateDatabaseDdlMetadata>
         metadata = future.get();
     if (!metadata) {
@@ -123,8 +125,9 @@ void DropDatabase(std::vector<std::string> const& argv) {
   [](std::string const& project_id, std::string const& instance_id,
      std::string const& database_id) {
     google::cloud::spanner::DatabaseAdminClient client;
-    google::cloud::Status status =
-        client.DropDatabase(project_id, instance_id, database_id);
+    google::cloud::spanner::Database database(project_id, instance_id,
+                                              database_id);
+    google::cloud::Status status = client.DropDatabase(database);
     if (!status.ok()) {
       throw std::runtime_error(status.message());
     }

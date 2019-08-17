@@ -28,19 +28,22 @@ Database::Database(std::string project_id, std::string instance_id,
 
 std::string Database::FullName() const {
   // "projects/<project-id>/instances/<instance-id>/databases/<database-id>"
+  constexpr char kDatabases[] = "/databases/";
+  std::string parent = ParentName();
+  return parent + kDatabases + database_id();
+}
+
+std::string Database::ParentName() const {
+  // "projects/<project-id>/instances/<instance-id>"
   constexpr char kProjects[] = "projects/";
   constexpr char kInstances[] = "/instances/";
-  constexpr char kDatabases[] = "/databases/";
   std::string name;
-  name.reserve(sizeof(kProjects) + sizeof(kInstances) + sizeof(kDatabases) - 3 +
-               project_id().size() + instance_id().size() +
-               database_id().size());
+  name.reserve(sizeof(kProjects) + sizeof(kInstances) - 2 +
+               project_id().size() + instance_id().size());
   name += kProjects;
   name += project_id();
   name += kInstances;
   name += instance_id();
-  name += kDatabases;
-  name += database_id();
   return name;
 }
 
