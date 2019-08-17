@@ -26,7 +26,7 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
 /**
- * This class identifies a Spanner Database 
+ * This class identifies a Spanner Database
  *
  * A Spanner database is identified by its `project_id`, `instance_id`, and
  * `database_id`.
@@ -55,6 +55,10 @@ class Database {
   // Returns the fully qualified database name as a string of the form:
   // "projects/<project-id>/instances/<instance-id>/databases/<database-id>"
   std::string FullName() const;
+
+  // Returns the fully qualified name of the database's parent of the form:
+  // "projects/<project-id>/instances/<instance-id>"
+  std::string ParentName() const;
 
  private:
   std::string project_id_;
