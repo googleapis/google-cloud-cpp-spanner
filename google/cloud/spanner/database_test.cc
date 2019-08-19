@@ -25,9 +25,7 @@ namespace {
 
 TEST(Database, Basics) {
   Database db("p1", "i1", "d1");
-  EXPECT_EQ("p1", db.project_id());
-  EXPECT_EQ("i1", db.instance_id());
-  EXPECT_EQ("d1", db.database_id());
+  EXPECT_EQ("d1", db.DatabaseId());
   EXPECT_EQ("projects/p1/instances/i1/databases/d1", db.FullName());
   EXPECT_EQ("projects/p1/instances/i1", db.ParentName());
 
