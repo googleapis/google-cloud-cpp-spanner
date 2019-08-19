@@ -26,10 +26,18 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
 /**
- * This class identifies a Spanner Database
+ * This class identifies a Cloud Spanner Database
  *
- * A Spanner database is identified by its `project_id`, `instance_id`, and
- * `database_id`.
+ * A Cloud Spanner database is identified by its `project_id`, `instance_id`,
+ * and `database_id`.
+ *
+ * @note this class makes no effort to validate the components of the
+ *     database name. It is the application's responsibility to provide valid
+ *     project, instance, and database ids. Passing invalid values will not be
+ *     checked until the database name is used in a RPC to spanner.
+ *
+ * For more info about the `database_id` format, see
+ * https://cloud.google.com/spanner/docs/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.CreateDatabaseRequest
  */
 class Database {
  public:
