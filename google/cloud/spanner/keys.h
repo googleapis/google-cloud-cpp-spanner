@@ -331,26 +331,31 @@ class KeySetBuilder {
     return key_ranges_;
   }
 
-  /**
-   * Adds a key `spanner::Row` to the `KeySetBuilder`.
-   */
-  KeySetBuilder& Add(RowType key) {
+  /// Adds a key `spanner::Row` to the `KeySetBuilder`.
+  KeySetBuilder&& Add(RowType key) && {
+    keys_.push_back(std::move(key));
+    return std::move(*this);
+  }
+
+  /// Adds a key `spanner::Row` to the `KeySetBuilder`.
+  KeySetBuilder& Add(RowType key) & {
     keys_.push_back(std::move(key));
     return *this;
   }
 
-  /**
-   * Adds a `KeyRange` to the `KeySetBuilder`.
-   */
-  KeySetBuilder& Add(KeyRange<RowType> key_range) {
+  /// Adds a `KeyRange` to the `KeySetBuilder`.
+  KeySetBuilder&& Add(KeyRange<RowType> key_range) && {
+    key_ranges_.push_back(std::move(key_range));
+    return std::move(*this);
+  }
+
+  /// Adds a `KeyRange` to the `KeySetBuilder`.
+  KeySetBuilder& Add(KeyRange<RowType> key_range) & {
     key_ranges_.push_back(std::move(key_range));
     return *this;
   }
 
-  /**
-   * Builds a type-erased `KeySet` from the contents of the `KeySetBuilder`.
-   *
-   */
+  /// Builds a type-erased `KeySet` from the contents of the `KeySetBuilder`.
   KeySet Build() && {
     google::spanner::v1::KeySet ks;
     for (auto& key : keys_) {
@@ -368,6 +373,7 @@ class KeySetBuilder {
     return internal::FromProto(std::move(ks));
   }
 
+  /// Builds a type-erased `KeySet` from the contents of the `KeySetBuilder`.
   KeySet Build() const& {
     auto copy = *this;
     return std::move(copy).Build();
