@@ -58,7 +58,8 @@ void CreateDatabase(std::vector<std::string> const& argv) {
                                 LastName   STRING(1024),
                                 SingerInfo BYTES(MAX)
                         ) PRIMARY KEY (SingerId))""",
-                                         R"""(CREATE TABLE Albums (
+                                         R"""(
+                        CREATE TABLE Albums (
                                 SingerId     INT64 NOT NULL,
                                 AlbumId      INT64 NOT NULL,
                                 AlbumTitle   STRING(MAX)
@@ -150,8 +151,9 @@ void InsertData(std::vector<std::string> const& argv) {
 
   // TODO(#377) - cache the client across sample functions.
   namespace spanner = google::cloud::spanner;
-  spanner::Client client(spanner::MakeConnection(
-      spanner::MakeDatabaseName(argv[0], argv[1], argv[2])));
+
+  spanner::Database db(argv[0], argv[1], argv[2]);
+  spanner::Client client(spanner::MakeConnection(db));
 
   //! [START spanner_insert_data]
   namespace spanner = google::cloud::spanner;
@@ -194,8 +196,8 @@ void DmlStandardInsert(std::vector<std::string> const& argv) {
 
   // TODO(#377) - cache the client across sample functions.
   namespace spanner = google::cloud::spanner;
-  spanner::Client client(spanner::MakeConnection(
-      spanner::MakeDatabaseName(argv[0], argv[1], argv[2])));
+  spanner::Database db(argv[0], argv[1], argv[2]);
+  spanner::Client client(spanner::MakeConnection(db));
 
   //! [START spanner_dml_standard_insert]
   namespace spanner = google::cloud::spanner;
