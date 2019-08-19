@@ -153,14 +153,13 @@ void InsertData(std::vector<std::string> const& argv) {
   //! [START spanner_insert_data]
   namespace gcs = google::cloud::spanner;
   [](gcs::Client client) {
-    auto insert_singers =
-        gcs::InsertMutationBuilder("Singers",
-                                   {"SingerId", "FirstName", "LastName"})
-            .EmplaceRow(1, "Marc", "Richards")
-            .EmplaceRow(2, "Catalina", "Smith")
-            .EmplaceRow(3, "Alice", "Trentor")
-            .EmplaceRow(4, "Lea", "Martin")
-            .EmplaceRow(5, "David", "Lomond");
+    auto insert_singers = gcs::InsertMutationBuilder(
+                              "Singers", {"SingerId", "FirstName", "LastName"})
+                              .EmplaceRow(1, "Marc", "Richards")
+                              .EmplaceRow(2, "Catalina", "Smith")
+                              .EmplaceRow(3, "Alice", "Trentor")
+                              .EmplaceRow(4, "Lea", "Martin")
+                              .EmplaceRow(5, "David", "Lomond");
 
     auto insert_albums = gcs::InsertMutationBuilder(
                              "Albums", {"SingerId", "AlbumId", "AlbumTitle"})
