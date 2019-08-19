@@ -29,8 +29,8 @@ Database::Database(std::string const& project_id,
 std::string Database::FullName() const { return full_name_; }
 
 std::string Database::DatabaseId() const {
-  auto pos = full_name_.rfind('/');
-  return full_name_.substr(pos + 1);
+  auto pos = full_name_.rfind("/databases/");
+  return full_name_.substr(pos + sizeof("/databases/") - 1);
 }
 
 std::string Database::ParentName() const {
