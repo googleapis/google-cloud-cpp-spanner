@@ -171,8 +171,9 @@ void InsertData(std::vector<std::string> const& argv) {
                              .EmplaceRow(2, 3, "Terrified")
                              .Build();
 
-    auto commit_result = client.Commit(spanner::MakeReadWriteTransaction(),
-                                       {insert_singers, insert_albums});
+    auto commit_result =
+        client.Commit(spanner::MakeReadWriteTransaction(),
+                      {std::move(insert_singers), std::move(insert_albums)});
     if (!commit_result) {
       throw std::runtime_error(commit_result.status().message());
     }
