@@ -16,7 +16,6 @@ Checks: >
   -google-readability-namespace-comments,
   -google-runtime-references,
   -misc-non-private-member-variables-in-classes,
-  -modernize-avoid-c-arrays,
   -readability-named-parameter,
   -readability-braces-around-statements,
   -readability-magic-numbers
