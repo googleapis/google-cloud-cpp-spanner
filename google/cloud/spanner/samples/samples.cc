@@ -151,8 +151,6 @@ void DmlStandardInsert(std::vector<std::string> const& argv) {
       gcs::MakeConnection(gcs::MakeDatabaseName(argv[0], argv[1], argv[2])));
 
   //! [START spanner_dml_standard_insert]
-  using google::cloud::future;
-  using google::cloud::StatusOr;
   namespace gcs = google::cloud::spanner;
   [](gcs::Client client) {
     auto commit_result = gcs::RunTransaction(
