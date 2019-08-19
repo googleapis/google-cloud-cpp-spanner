@@ -41,9 +41,11 @@ class IntegrationTestEnvironment : public ::testing::Environment {
   void SetUp() override {
     auto project_id =
         google::cloud::internal::GetEnv("GOOGLE_CLOUD_PROJECT").value();
+    ASSERT_FALSE(project_id.empty());
     auto instance_id =
         google::cloud::internal::GetEnv("GOOGLE_CLOUD_CPP_SPANNER_INSTANCE")
             .value();
+    ASSERT_FALSE(instance_id.empty());
 
     generator_ = new google::cloud::internal::DefaultPRNG(
         google::cloud::internal::MakeDefaultPRNG());

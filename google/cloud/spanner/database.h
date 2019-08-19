@@ -33,7 +33,7 @@ inline namespace SPANNER_CLIENT_NS {
  */
 class Database {
  public:
-  /// Constructs a Spanner Database identified by the given IDs.
+  /// Constructs a Database object identified by the given IDs.
   Database(std::string const& project_id, std::string const& instance_id,
            std::string const& database_id);
 
