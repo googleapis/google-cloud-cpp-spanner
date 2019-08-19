@@ -74,7 +74,7 @@ inline namespace SPANNER_CLIENT_NS {
  * using ::google::cloud::StatusOr;
  *
  * auto db = cs::Database("my_project", "my_instance", "my_db_id"));
- * auto conn = cs::MakeConnection(std::move(db));
+ * auto conn = cs::MakeConnection(db);
  * auto client = cs::Client(conn);
  *
  * StatusOr<cs::ResultSet> result = client.Read(...);
@@ -384,7 +384,7 @@ class Client {
  * @param endpoint (optional) the Spanner service to connect to.
  */
 std::shared_ptr<Connection> MakeConnection(
-    Database db,
+    Database const& db,
     std::shared_ptr<grpc::ChannelCredentials> const& creds =
         grpc::GoogleDefaultCredentials(),
     std::string const& endpoint = "spanner.googleapis.com");

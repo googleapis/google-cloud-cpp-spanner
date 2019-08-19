@@ -34,34 +34,26 @@ using ::testing::UnorderedElementsAre;
 // Use a ::testing::Environment to create the database once.
 class IntegrationTestEnvironment : public ::testing::Environment {
  public:
-  static Database DatabaseName() {
-    return Database(*project_id_, *instance_id_, *database_id_);
-  }
-
-  static std::string RandomTableName() {
-    return google::cloud::internal::Sample(*generator_, 16,
-                                           "abcdefghijklmnopqrstuvwxyz");
-  }
+  static Database const& GetDatabase() { return *db_; }
 
  protected:
   void SetUp() override {
-    project_id_ = new std::string(
-        google::cloud::internal::GetEnv("GOOGLE_CLOUD_PROJECT").value_or(""));
-    ASSERT_FALSE(project_id_->empty());
-    instance_id_ = new std::string(
+    auto project_id =
+        google::cloud::internal::GetEnv("GOOGLE_CLOUD_PROJECT").value();
+    auto instance_id =
         google::cloud::internal::GetEnv("GOOGLE_CLOUD_CPP_SPANNER_INSTANCE")
-            .value_or(""));
-    ASSERT_FALSE(instance_id_->empty());
+            .value();
 
     generator_ = new google::cloud::internal::DefaultPRNG(
         google::cloud::internal::MakeDefaultPRNG());
-    database_id_ =
-        new std::string(spanner_testing::RandomDatabaseName(*generator_));
+    auto database_id = spanner_testing::RandomDatabaseName(*generator_);
+
+    db_ = new Database(project_id, instance_id, database_id);
 
     std::cout << "Creating database and table " << std::flush;
     DatabaseAdminClient admin_client;
     auto database_future =
-        admin_client.CreateDatabase(DatabaseName(), {R"""(CREATE TABLE Singers (
+        admin_client.CreateDatabase(*db_, {R"""(CREATE TABLE Singers (
                                 SingerId   INT64 NOT NULL,
                                 FirstName  STRING(1024),
                                 LastName   STRING(1024)
@@ -84,27 +76,23 @@ class IntegrationTestEnvironment : public ::testing::Environment {
 
   void TearDown() override {
     DatabaseAdminClient admin_client;
-    auto drop_status = admin_client.DropDatabase(DatabaseName());
+    auto drop_status = admin_client.DropDatabase(*db_);
     EXPECT_STATUS_OK(drop_status);
   }
 
  private:
-  static std::string* project_id_;
-  static std::string* instance_id_;
-  static std::string* database_id_;
+  static Database* db_;
   static google::cloud::internal::DefaultPRNG* generator_;
 };
 
-std::string* IntegrationTestEnvironment::project_id_;
-std::string* IntegrationTestEnvironment::instance_id_;
-std::string* IntegrationTestEnvironment::database_id_;
+Database* IntegrationTestEnvironment::db_;
 google::cloud::internal::DefaultPRNG* IntegrationTestEnvironment::generator_;
 
 class ClientIntegrationTest : public ::testing::Test {
  public:
   static void SetUpTestSuite() {
     client_ = google::cloud::internal::make_unique<Client>(
-        MakeConnection(IntegrationTestEnvironment::DatabaseName()));
+        MakeConnection(IntegrationTestEnvironment::GetDatabase()));
   }
 
   void SetUp() override {

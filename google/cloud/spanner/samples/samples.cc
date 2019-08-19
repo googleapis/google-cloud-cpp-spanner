@@ -67,7 +67,7 @@ void CreateDatabase(std::vector<std::string> const& argv) {
     if (!db) {
       throw std::runtime_error(db.status().message());
     }
-    std::cout << "Created database [" << database_id << "]\n";
+    std::cout << "Created database [" << database << "]\n";
   }
   //! [create-database] [END spanner_create_database]
   (argv[0], argv[1], argv[2]);
@@ -131,7 +131,7 @@ void DropDatabase(std::vector<std::string> const& argv) {
     if (!status.ok()) {
       throw std::runtime_error(status.message());
     }
-    std::cout << "Database " << database_id << " successfully dropped\n";
+    std::cout << "Database " << database << " successfully dropped\n";
   }
   //! [drop-database] [END spanner_drop_database]
   (argv[0], argv[1], argv[2]);
