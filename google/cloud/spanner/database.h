@@ -34,8 +34,8 @@ inline namespace SPANNER_CLIENT_NS {
 class Database {
  public:
   /// Constructs a Spanner Database identified by the given IDs.
-  Database(std::string project_id, std::string instance_id,
-           std::string database_id);
+  Database(std::string const& project_id, std::string const& instance_id,
+           std::string const& database_id);
 
   /// @name Copy and move
   //@{
@@ -45,35 +45,33 @@ class Database {
   Database& operator=(Database&&) = default;
   //@}
 
-  /// @name Accessors
-  //@{
-  std::string const& project_id() const { return project_id_; }
-  std::string const& instance_id() const { return instance_id_; }
-  std::string const& database_id() const { return database_id_; }
-  //@}
+  /// Returns the database ID.
+  std::string DatabaseId() const;
 
-  // Returns the fully qualified database name as a string of the form:
-  // "projects/<project-id>/instances/<instance-id>/databases/<database-id>"
+  /**
+   * Returns the fully qualified database name as a string of the form:
+   * "projects/<project-id>/instances/<instance-id>/databases/<database-id>"
+   */
   std::string FullName() const;
 
-  // Returns the fully qualified name of the database's parent of the form:
-  // "projects/<project-id>/instances/<instance-id>"
+  /**
+   * Returns the fully qualified name of the database's parent of the form:
+   * "projects/<project-id>/instances/<instance-id>"
+   */
   std::string ParentName() const;
 
+  /// @name Equality operators
+  //@{
+  friend bool operator==(Database const& a, Database const& b);
+  friend bool operator!=(Database const& a, Database const& b);
+  //@}
+
+  /// Output the `FullName()` format.
+  friend std::ostream& operator<<(std::ostream& os, Database const& dn);
+
  private:
-  std::string project_id_;
-  std::string instance_id_;
-  std::string database_id_;
+  std::string full_name_;
 };
-
-/// @name Equality operators
-//@{
-bool operator==(Database const& a, Database const& b);
-bool operator!=(Database const& a, Database const& b);
-//@}
-
-/// Output the `FullName()` format.
-std::ostream& operator<<(std::ostream& os, Database const& dn);
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner

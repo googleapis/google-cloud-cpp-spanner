@@ -33,7 +33,7 @@ future<StatusOr<gcsa::Database>> DatabaseAdminClient::CreateDatabase(
   grpc::ClientContext context;
   gcsa::CreateDatabaseRequest request;
   request.set_parent(db.ParentName());
-  request.set_create_statement("CREATE DATABASE `" + db.database_id() + "`");
+  request.set_create_statement("CREATE DATABASE `" + db.DatabaseId() + "`");
   for (auto const& s : extra_statements) {
     *request.add_extra_statements() = s;
   }

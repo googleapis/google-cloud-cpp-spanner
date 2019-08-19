@@ -20,42 +20,32 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
-Database::Database(std::string project_id, std::string instance_id,
-                   std::string database_id)
-    : project_id_(std::move(project_id)),
-      instance_id_(std::move(instance_id)),
-      database_id_(std::move(database_id)) {}
+Database::Database(std::string const& project_id,
+                   std::string const& instance_id,
+                   std::string const& database_id)
+    : full_name_("projects/" + project_id + "/instances/" + instance_id +
+                 "/databases/" + database_id) {}
 
-std::string Database::FullName() const {
-  // "projects/<project-id>/instances/<instance-id>/databases/<database-id>"
-  constexpr char kDatabases[] = "/databases/";
-  std::string parent = ParentName();
-  return parent + kDatabases + database_id();
+std::string Database::FullName() const { return full_name_; }
+
+std::string Database::DatabaseId() const {
+  auto pos = full_name_.rfind('/');
+  return full_name_.substr(pos + 1);
 }
 
 std::string Database::ParentName() const {
-  // "projects/<project-id>/instances/<instance-id>"
-  constexpr char kProjects[] = "projects/";
-  constexpr char kInstances[] = "/instances/";
-  std::string name;
-  name.reserve(sizeof(kProjects) + sizeof(kInstances) - 2 +
-               project_id().size() + instance_id().size());
-  name += kProjects;
-  name += project_id();
-  name += kInstances;
-  name += instance_id();
-  return name;
+  auto pos = full_name_.rfind("/databases/");
+  return full_name_.substr(0, pos);
 }
 
 bool operator==(Database const& a, Database const& b) {
-  return std::tie(a.project_id(), a.instance_id(), a.database_id()) ==
-         std::tie(b.project_id(), b.instance_id(), b.database_id());
+  return a.full_name_ == b.full_name_;
 }
 
 bool operator!=(Database const& a, Database const& b) { return !(a == b); }
 
 std::ostream& operator<<(std::ostream& os, Database const& dn) {
-  return os << dn.FullName();
+  return os << dn.full_name_;
 }
 
 }  // namespace SPANNER_CLIENT_NS
