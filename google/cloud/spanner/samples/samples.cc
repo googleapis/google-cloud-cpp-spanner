@@ -152,7 +152,8 @@ void InsertData(google::cloud::spanner::Client client) {
                             .EmplaceRow(2, "Catalina", "Smith")
                             .EmplaceRow(3, "Alice", "Trentor")
                             .EmplaceRow(4, "Lea", "Martin")
-                            .EmplaceRow(5, "David", "Lomond");
+                            .EmplaceRow(5, "David", "Lomond")
+                            .Build();
 
   auto insert_albums = spanner::InsertMutationBuilder(
                            "Albums", {"SingerId", "AlbumId", "AlbumTitle"})
@@ -160,11 +161,12 @@ void InsertData(google::cloud::spanner::Client client) {
                            .EmplaceRow(1, 2, "Go, Go, Go")
                            .EmplaceRow(2, 1, "Green")
                            .EmplaceRow(2, 2, "Forever Hold Your Peace")
-                           .EmplaceRow(2, 3, "Terrified");
+                           .EmplaceRow(2, 3, "Terrified")
+                           .Build();
 
-  auto commit_result = client.Commit(
-      spanner::MakeReadWriteTransaction(),
-      {std::move(insert_singers).Build(), std::move(insert_albums).Build()});
+  auto commit_result =
+      client.Commit(spanner::MakeReadWriteTransaction(),
+                    {std::move(insert_singers), std::move(insert_albums)});
   if (!commit_result) {
     throw std::runtime_error(commit_result.status().message());
   }
@@ -186,27 +188,18 @@ void InsertDataCommand(std::vector<std::string> const& argv) {
 //! [START spanner_dml_standard_insert]
 namespace spanner = google::cloud::spanner;
 void DmlStandardInsert(google::cloud::spanner::Client client) {
-  auto insert_singers = spanner::InsertMutationBuilder(
-                            "Singers", {"SingerId", "FirstName", "LastName"})
-                            .EmplaceRow(1, "Marc", "Richards")
-                            .EmplaceRow(2, "Catalina", "Smith")
-                            .EmplaceRow(3, "Alice", "Trentor")
-                            .EmplaceRow(4, "Lea", "Martin")
-                            .EmplaceRow(5, "David", "Lomond")
-                            .Build();
-
-  auto insert_albums = spanner::InsertMutationBuilder(
-                           "Albums", {"SingerId", "AlbumId", "AlbumTitle"})
-                           .EmplaceRow(1, 1, "Total Junk")
-                           .EmplaceRow(1, 2, "Go, Go, Go")
-                           .EmplaceRow(2, 1, "Green")
-                           .EmplaceRow(2, 2, "Forever Hold Your Peace")
-                           .EmplaceRow(2, 3, "Terrified")
-                           .Build();
-
-  auto commit_result =
-      client.Commit(spanner::MakeReadWriteTransaction(),
-                    {std::move(insert_singers), std::move(insert_albums)});
+  auto commit_result = spanner::RunTransaction(
+      std::move(client), spanner::Transaction::ReadWriteOptions{},
+      [](spanner::Client client, spanner::Transaction txn) {
+        client.ExecuteSql(
+            std::move(txn),
+            spanner::SqlStatement(
+                "INSERT INTO Singers (SingerId, FirstName, LastName)"
+                "  VALUES (10, 'Virginia', 'Watson')",
+                {}));
+        return spanner::TransactionAction{spanner::TransactionAction::kCommit,
+                                          {}};
+      });
   if (!commit_result) {
     throw std::runtime_error(commit_result.status().message());
   }
