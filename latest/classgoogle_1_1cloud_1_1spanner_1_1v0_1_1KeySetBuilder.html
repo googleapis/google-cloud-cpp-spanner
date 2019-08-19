@@ -84,6 +84,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abec825b9323a317cf615d0af1e0cab5f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#abec825b9323a317cf615d0af1e0cab5f">KeySetBuilder</a> ()=default</td></tr>
 <tr class="memdesc:abec825b9323a317cf615d0af1e0cab5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an empty <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>.  <a href="#abec825b9323a317cf615d0af1e0cab5f">More...</a><br /></td></tr>
 <tr class="separator:abec825b9323a317cf615d0af1e0cab5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2858dc5b1f1b3526504e3c9d2230591"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#ab2858dc5b1f1b3526504e3c9d2230591">KeySetBuilder</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a> const &amp;key_range)=default</td></tr>
+<tr class="memdesc:ab2858dc5b1f1b3526504e3c9d2230591"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy and move constructors and assignment operators.  <a href="#ab2858dc5b1f1b3526504e3c9d2230591">More...</a><br /></td></tr>
+<tr class="separator:ab2858dc5b1f1b3526504e3c9d2230591"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3530d8b64721f28009edff9fa10b2adc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#a3530d8b64721f28009edff9fa10b2adc">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a> const &amp;rhs)=default</td></tr>
+<tr class="separator:a3530d8b64721f28009edff9fa10b2adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a225db91b26d2d552c4849539ffcdebee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#a225db91b26d2d552c4849539ffcdebee">KeySetBuilder</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a> &amp;&amp;key_range)=default</td></tr>
+<tr class="separator:a225db91b26d2d552c4849539ffcdebee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ca0e5655653e4a26c7fda9d10216eea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#a2ca0e5655653e4a26c7fda9d10216eea">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a> &amp;&amp;rhs)=default</td></tr>
+<tr class="separator:a2ca0e5655653e4a26c7fda9d10216eea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeda199515c598c613bfd7909d709d2fa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#aeda199515c598c613bfd7909d709d2fa">KeySetBuilder</a> (RowType key)</td></tr>
 <tr class="memdesc:aeda199515c598c613bfd7909d709d2fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code> with a single key <code>spanner::Row</code>.  <a href="#aeda199515c598c613bfd7909d709d2fa">More...</a><br /></td></tr>
 <tr class="separator:aeda199515c598c613bfd7909d709d2fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -96,15 +105,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8ea61a4f1cdd3c0a024dd1b537953046"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html">KeyRange</a>&lt; RowType &gt; &gt; const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#a8ea61a4f1cdd3c0a024dd1b537953046">key_ranges</a> () const</td></tr>
 <tr class="memdesc:a8ea61a4f1cdd3c0a024dd1b537953046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html" title="The KeyRange class is a regular type that represents the pair of Bounds necessary to uniquely identif...">KeyRange</a></code>s in the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>.  <a href="#a8ea61a4f1cdd3c0a024dd1b537953046">More...</a><br /></td></tr>
 <tr class="separator:a8ea61a4f1cdd3c0a024dd1b537953046"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a070339ade4b75104b4793d1a4c31bce6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#a070339ade4b75104b4793d1a4c31bce6">Add</a> (RowType key)</td></tr>
-<tr class="memdesc:a070339ade4b75104b4793d1a4c31bce6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a key <code>spanner::Row</code> to the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>.  <a href="#a070339ade4b75104b4793d1a4c31bce6">More...</a><br /></td></tr>
-<tr class="separator:a070339ade4b75104b4793d1a4c31bce6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a797a484a6f11bb72b573eb2e0fe19a61"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#a797a484a6f11bb72b573eb2e0fe19a61">Add</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html">KeyRange</a>&lt; RowType &gt; key_range)</td></tr>
-<tr class="memdesc:a797a484a6f11bb72b573eb2e0fe19a61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html" title="The KeyRange class is a regular type that represents the pair of Bounds necessary to uniquely identif...">KeyRange</a></code> to the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>.  <a href="#a797a484a6f11bb72b573eb2e0fe19a61">More...</a><br /></td></tr>
-<tr class="separator:a797a484a6f11bb72b573eb2e0fe19a61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7333504953a6c455d8bfadcd4f827108"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#a7333504953a6c455d8bfadcd4f827108">Build</a> () const</td></tr>
-<tr class="memdesc:a7333504953a6c455d8bfadcd4f827108"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a type-erased <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents the collection of spanner::Rows necessary to uniqu...">KeySet</a></code> from the contents of the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>.  <a href="#a7333504953a6c455d8bfadcd4f827108">More...</a><br /></td></tr>
-<tr class="separator:a7333504953a6c455d8bfadcd4f827108"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa05db4461f7a90927738668f0dbbf1d7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#aa05db4461f7a90927738668f0dbbf1d7">Add</a> (RowType key) &amp;&amp;</td></tr>
+<tr class="memdesc:aa05db4461f7a90927738668f0dbbf1d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a key <code>spanner::Row</code> to the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>.  <a href="#aa05db4461f7a90927738668f0dbbf1d7">More...</a><br /></td></tr>
+<tr class="separator:aa05db4461f7a90927738668f0dbbf1d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae62155d0f8f7f99c0e559890466cfd4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#ae62155d0f8f7f99c0e559890466cfd4c">Add</a> (RowType key) &amp;</td></tr>
+<tr class="memdesc:ae62155d0f8f7f99c0e559890466cfd4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a key <code>spanner::Row</code> to the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>.  <a href="#ae62155d0f8f7f99c0e559890466cfd4c">More...</a><br /></td></tr>
+<tr class="separator:ae62155d0f8f7f99c0e559890466cfd4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7239b8347de422a13b1813e967167660"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#a7239b8347de422a13b1813e967167660">Add</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html">KeyRange</a>&lt; RowType &gt; key_range) &amp;&amp;</td></tr>
+<tr class="memdesc:a7239b8347de422a13b1813e967167660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html" title="The KeyRange class is a regular type that represents the pair of Bounds necessary to uniquely identif...">KeyRange</a></code> to the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>.  <a href="#a7239b8347de422a13b1813e967167660">More...</a><br /></td></tr>
+<tr class="separator:a7239b8347de422a13b1813e967167660"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ff3c564ca05beb93bd9be7ecb776233"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#a7ff3c564ca05beb93bd9be7ecb776233">Add</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html">KeyRange</a>&lt; RowType &gt; key_range) &amp;</td></tr>
+<tr class="memdesc:a7ff3c564ca05beb93bd9be7ecb776233"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html" title="The KeyRange class is a regular type that represents the pair of Bounds necessary to uniquely identif...">KeyRange</a></code> to the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>.  <a href="#a7ff3c564ca05beb93bd9be7ecb776233">More...</a><br /></td></tr>
+<tr class="separator:a7ff3c564ca05beb93bd9be7ecb776233"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab758c1d3865289be65bdb5458caf519c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#ab758c1d3865289be65bdb5458caf519c">Build</a> () &amp;&amp;</td></tr>
+<tr class="memdesc:ab758c1d3865289be65bdb5458caf519c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a type-erased <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents the collection of spanner::Rows necessary to uniqu...">KeySet</a></code> from the contents of the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>.  <a href="#ab758c1d3865289be65bdb5458caf519c">More...</a><br /></td></tr>
+<tr class="separator:ab758c1d3865289be65bdb5458caf519c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a3df2503374bc941bfcc9f71d03494d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#a5a3df2503374bc941bfcc9f71d03494d">Build</a> () const &amp;</td></tr>
+<tr class="memdesc:a5a3df2503374bc941bfcc9f71d03494d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a type-erased <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents the collection of spanner::Rows necessary to uniqu...">KeySet</a></code> from the contents of the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>.  <a href="#a5a3df2503374bc941bfcc9f71d03494d">More...</a><br /></td></tr>
+<tr class="separator:a5a3df2503374bc941bfcc9f71d03494d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename RowType&gt;<br />
@@ -120,16 +138,16 @@ class google::cloud::spanner::v0::KeySetBuilder&lt; RowType &gt;</h3>
   </dd>
 </dl>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
-<p>// TODO(#328): use snippet for example code </p><div class="fragment"><div class="line"><span class="comment">// EmployeeTable has a primary key on EmployeeID.</span></div><div class="line"><span class="keyword">using</span> EmployeeTablePrimaryKey = Row&lt;std::int64_t&gt;;</div><div class="line"></div><div class="line"><span class="comment">// A KeySet where EmployeeID &gt;= 1 and EmployeeID &lt;= 10.</span></div><div class="line"><span class="keyword">auto</span> first_ten_employees =</div><div class="line">  KeySetBuilder&lt;EmployeeTablePrimaryKey&gt;()</div><div class="line">      .Add(<a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af852ea622262002e999d6a88b2a5145a">MakeKeyRange</a>(<a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(1), <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(10)))</div><div class="line">      .Build();</div><div class="line"></div><div class="line"><span class="comment">// EmployeeTable also has an index on LastName, FirstName.</span></div><div class="line"><span class="keyword">using</span> EmployeeNameKey = Row&lt;std::string, std::string&gt;;</div><div class="line"></div><div class="line"><span class="comment">// A KeySet where LastName, FirstName is (&quot;Smith&quot;, &quot;John&quot;).</span></div><div class="line"><span class="keyword">auto</span> all_employees_named_john_smith =</div><div class="line">  KeySetBuilder&lt;EmployeeNameKey&gt;()</div><div class="line">      .Add(<a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(<span class="stringliteral">&quot;Smith&quot;</span>, <span class="stringliteral">&quot;John&quot;</span>)))</div><div class="line">      .<a class="code" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#a7333504953a6c455d8bfadcd4f827108">Build</a>();</div></div><!-- fragment --> 
+<p>// TODO(#328): use snippet for example code </p><div class="fragment"><div class="line"><span class="comment">// EmployeeTable has a primary key on EmployeeID.</span></div><div class="line"><span class="keyword">using</span> EmployeeTablePrimaryKey = Row&lt;std::int64_t&gt;;</div><div class="line"></div><div class="line"><span class="comment">// A KeySet where EmployeeID &gt;= 1 and EmployeeID &lt;= 10.</span></div><div class="line"><span class="keyword">auto</span> first_ten_employees =</div><div class="line">  KeySetBuilder&lt;EmployeeTablePrimaryKey&gt;()</div><div class="line">      .Add(<a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af852ea622262002e999d6a88b2a5145a">MakeKeyRange</a>(<a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(1), <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(10)))</div><div class="line">      .Build();</div><div class="line"></div><div class="line"><span class="comment">// EmployeeTable also has an index on LastName, FirstName.</span></div><div class="line"><span class="keyword">using</span> EmployeeNameKey = Row&lt;std::string, std::string&gt;;</div><div class="line"></div><div class="line"><span class="comment">// A KeySet where LastName, FirstName is (&quot;Smith&quot;, &quot;John&quot;).</span></div><div class="line"><span class="keyword">auto</span> all_employees_named_john_smith =</div><div class="line">  KeySetBuilder&lt;EmployeeNameKey&gt;()</div><div class="line">      .Add(<a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(<span class="stringliteral">&quot;Smith&quot;</span>, <span class="stringliteral">&quot;John&quot;</span>)))</div><div class="line">      .<a class="code" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#ab758c1d3865289be65bdb5458caf519c">Build</a>();</div></div><!-- fragment --> 
 <p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00034">34</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abec825b9323a317cf615d0af1e0cab5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abec825b9323a317cf615d0af1e0cab5f">&#9670;&nbsp;</a></span>KeySetBuilder() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abec825b9323a317cf615d0af1e0cab5f">&#9670;&nbsp;</a></span>KeySetBuilder() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename RowType&gt; </div>
+template&lt;typename RowType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -152,13 +170,71 @@ template&lt;typename RowType&gt; </div>
 
 </div>
 </div>
-<a id="aeda199515c598c613bfd7909d709d2fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeda199515c598c613bfd7909d709d2fa">&#9670;&nbsp;</a></span>KeySetBuilder() <span class="overload">[2/3]</span></h2>
+<a id="ab2858dc5b1f1b3526504e3c9d2230591"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2858dc5b1f1b3526504e3c9d2230591">&#9670;&nbsp;</a></span>KeySetBuilder() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename RowType&gt; </div>
+template&lt;typename RowType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">google::cloud::spanner::v0::KeySetBuilder</a>&lt; RowType &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a>&lt; RowType &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>key_range</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copy and move constructors and assignment operators. </p>
+
+</div>
+</div>
+<a id="a225db91b26d2d552c4849539ffcdebee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a225db91b26d2d552c4849539ffcdebee">&#9670;&nbsp;</a></span>KeySetBuilder() <span class="overload">[3/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RowType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">google::cloud::spanner::v0::KeySetBuilder</a>&lt; RowType &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a>&lt; RowType &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>key_range</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeda199515c598c613bfd7909d709d2fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeda199515c598c613bfd7909d709d2fa">&#9670;&nbsp;</a></span>KeySetBuilder() <span class="overload">[4/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RowType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -180,17 +256,17 @@ template&lt;typename RowType&gt; </div>
 
 <p>Constructs a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code> with a single key <code>spanner::Row</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00322">322</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00311">311</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
 <a id="abb03b8a790d781c5fdeeb8ef28b22ebd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb03b8a790d781c5fdeeb8ef28b22ebd">&#9670;&nbsp;</a></span>KeySetBuilder() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abb03b8a790d781c5fdeeb8ef28b22ebd">&#9670;&nbsp;</a></span>KeySetBuilder() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename RowType&gt; </div>
+template&lt;typename RowType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -212,28 +288,28 @@ template&lt;typename RowType&gt; </div>
 
 <p>Constructs a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code> with a single <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html" title="The KeyRange class is a regular type that represents the pair of Bounds necessary to uniquely identif...">KeyRange</a></code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00327">327</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00316">316</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a070339ade4b75104b4793d1a4c31bce6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a070339ade4b75104b4793d1a4c31bce6">&#9670;&nbsp;</a></span>Add() <span class="overload">[1/2]</span></h2>
+<a id="aa05db4461f7a90927738668f0dbbf1d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa05db4461f7a90927738668f0dbbf1d7">&#9670;&nbsp;</a></span>Add() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename RowType&gt; </div>
+template&lt;typename RowType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a>&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">google::cloud::spanner::v0::KeySetBuilder</a>&lt; RowType &gt;::Add </td>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a>&amp;&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">google::cloud::spanner::v0::KeySetBuilder</a>&lt; RowType &gt;::Add </td>
           <td>(</td>
           <td class="paramtype">RowType&#160;</td>
           <td class="paramname"><em>key</em></td><td>)</td>
-          <td></td>
+          <td> &amp;&amp;</td>
         </tr>
       </table>
   </td>
@@ -245,17 +321,17 @@ template&lt;typename RowType&gt; </div>
 
 <p>Adds a key <code>spanner::Row</code> to the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00348">348</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00335">335</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
-<a id="a797a484a6f11bb72b573eb2e0fe19a61"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a797a484a6f11bb72b573eb2e0fe19a61">&#9670;&nbsp;</a></span>Add() <span class="overload">[2/2]</span></h2>
+<a id="ae62155d0f8f7f99c0e559890466cfd4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae62155d0f8f7f99c0e559890466cfd4c">&#9670;&nbsp;</a></span>Add() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename RowType&gt; </div>
+template&lt;typename RowType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -263,9 +339,41 @@ template&lt;typename RowType&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a>&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">google::cloud::spanner::v0::KeySetBuilder</a>&lt; RowType &gt;::Add </td>
           <td>(</td>
+          <td class="paramtype">RowType&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td> &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds a key <code>spanner::Row</code> to the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00341">341</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+
+</div>
+</div>
+<a id="a7239b8347de422a13b1813e967167660"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7239b8347de422a13b1813e967167660">&#9670;&nbsp;</a></span>Add() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RowType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a>&amp;&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">google::cloud::spanner::v0::KeySetBuilder</a>&lt; RowType &gt;::Add </td>
+          <td>(</td>
           <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html">KeyRange</a>&lt; RowType &gt;&#160;</td>
           <td class="paramname"><em>key_range</em></td><td>)</td>
-          <td></td>
+          <td> &amp;&amp;</td>
         </tr>
       </table>
   </td>
@@ -277,17 +385,49 @@ template&lt;typename RowType&gt; </div>
 
 <p>Adds a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html" title="The KeyRange class is a regular type that represents the pair of Bounds necessary to uniquely identif...">KeyRange</a></code> to the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00356">356</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00347">347</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
-<a id="a7333504953a6c455d8bfadcd4f827108"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7333504953a6c455d8bfadcd4f827108">&#9670;&nbsp;</a></span>Build()</h2>
+<a id="a7ff3c564ca05beb93bd9be7ecb776233"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ff3c564ca05beb93bd9be7ecb776233">&#9670;&nbsp;</a></span>Add() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename RowType&gt; </div>
+template&lt;typename RowType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a>&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">google::cloud::spanner::v0::KeySetBuilder</a>&lt; RowType &gt;::Add </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html">KeyRange</a>&lt; RowType &gt;&#160;</td>
+          <td class="paramname"><em>key_range</em></td><td>)</td>
+          <td> &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html" title="The KeyRange class is a regular type that represents the pair of Bounds necessary to uniquely identif...">KeyRange</a></code> to the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00353">353</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+
+</div>
+</div>
+<a id="ab758c1d3865289be65bdb5458caf519c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab758c1d3865289be65bdb5458caf519c">&#9670;&nbsp;</a></span>Build() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RowType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -296,7 +436,7 @@ template&lt;typename RowType&gt; </div>
           <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">google::cloud::spanner::v0::KeySetBuilder</a>&lt; RowType &gt;::Build </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td> &amp;&amp;</td>
         </tr>
       </table>
   </td>
@@ -308,7 +448,38 @@ template&lt;typename RowType&gt; </div>
 
 <p>Builds a type-erased <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents the collection of spanner::Rows necessary to uniqu...">KeySet</a></code> from the contents of the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00365">365</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00359">359</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+
+</div>
+</div>
+<a id="a5a3df2503374bc941bfcc9f71d03494d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a3df2503374bc941bfcc9f71d03494d">&#9670;&nbsp;</a></span>Build() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RowType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">google::cloud::spanner::v0::KeySetBuilder</a>&lt; RowType &gt;::Build </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Builds a type-erased <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents the collection of spanner::Rows necessary to uniqu...">KeySet</a></code> from the contents of the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00377">377</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
@@ -318,7 +489,7 @@ template&lt;typename RowType&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename RowType&gt; </div>
+template&lt;typename RowType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -340,7 +511,7 @@ template&lt;typename RowType&gt; </div>
 <p>Returns the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html" title="The KeyRange class is a regular type that represents the pair of Bounds necessary to uniquely identif...">KeyRange</a></code>s in the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>. </p>
 <p>These are separate from the collection of individual key <code>spanner::Row</code>s. </p>
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00341">341</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00330">330</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
@@ -350,7 +521,7 @@ template&lt;typename RowType&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename RowType&gt; </div>
+template&lt;typename RowType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -372,7 +543,63 @@ template&lt;typename RowType&gt; </div>
 <p>Returns the key <code>spanner::Row</code>s in the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>. </p>
 <p>These keys are separate from the collection of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html" title="The KeyRange class is a regular type that represents the pair of Bounds necessary to uniquely identif...">KeyRange</a></code>s. </p>
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00335">335</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00324">324</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+
+</div>
+</div>
+<a id="a3530d8b64721f28009edff9fa10b2adc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3530d8b64721f28009edff9fa10b2adc">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RowType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a>&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">google::cloud::spanner::v0::KeySetBuilder</a>&lt; RowType &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a>&lt; RowType &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2ca0e5655653e4a26c7fda9d10216eea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ca0e5655653e4a26c7fda9d10216eea">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RowType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a>&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">google::cloud::spanner::v0::KeySetBuilder</a>&lt; RowType &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">KeySetBuilder</a>&lt; RowType &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

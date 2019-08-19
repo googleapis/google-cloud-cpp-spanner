@@ -2,7 +2,7 @@ var searchData=
 [
   ['enable_5fclog',['enable_clog',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#aa605ca38222ae6295299f22b52b45163',1,'google::cloud::spanner::v0::ClientOptions']]],
   ['enable_5ftracing',['enable_tracing',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#a70fa061cfd4964e1bc36fd0d5bbb9c7e',1,'google::cloud::spanner::v0::ClientOptions']]],
-  ['end',['end',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html#a9dfbeb42ddf285ba003daf45b977f516',1,'google::cloud::spanner::v0::KeyRange::end()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#a76a58fddfaef2066b900176359fb01ea',1,'google::cloud::spanner::v0::RowParser::end()']]],
+  ['end',['end',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html#a898ff562b969dfb1d9aa481867c0c301',1,'google::cloud::spanner::v0::KeyRange::end() const &amp;'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html#ab459d8fa8b8b5ad885bb3a7a4cbb808a',1,'google::cloud::spanner::v0::KeyRange::end() &amp;&amp;'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#a76a58fddfaef2066b900176359fb01ea',1,'google::cloud::spanner::v0::RowParser::end()']]],
   ['endpoint',['endpoint',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#a0a0bed9cca90aaadc681e37c36f6576a',1,'google::cloud::spanner::v0::ClientOptions']]],
   ['executebatchdml',['ExecuteBatchDml',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a9671193497a85579a34936431fc92b82',1,'google::cloud::spanner::v0::Client']]],
   ['executepartitioneddml',['ExecutePartitionedDml',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a804d859e0918123b6fd706f3031017e5',1,'google::cloud::spanner::v0::Client']]],
