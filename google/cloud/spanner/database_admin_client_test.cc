@@ -184,10 +184,8 @@ TEST(DatabaseAdminClientTest, HandleAwaitCreateDatabaseError) {
       }));
 
   DatabaseAdminClient client(mock);
-  auto db =
-      client
-          .CreateDatabase(Database("test-project", "test-instance", "test-db"))
-          .get();
+  Database dbase("test-project", "test-instance", "test-db");
+  auto db = client.CreateDatabase(dbase).get();
   EXPECT_EQ(StatusCode::kAborted, db.status().code());
 }
 
@@ -211,11 +209,12 @@ TEST(DatabaseAdminClientTest, HandleAwaitUpdateDatabaseError) {
       }));
 
   DatabaseAdminClient client(mock);
-  auto db = client
-                .UpdateDatabase(
-                    Database("test-project", "test-instance", "test-db"),
-                    {"ALTER TABLE Albums ADD COLUMN MarketingBudget INT64"})
-                .get();
+  Database dbase("test-project", "test-instance", "test-db");
+  auto db =
+      client
+          .UpdateDatabase(
+              dbase, {"ALTER TABLE Albums ADD COLUMN MarketingBudget INT64"})
+          .get();
   EXPECT_EQ(StatusCode::kAborted, db.status().code());
 }
 
