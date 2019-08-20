@@ -144,10 +144,11 @@ void DropDatabase(std::vector<std::string> const& argv) {
 }
 
 google::cloud::spanner::Client MakeSampleClient(
-    std::vector<std::string> const& argv) {
+    std::string const& project_id, std::string const& instance_id,
+    std::string const& database_id) {
   namespace spanner = google::cloud::spanner;
-  return spanner::Client(
-      spanner::MakeConnection(spanner::Database(argv[0], argv[1], argv[2])));
+  return spanner::Client(spanner::MakeConnection(
+      spanner::Database(project_id, instance_id, database_id)));
 }
 
 //! [START spanner_insert_data]
@@ -187,7 +188,7 @@ void InsertDataCommand(std::vector<std::string> const& argv) {
         "insert-data <project-id> <instance-id> <database-id>");
   }
 
-  InsertData(MakeSampleClient(argv));
+  InsertData(MakeSampleClient(argv[0], argv[1], argv[2]));
 }
 
 //! [START spanner_update_data]
@@ -228,7 +229,7 @@ void UpdateDataCommand(std::vector<std::string> const& argv) {
         "update-data <project-id> <instance-id> <database-id>");
   }
 
-  UpdateData(MakeSampleClient(argv));
+  UpdateData(MakeSampleClient(argv[0], argv[1], argv[2]));
 }
 
 //! [START spanner_read_only_transaction]
@@ -269,7 +270,7 @@ void ReadOnlyTransactionCommand(std::vector<std::string> const& argv) {
         "read-only-transaction <project-id> <instance-id> <database-id>");
   }
 
-  ReadOnlyTransaction(MakeSampleClient(argv));
+  ReadOnlyTransaction(MakeSampleClient(argv[0], argv[1], argv[2]));
 }
 
 //! [START spanner_read_write_transaction]
@@ -322,7 +323,7 @@ void ReadWriteTransactionCommand(std::vector<std::string> const& argv) {
         "read-write-transaction <project-id> <instance-id> <database-id>");
   }
 
-  ReadWriteTransaction(MakeSampleClient(argv));
+  ReadWriteTransaction(MakeSampleClient(argv[0], argv[1], argv[2]));
 }
 
 //! [START spanner_dml_standard_insert]
@@ -353,7 +354,7 @@ void DmlStandardInsertCommand(std::vector<std::string> const& argv) {
         "dml-standard-insert <project-id> <instance-id> <database-id>");
   }
 
-  DmlStandardInsert(MakeSampleClient(argv));
+  DmlStandardInsert(MakeSampleClient(argv[0], argv[1], argv[2]));
 }
 
 //! [START spanner_dml_standard_update]
@@ -383,7 +384,7 @@ void DmlStandardUpdateCommand(std::vector<std::string> const& argv) {
         "dml-standard-update <project-id> <instance-id> <database-id>");
   }
 
-  DmlStandardUpdate(MakeSampleClient(argv));
+  DmlStandardUpdate(MakeSampleClient(argv[0], argv[1], argv[2]));
 }
 
 int RunOneCommand(std::vector<std::string> argv) {
