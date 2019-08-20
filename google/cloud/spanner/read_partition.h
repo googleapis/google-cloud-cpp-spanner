@@ -38,6 +38,7 @@ class ReadPartition;
  *
  * @par Example
  *
+ * TODO(#388): use snippet in lieu of code/endcode for all examples.
  * @code
  * std::vector<spanner::ReadPartition> partitions =
  *   spanner_client.PartitionRead(...);
@@ -64,9 +65,11 @@ StatusOr<std::string> SerializeReadPartition(
  *
  * @code
  * std::string serialized_partition = ReceiveFromRemoteMachine();
- * spanner::ReadPartition partition =
+ * StatusOr<spanner::ReadPartition> partition =
  *   spanner::DeserializeReadPartition(serialized_partition);
- * auto rows = spanner_client.Read(partition);
+ * if (partition.ok()) {
+ *   auto rows = spanner_client.Read(*partition);
+ * }
  * @endcode
  */
 StatusOr<ReadPartition> DeserializeReadPartition(
@@ -107,13 +110,13 @@ class ReadPartition {
   ReadPartition& operator=(ReadPartition&&) = default;
   ///@}
 
-  std::string table_name() const { return proto_.table(); }
-  std::vector<std::string> column_names() const {
-    auto columns = proto_.columns();
+  std::string TableName() const { return proto_.table(); }
+  std::vector<std::string> ColumnNames() const {
+    auto const& columns = proto_.columns();
     return std::vector<std::string>(columns.begin(), columns.end());
   }
-  ReadOptions read_options() const {
-    ReadOptions options;
+  google::cloud::spanner::ReadOptions ReadOptions() const {
+    google::cloud::spanner::ReadOptions options;
     options.index_name = proto_.index();
     options.limit = proto_.limit();
     return options;
@@ -130,7 +133,8 @@ class ReadPartition {
   friend ReadPartition internal::MakeReadPartition(
       std::string transaction_id, std::string session_id,
       std::string partition_token, std::string table_name, KeySet key_set,
-      std::vector<std::string> column_names, ReadOptions read_options);
+      std::vector<std::string> column_names,
+      google::cloud::spanner::ReadOptions read_options);
   friend StatusOr<std::string> SerializeReadPartition(
       ReadPartition const& read_partition);
   friend StatusOr<ReadPartition> DeserializeReadPartition(
@@ -138,14 +142,15 @@ class ReadPartition {
 
   ReadPartition(std::string transaction_id, std::string session_id,
                 std::string partition_token, std::string table_name,
-                KeySet key_set, std::vector<std::string> column_names,
-                ReadOptions read_options = {});
+                google::cloud::spanner::KeySet key_set,
+                std::vector<std::string> column_names,
+                google::cloud::spanner::ReadOptions read_options = {});
 
   // Accessor methods for use by friends.
-  std::string partition_token() const { return proto_.partition_token(); }
-  std::string session_id() const { return proto_.session(); }
-  std::string transaction_id() const { return proto_.transaction().id(); }
-  google::spanner::v1::KeySet key_set() const { return proto_.key_set(); }
+  std::string PartitionToken() const { return proto_.partition_token(); }
+  std::string SessionId() const { return proto_.session(); }
+  std::string TransactionId() const { return proto_.transaction().id(); }
+  google::spanner::v1::KeySet KeySet() const { return proto_.key_set(); }
 
   google::spanner::v1::ReadRequest proto_;
 };

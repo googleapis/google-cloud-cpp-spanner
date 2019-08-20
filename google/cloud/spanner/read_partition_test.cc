@@ -26,17 +26,17 @@ class ReadPartitionTester {
   ReadPartitionTester() = default;
   explicit ReadPartitionTester(ReadPartition partition)
       : partition_(std::move(partition)) {}
-  std::string PartitionToken() const { return partition_.partition_token(); }
-  std::string SessionId() const { return partition_.session_id(); }
-  std::string TransactionId() const { return partition_.transaction_id(); }
+  std::string PartitionToken() const { return partition_.PartitionToken(); }
+  std::string SessionId() const { return partition_.SessionId(); }
+  std::string TransactionId() const { return partition_.TransactionId(); }
   ReadPartition Partition() const { return partition_; }
-  std::string TableName() const { return partition_.table_name(); }
-  google::spanner::v1::KeySet KeySet() const { return partition_.key_set(); }
+  std::string TableName() const { return partition_.TableName(); }
+  google::spanner::v1::KeySet KeySet() const { return partition_.KeySet(); }
   std::vector<std::string> ColumnNames() const {
-    return partition_.column_names();
+    return partition_.ColumnNames();
   }
   google::cloud::spanner::ReadOptions ReadOptions() const {
-    return partition_.read_options();
+    return partition_.ReadOptions();
   }
 
  private:

@@ -22,22 +22,19 @@ inline namespace SPANNER_CLIENT_NS {
 
 ReadPartition::ReadPartition(std::string transaction_id, std::string session_id,
                              std::string partition_token,
-                             std::string table_name, KeySet key_set,
+                             std::string table_name,
+                             google::cloud::spanner::KeySet key_set,
                              std::vector<std::string> column_names,
-                             ReadOptions read_options) {
+                             google::cloud::spanner::ReadOptions read_options) {
   proto_.set_session(std::move(session_id));
   proto_.mutable_transaction()->set_id(std::move(transaction_id));
   proto_.set_table(std::move(table_name));
-  if (!read_options.index_name.empty()) {
-    proto_.set_index(std::move(read_options.index_name));
-  }
+  proto_.set_index(std::move(read_options.index_name));
   for (auto& column : column_names) {
     *proto_.mutable_columns()->Add() = std::move(column);
   }
   *proto_.mutable_key_set() = internal::ToProto(std::move(key_set));
-  if (read_options.limit != 0) {
-    proto_.set_limit(read_options.limit);
-  }
+  proto_.set_limit(read_options.limit);
   proto_.set_partition_token(std::move(partition_token));
 }
 
