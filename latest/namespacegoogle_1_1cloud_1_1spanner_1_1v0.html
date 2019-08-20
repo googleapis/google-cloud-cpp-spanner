@@ -95,6 +95,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html">Connection</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A connection to a Spanner database instance.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class identifies a Cloud Spanner <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html" title="This class identifies a Cloud Spanner Database.">Database</a>.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html">DatabaseAdminClient</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs database administration operations on Spanner.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -189,14 +192,17 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a653353319d59ae9642467e3a399eb1e8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a653353319d59ae9642467e3a399eb1e8">MakeDatabaseName</a> (std::string const  &amp;project, std::string const  &amp;instance, std::string const  &amp;database_id)</td></tr>
-<tr class="memdesc:a653353319d59ae9642467e3a399eb1e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Format a database name given the <code>project</code>, <code>instance</code>, and <code>database_id</code>.  <a href="#a653353319d59ae9642467e3a399eb1e8">More...</a><br /></td></tr>
-<tr class="separator:a653353319d59ae9642467e3a399eb1e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1730f18e8610ddf95dc9fd72edc31d72"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html">Connection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a1730f18e8610ddf95dc9fd72edc31d72">MakeConnection</a> (std::string database, std::shared_ptr&lt; grpc::ChannelCredentials &gt; const  &amp;creds=grpc::GoogleDefaultCredentials(), std::string const  &amp;endpoint=&quot;spanner.googleapis.com&quot;)</td></tr>
-<tr class="memdesc:a1730f18e8610ddf95dc9fd72edc31d72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner.  <a href="#a1730f18e8610ddf95dc9fd72edc31d72">More...</a><br /></td></tr>
-<tr class="separator:a1730f18e8610ddf95dc9fd72edc31d72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32bb677bd1afd6530d82b3e76569acb8"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html">Connection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a32bb677bd1afd6530d82b3e76569acb8">MakeConnection</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const  &amp;db, std::shared_ptr&lt; grpc::ChannelCredentials &gt; const  &amp;creds=grpc::GoogleDefaultCredentials(), std::string const  &amp;endpoint=&quot;spanner.googleapis.com&quot;)</td></tr>
+<tr class="memdesc:a32bb677bd1afd6530d82b3e76569acb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner.  <a href="#a32bb677bd1afd6530d82b3e76569acb8">More...</a><br /></td></tr>
+<tr class="separator:a32bb677bd1afd6530d82b3e76569acb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b6ae7089a05e31cfaa31026c5e658eb"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html">CommitResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a3b6ae7089a05e31cfaa31026c5e658eb">RunTransaction</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a> client, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1ReadWriteOptions.html">Transaction::ReadWriteOptions</a> const &amp;opts, std::function&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1TransactionAction.html">TransactionAction</a>(<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>)&gt; const &amp;f)</td></tr>
 <tr class="separator:a3b6ae7089a05e31cfaa31026c5e658eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0068a1796e0899fcfa4c2d33996c6208"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a0068a1796e0899fcfa4c2d33996c6208">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;b)</td></tr>
+<tr class="separator:a0068a1796e0899fcfa4c2d33996c6208"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3940fbbb384d1d50fc260556cf3de2f2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a3940fbbb384d1d50fc260556cf3de2f2">operator!=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;b)</td></tr>
+<tr class="separator:a3940fbbb384d1d50fc260556cf3de2f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41202757063a025e768948e7d1777a4d"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a41202757063a025e768948e7d1777a4d">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;dn)</td></tr>
+<tr class="separator:a41202757063a025e768948e7d1777a4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2a19481df4a3e725aa2cc13f112abd2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ab2a19481df4a3e725aa2cc13f112abd2">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;b)</td></tr>
 <tr class="separator:ab2a19481df4a3e725aa2cc13f112abd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a303b93745482b9d4430e07a05502da07"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a303b93745482b9d4430e07a05502da07">operator!=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> const &amp;b)</td></tr>
@@ -687,8 +693,8 @@ template&lt;typename RowType &gt; </div>
 
 </div>
 </div>
-<a id="a1730f18e8610ddf95dc9fd72edc31d72"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1730f18e8610ddf95dc9fd72edc31d72">&#9670;&nbsp;</a></span>MakeConnection()</h2>
+<a id="a32bb677bd1afd6530d82b3e76569acb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32bb677bd1afd6530d82b3e76569acb8">&#9670;&nbsp;</a></span>MakeConnection()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -696,8 +702,8 @@ template&lt;typename RowType &gt; </div>
         <tr>
           <td class="memname">std::shared_ptr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html">Connection</a> &gt; google::cloud::spanner::v0::MakeConnection </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>database</em>, </td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;&#160;</td>
+          <td class="paramname"><em>db</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -725,50 +731,12 @@ template&lt;typename RowType &gt; </div>
 <dl class="section see"><dt>See also</dt><dd><code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">database</td><td>the name of the database. See <code>MakeDatabaesName</code>. </td></tr>
+    <tr><td class="paramname">db</td><td>See <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html" title="This class identifies a Cloud Spanner Database.">Database</a></code>. </td></tr>
     <tr><td class="paramname">creds</td><td>(optional) the gRPC credentials to use. </td></tr>
     <tr><td class="paramname">endpoint</td><td>(optional) the Spanner service to connect to. </td></tr>
   </table>
   </dd>
 </dl>
-
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00122">122</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
-
-</div>
-</div>
-<a id="a653353319d59ae9642467e3a399eb1e8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a653353319d59ae9642467e3a399eb1e8">&#9670;&nbsp;</a></span>MakeDatabaseName()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string google::cloud::spanner::v0::MakeDatabaseName </td>
-          <td>(</td>
-          <td class="paramtype">std::string const &amp;&#160;</td>
-          <td class="paramname"><em>project</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string const &amp;&#160;</td>
-          <td class="paramname"><em>instance</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string const &amp;&#160;</td>
-          <td class="paramname"><em>database_id</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Format a database name given the <code>project</code>, <code>instance</code>, and <code>database_id</code>. </p>
 
 <p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00115">115</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
@@ -1177,7 +1145,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a2866afdd1525add924d27197e78e3c21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2866afdd1525add924d27197e78e3c21">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2866afdd1525add924d27197e78e3c21">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1206,8 +1174,38 @@ template&lt;typename... Ts&gt; </div>
 
 </div>
 </div>
+<a id="a3940fbbb384d1d50fc260556cf3de2f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3940fbbb384d1d50fc260556cf3de2f2">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool google::cloud::spanner::v0::operator!= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="database_8cc_source.html#l00045">45</a> of file <a class="el" href="database_8cc_source.html">database.cc</a>.</p>
+
+</div>
+</div>
 <a id="a303b93745482b9d4430e07a05502da07"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a303b93745482b9d4430e07a05502da07">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a303b93745482b9d4430e07a05502da07">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1282,8 +1280,38 @@ template&lt;typename... Ts&gt; </div>
 
 </div>
 </div>
+<a id="a41202757063a025e768948e7d1777a4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41202757063a025e768948e7d1777a4d">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; google::cloud::spanner::v0::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;&#160;</td>
+          <td class="paramname"><em>dn</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="database_8cc_source.html#l00047">47</a> of file <a class="el" href="database_8cc_source.html">database.cc</a>.</p>
+
+</div>
+</div>
 <a id="a782a4a4617b9017586334db8e1eb6ff6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a782a4a4617b9017586334db8e1eb6ff6">&#9670;&nbsp;</a></span>operator&lt;&lt;()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a782a4a4617b9017586334db8e1eb6ff6">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1351,7 +1379,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="ab5c8b49c00862cef780069b5a70cec74"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5c8b49c00862cef780069b5a70cec74">&#9670;&nbsp;</a></span>operator==() <span class="overload">[1/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5c8b49c00862cef780069b5a70cec74">&#9670;&nbsp;</a></span>operator==() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1381,7 +1409,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a2c43e0c5a858ec67696110558571d7cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c43e0c5a858ec67696110558571d7cb">&#9670;&nbsp;</a></span>operator==() <span class="overload">[2/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c43e0c5a858ec67696110558571d7cb">&#9670;&nbsp;</a></span>operator==() <span class="overload">[2/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1411,7 +1439,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="abef4b6fb2e4adb795966eb18a8bcf3a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abef4b6fb2e4adb795966eb18a8bcf3a0">&#9670;&nbsp;</a></span>operator==() <span class="overload">[3/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abef4b6fb2e4adb795966eb18a8bcf3a0">&#9670;&nbsp;</a></span>operator==() <span class="overload">[3/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1440,8 +1468,38 @@ template&lt;typename... Ts&gt; </div>
 
 </div>
 </div>
+<a id="a0068a1796e0899fcfa4c2d33996c6208"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0068a1796e0899fcfa4c2d33996c6208">&#9670;&nbsp;</a></span>operator==() <span class="overload">[4/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool google::cloud::spanner::v0::operator== </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="database_8cc_source.html#l00041">41</a> of file <a class="el" href="database_8cc_source.html">database.cc</a>.</p>
+
+</div>
+</div>
 <a id="ab2a19481df4a3e725aa2cc13f112abd2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2a19481df4a3e725aa2cc13f112abd2">&#9670;&nbsp;</a></span>operator==() <span class="overload">[4/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2a19481df4a3e725aa2cc13f112abd2">&#9670;&nbsp;</a></span>operator==() <span class="overload">[5/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1479,7 +1537,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a8859ae3327162cdab57cbafd2bd92727"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8859ae3327162cdab57cbafd2bd92727">&#9670;&nbsp;</a></span>operator==() <span class="overload">[5/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8859ae3327162cdab57cbafd2bd92727">&#9670;&nbsp;</a></span>operator==() <span class="overload">[6/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1704,7 +1762,7 @@ template&lt;typename... Ts&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00131">131</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00122">122</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>

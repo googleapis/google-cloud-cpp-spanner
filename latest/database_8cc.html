@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Google Cloud Spanner C++ Client: client.cc File Reference</title>
+<title>Google Cloud Spanner C++ Client: database.cc File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,15 +66,13 @@ $(function() {
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">client.cc File Reference</div>  </div>
+<div class="title">database.cc File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="client_8h_source.html">google/cloud/spanner/client.h</a>&quot;</code><br />
-<code>#include &quot;google/cloud/spanner/internal/connection_impl.h&quot;</code><br />
-<code>#include &quot;google/cloud/spanner/internal/spanner_stub.h&quot;</code><br />
-<code>#include &lt;grpcpp/grpcpp.h&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="database_8h_source.html">google/cloud/spanner/database.h</a>&quot;</code><br />
+<code>#include &lt;array&gt;</code><br />
 </div>
-<p><a href="client_8cc_source.html">Go to the source code of this file.</a></p>
+<p><a href="database_8cc_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -91,11 +89,12 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a32bb677bd1afd6530d82b3e76569acb8"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; Connection &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a32bb677bd1afd6530d82b3e76569acb8">google::cloud::spanner::v0::MakeConnection</a> (Database const  &amp;db, std::shared_ptr&lt; grpc::ChannelCredentials &gt; const  &amp;creds=grpc::GoogleDefaultCredentials(), std::string const  &amp;endpoint=&quot;spanner.googleapis.com&quot;)</td></tr>
-<tr class="memdesc:a32bb677bd1afd6530d82b3e76569acb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a32bb677bd1afd6530d82b3e76569acb8">More...</a><br /></td></tr>
-<tr class="separator:a32bb677bd1afd6530d82b3e76569acb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b6ae7089a05e31cfaa31026c5e658eb"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; CommitResult &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a3b6ae7089a05e31cfaa31026c5e658eb">google::cloud::spanner::v0::RunTransaction</a> (Client client, Transaction::ReadWriteOptions const &amp;opts, std::function&lt; TransactionAction(Client, Transaction)&gt; const &amp;f)</td></tr>
-<tr class="separator:a3b6ae7089a05e31cfaa31026c5e658eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0068a1796e0899fcfa4c2d33996c6208"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a0068a1796e0899fcfa4c2d33996c6208">google::cloud::spanner::v0::operator==</a> (Database const &amp;a, Database const &amp;b)</td></tr>
+<tr class="separator:a0068a1796e0899fcfa4c2d33996c6208"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3940fbbb384d1d50fc260556cf3de2f2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a3940fbbb384d1d50fc260556cf3de2f2">google::cloud::spanner::v0::operator!=</a> (Database const &amp;a, Database const &amp;b)</td></tr>
+<tr class="separator:a3940fbbb384d1d50fc260556cf3de2f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41202757063a025e768948e7d1777a4d"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a41202757063a025e768948e7d1777a4d">google::cloud::spanner::v0::operator&lt;&lt;</a> (std::ostream &amp;os, Database const &amp;dn)</td></tr>
+<tr class="separator:a41202757063a025e768948e7d1777a4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -16,7 +16,7 @@ var searchData=
   ['commitresult',['CommitResult',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html',1,'google::cloud::spanner::v0']]],
   ['connection',['Connection',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html',1,'google::cloud::spanner::v0']]],
   ['connection_2eh',['connection.h',['../connection_8h.html',1,'']]],
-  ['createdatabase',['CreateDatabase',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#ab1f7de8302b4e31067b75ba97872f0ad',1,'google::cloud::spanner::v0::DatabaseAdminClient']]],
+  ['createdatabase',['CreateDatabase',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#a08b823f9dfa04793e55977615502d50e',1,'google::cloud::spanner::v0::DatabaseAdminClient']]],
   ['credentials',['credentials',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#a3dd8f218a33418ed16cd996e022f5d98',1,'google::cloud::spanner::v0::ClientOptions']]],
   ['cloud_20spanner_20c_2b_2b_20client_20library',['Cloud Spanner C++ Client Library',['../index.html',1,'']]]
 ];
