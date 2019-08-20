@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "google/cloud/spanner/database.h"
 #include "google/cloud/spanner/database_admin_client.h"
 
 namespace spanner = google::cloud::spanner;
@@ -24,34 +25,34 @@ int main(int argc, char* argv[]) try {
         << " <project-id> <instance-id> <database-id>\n";
     return 1;
   }
-  std::string const project_id = argv[1];
-  std::string const instance_id = argv[2];
-  std::string const database_id = argv[3];
+
+  google::cloud::spanner::Database const database(argv[1], argv[2], argv[3]);
 
   using google::cloud::future;
   using google::cloud::StatusOr;
 
   google::cloud::spanner::DatabaseAdminClient client;
-  future<StatusOr<google::spanner::admin::database::v1::Database>> created_database =
-      client.CreateDatabase(project_id, instance_id, database_id,
-              {R"""(
+  future<StatusOr<google::spanner::admin::database::v1::Database>>
+      created_database =
+          client.CreateDatabase(database, {R"""(
                         CREATE TABLE Singers (
                                 SingerId   INT64 NOT NULL,
                                 FirstName  STRING(1024),
                                 LastName   STRING(1024),
                                 SingerInfo BYTES(MAX)
                         ) PRIMARY KEY (SingerId))""",
-              R"""(CREATE TABLE Albums (
+                                           R"""(CREATE TABLE Albums (
                                 SingerId     INT64 NOT NULL,
                                 AlbumId      INT64 NOT NULL,
                                 AlbumTitle   STRING(MAX)
                         ) PRIMARY KEY (SingerId, AlbumId),
                         INTERLEAVE IN PARENT Singers ON DELETE CASCADE)"""});
-      StatusOr<google::spanner::admin::database::v1::Database> db = created_database.get();
+  StatusOr<google::spanner::admin::database::v1::Database> db =
+      created_database.get();
   if (!db) {
       throw std::runtime_error(db.status().message());
   }
-  std::cout << "Created database [" << database_id << "]\n";
+  std::cout << "Created database [" << database << "]\n";
 
   return 0;
 } catch (std::exception const& ex) {
