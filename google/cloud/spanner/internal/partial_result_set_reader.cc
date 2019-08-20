@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/internal/partial_result_set_reader.h"
+#include "google/cloud/spanner/internal/merge_chunk.h"
 #include "google/cloud/grpc_utils/grpc_error_delegate.h"
 #include "google/cloud/log.h"
 
@@ -54,6 +55,10 @@ StatusOr<optional<Value>> PartialResultSetReader::NextValue() {
       return status;
     }
     if (finished_) {
+      if (partial_chunked_value_.has_value()) {
+        return Status(StatusCode::kInternal,
+                      "incomplete chunked_value at end of stream");
+      }
       return optional<Value>();
     }
     // If the response contained any values, the loop will exit, otherwise
@@ -115,8 +120,36 @@ Status PartialResultSetReader::ReadFromStream() {
   }
 
   // TODO(#271) store and use resume_token.
-  // TODO(#270) handle chunked_value.
+
   values_.Swap(result_set.mutable_values());
+  // If the last response had `chunked_value` set, partial_chunked_value_
+  // contains the partial value; merge it with the first value in the
+  // response.
+  if (partial_chunked_value_.has_value()) {
+    if (values_.empty()) {
+      return Status(StatusCode::kInternal,
+                    "PartialResultSet contained no values to merge with prior "
+                    "chunked_value");
+    }
+    auto merge_status =
+        MergeChunk(*partial_chunked_value_, std::move(values_[0]));
+    if (!merge_status.ok()) {
+      return merge_status;
+    }
+    values_[0] = *std::move(partial_chunked_value_);
+    partial_chunked_value_.reset();
+  }
+  // If the last value is chunked, move it into partial_chunked_value_;
+  // we'll merge the next chunk into it.
+  if (result_set.chunked_value()) {
+    if (values_.empty()) {
+      return Status(StatusCode::kInternal,
+                    "PartialResultSet had chunked_value set true but contained "
+                    "no values");
+    }
+    partial_chunked_value_ = std::move(values_[values_.size() - 1]);
+    values_.RemoveLast();
+  }
   return Status();
 }
 
