@@ -460,6 +460,60 @@ void QueryDataWithArrayOfStruct(google::cloud::spanner::Client client) {
 }
 //! [END spanner_query_data_with_array_of_struct]
 
+//! [START spanner_field_access_on_struct_parameters]
+void FieldAccessOnStructParameters(google::cloud::spanner::Client client) {
+  namespace spanner = google::cloud::spanner;
+
+  // Cloud Spanner STRUCT<> with named fields is represented as
+  // tuple<pair<string, T>...>. Create a type alias for this example:
+  using SingerName = std::tuple<std::pair<std::string, std::string>,
+                                std::pair<std::string, std::string>>;
+  SingerName name({"FirtName", "Elena"}, {"LastName", "Campbell"});
+
+  auto reader = client.ExecuteSql(spanner::SqlStatement(
+      "SELECT SingerId FROM Singers WHERE FirstName = @name.FirstName",
+      {{"name", spanner::Value(name)}}));
+  if (!reader) throw std::runtime_error(reader.status().message());
+
+  for (auto row : reader->Rows<std::int64_t>()) {
+    if (!row) throw std::runtime_error(row.status().message());
+    std::cout << "SingerId: " << row->get<0>() << "\n";
+  }
+  std::cout << "Query completed for"
+            << " [spanner_field_access_on_struct_parameters]\n";
+}
+//! [END spanner_field_access_on_struct_parameters]
+
+//! [START spanner_field_access_on_nested_struct]
+void FieldAccessOnNestedStruct(google::cloud::spanner::Client client) {
+  namespace spanner = google::cloud::spanner;
+  using SingerFullName = std::tuple<std::string, std::string>;
+
+  // Cloud Spanner STRUCT<> with named fields is represented as
+  // tuple<pair<string, T>...>. Create a type alias for this example:
+  using SongInfo =
+      std::tuple<std::pair<std::string, std::string>,
+                 std::pair<std::string, std::vector<SingerFullName>>>;
+  auto songinfo =
+      SongInfo({"SongName", "Imagination"},
+               {"ArtistNames", {{"Elena", "Campbell"}, {"Hannah", "Harris"}}});
+
+  auto reader = client.ExecuteSql(spanner::SqlStatement(
+      "SELECT SingerId, @songinfo.SongName FROM Singers"
+      " WHERE STRUCT<FirstName STRING, LastName STRING>(FirstName, LastName)"
+      "    IN UNNEST(@songinfo.ArtistNames)",
+      {{"songinfo", spanner::Value(songinfo)}}));
+  if (!reader) throw std::runtime_error(reader.status().message());
+
+  for (auto row : reader->Rows<std::int64_t, std::string>()) {
+    if (!row) throw std::runtime_error(row.status().message());
+    std::cout << "SingerId: " << row->get<0>() << " SongName: " << row->get<1>()
+              << "\n";
+  }
+  std::cout << "Query completed for [spanner_field_access_on_nested_struct]\n";
+}
+//! [END spanner_field_access_on_nested_struct]
+
 int RunOneCommand(std::vector<std::string> argv) {
   using CommandType = std::function<void(std::vector<std::string> const&)>;
 
@@ -498,6 +552,10 @@ int RunOneCommand(std::vector<std::string> argv) {
       make_command_entry("query-data-with-struct", &QueryDataWithStruct),
       make_command_entry("query-data-with-array-of-struct",
                          &QueryDataWithArrayOfStruct),
+      make_command_entry("field-access-struct-parameters",
+                         &FieldAccessOnStructParameters),
+      make_command_entry("field-access-on-nested-struct",
+                         &FieldAccessOnNestedStruct),
   };
 
   static std::string usage_msg = [&argv, &commands] {
@@ -602,6 +660,12 @@ void RunAll() {
 
   std::cout << "\nRunning spanner_query_data_with_array_of_struct sample\n";
   QueryDataWithArrayOfStruct(client);
+
+  std::cout << "\nRunning spanner_field_access_on_struct_parameters sample\n";
+  FieldAccessOnStructParameters(client);
+
+  std::cout << "\nRunning spanner_field_access_on_nested_struct sample\n";
+  FieldAccessOnNestedStruct(client);
 
   std::cout << "\nRunning spanner_drop_database sample\n";
   RunOneCommand({"", "drop-database", project_id, instance_id, database_id});
