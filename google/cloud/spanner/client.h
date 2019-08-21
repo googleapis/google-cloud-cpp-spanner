@@ -235,6 +235,11 @@ class Client {
 
   /**
    * @copydoc ExecuteSql(SqlStatement)
+   */
+  StatusOr<ResultSet> ExecuteSql(std::string const& statement);
+
+  /**
+   * @copydoc ExecuteSql(SqlStatement)
    *
    * @param transaction_options Execute this query in a single-use transaction
    *     with these options.
@@ -244,12 +249,25 @@ class Client {
       SqlStatement statement);
 
   /**
+   * @copydoc ExecuteSql(Transaction::SingleUseOptions, SqlStatement)
+   */
+  StatusOr<ResultSet> ExecuteSql(
+      Transaction::SingleUseOptions transaction_options,
+      std::string const& statement);
+
+  /**
    * @copydoc ExecuteSql(SqlStatement)
    *
    * @param transaction Execute this query as part of an existing transaction.
    */
   StatusOr<ResultSet> ExecuteSql(Transaction transaction,
                                  SqlStatement statement);
+
+  /**
+   * @copydoc ExecuteSql(Transaction transaction, SqlStatement statement);
+   */
+  StatusOr<ResultSet> ExecuteSql(Transaction transaction,
+                                 std::string const& statement);
   //@}
 
   /**

@@ -234,6 +234,78 @@ TEST(ClientTest, ExecuteSqlSuccess) {
   EXPECT_EQ(row_number, 2);
 }
 
+TEST(ClientTest, ExecuteSqlStringOverload) {
+  auto conn = std::make_shared<MockConnection>();
+  Client client(conn);
+
+  auto source = make_unique<MockResultSetSource>();
+  ResultSet result_set(std::move(source));
+  EXPECT_CALL(*conn, ExecuteSql(_))
+      .WillOnce(Return(ByMove(std::move(result_set))));
+
+  auto result = client.ExecuteSql("select * from table;");
+  EXPECT_STATUS_OK(result);
+}
+
+TEST(ClientTest, ExecuteSqlWithTransaction) {
+  auto conn = std::make_shared<MockConnection>();
+  Client client(conn);
+
+  auto source = make_unique<MockResultSetSource>();
+  ResultSet result_set(std::move(source));
+  EXPECT_CALL(*conn, ExecuteSql(_))
+      .WillOnce(Return(ByMove(std::move(result_set))));
+
+  auto txn = MakeReadWriteTransaction();
+  auto result = client.ExecuteSql(txn, SqlStatement{"select * from table;"});
+  EXPECT_STATUS_OK(result);
+}
+
+TEST(ClientTest, ExecuteSqlWithTransactionStringOverload) {
+  auto conn = std::make_shared<MockConnection>();
+  Client client(conn);
+
+  auto source = make_unique<MockResultSetSource>();
+  ResultSet result_set(std::move(source));
+  EXPECT_CALL(*conn, ExecuteSql(_))
+      .WillOnce(Return(ByMove(std::move(result_set))));
+
+  auto txn = MakeReadWriteTransaction();
+  auto result = client.ExecuteSql(txn, "select * from table;");
+  EXPECT_STATUS_OK(result);
+}
+
+TEST(ClientTest, ExecuteSqlWithTransactionSingleOption) {
+  auto conn = std::make_shared<MockConnection>();
+  Client client(conn);
+
+  auto source = make_unique<MockResultSetSource>();
+  ResultSet result_set(std::move(source));
+  EXPECT_CALL(*conn, ExecuteSql(_))
+      .WillOnce(Return(ByMove(std::move(result_set))));
+
+  Transaction::ReadOnlyOptions strong;
+  Transaction::SingleUseOptions su_strong(strong);
+  auto result =
+      client.ExecuteSql(su_strong, SqlStatement{"select * from table;"});
+  EXPECT_STATUS_OK(result);
+}
+
+TEST(ClientTest, ExecuteSqlWithTransactionSingleOptionStringOverload) {
+  auto conn = std::make_shared<MockConnection>();
+  Client client(conn);
+
+  auto source = make_unique<MockResultSetSource>();
+  ResultSet result_set(std::move(source));
+  EXPECT_CALL(*conn, ExecuteSql(_))
+      .WillOnce(Return(ByMove(std::move(result_set))));
+
+  Transaction::ReadOnlyOptions strong;
+  Transaction::SingleUseOptions su_strong(strong);
+  auto result = client.ExecuteSql(su_strong, "select * from table;");
+  EXPECT_STATUS_OK(result);
+}
+
 TEST(ClientTest, ExecuteSqlFailure) {
   auto conn = std::make_shared<MockConnection>();
   Client client(conn);

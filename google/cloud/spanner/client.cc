@@ -67,6 +67,10 @@ StatusOr<ResultSet> Client::ExecuteSql(SqlStatement statement) {
        std::move(statement)});
 }
 
+StatusOr<ResultSet> Client::ExecuteSql(std::string const& statement) {
+  return ExecuteSql(SqlStatement{statement});
+}
+
 StatusOr<ResultSet> Client::ExecuteSql(
     Transaction::SingleUseOptions transaction_options, SqlStatement statement) {
   return conn_->ExecuteSql(
@@ -74,9 +78,22 @@ StatusOr<ResultSet> Client::ExecuteSql(
        std::move(statement)});
 }
 
+StatusOr<ResultSet> Client::ExecuteSql(
+    Transaction::SingleUseOptions transaction_options,
+    std::string const& statement) {
+  return conn_->ExecuteSql(
+      {internal::MakeSingleUseTransaction(std::move(transaction_options)),
+       SqlStatement{statement}});
+}
+
 StatusOr<ResultSet> Client::ExecuteSql(Transaction transaction,
                                        SqlStatement statement) {
   return conn_->ExecuteSql({std::move(transaction), std::move(statement)});
+}
+
+StatusOr<ResultSet> Client::ExecuteSql(Transaction transaction,
+                                       std::string const& statement) {
+  return conn_->ExecuteSql({std::move(transaction), SqlStatement{statement}});
 }
 
 StatusOr<ResultSet> Client::ExecuteSql(SqlPartition const& /* partition */) {
