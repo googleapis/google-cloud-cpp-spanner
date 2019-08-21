@@ -19,6 +19,7 @@
 #include "google/cloud/spanner/commit_result.h"
 #include "google/cloud/spanner/keys.h"
 #include "google/cloud/spanner/mutations.h"
+#include "google/cloud/spanner/read_partition.h"
 #include "google/cloud/spanner/result_set.h"
 #include "google/cloud/spanner/sql_statement.h"
 #include "google/cloud/spanner/transaction.h"
@@ -56,6 +57,9 @@ class Connection {
     ReadOptions read_options;
   };
   virtual StatusOr<ResultSet> Read(ReadParams) = 0;
+
+  virtual StatusOr<std::vector<ReadPartition>> PartitionRead(
+      ReadParams const&, PartitionOptions partition_options) = 0;
 
   struct ExecuteSqlParams {
     Transaction transaction;

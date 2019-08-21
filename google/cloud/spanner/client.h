@@ -21,6 +21,7 @@
 #include "google/cloud/spanner/database.h"
 #include "google/cloud/spanner/keys.h"
 #include "google/cloud/spanner/mutations.h"
+#include "google/cloud/spanner/read_partition.h"
 #include "google/cloud/spanner/result_set.h"
 #include "google/cloud/spanner/sql_partition.h"
 #include "google/cloud/spanner/sql_statement.h"
@@ -207,11 +208,11 @@ class Client {
    * @return A `StatusOr` containing a vector of `SqlPartition` or error
    *     status on failure.
    */
-  StatusOr<std::vector<SqlPartition>> PartitionRead(
+  StatusOr<std::vector<ReadPartition>> PartitionRead(
       Transaction const& transaction, std::string const& table,
       KeySet const& keys, std::vector<std::string> const& columns,
       ReadOptions const& read_options = {},
-      PartitionOptions const& partition_options = {});
+      PartitionOptions partition_options = {});
 
   //@{
   /**
