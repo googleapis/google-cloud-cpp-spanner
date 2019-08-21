@@ -329,13 +329,13 @@ void DmlStandardInsert(google::cloud::spanner::Client client) {
       std::move(client), spanner::Transaction::ReadWriteOptions{},
       [](spanner::Client client,
          spanner::Transaction txn) -> StatusOr<spanner::Mutations> {
-        auto read = client.ExecuteSql(
+        auto insert = client.ExecuteSql(
             std::move(txn),
             spanner::SqlStatement(
                 "INSERT INTO Singers (SingerId, FirstName, LastName)"
                 "  VALUES (10, 'Virginia', 'Watson')",
                 {}));
-        if (!read) return read.status();
+        if (!insert) return insert.status();
         return spanner::Mutations{};
       });
   if (!commit_result) {
@@ -353,13 +353,13 @@ void DmlStandardUpdate(google::cloud::spanner::Client client) {
       std::move(client), spanner::Transaction::ReadWriteOptions{},
       [](spanner::Client client,
          spanner::Transaction txn) -> StatusOr<spanner::Mutations> {
-        auto read = client.ExecuteSql(
+        auto update = client.ExecuteSql(
             std::move(txn),
             spanner::SqlStatement(
                 "UPDATE Albums SET MarketingBudget = MarketingBudget * 2"
                 " WHERE SingerId = 1 AND AlbumId = 1",
                 {}));
-        if (!read) return read.status();
+        if (!update) return update.status();
         return spanner::Mutations{};
       });
   if (!commit_result) {
@@ -371,15 +371,18 @@ void DmlStandardUpdate(google::cloud::spanner::Client client) {
 
 //! [START spanner_dml_standard_delete]
 void DmlStandardDelete(google::cloud::spanner::Client client) {
+  using google::cloud::StatusOr;
   namespace spanner = google::cloud::spanner;
   auto commit_result = spanner::RunTransaction(
       std::move(client), spanner::Transaction::ReadWriteOptions{},
-      [](spanner::Client client, spanner::Transaction txn) {
-        client.ExecuteSql(std::move(txn),
-                          spanner::SqlStatement(
-                              "DELETE FROM Singers WHERE FirstName = 'Alice'"));
-        return spanner::TransactionAction{spanner::TransactionAction::kCommit,
-                                          {}};
+      [](spanner::Client client,
+         spanner::Transaction txn) -> StatusOr<spanner::Mutations> {
+        auto dele = client.ExecuteSql(
+            std::move(txn),
+            spanner::SqlStatement(
+                "DELETE FROM Singers WHERE FirstName = 'Alice'"));
+        if (!dele) return dele.status();
+        return spanner::Mutations{};
       });
   if (!commit_result) {
     throw std::runtime_error(commit_result.status().message());
