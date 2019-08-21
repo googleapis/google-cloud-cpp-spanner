@@ -1,6 +1,7 @@
 var searchData=
 [
   ['samples_2ecc',['samples.cc',['../samples_8cc.html',1,'']]],
+  ['serializereadpartition',['SerializeReadPartition',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html#a4ccee387c1d9cead7d15923cd19ab71f',1,'google::cloud::spanner::v0::ReadPartition::SerializeReadPartition()'],['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a4ff13634f664ceba89bd073110bb5fb8',1,'google::cloud::spanner::v0::SerializeReadPartition()']]],
   ['serializesqlpartition',['SerializeSqlPartition',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlPartition.html#a32bdda468521da932f070859ade7d1ca',1,'google::cloud::spanner::v0::SqlPartition::SerializeSqlPartition()'],['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a0330dd31b70a1d74509675d046dc450f',1,'google::cloud::spanner::v0::SerializeSqlPartition()']]],
   ['set_5fcredentials',['set_credentials',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#a7a64cb7363cf6878ad89d05054ffc896',1,'google::cloud::spanner::v0::ClientOptions']]],
   ['set_5fendpoint',['set_endpoint',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#a6529e966e93116a2762770b340c25223',1,'google::cloud::spanner::v0::ClientOptions']]],
