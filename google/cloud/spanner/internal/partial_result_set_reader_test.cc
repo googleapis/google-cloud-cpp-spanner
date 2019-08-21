@@ -616,7 +616,8 @@ TEST(PartialResultSetReaderTest, ChunkedValueSetAtEndOfStream) {
   ASSERT_TRUE(TextFormat::ParseFromString(
       R"pb(
         values: { string_value: "incomplete" }
-        chunked_value: true)pb",
+        chunked_value: true
+      )pb",
       &response[1]));
   EXPECT_CALL(*grpc_reader, Read(_))
       .WillOnce(DoAll(SetArgPointee<0>(response[0]), Return(true)))
@@ -634,6 +635,52 @@ TEST(PartialResultSetReaderTest, ChunkedValueSetAtEndOfStream) {
   EXPECT_EQ(value.status().code(), StatusCode::kInternal);
   EXPECT_EQ(value.status().message(),
             "incomplete chunked_value at end of stream");
+}
+
+/**
+ * @test Verify the behavior when attempting to merge a value that can't be
+ * chunked (float64/number).
+ */
+TEST(PartialResultSetReaderTest, ChunkedValueMergeFailure) {
+  auto grpc_reader = make_unique<MockGrpcReader>();
+  std::array<spanner_proto::PartialResultSet, 3> response;
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        metadata: {
+          row_type: {
+            fields: {
+              name: "Number",
+              type: { code: FLOAT64 }
+            }
+          }
+        }
+      )pb",
+      &response[0]));
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        values: { number_value: 86 }
+        chunked_value: true
+      )pb",
+      &response[1]));
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        values: { number_value: 99 }
+      )pb",
+      &response[2]));
+  EXPECT_CALL(*grpc_reader, Read(_))
+      .WillOnce(DoAll(SetArgPointee<0>(response[0]), Return(true)))
+      .WillOnce(DoAll(SetArgPointee<0>(response[1]), Return(true)))
+      .WillOnce(DoAll(SetArgPointee<0>(response[2]), Return(true)));
+  EXPECT_CALL(*grpc_reader, Finish()).WillOnce(Return(grpc::Status()));
+
+  auto context = make_unique<grpc::ClientContext>();
+  auto reader = PartialResultSetReader::Create(std::move(context),
+                                               std::move(grpc_reader));
+  EXPECT_STATUS_OK(reader.status());
+
+  // Trying to read the next value should fail.
+  auto value = (*reader)->NextValue();
+  EXPECT_EQ(value.status().code(), StatusCode::kInvalidArgument);
 }
 
 }  // namespace
