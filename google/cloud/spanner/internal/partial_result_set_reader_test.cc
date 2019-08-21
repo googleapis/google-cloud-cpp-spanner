@@ -681,6 +681,7 @@ TEST(PartialResultSetReaderTest, ChunkedValueMergeFailure) {
   // Trying to read the next value should fail.
   auto value = (*reader)->NextValue();
   EXPECT_EQ(value.status().code(), StatusCode::kInvalidArgument);
+  EXPECT_EQ(value.status().message(), "invalid type");
 }
 
 }  // namespace
