@@ -122,9 +122,28 @@ Status PartialResultSetReader::ReadFromStream() {
   // TODO(#271) store and use resume_token.
 
   values_.Swap(result_set.mutable_values());
-  // If the last response had `chunked_value` set, partial_chunked_value_
-  // contains the partial value; merge it with the first value in the
-  // response.
+
+  // Merge values if necessary, as described in:
+  // https://cloud.google.com/spanner/docs/reference/rpc/google.spanner.v1#google.spanner.v1.PartialResultSet
+  //
+  // As an example, if we receive the following 4 responses (assume the values
+  // are all `string_value`s of type `STRING`):
+  //
+  // ```
+  // { { values: ["A", "B", "C1"] }  chunked_value: true }
+  // { { values: ["C2", "D", "E1"] } chunked_value: true }
+  // { { values: ["E2"] },           chunked_value: true }
+  // { { values: ["E3", "F"] }       chunked_value: false }
+  // ```
+  //
+  // The final values yielded are: `A`, `B`, `C1C2`, `D`, `E1E2E3`, `F`.
+  //
+  // n.b. One value can span more than two responses (the `E1E2E3` case above);
+  // the code "just works" without needing to treat that as a special-case.
+
+  // If the last response had `chunked_value` set, `partial_chunked_value_`
+  // contains the partial value from that response; merge it with the first
+  // value in this response and set the first entry in `values_` to the result.
   if (partial_chunked_value_.has_value()) {
     if (values_.empty()) {
       return Status(StatusCode::kInternal,
@@ -136,11 +155,16 @@ Status PartialResultSetReader::ReadFromStream() {
     if (!merge_status.ok()) {
       return merge_status;
     }
+    // Move the merged value to the front of the array and make
+    // `partial_chunked_value_` empty.
     values_[0] = *std::move(partial_chunked_value_);
     partial_chunked_value_.reset();
   }
-  // If the last value is chunked, move it into partial_chunked_value_;
-  // we'll merge the next chunk into it.
+
+  // If `chunked_value` is set, the last value in *this* response is incomplete
+  // and needs to be merged with the first value in the *next* response. Move it
+  // into `partial_chunked_value_`; this ensures everything in `values_` is a
+  // complete value, which simplifies things elsewhere.
   if (result_set.chunked_value()) {
     if (values_.empty()) {
       return Status(StatusCode::kInternal,

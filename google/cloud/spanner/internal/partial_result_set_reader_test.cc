@@ -464,6 +464,7 @@ TEST(PartialResultSetReaderTest, ChunkedStringValueWellFormed) {
         chunked_value: true
       )pb",
       &response[0]));
+  // Note this is part of a value that spans 3 responses.
   ASSERT_TRUE(TextFormat::ParseFromString(
       R"pb(
         values: { string_value: "second_chunk" }
