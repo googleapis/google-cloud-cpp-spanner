@@ -433,14 +433,15 @@ void DmlStandardUpdateCommand(std::vector<std::string> const& argv) {
 
 //! [START spanner_dml_standard_delete]
 void DmlStandardDelete(google::cloud::spanner::Client client) {
-  namespace gcs = google::cloud::spanner;
-  auto commit_result = gcs::RunTransaction(
-      std::move(client), gcs::Transaction::ReadWriteOptions{},
-      [](gcs::Client client, gcs::Transaction txn) {
-        client.ExecuteSql(
-            std::move(txn),
-            gcs::SqlStatement("DELETE FROM Singers WHERE FirstName = 'Alice'"));
-        return gcs::TransactionAction{gcs::TransactionAction::kCommit, {}};
+  namespace spanner = google::cloud::spanner;
+  auto commit_result = spanner::RunTransaction(
+      std::move(client), spanner::Transaction::ReadWriteOptions{},
+      [](spanner::Client client, spanner::Transaction txn) {
+        client.ExecuteSql(std::move(txn),
+                          spanner::SqlStatement(
+                              "DELETE FROM Singers WHERE FirstName = 'Alice'"));
+        return spanner::TransactionAction{spanner::TransactionAction::kCommit,
+                                          {}};
       });
   if (!commit_result) {
     throw std::runtime_error(commit_result.status().message());
