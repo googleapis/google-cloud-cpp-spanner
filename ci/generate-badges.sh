@@ -20,7 +20,7 @@ set -eu
 BINDIR="$(dirname "$0")"
 readonly BINDIR
 
-echo "<!-- Start of automatically generated content by ci/$(basename $0) -->"
+echo "<!-- Start of automatically generated content by ci/$(basename "$0") -->"
 echo
 echo '**Core Builds**'
 find "${BINDIR}/kokoro/macos" "${BINDIR}/kokoro/docker" \
