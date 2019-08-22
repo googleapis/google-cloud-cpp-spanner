@@ -49,18 +49,18 @@ StatusOr<ResultSet> Client::Read(Transaction transaction, std::string table,
                       std::move(columns), std::move(read_options)});
 }
 
-StatusOr<ResultSet> Client::Read(ReadPartition const& partition /*partition*/) {
-  return conn_->Read(partition);
+StatusOr<ResultSet> Client::Read(ReadPartition const& read_partition) {
+  return conn_->Read(internal::MakeReadParams(read_partition));
 }
 
 StatusOr<std::vector<ReadPartition>> Client::PartitionRead(
-    Transaction const& transaction /*transaction*/,
-    std::string const& table /*table*/, KeySet const& keys /*keys*/,
-    std::vector<std::string> const& columns /*columns*/,
-    ReadOptions const& read_options /*read_options*/,
-    PartitionOptions partition_options /*partition_options*/) {
-  return conn_->PartitionRead({transaction, table, keys, columns, read_options},
-                              std::move(partition_options));
+    Transaction transaction, std::string table, KeySet keys,
+    std::vector<std::string> columns, ReadOptions read_options,
+    PartitionOptions partition_options) {
+  return conn_->PartitionRead(
+      {std::move(transaction), std::move(table), std::move(keys),
+       std::move(columns), std::move(read_options)},
+      std::move(partition_options));
 }
 
 StatusOr<ResultSet> Client::ExecuteSql(SqlStatement statement) {

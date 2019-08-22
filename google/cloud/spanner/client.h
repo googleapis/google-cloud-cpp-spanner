@@ -177,6 +177,7 @@ class Client {
    *     No individual row in the `ResultSet` can exceed 100 MiB, and no column
    *     value can exceed 10 MiB.
    */
+  // TODO(#409): possibly change to pass by value when issue resolved.
   StatusOr<ResultSet> Read(ReadPartition const& partition);
 
   /**
@@ -209,9 +210,8 @@ class Client {
    *     status on failure.
    */
   StatusOr<std::vector<ReadPartition>> PartitionRead(
-      Transaction const& transaction, std::string const& table,
-      KeySet const& keys, std::vector<std::string> const& columns,
-      ReadOptions const& read_options = {},
+      Transaction transaction, std::string table, KeySet keys,
+      std::vector<std::string> columns, ReadOptions read_options = {},
       PartitionOptions partition_options = {});
 
   //@{

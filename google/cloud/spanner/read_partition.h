@@ -28,9 +28,6 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
-namespace internal {
-class ConnectionImpl;
-}  // namespace internal
 
 class ReadPartition;
 
@@ -89,6 +86,7 @@ ReadPartition MakeReadPartition(std::string transaction_id,
                                 std::vector<std::string> column_names,
                                 ReadOptions read_options = {});
 
+// TODO(#409): possibly change to pass by value when issue resolved.
 Connection::ReadParams MakeReadParams(ReadPartition const& read_partition);
 
 }  // namespace internal

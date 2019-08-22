@@ -35,20 +35,12 @@ StatusOr<ResultSet> ConnectionImpl::Read(ReadParams rp) {
       });
 }
 
-StatusOr<ResultSet> ConnectionImpl::Read(ReadPartition read_partition) {
-  ReadParams rp = internal::MakeReadParams(read_partition);
+StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionRead(
+    ReadParams rp, PartitionOptions partition_options) {
   return internal::Visit(
       std::move(rp.transaction),
-      [this, &rp](spanner_proto::TransactionSelector& s, std::int64_t) {
-        return Read(s, std::move(rp));
-      });
-}
-
-StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionRead(
-    ReadParams const& rp, PartitionOptions partition_options) {
-  return internal::Visit(
-      rp.transaction, [this, &rp, &partition_options](
-                          spanner_proto::TransactionSelector& s, std::int64_t) {
+      [this, &rp, &partition_options](spanner_proto::TransactionSelector& s,
+                                      std::int64_t) {
         return PartitionRead(s, rp, std::move(partition_options));
       });
 }
@@ -96,7 +88,7 @@ StatusOr<ResultSet> ConnectionImpl::Read(spanner_proto::TransactionSelector& s,
   spanner_proto::ReadRequest request;
   // TODO(#307): Refactor once correct location for session implemented.
   if (rp.session_name) {
-    request.set_session(*rp.session_name);
+    request.set_session(std::move(*rp.session_name));
   } else {
     auto session = GetSession();
     if (!session) {
@@ -113,6 +105,9 @@ StatusOr<ResultSet> ConnectionImpl::Read(spanner_proto::TransactionSelector& s,
   }
   *request.mutable_key_set() = internal::ToProto(std::move(rp.keys));
   request.set_limit(rp.read_options.limit);
+  if (rp.partition_token) {
+    request.set_partition_token(std::move(*rp.partition_token));
+  }
 
   auto context = google::cloud::internal::make_unique<grpc::ClientContext>();
   auto rpc = stub_->StreamingRead(*context, request);
@@ -240,6 +235,10 @@ StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionRead(
   auto response = stub_->PartitionRead(*context, request);
   if (!response.ok()) {
     return std::move(response).status();
+  }
+
+  if (s.has_begin()) {
+    s.set_id(response->transaction().id());
   }
 
   std::vector<ReadPartition> read_partitions;
