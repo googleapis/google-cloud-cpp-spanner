@@ -466,7 +466,8 @@ int RunOneCommand(std::vector<std::string> argv) {
       make_command_entry("write-data-for-struct-queries",
                          &WriteDataForStructQueries),
       make_command_entry("query-data-with-struct", &QueryDataWithStruct),
-      make_command_entry("query-data-with-array-of-struct", &QueryDataWithArrayOfStruct),
+      make_command_entry("query-data-with-array-of-struct",
+                         &QueryDataWithArrayOfStruct),
   };
 
   static std::string usage_msg = [&argv, &commands] {
