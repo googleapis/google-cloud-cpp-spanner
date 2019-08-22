@@ -23,6 +23,7 @@
 #include "google/cloud/status_or.h"
 #include <cstdint>
 #include <memory>
+#include <mutex>
 #include <string>
 
 namespace google {
@@ -56,7 +57,10 @@ class ConnectionImpl : public Connection {
    public:
     SessionHolder(std::string session, ConnectionImpl* conn) noexcept
         : session_(std::move(session)), conn_(conn) {}
-    ~SessionHolder() { conn_->sessions_.emplace_back(std::move(session_)); }
+    ~SessionHolder() {
+      conn_->ReleaseSession(std::move(session_));
+      session_.clear();
+    }
 
     std::string const& session_name() const { return session_; }
 
@@ -66,6 +70,7 @@ class ConnectionImpl : public Connection {
   };
   friend class SessionHolder;
   StatusOr<SessionHolder> GetSession();
+  void ReleaseSession(std::string session);
 
   /// Implementation details for Read.
   StatusOr<ResultSet> Read(google::spanner::v1::TransactionSelector& s,
@@ -92,6 +97,7 @@ class ConnectionImpl : public Connection {
 
   // The current session pool.
   // TODO(#307) - improve session refresh and expiration.
+  std::mutex mu_;
   std::vector<std::string> sessions_;
 };
 
