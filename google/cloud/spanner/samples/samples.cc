@@ -468,7 +468,7 @@ void FieldAccessOnStructParameters(google::cloud::spanner::Client client) {
   // tuple<pair<string, T>...>. Create a type alias for this example:
   using SingerName = std::tuple<std::pair<std::string, std::string>,
                                 std::pair<std::string, std::string>>;
-  SingerName name({"FirtName", "Elena"}, {"LastName", "Campbell"});
+  SingerName name({"FirstName", "Elena"}, {"LastName", "Campbell"});
 
   auto reader = client.ExecuteSql(spanner::SqlStatement(
       "SELECT SingerId FROM Singers WHERE FirstName = @name.FirstName",
@@ -494,9 +494,10 @@ void FieldAccessOnNestedStruct(google::cloud::spanner::Client client) {
   using SongInfo =
       std::tuple<std::pair<std::string, std::string>,
                  std::pair<std::string, std::vector<SingerFullName>>>;
-  auto songinfo =
-      SongInfo({"SongName", "Imagination"},
-               {"ArtistNames", {{"Elena", "Campbell"}, {"Hannah", "Harris"}}});
+  auto songinfo = SongInfo({"SongName", "Imagination"},
+                           {"ArtistNames",
+                            {SingerFullName{"Elena", "Campbell"},
+                             SingerFullName{"Hannah", "Harris"}}});
 
   auto reader = client.ExecuteSql(spanner::SqlStatement(
       "SELECT SingerId, @songinfo.SongName FROM Singers"
