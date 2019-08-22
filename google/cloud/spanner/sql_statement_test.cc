@@ -30,7 +30,7 @@ using ::testing::Eq;
 using ::testing::UnorderedPointwise;
 
 TEST(SqlStatementTest, SqlAccessor) {
-  const char* statement = "select * from foo";
+  auto const& statement = "select * from foo";
   SqlStatement stmt(statement);
   EXPECT_EQ(statement, stmt.sql());
 }
@@ -123,7 +123,7 @@ TEST(SqlStatementTest, ToProtoWithParams) {
                                     {"first", Value("Elwood")},
                                     {"destroyed_cars", Value(103)}};
 
-  auto sql =
+  auto const& sql =
       "SELECT * FROM foo WHERE last = @last AND first = @first AND "
       "destroyed_cars >= @destroyed_cars";
   SqlStatement stmt(sql, params);

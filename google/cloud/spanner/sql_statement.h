@@ -49,7 +49,15 @@ SqlStatementProto ToProto(SqlStatement s);
  * Parameter placeholders are specified by `@<param name>` in the SQL string.
  * Values for parameters are a collection of `std::pair<std::string const,
  * google::cloud:spanner::Value>`.
- * @par Example:
+ *
+ * @warning SqlStatement requires compile-time string literals for the
+ *     `statement` in order to protect against SQL injection attacks. If you
+ *     need to compute the SQL query string dynamically at runtime, you may use
+ *     the `MakeUntrustedSqlStatement()` function defined below. **It is the
+ *     caller's responsibility to ensure the dynamically generated string is
+ *     safe**.
+ *
+ * @par Example
  *
  *     using google::cloud::spanner::SqlStatement;
  *     using google::cloud::spanner::Value;
@@ -64,12 +72,19 @@ class SqlStatement {
   using ParamType = std::unordered_map<std::string, Value>;
 
   SqlStatement() = default;
-  /// Constructs a SqlStatement without parameters.
-  explicit SqlStatement(std::string statement)
-      : statement_(std::move(statement)) {}
-  /// Constructs a SqlStatement with specified parameters.
-  SqlStatement(std::string statement, ParamType params)
-      : statement_(std::move(statement)), params_(std::move(params)) {}
+
+  /// Constructs an SqlStatement from the given string literal.
+  template <std::size_t N>
+  explicit SqlStatement(char const (&arr)[N]) : SqlStatement(arr, {}) {}
+
+  /// Constructs an SqlStatement from the given string literal and `params.
+  template <std::size_t N>
+  SqlStatement(char const (&arr)[N], ParamType params)
+      : statement_(arr, N - 1), params_(std::move(params)) {
+    // TODO(XXX): Look into compiler-specific extensions/attributes that will
+    // allow us better enforce that these are compile-time literals.
+    static_assert(N > 0, "String literal required");
+  }
 
   /// Copy and move.
   SqlStatement(SqlStatement const&) = default;
@@ -91,12 +106,43 @@ class SqlStatement {
   }
 
  private:
+  // Constructs an SqlStatement with specified parameters.
+  SqlStatement(std::string statement, ParamType params)
+      : statement_(std::move(statement)), params_(std::move(params)) {}
+
   friend std::ostream& operator<<(std::ostream& os, SqlStatement const& stmt);
   friend internal::SqlStatementProto internal::ToProto(SqlStatement s);
+  friend SqlStatement MakeUntrustedSqlStatement(std::string statement,
+                                                SqlStatement::ParamType params);
 
   std::string statement_;
   ParamType params_;
 };
+
+/**
+ * Constructs an SqlStatement form the given string and optional params.
+ *
+ * @warning It is the caller's responsibility to ensure that the `statement`
+ *     argument is safe and free from SQL injection attacks. Whenver possible,
+ *     it is safer to use the `SqlStatement` constructors which require (as
+ *     much as possible) that the SQL string was given at compile-time and is
+ *     therefore safe from user influence.
+ *
+ * @par Example
+ *
+ *   // PREFERRED
+ *   SqlStatement sql1("select ....");  // Safe compile-time string
+ *
+ *   // WHEN YOU MUST
+ *   std::string s;
+ *   if (UserCodeToVerifyStringIsSafe(s)) {
+ *     SqlStatement sql2 = MakeUntrusted(s);
+ *   }
+ */
+inline SqlStatement MakeUntrustedSqlStatement(
+    std::string statement, SqlStatement::ParamType params = {}) {
+  return SqlStatement(std::move(statement), std::move(params));
+}
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner

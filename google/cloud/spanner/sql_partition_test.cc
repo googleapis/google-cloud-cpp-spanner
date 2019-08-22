@@ -42,7 +42,7 @@ class SqlPartitionTester {
 namespace {
 
 TEST(SqlPartitionTest, MakeSqlPartition) {
-  std::string stmt("select * from foo where name = @name");
+  auto const& stmt = "select * from foo where name = @name";
   SqlStatement::ParamType params = {{"name", Value("Bob")}};
   std::string partition_token("token");
   std::string session_id("session");
@@ -58,7 +58,7 @@ TEST(SqlPartitionTest, MakeSqlPartition) {
 }
 
 TEST(SqlPartitionTest, Constructor) {
-  std::string stmt("select * from foo where name = @name");
+  auto const& stmt = "select * from foo where name = @name";
   SqlStatement::ParamType params = {{"name", Value("Bob")}};
   std::string partition_token("token");
   std::string session_id("session");
@@ -74,7 +74,7 @@ TEST(SqlPartitionTest, Constructor) {
 }
 
 TEST(SqlPartitionTester, RegularSemantics) {
-  std::string stmt("select * from foo where name = @name");
+  auto const& stmt = "select * from foo where name = @name";
   SqlStatement::ParamType params = {{"name", Value("Bob")}};
   std::string partition_token("token");
   std::string session_id("session");

@@ -80,9 +80,9 @@ StatusOr<SqlPartition> DeserializeSqlPartition(
     }
   }
 
-  SqlPartition sql_partition(proto.transaction().id(), proto.session(),
-                             proto.partition_token(),
-                             SqlStatement(proto.sql(), sql_parameters));
+  SqlPartition sql_partition(
+      proto.transaction().id(), proto.session(), proto.partition_token(),
+      MakeUntrustedSqlStatement(proto.sql(), sql_parameters));
   return sql_partition;
 }
 
