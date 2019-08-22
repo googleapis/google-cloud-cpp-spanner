@@ -400,8 +400,8 @@ void QueryDataWithArrayOfStruct(google::cloud::spanner::Client client) {
   namespace spanner = google::cloud::spanner;
   // [START spanner_create_array_of_struct_with_data]
   // Cloud Spanner STRUCT<> types with named fields are represented by
-  // std::tuple<std::pair<std::string, Ts>...>, create an alias to make it
-  // easier to follow this code.
+  // std::tuple<std::pair<std::string, T>...>, create an alias to make it easier
+  // to follow this code.
   using SingerName = std::tuple<std::pair<std::string, std::string>,
                                 std::pair<std::string, std::string>>;
   auto make_name = [](std::string first_name, std::string last_name) {
