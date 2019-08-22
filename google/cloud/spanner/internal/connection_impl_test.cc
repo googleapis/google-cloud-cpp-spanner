@@ -523,7 +523,7 @@ TEST(ConnectionImplTest, PartitionReadSuccess) {
       .WillOnce(Return(partition_response));
 
   StatusOr<std::vector<ReadPartition>> result = conn.PartitionRead(
-      {MakeSingleUseTransaction(Transaction::ReadOnlyOptions()),
+      {MakeReadOnlyTransaction(Transaction::ReadOnlyOptions()),
        "table",
        KeySet::All(),
        {"UserId", "UserName"},
@@ -562,7 +562,7 @@ TEST(ConnectionImplTest, PartitionReadFailure) {
       .WillOnce(Return(failed_status));
 
   StatusOr<std::vector<ReadPartition>> result = conn.PartitionRead(
-      {MakeSingleUseTransaction(Transaction::ReadOnlyOptions()),
+      {MakeReadOnlyTransaction(Transaction::ReadOnlyOptions()),
        "table",
        KeySet::All(),
        {"UserId", "UserName"},
