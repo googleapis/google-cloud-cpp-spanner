@@ -136,7 +136,8 @@ void Quickstart(std::string const& project_id, std::string const& instance_id,
   spanner::Client client(spanner::MakeConnection(
       spanner::Database(project_id, instance_id, database_id)));
 
-  auto reader = client.ExecuteSql(spanner::SqlStatement("SELECT 'Hello Word'"));
+  auto reader =
+      client.ExecuteSql(spanner::SqlStatement("SELECT 'Hello World'"));
   if (!reader) throw std::runtime_error(reader.status().message());
 
   for (auto row : reader->Rows<std::string>()) {
