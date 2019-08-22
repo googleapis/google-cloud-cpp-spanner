@@ -57,9 +57,30 @@ class ConnectionImpl : public Connection {
    public:
     SessionHolder(std::string session, ConnectionImpl* conn) noexcept
         : session_(std::move(session)), conn_(conn) {}
+
+    // This class is move-only because we want only one destructor returning the
+    // session back to `conn_`.
+    SessionHolder(SessionHolder const&) = delete;
+    SessionHolder& operator=(SessionHolder const&) = delete;
+
+    // Need explicit move constructor and assignment to clear the `conn_` from
+    // the source.
+    SessionHolder(SessionHolder&& rhs) noexcept
+        : session_(std::move(rhs.session_)), conn_(rhs.conn_) {
+      rhs.conn_ = nullptr;
+    }
+
+    SessionHolder& operator=(SessionHolder&& rhs) noexcept {
+      session_ = std::move(rhs.session_);
+      conn_ = rhs.conn_;
+      rhs.conn_ = nullptr;
+      return *this;
+    }
+
     ~SessionHolder() {
-      conn_->ReleaseSession(std::move(session_));
-      session_.clear();
+      if (conn_) {
+        conn_->ReleaseSession(std::move(session_));
+      }
     }
 
     std::string const& session_name() const { return session_; }
