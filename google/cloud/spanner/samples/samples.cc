@@ -487,17 +487,22 @@ void FieldAccessOnStructParameters(google::cloud::spanner::Client client) {
 //! [START spanner_field_access_on_nested_struct]
 void FieldAccessOnNestedStruct(google::cloud::spanner::Client client) {
   namespace spanner = google::cloud::spanner;
-  using SingerFullName = std::tuple<std::string, std::string>;
 
   // Cloud Spanner STRUCT<> with named fields is represented as
   // tuple<pair<string, T>...>. Create a type alias for this example:
+  using SingerFullName = std::tuple<std::pair<std::string, std::string>,
+                                    std::pair<std::string, std::string>>;
+  auto make_name = [](std::string fname, std::string lname) {
+    return SingerFullName({"FirstName", std::move(fname)},
+                          {"LastName", std::move(lname)});
+  };
   using SongInfo =
       std::tuple<std::pair<std::string, std::string>,
                  std::pair<std::string, std::vector<SingerFullName>>>;
-  auto songinfo = SongInfo({"SongName", "Imagination"},
-                           {"ArtistNames",
-                            {SingerFullName{"Elena", "Campbell"},
-                             SingerFullName{"Hannah", "Harris"}}});
+  auto songinfo = SongInfo(
+      {"SongName", "Imagination"},
+      {"ArtistNames",
+       {make_name("Elena", "Campbell"), make_name("Hannah", "Harris")}});
 
   auto reader = client.ExecuteSql(spanner::SqlStatement(
       "SELECT SingerId, @songinfo.SongName FROM Singers"
