@@ -112,7 +112,7 @@ class ConnectionImpl : public Connection {
   // The current session pool.
   // TODO(#307) - improve session refresh and expiration.
   std::mutex mu_;
-  std::vector<std::string> sessions_;
+  std::vector<std::string> sessions_;  // GUARDED_BY(mu_)
 };
 
 }  // namespace internal
