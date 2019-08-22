@@ -49,8 +49,8 @@ StatusOr<ResultSet> Client::Read(Transaction transaction, std::string table,
                       std::move(columns), std::move(read_options)});
 }
 
-StatusOr<ResultSet> Client::Read(SqlPartition const& /*partition*/) {
-  return Status(StatusCode::kUnimplemented, "not implemented");
+StatusOr<ResultSet> Client::Read(ReadPartition const& partition /*partition*/) {
+  return conn_->Read(partition);
 }
 
 StatusOr<std::vector<ReadPartition>> Client::PartitionRead(

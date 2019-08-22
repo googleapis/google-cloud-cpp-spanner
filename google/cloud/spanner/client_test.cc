@@ -39,6 +39,7 @@ namespace spanner_proto = ::google::spanner::v1;
 using ::google::cloud::internal::make_unique;
 using ::google::protobuf::TextFormat;
 using ::testing::_;
+using ::testing::A;
 using ::testing::ByMove;
 using ::testing::DoAll;
 using ::testing::ElementsAre;
@@ -49,6 +50,7 @@ using ::testing::SaveArg;
 class MockConnection : public Connection {
  public:
   MOCK_METHOD1(Read, StatusOr<ResultSet>(ReadParams));
+  MOCK_METHOD1(Read, StatusOr<ResultSet>(ReadPartition));
   MOCK_METHOD2(PartitionRead,
                StatusOr<std::vector<ReadPartition>>(ReadParams const&,
                                                     PartitionOptions));
@@ -120,7 +122,8 @@ TEST(ClientTest, ReadSuccess) {
       .WillOnce(Return(optional<Value>()));
 
   ResultSet result_set(std::move(source));
-  EXPECT_CALL(*conn, Read(_)).WillOnce(Return(ByMove(std::move(result_set))));
+  EXPECT_CALL(*conn, Read(A<Connection::ReadParams>()))
+      .WillOnce(Return(ByMove(std::move(result_set))));
 
   KeySet keys = KeySet::All();
   auto result = client.Read("table", std::move(keys), {"column1", "column2"});
@@ -164,7 +167,8 @@ TEST(ClientTest, ReadFailure) {
       .WillOnce(Return(Status(StatusCode::kDeadlineExceeded, "deadline!")));
 
   ResultSet result_set(std::move(source));
-  EXPECT_CALL(*conn, Read(_)).WillOnce(Return(ByMove(std::move(result_set))));
+  EXPECT_CALL(*conn, Read(A<Connection::ReadParams>()))
+      .WillOnce(Return(ByMove(std::move(result_set))));
 
   KeySet keys = KeySet::All();
   auto result = client.Read("table", std::move(keys), {"column1"});
@@ -357,7 +361,7 @@ TEST(ClientTest, RunTransactionCommit) {
   Transaction txn = MakeReadWriteTransaction();  // dummy
   Connection::ReadParams actual_read_params{txn, {}, {}, {}, {}};
   Connection::CommitParams actual_commit_params{txn, {}};
-  EXPECT_CALL(*conn, Read(_))
+  EXPECT_CALL(*conn, Read(A<Connection::ReadParams>()))
       .WillOnce(
           DoAll(SaveArg<0>(&actual_read_params), Return(ByMove(ResultSet{}))));
   EXPECT_CALL(*conn, Commit(_))
@@ -386,7 +390,7 @@ TEST(ClientTest, RunTransactionRollback) {
   auto conn = std::make_shared<MockConnection>();
   Transaction txn = MakeReadWriteTransaction();  // dummy
   Connection::ReadParams actual_read_params{txn, {}, {}, {}, {}};
-  EXPECT_CALL(*conn, Read(_))
+  EXPECT_CALL(*conn, Read(A<Connection::ReadParams>()))
       .WillOnce(
           DoAll(SaveArg<0>(&actual_read_params),
                 Return(ByMove(Status(StatusCode::kInvalidArgument, "blah")))));
@@ -413,7 +417,7 @@ TEST(ClientTest, RunTransactionRollbackError) {
   auto conn = std::make_shared<MockConnection>();
   Transaction txn = MakeReadWriteTransaction();  // dummy
   Connection::ReadParams actual_read_params{txn, {}, {}, {}, {}};
-  EXPECT_CALL(*conn, Read(_))
+  EXPECT_CALL(*conn, Read(A<Connection::ReadParams>()))
       .WillOnce(
           DoAll(SaveArg<0>(&actual_read_params),
                 Return(ByMove(Status(StatusCode::kInvalidArgument, "blah")))));
@@ -441,7 +445,7 @@ TEST(ClientTest, RunTransactionRollbackError) {
 #if GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
 TEST(ClientTest, RunTransactionException) {
   auto conn = std::make_shared<MockConnection>();
-  EXPECT_CALL(*conn, Read(_))
+  EXPECT_CALL(*conn, Read(A<Connection::ReadParams>()))
       .WillOnce(Return(ByMove(Status(StatusCode::kInvalidArgument, "blah"))));
   EXPECT_CALL(*conn, Rollback(_)).WillOnce(Return(Status()));
 

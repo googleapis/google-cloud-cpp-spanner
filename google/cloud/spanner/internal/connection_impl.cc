@@ -15,6 +15,7 @@
 #include "google/cloud/spanner/internal/connection_impl.h"
 #include "google/cloud/spanner/internal/partial_result_set_reader.h"
 #include "google/cloud/spanner/internal/time.h"
+#include "google/cloud/spanner/read_partition.h"
 #include "google/cloud/internal/make_unique.h"
 #include <google/spanner/v1/spanner.pb.h>
 
@@ -27,6 +28,15 @@ namespace internal {
 namespace spanner_proto = ::google::spanner::v1;
 
 StatusOr<ResultSet> ConnectionImpl::Read(ReadParams rp) {
+  return internal::Visit(
+      std::move(rp.transaction),
+      [this, &rp](spanner_proto::TransactionSelector& s, std::int64_t) {
+        return Read(s, std::move(rp));
+      });
+}
+
+StatusOr<ResultSet> ConnectionImpl::Read(ReadPartition read_partition) {
+  ReadParams rp = internal::MakeReadParams(read_partition);
   return internal::Visit(
       std::move(rp.transaction),
       [this, &rp](spanner_proto::TransactionSelector& s, std::int64_t) {
@@ -83,12 +93,18 @@ StatusOr<ConnectionImpl::SessionHolder> ConnectionImpl::GetSession() {
 
 StatusOr<ResultSet> ConnectionImpl::Read(spanner_proto::TransactionSelector& s,
                                          ReadParams rp) {
-  auto session = GetSession();
-  if (!session) {
-    return std::move(session).status();
-  }
   spanner_proto::ReadRequest request;
-  request.set_session(session->session_name());
+  // TODO(#307): Refactor once correct location for session implemented.
+  if (rp.session_name) {
+    request.set_session(*rp.session_name);
+  } else {
+    auto session = GetSession();
+    if (!session) {
+      return std::move(session).status();
+    }
+    request.set_session(session->session_name());
+  }
+
   *request.mutable_transaction() = s;
   request.set_table(std::move(rp.table));
   request.set_index(std::move(rp.read_options.index_name));

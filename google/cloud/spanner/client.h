@@ -171,13 +171,13 @@ class Client {
    * to `PartitionRead` to obtain the partition information; see the
    * documentation of that method for full details.
    *
-   * @param partition A `SqlPartition`, obtained by calling `PartitionRead`.
+   * @param partition A `ReadPartition`, obtained by calling `PartitionRead`.
    *
    * @return A `StatusOr` containing a `ResultSet` or error status on failure.
    *     No individual row in the `ResultSet` can exceed 100 MiB, and no column
    *     value can exceed 10 MiB.
    */
-  StatusOr<ResultSet> Read(SqlPartition const& partition);
+  StatusOr<ResultSet> Read(ReadPartition const& partition);
 
   /**
    * Creates a set of partitions that can be used to execute a read
@@ -205,7 +205,7 @@ class Client {
    * @param read_options `ReadOptions` used for this request.
    * @param partition_options `PartitionOptions` used for this request.
    *
-   * @return A `StatusOr` containing a vector of `SqlPartition` or error
+   * @return A `StatusOr` containing a vector of `ReadPartition` or error
    *     status on failure.
    */
   StatusOr<std::vector<ReadPartition>> PartitionRead(

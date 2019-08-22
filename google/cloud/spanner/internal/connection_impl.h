@@ -45,6 +45,7 @@ class ConnectionImpl : public Connection {
       : db_(std::move(db)), stub_(std::move(stub)) {}
 
   StatusOr<ResultSet> Read(ReadParams rp) override;
+  StatusOr<ResultSet> Read(ReadPartition read_partition) override;
   StatusOr<std::vector<ReadPartition>> PartitionRead(
       ReadParams const& rp, PartitionOptions partition_options) override;
   StatusOr<ResultSet> ExecuteSql(ExecuteSqlParams esp) override;
