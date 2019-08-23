@@ -601,7 +601,7 @@ TEST(ConnectionImplTest, MultipleThreads) {
             return Status();
           }));
 
-  auto conn = std::make_shared<ConnectionImpl>(db, mock);
+  ConnectionImpl conn(db, mock);
 
   int const per_thread_iterations = 1000;
   auto const thread_count = []() -> unsigned {
@@ -611,8 +611,7 @@ TEST(ConnectionImplTest, MultipleThreads) {
     return std::thread::hardware_concurrency();
   }();
 
-  auto runner = [](int thread_id, int iterations,
-                   std::shared_ptr<Connection> const& conn) {
+  auto runner = [](int thread_id, int iterations, Connection& conn) {
     for (int i = 0; i != iterations; ++i) {
       auto txn = MakeReadWriteTransaction();
       auto begin_transaction = [thread_id, i](
@@ -622,15 +621,15 @@ TEST(ConnectionImplTest, MultipleThreads) {
         return 0;
       };
       internal::Visit(txn, begin_transaction);
-      auto rollback = conn->Rollback({txn});
+      auto rollback = conn.Rollback({txn});
       EXPECT_TRUE(rollback.ok());
     }
   };
 
   std::vector<std::future<void>> tasks;
   for (unsigned i = 0; i != thread_count; ++i) {
-    tasks.push_back(
-        std::async(std::launch::async, runner, i, per_thread_iterations, conn));
+    tasks.push_back(std::async(std::launch::async, runner, i,
+                               per_thread_iterations, std::ref(conn)));
   }
 
   for (auto& f : tasks) {
