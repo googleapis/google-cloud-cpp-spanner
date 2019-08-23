@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['read_5foptions',['read_options',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ReadParams.html#aebbc3d1e8aa6ccb148c77a79cb346bdd',1,'google::cloud::spanner::v0::Connection::ReadParams']]],
-  ['read_5fparams',['read_params',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1PartitionReadParams.html#a443a8d382b44c50ed7c08672291e128f',1,'google::cloud::spanner::v0::Connection::PartitionReadParams']]]
+  ['session_5fname',['session_name',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ReadParams.html#a0d6619b4783d35a0c342b02561ae4cd4',1,'google::cloud::spanner::v0::Connection::ReadParams']]],
+  ['statement',['statement',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ExecuteSqlParams.html#a62bbdf511297e5c246237b89395e4aa4',1,'google::cloud::spanner::v0::Connection::ExecuteSqlParams']]]
 ];

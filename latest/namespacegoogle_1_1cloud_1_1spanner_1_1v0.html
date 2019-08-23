@@ -144,9 +144,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The representation of a Cloud Spanner transaction.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1TransactionAction.html">TransactionAction</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute a function in the context of a read-write transaction, with automatic retries if the transaction commit results in an abort.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1TransactionAction.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a> class represents a type-safe, nullable Spanner value.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -162,6 +159,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a715266c430725251bb817767f12bbd4a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a715266c430725251bb817767f12bbd4a">PartitionOptions</a> = google::spanner::v1::PartitionOptions</td></tr>
 <tr class="memdesc:a715266c430725251bb817767f12bbd4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options passed to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae79520d087ff55c903e2351c5d36a446" title="Creates a set of partitions that can be used to execute a read operation in parallel.">Client::PartitionRead</a></code> or <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a16562c3416868563f18792b4971e7b0b" title="Creates a set of partitions that can be used to execute a query operation in parallel.">Client::PartitionQuery</a></code>  <a href="#a715266c430725251bb817767f12bbd4a">More...</a><br /></td></tr>
 <tr class="separator:a715266c430725251bb817767f12bbd4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a283421d14e4073e59922c9168d880cae"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a283421d14e4073e59922c9168d880cae">Mutations</a> = std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html">Mutation</a> &gt;</td></tr>
+<tr class="memdesc:a283421d14e4073e59922c9168d880cae"><td class="mdescLeft">&#160;</td><td class="mdescRight">An ordered sequence of mutations to pass to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a9349cc0b3fb4d9d83721e642bfcc1102" title="Commits a read-write transaction.">Client::Commit()</a></code> or return from the <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a2b3c02170a0a8a1288b396092f98438c" title="Execute a function in the context of a read-write transaction, with automatic retries if the transact...">Client::RunTransaction()</a></code> functor.  <a href="#a283421d14e4073e59922c9168d880cae">More...</a><br /></td></tr>
+<tr class="separator:a283421d14e4073e59922c9168d880cae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7447c52a5348dfc769538a160c0d455a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7447c52a5348dfc769538a160c0d455a">InsertMutationBuilder</a> = internal::WriteMutationBuilder&lt; internal::InsertOp &gt;</td></tr>
 <tr class="memdesc:a7447c52a5348dfc769538a160c0d455a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper class to construct "insert" mutations.  <a href="#a7447c52a5348dfc769538a160c0d455a">More...</a><br /></td></tr>
 <tr class="separator:a7447c52a5348dfc769538a160c0d455a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -198,8 +198,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a32bb677bd1afd6530d82b3e76569acb8"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html">Connection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a32bb677bd1afd6530d82b3e76569acb8">MakeConnection</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const  &amp;db, std::shared_ptr&lt; grpc::ChannelCredentials &gt; const  &amp;creds=grpc::GoogleDefaultCredentials(), std::string const  &amp;endpoint=&quot;spanner.googleapis.com&quot;)</td></tr>
 <tr class="memdesc:a32bb677bd1afd6530d82b3e76569acb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner.  <a href="#a32bb677bd1afd6530d82b3e76569acb8">More...</a><br /></td></tr>
 <tr class="separator:a32bb677bd1afd6530d82b3e76569acb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b6ae7089a05e31cfaa31026c5e658eb"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html">CommitResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a3b6ae7089a05e31cfaa31026c5e658eb">RunTransaction</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a> client, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1ReadWriteOptions.html">Transaction::ReadWriteOptions</a> const &amp;opts, std::function&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1TransactionAction.html">TransactionAction</a>(<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>)&gt; const &amp;f)</td></tr>
-<tr class="separator:a3b6ae7089a05e31cfaa31026c5e658eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b3c02170a0a8a1288b396092f98438c"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html">CommitResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a2b3c02170a0a8a1288b396092f98438c">RunTransaction</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a> client, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1ReadWriteOptions.html">Transaction::ReadWriteOptions</a> const  &amp;opts, std::function&lt; StatusOr&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a283421d14e4073e59922c9168d880cae">Mutations</a> &gt;(<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>)&gt; const  &amp;f)</td></tr>
+<tr class="memdesc:a2b3c02170a0a8a1288b396092f98438c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute a function in the context of a read-write transaction, with automatic retries if the transaction commit results in an abort.  <a href="#a2b3c02170a0a8a1288b396092f98438c">More...</a><br /></td></tr>
+<tr class="separator:a2b3c02170a0a8a1288b396092f98438c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fdf3555f02b3585a5754d36d6bc1b53"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a5fdf3555f02b3585a5754d36d6bc1b53">operator==</a> (<a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadOptions.html">ReadOptions</a> const &amp;lhs, <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadOptions.html">ReadOptions</a> const &amp;rhs)</td></tr>
 <tr class="separator:a5fdf3555f02b3585a5754d36d6bc1b53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accc45a0781ce20f70cbb81f22cc6765e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#accc45a0781ce20f70cbb81f22cc6765e">operator!=</a> (<a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadOptions.html">ReadOptions</a> const &amp;lhs, <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadOptions.html">ReadOptions</a> const &amp;rhs)</td></tr>
@@ -363,7 +364,7 @@ Functions</h2></td></tr>
 <dd>
 <a href="https://cloud.google.com/spanner/docs/modify-mutation-api">https://cloud.google.com/spanner/docs/modify-mutation-api</a> for more information about the Cloud Spanner mutation API. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00266">266</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00273">273</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -402,7 +403,7 @@ Functions</h2></td></tr>
 <dd>
 <a href="https://cloud.google.com/spanner/docs/modify-mutation-api">https://cloud.google.com/spanner/docs/modify-mutation-api</a> for more information about the Cloud Spanner mutation API. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00181">181</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00188">188</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -423,7 +424,7 @@ Functions</h2></td></tr>
 <dd>
 <a href="https://cloud.google.com/spanner/docs/modify-mutation-api">https://cloud.google.com/spanner/docs/modify-mutation-api</a> for more information about the Cloud Spanner mutation API. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00223">223</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00230">230</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -463,6 +464,24 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a283421d14e4073e59922c9168d880cae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a283421d14e4073e59922c9168d880cae">&#9670;&nbsp;</a></span>Mutations</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a283421d14e4073e59922c9168d880cae">google::cloud::spanner::v0::Mutations</a> = typedef std::vector&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html">Mutation</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>An ordered sequence of mutations to pass to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a9349cc0b3fb4d9d83721e642bfcc1102" title="Commits a read-write transaction.">Client::Commit()</a></code> or return from the <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a2b3c02170a0a8a1288b396092f98438c" title="Execute a function in the context of a read-write transaction, with automatic retries if the transact...">Client::RunTransaction()</a></code> functor. </p>
+
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00093">93</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+
+</div>
+</div>
 <a id="a715266c430725251bb817767f12bbd4a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a715266c430725251bb817767f12bbd4a">&#9670;&nbsp;</a></span>PartitionOptions</h2>
 
@@ -498,7 +517,7 @@ Functions</h2></td></tr>
 <dd>
 <a href="https://cloud.google.com/spanner/docs/modify-mutation-api">https://cloud.google.com/spanner/docs/modify-mutation-api</a> for more information about the Cloud Spanner mutation API. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00246">246</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00253">253</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -558,7 +577,7 @@ Functions</h2></td></tr>
 <dd>
 <a href="https://cloud.google.com/spanner/docs/modify-mutation-api">https://cloud.google.com/spanner/docs/modify-mutation-api</a> for more information about the Cloud Spanner mutation API. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00202">202</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00209">209</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -785,7 +804,7 @@ template&lt;typename RowType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00117">117</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00118">118</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -825,7 +844,7 @@ template&lt;typename RowType &gt; </div>
 
 <p>Creates a simple "delete" mutation for the values in <code>keys</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00269">269</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00276">276</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -865,7 +884,7 @@ template&lt;typename... Ts&gt; </div>
 
 <p>Creates a simple insert mutation for the values in <code>values</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00185">185</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00192">192</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -905,7 +924,7 @@ template&lt;typename... Ts&gt; </div>
 
 <p>Creates a simple "insert or update" mutation for the values in <code>values</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00227">227</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00234">234</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -1121,7 +1140,7 @@ template&lt;typename... Ts&gt; </div>
 
 <p>Creates a simple "replace" mutation for the values in <code>values</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00250">250</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00257">257</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -1187,7 +1206,7 @@ template&lt;typename... Ts&gt; </div>
 
 <p>Creates a simple update mutation for the values in <code>values</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00206">206</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00213">213</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -1913,8 +1932,8 @@ template&lt;typename... Ts&gt; </div>
 
 </div>
 </div>
-<a id="a3b6ae7089a05e31cfaa31026c5e658eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b6ae7089a05e31cfaa31026c5e658eb">&#9670;&nbsp;</a></span>RunTransaction()</h2>
+<a id="a2b3c02170a0a8a1288b396092f98438c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b3c02170a0a8a1288b396092f98438c">&#9670;&nbsp;</a></span>RunTransaction()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1934,7 +1953,7 @@ template&lt;typename... Ts&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::function&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1TransactionAction.html">TransactionAction</a>(<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>)&gt; const &amp;&#160;</td>
+          <td class="paramtype">std::function&lt; StatusOr&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a283421d14e4073e59922c9168d880cae">Mutations</a> &gt;(<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>)&gt; const &amp;&#160;</td>
           <td class="paramname"><em>f</em>&#160;</td>
         </tr>
         <tr>
@@ -1945,7 +1964,11 @@ template&lt;typename... Ts&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00124">124</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p>Execute a function in the context of a read-write transaction, with automatic retries if the transaction commit results in an abort. </p>
+<p>The caller-provided function will be passed the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> argument and a newly created read-write <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code>. It should use these objects to issue any <code>Read()</code>s, <code>ExecuteSql()</code>s, etc., and return the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html" title="A wrapper for Cloud Spanner mutations.">Mutation</a></code>s to commit, or an error (which causes the transaction to be rolled back).</p>
+<p>The lock priority of the transaction increases after each prior aborted transaction, meaning that the next attempt has a slightly better chance of success than before. </p>
+
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00125">125</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>

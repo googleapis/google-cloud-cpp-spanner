@@ -5,7 +5,7 @@ var searchData=
   ['clog_5fenabled',['clog_enabled',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#a36e8cc4d1925957369386b06d524c22e',1,'google::cloud::spanner::v0::ClientOptions']]],
   ['clone',['clone',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1PollingPolicy.html#a84ec286d5ba523c4c9816dc95efc4ff3',1,'google::cloud::spanner::v0::PollingPolicy::clone()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1GenericPollingPolicy.html#a34768dd99b02713cbc62d4e0608d045e',1,'google::cloud::spanner::v0::GenericPollingPolicy::clone()']]],
   ['columnnames',['ColumnNames',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html#a71d1587b4b7f5c2e0611611f1edd3e76',1,'google::cloud::spanner::v0::ReadPartition']]],
-  ['commit',['Commit',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a5d534ef251845879a66a230e3ea36f51',1,'google::cloud::spanner::v0::Client::Commit()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html#af9dcaf771cff2baac2d35e6fbc03e0f5',1,'google::cloud::spanner::v0::Connection::Commit()']]],
+  ['commit',['Commit',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a9349cc0b3fb4d9d83721e642bfcc1102',1,'google::cloud::spanner::v0::Client::Commit()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html#af9dcaf771cff2baac2d35e6fbc03e0f5',1,'google::cloud::spanner::v0::Connection::Commit()']]],
   ['createdatabase',['CreateDatabase',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#a08b823f9dfa04793e55977615502d50e',1,'google::cloud::spanner::v0::DatabaseAdminClient']]],
   ['credentials',['credentials',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#a3dd8f218a33418ed16cd996e022f5d98',1,'google::cloud::spanner::v0::ClientOptions']]]
 ];
