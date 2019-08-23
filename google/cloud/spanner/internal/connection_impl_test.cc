@@ -523,12 +523,12 @@ TEST(ConnectionImplTest, PartitionReadSuccess) {
       .WillOnce(Return(partition_response));
 
   StatusOr<std::vector<ReadPartition>> result = conn.PartitionRead(
-      {MakeReadOnlyTransaction(Transaction::ReadOnlyOptions()),
-       "table",
-       KeySet::All(),
-       {"UserId", "UserName"},
-       ReadOptions()},
-      PartitionOptions());
+      {{MakeReadOnlyTransaction(Transaction::ReadOnlyOptions()),
+        "table",
+        KeySet::All(),
+        {"UserId", "UserName"},
+        ReadOptions()},
+       PartitionOptions()});
   EXPECT_STATUS_OK(result);
 
   std::vector<ReadPartition> expected_read_partitions = {
@@ -562,12 +562,12 @@ TEST(ConnectionImplTest, PartitionReadFailure) {
       .WillOnce(Return(failed_status));
 
   StatusOr<std::vector<ReadPartition>> result = conn.PartitionRead(
-      {MakeReadOnlyTransaction(Transaction::ReadOnlyOptions()),
-       "table",
-       KeySet::All(),
-       {"UserId", "UserName"},
-       ReadOptions()},
-      PartitionOptions());
+      {{MakeReadOnlyTransaction(Transaction::ReadOnlyOptions()),
+        "table",
+        KeySet::All(),
+        {"UserId", "UserName"},
+        ReadOptions()},
+       PartitionOptions()});
   EXPECT_FALSE(result.ok());
   EXPECT_EQ(result.status(), failed_status);
 }

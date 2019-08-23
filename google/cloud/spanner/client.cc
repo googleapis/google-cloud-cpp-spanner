@@ -58,9 +58,9 @@ StatusOr<std::vector<ReadPartition>> Client::PartitionRead(
     std::vector<std::string> columns, ReadOptions read_options,
     PartitionOptions partition_options) {
   return conn_->PartitionRead(
-      {std::move(transaction), std::move(table), std::move(keys),
-       std::move(columns), std::move(read_options)},
-      std::move(partition_options));
+      {{std::move(transaction), std::move(table), std::move(keys),
+        std::move(columns), std::move(read_options)},
+       std::move(partition_options)});
 }
 
 StatusOr<ResultSet> Client::ExecuteSql(SqlStatement statement) {

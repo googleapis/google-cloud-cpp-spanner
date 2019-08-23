@@ -51,9 +51,8 @@ class MockConnection : public Connection {
  public:
   MOCK_METHOD1(Read, StatusOr<ResultSet>(ReadParams));
   MOCK_METHOD1(Read, StatusOr<ResultSet>(ReadPartition));
-  MOCK_METHOD2(PartitionRead,
-               StatusOr<std::vector<ReadPartition>>(ReadParams,
-                                                    PartitionOptions));
+  MOCK_METHOD1(PartitionRead,
+               StatusOr<std::vector<ReadPartition>>(PartitionReadParams));
   MOCK_METHOD1(ExecuteSql, StatusOr<ResultSet>(ExecuteSqlParams));
   MOCK_METHOD1(Commit, StatusOr<CommitResult>(CommitParams));
   MOCK_METHOD1(Rollback, Status(RollbackParams));

@@ -73,8 +73,13 @@ class Connection {
   };
   virtual StatusOr<ResultSet> Read(ReadParams) = 0;
 
+  struct PartitionReadParams {
+    ReadParams read_params;
+    PartitionOptions partition_options;
+  };
+
   virtual StatusOr<std::vector<ReadPartition>> PartitionRead(
-      ReadParams, PartitionOptions partition_options) = 0;
+      PartitionReadParams) = 0;
 
   struct ExecuteSqlParams {
     Transaction transaction;

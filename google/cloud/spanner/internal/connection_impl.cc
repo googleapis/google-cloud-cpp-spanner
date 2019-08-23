@@ -36,12 +36,12 @@ StatusOr<ResultSet> ConnectionImpl::Read(ReadParams rp) {
 }
 
 StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionRead(
-    ReadParams rp, PartitionOptions partition_options) {
+    PartitionReadParams prp) {
   return internal::Visit(
-      std::move(rp.transaction),
-      [this, &rp, &partition_options](spanner_proto::TransactionSelector& s,
-                                      std::int64_t) {
-        return PartitionRead(s, rp, std::move(partition_options));
+      std::move(prp.read_params.transaction),
+      [this, &prp](spanner_proto::TransactionSelector& s, std::int64_t) {
+        return PartitionRead(s, prp.read_params,
+                             std::move(prp.partition_options));
       });
 }
 
@@ -214,7 +214,7 @@ Status ConnectionImpl::Rollback(spanner_proto::TransactionSelector& s) {
 }
 
 StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionRead(
-    google::spanner::v1::TransactionSelector& s, ReadParams const& rp,
+    spanner_proto::TransactionSelector& s, ReadParams const& rp,
     PartitionOptions partition_options) {
   auto session = GetSession();
   if (!session) {

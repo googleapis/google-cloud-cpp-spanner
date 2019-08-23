@@ -46,7 +46,7 @@ class ConnectionImpl : public Connection {
 
   StatusOr<ResultSet> Read(ReadParams rp) override;
   StatusOr<std::vector<ReadPartition>> PartitionRead(
-      ReadParams rp, PartitionOptions partition_options) override;
+      PartitionReadParams prp) override;
   StatusOr<ResultSet> ExecuteSql(ExecuteSqlParams esp) override;
   StatusOr<CommitResult> Commit(CommitParams cp) override;
   Status Rollback(RollbackParams rp) override;
