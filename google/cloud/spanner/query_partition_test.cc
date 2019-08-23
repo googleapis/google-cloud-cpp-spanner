@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "google/cloud/spanner/sql_partition.h"
+#include "google/cloud/spanner/query_partition.h"
 #include <gmock/gmock.h>
 
 namespace google {
@@ -80,13 +80,13 @@ TEST(QueryPartitionTester, RegularSemantics) {
   std::string session_id("session");
   std::string transaction_id("foo");
 
-  QueryPartition sql_partition(internal::MakeQueryPartition(
+  QueryPartition query_partition(internal::MakeQueryPartition(
       transaction_id, session_id, partition_token, SqlStatement(stmt, params)));
 
-  EXPECT_NE(sql_partition, QueryPartition());
+  EXPECT_NE(query_partition, QueryPartition());
 
-  QueryPartition copy = sql_partition;
-  EXPECT_EQ(copy, sql_partition);
+  QueryPartition copy = query_partition;
+  EXPECT_EQ(copy, query_partition);
 
   QueryPartition assign;
   assign = copy;

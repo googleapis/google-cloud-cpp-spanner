@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "google/cloud/spanner/sql_partition.h"
+#include "google/cloud/spanner/query_partition.h"
 #include <google/protobuf/map.h>
 #include <google/spanner/v1/spanner.pb.h>
 
@@ -21,9 +21,10 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
-QueryPartition::QueryPartition(std::string transaction_id, std::string session_id,
-                           std::string partition_token,
-                           SqlStatement sql_statement)
+QueryPartition::QueryPartition(std::string transaction_id,
+                               std::string session_id,
+                               std::string partition_token,
+                               SqlStatement sql_statement)
     : transaction_id_(std::move(transaction_id)),
       session_id_(std::move(session_id)),
       partition_token_(std::move(partition_token)),
@@ -36,14 +37,15 @@ bool operator==(QueryPartition const& a, QueryPartition const& b) {
          a.sql_statement_ == b.sql_statement_;
 }
 
-StatusOr<std::string> SerializeQueryPartition(QueryPartition const& sql_partition) {
+StatusOr<std::string> SerializeQueryPartition(
+    QueryPartition const& query_partition) {
   google::spanner::v1::ExecuteSqlRequest proto;
-  proto.set_partition_token(sql_partition.partition_token());
-  proto.set_session(sql_partition.session_id());
-  proto.mutable_transaction()->set_id(sql_partition.transaction_id());
-  proto.set_sql(sql_partition.sql_statement_.sql());
+  proto.set_partition_token(query_partition.partition_token());
+  proto.set_session(query_partition.session_id());
+  proto.mutable_transaction()->set_id(query_partition.transaction_id());
+  proto.set_sql(query_partition.sql_statement_.sql());
 
-  for (auto const& param : sql_partition.sql_statement_.params()) {
+  for (auto const& param : query_partition.sql_statement_.params()) {
     auto const& param_name = param.first;
     auto const& type_value = internal::ToProto(param.second);
     (*proto.mutable_params()->mutable_fields())[param_name] = type_value.second;
@@ -58,9 +60,9 @@ StatusOr<std::string> SerializeQueryPartition(QueryPartition const& sql_partitio
 }
 
 StatusOr<QueryPartition> DeserializeQueryPartition(
-    std::string const& serialized_sql_partition) {
+    std::string const& serialized_query_partition) {
   google::spanner::v1::ExecuteSqlRequest proto;
-  if (!proto.ParseFromString(serialized_sql_partition)) {
+  if (!proto.ParseFromString(serialized_query_partition)) {
     return Status(StatusCode::kInvalidArgument,
                   "Failed to deserialize into QueryPartition");
   }
@@ -80,19 +82,19 @@ StatusOr<QueryPartition> DeserializeQueryPartition(
     }
   }
 
-  QueryPartition sql_partition(proto.transaction().id(), proto.session(),
-                             proto.partition_token(),
-                             SqlStatement(proto.sql(), sql_parameters));
-  return sql_partition;
+  QueryPartition query_partition(proto.transaction().id(), proto.session(),
+                                 proto.partition_token(),
+                                 SqlStatement(proto.sql(), sql_parameters));
+  return query_partition;
 }
 
 namespace internal {
 QueryPartition MakeQueryPartition(std::string const& transaction_id,
-                              std::string const& session_id,
-                              std::string const& partition_token,
-                              SqlStatement const& sql_statement) {
+                                  std::string const& session_id,
+                                  std::string const& partition_token,
+                                  SqlStatement const& sql_statement) {
   return QueryPartition(transaction_id, session_id, partition_token,
-                      sql_statement);
+                        sql_statement);
 }
 
 }  // namespace internal

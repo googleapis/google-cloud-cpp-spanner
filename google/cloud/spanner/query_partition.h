@@ -28,9 +28,10 @@ inline namespace SPANNER_CLIENT_NS {
 class QueryPartition;
 
 /**
- * Serializes an instance of `QueryPartition` for transmission to another process.
+ * Serializes an instance of `QueryPartition` for transmission to another
+ * process.
  *
- * @param sql_partition - instance to be serialized.
+ * @param query_partition - instance to be serialized.
  *
  * @par Example
  *
@@ -46,7 +47,8 @@ class QueryPartition;
  * }
  * @endcode
  */
-StatusOr<std::string> SerializeQueryPartition(QueryPartition const& sql_partition);
+StatusOr<std::string> SerializeQueryPartition(
+    QueryPartition const& query_partition);
 
 /**
  * Deserializes the provided string into a `QueryPartition`, if able.
@@ -54,7 +56,7 @@ StatusOr<std::string> SerializeQueryPartition(QueryPartition const& sql_partitio
  * Returned `Status` should be checked to determine if deserialization was
  * successful.
  *
- * @param serialized_sql_partition
+ * @param serialized_query_partition
  *
  * @par Example
  *
@@ -66,20 +68,20 @@ StatusOr<std::string> SerializeQueryPartition(QueryPartition const& sql_partitio
  * @endcode
  */
 StatusOr<QueryPartition> DeserializeQueryPartition(
-    std::string const& serialized_sql_partition);
+    std::string const& serialized_query_partition);
 
 // Internal implementation details that callers should not use.
 namespace internal {
 
 QueryPartition MakeQueryPartition(std::string const& transaction_id,
-                              std::string const& session_id,
-                              std::string const& partition_token,
-                              SqlStatement const& sql_statement);
+                                  std::string const& session_id,
+                                  std::string const& partition_token,
+                                  SqlStatement const& sql_statement);
 }  // namespace internal
 
 /**
- * The `QueryPartition` class is a regular type that represents a single slice of
- * a parallel SQL read.
+ * The `QueryPartition` class is a regular type that represents a single slice
+ * of a parallel SQL read.
  *
  * Instances of `QueryPartition` are created by `Client::PartitionSql`. Once
  * created, `QueryPartition` objects can be serialized, transmitted to separate
@@ -120,13 +122,13 @@ class QueryPartition {
       std::string const& transaction_id, std::string const& session_id,
       std::string const& partition_token, SqlStatement const& sql_statement);
   friend StatusOr<std::string> SerializeQueryPartition(
-      QueryPartition const& sql_partition);
+      QueryPartition const& query_partition);
   friend StatusOr<QueryPartition> DeserializeQueryPartition(
-      std::string const& serialized_sql_partition);
+      std::string const& serialized_query_partition);
 
   explicit QueryPartition(std::string transaction_id, std::string session_id,
-                        std::string partition_token,
-                        SqlStatement sql_statement);
+                          std::string partition_token,
+                          SqlStatement sql_statement);
 
   // Accessor methods for use by friends.
   std::string const& partition_token() const { return partition_token_; }
