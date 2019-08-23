@@ -21,7 +21,7 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
-SqlPartition::SqlPartition(std::string transaction_id, std::string session_id,
+QueryPartition::QueryPartition(std::string transaction_id, std::string session_id,
                            std::string partition_token,
                            SqlStatement sql_statement)
     : transaction_id_(std::move(transaction_id)),
@@ -29,14 +29,14 @@ SqlPartition::SqlPartition(std::string transaction_id, std::string session_id,
       partition_token_(std::move(partition_token)),
       sql_statement_(std::move(sql_statement)) {}
 
-bool operator==(SqlPartition const& a, SqlPartition const& b) {
+bool operator==(QueryPartition const& a, QueryPartition const& b) {
   return a.transaction_id_ == b.transaction_id_ &&
          a.session_id_ == b.session_id_ &&
          a.partition_token_ == b.partition_token_ &&
          a.sql_statement_ == b.sql_statement_;
 }
 
-StatusOr<std::string> SerializeSqlPartition(SqlPartition const& sql_partition) {
+StatusOr<std::string> SerializeQueryPartition(QueryPartition const& sql_partition) {
   google::spanner::v1::ExecuteSqlRequest proto;
   proto.set_partition_token(sql_partition.partition_token());
   proto.set_session(sql_partition.session_id());
@@ -54,15 +54,15 @@ StatusOr<std::string> SerializeSqlPartition(SqlPartition const& sql_partition) {
     return serialized_proto;
   }
   return Status(StatusCode::kInvalidArgument,
-                "Failed to serialize SqlPartition");
+                "Failed to serialize QueryPartition");
 }
 
-StatusOr<SqlPartition> DeserializeSqlPartition(
+StatusOr<QueryPartition> DeserializeQueryPartition(
     std::string const& serialized_sql_partition) {
   google::spanner::v1::ExecuteSqlRequest proto;
   if (!proto.ParseFromString(serialized_sql_partition)) {
     return Status(StatusCode::kInvalidArgument,
-                  "Failed to deserialize into SqlPartition");
+                  "Failed to deserialize into QueryPartition");
   }
 
   SqlStatement::ParamType sql_parameters;
@@ -80,18 +80,18 @@ StatusOr<SqlPartition> DeserializeSqlPartition(
     }
   }
 
-  SqlPartition sql_partition(proto.transaction().id(), proto.session(),
+  QueryPartition sql_partition(proto.transaction().id(), proto.session(),
                              proto.partition_token(),
                              SqlStatement(proto.sql(), sql_parameters));
   return sql_partition;
 }
 
 namespace internal {
-SqlPartition MakeSqlPartition(std::string const& transaction_id,
+QueryPartition MakeQueryPartition(std::string const& transaction_id,
                               std::string const& session_id,
                               std::string const& partition_token,
                               SqlStatement const& sql_statement) {
-  return SqlPartition(transaction_id, session_id, partition_token,
+  return QueryPartition(transaction_id, session_id, partition_token,
                       sql_statement);
 }
 

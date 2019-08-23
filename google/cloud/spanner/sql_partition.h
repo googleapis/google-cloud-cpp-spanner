@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_SQL_PARTITION_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_SQL_PARTITION_H_
+#ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_QUERY_PARTITION_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_QUERY_PARTITION_H_
 
 #include "google/cloud/spanner/sql_statement.h"
 #include "google/cloud/status_or.h"
@@ -25,10 +25,10 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
-class SqlPartition;
+class QueryPartition;
 
 /**
- * Serializes an instance of `SqlPartition` for transmission to another process.
+ * Serializes an instance of `QueryPartition` for transmission to another process.
  *
  * @param sql_partition - instance to be serialized.
  *
@@ -36,20 +36,20 @@ class SqlPartition;
  *
  * @code
  * spanner::SqlStatement stmt("select * from Albums");
- * std::vector<spanner::SqlPartition> partitions =
+ * std::vector<spanner::QueryPartition> partitions =
  *   spanner_client.PartitionSql(stmt);
  * for (auto const& partition : partitions) {
- *   auto serialized_partition = spanner::SerializeSqlPartition(partition);
+ *   auto serialized_partition = spanner::SerializeQueryPartition(partition);
  *   if (serialized_partition.ok()) {
  *     SendToRemoteMachine(*serialized_partition);
  *   }
  * }
  * @endcode
  */
-StatusOr<std::string> SerializeSqlPartition(SqlPartition const& sql_partition);
+StatusOr<std::string> SerializeQueryPartition(QueryPartition const& sql_partition);
 
 /**
- * Deserializes the provided string into a `SqlPartition`, if able.
+ * Deserializes the provided string into a `QueryPartition`, if able.
  *
  * Returned `Status` should be checked to determine if deserialization was
  * successful.
@@ -60,71 +60,71 @@ StatusOr<std::string> SerializeSqlPartition(SqlPartition const& sql_partition);
  *
  * @code
  * std::string serialized_partition = ReceiveFromRemoteMachine();
- * spanner::SqlPartition partition =
- *   spanner::DeserializeSqlPartition(serialized_partition);
+ * spanner::QueryPartition partition =
+ *   spanner::DeserializeQueryPartition(serialized_partition);
  * auto rows = spanner_client.ExecuteSql(partition);
  * @endcode
  */
-StatusOr<SqlPartition> DeserializeSqlPartition(
+StatusOr<QueryPartition> DeserializeQueryPartition(
     std::string const& serialized_sql_partition);
 
 // Internal implementation details that callers should not use.
 namespace internal {
 
-SqlPartition MakeSqlPartition(std::string const& transaction_id,
+QueryPartition MakeQueryPartition(std::string const& transaction_id,
                               std::string const& session_id,
                               std::string const& partition_token,
                               SqlStatement const& sql_statement);
 }  // namespace internal
 
 /**
- * The `SqlPartition` class is a regular type that represents a single slice of
+ * The `QueryPartition` class is a regular type that represents a single slice of
  * a parallel SQL read.
  *
- * Instances of `SqlPartition` are created by `Client::PartitionSql`. Once
- * created, `SqlPartition` objects can be serialized, transmitted to separate
+ * Instances of `QueryPartition` are created by `Client::PartitionSql`. Once
+ * created, `QueryPartition` objects can be serialized, transmitted to separate
  * process, and used to read data in parallel using `Client::ExecuteSql`.
  */
-class SqlPartition {
+class QueryPartition {
  public:
   /**
-   * Constructs an instance of `SqlPartition` that is not associated with any
+   * Constructs an instance of `QueryPartition` that is not associated with any
    * `SqlStatement`.
    */
-  SqlPartition() = default;
+  QueryPartition() = default;
 
   /// @name Copy and move
   ///@{
-  SqlPartition(SqlPartition const&) = default;
-  SqlPartition(SqlPartition&&) = default;
-  SqlPartition& operator=(SqlPartition const&) = default;
-  SqlPartition& operator=(SqlPartition&&) = default;
+  QueryPartition(QueryPartition const&) = default;
+  QueryPartition(QueryPartition&&) = default;
+  QueryPartition& operator=(QueryPartition const&) = default;
+  QueryPartition& operator=(QueryPartition&&) = default;
   ///@}
 
   /**
-   * Accessor for the `SqlStatement` associated with this `SqlPartition`.
+   * Accessor for the `SqlStatement` associated with this `QueryPartition`.
    */
   SqlStatement const& sql_statement() const { return sql_statement_; }
 
   /// @name Equality
   ///@{
-  friend bool operator==(SqlPartition const& a, SqlPartition const& b);
-  friend bool operator!=(SqlPartition const& a, SqlPartition const& b) {
+  friend bool operator==(QueryPartition const& a, QueryPartition const& b);
+  friend bool operator!=(QueryPartition const& a, QueryPartition const& b) {
     return !(a == b);
   }
   ///@}
 
  private:
-  friend class SqlPartitionTester;
-  friend SqlPartition internal::MakeSqlPartition(
+  friend class QueryPartitionTester;
+  friend QueryPartition internal::MakeQueryPartition(
       std::string const& transaction_id, std::string const& session_id,
       std::string const& partition_token, SqlStatement const& sql_statement);
-  friend StatusOr<std::string> SerializeSqlPartition(
-      SqlPartition const& sql_partition);
-  friend StatusOr<SqlPartition> DeserializeSqlPartition(
+  friend StatusOr<std::string> SerializeQueryPartition(
+      QueryPartition const& sql_partition);
+  friend StatusOr<QueryPartition> DeserializeQueryPartition(
       std::string const& serialized_sql_partition);
 
-  explicit SqlPartition(std::string transaction_id, std::string session_id,
+  explicit QueryPartition(std::string transaction_id, std::string session_id,
                         std::string partition_token,
                         SqlStatement sql_statement);
 
@@ -144,4 +144,4 @@ class SqlPartition {
 }  // namespace cloud
 }  // namespace google
 
-#endif  // GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_SQL_PARTITION_H_
+#endif  // GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_QUERY_PARTITION_H_
