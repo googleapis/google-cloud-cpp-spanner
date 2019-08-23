@@ -82,7 +82,7 @@ StatusOr<QueryPartition> DeserializeQueryPartition(
     }
   }
 
-  QueryPartition query_partition(proto.transaction().id(), proto.session(),
+QueryPartition query_partition(proto.transaction().id(), proto.session(),
                                  proto.partition_token(),
                                  SqlStatement(proto.sql(), sql_parameters));
   return query_partition;
