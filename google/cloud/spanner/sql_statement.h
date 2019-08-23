@@ -53,9 +53,9 @@ SqlStatementProto ToProto(SqlStatement s);
  * @warning SqlStatement requires compile-time string literals for the
  *     `statement` in order to protect against SQL injection attacks. If you
  *     need to compute the SQL query string dynamically at runtime, you may use
- *     the `MakeUntrustedSqlStatement()` function defined below. **It is the
+ *     the `MakeUntrustedSqlStatement()` function defined below. It is the
  *     caller's responsibility to ensure the dynamically generated string is
- *     safe**.
+ *     safe.
  *
  * @par Example
  *
@@ -77,7 +77,7 @@ class SqlStatement {
   template <std::size_t N>
   explicit SqlStatement(char const (&arr)[N]) : SqlStatement(arr, {}) {}
 
-  /// Constructs an SqlStatement from the given string literal and `params.
+  /// Constructs an SqlStatement from the given string literal and @p params.
   template <std::size_t N>
   SqlStatement(char const (&arr)[N], ParamType params)
       : statement_(arr, N - 1), params_(std::move(params)) {
@@ -130,10 +130,10 @@ class SqlStatement {
  *
  * @par Example
  *
- *   // PREFERRED
+ *   // Preferred
  *   SqlStatement sql1("select ....");  // Safe compile-time string
  *
- *   // WHEN YOU MUST
+ *   // When necessary
  *   std::string s;
  *   if (UserCodeToVerifyStringIsSafe(s)) {
  *     SqlStatement sql2 = MakeUntrusted(s);
