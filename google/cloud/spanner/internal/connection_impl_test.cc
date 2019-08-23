@@ -579,7 +579,7 @@ TEST(ConnectionImplTest, MultipleThreads) {
   auto db = Database("project", "instance", "database");
   std::string const session_prefix = "test-session-prefix-";
   std::string const transaction_id = "test-txn-id";
-  int session_counter = 0;
+  std::atomic<int> session_counter(0);
 
   auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
   EXPECT_CALL(*mock, CreateSession(_, _))
