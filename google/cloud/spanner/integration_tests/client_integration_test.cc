@@ -480,8 +480,8 @@ TEST_F(ClientIntegrationTest, Read_ExactStaleness_Latest) {
 /// @test Test read with exact staleness set by a timestamp.
 TEST_F(ClientIntegrationTest, Read_ExactStaleness_Timestamp) {
   CheckReadWithOptions(*client_, [](CommitResult const& result) {
-    return Transaction::SingleUseOptions(
-        Transaction::ReadOnlyOptions(result.commit_timestamp));
+    return Transaction::SingleUseOptions(Transaction::ReadOnlyOptions(
+        /*read_timestamp=*/result.commit_timestamp));
   });
 }
 
@@ -490,9 +490,14 @@ TEST_F(ClientIntegrationTest, Read_ExactStaleness_Duration) {
   // Query the state as-of N nanoseconds ago, where N is shorter than the time
   // since the last commit.
   CheckReadWithOptions(*client_, [](CommitResult const& result) {
+    auto elapsed_since_commit =
+        Timestamp::clock::now() - result.commit_timestamp;
+    auto staleness = elapsed_since_commit;
+    if (staleness.count() > 0) {
+      staleness -= std::chrono::nanoseconds(1);
+    }
     return Transaction::SingleUseOptions(Transaction::ReadOnlyOptions(
-        Timestamp::clock::now() - result.commit_timestamp -
-        Timestamp::duration(1)));
+        /*exact_staleness=*/staleness));
   });
 }
 
