@@ -410,23 +410,26 @@ void CheckReadWithOptions(
         options_generator) {
   using RowType = Row<std::int64_t, std::string, std::string>;
   std::vector<RowType> expected_rows;
-  InsertMutationBuilder insert("Singers",
-                               {"SingerId", "FirstName", "LastName"});
-  for (int i = 1; i != 10; ++i) {
-    auto s = std::to_string(i);
-    auto row = MakeRow(i, "test-fname-" + s, "test-lname-" + s);
-    insert.AddRow(row);
-    expected_rows.push_back(row);
-  }
 
-  auto txn = MakeReadWriteTransaction();
-  auto commit = client.Commit(txn, {insert.Build()});
+  auto commit = RunTransaction(
+      client, Transaction::ReadWriteOptions{},
+      [&expected_rows](Client, Transaction) -> StatusOr<Mutations> {
+        InsertMutationBuilder insert("Singers",
+                                     {"SingerId", "FirstName", "LastName"});
+        for (int i = 1; i != 10; ++i) {
+          auto s = std::to_string(i);
+          auto row = MakeRow(i, "test-fname-" + s, "test-lname-" + s);
+          insert.AddRow(row);
+          expected_rows.push_back(row);
+        }
+        return Mutations{std::move(insert).Build()};
+      });
   ASSERT_STATUS_OK(commit);
 
   auto reader =
       client.Read(options_generator(*commit), "Singers", KeySet::All(),
                   {"SingerId", "FirstName", "LastName"});
-  EXPECT_STATUS_OK(reader);
+  ASSERT_STATUS_OK(reader);
 
   std::vector<RowType> actual_rows;
   if (reader) {
@@ -445,7 +448,8 @@ void CheckReadWithOptions(
 /// @test Test read with bounded staleness set by a timestamp.
 TEST_F(ClientIntegrationTest, Read_BoundedStaleness_Timestamp) {
   CheckReadWithOptions(*client_, [](CommitResult const& result) {
-    return Transaction::SingleUseOptions(result.commit_timestamp);
+    return Transaction::SingleUseOptions(
+        /*min_read_timestamp=*/result.commit_timestamp);
   });
 }
 
@@ -453,7 +457,8 @@ TEST_F(ClientIntegrationTest, Read_BoundedStaleness_Timestamp) {
 TEST_F(ClientIntegrationTest, Read_BoundedStaleness_Duration) {
   CheckReadWithOptions(*client_, [](CommitResult const&) {
     // We want a duration sufficiently recent to include the latest commit.
-    return Transaction::SingleUseOptions(std::chrono::nanoseconds(1));
+    return Transaction::SingleUseOptions(
+        /*max_staleness=*/std::chrono::nanoseconds(1));
   });
 }
 
