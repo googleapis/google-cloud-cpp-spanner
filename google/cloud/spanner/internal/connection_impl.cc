@@ -88,7 +88,7 @@ StatusOr<ResultSet> ConnectionImpl::Read(spanner_proto::TransactionSelector& s,
   spanner_proto::ReadRequest request;
   // TODO(#307): Refactor once correct location for session implemented.
   if (rp.session_name) {
-    request.set_session(std::move(*rp.session_name));
+    request.set_session(*std::move(rp.session_name));
   } else {
     auto session = GetSession();
     if (!session) {
@@ -106,7 +106,7 @@ StatusOr<ResultSet> ConnectionImpl::Read(spanner_proto::TransactionSelector& s,
   *request.mutable_key_set() = internal::ToProto(std::move(rp.keys));
   request.set_limit(rp.read_options.limit);
   if (rp.partition_token) {
-    request.set_partition_token(std::move(*rp.partition_token));
+    request.set_partition_token(*std::move(rp.partition_token));
   }
 
   auto context = google::cloud::internal::make_unique<grpc::ClientContext>();
