@@ -351,7 +351,8 @@ TEST_F(ClientIntegrationTest, RunTransaction) {
 /// @test Test various forms of ExecuteSql()
 TEST_F(ClientIntegrationTest, ExecuteSql) {
   auto insert = RunTransaction(
-      *client_, {}, [](Client client, Transaction txn) -> StatusOr<Mutations> {
+      *client_, {},
+      [](Client client, Transaction const& txn) -> StatusOr<Mutations> {
         auto insert = client.ExecuteSql(
             txn, SqlStatement(R"sql(
         INSERT INTO Singers (SingerId, FirstName, LastName)
