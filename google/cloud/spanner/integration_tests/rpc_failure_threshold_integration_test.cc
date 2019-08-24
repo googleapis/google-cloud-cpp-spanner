@@ -93,11 +93,21 @@ class RpcFailureThresholdTest : public ::testing::Test {
 };
 
 /**
- * @test Verify that the error rate for commit operations is within bounds.
+ * @test Verify that the error rate for ExecuteSql(...DELETE) operations is
+ *     within bounds.
  *
- * This program runs a series of commits
+ * This program estimates the error rate for ExecuteSql() when the SQL statement
+ * is 'DELETE FROM table WHERE true'. We expect this to be very low for an empty
+ * table, but was high at some point.
+ *
+ * The program assumes that each run is a independent, identically distributed,
+ * Bernoulli experiment, with an underlying probably of success $p$. The program
+ * computes the 95% confidence interval for $p$ using the normal approximation:
+ *
+ *     https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval
+ *
  */
-TEST_F(RpcFailureThresholdTest, CommitErrors) {
+TEST_F(RpcFailureThresholdTest, ExecuteSqlDeleteErrors) {
   ASSERT_TRUE(client_);
 
   int number_of_failures = 0;
@@ -121,30 +131,11 @@ TEST_F(RpcFailureThresholdTest, CommitErrors) {
     }
   };
 
-  int const iterations = 200;
+  int const iterations = 500;
   int const report = iterations / 40;
   std::cout << "Running test " << std::flush;
   for (int i = 0; i != iterations; ++i) {
     if (i % report == 0) std::cout << '.' << std::flush;
-    auto s = std::to_string(i);
-    auto commit_result = client_->Commit(
-        MakeReadWriteTransaction(),
-        {InsertMutationBuilder("Singers", {"SingerId", "FirstName", "LastName"})
-             .EmplaceRow(i, "fname-" + s, "lname-" + s)
-             .Build()});
-    update_trials(commit_result.status());
-    // Read the first 5 rows.
-    ReadOptions max_rows;
-    max_rows.limit = 5;
-    auto reader =
-        client_->Read("Singers", KeySet::All(),
-                      {"SingerId", "FirstName", "LastName"}, max_rows);
-    update_trials(reader.status());
-    if (!reader) continue;
-    for (auto row : reader->Rows<std::int64_t, std::string, std::string>()) {
-      update_trials(row.status());
-      if (!row) break;
-    }
     auto delete_status = RunTransaction(
         *client_, Transaction::ReadWriteOptions{},
         [&](Client client, Transaction const& txn) -> StatusOr<Mutations> {
