@@ -350,40 +350,48 @@ TEST_F(ClientIntegrationTest, RunTransaction) {
 
 /// @test Test various forms of ExecuteSql()
 TEST_F(ClientIntegrationTest, ExecuteSql) {
-  {
-    auto insert =
-        client_->ExecuteSql(MakeReadWriteTransaction(),
-                            SqlStatement(R"sql(
+  auto insert = RunTransaction(
+      *client_, {}, [](Client client, Transaction txn) -> StatusOr<Mutations> {
+        auto insert = client.ExecuteSql(
+            txn, SqlStatement(R"sql(
         INSERT INTO Singers (SingerId, FirstName, LastName)
         VALUES (@id, @fname, @lname))sql",
-                                         {{"id", Value(1)},
-                                          {"fname", Value("test-fname-1")},
-                                          {"lname", Value("test-lname-1")}}));
-    EXPECT_STATUS_OK(insert);
-  }
+                              {{"id", Value(1)},
+                               {"fname", Value("test-fname-1")},
+                               {"lname", Value("test-lname-1")}}));
+        if (!insert) return std::move(insert).status();
+        return Mutations{};
+      });
 
   using RowType = Row<std::int64_t, std::string, std::string>;
   std::vector<RowType> expected_rows;
-  auto txn = MakeReadWriteTransaction();
-  for (int i = 2; i != 10; ++i) {
-    auto s = std::to_string(i);
-    auto insert = client_->ExecuteSql(
-        txn, SqlStatement(R"sql(
+  auto commit = RunTransaction(
+      *client_, {},
+      [&expected_rows](Client client,
+                       Transaction const& txn) -> StatusOr<Mutations> {
+        for (int i = 2; i != 10; ++i) {
+          auto s = std::to_string(i);
+          auto insert = client.ExecuteSql(
+              txn, SqlStatement(R"sql(
         INSERT INTO Singers (SingerId, FirstName, LastName)
         VALUES (@id, @fname, @lname))sql",
-                          {{"id", Value(i)},
-                           {"fname", Value("test-fname-" + s)},
-                           {"lname", Value("test-lname-" + s)}}));
-    EXPECT_STATUS_OK(insert);
-    expected_rows.push_back(MakeRow(i, "test-fname-" + s, "test-lname-" + s));
-  }
+                                {{"id", Value(i)},
+                                 {"fname", Value("test-fname-" + s)},
+                                 {"lname", Value("test-lname-" + s)}}));
+          if (!insert) return std::move(insert).status();
+          expected_rows.push_back(
+              MakeRow(i, "test-fname-" + s, "test-lname-" + s));
+        }
 
-  auto delete_1 = client_->ExecuteSql(txn, SqlStatement(R"sql(
+        auto delete_result =
+            client.ExecuteSql(txn, SqlStatement(R"sql(
         DELETE FROM Singers WHERE SingerId = @id)sql",
-                                                        {{"id", Value(1)}}));
-  EXPECT_STATUS_OK(delete_1);
-  auto commit = client_->Commit(txn, {});
-  EXPECT_STATUS_OK(commit);
+                                                {{"id", Value(1)}}));
+        if (!delete_result) return std::move(delete_result).status();
+
+        return Mutations{};
+      });
+  ASSERT_STATUS_OK(commit);
 
   auto reader = client_->ExecuteSql(
       SqlStatement("SELECT SingerId, FirstName, LastName FROM Singers", {}));
