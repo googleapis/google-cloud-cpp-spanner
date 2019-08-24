@@ -15,6 +15,7 @@
 #include "google/cloud/spanner/client.h"
 #include "google/cloud/spanner/internal/connection_impl.h"
 #include "google/cloud/spanner/internal/spanner_stub.h"
+#include "google/cloud/spanner/retry_policy.h"
 #include "google/cloud/log.h"
 #include <grpcpp/grpcpp.h>
 
@@ -122,8 +123,8 @@ std::shared_ptr<Connection> MakeConnection(
   return std::make_shared<internal::ConnectionImpl>(db, std::move(stub));
 }
 
-StatusOr<CommitResult> RunTransaction(
-    Client client, Transaction::ReadWriteOptions const& opts,
+StatusOr<CommitResult> RunTransactionImpl(
+    Client& client, Transaction::ReadWriteOptions const& opts,
     std::function<StatusOr<Mutations>(Client, Transaction)> const& f) {
   Transaction txn = MakeReadWriteTransaction(opts);
   StatusOr<Mutations> mutations;
@@ -153,6 +154,22 @@ StatusOr<CommitResult> RunTransaction(
   // not a good idea to simply cap the number of retries. Instead, it
   // is better to limit the total amount of wall time spent retrying.
   return client.Commit(txn, *mutations);
+}
+
+StatusOr<CommitResult> RunTransaction(
+    Client& client, Transaction::ReadWriteOptions const& opts,
+    std::function<StatusOr<Mutations>(Client, Transaction)> const& f) {
+  int const kMaxAttempts = 3;
+
+  StatusOr<CommitResult> last_result;
+  for (int i = 0; i != kMaxAttempts; ++i) {
+    last_result = RunTransactionImpl(client, opts, f);
+    if (last_result) return last_result;
+    if (internal::SafeGrpcRetry::IsPermanentFailure(last_result.status())) {
+      return last_result;
+    }
+  }
+  return last_result;
 }
 
 }  // namespace SPANNER_CLIENT_NS

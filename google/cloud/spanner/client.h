@@ -403,7 +403,7 @@ std::shared_ptr<Connection> MakeConnection(
  * of success than before.
  */
 StatusOr<CommitResult> RunTransaction(
-    Client client, Transaction::ReadWriteOptions const& opts,
+    Client& client, Transaction::ReadWriteOptions const& opts,
     std::function<StatusOr<Mutations>(Client, Transaction)> const& f);
 
 }  // namespace SPANNER_CLIENT_NS
