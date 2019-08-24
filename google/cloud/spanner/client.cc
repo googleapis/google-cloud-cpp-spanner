@@ -13,17 +13,19 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/client.h"
+#include "google/cloud/spanner/backoff_policy.h"
 #include "google/cloud/spanner/internal/connection_impl.h"
+#include "google/cloud/spanner/internal/retry_loop.h"
 #include "google/cloud/spanner/internal/spanner_stub.h"
 #include "google/cloud/spanner/retry_policy.h"
 #include "google/cloud/log.h"
 #include <grpcpp/grpcpp.h>
+#include <thread>
 
 namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
-
 namespace spanner_proto = ::google::spanner::v1;
 
 StatusOr<ResultSet> Client::Read(std::string table, KeySet keys,
@@ -157,19 +159,25 @@ StatusOr<CommitResult> RunTransactionImpl(
 }
 
 StatusOr<CommitResult> RunTransaction(
-    Client& client, Transaction::ReadWriteOptions const& opts,
+    Client client, Transaction::ReadWriteOptions const& opts,
     std::function<StatusOr<Mutations>(Client, Transaction)> const& f) {
-  int const kMaxAttempts = 3;
+  ExponentialBackoffPolicy backoff_policy(std::chrono::milliseconds(100),
+                                          std::chrono::minutes(5), 2.0);
+  LimitedErrorCountRetryPolicy retry_policy(/*maximum_failures=*/2);
 
-  StatusOr<CommitResult> last_result;
-  for (int i = 0; i != kMaxAttempts; ++i) {
-    last_result = RunTransactionImpl(client, opts, f);
-    if (last_result) return last_result;
-    if (internal::SafeGrpcRetry::IsPermanentFailure(last_result.status())) {
-      return last_result;
+  Status last_status;
+  char const* reason = "Too many failures in ";
+  while (!retry_policy.IsExhausted()) {
+    auto result = RunTransactionImpl(client, opts, f);
+    if (result) return result;
+    last_status = std::move(result).status();
+    if (!retry_policy.OnFailure(last_status)) {
+      reason = "Permanent failure in ";
+      break;
     }
+    std::this_thread::sleep_for(backoff_policy.OnCompletion());
   }
-  return last_result;
+  return internal::RetryLoopError(reason, __func__, last_status);
 }
 
 }  // namespace SPANNER_CLIENT_NS
