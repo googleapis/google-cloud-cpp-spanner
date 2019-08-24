@@ -188,11 +188,12 @@ TEST_F(RpcFailureThresholdTest, ExecuteSqlDeleteErrors) {
   int const desired_samples = 32000;  // slightly higher sample rate.
 
   auto const threads_per_core = 8;
-  auto const number_of_threads = []() -> unsigned {
+  // GCC and Clang default capture constants, but MSVC does not, so pass the
+  // constant as an argument.
+  auto const number_of_threads = [](int tpc) -> unsigned {
     auto number_of_cores = std::thread::hardware_concurrency();
-    return number_of_cores == 0 ? threads_per_core
-                                : number_of_cores * threads_per_core;
-  }();
+    return number_of_cores == 0 ? tpc : number_of_cores * tpc;
+  }(threads_per_core);
 
   auto const iterations = static_cast<int>(desired_samples / number_of_threads);
 
