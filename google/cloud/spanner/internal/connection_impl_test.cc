@@ -20,6 +20,7 @@
 #include "google/cloud/testing_util/assert_ok.h"
 #include <google/protobuf/text_format.h>
 #include <gmock/gmock.h>
+#include <atomic>
 #include <future>
 #include <string>
 #include <thread>
