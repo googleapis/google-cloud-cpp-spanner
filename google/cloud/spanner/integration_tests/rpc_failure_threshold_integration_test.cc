@@ -94,7 +94,7 @@ struct Result {
 };
 
 /// Run a single copy of the experiment
-Result RunExperiment(Database const& db) {
+Result RunExperiment(Database const& db, int iterations) {
   // Use a different client on each thread because we do not want to share
   // sessions.
   Client client(MakeConnection(db));
@@ -112,7 +112,6 @@ Result RunExperiment(Database const& db) {
     }
   };
 
-  int const iterations = 1000;
   int const report = iterations / 5;
   for (int i = 0; i != iterations; ++i) {
     if (i % report == 0) std::cout << '.' << std::flush;
@@ -153,27 +152,57 @@ TEST_F(RpcFailureThresholdTest, ExecuteSqlDeleteErrors) {
   // we select $\alpha$ as $1/1000$ because we want a very high confidence in
   // the failure rate. The approximation above requires the normal distribution
   // quantile, which we obtained using R, and the expression
-  //   `qnorm(1 - (1/1000.0)/2)`
+  //   `qnorm(1 - (1/100.0)/2)`
   // which yields:
-  double const z = 3.290527;
+  double const z = 2.575829;
 
-  // We are willing to tolerate one failure in 10,000 requests.
-  double const kThreshold = 1 / 10000.0;
+  // We are willing to tolerate one failure in 1,000 requests.
+  double const threshold = 1 / 1000.0;
 
-  auto const threads_per_core = 4;
+  // Detecting if the failure rate is higher than 1 / 1,000 when we observe some
+  // other rate requires some power analysis to ensure the sample size is large
+  // enough. Fortunately, R has a function to do precisely this:
+  //
+  // ```R
+  // require(pwr)
+  // pwr.p.test(
+  //     h=ES.h(p1=0.002, p2=0.001),
+  //     power=0.99, sig.level=0.0001, alternative="greater")
+  // proportion power calculation for binomial distribution
+  // (arcsine transformation)
+  //
+  //      h = 0.02621646
+  //      n = 31496.42
+  //      sig.level = 0.01
+  //      power = 0.99
+  //      alternative = greater
+  // ```
+  //
+  // This reads: you need 53,174 samples to reliably (99% power) detect an
+  // effect of 2 failures per 1,000 when your null hypothesis is 1 per 1,000 and
+  // you want to use a significance level of 1%.
+  //
+  // In practice this means running the test for about 3 minutes on a server
+  // with 4 cores.
+
+  int const desired_samples = 32000; // slightly higher sample rate.
+
+  auto const threads_per_core = 8;
   auto const number_of_threads = []() -> unsigned {
     auto number_of_cores = std::thread::hardware_concurrency();
     return number_of_cores == 0 ? threads_per_core
                                 : number_of_cores * threads_per_core;
   }();
 
+  auto const iterations = static_cast<int>(desired_samples / number_of_threads);
+
   int number_of_successes = 0;
   int number_of_failures = 0;
 
   std::vector<std::future<Result>> tasks(number_of_threads);
   std::cout << "Running test " << std::flush;
-  std::generate_n(tasks.begin(), number_of_threads, [this] {
-    return std::async(std::launch::async, RunExperiment, *db_);
+  std::generate_n(tasks.begin(), number_of_threads, [this, iterations] {
+    return std::async(std::launch::async, RunExperiment, *db_, iterations);
   });
   for (auto& t : tasks) {
     auto r = t.get();
@@ -190,15 +219,15 @@ TEST_F(RpcFailureThresholdTest, ExecuteSqlDeleteErrors) {
   std::cout << "Total failures = " << number_of_failures
             << "\nTotal successes = " << number_of_successes
             << "\nTotal trials = " << number_of_trials
-            << "\nEstimated 99.99% confidence interval for success rate is ["
+            << "\nEstimated 99% confidence interval for success rate is ["
             << (mid - r) << "," << (mid + r) << "]\n";
 
-  EXPECT_GT(mid - r, 1.0 - kThreshold)
+  EXPECT_GT(mid - r, 1.0 - threshold)
       << " number_of_failures=" << number_of_failures
       << ", number_of_successes=" << number_of_successes
       << ", number_of_trials=" << number_of_trials << ", mid=" << mid
       << ", r=" << r << ", range=[ " << (mid - r) << " , " << (mid + r) << "]"
-      << ", kTheshold=" << kThreshold;
+      << ", kTheshold=" << threshold;
 }
 
 }  // namespace
