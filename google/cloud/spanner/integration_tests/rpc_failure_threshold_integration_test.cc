@@ -70,13 +70,10 @@ class RpcFailureThresholdTest : public ::testing::Test {
     auto database = database_future.get();
     ASSERT_STATUS_OK(database);
     std::cout << " DONE\n";
-
-    client_ =
-        google::cloud::internal::make_unique<Client>(MakeConnection(*db_));
   }
 
   void TearDown() override {
-    if (!client_) {
+    if (!db_) {
       return;
     }
     std::cout << "Dropping database " << db_->DatabaseId() << std::flush;
@@ -89,8 +86,49 @@ class RpcFailureThresholdTest : public ::testing::Test {
  protected:
   google::cloud::internal::DefaultPRNG generator_;
   std::unique_ptr<Database> db_;
-  std::unique_ptr<Client> client_;
 };
+
+struct Result {
+  int number_of_successes;
+  int number_of_failures;
+};
+
+/// Run a single copy of the experiment
+Result RunExperiment(Database const& db) {
+  // Use a different client on each thread because we do not want to share
+  // sessions.
+  Client client(MakeConnection(db));
+
+  int number_of_successes = 0;
+  int number_of_failures = 0;
+
+  auto update_trials = [&number_of_failures,
+                        &number_of_successes](Status const& status) {
+    if (status.ok()) {
+      ++number_of_successes;
+    } else {
+      ++number_of_failures;
+      std::cout << status << "\n";
+    }
+  };
+
+  int const iterations = 1000;
+  int const report = iterations / 5;
+  for (int i = 0; i != iterations; ++i) {
+    if (i % report == 0) std::cout << '.' << std::flush;
+    auto delete_status = RunTransaction(
+        client, Transaction::ReadWriteOptions{},
+        [&](Client client, Transaction const& txn) -> StatusOr<Mutations> {
+          auto status = client.ExecuteSql(
+              txn, SqlStatement("DELETE FROM Singers WHERE true"));
+          if (!status) return std::move(status).status();
+          return Mutations{};
+        });
+    update_trials(delete_status.status());
+  }
+
+  return Result{number_of_successes, number_of_failures};
+}
 
 /**
  * @test Verify that the error rate for ExecuteSql(...DELETE) operations is
@@ -108,10 +146,8 @@ class RpcFailureThresholdTest : public ::testing::Test {
  *
  */
 TEST_F(RpcFailureThresholdTest, ExecuteSqlDeleteErrors) {
-  ASSERT_TRUE(client_);
+  ASSERT_TRUE(db_);
 
-  int number_of_failures = 0;
-  int number_of_successes = 0;
   // We are using the approximation via a normal distribution from here:
   //   https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval
   // we select $\alpha$ as $1/1000$ because we want a very high confidence in
@@ -124,30 +160,25 @@ TEST_F(RpcFailureThresholdTest, ExecuteSqlDeleteErrors) {
   // We are willing to tolerate one failure in 10,000 requests.
   double const kThreshold = 1 / 10000.0;
 
-  auto update_trials = [&number_of_failures,
-                        &number_of_successes](Status const& status) {
-    if (status.ok()) {
-      ++number_of_successes;
-    } else {
-      ++number_of_failures;
-      std::cout << status << "\n";
-    }
-  };
+  auto const threads_per_core = 4;
+  auto const number_of_threads = []() -> unsigned {
+    auto number_of_cores = std::thread::hardware_concurrency();
+    return number_of_cores == 0 ? threads_per_core
+                                : number_of_cores * threads_per_core;
+  }();
 
-  int const iterations = 500;
-  int const report = iterations / 40;
+  int number_of_successes = 0;
+  int number_of_failures = 0;
+
+  std::vector<std::future<Result>> tasks(number_of_threads);
   std::cout << "Running test " << std::flush;
-  for (int i = 0; i != iterations; ++i) {
-    if (i % report == 0) std::cout << '.' << std::flush;
-    auto delete_status = RunTransaction(
-        *client_, Transaction::ReadWriteOptions{},
-        [&](Client client, Transaction const& txn) -> StatusOr<Mutations> {
-          auto status = client.ExecuteSql(txn,
-                            SqlStatement("DELETE FROM Singers WHERE true"));
-          if (!status) return std::move(status).status();
-          return Mutations{};
-        });
-    update_trials(delete_status.status());
+  std::generate_n(tasks.begin(), number_of_threads, [this] {
+    return std::async(std::launch::async, RunExperiment, *db_);
+  });
+  for (auto& t : tasks) {
+    auto r = t.get();
+    number_of_successes += r.number_of_successes;
+    number_of_failures += r.number_of_failures;
   }
   std::cout << " DONE\n";
 
@@ -156,7 +187,10 @@ TEST_F(RpcFailureThresholdTest, ExecuteSqlDeleteErrors) {
   double const r =
       z / number_of_trials *
       std::sqrt(number_of_failures / number_of_trials * number_of_successes);
-  std::cout << "Estimated 99.99% confidence interval for success rate is ["
+  std::cout << "Total failures = " << number_of_failures
+            << "\nTotal successes = " << number_of_successes
+            << "\nTotal trials = " << number_of_trials
+            << "\nEstimated 99.99% confidence interval for success rate is ["
             << (mid - r) << "," << (mid + r) << "]\n";
 
   EXPECT_GT(mid - r, 1.0 - kThreshold)
