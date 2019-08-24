@@ -112,11 +112,14 @@ TEST_F(RpcFailureThresholdTest, ExecuteSqlDeleteErrors) {
 
   int number_of_failures = 0;
   int number_of_successes = 0;
-  // probit(0.975): probit is the percentile function for the normal
-  // distribution:
-  //   https://en.wikipedia.org/wiki/Probit
-  // We will need it to estimate the confidence interval for the error rate.
-  double const z = 1.96;
+  // We are using the approximation via a normal distribution from here:
+  //   https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval
+  // we select $\alpha$ as $1/1000$ because we want a very high confidence in
+  // the failure rate. The approximation above requires the normal distribution
+  // quantile, which we obtained using R, and the expression
+  //   `qnorm(1 - (1/1000.0)/2)`
+  // which yields:
+  double const z = 3.290527;
 
   // We are willing to tolerate one failure in 10,000 requests.
   double const kThreshold = 1 / 10000.0;
@@ -153,7 +156,7 @@ TEST_F(RpcFailureThresholdTest, ExecuteSqlDeleteErrors) {
   double const r =
       z / number_of_trials *
       std::sqrt(number_of_failures / number_of_trials * number_of_successes);
-  std::cout << "Estimated 95% confidence interval for success rate is ["
+  std::cout << "Estimated 99.99% confidence interval for success rate is ["
             << (mid - r) << "," << (mid + r) << "]\n";
 
   EXPECT_GT(mid - r, 1.0 - kThreshold)
