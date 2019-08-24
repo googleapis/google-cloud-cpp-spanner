@@ -62,6 +62,15 @@ cmake "-DCMAKE_INSTALL_PREFIX=$HOME/staging" \
       "-H${SOURCE_DIR}" "-B${BINARY_DIR}" "${cmake_flags[@]}"
 cmake --build "${BINARY_DIR}" -- -j "$(nproc)"
 
+TEST_JOB_COUNT="$(nproc)"
+if [[ "${BUILD_TYPE}" == "Coverage" ]]; then
+  # The code coverage build cannot run the tests in parallel. Some of
+  # the files where the code coverage is recorded are shared and not
+  # protected by locks of any kind.
+  TEST_JOB_COUNT=1
+fi
+readonly TEST_JOB_COUNT
+
 # When user a super-build the tests are hidden in a subdirectory. We can tell
 # that ${BINARY_DIR} does not have the tests by checking for this file:
 if [[ -r "${BINARY_DIR}/CTestTestfile.cmake" ]]; then
@@ -70,15 +79,7 @@ if [[ -r "${BINARY_DIR}/CTestTestfile.cmake" ]]; then
   # automatically runs them.
   echo "Running the unit tests $(date)"
   env -C "${BINARY_DIR}" ctest \
-      -LE integration-tests \
-      --output-on-failure -j "$(nproc)"
-  echo "================================================================"
-fi
-
-if [[ "${GENERATE_DOCS:-}" = "yes" ]]; then
-  echo "================================================================"
-  echo "Validate Doxygen documentation $(date)"
-  cmake --build "${BINARY_DIR}" --target doxygen-docs
+      -LE integration-tests --output-on-failure -j "${TEST_JOB_COUNT}"
   echo "================================================================"
 fi
 
@@ -93,9 +94,14 @@ if [[ ${RUN_INTEGRATION_TESTS} == "yes" ]]; then
 
   # Run the integration tests too.
   env -C "${BINARY_DIR}" ctest \
-      -L integration-tests \
-      -j 4 \
-      --output-on-failure
+      -L integration-tests --output-on-failure -j "${TEST_JOB_COUNT}"
+  echo "================================================================"
+fi
+
+if [[ "${GENERATE_DOCS:-}" = "yes" ]]; then
+  echo "================================================================"
+  echo "Validate Doxygen documentation $(date)"
+  cmake --build "${BINARY_DIR}" --target doxygen-docs
   echo "================================================================"
 fi
 
