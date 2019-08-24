@@ -185,7 +185,7 @@ TEST_F(RpcFailureThresholdTest, ExecuteSqlDeleteErrors) {
   // In practice this means running the test for about 3 minutes on a server
   // with 4 cores.
 
-  int const desired_samples = 32000; // slightly higher sample rate.
+  int const desired_samples = 32000;  // slightly higher sample rate.
 
   auto const threads_per_core = 8;
   auto const number_of_threads = []() -> unsigned {
