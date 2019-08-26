@@ -305,14 +305,14 @@ TEST(Row, ValuesMove) {
   EXPECT_EQ(Value("bar"), values[2]);
 }
 
-TEST(Row, PrinTo) {
+TEST(Row, PrintTo) {
   auto row = MakeRow(1234, "foo", 2345, "bar", "baz");
   std::ostringstream os;
   PrintTo(row, &os);
   auto actual = os.str();
   EXPECT_THAT(actual, HasSubstr("1234"));
-  EXPECT_THAT(actual, HasSubstr("2345"));
   EXPECT_THAT(actual, HasSubstr("foo"));
+  EXPECT_THAT(actual, HasSubstr("2345"));
   EXPECT_THAT(actual, HasSubstr("bar"));
   EXPECT_THAT(actual, HasSubstr("baz"));
 }
