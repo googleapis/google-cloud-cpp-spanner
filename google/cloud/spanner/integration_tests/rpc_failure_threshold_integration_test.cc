@@ -137,11 +137,23 @@ Result RunExperiment(Database const& db, int iterations) {
  * is 'DELETE FROM table WHERE true'. We expect this to be very low for an empty
  * table, but was high at some point.
  *
- * The program assumes that each run is a independent, identically distributed,
- * Bernoulli experiment, with an underlying probably of success $p$. The program
- * computes the 95% confidence interval for $p$ using the normal approximation:
+ * The program assumes that each request is a independent, identically
+ * distributed, Bernoulli experiment, with an underlying probably of success
+ * $p$. The program computes the 99% confidence interval for $p$ using the
+ * normal approximation:
  *
  *     https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval
+ *
+ * If the confidence interval includes a critical threshold (0.999) then the
+ * program fails, claiming that the underlying error rate may be too high.
+ *
+ * The number of iteration in the program was chosen to the statistical test
+ * would have 0.99 power. That is, the test would miss an actual change from
+ * 0.001 to 0.002 only 1% of the time.
+ *
+ * Note that the power (0.99) and confidence (0.01) parameters are more strict
+ * that the conventional values (0.8 are 0.05). We can afford more strict tests
+ * because the experiments are "cheap", so there is no reason not to.
  */
 TEST_F(RpcFailureThresholdTest, ExecuteSqlDeleteErrors) {
   ASSERT_TRUE(db_);
@@ -166,7 +178,7 @@ TEST_F(RpcFailureThresholdTest, ExecuteSqlDeleteErrors) {
   // require(pwr)
   // pwr.p.test(
   //     h=ES.h(p1=0.002, p2=0.001),
-  //     power=0.99, sig.level=0.0001, alternative="greater")
+  //     power=0.99, sig.level=0.01, alternative="greater")
   // proportion power calculation for binomial distribution
   // (arcsine transformation)
   //
@@ -177,7 +189,7 @@ TEST_F(RpcFailureThresholdTest, ExecuteSqlDeleteErrors) {
   //      alternative = greater
   // ```
   //
-  // This reads: you need 53,174 samples to reliably (99% power) detect an
+  // This reads: you need 31,496 samples to reliably (99% power) detect an
   // effect of 2 failures per 1,000 when your null hypothesis is 1 per 1,000 and
   // you want to use a significance level of 1%.
   //
