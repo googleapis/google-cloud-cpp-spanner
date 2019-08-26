@@ -29,6 +29,5 @@ var searchData=
   ['rowparser',['RowParser',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html',1,'google::cloud::spanner::v0::RowParser&lt; T, Ts &gt;'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#a40b25ee1a94f2035d1c19b12d4e54828',1,'google::cloud::spanner::v0::RowParser::RowParser(ValueSource vs)'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#ad6616e95e9548646c1378f799664c149',1,'google::cloud::spanner::v0::RowParser::RowParser(RowParser const &amp;)=default'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#a1151126844957391f945352ac7738d13',1,'google::cloud::spanner::v0::RowParser::RowParser(RowParser &amp;&amp;)=default']]],
   ['rows',['Rows',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html#aa4b5fade261d8fd52008710f3ed96aa9',1,'google::cloud::spanner::v0::ResultSet']]],
   ['rowtype',['RowType',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#a32d67097808677d6e4760ed4e0c8e336',1,'google::cloud::spanner::v0::RowParser']]],
-  ['runtransaction',['RunTransaction',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a2b3c02170a0a8a1288b396092f98438c',1,'google::cloud::spanner::v0']]],
-  ['runtransactionimpl',['RunTransactionImpl',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a33cb91a866ce8d5e7084ae3e544d7f5d',1,'google::cloud::spanner::v0']]]
+  ['runtransaction',['RunTransaction',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a2b3c02170a0a8a1288b396092f98438c',1,'google::cloud::spanner::v0']]]
 ];
