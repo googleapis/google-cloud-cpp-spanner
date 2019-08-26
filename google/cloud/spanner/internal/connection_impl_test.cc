@@ -15,6 +15,7 @@
 #include "google/cloud/spanner/internal/connection_impl.h"
 #include "google/cloud/spanner/client.h"
 #include "google/cloud/spanner/internal/spanner_stub.h"
+#include "google/cloud/spanner/internal/time.h"
 #include "google/cloud/spanner/testing/mock_spanner_stub.h"
 #include "google/cloud/internal/make_unique.h"
 #include "google/cloud/testing_util/assert_ok.h"
@@ -329,7 +330,7 @@ TEST(ConnectionImplTest, CommitCommitFailure) {
   EXPECT_THAT(commit.status().message(), HasSubstr("uh-oh in Commit"));
 }
 
-TEST(ConnectionImplTest, CommitTransactionId) {
+TEST(ConnectionImplTest, CommitSuccessWithTransactionId) {
   auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
@@ -348,7 +349,10 @@ TEST(ConnectionImplTest, CommitTransactionId) {
                           spanner_proto::CommitRequest const& request) {
         EXPECT_EQ("test-session-name", request.session());
         EXPECT_EQ("test-txn-id", request.transaction_id());
-        return Status(StatusCode::kPermissionDenied, "uh-oh in Commit");
+        spanner_proto::CommitResponse response;
+        *response.mutable_commit_timestamp() =
+            internal::ToProto(Timestamp{std::chrono::seconds(123)});
+        return response;
       }));
 
   auto txn = MakeReadWriteTransaction();
@@ -358,8 +362,7 @@ TEST(ConnectionImplTest, CommitTransactionId) {
   });
 
   auto commit = conn.Commit({txn, {}});
-  EXPECT_EQ(StatusCode::kPermissionDenied, commit.status().code());
-  EXPECT_THAT(commit.status().message(), HasSubstr("uh-oh in Commit"));
+  EXPECT_STATUS_OK(commit);
 }
 
 TEST(ConnectionImplTest, RollbackGetSessionFailure) {
@@ -401,7 +404,7 @@ TEST(ConnectionImplTest, RollbackBeginTransaction) {
   ConnectionImpl conn(db, mock);
   auto txn = MakeReadWriteTransaction();
   auto rollback = conn.Rollback({txn});
-  EXPECT_TRUE(rollback.ok());
+  EXPECT_STATUS_OK(rollback);
 }
 
 TEST(ConnectionImplTest, RollbackSingleUseTransaction) {
@@ -498,7 +501,7 @@ TEST(ConnectionImplTest, RollbackSuccess) {
       };
   internal::Visit(txn, begin_transaction);
   auto rollback = conn.Rollback({txn});
-  EXPECT_TRUE(rollback.ok());
+  EXPECT_STATUS_OK(rollback);
 }
 
 TEST(ConnectionImplTest, PartitionReadSuccess) {
@@ -623,7 +626,7 @@ TEST(ConnectionImplTest, MultipleThreads) {
       };
       internal::Visit(txn, begin_transaction);
       auto rollback = conn.Rollback({txn});
-      EXPECT_TRUE(rollback.ok());
+      EXPECT_STATUS_OK(rollback);
     }
   };
 
