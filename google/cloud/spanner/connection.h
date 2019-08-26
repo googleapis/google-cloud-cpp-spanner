@@ -79,7 +79,6 @@ class Connection {
     ReadParams read_params;
     PartitionOptions partition_options;
   };
-
   virtual StatusOr<std::vector<ReadPartition>> PartitionRead(
       PartitionReadParams) = 0;
 
@@ -105,7 +104,6 @@ class Connection {
     ExecuteSqlParams sql_params;
     PartitionOptions partition_options;
   };
-
   virtual StatusOr<std::vector<QueryPartition>> PartitionQuery(
       PartitionQueryParams) = 0;
 
