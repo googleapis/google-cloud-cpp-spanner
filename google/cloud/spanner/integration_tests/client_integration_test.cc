@@ -420,8 +420,8 @@ void CheckReadWithOptions(
 
   auto commit = RunTransaction(
       client, Transaction::ReadWriteOptions{},
-      // NOLINTNEXTLINE
-      [&expected_rows](Client, Transaction) -> StatusOr<Mutations> {
+      [&expected_rows](Client const&,
+                       Transaction const&) -> StatusOr<Mutations> {
         InsertMutationBuilder insert("Singers",
                                      {"SingerId", "FirstName", "LastName"});
         for (int i = 1; i != 10; ++i) {
