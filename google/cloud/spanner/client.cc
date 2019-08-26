@@ -174,7 +174,9 @@ StatusOr<CommitResult> RunTransaction(
     if (result) return result;
     last_status = std::move(result).status();
     if (!retry_policy.OnFailure(last_status)) {
-      reason = "Permanent failure in ";
+      if (internal::SafeGrpcRetry::IsPermanentFailure(last_status)) {
+        reason = "Permanent failure in ";
+      }
       break;
     }
     std::this_thread::sleep_for(backoff_policy.OnCompletion());
