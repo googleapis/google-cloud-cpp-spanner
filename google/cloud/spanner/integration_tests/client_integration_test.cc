@@ -112,12 +112,11 @@ class ClientIntegrationTest : public ::testing::Test {
   void InsertTwoSingers() {
     auto commit_result =
         RunTransaction(*client_, {}, [](Client const&, Transaction const&) {
-          return Mutations{
-              InsertMutationBuilder("Singers",
-                                    {"SingerId", "FirstName", "LastName"})
-                  .EmplaceRow(1, "test-first-name-1", "test-last-name-1")
-                  .EmplaceRow(2, "test-first-name-2", "test-last-name-2")
-                  .Build()};
+          return Mutations{InsertMutationBuilder(
+                               "Singers", {"SingerId", "FirstName", "LastName"})
+                               .EmplaceRow(1, "test-fname-1", "test-lname-1")
+                               .EmplaceRow(2, "test-fname-2", "test-lname-2")
+                               .Build()};
         });
     ASSERT_STATUS_OK(commit_result);
   }
@@ -152,9 +151,8 @@ TEST_F(ClientIntegrationTest, InsertAndCommit) {
   }
 
   EXPECT_THAT(returned_rows,
-              UnorderedElementsAre(
-                  RowType(1, "test-first-name-1", "test-last-name-1"),
-                  RowType(2, "test-first-name-2", "test-last-name-2")));
+              UnorderedElementsAre(RowType(1, "test-fname-1", "test-lname-1"),
+                                   RowType(2, "test-fname-2", "test-lname-2")));
 }
 
 /// @test Verify the basic delete mutations work.
@@ -186,8 +184,8 @@ TEST_F(ClientIntegrationTest, DeleteAndCommit) {
     }
   }
 
-  EXPECT_THAT(returned_rows, UnorderedElementsAre(RowType(
-                                 2, "test-first-name-2", "test-last-name-2")));
+  EXPECT_THAT(returned_rows,
+              UnorderedElementsAre(RowType(2, "test-fname-2", "test-lname-2")));
 }
 
 /// @test Verify that read-write transactions with multiple statements work.
