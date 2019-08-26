@@ -82,7 +82,7 @@ StatusOr<QueryPartition> DeserializeQueryPartition(
     }
   }
 
-QueryPartition query_partition(proto.transaction().id(), proto.session(),
+  QueryPartition query_partition(proto.transaction().id(), proto.session(),
                                  proto.partition_token(),
                                  SqlStatement(proto.sql(), sql_parameters));
   return query_partition;
@@ -95,6 +95,13 @@ QueryPartition MakeQueryPartition(std::string const& transaction_id,
                                   SqlStatement const& sql_statement) {
   return QueryPartition(transaction_id, session_id, partition_token,
                         sql_statement);
+}
+
+Connection::ExecuteSqlParams MakeExecuteSqlParams(
+    QueryPartition const& query_partition) {
+  return {internal::MakeTransactionFromId(query_partition.transaction_id()),
+          query_partition.sql_statement(), query_partition.partition_token(),
+          query_partition.session_id()};
 }
 
 }  // namespace internal
