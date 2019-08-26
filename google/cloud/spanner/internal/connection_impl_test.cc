@@ -15,7 +15,6 @@
 #include "google/cloud/spanner/internal/connection_impl.h"
 #include "google/cloud/spanner/client.h"
 #include "google/cloud/spanner/internal/spanner_stub.h"
-#include "google/cloud/spanner/internal/time.h"
 #include "google/cloud/spanner/testing/mock_spanner_stub.h"
 #include "google/cloud/internal/make_unique.h"
 #include "google/cloud/testing_util/assert_ok.h"
