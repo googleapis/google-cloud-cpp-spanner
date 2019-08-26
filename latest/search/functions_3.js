@@ -5,8 +5,8 @@ var searchData=
   ['databaseid',['DatabaseId',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html#af05f847816207943ca30d478c9245172',1,'google::cloud::spanner::v0::Database']]],
   ['date',['Date',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html#a1c3ace1b2fbf93fcbdc20e234d9ffabb',1,'google::cloud::spanner::v0::Date::Date(std::int64_t year, int month, int day)'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html#aee96fb4664e22cad5a1927aade88e43a',1,'google::cloud::spanner::v0::Date::Date()']]],
   ['day',['day',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html#a45aa5e22c824b5ad02b81ccc58efc4ae',1,'google::cloud::spanner::v0::Date']]],
+  ['deserializequerypartition',['DeserializeQueryPartition',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a5193c588900afa93d2ba3bd34b698964',1,'google::cloud::spanner::v0']]],
   ['deserializereadpartition',['DeserializeReadPartition',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aca3e9bd1afccb8b09a0a01f34c931bd6',1,'google::cloud::spanner::v0']]],
-  ['deserializesqlpartition',['DeserializeSqlPartition',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aa0a97e4a5530bb2ddb8a26e4ed4998d0',1,'google::cloud::spanner::v0']]],
   ['disable_5fclog',['disable_clog',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#af2bbc89f1030adf9966f0a27590f831c',1,'google::cloud::spanner::v0::ClientOptions']]],
   ['disable_5ftracing',['disable_tracing',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#a729cbe4949297384b35d3a9d7cf0d1bd',1,'google::cloud::spanner::v0::ClientOptions']]],
   ['dropdatabase',['DropDatabase',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#ab15edc47e3ec043f3ba97a414ae73dc1',1,'google::cloud::spanner::v0::DatabaseAdminClient']]]

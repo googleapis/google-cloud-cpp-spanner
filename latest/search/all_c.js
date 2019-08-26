@@ -8,7 +8,7 @@ var searchData=
   ['partition_5foptions',['partition_options',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1PartitionReadParams.html#ac1653d72b2088000e858b07358733561',1,'google::cloud::spanner::v0::Connection::PartitionReadParams']]],
   ['partition_5ftoken',['partition_token',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ReadParams.html#aad2f07fa9317b6376b2b4ff027528fe1',1,'google::cloud::spanner::v0::Connection::ReadParams']]],
   ['partitionoptions',['PartitionOptions',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a715266c430725251bb817767f12bbd4a',1,'google::cloud::spanner::v0']]],
-  ['partitionquery',['PartitionQuery',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a16562c3416868563f18792b4971e7b0b',1,'google::cloud::spanner::v0::Client']]],
+  ['partitionquery',['PartitionQuery',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a80dafb769a6a297cdf1e6ea1e03d5131',1,'google::cloud::spanner::v0::Client']]],
   ['partitionread',['PartitionRead',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae79520d087ff55c903e2351c5d36a446',1,'google::cloud::spanner::v0::Client::PartitionRead()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html#a1454df6f87dde5f097df21e2e26d607d',1,'google::cloud::spanner::v0::Connection::PartitionRead()']]],
   ['partitionreadparams',['PartitionReadParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1PartitionReadParams.html',1,'google::cloud::spanner::v0::Connection']]],
   ['pointer',['pointer',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html#aa5de4ed0325aa71924d223cc7f9899b8',1,'google::cloud::spanner::v0::RowParser::iterator']]],
