@@ -101,9 +101,9 @@ class ClientIntegrationTest : public ::testing::Test {
   void SetUp() override {
     auto commit =
         RunTransaction(*client_, {}, [](Client client, Transaction const& txn) {
-          auto reader = client.ExecuteSql(
+          auto deleter = client.ExecuteSql(
               txn, SqlStatement("DELETE FROM Singers WHERE true;"));
-          EXPECT_STATUS_OK(reader);
+          EXPECT_STATUS_OK(deleter);
           return Mutations{};
         });
     EXPECT_STATUS_OK(commit);
