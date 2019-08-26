@@ -110,7 +110,7 @@ class ConnectionImpl : public Connection {
 
   /// Implementation details for PartitionQuery
   StatusOr<std::vector<QueryPartition>> PartitionQuery(
-      google::spanner::v1::TransactionSelector& s, ExecuteSqlParams esp,
+      google::spanner::v1::TransactionSelector& s, ExecuteSqlParams const& esp,
       PartitionOptions partition_options);
 
   /// Implementation details for Commit.

@@ -232,7 +232,7 @@ StatusOr<ResultSet> ConnectionImpl::ExecuteSql(
 }
 
 StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
-    spanner_proto::TransactionSelector& s, ExecuteSqlParams esp,
+    spanner_proto::TransactionSelector& s, ExecuteSqlParams const& esp,
     PartitionOptions partition_options) {
   auto session = GetSession();
   if (!session) {
@@ -241,7 +241,7 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
   spanner_proto::PartitionQueryRequest request;
   request.set_session(session->session_name());
   *request.mutable_transaction() = s;
-  auto sql_statement = internal::ToProto(std::move(esp.statement));
+  auto sql_statement = internal::ToProto(esp.statement);
   request.set_sql(std::move(*sql_statement.mutable_sql()));
   *request.mutable_params() = std::move(*sql_statement.mutable_params());
   *request.mutable_param_types() =
