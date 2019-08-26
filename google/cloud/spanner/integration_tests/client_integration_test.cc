@@ -453,7 +453,7 @@ void CheckReadWithOptions(
   EXPECT_THAT(actual_rows, UnorderedElementsAreArray(expected_rows));
 }
 
-/// @test Test read with bounded staleness set by a timestamp.
+/// @test Test Read() with bounded staleness set by a timestamp.
 TEST_F(ClientIntegrationTest, Read_BoundedStaleness_Timestamp) {
   CheckReadWithOptions(*client_, [](CommitResult const& result) {
     return Transaction::SingleUseOptions(
@@ -461,7 +461,7 @@ TEST_F(ClientIntegrationTest, Read_BoundedStaleness_Timestamp) {
   });
 }
 
-/// @test Test read with bounded staleness set by duration.
+/// @test Test Read() with bounded staleness set by duration.
 TEST_F(ClientIntegrationTest, Read_BoundedStaleness_Duration) {
   CheckReadWithOptions(*client_, [](CommitResult const&) {
     // We want a duration sufficiently recent to include the latest commit.
@@ -470,14 +470,14 @@ TEST_F(ClientIntegrationTest, Read_BoundedStaleness_Duration) {
   });
 }
 
-/// @test Test read with exact staleness set to "all previous transactions".
+/// @test Test Read() with exact staleness set to "all previous transactions".
 TEST_F(ClientIntegrationTest, Read_ExactStaleness_Latest) {
   CheckReadWithOptions(*client_, [](CommitResult const&) {
     return Transaction::SingleUseOptions(Transaction::ReadOnlyOptions());
   });
 }
 
-/// @test Test read with exact staleness set by a timestamp.
+/// @test Test Read() with exact staleness set by a timestamp.
 TEST_F(ClientIntegrationTest, Read_ExactStaleness_Timestamp) {
   CheckReadWithOptions(*client_, [](CommitResult const& result) {
     return Transaction::SingleUseOptions(Transaction::ReadOnlyOptions(
@@ -485,7 +485,7 @@ TEST_F(ClientIntegrationTest, Read_ExactStaleness_Timestamp) {
   });
 }
 
-/// @test Test read with exact staleness set by duration.
+/// @test Test Read() with exact staleness set by duration.
 TEST_F(ClientIntegrationTest, Read_ExactStaleness_Duration) {
   CheckReadWithOptions(*client_, [](CommitResult const&) {
     return Transaction::SingleUseOptions(Transaction::ReadOnlyOptions(
@@ -534,7 +534,7 @@ void CheckExecuteSqlWithSingleUseOptions(
   EXPECT_THAT(actual_rows, UnorderedElementsAreArray(expected_rows));
 }
 
-/// @test Test read with bounded staleness set by a timestamp.
+/// @test Test ExecuteSql() with bounded staleness set by a timestamp.
 TEST_F(ClientIntegrationTest, ExecuteSql_BoundedStaleness_Timestamp) {
   CheckExecuteSqlWithSingleUseOptions(*client_, [](CommitResult const& result) {
     return Transaction::SingleUseOptions(
@@ -542,7 +542,7 @@ TEST_F(ClientIntegrationTest, ExecuteSql_BoundedStaleness_Timestamp) {
   });
 }
 
-/// @test Test read with bounded staleness set by duration.
+/// @test Test ExecuteSql() with bounded staleness set by duration.
 TEST_F(ClientIntegrationTest, ExecuteSql_BoundedStaleness_Duration) {
   CheckExecuteSqlWithSingleUseOptions(*client_, [](CommitResult const&) {
     // We want a duration sufficiently recent to include the latest commit.
@@ -551,14 +551,15 @@ TEST_F(ClientIntegrationTest, ExecuteSql_BoundedStaleness_Duration) {
   });
 }
 
-/// @test Test read with exact staleness set to "all previous transactions".
+/// @test Test ExecuteSql() with exact staleness set to "all previous
+/// transactions".
 TEST_F(ClientIntegrationTest, ExecuteSql_ExactStaleness_Latest) {
   CheckExecuteSqlWithSingleUseOptions(*client_, [](CommitResult const&) {
     return Transaction::SingleUseOptions(Transaction::ReadOnlyOptions());
   });
 }
 
-/// @test Test read with exact staleness set by a timestamp.
+/// @test Test ExecuteSql() with exact staleness set by a timestamp.
 TEST_F(ClientIntegrationTest, ExecuteSql_ExactStaleness_Timestamp) {
   CheckExecuteSqlWithSingleUseOptions(*client_, [](CommitResult const& result) {
     return Transaction::SingleUseOptions(Transaction::ReadOnlyOptions(
@@ -566,7 +567,7 @@ TEST_F(ClientIntegrationTest, ExecuteSql_ExactStaleness_Timestamp) {
   });
 }
 
-/// @test Test read with exact staleness set by duration.
+/// @test Test ExecuteSql() with exact staleness set by duration.
 TEST_F(ClientIntegrationTest, ExecuteSql_ExactStaleness_Duration) {
   CheckExecuteSqlWithSingleUseOptions(*client_, [](CommitResult const&) {
     return Transaction::SingleUseOptions(Transaction::ReadOnlyOptions(
