@@ -472,12 +472,12 @@ TEST(ClientTest, RunTransaction_RetryTransientFailures) {
 
   auto conn = std::make_shared<MockConnection>();
   EXPECT_CALL(*conn, Commit(_))
-  .WillOnce(Invoke([](Connection::CommitParams const&) {
-    return Status(StatusCode::kAborted, "Aborted transaction");
-  }))
-  .WillOnce(Invoke([&timestamp](Connection::CommitParams const&) {
-    return CommitResult{*timestamp};
-  }));
+      .WillOnce(Invoke([](Connection::CommitParams const&) {
+        return Status(StatusCode::kAborted, "Aborted transaction");
+      }))
+      .WillOnce(Invoke([&timestamp](Connection::CommitParams const&) {
+        return CommitResult{*timestamp};
+      }));
 
   auto f = [](Client const&, Transaction const&) -> StatusOr<Mutations> {
     return Mutations{MakeDeleteMutation("table", KeySet::All())};
