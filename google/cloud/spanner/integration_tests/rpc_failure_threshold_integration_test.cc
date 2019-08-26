@@ -79,8 +79,8 @@ class RpcFailureThresholdTest : public ::testing::Test {
     std::cout << "Dropping database " << db_->DatabaseId() << std::flush;
     DatabaseAdminClient admin_client;
     auto drop_status = admin_client.DropDatabase(*db_);
-    EXPECT_STATUS_OK(drop_status);
     std::cout << " DONE\n";
+    EXPECT_STATUS_OK(drop_status);
   }
 
  protected:
@@ -142,7 +142,6 @@ Result RunExperiment(Database const& db, int iterations) {
  * computes the 95% confidence interval for $p$ using the normal approximation:
  *
  *     https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval
- *
  */
 TEST_F(RpcFailureThresholdTest, ExecuteSqlDeleteErrors) {
   ASSERT_TRUE(db_);

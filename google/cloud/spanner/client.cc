@@ -165,7 +165,9 @@ StatusOr<CommitResult> RunTransaction(
                                           std::chrono::minutes(5), 2.0);
   LimitedErrorCountRetryPolicy retry_policy(/*maximum_failures=*/2);
 
-  Status last_status;
+  Status last_status(
+      StatusCode::kFailedPrecondition,
+      "Retry policy should not be exhausted when retry loop starts");
   char const* reason = "Too many failures in ";
   while (!retry_policy.IsExhausted()) {
     auto result = RunTransactionImpl(client, opts, f);

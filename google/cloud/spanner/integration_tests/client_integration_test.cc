@@ -99,12 +99,27 @@ class ClientIntegrationTest : public ::testing::Test {
   }
 
   void SetUp() override {
-    auto txn = MakeReadWriteTransaction();
-    auto reader = client_->ExecuteSql(
-        txn, SqlStatement("DELETE FROM Singers WHERE true;"));
-    EXPECT_STATUS_OK(reader);
-    auto commit = client_->Commit(txn, {});
+    auto commit =
+        RunTransaction(*client_, {}, [](Client client, Transaction const& txn) {
+          auto reader = client.ExecuteSql(
+              txn, SqlStatement("DELETE FROM Singers WHERE true;"));
+          EXPECT_STATUS_OK(reader);
+          return Mutations{};
+        });
     EXPECT_STATUS_OK(commit);
+  }
+
+  void InsertTwoSingers() {
+    auto commit_result =
+        RunTransaction(*client_, {}, [](Client const&, Transaction const&) {
+          return Mutations{
+              InsertMutationBuilder("Singers",
+                                    {"SingerId", "FirstName", "LastName"})
+                  .EmplaceRow(1, "test-first-name-1", "test-last-name-1")
+                  .EmplaceRow(2, "test-first-name-2", "test-last-name-2")
+                  .Build()};
+        });
+    ASSERT_STATUS_OK(commit_result);
   }
 
   static void TearDownTestSuite() { client_ = nullptr; }
@@ -117,13 +132,7 @@ std::unique_ptr<Client> ClientIntegrationTest::client_;
 
 /// @test Verify the basic insert operations for transaction commits.
 TEST_F(ClientIntegrationTest, InsertAndCommit) {
-  auto commit_result = client_->Commit(
-      MakeReadWriteTransaction(),
-      {InsertMutationBuilder("Singers", {"SingerId", "FirstName", "LastName"})
-           .EmplaceRow(1, "test-first-name-1", "test-last-name-1")
-           .EmplaceRow(2, "test-first-name-2", "test-last-name-2")
-           .Build()});
-  EXPECT_STATUS_OK(commit_result);
+  ASSERT_NO_FATAL_FAILURE(InsertTwoSingers());
 
   auto reader = client_->Read("Singers", KeySet::All(),
                               {"SingerId", "FirstName", "LastName"});
@@ -150,19 +159,15 @@ TEST_F(ClientIntegrationTest, InsertAndCommit) {
 
 /// @test Verify the basic delete mutations work.
 TEST_F(ClientIntegrationTest, DeleteAndCommit) {
-  auto commit_result = client_->Commit(
-      MakeReadWriteTransaction(),
-      {InsertMutationBuilder("Singers", {"SingerId", "FirstName", "LastName"})
-           .EmplaceRow(1, "test-first-name-1", "test-last-name-1")
-           .EmplaceRow(2, "test-first-name-2", "test-last-name-2")
-           .Build()});
-  EXPECT_STATUS_OK(commit_result);
+  ASSERT_NO_FATAL_FAILURE(InsertTwoSingers());
 
-  commit_result = client_->Commit(
-      MakeReadWriteTransaction(),
-      {MakeDeleteMutation("Singers", KeySetBuilder<Row<std::int64_t>>()
-                                         .Add(MakeRow(std::int64_t(1)))
-                                         .Build())});
+  auto commit_result =
+      RunTransaction(*client_, {}, [](Client const&, Transaction const&) {
+        return Mutations{
+            MakeDeleteMutation("Singers", KeySetBuilder<Row<std::int64_t>>()
+                                              .Add(MakeRow(std::int64_t(1)))
+                                              .Build())};
+      });
   EXPECT_STATUS_OK(commit_result);
 
   auto reader = client_->Read("Singers", KeySet::All(),
@@ -187,30 +192,29 @@ TEST_F(ClientIntegrationTest, DeleteAndCommit) {
 
 /// @test Verify that read-write transactions with multiple statements work.
 TEST_F(ClientIntegrationTest, MultipleInserts) {
-  auto commit_result = client_->Commit(
-      MakeReadWriteTransaction(),
-      {InsertMutationBuilder("Singers", {"SingerId", "FirstName", "LastName"})
-           .EmplaceRow(1, "test-fname-1", "test-lname-1")
-           .EmplaceRow(2, "test-fname-2", "test-lname-2")
-           .Build()});
-  EXPECT_STATUS_OK(commit_result);
+  ASSERT_NO_FATAL_FAILURE(InsertTwoSingers());
 
-  auto txn = MakeReadWriteTransaction();
-  auto insert1 = client_->ExecuteSql(
-      txn, SqlStatement("INSERT INTO Singers (SingerId, FirstName, LastName) "
-                        "VALUES (@id, @fname, @lname)",
-                        {{"id", Value(3)},
-                         {"fname", Value("test-fname-3")},
-                         {"lname", Value("test-lname-3")}}));
-  EXPECT_STATUS_OK(insert1);
-  auto insert2 = client_->ExecuteSql(
-      txn, SqlStatement("INSERT INTO Singers (SingerId, FirstName, LastName) "
-                        "VALUES (@id, @fname, @lname)",
-                        {{"id", Value(4)},
-                         {"fname", Value("test-fname-4")},
-                         {"lname", Value("test-lname-4")}}));
-  EXPECT_STATUS_OK(insert2);
-  auto insert_commit_result = client_->Commit(txn, {});
+  auto insert_commit_result = RunTransaction(
+      *client_, {},
+      [](Client client, Transaction const& txn) -> StatusOr<Mutations> {
+        auto insert1 = client.ExecuteSql(
+            txn,
+            SqlStatement("INSERT INTO Singers (SingerId, FirstName, LastName) "
+                         "VALUES (@id, @fname, @lname)",
+                         {{"id", Value(3)},
+                          {"fname", Value("test-fname-3")},
+                          {"lname", Value("test-lname-3")}}));
+        if (!insert1) return std::move(insert1).status();
+        auto insert2 = client.ExecuteSql(
+            txn,
+            SqlStatement("INSERT INTO Singers (SingerId, FirstName, LastName) "
+                         "VALUES (@id, @fname, @lname)",
+                         {{"id", Value(4)},
+                          {"fname", Value("test-fname-4")},
+                          {"lname", Value("test-lname-4")}}));
+        if (!insert2) return std::move(insert2).status();
+        return Mutations{};
+      });
   EXPECT_STATUS_OK(insert_commit_result);
 
   auto reader = client_->Read("Singers", KeySet::All(),
@@ -238,14 +242,10 @@ TEST_F(ClientIntegrationTest, MultipleInserts) {
 
 /// @test Verify that Client::Rollback works as expected.
 TEST_F(ClientIntegrationTest, TransactionRollback) {
-  auto commit_result = client_->Commit(
-      MakeReadWriteTransaction(),
-      {InsertMutationBuilder("Singers", {"SingerId", "FirstName", "LastName"})
-           .EmplaceRow(1, "test-fname-1", "test-lname-1")
-           .EmplaceRow(2, "test-fname-2", "test-lname-2")
-           .Build()});
-  EXPECT_STATUS_OK(commit_result);
+  ASSERT_NO_FATAL_FAILURE(InsertTwoSingers());
 
+  // Cannot use RunTransaction in this test because we want to call Rollback
+  // explicitly.
   auto txn = MakeReadWriteTransaction();
   auto insert1 = client_->ExecuteSql(
       txn, SqlStatement("INSERT INTO Singers (SingerId, FirstName, LastName) "
