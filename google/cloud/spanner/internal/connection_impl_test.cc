@@ -15,6 +15,7 @@
 #include "google/cloud/spanner/internal/connection_impl.h"
 #include "google/cloud/spanner/client.h"
 #include "google/cloud/spanner/internal/spanner_stub.h"
+#include "google/cloud/spanner/testing/matchers.h"
 #include "google/cloud/spanner/testing/mock_spanner_stub.h"
 #include "google/cloud/internal/make_unique.h"
 #include "google/cloud/testing_util/assert_ok.h"
@@ -523,7 +524,25 @@ TEST(ConnectionImplTest, PartitionReadSuccess) {
         transaction: { id: "CAFEDEAD" }
       )pb",
       &partition_response));
-  EXPECT_CALL(*mock_spanner_stub, PartitionRead(_, _))
+
+  google::spanner::v1::PartitionReadRequest partition_request;
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        session: "test-session-name"
+        transaction: {
+          begin { read_only { strong: true return_read_timestamp: true } }
+        }
+        table: "table"
+        columns: "UserId"
+        columns: "UserName"
+        key_set: { all: true }
+        partition_options: {}
+      )pb",
+      &partition_request));
+
+  EXPECT_CALL(
+      *mock_spanner_stub,
+      PartitionRead(_, spanner_testing::IsProtoEqual(partition_request)))
       .WillOnce(Return(partition_response));
 
   StatusOr<std::vector<ReadPartition>> result = conn.PartitionRead(
@@ -599,7 +618,21 @@ TEST(ConnectionImplTest, PartitionQuerySuccess) {
       )pb",
       &partition_response));
 
-  EXPECT_CALL(*mock_spanner_stub, PartitionQuery(_, _))
+  google::spanner::v1::PartitionQueryRequest partition_request;
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        session: "test-session-name"
+        transaction: {
+          begin { read_only { strong: true return_read_timestamp: true } }
+        }
+        sql: "select * from table"
+        params: {}
+        partition_options: {}
+      )pb",
+      &partition_request));
+  EXPECT_CALL(
+      *mock_spanner_stub,
+      PartitionQuery(_, spanner_testing::IsProtoEqual(partition_request)))
       .WillOnce(Return(partition_response));
 
   SqlStatement sql_statement("select * from table");

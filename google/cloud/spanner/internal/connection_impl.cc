@@ -161,8 +161,8 @@ StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionRead(
   *request.mutable_transaction() = s;
   request.set_table(rp.table);
   request.set_index(rp.read_options.index_name);
-  for (auto&& column : rp.columns) {
-    request.add_columns(column);
+  for (auto const& column : rp.columns) {
+    *request.add_columns() = column;
   }
   *request.mutable_key_set() = internal::ToProto(rp.keys);
   *request.mutable_partition_options() = std::move(partition_options);
