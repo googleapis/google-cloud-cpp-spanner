@@ -24,7 +24,8 @@ inline namespace SPANNER_CLIENT_NS {
 
 namespace gcsa = google::spanner::admin::database::v1;
 
-DatabaseAdminClient::DatabaseAdminClient(ClientOptions const& client_options)
+DatabaseAdminClient::DatabaseAdminClient(
+    ConnectionOptions const& client_options)
     : stub_(new internal::DatabaseAdminRetry(
           internal::CreateDefaultDatabaseAdminStub(client_options))) {}
 
