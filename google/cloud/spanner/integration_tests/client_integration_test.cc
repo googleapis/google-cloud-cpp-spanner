@@ -99,13 +99,9 @@ class ClientIntegrationTest : public ::testing::Test {
   }
 
   void SetUp() override {
-    auto commit_result = RunTransaction(
-        *client_, {},
-        [](Client client, Transaction txn) -> StatusOr<Mutations> {
-          auto deleter = client.ExecuteSql(
-              std::move(txn), SqlStatement("DELETE FROM Singers WHERE true;"));
-          if (!deleter) return deleter.status();
-          return Mutations{};
+    auto commit_result =
+        RunTransaction(*client_, {}, [](Client const&, Transaction const&) {
+          return Mutations{MakeDeleteMutation("Singers", KeySet::All())};
         });
     EXPECT_STATUS_OK(commit_result);
   }

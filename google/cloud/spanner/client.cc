@@ -165,8 +165,8 @@ StatusOr<CommitResult> RunTransaction(
     std::function<StatusOr<Mutations>(Client, Transaction)> const& f) {
   ExponentialBackoffPolicy backoff_policy(std::chrono::milliseconds(100),
                                           std::chrono::minutes(5), 2.0);
-  // TODO(#357): It is not a good idea to simply cap the number of retries.
-  // Instead, it is better to limit the total amount of time spent retrying.
+  // TODO(#357,#442): It is not a good idea to simply cap the number of
+  // retries. It is better to limit the total amount of time spent retrying.
   LimitedErrorCountRetryPolicy retry_policy(/*maximum_failures=*/2);
 
   Status last_status(
