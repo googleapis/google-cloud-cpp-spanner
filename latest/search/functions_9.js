@@ -1,13 +1,13 @@
 var searchData=
 [
   ['main',['main',['../samples_8cc.html#adacbe0175a79dff748855d8c9839f82b',1,'samples.cc']]],
-  ['makeboundclosed',['MakeBoundClosed',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af83b3f827a4d9c996aed7d30bfe9ba0b',1,'google::cloud::spanner::v0']]],
-  ['makeboundopen',['MakeBoundOpen',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aa96edd4ce072b9624c78b4f5edc53c48',1,'google::cloud::spanner::v0']]],
   ['makeconnection',['MakeConnection',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a32bb677bd1afd6530d82b3e76569acb8',1,'google::cloud::spanner::v0']]],
   ['makedeletemutation',['MakeDeleteMutation',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a5dbbd67a8f47b3417280deb7ae048609',1,'google::cloud::spanner::v0']]],
   ['makeinsertmutation',['MakeInsertMutation',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af77b5f3c1a45e35f626398888df17610',1,'google::cloud::spanner::v0']]],
   ['makeinsertorupdatemutation',['MakeInsertOrUpdateMutation',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7170284d5638df130d97ec16318e9dac',1,'google::cloud::spanner::v0']]],
-  ['makekeyrange',['MakeKeyRange',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af852ea622262002e999d6a88b2a5145a',1,'google::cloud::spanner::v0']]],
+  ['makekeyboundclosed',['MakeKeyBoundClosed',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a91e3fd35be38fd51df1755fc613ede6c',1,'google::cloud::spanner::v0']]],
+  ['makekeyboundopen',['MakeKeyBoundOpen',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a2cdaddcb9d16a5e6f0d53b71f63397e8',1,'google::cloud::spanner::v0']]],
+  ['makekeyrange',['MakeKeyRange',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aad8ba59ede29fdb53b93d6ab3fac6e17',1,'google::cloud::spanner::v0']]],
   ['makekeyrangeclosed',['MakeKeyRangeClosed',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aa65e6a686b9299524cd9b8f5d4837b55',1,'google::cloud::spanner::v0']]],
   ['makenullvalue',['MakeNullValue',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ae3b5712ab2b1add6e7e610effc5f35b4',1,'google::cloud::spanner::v0']]],
   ['makereadonlytransaction',['MakeReadOnlyTransaction',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7aedae28062a59c9b7e809205ebe09be',1,'google::cloud::spanner::v0']]],
