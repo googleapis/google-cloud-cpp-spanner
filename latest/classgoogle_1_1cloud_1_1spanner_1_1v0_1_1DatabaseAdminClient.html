@@ -81,8 +81,8 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abdd9620e892e6be196c2abc1840eb40f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#abdd9620e892e6be196c2abc1840eb40f">DatabaseAdminClient</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html">ClientOptions</a> const &amp;client_options=<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html">ClientOptions</a>())</td></tr>
-<tr class="separator:abdd9620e892e6be196c2abc1840eb40f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5359f2621faada447be80416df5e2eba"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#a5359f2621faada447be80416df5e2eba">DatabaseAdminClient</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a> const &amp;options=<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a>())</td></tr>
+<tr class="separator:a5359f2621faada447be80416df5e2eba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08b823f9dfa04793e55977615502d50e"><td class="memItemLeft" align="right" valign="top">future&lt; StatusOr&lt; google::spanner::admin::database::v1::Database &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#a08b823f9dfa04793e55977615502d50e">CreateDatabase</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;db, std::vector&lt; std::string &gt; const &amp;extra_statements={})</td></tr>
 <tr class="memdesc:a08b823f9dfa04793e55977615502d50e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new Cloud Spanner database in the given project and instance.  <a href="#a08b823f9dfa04793e55977615502d50e">More...</a><br /></td></tr>
 <tr class="separator:a08b823f9dfa04793e55977615502d50e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -110,8 +110,8 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="keyword">namespace </span>cs = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">google::cloud::spanner</a>;</div><div class="line">cs::DatabaseAdminClient client = ...;</div><div class="line"><span class="comment">// Make example less verbose.</span></div><div class="line"><span class="keyword">using</span> google::cloud::future;</div><div class="line"><span class="keyword">using</span> google::cloud::StatusOr;</div><div class="line"><span class="keyword">using</span> std::chrono::chrono_literals; <span class="comment">// C++14</span></div><div class="line"></div><div class="line"><span class="keyword">auto</span> database = client.CreateDatabase(...);</div><div class="line"><span class="keywordflow">if</span> (database.wait_for(5m) == std::future_state::ready) {</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Database created in under 5 minutes, yay!\n&quot;</span>;</div><div class="line">  <span class="keywordflow">return</span>;</div><div class="line">}</div><div class="line"><span class="comment">// Too slow, setup a callback instead:</span></div><div class="line">database.then([](<span class="keyword">auto</span> f) {</div><div class="line">  StatusOr&lt;google::spanner::admin::database::v1::Database&gt; db = f.get();</div><div class="line">  <span class="keywordflow">if</span> (!db) {</div><div class="line">      std::cout &lt;&lt; <span class="stringliteral">&quot;Database created!\n&quot;</span>;</div><div class="line">      <span class="keywordflow">return</span>;</div><div class="line">  }</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Database created!\n&quot;</span>;</div><div class="line">});</div></div><!-- fragment --> 
 <p class="definition">Definition at line <a class="el" href="database__admin__client_8h_source.html#l00107">107</a> of file <a class="el" href="database__admin__client_8h_source.html">database_admin_client.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="abdd9620e892e6be196c2abc1840eb40f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abdd9620e892e6be196c2abc1840eb40f">&#9670;&nbsp;</a></span>DatabaseAdminClient() <span class="overload">[1/2]</span></h2>
+<a id="a5359f2621faada447be80416df5e2eba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5359f2621faada447be80416df5e2eba">&#9670;&nbsp;</a></span>DatabaseAdminClient() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -122,8 +122,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">google::cloud::spanner::v0::DatabaseAdminClient::DatabaseAdminClient </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html">ClientOptions</a> const &amp;&#160;</td>
-          <td class="paramname"><em>client_options</em> = <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html">ClientOptions</a>()</code></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a> const &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a>()</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
