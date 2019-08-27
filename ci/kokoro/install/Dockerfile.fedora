@@ -47,15 +47,29 @@ RUN cmake \
         -H. -Bcmake-out/gtest
 RUN cmake --build cmake-out/gtest --target install -- -j $(nproc)
 
-# Download and compile google-cloud-cpp from source too:
+# Download and compile googleapis/cpp-cmakefiles:
+
 WORKDIR /var/tmp/build
-RUN wget -q https://github.com/googleapis/google-cloud-cpp/archive/2de685053a3ba44afb43531776e0eaada3c35e4c.tar.gz
-RUN tar -xf 2de685053a3ba44afb43531776e0eaada3c35e4c.tar.gz
-WORKDIR /var/tmp/build/google-cloud-cpp-2de685053a3ba44afb43531776e0eaada3c35e4c
+RUN wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.4.tar.gz
+RUN tar -xf v0.1.4.tar.gz
+WORKDIR /var/tmp/build/cpp-cmakefiles-0.1.4
 # Compile without the tests because we are testing spanner, not the base
 # libraries
 RUN cmake -H. -Bcmake-out \
-    -DGOOGLE_CLOUD_CPP_DEPENDENCY_PROVIDER=package \
+    -DBUILD_TESTING=OFF \
+    -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON
+RUN cmake --build cmake-out -- -j $(nproc)
+RUN cmake --build cmake-out --target install
+
+
+# Download and compile google-cloud-cpp from source too:
+WORKDIR /var/tmp/build
+RUN wget -q https://github.com/googleapis/google-cloud-cpp/archive/7c4f218dbd9e1fbe08bc7187347d4da80198ec0a.tar.gz
+RUN tar -xf 7c4f218dbd9e1fbe08bc7187347d4da80198ec0a.tar.gz
+WORKDIR /var/tmp/build/google-cloud-cpp-7c4f218dbd9e1fbe08bc7187347d4da80198ec0a
+# Compile without the tests because we are testing spanner, not the base
+# libraries
+RUN cmake -H. -Bcmake-out \
     -DBUILD_TESTING=OFF \
     -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON
 RUN cmake --build cmake-out -- -j $(nproc)
