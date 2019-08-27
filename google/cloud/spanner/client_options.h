@@ -29,7 +29,7 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 /**
- * The configuration parameters for spanner clients.
+ * The configuration parameters for spanner connections.
  */
 class ConnectionOptions {
  public:
