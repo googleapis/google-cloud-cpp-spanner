@@ -39,8 +39,6 @@ echo "================================================================"
 readonly BAZEL_BIN="$HOME/bin/bazel"
 echo "Using Bazel in ${BAZEL_BIN}"
 
-export GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/spanner-credentials.json"
-
 bazel_args=(
     # On macOS gRPC does not compile correctly unless one defines this:
     "--copt=-DGRPC_BAZEL_BUILD"
@@ -67,3 +65,21 @@ echo "================================================================"
 echo "Build and all targets at $(date)."
 "${BAZEL_BIN}" build \
     "${bazel_args[@]}" -- //google/cloud/...:all
+
+if [[ ${RUN_INTEGRATION_TESTS} == "yes" ]]; then
+  echo "================================================================"
+  echo "Running the integration tests $(date)"
+  echo "================================================================"
+
+  # Run the integration tests using Bazel to drive them.
+  "${BAZEL_BIN}" test \
+      "${bazel_args[@]}" \
+      "--spawn_strategy=local" \
+      "--test_env=GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS}" \
+      "--test_env=GRPC_DEFAULT_SSL_ROOTS_FILE_PATH=${GRPC_DEFAULT_SSL_ROOTS_FILE_PATH}" \
+      "--test_env=GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}" \
+      "--test_env=GOOGLE_CLOUD_CPP_SPANNER_INSTANCE=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}" \
+      "--test_env=GOOGLE_CLOUD_CPP_AUTO_RUN_EXAMPLES=yes" \
+      "--test_tag_filters=integration-tests" \
+      -- //google/cloud/...:all
+fi

@@ -58,4 +58,25 @@ else
   exit 1
 fi
 
+RUN_INTEGRATION_TESTS=no
+GOOGLE_APPLICATION_CREDENTIALS=/dev/null
+if [[ -n "${KOKORO_GFILE_DIR:-}" ]] && 
+   [[ -f "${KOKORO_GFILE_DIR}/spanner-integration-tests-config.sh" ]]; then
+  source "${KOKORO_GFILE_DIR}/spanner-integration-tests-config.sh"
+  GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/spanner-credentials.json"
+  RUN_INTEGRATION_TESTS=yes
+
+  # Download the gRPC `roots.pem` file. On macOS gRPC does not use the native
+  # trust store. One needs to set GRPC_DEFAULT_SSL_ROOTS_FILE_PATH. There was
+  # a PR to fix this:
+  #    https://github.com/grpc/grpc/pull/16246
+  # But it was closed without being merged, and there are open bugs:
+  #    https://github.com/grpc/grpc/issues/16571
+  echo "    Getting roots.pem for gRPC."
+  wget -q https://raw.githubusercontent.com/grpc/grpc/master/etc/roots.pem
+  export GRPC_DEFAULT_SSL_ROOTS_FILE_PATH="$PWD/roots.pem"
+fi
+export RUN_INTEGRATION_TESTS
+export GOOGLE_APPLICATION_CREDENTIALS
+
 exec "${driver_script}" "${script_flags[@]}"
