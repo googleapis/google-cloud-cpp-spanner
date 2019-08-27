@@ -96,9 +96,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a10b42742418b5b6ccb41bea5d877c056"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html">ResultSet</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a10b42742418b5b6ccb41bea5d877c056">ExecuteSql</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html">QueryPartition</a> const &amp;partition)</td></tr>
 <tr class="memdesc:a10b42742418b5b6ccb41bea5d877c056"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a SQL query on a subset of rows in a database.  <a href="#a10b42742418b5b6ccb41bea5d877c056">More...</a><br /></td></tr>
 <tr class="separator:a10b42742418b5b6ccb41bea5d877c056"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80dafb769a6a297cdf1e6ea1e03d5131"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html">QueryPartition</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a80dafb769a6a297cdf1e6ea1e03d5131">PartitionQuery</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> const &amp;transaction, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;statement, <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a715266c430725251bb817767f12bbd4a">PartitionOptions</a> const &amp;partition_options={})</td></tr>
-<tr class="memdesc:a80dafb769a6a297cdf1e6ea1e03d5131"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a set of partitions that can be used to execute a query operation in parallel.  <a href="#a80dafb769a6a297cdf1e6ea1e03d5131">More...</a><br /></td></tr>
-<tr class="separator:a80dafb769a6a297cdf1e6ea1e03d5131"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a501a9d95abac856b077d1e82c11c4135"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html">QueryPartition</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a501a9d95abac856b077d1e82c11c4135">PartitionQuery</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> transaction, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> statement, <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a715266c430725251bb817767f12bbd4a">PartitionOptions</a> partition_options={})</td></tr>
+<tr class="memdesc:a501a9d95abac856b077d1e82c11c4135"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a set of partitions that can be used to execute a query operation in parallel.  <a href="#a501a9d95abac856b077d1e82c11c4135">More...</a><br /></td></tr>
+<tr class="separator:a501a9d95abac856b077d1e82c11c4135"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9671193497a85579a34936431fc92b82"><td class="memItemLeft" align="right" valign="top">std::vector&lt; StatusOr&lt; google::spanner::v1::ResultSetStats &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a9671193497a85579a34936431fc92b82">ExecuteBatchDml</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> const &amp;transaction, std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> &gt; const &amp;statements)</td></tr>
 <tr class="memdesc:a9671193497a85579a34936431fc92b82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a batch of SQL DML statements.  <a href="#a9671193497a85579a34936431fc92b82">More...</a><br /></td></tr>
 <tr class="separator:a9671193497a85579a34936431fc92b82"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -310,7 +310,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <code>StatusOr</code> containing the result of the commit or error status on failure. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00113">113</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00114">114</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -353,7 +353,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A vector of <code>StatusOr</code> corresponding to each statement in <code>statements</code>. Statements that were successfully executed return statistics. If a statement fails, its error status is returned and entries for subsequent statements are not present in the returned vector. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00099">99</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00100">100</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -383,7 +383,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <code>StatusOr</code> containing a lower bound on the number of modified rows or error status on failure. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00108">108</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00109">109</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -594,8 +594,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a80dafb769a6a297cdf1e6ea1e03d5131"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a80dafb769a6a297cdf1e6ea1e03d5131">&#9670;&nbsp;</a></span>PartitionQuery()</h2>
+<a id="a501a9d95abac856b077d1e82c11c4135"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a501a9d95abac856b077d1e82c11c4135">&#9670;&nbsp;</a></span>PartitionQuery()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -603,19 +603,19 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">StatusOr&lt; std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html">QueryPartition</a> &gt; &gt; google::cloud::spanner::v0::Client::PartitionQuery </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>&#160;</td>
           <td class="paramname"><em>transaction</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a>&#160;</td>
           <td class="paramname"><em>statement</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a715266c430725251bb817767f12bbd4a">PartitionOptions</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a715266c430725251bb817767f12bbd4a">PartitionOptions</a>&#160;</td>
           <td class="paramname"><em>partition_options</em> = <code>{}</code>&#160;</td>
         </tr>
         <tr>
@@ -960,7 +960,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The error status of the rollback. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00118">118</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00119">119</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
