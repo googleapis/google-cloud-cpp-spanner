@@ -323,6 +323,7 @@ TEST(ConnectionImplTest, CommitCommitFailure) {
       .WillOnce(Invoke([](grpc::ClientContext&,
                           spanner_proto::CommitRequest const& request) {
         EXPECT_EQ("test-session-name", request.session());
+        EXPECT_TRUE(request.has_single_use_transaction());
         return Status(StatusCode::kPermissionDenied, "uh-oh in Commit");
       }));
   auto commit = conn.Commit({MakeReadWriteTransaction(), {}});
