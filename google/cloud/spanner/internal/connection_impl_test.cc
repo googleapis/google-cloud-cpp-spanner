@@ -436,6 +436,7 @@ TEST(ConnectionImplTest, CommitSuccessWithTransactionId) {
 
   auto commit = conn.Commit({txn, {}});
   EXPECT_STATUS_OK(commit);
+  EXPECT_EQ(commit->commit_timestamp, Timestamp{std::chrono::seconds(123)});
 }
 
 TEST(ConnectionImplTest, RollbackGetSessionFailure) {
