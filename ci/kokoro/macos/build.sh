@@ -60,7 +60,7 @@ fi
 
 RUN_INTEGRATION_TESTS=no
 GOOGLE_APPLICATION_CREDENTIALS=/dev/null
-if [[ -n "${KOKORO_GFILE_DIR:-}" ]] && 
+if [[ -n "${KOKORO_GFILE_DIR:-}" ]] &&
    [[ -f "${KOKORO_GFILE_DIR}/spanner-integration-tests-config.sh" ]]; then
   source "${KOKORO_GFILE_DIR}/spanner-integration-tests-config.sh"
   GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/spanner-credentials.json"
