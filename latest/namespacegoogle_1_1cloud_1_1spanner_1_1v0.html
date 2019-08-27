@@ -195,9 +195,9 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a32bb677bd1afd6530d82b3e76569acb8"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html">Connection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a32bb677bd1afd6530d82b3e76569acb8">MakeConnection</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const  &amp;db, std::shared_ptr&lt; grpc::ChannelCredentials &gt; const  &amp;creds=grpc::GoogleDefaultCredentials(), std::string const  &amp;endpoint=&quot;spanner.googleapis.com&quot;)</td></tr>
-<tr class="memdesc:a32bb677bd1afd6530d82b3e76569acb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner.  <a href="#a32bb677bd1afd6530d82b3e76569acb8">More...</a><br /></td></tr>
-<tr class="separator:a32bb677bd1afd6530d82b3e76569acb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34e43f27057136f44b36251a0a379c1b"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html">Connection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a34e43f27057136f44b36251a0a379c1b">MakeConnection</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const  &amp;db, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a> const  &amp;options=<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a>())</td></tr>
+<tr class="memdesc:a34e43f27057136f44b36251a0a379c1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner.  <a href="#a34e43f27057136f44b36251a0a379c1b">More...</a><br /></td></tr>
+<tr class="separator:a34e43f27057136f44b36251a0a379c1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b3c02170a0a8a1288b396092f98438c"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html">CommitResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a2b3c02170a0a8a1288b396092f98438c">RunTransaction</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a> client, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1ReadWriteOptions.html">Transaction::ReadWriteOptions</a> const  &amp;opts, std::function&lt; StatusOr&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a283421d14e4073e59922c9168d880cae">Mutations</a> &gt;(<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>)&gt; const  &amp;f)</td></tr>
 <tr class="memdesc:a2b3c02170a0a8a1288b396092f98438c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute a function in the context of a read-write transaction, with automatic retries if the transaction commit results in an abort.  <a href="#a2b3c02170a0a8a1288b396092f98438c">More...</a><br /></td></tr>
 <tr class="separator:a2b3c02170a0a8a1288b396092f98438c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -685,8 +685,8 @@ template&lt;std::size_t I, typename... Ts&gt; </div>
 
 </div>
 </div>
-<a id="a32bb677bd1afd6530d82b3e76569acb8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32bb677bd1afd6530d82b3e76569acb8">&#9670;&nbsp;</a></span>MakeConnection()</h2>
+<a id="a34e43f27057136f44b36251a0a379c1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34e43f27057136f44b36251a0a379c1b">&#9670;&nbsp;</a></span>MakeConnection()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -700,14 +700,8 @@ template&lt;std::size_t I, typename... Ts&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::shared_ptr&lt; grpc::ChannelCredentials &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>creds</em> = <code>grpc::GoogleDefaultCredentials()</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string const &amp;&#160;</td>
-          <td class="paramname"><em>endpoint</em> = <code>&quot;spanner.googleapis.com&quot;</code>&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a> const &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a>()</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -719,13 +713,11 @@ template&lt;std::size_t I, typename... Ts&gt; </div>
 
 <p>Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner. </p>
 <p>The returned connection object should not be used directly, rather it should be given to a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> instance, and methods should be invoked on <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code>.</p>
-<p>TODO(#321): Move optional args into options struct.</p>
 <dl class="section see"><dt>See also</dt><dd><code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">db</td><td>See <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html" title="This class identifies a Cloud Spanner Database.">Database</a></code>. </td></tr>
-    <tr><td class="paramname">creds</td><td>(optional) the gRPC credentials to use. </td></tr>
-    <tr><td class="paramname">endpoint</td><td>(optional) the Spanner service to connect to. </td></tr>
+    <tr><td class="paramname">options</td><td>(optional) configure the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code> created by this function. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1968,7 +1960,7 @@ template&lt;typename... Ts&gt; </div>
 <p>The caller-provided function will be passed the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> argument and a newly created read-write <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code>. It should use these objects to issue any <code>Read()</code>s, <code>ExecuteSql()</code>s, etc., and return the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html" title="A wrapper for Cloud Spanner mutations.">Mutation</a></code>s to commit, or an error (which causes the transaction to be rolled back).</p>
 <p>The lock priority of the transaction increases after each prior aborted transaction, meaning that the next attempt has a slightly better chance of success than before. </p>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00163">163</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00162">162</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
