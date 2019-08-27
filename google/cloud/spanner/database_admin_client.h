@@ -107,7 +107,7 @@ inline namespace SPANNER_CLIENT_NS {
 class DatabaseAdminClient {
  public:
   explicit DatabaseAdminClient(
-      ConnectionOptions const& client_options = ConnectionOptions());
+      ConnectionOptions const& options = ConnectionOptions());
 
   /**
    * Creates a new Cloud Spanner database in the given project and instance.
