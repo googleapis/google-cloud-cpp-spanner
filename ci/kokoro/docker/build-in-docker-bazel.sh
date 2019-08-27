@@ -78,7 +78,7 @@ if [[ ${RUN_INTEGRATION_TESTS} == "yes" ]]; then
   # shellcheck disable=SC1091
   source /c/spanner-integration-tests-config.sh
 
-  # Run the interation tests using Bazel to drive them.
+  # Run the integration tests using Bazel to drive them.
   "${BAZEL_BIN}" test \
       "${bazel_args[@]}" \
       "--spawn_strategy=local" \
