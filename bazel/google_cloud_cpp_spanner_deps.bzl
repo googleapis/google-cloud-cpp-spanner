@@ -31,11 +31,11 @@ def google_cloud_cpp_spanner_deps():
     if "com_github_googleapis_google_cloud_cpp" not in native.existing_rules():
         http_archive(
             name = "com_github_googleapis_google_cloud_cpp",
-            strip_prefix = "google-cloud-cpp-825c3a6a985b55a0b5c33914f1fa4ed784332ea0",
+            strip_prefix = "google-cloud-cpp-7c4f218dbd9e1fbe08bc7187347d4da80198ec0a",
             urls = [
-                "https://github.com/googleapis/google-cloud-cpp/archive/825c3a6a985b55a0b5c33914f1fa4ed784332ea0.tar.gz",
+                "https://github.com/googleapis/google-cloud-cpp/archive/7c4f218dbd9e1fbe08bc7187347d4da80198ec0a.tar.gz",
             ],
-            sha256 = "5f1fffbe9a9505cda93cb284b5bb8dcfad02b7d07d961673a6aa23bd664e0f6a",
+            sha256 = "a0a0c46afb099d9c36f142ca812d8ef0e15b5ce6a0373fb7cb923683c56256dc",
         )
 
     # Load a newer version of google test than what gRPC does.
@@ -54,10 +54,10 @@ def google_cloud_cpp_spanner_deps():
         http_archive(
             name = "com_google_googleapis",
             urls = [
-                "https://github.com/googleapis/googleapis/archive/a8ee1416f4c588f2ab92da72e7c1f588c784d3e6.tar.gz",
+                "https://github.com/googleapis/googleapis/archive/9c9f778aedde02f9826d2ae5d0f9c96409ba0f25.tar.gz",
             ],
-            strip_prefix = "googleapis-a8ee1416f4c588f2ab92da72e7c1f588c784d3e6",
-            sha256 = "6b8a9b2bcb4476e9a5a9872869996f0d639c8d5df76dd8a893e79201f211b1cf",
+            strip_prefix = "googleapis-9c9f778aedde02f9826d2ae5d0f9c96409ba0f25",
+            sha256 = "13af135d8cc9b81b47d6fbfc258fe790a151956d06e01fd16671aa49fe536ab1",
             build_file = "@com_github_googleapis_google_cloud_cpp_spanner//bazel:googleapis.BUILD",
         )
 
