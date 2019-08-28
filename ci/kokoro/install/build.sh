@@ -76,7 +76,6 @@ echo "================================================================"
 CONFIG_DIRECTORY="${KOKORO_GFILE_DIR:-/dev/shm}"
 readonly CONFIG_DIRECTORY
 if [[ -f "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh" ]]; then
-  # shellcheck source=/dev/null
   source "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh"
 
   run_args=(
