@@ -35,6 +35,7 @@ namespace internal {
 namespace {
 
 using ::google::cloud::internal::make_unique;
+using ::google::cloud::spanner_testing::HasSessionAndTransactionId;
 using ::google::protobuf::TextFormat;
 using ::testing::_;
 using ::testing::ByMove;
@@ -45,13 +46,6 @@ using ::testing::SetArgPointee;
 using ::testing::StartsWith;
 
 namespace spanner_proto = ::google::spanner::v1;
-
-MATCHER_P(TransactionIdEquals, expected_id,
-          "Verifies that a Transaction has the expected Transaction ID") {
-  return Visit(arg, [&](spanner_proto::TransactionSelector& s, std::int64_t) {
-    return s.id() == expected_id;
-  });
-}
 
 class MockGrpcReader
     : public ::grpc::ClientReaderInterface<spanner_proto::PartialResultSet> {
@@ -213,7 +207,7 @@ TEST(ConnectionImplTest, ReadImplicitBeginTransaction) {
   auto result = conn.Read(
       {txn, "table", KeySet::All(), {"UserId", "UserName"}, ReadOptions()});
   EXPECT_STATUS_OK(result);
-  EXPECT_THAT(txn, TransactionIdEquals("ABCDEF00"));
+  EXPECT_THAT(txn, HasSessionAndTransactionId("test-session-name", "ABCDEF00"));
 }
 
 TEST(ConnectionImplTest, ExecuteSqlGetSessionFailure) {
@@ -357,7 +351,7 @@ TEST(ConnectionImplTest, ExecuteSqlImplicitBeginTransaction) {
   Transaction txn = MakeReadOnlyTransaction(Transaction::ReadOnlyOptions());
   auto result = conn.ExecuteSql({txn, SqlStatement("select * from table")});
   EXPECT_STATUS_OK(result);
-  EXPECT_THAT(txn, TransactionIdEquals("00FEDCBA"));
+  EXPECT_THAT(txn, HasSessionAndTransactionId("test-session-name", "00FEDCBA"));
 }
 
 TEST(ConnectionImplTest, CommitGetSessionFailure) {
@@ -430,7 +424,8 @@ TEST(ConnectionImplTest, CommitSuccessWithTransactionId) {
       }));
 
   auto txn = MakeReadWriteTransaction();
-  internal::Visit(txn, [](spanner_proto::TransactionSelector& s, std::int64_t) {
+  internal::Visit(txn, [](SessionHolder&, spanner_proto::TransactionSelector& s,
+                          std::int64_t) {
     s.set_id("test-txn-id");
     return 0;
   });
@@ -533,7 +528,8 @@ TEST(ConnectionImplTest, RollbackFailure) {
   ConnectionImpl conn(db, mock);
   auto txn = MakeReadWriteTransaction();
   auto begin_transaction =
-      [&transaction_id](spanner_proto::TransactionSelector& s, std::int64_t) {
+      [&transaction_id](SessionHolder&, spanner_proto::TransactionSelector& s,
+                        std::int64_t) {
         s.set_id(transaction_id);
         return 0;
       };
@@ -570,7 +566,8 @@ TEST(ConnectionImplTest, RollbackSuccess) {
   ConnectionImpl conn(db, mock);
   auto txn = MakeReadWriteTransaction();
   auto begin_transaction =
-      [&transaction_id](spanner_proto::TransactionSelector& s, std::int64_t) {
+      [&transaction_id](SessionHolder&, spanner_proto::TransactionSelector& s,
+                        std::int64_t) {
         s.set_id(transaction_id);
         return 0;
       };
@@ -627,7 +624,7 @@ TEST(ConnectionImplTest, PartitionReadSuccess) {
       {{txn, "table", KeySet::All(), {"UserId", "UserName"}, ReadOptions()},
        PartitionOptions()});
   EXPECT_STATUS_OK(result);
-  EXPECT_THAT(txn, TransactionIdEquals("CAFEDEAD"));
+  EXPECT_THAT(txn, HasSessionAndTransactionId("test-session-name", "CAFEDEAD"));
 
   std::vector<ReadPartition> expected_read_partitions = {
       internal::MakeReadPartition("CAFEDEAD", "test-session-name", "BADDECAF",
@@ -792,6 +789,7 @@ TEST(ConnectionImplTest, MultipleThreads) {
     for (int i = 0; i != iterations; ++i) {
       auto txn = MakeReadWriteTransaction();
       auto begin_transaction = [thread_id, i](
+                                   SessionHolder&,
                                    spanner_proto::TransactionSelector& s,
                                    std::int64_t) {
         s.set_id("txn-" + std::to_string(thread_id) + ":" + std::to_string(i));
