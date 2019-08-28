@@ -31,7 +31,6 @@ class DatabaseEnvironment : public ::testing::Environment {
 
  protected:
   void SetUp() override;
-
   void TearDown() override;
 
  private:
