@@ -15,6 +15,7 @@
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CLIENT_H_
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CLIENT_H_
 
+#include "google/cloud/spanner/batch_dml_result.h"
 #include "google/cloud/spanner/commit_result.h"
 #include "google/cloud/spanner/connection.h"
 #include "google/cloud/spanner/connection_options.h"
@@ -312,7 +313,7 @@ class Client {
    *     entries for subsequent statements are not present in the returned
    *     vector.
    */
-  std::vector<StatusOr<google::spanner::v1::ResultSetStats>> ExecuteBatchDml(
+  StatusOr<BatchDmlResult> ExecuteBatchDml(
       Transaction const& transaction,
       std::vector<SqlStatement> const& statements);
 
