@@ -17,8 +17,11 @@
 #include "google/cloud/spanner/database_admin_client.h"
 #include "google/cloud/internal/getenv.h"
 #include "google/cloud/internal/random.h"
+#include <functional>
 
 namespace spanner = google::cloud::spanner;
+
+std::function<void()> drop_database = []{};
 
 int main(int argc, char* argv[]) try {
   if (argc != 1) {
@@ -90,6 +93,12 @@ int main(int argc, char* argv[]) try {
       created_database.get();
   if (!db) throw std::runtime_error(db.status().message());
 
+  drop_database = [admin_client, database]() mutable {
+    auto drop = admin_client.DropDatabase(database);
+    if (!drop.ok()) throw std::runtime_error(drop.message());
+    std::cout << "Database dropped\n";
+  };
+
   spanner::Client client(spanner::MakeConnection(database));
 
   auto reader =
@@ -101,12 +110,10 @@ int main(int argc, char* argv[]) try {
     std::cout << row->get<0>() << "\n";
   }
 
-  auto drop = admin_client.DropDatabase(database);
-  if (!drop.ok()) throw std::runtime_error(drop.message());
-  std::cout << "Database dropped\n";
-
+  drop_database();
   return 0;
 } catch (std::exception const& ex) {
   std::cerr << "Standard exception raised: " << ex.what() << "\n";
+  drop_database();
   return 1;
 }
