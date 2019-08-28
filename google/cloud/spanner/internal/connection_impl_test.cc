@@ -22,6 +22,7 @@
 #include "google/cloud/testing_util/assert_ok.h"
 #include <google/protobuf/text_format.h>
 #include <gmock/gmock.h>
+#include <array>
 #include <atomic>
 #include <future>
 #include <string>
@@ -40,12 +41,33 @@ using ::google::protobuf::TextFormat;
 using ::testing::_;
 using ::testing::ByMove;
 using ::testing::HasSubstr;
+using ::testing::InSequence;
 using ::testing::Invoke;
 using ::testing::Return;
 using ::testing::SetArgPointee;
 using ::testing::StartsWith;
 
 namespace spanner_proto = ::google::spanner::v1;
+
+// Matches a spanner_proto::ReadRequest with the specified `session` and
+// `transaction_id`.
+MATCHER_P2(ReadRequestHasSessionAndTransactionId, session, transaction_id,
+           "ReadRequest has expected session and transaction") {
+  return arg.session() == session && arg.transaction().id() == transaction_id;
+}
+
+// Matches a spanner_proto::ReadRequest with the specified `session` and
+// 'begin` set in the TransactionSelector.
+MATCHER_P(ReadRequestHasSessionAndBeginTransaction, session,
+          "ReadRequest has expected session and transaction") {
+  return arg.session() == session && arg.transaction().has_begin();
+}
+
+// Matches a spanner_proto::CreateSessionRequest with the specified `database`.
+MATCHER_P(CreateSessionRequestHasDatabase, database,
+          "CreateSessionRequest has expected database") {
+  return arg.database() == database;
+}
 
 class MockGrpcReader
     : public ::grpc::ClientReaderInterface<spanner_proto::PartialResultSet> {
@@ -809,6 +831,124 @@ TEST(ConnectionImplTest, MultipleThreads) {
 
   for (auto& f : tasks) {
     f.get();
+  }
+}
+
+/**
+ * @test Verify Transactions remain bound to a single Session.
+ *
+ * This test makes interleaved Read() calls using two separate Transactions,
+ * and ensures each Transaction uses the same session consistently.
+ */
+TEST(ConnectionImplTest, TransactionSessionBinding) {
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
+
+  auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
+  ConnectionImpl conn(db, mock);
+  spanner_proto::Session session1;
+  session1.set_name("session-1");
+  spanner_proto::Session session2;
+  session2.set_name("session-2");
+  EXPECT_CALL(*mock,
+              CreateSession(_, CreateSessionRequestHasDatabase(db.FullName())))
+      .WillOnce(Return(session1))
+      .WillOnce(Return(session2));
+
+  constexpr int kNumResponses = 4;
+  std::array<spanner_proto::PartialResultSet, kNumResponses> responses;
+  std::array<std::unique_ptr<MockGrpcReader>, kNumResponses> readers;
+  for (int i = 0; i < kNumResponses; ++i) {
+    ASSERT_TRUE(TextFormat::ParseFromString(
+        R"pb(
+          metadata: {
+            row_type: {
+              fields: {
+                name: "Number",
+                type: { code: INT64 }
+              }
+            }
+          }
+        )pb",
+        &responses[i]));
+    // The first two responses are reads from two different "begin"
+    // transactions.
+    switch (i) {
+      case 0:
+        responses[i].mutable_metadata()->mutable_transaction()->set_id(
+            "ABCDEF01");
+        break;
+      case 1:
+        responses[i].mutable_metadata()->mutable_transaction()->set_id(
+            "ABCDEF02");
+        break;
+    }
+    responses[i].add_values()->set_string_value(std::to_string(i));
+
+    readers[i] = make_unique<MockGrpcReader>();
+    EXPECT_CALL(*readers[i], Read(_))
+        .WillOnce(DoAll(SetArgPointee<0>(responses[i]), Return(true)))
+        .WillOnce(Return(false));
+    EXPECT_CALL(*readers[i], Finish()).WillOnce(Return(grpc::Status()));
+  }
+
+  // Ensure the StreamingRead calls have the expected session and transaction
+  // IDs or "begin" set as appropriate.
+  {
+    InSequence s;
+    EXPECT_CALL(
+        *mock,
+        StreamingRead(_, ReadRequestHasSessionAndBeginTransaction("session-1")))
+        .WillOnce(Return(ByMove(std::move(readers[0]))));
+    EXPECT_CALL(
+        *mock,
+        StreamingRead(_, ReadRequestHasSessionAndBeginTransaction("session-2")))
+        .WillOnce(Return(ByMove(std::move(readers[1]))));
+    EXPECT_CALL(*mock, StreamingRead(_, ReadRequestHasSessionAndTransactionId(
+                                            "session-1", "ABCDEF01")))
+        .WillOnce(Return(ByMove(std::move(readers[2]))));
+    EXPECT_CALL(*mock, StreamingRead(_, ReadRequestHasSessionAndTransactionId(
+                                            "session-2", "ABCDEF02")))
+        .WillOnce(Return(ByMove(std::move(readers[3]))));
+  }
+
+  // Now do the actual reads and verify the results.
+  Transaction txn1 = MakeReadOnlyTransaction(Transaction::ReadOnlyOptions());
+  auto result =
+      conn.Read({txn1, "table", KeySet::All(), {"Number"}, ReadOptions()});
+  EXPECT_STATUS_OK(result);
+  EXPECT_THAT(txn1, HasSessionAndTransactionId("session-1", "ABCDEF01"));
+  for (auto& row : result->Rows<std::int64_t>()) {
+    EXPECT_STATUS_OK(row);
+    EXPECT_EQ(row->size(), 1);
+    EXPECT_EQ(row->get<0>(), 0);
+  }
+
+  Transaction txn2 = MakeReadOnlyTransaction(Transaction::ReadOnlyOptions());
+  result = conn.Read({txn2, "table", KeySet::All(), {"Number"}, ReadOptions()});
+  EXPECT_STATUS_OK(result);
+  EXPECT_THAT(txn2, HasSessionAndTransactionId("session-2", "ABCDEF02"));
+  for (auto& row : result->Rows<std::int64_t>()) {
+    EXPECT_STATUS_OK(row);
+    EXPECT_EQ(row->size(), 1);
+    EXPECT_EQ(row->get<0>(), 1);
+  }
+
+  result = conn.Read({txn1, "table", KeySet::All(), {"Number"}, ReadOptions()});
+  EXPECT_STATUS_OK(result);
+  EXPECT_THAT(txn1, HasSessionAndTransactionId("session-1", "ABCDEF01"));
+  for (auto& row : result->Rows<std::int64_t>()) {
+    EXPECT_STATUS_OK(row);
+    EXPECT_EQ(row->size(), 1);
+    EXPECT_EQ(row->get<0>(), 2);
+  }
+
+  result = conn.Read({txn2, "table", KeySet::All(), {"Number"}, ReadOptions()});
+  EXPECT_STATUS_OK(result);
+  EXPECT_THAT(txn2, HasSessionAndTransactionId("session-2", "ABCDEF02"));
+  for (auto& row : result->Rows<std::int64_t>()) {
+    EXPECT_STATUS_OK(row);
+    EXPECT_EQ(row->size(), 1);
+    EXPECT_EQ(row->get<0>(), 3);
   }
 }
 
