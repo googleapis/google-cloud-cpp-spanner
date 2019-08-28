@@ -80,7 +80,7 @@ if [[ -f "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh" ]]; then
   source "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh"
 
   run_args=(
-    # Remove the image after running
+    # Remove the container after running
     "--rm"
 
     # Set the environment variables for the test program.
