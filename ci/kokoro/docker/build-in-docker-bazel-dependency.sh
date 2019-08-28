@@ -56,6 +56,23 @@ cd ci/test-install
 "${BAZEL_BIN}" build  "${bazel_args[@]}" \
     -- //...:all
 
+if [[ -r "/c/spanner-integration-tests-config.sh" ]]; then
+  echo "================================================================"
+  echo "Running the dependent program $(date)"
+  echo "================================================================"
+  # shellcheck disable=SC1091
+  source "/c/spanner-integration-tests-config.sh"
+
+  # Run the integration tests using Bazel to drive them.
+  env "GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json" \
+      "GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}" \
+      "GOOGLE_CLOUD_CPP_SPANNER_INSTANCE=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}" \
+      "${BAZEL_BIN}" run \
+      "${bazel_args[@]}" \
+      "--spawn_strategy=local" \
+      -- //...:all
+fi
+
 echo "================================================================"
 echo "Build finished at $(date)"
 echo "================================================================"
