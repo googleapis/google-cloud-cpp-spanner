@@ -86,7 +86,7 @@ TEST(Transaction, Visit) {
     a_seqno = seqno;
     return 0;
   });
-  internal::Visit(a, [&a_seqno](internal::SessionHolder& /*session*/,
+  internal::Visit(a, [a_seqno](internal::SessionHolder& /*session*/,
                                 google::spanner::v1::TransactionSelector& s,
                                 std::int64_t seqno) {
     EXPECT_EQ("test-txn-id", s.id());
