@@ -92,5 +92,5 @@ ENV LD_LIBRARY_PATH=/home/build/google-cloud-spanner-install/lib64
 COPY ci/test-install /home/build/test-install-cmake
 RUN env -u PKG_CONFIG_PATH cmake \
     -DCMAKE_PREFIX_PATH=/home/build/google-cloud-spanner-install \
-    -H. -Bcmake-out
-RUN cmake --build cmake-out -- -j $(nproc)
+    -H. -B/o
+RUN cmake --build /o -- -j $(nproc)
