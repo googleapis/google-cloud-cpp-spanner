@@ -249,9 +249,9 @@ std::shared_ptr<SpannerStub> CreateDefaultSpannerStub(
   if (!options.channel_pool_domain().empty()) {
     // To get a different channel pool one just needs to set any channel
     // parameter to a different value. Newer versions of gRPC include a macro
-    // for this purpose (GRPC_ARG_CHANNEL_POOL_DOMAIN), but we are compiling
-    // against older versions in some cases.
-    channel_arguments.SetString("spanner-c++/channel-pool-domain",
+    // for this purpose (GRPC_ARG_CHANNEL_POOL_DOMAIN). As we are compiling
+    // against older versions in some cases, we use the actual value.
+    channel_arguments.SetString("grpc.channel_pooling_domain",
                                 options.channel_pool_domain());
   }
 
