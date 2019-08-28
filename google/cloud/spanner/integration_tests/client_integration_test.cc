@@ -610,9 +610,10 @@ TEST_F(ClientIntegrationTest, PartitionRead) {
     int row_number = 0;
     auto deserialized_partition = DeserializeReadPartition(partition);
     ASSERT_STATUS_OK(deserialized_partition);
-    auto partition_reader = client_->Read(*deserialized_partition);
+    auto partition_result_set = client_->Read(*deserialized_partition);
+    ASSERT_STATUS_OK(partition_result_set);
     for (auto& row :
-         partition_reader->Rows<std::int64_t, std::string, std::string>()) {
+         partition_result_set->Rows<std::int64_t, std::string, std::string>()) {
       SCOPED_TRACE("Reading partition[" + std::to_string(partition_number++) +
                    "] row[" + std::to_string(row_number++) + "]");
       EXPECT_STATUS_OK(row);
@@ -647,9 +648,10 @@ TEST_F(ClientIntegrationTest, PartitionQuery) {
     int row_number = 0;
     auto deserialized_partition = DeserializeQueryPartition(partition);
     ASSERT_STATUS_OK(deserialized_partition);
-    auto partition_reader = client_->ExecuteSql(*deserialized_partition);
+    auto partition_result_set = client_->ExecuteSql(*deserialized_partition);
+    ASSERT_STATUS_OK(partition_result_set);
     for (auto& row :
-         partition_reader->Rows<std::int64_t, std::string, std::string>()) {
+         partition_result_set->Rows<std::int64_t, std::string, std::string>()) {
       SCOPED_TRACE("Reading partition[" + std::to_string(partition_number++) +
                    "] row[" + std::to_string(row_number++) + "]");
       EXPECT_STATUS_OK(row);
