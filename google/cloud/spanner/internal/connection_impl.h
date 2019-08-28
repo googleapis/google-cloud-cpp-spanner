@@ -17,6 +17,7 @@
 
 #include "google/cloud/spanner/connection.h"
 #include "google/cloud/spanner/database.h"
+#include "google/cloud/spanner/internal/session_holder.h"
 #include "google/cloud/spanner/internal/spanner_stub.h"
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/status.h"
@@ -31,8 +32,6 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
-
-class SessionHolder;
 
 /**
  * A concrete `Connection` subclass that uses gRPC to actually talk to a real
@@ -57,7 +56,6 @@ class ConnectionImpl : public Connection {
   Status Rollback(RollbackParams rp) override;
 
  private:
-  friend class SessionHolder;
   StatusOr<SessionHolder> GetSession();
   void ReleaseSession(std::string session);
 

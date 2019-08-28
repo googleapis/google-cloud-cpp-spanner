@@ -17,6 +17,7 @@
 
 #include "google/cloud/spanner/internal/connection_impl.h"
 #include "google/cloud/spanner/version.h"
+#include <functional>
 #include <string>
 
 namespace google {
@@ -30,31 +31,21 @@ namespace internal {
  */
 class SessionHolder {
  public:
-  SessionHolder(std::string session, ConnectionImpl* conn) noexcept
-      : session_(std::move(session)), conn_(conn) {}
+  SessionHolder(std::string session,
+                std::function<void(std::string)> deleter) noexcept
+      : session_(std::move(session)), deleter_(std::move(deleter)) {}
 
-  // This class is move-only because we want only one destructor returning the
-  // session back to `conn_`.
+  // This class is move-only because we want only one destructor calling the
+  // `deleter_`.
   SessionHolder(SessionHolder const&) = delete;
   SessionHolder& operator=(SessionHolder const&) = delete;
 
-  // Need explicit move constructor and assignment to clear the `conn_` from
-  // the source.
-  SessionHolder(SessionHolder&& rhs) noexcept
-      : session_(std::move(rhs.session_)), conn_(rhs.conn_) {
-    rhs.conn_ = nullptr;
-  }
-
-  SessionHolder& operator=(SessionHolder&& rhs) noexcept {
-    session_ = std::move(rhs.session_);
-    conn_ = rhs.conn_;
-    rhs.conn_ = nullptr;
-    return *this;
-  }
+  SessionHolder(SessionHolder&& rhs) noexcept = default;
+  SessionHolder& operator=(SessionHolder&& rhs) noexcept = default;
 
   ~SessionHolder() {
-    if (conn_) {
-      conn_->ReleaseSession(std::move(session_));
+    if (deleter_) {
+      deleter_(std::move(session_));
     }
   }
 
@@ -62,7 +53,7 @@ class SessionHolder {
 
  private:
   std::string session_;
-  ConnectionImpl* conn_;
+  std::function<void(std::string)> deleter_;
 };
 
 }  // namespace internal
