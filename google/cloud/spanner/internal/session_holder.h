@@ -40,8 +40,8 @@ class SessionHolder {
   SessionHolder(SessionHolder const&) = delete;
   SessionHolder& operator=(SessionHolder const&) = delete;
 
-  SessionHolder(SessionHolder&& rhs) noexcept = default;
-  SessionHolder& operator=(SessionHolder&& rhs) noexcept = default;
+  SessionHolder(SessionHolder&& rhs) = default;
+  SessionHolder& operator=(SessionHolder&& rhs) = default;
 
   ~SessionHolder() {
     if (deleter_) {
