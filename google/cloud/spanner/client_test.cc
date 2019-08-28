@@ -288,6 +288,59 @@ TEST(ClientTest, ExecuteSqlFailure) {
   EXPECT_EQ((*iter).status().code(), StatusCode::kDeadlineExceeded);
 }
 
+TEST(ClientTest, ExecuteBatchDmlSuccess) {
+  auto request = {
+      SqlStatement("update ..."),
+      SqlStatement("update ..."),
+      SqlStatement("update ..."),
+  };
+
+  BatchDmlResult result;
+  result.stats = std::vector<BatchDmlResult::Stats>{
+      {10},
+      {10},
+      {10},
+  };
+
+  auto conn = std::make_shared<MockConnection>();
+  EXPECT_CALL(*conn, ExecuteBatchDml(_)).WillOnce(Return(result));
+
+  Client client(conn);
+  auto txn = MakeReadWriteTransaction();
+  auto actual = client.ExecuteBatchDml(txn, std::move(request));
+
+  EXPECT_STATUS_OK(actual);
+  EXPECT_STATUS_OK(actual->status);
+  EXPECT_EQ(actual->stats.size(), request.size());
+}
+
+TEST(ClientTest, ExecuteBatchDmlError) {
+  auto request = {
+      SqlStatement("update ..."),
+      SqlStatement("update ..."),
+      SqlStatement("update ..."),
+  };
+
+  BatchDmlResult result;
+  result.status = Status(StatusCode::kUnknown, "some error");
+  result.stats = std::vector<BatchDmlResult::Stats>{
+      {10},
+      // Oops: Only one SqlStatement was processed.
+  };
+
+  auto conn = std::make_shared<MockConnection>();
+  EXPECT_CALL(*conn, ExecuteBatchDml(_)).WillOnce(Return(result));
+
+  Client client(conn);
+  auto txn = MakeReadWriteTransaction();
+  auto actual = client.ExecuteBatchDml(txn, std::move(request));
+
+  EXPECT_STATUS_OK(actual);
+  EXPECT_FALSE(actual->status.ok());
+  EXPECT_NE(actual->stats.size(), request.size());
+  EXPECT_EQ(actual->stats.size(), 1);
+}
+
 TEST(ClientTest, CommitSuccess) {
   auto conn = std::make_shared<MockConnection>();
 
