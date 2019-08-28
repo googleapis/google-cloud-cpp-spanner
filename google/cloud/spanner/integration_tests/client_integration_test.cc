@@ -633,7 +633,6 @@ TEST_F(ClientIntegrationTest, PartitionQuery) {
       ro_transaction,
       SqlStatement("select SingerId, FirstName, LastName from Singers"));
   ASSERT_STATUS_OK(query_partitions);
-  EXPECT_GT(query_partitions->size(), 1);
 
   std::vector<std::string> serialized_partitions;
   for (auto& partition : *query_partitions) {
