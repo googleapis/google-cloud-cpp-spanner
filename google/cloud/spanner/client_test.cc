@@ -55,6 +55,7 @@ class MockConnection : public Connection {
   MOCK_METHOD1(ExecuteSql, StatusOr<ResultSet>(ExecuteSqlParams));
   MOCK_METHOD1(PartitionQuery,
                StatusOr<std::vector<QueryPartition>>(PartitionQueryParams));
+  MOCK_METHOD1(ExecuteBatchDml, StatusOr<BatchDmlResult>(BatchDmlParams));
   MOCK_METHOD1(Commit, StatusOr<CommitResult>(CommitParams));
   MOCK_METHOD1(Rollback, Status(RollbackParams));
 };

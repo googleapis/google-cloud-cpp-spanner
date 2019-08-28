@@ -66,6 +66,12 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
       });
 }
 
+StatusOr<BatchDmlResult> ConnectionImpl::ExecuteBatchDml(
+    BatchDmlParams params) {
+  (void)params;
+  return {Status(StatusCode::kUnimplemented, "not implemented")};
+}
+
 StatusOr<CommitResult> ConnectionImpl::Commit(CommitParams cp) {
   return internal::Visit(
       std::move(cp.transaction),

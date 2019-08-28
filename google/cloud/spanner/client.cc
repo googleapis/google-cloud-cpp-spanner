@@ -98,9 +98,9 @@ StatusOr<std::vector<QueryPartition>> Client::PartitionQuery(
 }
 
 StatusOr<BatchDmlResult> Client::ExecuteBatchDml(
-    Transaction const& /*transaction*/,
-    std::vector<SqlStatement> const& /*statements*/) {
-  return {Status(StatusCode::kUnimplemented, "not implemented")};
+    Transaction transaction, std::vector<SqlStatement> statements) {
+  return conn_->ExecuteBatchDml(
+      {std::move(transaction), std::move(statements)});
 }
 
 StatusOr<CommitResult> Client::Commit(Transaction transaction,

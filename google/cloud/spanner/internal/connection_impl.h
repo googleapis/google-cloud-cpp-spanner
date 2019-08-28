@@ -52,6 +52,7 @@ class ConnectionImpl : public Connection {
   StatusOr<ResultSet> ExecuteSql(ExecuteSqlParams esp) override;
   StatusOr<std::vector<QueryPartition>> PartitionQuery(
       PartitionQueryParams) override;
+  StatusOr<BatchDmlResult> ExecuteBatchDml(BatchDmlParams) override;
   StatusOr<CommitResult> Commit(CommitParams cp) override;
   Status Rollback(RollbackParams rp) override;
 
