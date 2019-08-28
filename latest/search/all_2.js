@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['channel_5fpool_5fdomain',['channel_pool_domain',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#aaa36738cbde0febd10f5c98a4bfbfd13',1,'google::cloud::spanner::v0::ConnectionOptions']]],
   ['client',['Client',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html',1,'google::cloud::spanner::v0::Client'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ac02ff58e375cd0a5150adf7bb0698671',1,'google::cloud::spanner::v0::Client::Client(std::shared_ptr&lt; Connection &gt; conn)'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a30c4b976a93be9a3c9159d0f282dd1d0',1,'google::cloud::spanner::v0::Client::Client()=delete'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a1bf1ba0a670d69df203fd8d79abd9e05',1,'google::cloud::spanner::v0::Client::Client(Client const &amp;)=default'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#aee17a4fa605886c270b058ebdb1981b3',1,'google::cloud::spanner::v0::Client::Client(Client &amp;&amp;)=default']]],
   ['client_2ecc',['client.cc',['../client_8cc.html',1,'']]],
   ['client_2eh',['client.h',['../client_8h.html',1,'']]],
