@@ -2,6 +2,7 @@ var searchData=
 [
   ['table',['table',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ReadParams.html#a8418623af018ccfde6af48658a0f4370',1,'google::cloud::spanner::v0::Connection::ReadParams']]],
   ['tablename',['TableName',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html#a5b7c28acb60bb4aeffb61f35ce60e424',1,'google::cloud::spanner::v0::ReadPartition']]],
+  ['teardown',['TearDown',['../classgoogle_1_1cloud_1_1spanner__testing_1_1v0_1_1DatabaseEnvironment.html#a25b3f9d9cf7db2d94724499ab5f9ca66',1,'google::cloud::spanner_testing::v0::DatabaseEnvironment']]],
   ['timestamp',['Timestamp',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9711d66cf02a8305d987474ac7c5efca',1,'google::cloud::spanner::v0']]],
   ['timestamp_2eh',['timestamp.h',['../timestamp_8h.html',1,'']]],
   ['tracing_5fenabled',['tracing_enabled',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#ac711a7eb3e8ca1711f450a352275332f',1,'google::cloud::spanner::v0::ConnectionOptions']]],
