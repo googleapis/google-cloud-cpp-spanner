@@ -51,9 +51,9 @@ if [[ -r "${BINARY_DIR}/CTestTestfile.cmake" ]]; then
   # It is Okay to skip the tests in this case because the super build
   # automatically runs them.
   echo "Running the unit tests $(date)"
-  env -C "${BINARY_DIR}" ctest \
+  (cd "${BINARY_DIR}"; ctest \
       -LE integration-tests \
-      --output-on-failure -j "${NCPU}"
+      --output-on-failure -j "${NCPU}")
   echo "================================================================"
 fi
 
@@ -61,14 +61,14 @@ if [[ ${RUN_INTEGRATION_TESTS} == "yes" ]]; then
   echo "================================================================"
   echo "Running the integration tests $(date)"
   echo "================================================================"
-  source "${KOKORO_GFILE_DIR}/spanner-integration-tests-config.sh"
-  export GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/spanner-credentials.json"
   export GOOGLE_CLOUD_CPP_AUTO_RUN_EXAMPLES=yes
 
-  # Run the integration tests too.
-  env -C "${BINARY_DIR}" ctest \
+  # Run the integration tests, because we use a super build for macOS, the
+  # binaries are in a weird location.
+  (cd "${BINARY_DIR}/build/google-cloud-cpp-spanner/src/google-cloud-cpp-spanner-as-external-build"; \
+   ctest \
       -L integration-tests \
-      --output-on-failure -j "${NCPU}"
+      --output-on-failure -j "${NCPU}")
   echo "================================================================"
 fi
 
