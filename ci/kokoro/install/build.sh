@@ -65,8 +65,34 @@ docker build "${devtools_flags[@]}" ci
 
 echo "================================================================"
 echo "Run validation script for INSTALL instructions on ${DISTRO}."
-docker build \
+RUN_IMAGE="spanci-test-install-full-${DISTRO}:latest"
+readonly RUN_IMAGE
+docker build -t "${RUN_IMAGE}" \
   "--cache-from=${DEV_IMAGE}:latest" \
   "--target=install" \
   -f "ci/kokoro/install/Dockerfile.${DISTRO}" .
 echo "================================================================"
+
+CONFIG_DIRECTORY="${KOKORO_GFILE_DIR:-/dev/shm}"
+readonly CONFIG_DIRECTORY
+if [[ -f "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh" ]]; then
+  # shellcheck source=/dev/null
+  source "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh"
+
+  run_args=(
+    # Remove the image after running
+    "--rm"
+
+    # Set the environment variables for the test program.
+    "--env" "GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json"
+    "--env" "GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}"
+    "--env" "GOOGLE_CLOUD_CPP_SPANNER_INSTANCE=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}"
+
+    # Mount the config directory as a volumne in `/c`
+    "--volume" "${CONFIG_DIRECTORY}:/c"
+  )
+  echo "================================================================"
+  echo "Run test program against installed libraries ${DISTRO}."
+  docker run "${run_args[@]}" "${RUN_IMAGE}" "/o/spanner_install_test"
+  echo "================================================================"
+fi
