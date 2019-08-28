@@ -32,6 +32,8 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
+class SessionHolder;
+
 /**
  * A concrete `Connection` subclass that uses gRPC to actually talk to a real
  * Spanner instance. See `MakeConnection()` for a factory function that creates
@@ -55,42 +57,6 @@ class ConnectionImpl : public Connection {
   Status Rollback(RollbackParams rp) override;
 
  private:
-  class SessionHolder {
-   public:
-    SessionHolder(std::string session, ConnectionImpl* conn) noexcept
-        : session_(std::move(session)), conn_(conn) {}
-
-    // This class is move-only because we want only one destructor returning the
-    // session back to `conn_`.
-    SessionHolder(SessionHolder const&) = delete;
-    SessionHolder& operator=(SessionHolder const&) = delete;
-
-    // Need explicit move constructor and assignment to clear the `conn_` from
-    // the source.
-    SessionHolder(SessionHolder&& rhs) noexcept
-        : session_(std::move(rhs.session_)), conn_(rhs.conn_) {
-      rhs.conn_ = nullptr;
-    }
-
-    SessionHolder& operator=(SessionHolder&& rhs) noexcept {
-      session_ = std::move(rhs.session_);
-      conn_ = rhs.conn_;
-      rhs.conn_ = nullptr;
-      return *this;
-    }
-
-    ~SessionHolder() {
-      if (conn_) {
-        conn_->ReleaseSession(std::move(session_));
-      }
-    }
-
-    std::string const& session_name() const { return session_; }
-
-   private:
-    std::string session_;
-    ConnectionImpl* conn_;
-  };
   friend class SessionHolder;
   StatusOr<SessionHolder> GetSession();
   void ReleaseSession(std::string session);

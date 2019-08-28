@@ -14,6 +14,7 @@
 
 #include "google/cloud/spanner/internal/connection_impl.h"
 #include "google/cloud/spanner/internal/partial_result_set_reader.h"
+#include "google/cloud/spanner/internal/session_holder.h"
 #include "google/cloud/spanner/internal/time.h"
 #include "google/cloud/spanner/query_partition.h"
 #include "google/cloud/spanner/read_partition.h"
@@ -78,7 +79,7 @@ Status ConnectionImpl::Rollback(RollbackParams rp) {
                                 std::int64_t) { return this->Rollback(s); });
 }
 
-StatusOr<ConnectionImpl::SessionHolder> ConnectionImpl::GetSession() {
+StatusOr<SessionHolder> ConnectionImpl::GetSession() {
   std::unique_lock<std::mutex> lk(mu_);
   if (!sessions_.empty()) {
     std::string session = std::move(sessions_.back());
