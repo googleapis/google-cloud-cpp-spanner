@@ -80,6 +80,11 @@ class ConnectionImpl : public Connection {
       SessionHolder& session, google::spanner::v1::TransactionSelector& s,
       ExecuteSqlParams const& esp, PartitionOptions partition_options);
 
+  /// Implementation details for ExecuteBatchDml
+  StatusOr<BatchDmlResult> ExecuteBatchDml(
+      google::spanner::v1::TransactionSelector& s, std::int64_t seqno,
+      BatchDmlParams params);
+
   /// Implementation details for Commit.
   StatusOr<CommitResult> Commit(SessionHolder& session,
                                 google::spanner::v1::TransactionSelector& s,

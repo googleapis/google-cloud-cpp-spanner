@@ -376,6 +376,106 @@ TEST(ConnectionImplTest, ExecuteSqlImplicitBeginTransaction) {
   EXPECT_THAT(txn, HasSessionAndTransactionId("test-session-name", "00FEDCBA"));
 }
 
+TEST(ConnectionImplTest, ExecuteBatchDmlSuccess) {
+  auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
+  EXPECT_CALL(*mock, CreateSession(_, _))
+      .WillOnce(::testing::Invoke(
+          [&db](grpc::ClientContext&,
+                spanner_proto::CreateSessionRequest const& request) {
+            EXPECT_EQ(db.FullName(), request.database());
+            spanner_proto::Session session;
+            session.set_name("test-session-name");
+            return session;
+          }));
+
+  spanner_proto::ExecuteBatchDmlResponse response;
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        result_sets: {
+          metadata: { transaction: { id: "1234567890" } }
+          stats: { row_count_exact: 0 }
+        }
+        result_sets: { stats: { row_count_exact: 1 } }
+        result_sets: { stats: { row_count_exact: 2 } }
+      )pb",
+      &response));
+  EXPECT_CALL(*mock, ExecuteBatchDml(_, _))
+      .WillOnce(Invoke(
+          [&response](grpc::ClientContext&,
+                      spanner_proto::ExecuteBatchDmlRequest const& request) {
+            return response;
+          }));
+
+  auto request = {
+      SqlStatement("update ..."),
+      SqlStatement("update ..."),
+      SqlStatement("update ..."),
+  };
+
+  ConnectionImpl conn(db, mock);
+  auto txn = MakeReadWriteTransaction();
+  auto result = conn.ExecuteBatchDml({txn, request});
+  EXPECT_STATUS_OK(result);
+  EXPECT_STATUS_OK(result->status);
+  EXPECT_EQ(result->stats.size(), request.size());
+  EXPECT_EQ(result->stats.size(), 3);
+  EXPECT_EQ(result->stats[0].row_count, 0);
+  EXPECT_EQ(result->stats[1].row_count, 1);
+  EXPECT_EQ(result->stats[2].row_count, 2);
+  EXPECT_THAT(txn, TransactionIdEquals("1234567890"));
+}
+
+TEST(ConnectionImplTest, ExecuteBatchDmlFailure) {
+  auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
+  EXPECT_CALL(*mock, CreateSession(_, _))
+      .WillOnce(::testing::Invoke(
+          [&db](grpc::ClientContext&,
+                spanner_proto::CreateSessionRequest const& request) {
+            EXPECT_EQ(db.FullName(), request.database());
+            spanner_proto::Session session;
+            session.set_name("test-session-name");
+            return session;
+          }));
+
+  spanner_proto::ExecuteBatchDmlResponse response;
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        result_sets: {
+          metadata: { transaction: { id: "1234567890" } }
+          stats: { row_count_exact: 42 }
+        }
+        result_sets: { stats: { row_count_exact: 43 } }
+        status: { code: 2 message: "oops" }
+      )pb",
+      &response));
+  EXPECT_CALL(*mock, ExecuteBatchDml(_, _))
+      .WillOnce(Invoke(
+          [&response](grpc::ClientContext&,
+                      spanner_proto::ExecuteBatchDmlRequest const& request) {
+            return response;
+          }));
+
+  auto request = {
+      SqlStatement("update ..."),
+      SqlStatement("update ..."),
+      SqlStatement("update ..."),
+  };
+
+  ConnectionImpl conn(db, mock);
+  auto txn = MakeReadWriteTransaction();
+  auto result = conn.ExecuteBatchDml({txn, request});
+  EXPECT_STATUS_OK(result);
+  EXPECT_EQ(result->status.code(), StatusCode::kUnknown);
+  EXPECT_EQ(result->status.message(), "oops");
+  EXPECT_NE(result->stats.size(), request.size());
+  EXPECT_EQ(result->stats.size(), 2);
+  EXPECT_EQ(result->stats[0].row_count, 42);
+  EXPECT_EQ(result->stats[1].row_count, 43);
+  EXPECT_THAT(txn, TransactionIdEquals("1234567890"));
+}
+
 TEST(ConnectionImplTest, CommitGetSessionFailure) {
   auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
