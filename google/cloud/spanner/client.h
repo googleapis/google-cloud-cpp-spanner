@@ -294,9 +294,6 @@ class Client {
    * to be run with lower latency than submitting them sequentially with
    * `ExecuteSql`.
    *
-   * @warning This method is not supported in the alpha release and will return
-   *     "Unimplemented" status.
-   *
    * Statements are executed in order, sequentially. Execution will stop at
    * the first failed statement; the remaining statements will not run.
    *
@@ -306,16 +303,9 @@ class Client {
    *     are visible to statement i+1. Each statement must be a DML statement.
    *     Execution will stop at the first failed statement; the remaining
    *     statements will not run. Must not be empty.
-   *
-   * @return A vector of `StatusOr` corresponding to each statement in
-   *     `statements`. Statements that were successfully executed return
-   *     statistics. If a statement fails, its error status is returned and
-   *     entries for subsequent statements are not present in the returned
-   *     vector.
    */
   StatusOr<BatchDmlResult> ExecuteBatchDml(
-      Transaction const& transaction,
-      std::vector<SqlStatement> const& statements);
+      Transaction transaction, std::vector<SqlStatement> statements);
 
   /**
    * Commits a read-write transaction.
