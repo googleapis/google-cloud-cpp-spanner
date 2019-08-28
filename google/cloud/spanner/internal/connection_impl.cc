@@ -124,7 +124,7 @@ void ConnectionImpl::ReleaseSession(std::string session) {
 StatusOr<ResultSet> ConnectionImpl::Read(SessionHolder& session,
                                          spanner_proto::TransactionSelector& s,
                                          ReadParams rp) {
-  if (session.session_name().empty()) {
+  if (!session.session_name()) {
     auto session_or = GetSession();
     if (!session_or) {
       return std::move(session_or).status();
@@ -133,7 +133,7 @@ StatusOr<ResultSet> ConnectionImpl::Read(SessionHolder& session,
   }
 
   spanner_proto::ReadRequest request;
-  request.set_session(session.session_name());
+  request.set_session(*session.session_name());
   *request.mutable_transaction() = s;
   request.set_table(std::move(rp.table));
   request.set_index(std::move(rp.read_options.index_name));
@@ -168,7 +168,7 @@ StatusOr<ResultSet> ConnectionImpl::Read(SessionHolder& session,
 StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionRead(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
     ReadParams const& rp, PartitionOptions partition_options) {
-  if (session.session_name().empty()) {
+  if (!session.session_name()) {
     // Since the session may be sent to other machines, it should not be
     // returned to the pool when the Transaction is destroyed (release=true).
     auto session_or = GetSession(/*release=*/true);
@@ -179,7 +179,7 @@ StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionRead(
   }
 
   spanner_proto::PartitionReadRequest request;
-  request.set_session(session.session_name());
+  request.set_session(*session.session_name());
   *request.mutable_transaction() = s;
   request.set_table(rp.table);
   request.set_index(rp.read_options.index_name);
@@ -202,7 +202,7 @@ StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionRead(
   std::vector<ReadPartition> read_partitions;
   for (auto& partition : response->partitions()) {
     read_partitions.push_back(internal::MakeReadPartition(
-        response->transaction().id(), session.session_name(),
+        response->transaction().id(), *session.session_name(),
         partition.partition_token(), rp.table, rp.keys, rp.columns,
         rp.read_options));
   }
@@ -213,7 +213,7 @@ StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionRead(
 StatusOr<ResultSet> ConnectionImpl::ExecuteSql(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
     std::int64_t seqno, ExecuteSqlParams esp) {
-  if (session.session_name().empty()) {
+  if (!session.session_name()) {
     auto session_or = GetSession();
     if (!session_or) {
       return std::move(session_or).status();
@@ -222,7 +222,7 @@ StatusOr<ResultSet> ConnectionImpl::ExecuteSql(
   }
 
   spanner_proto::ExecuteSqlRequest request;
-  request.set_session(session.session_name());
+  request.set_session(*session.session_name());
   *request.mutable_transaction() = s;
   auto sql_statement = internal::ToProto(std::move(esp.statement));
   request.set_sql(std::move(*sql_statement.mutable_sql()));
@@ -256,7 +256,7 @@ StatusOr<ResultSet> ConnectionImpl::ExecuteSql(
 StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
     ExecuteSqlParams const& esp, PartitionOptions partition_options) {
-  if (session.session_name().empty()) {
+  if (!session.session_name()) {
     // Since the session may be sent to other machines, it should not be
     // returned to the pool when the Transaction is destroyed (release=true).
     auto session_or = GetSession(/*release=*/true);
@@ -267,7 +267,7 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
   }
 
   spanner_proto::PartitionQueryRequest request;
-  request.set_session(session.session_name());
+  request.set_session(*session.session_name());
   *request.mutable_transaction() = s;
   auto sql_statement = internal::ToProto(esp.statement);
   request.set_sql(std::move(*sql_statement.mutable_sql()));
@@ -290,7 +290,7 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
   std::vector<QueryPartition> query_partitions;
   for (auto& partition : response->partitions()) {
     query_partitions.push_back(internal::MakeQueryPartition(
-        response->transaction().id(), session.session_name(),
+        response->transaction().id(), *session.session_name(),
         partition.partition_token(), esp.statement));
   }
 
@@ -300,7 +300,7 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
 StatusOr<CommitResult> ConnectionImpl::Commit(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
     CommitParams cp) {
-  if (session.session_name().empty()) {
+  if (!session.session_name()) {
     auto session_or = GetSession();
     if (!session_or) {
       return std::move(session_or).status();
@@ -309,7 +309,7 @@ StatusOr<CommitResult> ConnectionImpl::Commit(
   }
 
   spanner_proto::CommitRequest request;
-  request.set_session(session.session_name());
+  request.set_session(*session.session_name());
   for (auto&& m : cp.mutations) {
     *request.add_mutations() = std::move(m).as_proto();
   }
@@ -332,7 +332,7 @@ StatusOr<CommitResult> ConnectionImpl::Commit(
 
 Status ConnectionImpl::Rollback(SessionHolder& session,
                                 spanner_proto::TransactionSelector& s) {
-  if (session.session_name().empty()) {
+  if (!session.session_name()) {
     auto session_or = GetSession();
     if (!session_or) {
       return std::move(session_or).status();
@@ -350,7 +350,7 @@ Status ConnectionImpl::Rollback(SessionHolder& session,
     return Status();
   }
   spanner_proto::RollbackRequest request;
-  request.set_session(session.session_name());
+  request.set_session(*session.session_name());
   request.set_transaction_id(s.id());
   grpc::ClientContext context;
   return stub_->Rollback(context, request);

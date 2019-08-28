@@ -16,6 +16,7 @@
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_SESSION_HOLDER_H_
 
 #include "google/cloud/spanner/version.h"
+#include "google/cloud/optional.h"
 #include <functional>
 #include <string>
 
@@ -42,6 +43,7 @@ class SessionHolder {
 
   SessionHolder(SessionHolder&& rhs)
       : session_(std::move(rhs.session_)), deleter_(std::move(rhs.deleter_)) {
+    rhs.session_.reset();
     rhs.deleter_ = nullptr;
   }
 
@@ -49,21 +51,22 @@ class SessionHolder {
     if (&rhs != this) {
       session_ = std::move(rhs.session_);
       deleter_ = std::move(rhs.deleter_);
+      rhs.session_.reset();
       rhs.deleter_ = nullptr;
     }
     return *this;
   }
 
   ~SessionHolder() {
-    if (deleter_) {
-      deleter_(std::move(session_));
+    if (deleter_ && session_.has_value()) {
+      deleter_(*std::move(session_));
     }
   }
 
-  std::string const& session_name() const { return session_; }
+  optional<std::string> const& session_name() const { return session_; }
 
  private:
-  std::string session_;
+  optional<std::string> session_;
   std::function<void(std::string)> deleter_;
 };
 
