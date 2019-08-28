@@ -102,9 +102,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9671193497a85579a34936431fc92b82"><td class="memItemLeft" align="right" valign="top">std::vector&lt; StatusOr&lt; google::spanner::v1::ResultSetStats &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a9671193497a85579a34936431fc92b82">ExecuteBatchDml</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> const &amp;transaction, std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> &gt; const &amp;statements)</td></tr>
 <tr class="memdesc:a9671193497a85579a34936431fc92b82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a batch of SQL DML statements.  <a href="#a9671193497a85579a34936431fc92b82">More...</a><br /></td></tr>
 <tr class="separator:a9671193497a85579a34936431fc92b82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a804d859e0918123b6fd706f3031017e5"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; std::int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a804d859e0918123b6fd706f3031017e5">ExecutePartitionedDml</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;statement)</td></tr>
-<tr class="memdesc:a804d859e0918123b6fd706f3031017e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes single Partitioned DML statement.  <a href="#a804d859e0918123b6fd706f3031017e5">More...</a><br /></td></tr>
-<tr class="separator:a804d859e0918123b6fd706f3031017e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9349cc0b3fb4d9d83721e642bfcc1102"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html">CommitResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a9349cc0b3fb4d9d83721e642bfcc1102">Commit</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> transaction, <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a283421d14e4073e59922c9168d880cae">Mutations</a> mutations)</td></tr>
 <tr class="memdesc:a9349cc0b3fb4d9d83721e642bfcc1102"><td class="mdescLeft">&#160;</td><td class="mdescRight">Commits a read-write transaction.  <a href="#a9349cc0b3fb4d9d83721e642bfcc1102">More...</a><br /></td></tr>
 <tr class="separator:a9349cc0b3fb4d9d83721e642bfcc1102"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -310,7 +307,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <code>StatusOr</code> containing the result of the commit or error status on failure. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00114">114</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00108">108</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -354,36 +351,6 @@ Friends</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>A vector of <code>StatusOr</code> corresponding to each statement in <code>statements</code>. Statements that were successfully executed return statistics. If a statement fails, its error status is returned and entries for subsequent statements are not present in the returned vector. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00100">100</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
-
-</div>
-</div>
-<a id="a804d859e0918123b6fd706f3031017e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a804d859e0918123b6fd706f3031017e5">&#9670;&nbsp;</a></span>ExecutePartitionedDml()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">StatusOr&lt; std::int64_t &gt; google::cloud::spanner::v0::Client::ExecutePartitionedDml </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;&#160;</td>
-          <td class="paramname"><em>statement</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Executes single Partitioned DML statement. </p>
-<p>Partitions the key space and runs the DML statement over each partition in parallel using separate, internal transactions that commit independently.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">statement</td><td>The SQL DML statement to execute.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A <code>StatusOr</code> containing a lower bound on the number of modified rows or error status on failure. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00109">109</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -960,7 +927,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The error status of the rollback. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00119">119</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00113">113</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
