@@ -72,7 +72,7 @@ StatusOr<Transaction> ConnectionImpl::BeginTransaction(
                          [this, &btp](SessionHolder& session,
                                       spanner_proto::TransactionSelector& s,
                                       std::int64_t) -> StatusOr<Transaction> {
-    return BeginTransaction(session, s, std::move(btp));
+                           return BeginTransaction(session, s, std::move(btp));
                          });
 }
 

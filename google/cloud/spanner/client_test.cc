@@ -55,8 +55,7 @@ class MockConnection : public Connection {
   MOCK_METHOD1(ExecuteSql, StatusOr<ResultSet>(ExecuteSqlParams));
   MOCK_METHOD1(PartitionQuery,
                StatusOr<std::vector<QueryPartition>>(PartitionQueryParams));
-  MOCK_METHOD1(BeginTransaction,
-      StatusOr<Transaction>(BeginTransactionParams));
+  MOCK_METHOD1(BeginTransaction, StatusOr<Transaction>(BeginTransactionParams));
   MOCK_METHOD1(Commit, StatusOr<CommitResult>(CommitParams));
   MOCK_METHOD1(Rollback, Status(RollbackParams));
 };
@@ -301,19 +300,19 @@ TEST(ClientTest, ExecuteSqlPartitionedDml_Success) {
   ResultSet result_set(std::move(source));
   auto conn = std::make_shared<MockConnection>();
   EXPECT_CALL(*conn, BeginTransaction(_))
-  .WillOnce([](Connection::BeginTransactionParams btp) {
-    internal::Visit(
-        btp.transaction,
-        [](internal::SessionHolder&, spanner_proto::TransactionSelector& s,
-           std::int64_t seqno) {
-          EXPECT_TRUE(s.has_begin());
-          EXPECT_TRUE(s.has_begin() && s.begin().has_partitioned_dml());
-          EXPECT_EQ(1, seqno);
-          s.set_id("test-txn-id");
-          return 0;
-        });
-    return std::move(btp.transaction);
-  });
+      .WillOnce([](Connection::BeginTransactionParams btp) {
+        internal::Visit(
+            btp.transaction,
+            [](internal::SessionHolder&, spanner_proto::TransactionSelector& s,
+               std::int64_t seqno) {
+              EXPECT_TRUE(s.has_begin());
+              EXPECT_TRUE(s.has_begin() && s.begin().has_partitioned_dml());
+              EXPECT_EQ(1, seqno);
+              s.set_id("test-txn-id");
+              return 0;
+            });
+        return std::move(btp.transaction);
+      });
   EXPECT_CALL(*conn, ExecuteSql(_))
       .WillOnce([&result_set,
                  &sql_statement](Connection::ExecuteSqlParams const& params) {
