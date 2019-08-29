@@ -70,9 +70,11 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
 StatusOr<BatchDmlResult> ConnectionImpl::ExecuteBatchDml(
     BatchDmlParams params) {
   return internal::Visit(std::move(params.transaction),
-                         [this, &params](spanner_proto::TransactionSelector& s,
+                         [this, &params](SessionHolder& session,
+                                         spanner_proto::TransactionSelector& s,
                                          std::int64_t seqno) {
-                           return ExecuteBatchDml(s, seqno, std::move(params));
+                           return ExecuteBatchDml(session, s, seqno,
+                                                  std::move(params));
                          });
 }
 
@@ -308,14 +310,17 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
 }
 
 StatusOr<BatchDmlResult> ConnectionImpl::ExecuteBatchDml(
-    google::spanner::v1::TransactionSelector& s, std::int64_t seqno,
-    BatchDmlParams params) {
-  auto session = GetSession();
-  if (!session) {
-    return std::move(session).status();
+    SessionHolder& session, google::spanner::v1::TransactionSelector& s,
+    std::int64_t seqno, BatchDmlParams params) {
+  if (session.session_name().empty()) {
+    auto session_or = GetSession();
+    if (!session_or) {
+      return std::move(session_or).status();
+    }
+    session = std::move(*session_or);
   }
   spanner_proto::ExecuteBatchDmlRequest request;
-  request.set_session(session->session_name());
+  request.set_session(session.session_name());
   request.set_seqno(seqno);
   *request.mutable_transaction() = s;
   for (auto& sql : params.statements) {
@@ -330,7 +335,7 @@ StatusOr<BatchDmlResult> ConnectionImpl::ExecuteBatchDml(
 
   BatchDmlResult result;
   result.status = grpc_utils::MakeStatusFromRpcError(response->status());
-  for (std::size_t i = 0; i < response->result_sets_size(); ++i) {
+  for (std::int64_t i = 0; i < response->result_sets_size(); ++i) {
     auto const& result_set = response->result_sets(i);
     // Only the first result contains the ResultSetMetadata, which will contain
     // the new transaction ID if one was requested.

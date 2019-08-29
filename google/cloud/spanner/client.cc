@@ -27,8 +27,6 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
-namespace spanner_proto = ::google::spanner::v1;
-
 StatusOr<ResultSet> Client::Read(std::string table, KeySet keys,
                                  std::vector<std::string> columns,
                                  ReadOptions read_options) {

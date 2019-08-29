@@ -307,7 +307,7 @@ TEST(ClientTest, ExecuteBatchDmlSuccess) {
 
   Client client(conn);
   auto txn = MakeReadWriteTransaction();
-  auto actual = client.ExecuteBatchDml(txn, std::move(request));
+  auto actual = client.ExecuteBatchDml(txn, request);
 
   EXPECT_STATUS_OK(actual);
   EXPECT_STATUS_OK(actual->status);
@@ -333,7 +333,7 @@ TEST(ClientTest, ExecuteBatchDmlError) {
 
   Client client(conn);
   auto txn = MakeReadWriteTransaction();
-  auto actual = client.ExecuteBatchDml(txn, std::move(request));
+  auto actual = client.ExecuteBatchDml(txn, request);
 
   EXPECT_STATUS_OK(actual);
   EXPECT_FALSE(actual->status.ok());
