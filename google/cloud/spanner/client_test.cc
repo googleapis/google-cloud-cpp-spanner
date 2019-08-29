@@ -287,6 +287,40 @@ TEST(ClientTest, ExecuteSqlFailure) {
   EXPECT_EQ((*iter).status().code(), StatusCode::kDeadlineExceeded);
 }
 
+TEST(ClientTest, ExecuteSqlPartitionedDmlSuccess) {
+  auto source = make_unique<MockResultSetSource>();
+  spanner_proto::ResultSetMetadata metadata;
+  EXPECT_CALL(*source, Metadata()).WillRepeatedly(Return(metadata));
+  EXPECT_CALL(*source, Stats())
+      .WillRepeatedly(Return(optional<spanner_proto::ResultSetStats>()));
+  EXPECT_CALL(*source, NextValue()).WillRepeatedly(Return(optional<Value>()));
+
+  std::string const sql_statement = "UPDATE Singers SET MarketingBudget = 1000";
+  ResultSet result_set(std::move(source));
+  auto conn = std::make_shared<MockConnection>();
+  EXPECT_CALL(*conn, ExecuteSql(_))
+      .WillOnce([&result_set,
+                 &sql_statement](Connection::ExecuteSqlParams const& params) {
+        internal::Visit(
+            params.transaction,
+            [](internal::SessionHolder&, spanner_proto::TransactionSelector& s,
+               std::int64_t seqno) {
+              EXPECT_TRUE(s.has_begin());
+              EXPECT_TRUE(s.has_begin() && s.begin().has_partitioned_dml());
+              EXPECT_EQ(1, seqno);
+              return 0;
+            });
+        EXPECT_EQ(sql_statement, params.statement.sql());
+        EXPECT_FALSE(params.partition_token.has_value());
+        return std::move(result_set);
+      });
+
+  Client client(conn);
+  auto result = client.ExecuteSql(Transaction::PartitionDmlOptions{},
+                                  SqlStatement(sql_statement));
+  EXPECT_STATUS_OK(result);
+}
+
 TEST(ClientTest, CommitSuccess) {
   auto conn = std::make_shared<MockConnection>();
 

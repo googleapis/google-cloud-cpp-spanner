@@ -247,6 +247,25 @@ class Client {
   /**
    * @copydoc ExecuteSql(SqlStatement)
    *
+   * @param transaction_options Execute a Partition DML statement.
+   *
+   * @par Example
+   * @snippet samples.cc execute-sql-partitioned
+   *
+   * @see
+   * https://cloud.google.com/spanner/docs/transactions#partitioned_dml_transactions
+   *   for an overview of Partitioned DML transactions.
+   * @see https://cloud.google.com/spanner/docs/dml-partitioned for a
+   *   description of which SQL statements are supported in Partitioned DML
+   *   transactions.
+   */
+  StatusOr<ResultSet> ExecuteSql(
+      Transaction::PartitionDmlOptions transaction_options,
+      SqlStatement statement);
+
+  /**
+   * @copydoc ExecuteSql(SqlStatement)
+   *
    * @param transaction Execute this query as part of an existing transaction.
    */
   StatusOr<ResultSet> ExecuteSql(Transaction transaction,
