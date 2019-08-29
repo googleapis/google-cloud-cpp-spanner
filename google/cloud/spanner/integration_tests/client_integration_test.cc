@@ -663,7 +663,7 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDml) {
 }
 
 TEST_F(ClientIntegrationTest, ExecuteBatchDmlMany) {
-  std::vector<SqlStatement> statements;
+  std::vector<SqlStatement> v;
   constexpr auto kBatchSize = 500;
   for (int i = 0; i < kBatchSize; ++i) {
     std::string const singer_id = std::to_string(i);
@@ -674,25 +674,47 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDmlMany) {
     insert += singer_id + ", '";
     insert += first_name + "', '";
     insert += last_name + "')";
-    statements.emplace_back(insert);
+    v.emplace_back(insert);
   }
 
-  StatusOr<BatchDmlResult> batch_result;
-  auto commit_result = RunTransaction(
-      *client_, {},
-      [&batch_result, &statements](Client c,
-                                   Transaction txn) -> StatusOr<Mutations> {
-        batch_result = c.ExecuteBatchDml(std::move(txn), statements);
-        if (!batch_result) return batch_result.status();
-        if (!batch_result->status.ok()) return batch_result->status;
-        return Mutations{};
-      });
+  std::vector<SqlStatement> left(v.begin(), v.begin() + v.size() / 2);
+  std::vector<SqlStatement> right(v.begin() + v.size() / 2, v.end());
+
+  StatusOr<BatchDmlResult> batch_result_left;
+  StatusOr<BatchDmlResult> batch_result_right;
+  auto commit_result =
+      RunTransaction(*client_, {},
+                     [&batch_result_left, &batch_result_right, &left, &right](
+                         Client c, Transaction txn) -> StatusOr<Mutations> {
+
+                       batch_result_left = c.ExecuteBatchDml(std::move(txn), left);
+                       if (!batch_result_left)
+                         return batch_result_left.status();
+                       if (!batch_result_left->status.ok())
+                         return batch_result_left->status;
+
+                       batch_result_right = c.ExecuteBatchDml(std::move(txn), right);
+                       if (!batch_result_right)
+                         return batch_result_right.status();
+                       if (!batch_result_right->status.ok())
+                         return batch_result_right->status;
+
+                       return Mutations{};
+                     });
 
   ASSERT_STATUS_OK(commit_result);
-  ASSERT_STATUS_OK(batch_result);
-  EXPECT_EQ(batch_result->stats.size(), statements.size());
-  EXPECT_STATUS_OK(batch_result->status);
-  for (auto const& stats : batch_result->stats) {
+
+  ASSERT_STATUS_OK(batch_result_left);
+  EXPECT_EQ(batch_result_left->stats.size(), left.size());
+  EXPECT_STATUS_OK(batch_result_left->status);
+  for (auto const& stats : batch_result_left->stats) {
+    ASSERT_EQ(stats.row_count, 1);
+  }
+
+  ASSERT_STATUS_OK(batch_result_right);
+  EXPECT_EQ(batch_result_right->stats.size(), right.size());
+  EXPECT_STATUS_OK(batch_result_right->status);
+  for (auto const& stats : batch_result_right->stats) {
     ASSERT_EQ(stats.row_count, 1);
   }
 

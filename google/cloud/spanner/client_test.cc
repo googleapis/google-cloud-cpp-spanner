@@ -290,9 +290,9 @@ TEST(ClientTest, ExecuteSqlFailure) {
 
 TEST(ClientTest, ExecuteBatchDmlSuccess) {
   auto request = {
-      SqlStatement("update ..."),
-      SqlStatement("update ..."),
-      SqlStatement("update ..."),
+      SqlStatement("UPDATE Foo SET Bar = 1"),
+      SqlStatement("UPDATE Foo SET Bar = 1"),
+      SqlStatement("UPDATE Foo SET Bar = 1"),
   };
 
   BatchDmlResult result;
@@ -316,9 +316,9 @@ TEST(ClientTest, ExecuteBatchDmlSuccess) {
 
 TEST(ClientTest, ExecuteBatchDmlError) {
   auto request = {
-      SqlStatement("update ..."),
-      SqlStatement("update ..."),
-      SqlStatement("update ..."),
+      SqlStatement("UPDATE Foo SET Bar = 1"),
+      SqlStatement("UPDATE Foo SET Bar = 1"),
+      SqlStatement("UPDATE Foo SET Bar = 1"),
   };
 
   BatchDmlResult result;

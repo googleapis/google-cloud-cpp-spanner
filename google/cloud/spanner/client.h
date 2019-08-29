@@ -294,10 +294,18 @@ class Client {
    * to be run with lower latency than submitting them sequentially with
    * `ExecuteSql`.
    *
-   * Statements are executed in order, sequentially. Execution will stop at
-   * the first failed statement; the remaining statements will not run.
+   * Statements are executed in order, sequentially. Execution will stop at the
+   * first failed statement; the remaining statements will not run.
    *
-   * @param transaction The transaction to execute the operation in.
+   * As with all read-write transactions, the results will not be visible
+   * outside of the transaction until it is committed. For that reason, it is
+   * advisable to run this method with `RunTransaction`.
+   *
+   * @warning A returned status of OK from this function does not imply that
+   *     all the statements were executed successfully. For that, you need to
+   *     inspect the `BatchDmlResult::status` field.
+   *
+   * @param transaction The read-write transaction to execute the operation in.
    * @param statements The list of statements to execute in this batch.
    *     Statements are executed serially, such that the effects of statement i
    *     are visible to statement i+1. Each statement must be a DML statement.

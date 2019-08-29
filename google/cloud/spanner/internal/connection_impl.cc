@@ -333,12 +333,13 @@ StatusOr<BatchDmlResult> ConnectionImpl::ExecuteBatchDml(
     return std::move(response).status();
   }
 
+  if (response->result_sets_size() > 0 && s.has_begin()) {
+    s.set_id(response->result_sets(0).metadata().transaction().id());
+  }
+
   BatchDmlResult result;
   result.status = grpc_utils::MakeStatusFromRpcError(response->status());
   for (auto const& result_set : response->result_sets()) {
-    if (s.has_begin()) {
-      s.set_id(result_set.metadata().transaction().id());
-    }
     result.stats.push_back({result_set.stats().row_count_exact()});
   }
 
