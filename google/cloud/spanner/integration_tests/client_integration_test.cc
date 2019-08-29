@@ -604,6 +604,50 @@ TEST_F(ClientIntegrationTest, PartitionQuery) {
   EXPECT_THAT(actual_rows, UnorderedElementsAreArray(*expected_rows));
 }
 
+TEST_F(ClientIntegrationTest, ExecuteBatchDml) {
+  auto rw_txn = MakeReadWriteTransaction();
+  auto batch_sql = {
+      SqlStatement("INSERT INTO Singers (SingerId, FirstName, LastName) "
+                   "VALUES(1, \"Axl\", \"Rose\")"),
+      SqlStatement("INSERT INTO Singers (SingerId, FirstName, LastName) "
+                   "VALUES(2, \"Freddy\", \"Mercury\")"),
+      SqlStatement("INSERT INTO Singers (SingerId, FirstName, LastName) "
+                   "VALUES(3, \"John\", \"Lennon\")"),
+      SqlStatement("UPDATE Singers SET FirstName = \"FOO\" "
+                   "WHERE FirstName = \"Axl\" or FirstName = \"John\""),
+  };
+  auto batch_result = client_->ExecuteBatchDml(rw_txn, batch_sql);
+  ASSERT_STATUS_OK(batch_result);
+  ASSERT_STATUS_OK(batch_result->status);
+  ASSERT_EQ(batch_result->stats.size(), 4);
+  ASSERT_EQ(batch_result->stats[0].row_count, 1);
+  ASSERT_EQ(batch_result->stats[1].row_count, 1);
+  ASSERT_EQ(batch_result->stats[2].row_count, 1);
+  ASSERT_EQ(batch_result->stats[3].row_count, 2);
+
+  auto query = client_->ExecuteSql(
+      SqlStatement("SELECT SingerId, FirstName, LastName from Singers"));
+  ASSERT_STATUS_OK(query);
+
+  struct Expectation {
+    std::int64_t id;
+    std::string fname;
+    std::string lname;
+  };
+  auto expected = std::vector<Expectation>{
+      Expectation{1, "FOO", "Rose"},
+      Expectation{2, "Freddy", "Mercury"},
+      Expectation{3, "FOO", "Lennon"},
+  };
+  std::size_t expected_index = 0;
+  for (auto const& row : query->Rows<std::int64_t, std::string, std::string>()) {
+    ASSERT_STATUS_OK(row);
+    ASSERT_EQ(row->get<0>(), expected[expected_index].id);
+    ASSERT_EQ(row->get<1>(), expected[expected_index].fname);
+    ASSERT_EQ(row->get<2>(), expected[expected_index].lname);
+  }
+}
+
 }  // namespace
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
