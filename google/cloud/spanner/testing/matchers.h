@@ -44,7 +44,11 @@ MATCHER_P2(
       arg, [&](google::cloud::spanner::internal::SessionHolder& session,
                google::spanner::v1::TransactionSelector& s, std::int64_t) {
         bool result = true;
-        if (session.session_name() != session_id) {
+        if (!session) {
+          *result_listener << "Session ID missing (expected " << session_id
+                           << ")";
+          result = false;
+        } else if (session.session_name() != session_id) {
           *result_listener << "Session ID mismatch: " << session.session_name()
                            << " != " << session_id;
           result = false;

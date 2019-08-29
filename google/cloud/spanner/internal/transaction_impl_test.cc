@@ -108,7 +108,7 @@ ResultSet Client::Read(SessionHolder& session, TransactionSelector& selector,
                        std::int64_t seqno, std::string const&, KeySet const&,
                        std::vector<std::string> const&) {
   if (selector.has_begin()) {
-    EXPECT_EQ("", session.session_name());
+    EXPECT_FALSE(session);
     bool fail_with_throw = false;
     if (selector.begin().has_read_only() &&
         selector.begin().read_only().has_read_timestamp()) {
@@ -142,6 +142,7 @@ ResultSet Client::Read(SessionHolder& session, TransactionSelector& selector,
     }
   } else {
     if (selector.id() == txn_id_) {
+      EXPECT_TRUE(session);
       EXPECT_EQ(session_id_, session.session_name());
       std::unique_lock<std::mutex> lock(mu_);
       switch (mode_) {

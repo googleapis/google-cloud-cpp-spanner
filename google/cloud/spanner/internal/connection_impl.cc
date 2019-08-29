@@ -124,7 +124,7 @@ void ConnectionImpl::ReleaseSession(std::string session) {
 StatusOr<ResultSet> ConnectionImpl::Read(SessionHolder& session,
                                          spanner_proto::TransactionSelector& s,
                                          ReadParams rp) {
-  if (session.session_name().empty()) {
+  if (!session) {
     auto session_or = GetSession();
     if (!session_or) {
       return std::move(session_or).status();
@@ -168,7 +168,7 @@ StatusOr<ResultSet> ConnectionImpl::Read(SessionHolder& session,
 StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionRead(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
     ReadParams const& rp, PartitionOptions partition_options) {
-  if (session.session_name().empty()) {
+  if (!session) {
     // Since the session may be sent to other machines, it should not be
     // returned to the pool when the Transaction is destroyed (release=true).
     auto session_or = GetSession(/*release=*/true);
@@ -213,7 +213,7 @@ StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionRead(
 StatusOr<ResultSet> ConnectionImpl::ExecuteSql(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
     std::int64_t seqno, ExecuteSqlParams esp) {
-  if (session.session_name().empty()) {
+  if (!session) {
     auto session_or = GetSession();
     if (!session_or) {
       return std::move(session_or).status();
@@ -256,7 +256,7 @@ StatusOr<ResultSet> ConnectionImpl::ExecuteSql(
 StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
     ExecuteSqlParams const& esp, PartitionOptions partition_options) {
-  if (session.session_name().empty()) {
+  if (!session) {
     // Since the session may be sent to other machines, it should not be
     // returned to the pool when the Transaction is destroyed (release=true).
     auto session_or = GetSession(/*release=*/true);
@@ -300,7 +300,7 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
 StatusOr<CommitResult> ConnectionImpl::Commit(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
     CommitParams cp) {
-  if (session.session_name().empty()) {
+  if (!session) {
     auto session_or = GetSession();
     if (!session_or) {
       return std::move(session_or).status();
@@ -332,7 +332,7 @@ StatusOr<CommitResult> ConnectionImpl::Commit(
 
 Status ConnectionImpl::Rollback(SessionHolder& session,
                                 spanner_proto::TransactionSelector& s) {
-  if (session.session_name().empty()) {
+  if (!session) {
     auto session_or = GetSession();
     if (!session_or) {
       return std::move(session_or).status();
