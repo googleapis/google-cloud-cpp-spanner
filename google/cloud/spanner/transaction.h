@@ -33,6 +33,8 @@ class Transaction;  // defined below
 namespace internal {
 template <typename T>
 Transaction MakeSingleUseTransaction(T&&);
+template <typename T>
+Transaction MakePartitionedDmlTransaction(T&&);
 template <typename Functor>
 VisitInvokeResult<Functor> Visit(Transaction, Functor&&);
 Transaction MakeTransactionFromIds(std::string session_id,
@@ -96,6 +98,23 @@ class Transaction {
   };
 
   /**
+   * Options for Partitioned DML transactions.
+   *
+   * @see
+   * https://cloud.google.com/spanner/docs/transactions#partitioned_dml_transactions
+   *   for an overview of Partitioned DML transactions.
+   */
+  class PartitionedDmlOptions {
+   public:
+    // There are currently no Partitioned DML options.
+    PartitionedDmlOptions();
+
+   private:
+    friend Transaction;
+    google::spanner::v1::TransactionOptions_PartitionedDml pd_opts_;
+  };
+
+  /**
    * Options for "single-use", ReadOnly transactions, where Spanner chooses
    * the read timestamp, subject to user-provided bounds. This allows reading
    * without blocking.
@@ -153,6 +172,8 @@ class Transaction {
   // Friendship for access by internal helpers.
   template <typename T>
   friend Transaction internal::MakeSingleUseTransaction(T&&);
+  template <typename T>
+  friend Transaction internal::MakePartitionedDmlTransaction(T&&);
   template <typename Functor>
   friend internal::VisitInvokeResult<Functor> internal::Visit(Transaction,
                                                               Functor&&);
@@ -161,6 +182,13 @@ class Transaction {
 
   // Construction of a single-use transaction.
   explicit Transaction(SingleUseOptions opts);
+
+  // Construction of a Partitioned DML transaction. Because a Partitioned DML
+  // transaction can only have a single DML statement:
+  //   https://cloud.google.com/spanner/docs/transactions#properties_
+  // it makes no sense for the application to create such a transaction and use
+  // it in more than one `ExecuteSql` statement.
+  explicit Transaction(PartitionedDmlOptions opts);
 
   explicit Transaction(std::string session_id, std::string transaction_id);
 
@@ -184,6 +212,13 @@ Transaction MakeSingleUseTransaction(T&& opts) {
   // Requires that `opts` is implicitly convertible to SingleUseOptions.
   Transaction::SingleUseOptions su_opts = std::forward<T>(opts);
   return Transaction(std::move(su_opts));
+}
+
+template <typename T>
+Transaction MakePartitionedDmlTransaction(T&& opts) {
+  // Requires that `opts` is implicitly convertible to PartitionedDmlOptions.
+  Transaction::PartitionedDmlOptions pd_opts = std::forward<T>(opts);
+  return Transaction(std::move(pd_opts));
 }
 
 template <typename Functor>
