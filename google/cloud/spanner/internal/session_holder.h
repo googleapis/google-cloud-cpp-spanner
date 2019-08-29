@@ -64,7 +64,7 @@ class SessionHolder {
   }
 
   // Returns whether this object has a session.
-  operator bool() const { return session_.has_value(); }
+  explicit operator bool() const { return session_.has_value(); }
 
   // Must only be called if operator bool() returns true.
   std::string const& session_name() const { return *session_; }
