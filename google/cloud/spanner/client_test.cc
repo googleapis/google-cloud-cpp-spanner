@@ -325,7 +325,7 @@ TEST(ClientTest, ExecuteBatchDmlError) {
   result.status = Status(StatusCode::kUnknown, "some error");
   result.stats = std::vector<BatchDmlResult::Stats>{
       {10},
-      // Oops: Only one SqlStatement was processed.
+      // Oops: Only one SqlStatement was processed, then "some error"
   };
 
   auto conn = std::make_shared<MockConnection>();
@@ -337,6 +337,7 @@ TEST(ClientTest, ExecuteBatchDmlError) {
 
   EXPECT_STATUS_OK(actual);
   EXPECT_FALSE(actual->status.ok());
+  EXPECT_EQ(actual->status.message(), "some error");
   EXPECT_NE(actual->stats.size(), request.size());
   EXPECT_EQ(actual->stats.size(), 1);
 }
