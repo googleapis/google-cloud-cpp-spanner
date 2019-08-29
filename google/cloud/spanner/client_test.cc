@@ -53,6 +53,8 @@ class MockConnection : public Connection {
   MOCK_METHOD1(PartitionRead,
                StatusOr<std::vector<ReadPartition>>(PartitionReadParams));
   MOCK_METHOD1(ExecuteSql, StatusOr<ResultSet>(ExecuteSqlParams));
+  MOCK_METHOD1(ExecutePartitionedDml,
+               StatusOr<PartitionedDmlResult>(ExecuteSqlParams));
   MOCK_METHOD1(PartitionQuery,
                StatusOr<std::vector<QueryPartition>>(PartitionQueryParams));
   MOCK_METHOD1(ExecuteBatchDml, StatusOr<BatchDmlResult>(BatchDmlParams));
@@ -340,6 +342,39 @@ TEST(ClientTest, ExecuteBatchDmlError) {
   EXPECT_EQ(actual->status.message(), "some error");
   EXPECT_NE(actual->stats.size(), request.size());
   EXPECT_EQ(actual->stats.size(), 1);
+}
+
+TEST(ClientTest, ExecuteSqlPartitionedDml_Success) {
+  auto source = make_unique<MockResultSetSource>();
+  spanner_proto::ResultSetMetadata metadata;
+  EXPECT_CALL(*source, Metadata()).WillRepeatedly(Return(metadata));
+  EXPECT_CALL(*source, Stats())
+      .WillRepeatedly(Return(optional<spanner_proto::ResultSetStats>()));
+  EXPECT_CALL(*source, NextValue()).WillRepeatedly(Return(optional<Value>()));
+
+  std::string const sql_statement = "UPDATE Singers SET MarketingBudget = 1000";
+  auto conn = std::make_shared<MockConnection>();
+  EXPECT_CALL(*conn, ExecutePartitionedDml(_))
+      .WillOnce([&sql_statement](Connection::ExecuteSqlParams const& esp) {
+        internal::Visit(
+            esp.transaction,
+            [](internal::SessionHolder&, spanner_proto::TransactionSelector& s,
+               std::int64_t seqno) {
+              EXPECT_TRUE(s.has_begin());
+              EXPECT_TRUE(s.has_begin() && s.begin().has_partitioned_dml());
+              EXPECT_EQ(1, seqno);
+              s.set_id("test-txn-id");
+              return 0;
+            });
+        EXPECT_EQ(sql_statement, esp.statement.sql());
+        EXPECT_FALSE(esp.partition_token.has_value());
+        return PartitionedDmlResult{7};
+      });
+
+  Client client(conn);
+  auto result = client.ExecutePartitionedDml(SqlStatement(sql_statement));
+  EXPECT_STATUS_OK(result);
+  EXPECT_EQ(7, result->row_count_lower_bound);
 }
 
 TEST(ClientTest, CommitSuccess) {

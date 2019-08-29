@@ -38,6 +38,13 @@ google::spanner::v1::TransactionOptions MakeOpts(
   return opts;
 }
 
+google::spanner::v1::TransactionOptions MakeOpts(
+    google::spanner::v1::TransactionOptions_PartitionedDml pd_opts) {
+  google::spanner::v1::TransactionOptions opts;
+  *opts.mutable_partitioned_dml() = std::move(pd_opts);
+  return opts;
+}
+
 }  // namespace
 
 Transaction::ReadOnlyOptions::ReadOnlyOptions() {
@@ -57,6 +64,8 @@ Transaction::ReadOnlyOptions::ReadOnlyOptions(
 }
 
 Transaction::ReadWriteOptions::ReadWriteOptions() = default;  // currently none
+
+Transaction::PartitionedDmlOptions::PartitionedDmlOptions() = default;
 
 Transaction::SingleUseOptions::SingleUseOptions(ReadOnlyOptions opts) {
   ro_opts_ = std::move(opts.ro_opts_);
@@ -83,6 +92,12 @@ Transaction::Transaction(ReadOnlyOptions opts) {
 Transaction::Transaction(ReadWriteOptions opts) {
   google::spanner::v1::TransactionSelector selector;
   *selector.mutable_begin() = MakeOpts(std::move(opts.rw_opts_));
+  impl_ = std::make_shared<internal::TransactionImpl>(std::move(selector));
+}
+
+Transaction::Transaction(PartitionedDmlOptions opts) {
+  google::spanner::v1::TransactionSelector selector;
+  *selector.mutable_begin() = MakeOpts(std::move(opts.pd_opts_));
   impl_ = std::make_shared<internal::TransactionImpl>(std::move(selector));
 }
 
