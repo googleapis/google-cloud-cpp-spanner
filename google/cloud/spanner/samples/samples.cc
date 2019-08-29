@@ -527,6 +527,126 @@ void FieldAccessOnNestedStruct(google::cloud::spanner::Client client) {
 }
 //! [END spanner_field_access_on_nested_struct]
 
+void Send(std::string) {}  // NOLINT
+
+void SendPartitionToRemoteMachine(
+    google::cloud::spanner::ReadPartition const& partition) {
+  //! [serialize-read-partition]
+  namespace spanner = google::cloud::spanner;
+  google::cloud::StatusOr<std::string> serialized_partition =
+      spanner::SerializeReadPartition(partition);
+  if (serialized_partition.ok()) {
+    Send(*serialized_partition);
+  }
+  //! [serialize-read-partition]
+}
+
+void SendPartitionToRemoteMachine(
+    google::cloud::spanner::QueryPartition const& partition) {
+  //! [serialize-query-partition]
+  namespace spanner = google::cloud::spanner;
+  google::cloud::StatusOr<std::string> serialized_partition =
+      spanner::SerializeQueryPartition(partition);
+  if (serialized_partition.ok()) {
+    Send(*serialized_partition);
+  }
+  //! [serialize-query-partition]
+}
+
+std::string Receive() { return std::string(); }  // NOLINT
+
+//! [deserialize-read-partition]
+google::cloud::StatusOr<google::cloud::spanner::ReadPartition>
+ReceiveReadPartitionFromRemoteMachine() {
+  std::string serialized_partition = Receive();
+  return google::cloud::spanner::DeserializeReadPartition(serialized_partition);
+}
+//! [deserialize-read-partition]
+
+//! [deserialize-query-partition]
+google::cloud::StatusOr<google::cloud::spanner::QueryPartition>
+ReceiveQueryPartitionFromRemoteMachine() {
+  std::string serialized_partition = Receive();
+  return google::cloud::spanner::DeserializeQueryPartition(
+      serialized_partition);
+}
+//! [deserialize-query-partition]
+
+void ProcessRow(google::cloud::spanner::Row<std::int64_t, std::string,
+                                            std::string>) {  // NOLINT
+}
+
+void PartitionRead(google::cloud::spanner::Client client) {
+  namespace spanner = google::cloud::spanner;
+  //! [key-set-builder]
+  auto key_set = spanner::KeySetBuilder<spanner::Row<int64_t>>()
+                     .Add(spanner::MakeKeyRangeClosed(spanner::MakeRow(1),
+                                                      spanner::MakeRow(10)))
+                     .Build();
+  //! [key-set-builder]
+
+  //! [partition-read]
+  spanner::Transaction ro_transaction = spanner::MakeReadOnlyTransaction();
+  google::cloud::StatusOr<std::vector<spanner::ReadPartition>> partitions =
+      client.PartitionRead(ro_transaction, "Singers", key_set,
+                           {"SingerId", "FirstName", "LastName"});
+  if (partitions) {
+    for (auto& partition : *partitions) {
+      SendPartitionToRemoteMachine(partition);
+    }
+  }
+  //! [partition-read]
+
+  //! [read-read-partition]
+  google::cloud::StatusOr<spanner::ReadPartition> partition =
+      ReceiveReadPartitionFromRemoteMachine();
+  if (partition) {
+    auto result_set = client.Read(*partition);
+    if (result_set) {
+      for (auto& row :
+           result_set->Rows<std::int64_t, std::string, std::string>()) {
+        if (row) {
+          ProcessRow(*row);
+        }
+      }
+    }
+  }
+  //! [read-read-partition]
+}
+
+void PartitionQuery(google::cloud::spanner::Client client) {
+  namespace spanner = google::cloud::spanner;
+  //! [partition-query]
+  spanner::Transaction ro_transaction = spanner::MakeReadOnlyTransaction();
+  google::cloud::StatusOr<std::vector<spanner::QueryPartition>> partitions =
+      client.PartitionQuery(
+          ro_transaction,
+          spanner::SqlStatement(
+              "select SingerId, FirstName, LastName from Singers"));
+  if (partitions.ok()) {
+    for (auto& partition : *partitions) {
+      SendPartitionToRemoteMachine(partition);
+    }
+  }
+  //! [partition-query]
+
+  //! [execute-sql-query-partition]
+  google::cloud::StatusOr<spanner::QueryPartition> partition =
+      ReceiveQueryPartitionFromRemoteMachine();
+  if (partition) {
+    auto result_set = client.ExecuteSql(*partition);
+    if (result_set) {
+      for (auto& row :
+           result_set->Rows<std::int64_t, std::string, std::string>()) {
+        if (row) {
+          ProcessRow(*row);
+        }
+      }
+    }
+  }
+  //! [execute-sql-query-partition]
+}
+
 int RunOneCommand(std::vector<std::string> argv) {
   using CommandType = std::function<void(std::vector<std::string> const&)>;
 
@@ -569,6 +689,9 @@ int RunOneCommand(std::vector<std::string> argv) {
                          &FieldAccessOnStructParameters),
       make_command_entry("field-access-on-nested-struct",
                          &FieldAccessOnNestedStruct),
+      make_command_entry("partition-read", &PartitionRead),
+      make_command_entry("partition-query", &PartitionQuery)
+
   };
 
   static std::string usage_msg = [&argv, &commands] {
