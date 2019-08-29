@@ -607,13 +607,13 @@ TEST_F(ClientIntegrationTest, PartitionQuery) {
 TEST_F(ClientIntegrationTest, ExecuteBatchDml) {
   auto statements = {
       SqlStatement("INSERT INTO Singers (SingerId, FirstName, LastName) "
-                   "VALUES(1, \"Axl\", \"Rose\")"),
+                   "VALUES(1, 'Foo1', 'Bar1')"),
       SqlStatement("INSERT INTO Singers (SingerId, FirstName, LastName) "
-                   "VALUES(2, \"Freddy\", \"Mercury\")"),
+                   "VALUES(2, 'Foo2', 'Bar2')"),
       SqlStatement("INSERT INTO Singers (SingerId, FirstName, LastName) "
-                   "VALUES(3, \"John\", \"Lennon\")"),
+                   "VALUES(3, 'Foo3', 'Bar3')"),
       SqlStatement("UPDATE Singers SET FirstName = \"FOO\" "
-                   "WHERE FirstName = \"Axl\" or FirstName = \"John\""),
+                   "WHERE FirstName = 'Foo1' or FirstName = 'Foo3'"),
   };
 
   StatusOr<BatchDmlResult> batch_result;
@@ -646,9 +646,9 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDml) {
     std::string lname;
   };
   auto expected = std::vector<Expectation>{
-      Expectation{1, "FOO", "Rose"},
-      Expectation{2, "Freddy", "Mercury"},
-      Expectation{3, "FOO", "Lennon"},
+      Expectation{1, "FOO", "Bar1"},
+      Expectation{2, "Foo2", "Bar2"},
+      Expectation{3, "FOO", "Bar3"},
   };
   std::size_t counter = 0;
   for (auto const& row :
@@ -664,16 +664,16 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDml) {
 
 TEST_F(ClientIntegrationTest, ExecuteBatchDmlMany) {
   std::vector<SqlStatement> statements;
-  constexpr auto kBatchSize = 1000;
+  constexpr auto kBatchSize = 500;
   for (int i = 0; i < kBatchSize; ++i) {
     std::string const singer_id = std::to_string(i);
-    std::string const first_name = "John" + singer_id;
-    std::string const last_name = "Lennon" + singer_id;
+    std::string const first_name = "Foo" + singer_id;
+    std::string const last_name = "Bar" + singer_id;
     std::string insert =
         "INSERT INTO Singers (SingerId, FirstName, LastName) Values(";
-    insert += singer_id + ", \"";
-    insert += first_name + "\", \"";
-    insert += last_name + "\")";
+    insert += singer_id + ", '";
+    insert += first_name + "', '";
+    insert += last_name + "')";
     statements.emplace_back(insert);
   }
 
@@ -705,8 +705,8 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDmlMany) {
        query->Rows<std::int64_t, std::string, std::string>()) {
     ASSERT_STATUS_OK(row);
     std::string const singer_id = std::to_string(counter);
-    std::string const first_name = "John" + singer_id;
-    std::string const last_name = "Lennon" + singer_id;
+    std::string const first_name = "Foo" + singer_id;
+    std::string const last_name = "Bar" + singer_id;
     ASSERT_EQ(row->get<0>(), counter);
     ASSERT_EQ(row->get<1>(), first_name);
     ASSERT_EQ(row->get<2>(), last_name);
@@ -714,6 +714,36 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDmlMany) {
   }
 
   ASSERT_EQ(counter, kBatchSize);
+}
+
+TEST_F(ClientIntegrationTest, ExecuteBatchDmlFailure) {
+  auto statements = {
+      SqlStatement("INSERT INTO Singers (SingerId, FirstName, LastName) "
+                   "VALUES(1, 'Foo1', 'Bar1')"),
+      SqlStatement("INSERT INTO Singers (SingerId, FirstName, LastName) "
+                   "VALUES(2, 'Foo2', 'Bar2')"),
+      SqlStatement("INSERT OOPS SYNTAX ERROR"),
+      SqlStatement("UPDATE Singers SET FirstName = 'FOO' "
+                   "WHERE FirstName = 'Foo1' or FirstName = 'Foo3'"),
+  };
+
+  StatusOr<BatchDmlResult> batch_result;
+  auto commit_result = RunTransaction(
+      *client_, {},
+      [&batch_result, &statements](Client c,
+                                   Transaction txn) -> StatusOr<Mutations> {
+        batch_result = c.ExecuteBatchDml(std::move(txn), statements);
+        if (!batch_result) return batch_result.status();
+        if (!batch_result->status.ok()) return batch_result->status;
+        return Mutations{};
+      });
+
+  ASSERT_FALSE(commit_result.ok());
+  ASSERT_STATUS_OK(batch_result);
+  ASSERT_FALSE(batch_result->status.ok());
+  ASSERT_EQ(batch_result->stats.size(), 2);
+  ASSERT_EQ(batch_result->stats[0].row_count, 1);
+  ASSERT_EQ(batch_result->stats[1].row_count, 1);
 }
 
 }  // namespace

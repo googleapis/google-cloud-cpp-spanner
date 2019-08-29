@@ -49,15 +49,6 @@ using ::testing::StartsWith;
 
 namespace spanner_proto = ::google::spanner::v1;
 
-// Matches a g::c::spanner::Transaction with the specified session name and ID
-MATCHER_P2(TransactionEquals, expected_session, expected_id,
-           "Verifies that a Transaction has the expected session name and ID") {
-  return Visit(arg, [&](SessionHolder& s, spanner_proto::TransactionSelector& t,
-                        std::int64_t) {
-    return s.session_name() == expected_session && t.id() == expected_id;
-  });
-}
-
 // Matches a spanner_proto::ReadRequest with the specified `session` and
 // `transaction_id`.
 MATCHER_P2(ReadRequestHasSessionAndTransactionId, session, transaction_id,
@@ -390,7 +381,7 @@ TEST(ConnectionImplTest, ExecuteBatchDmlSuccess) {
   auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
   spanner_proto::Session session;
-  session.set_name("test-session-name");
+  session.set_name("session-name");
   EXPECT_CALL(*mock, CreateSession(_, _)).WillOnce(Return(session));
 
   spanner_proto::ExecuteBatchDmlResponse response;
@@ -422,7 +413,7 @@ TEST(ConnectionImplTest, ExecuteBatchDmlSuccess) {
   EXPECT_EQ(result->stats[0].row_count, 0);
   EXPECT_EQ(result->stats[1].row_count, 1);
   EXPECT_EQ(result->stats[2].row_count, 2);
-  EXPECT_THAT(txn, TransactionEquals("test-session-name", "1234567890"));
+  EXPECT_THAT(txn, HasSessionAndTransactionId("session-name", "1234567890"));
 }
 
 TEST(ConnectionImplTest, ExecuteBatchDmlFailure) {
@@ -430,7 +421,7 @@ TEST(ConnectionImplTest, ExecuteBatchDmlFailure) {
   auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
   spanner_proto::Session session;
-  session.set_name("test-session-name");
+  session.set_name("session-name");
   EXPECT_CALL(*mock, CreateSession(_, _)).WillOnce(Return(session));
 
   spanner_proto::ExecuteBatchDmlResponse response;
@@ -462,7 +453,7 @@ TEST(ConnectionImplTest, ExecuteBatchDmlFailure) {
   EXPECT_EQ(result->stats.size(), 2);
   EXPECT_EQ(result->stats[0].row_count, 42);
   EXPECT_EQ(result->stats[1].row_count, 43);
-  EXPECT_THAT(txn, TransactionEquals("test-session-name", "1234567890"));
+  EXPECT_THAT(txn, HasSessionAndTransactionId("session-name", "1234567890"));
 }
 
 TEST(ConnectionImplTest, CommitGetSessionFailure) {
