@@ -618,8 +618,12 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDml) {
 
   StatusOr<BatchDmlResult> batch_result;
   auto commit_result = RunTransaction(
-      *client_, {}, [&batch_result, &statements](Client c, Transaction txn) {
+      *client_, {},
+      [&batch_result, &statements](Client c,
+                                   Transaction txn) -> StatusOr<Mutations> {
         batch_result = c.ExecuteBatchDml(std::move(txn), statements);
+        if (!batch_result) return batch_result.status();
+        if (!batch_result->status.ok()) return batch_result->status;
         return Mutations{};
       });
 
@@ -675,8 +679,12 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDmlMany) {
 
   StatusOr<BatchDmlResult> batch_result;
   auto commit_result = RunTransaction(
-      *client_, {}, [&batch_result, &statements](Client c, Transaction txn) {
+      *client_, {},
+      [&batch_result, &statements](Client c,
+                                   Transaction txn) -> StatusOr<Mutations> {
         batch_result = c.ExecuteBatchDml(std::move(txn), statements);
+        if (!batch_result) return batch_result.status();
+        if (!batch_result->status.ok()) return batch_result->status;
         return Mutations{};
       });
 
