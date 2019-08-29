@@ -82,8 +82,8 @@ class ConnectionImpl : public Connection {
 
   /// Implementation details for ExecuteBatchDml
   StatusOr<BatchDmlResult> ExecuteBatchDml(
-      google::spanner::v1::TransactionSelector& s, std::int64_t seqno,
-      BatchDmlParams params);
+      SessionHolder& session, google::spanner::v1::TransactionSelector& s,
+      std::int64_t seqno, BatchDmlParams params);
 
   /// Implementation details for Commit.
   StatusOr<CommitResult> Commit(SessionHolder& session,
