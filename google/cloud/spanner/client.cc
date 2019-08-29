@@ -84,9 +84,10 @@ StatusOr<ResultSet> Client::ExecuteSql(
 StatusOr<ResultSet> Client::ExecuteSql(
     Transaction::PartitionDmlOptions transaction_options,
     SqlStatement statement) {
-  return conn_->ExecuteSql(
-      {internal::MakePartitionedDmlTransaction(std::move(transaction_options)),
-       std::move(statement)});
+  auto txn = conn_->BeginTransaction({internal::MakePartitionedDmlTransaction(
+      std::move(transaction_options))});
+  if (!txn) return std::move(txn).status();
+  return conn_->ExecuteSql({*std::move(txn), std::move(statement)});
 }
 
 StatusOr<ResultSet> Client::ExecuteSql(Transaction transaction,

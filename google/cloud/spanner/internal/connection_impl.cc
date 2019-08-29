@@ -66,6 +66,16 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
       });
 }
 
+StatusOr<Transaction> ConnectionImpl::BeginTransaction(
+    BeginTransactionParams btp) {
+  return internal::Visit(btp.transaction,
+                         [this, &btp](SessionHolder& session,
+                                      spanner_proto::TransactionSelector& s,
+                                      std::int64_t) -> StatusOr<Transaction> {
+    return BeginTransaction(session, s, std::move(btp));
+                         });
+}
+
 StatusOr<CommitResult> ConnectionImpl::Commit(CommitParams cp) {
   return internal::Visit(
       std::move(cp.transaction),
@@ -295,6 +305,26 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
   }
 
   return query_partitions;
+}
+
+StatusOr<Transaction> ConnectionImpl::BeginTransaction(
+    SessionHolder& session, google::spanner::v1::TransactionSelector& s,
+    BeginTransactionParams btp) {
+  if (session.session_name().empty()) {
+    auto session_or = GetSession();
+    if (!session_or) {
+      return std::move(session_or).status();
+    }
+    session = std::move(*session_or);
+  }
+  spanner_proto::BeginTransactionRequest request;
+  request.set_session(session.session_name());
+  *request.mutable_options() = s.begin();
+  grpc::ClientContext context;
+  auto response = stub_->BeginTransaction(context, request);
+  if (!response) return std::move(response).status();
+  s.set_id(response->id());
+  return std::move(btp.transaction);
 }
 
 StatusOr<CommitResult> ConnectionImpl::Commit(

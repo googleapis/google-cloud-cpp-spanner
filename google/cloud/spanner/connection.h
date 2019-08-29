@@ -98,6 +98,14 @@ class Connection {
   virtual StatusOr<std::vector<QueryPartition>> PartitionQuery(
       PartitionQueryParams) = 0;
 
+  struct BeginTransactionParams {
+    Transaction transaction;
+  };
+  /**
+   * Create a transaction using the transaction selector embedded in @p params.
+   */
+  virtual StatusOr<Transaction> BeginTransaction(BeginTransactionParams params) = 0;
+
   struct CommitParams {
     Transaction transaction;
     Mutations mutations;
