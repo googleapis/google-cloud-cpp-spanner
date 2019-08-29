@@ -109,11 +109,11 @@ StatusOr<SessionHolder> ConnectionImpl::GetSession(bool release) {
     session_name = std::move(*response->mutable_name());
   }
 
-  return release ? SessionHolder(std::move(session_name), /*deleter=*/nullptr)
-                 : SessionHolder(std::move(session_name),
+  return release ? SessionHolder(std::move(session_name),
                                  [this](std::string session) {
                                    this->ReleaseSession(std::move(session));
-                                 });
+                                 })
+                 : SessionHolder(std::move(session_name), /*deleter=*/nullptr);
 }
 
 void ConnectionImpl::ReleaseSession(std::string session) {
