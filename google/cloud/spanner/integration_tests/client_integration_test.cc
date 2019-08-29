@@ -605,8 +605,7 @@ TEST_F(ClientIntegrationTest, PartitionQuery) {
 }
 
 TEST_F(ClientIntegrationTest, ExecuteBatchDml) {
-  auto rw_txn = MakeReadWriteTransaction();
-  auto batch_sql = {
+  auto statements = {
       SqlStatement("INSERT INTO Singers (SingerId, FirstName, LastName) "
                    "VALUES(1, \"Axl\", \"Rose\")"),
       SqlStatement("INSERT INTO Singers (SingerId, FirstName, LastName) "
@@ -616,7 +615,15 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDml) {
       SqlStatement("UPDATE Singers SET FirstName = \"FOO\" "
                    "WHERE FirstName = \"Axl\" or FirstName = \"John\""),
   };
-  auto batch_result = client_->ExecuteBatchDml(rw_txn, batch_sql);
+
+  StatusOr<BatchDmlResult> batch_result;
+  auto commit_result = RunTransaction(
+      *client_, {}, [&batch_result, &statements](Client c, Transaction txn) {
+        batch_result = c.ExecuteBatchDml(std::move(txn), statements);
+        return Mutations{};
+      });
+
+  ASSERT_STATUS_OK(commit_result);
   ASSERT_STATUS_OK(batch_result);
   ASSERT_STATUS_OK(batch_result->status);
   ASSERT_EQ(batch_result->stats.size(), 4);
@@ -625,8 +632,8 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDml) {
   ASSERT_EQ(batch_result->stats[2].row_count, 1);
   ASSERT_EQ(batch_result->stats[3].row_count, 2);
 
-  auto query = client_->ExecuteSql(
-      SqlStatement("SELECT SingerId, FirstName, LastName from Singers"));
+  auto query = client_->ExecuteSql(SqlStatement(
+      "SELECT SingerId, FirstName, LastName FROM Singers ORDER BY SingerId"));
   ASSERT_STATUS_OK(query);
 
   struct Expectation {
@@ -639,13 +646,66 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDml) {
       Expectation{2, "Freddy", "Mercury"},
       Expectation{3, "FOO", "Lennon"},
   };
-  std::size_t expected_index = 0;
-  for (auto const& row : query->Rows<std::int64_t, std::string, std::string>()) {
+  std::size_t counter = 0;
+  for (auto const& row :
+       query->Rows<std::int64_t, std::string, std::string>()) {
     ASSERT_STATUS_OK(row);
-    ASSERT_EQ(row->get<0>(), expected[expected_index].id);
-    ASSERT_EQ(row->get<1>(), expected[expected_index].fname);
-    ASSERT_EQ(row->get<2>(), expected[expected_index].lname);
+    ASSERT_EQ(row->get<0>(), expected[counter].id);
+    ASSERT_EQ(row->get<1>(), expected[counter].fname);
+    ASSERT_EQ(row->get<2>(), expected[counter].lname);
+    ++counter;
   }
+  ASSERT_EQ(counter, expected.size());
+}
+
+TEST_F(ClientIntegrationTest, ExecuteBatchDmlMany) {
+  std::vector<SqlStatement> statements;
+  constexpr auto kBatchSize = 1000;
+  for (int i = 0; i < kBatchSize; ++i) {
+    std::string const singer_id = std::to_string(i);
+    std::string const first_name = "John" + singer_id;
+    std::string const last_name = "Lennon" + singer_id;
+    std::string insert =
+        "INSERT INTO Singers (SingerId, FirstName, LastName) Values(";
+    insert += singer_id + ", \"";
+    insert += first_name + "\", \"";
+    insert += last_name + "\")";
+    statements.emplace_back(insert);
+  }
+
+  StatusOr<BatchDmlResult> batch_result;
+  auto commit_result = RunTransaction(
+      *client_, {}, [&batch_result, &statements](Client c, Transaction txn) {
+        batch_result = c.ExecuteBatchDml(std::move(txn), statements);
+        return Mutations{};
+      });
+
+  ASSERT_STATUS_OK(commit_result);
+  ASSERT_STATUS_OK(batch_result);
+  EXPECT_EQ(batch_result->stats.size(), statements.size());
+  EXPECT_STATUS_OK(batch_result->status);
+  for (auto const& stats : batch_result->stats) {
+    ASSERT_EQ(stats.row_count, 1);
+  }
+
+  auto query = client_->ExecuteSql(SqlStatement(
+      "SELECT SingerId, FirstName, LastName FROM Singers ORDER BY SingerId"));
+  ASSERT_STATUS_OK(query);
+
+  auto counter = 0;
+  for (auto const& row :
+       query->Rows<std::int64_t, std::string, std::string>()) {
+    ASSERT_STATUS_OK(row);
+    std::string const singer_id = std::to_string(counter);
+    std::string const first_name = "John" + singer_id;
+    std::string const last_name = "Lennon" + singer_id;
+    ASSERT_EQ(row->get<0>(), counter);
+    ASSERT_EQ(row->get<1>(), first_name);
+    ASSERT_EQ(row->get<2>(), last_name);
+    ++counter;
+  }
+
+  ASSERT_EQ(counter, kBatchSize);
 }
 
 }  // namespace
