@@ -65,7 +65,7 @@ Transaction::ReadOnlyOptions::ReadOnlyOptions(
 
 Transaction::ReadWriteOptions::ReadWriteOptions() = default;  // currently none
 
-Transaction::PartitionDmlOptions::PartitionDmlOptions() = default;
+Transaction::PartitionedDmlOptions::PartitionedDmlOptions() = default;
 
 Transaction::SingleUseOptions::SingleUseOptions(ReadOnlyOptions opts) {
   ro_opts_ = std::move(opts.ro_opts_);
@@ -95,7 +95,7 @@ Transaction::Transaction(ReadWriteOptions opts) {
   impl_ = std::make_shared<internal::TransactionImpl>(std::move(selector));
 }
 
-Transaction::Transaction(PartitionDmlOptions opts) {
+Transaction::Transaction(PartitionedDmlOptions opts) {
   google::spanner::v1::TransactionSelector selector;
   *selector.mutable_begin() = MakeOpts(std::move(opts.pd_opts_));
   impl_ = std::make_shared<internal::TransactionImpl>(std::move(selector));

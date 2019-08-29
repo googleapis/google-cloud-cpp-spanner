@@ -394,8 +394,7 @@ void DmlStandardDelete(google::cloud::spanner::Client client) {
 //! [execute-sql-partitioned] [START spanner_dml_partitioned_delete]
 void DmlPartitionedDelete(google::cloud::spanner::Client client) {
   namespace spanner = google::cloud::spanner;
-  auto result = client.ExecuteSql(
-      spanner::Transaction::PartitionDmlOptions{},
+  auto result = client.ExecutePartitionedDml(
       spanner::SqlStatement("DELETE FROM Singers WHERE SingerId > 10"));
   if (!result) throw std::runtime_error(result.status().message());
   std::cout << "Delete was successful [spanner_dml_partitioned_delete]\n";
@@ -405,8 +404,7 @@ void DmlPartitionedDelete(google::cloud::spanner::Client client) {
 //! [START spanner_dml_partitioned_update]
 void DmlPartitionedUpdate(google::cloud::spanner::Client client) {
   namespace spanner = google::cloud::spanner;
-  auto result = client.ExecuteSql(
-      spanner::Transaction::PartitionDmlOptions{},
+  auto result = client.ExecutePartitionedDml(
       spanner::SqlStatement("UPDATE Albums SET MarketingBudget = 100000"
                             " WHERE SingerId > 1"));
   if (!result) throw std::runtime_error(result.status().message());

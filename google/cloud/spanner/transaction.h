@@ -104,10 +104,10 @@ class Transaction {
    * https://cloud.google.com/spanner/docs/transactions#partitioned_dml_transactions
    *   for an overview of Partitioned DML transactions.
    */
-  class PartitionDmlOptions {
+  class PartitionedDmlOptions {
    public:
-    // There are currently no read-write options.
-    PartitionDmlOptions();
+    // There are currently no Partitioned DML options.
+    PartitionedDmlOptions();
 
    private:
     friend Transaction;
@@ -188,7 +188,7 @@ class Transaction {
   //   https://cloud.google.com/spanner/docs/transactions#properties_
   // it makes no sense for the application to create such a transaction and use
   // it in more than one `ExecuteSql` statement.
-  explicit Transaction(PartitionDmlOptions opts);
+  explicit Transaction(PartitionedDmlOptions opts);
 
   explicit Transaction(std::string session_id, std::string transaction_id);
 
@@ -217,7 +217,7 @@ Transaction MakeSingleUseTransaction(T&& opts) {
 template <typename T>
 Transaction MakePartitionedDmlTransaction(T&& opts) {
   // Requires that `opts` is implicitly convertible to PartitionedDmlOptions.
-  Transaction::PartitionDmlOptions pd_opts = std::forward<T>(opts);
+  Transaction::PartitionedDmlOptions pd_opts = std::forward<T>(opts);
   return Transaction(std::move(pd_opts));
 }
 

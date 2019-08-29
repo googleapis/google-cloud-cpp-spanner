@@ -55,6 +55,15 @@ StatusOr<ResultSet> ConnectionImpl::ExecuteSql(ExecuteSqlParams esp) {
       });
 }
 
+StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDml(
+    ExecuteSqlParams esp) {
+  return internal::Visit(
+      std::move(esp.transaction),
+      [this, &esp](SessionHolder& session,
+                   spanner_proto::TransactionSelector& s, std::int64_t seqno) {
+        return ExecutePartitionedDml(session, s, seqno, std::move(esp));
+      });
+}
 StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
     PartitionQueryParams pqp) {
   return internal::Visit(
@@ -64,16 +73,6 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
         return PartitionQuery(session, s, pqp.sql_params,
                               std::move(pqp.partition_options));
       });
-}
-
-StatusOr<Transaction> ConnectionImpl::BeginTransaction(
-    BeginTransactionParams btp) {
-  return internal::Visit(btp.transaction,
-                         [this, &btp](SessionHolder& session,
-                                      spanner_proto::TransactionSelector& s,
-                                      std::int64_t) -> StatusOr<Transaction> {
-                           return BeginTransaction(session, s, std::move(btp));
-                         });
 }
 
 StatusOr<CommitResult> ConnectionImpl::Commit(CommitParams cp) {
@@ -263,6 +262,51 @@ StatusOr<ResultSet> ConnectionImpl::ExecuteSql(
   return ResultSet(std::move(*reader));
 }
 
+StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDml(
+    SessionHolder& session, google::spanner::v1::TransactionSelector& s,
+    std::int64_t seqno, ExecuteSqlParams esp) {
+  if (session.session_name().empty()) {
+    // Since the session may be sent to other machines, it should not be
+    // returned to the pool when the Transaction is destroyed (release=true).
+    auto session_or = GetSession(/*release=*/true);
+    if (!session_or) {
+      return std::move(session_or).status();
+    }
+    session = std::move(*session_or);
+  }
+
+  grpc::ClientContext begin_context;
+  spanner_proto::BeginTransactionRequest begin_request;
+  begin_request.set_session(session.session_name());
+  *begin_request.mutable_options() = s.begin();
+
+  auto begin_response = stub_->BeginTransaction(begin_context, begin_request);
+  if (!begin_response) return std::move(begin_response).status();
+
+  s.set_id(begin_response->id());
+
+  grpc::ClientContext context;
+  spanner_proto::ExecuteSqlRequest request;
+  request.set_session(session.session_name());
+  *request.mutable_transaction() = s;
+  auto sql_statement = internal::ToProto(std::move(esp.statement));
+  request.set_sql(std::move(*sql_statement.mutable_sql()));
+  *request.mutable_params() = std::move(*sql_statement.mutable_params());
+  *request.mutable_param_types() =
+      std::move(*sql_statement.mutable_param_types());
+  request.set_seqno(seqno);
+
+  auto response = stub_->ExecuteSql(context, request);
+  if (!response) return std::move(response).status();
+
+  PartitionedDmlResult result;
+  if (response->has_stats()) {
+    result.row_count_lower_bound = response->stats().row_count_lower_bound();
+  }
+
+  return result;
+}
+
 StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
     ExecuteSqlParams const& esp, PartitionOptions partition_options) {
@@ -305,26 +349,6 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
   }
 
   return query_partitions;
-}
-
-StatusOr<Transaction> ConnectionImpl::BeginTransaction(
-    SessionHolder& session, google::spanner::v1::TransactionSelector& s,
-    BeginTransactionParams btp) {
-  if (session.session_name().empty()) {
-    auto session_or = GetSession();
-    if (!session_or) {
-      return std::move(session_or).status();
-    }
-    session = std::move(*session_or);
-  }
-  spanner_proto::BeginTransactionRequest request;
-  request.set_session(session.session_name());
-  *request.mutable_options() = s.begin();
-  grpc::ClientContext context;
-  auto response = stub_->BeginTransaction(context, request);
-  if (!response) return std::move(response).status();
-  s.set_id(response->id());
-  return std::move(btp.transaction);
 }
 
 StatusOr<CommitResult> ConnectionImpl::Commit(

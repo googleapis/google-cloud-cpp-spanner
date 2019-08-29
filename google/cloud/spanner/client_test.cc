@@ -53,9 +53,10 @@ class MockConnection : public Connection {
   MOCK_METHOD1(PartitionRead,
                StatusOr<std::vector<ReadPartition>>(PartitionReadParams));
   MOCK_METHOD1(ExecuteSql, StatusOr<ResultSet>(ExecuteSqlParams));
+  MOCK_METHOD1(ExecutePartitionedDml,
+               StatusOr<PartitionedDmlResult>(ExecuteSqlParams));
   MOCK_METHOD1(PartitionQuery,
                StatusOr<std::vector<QueryPartition>>(PartitionQueryParams));
-  MOCK_METHOD1(BeginTransaction, StatusOr<Transaction>(BeginTransactionParams));
   MOCK_METHOD1(Commit, StatusOr<CommitResult>(CommitParams));
   MOCK_METHOD1(Rollback, Status(RollbackParams));
 };
@@ -297,12 +298,11 @@ TEST(ClientTest, ExecuteSqlPartitionedDml_Success) {
   EXPECT_CALL(*source, NextValue()).WillRepeatedly(Return(optional<Value>()));
 
   std::string const sql_statement = "UPDATE Singers SET MarketingBudget = 1000";
-  ResultSet result_set(std::move(source));
   auto conn = std::make_shared<MockConnection>();
-  EXPECT_CALL(*conn, BeginTransaction(_))
-      .WillOnce([](Connection::BeginTransactionParams btp) {
+  EXPECT_CALL(*conn, ExecutePartitionedDml(_))
+      .WillOnce([&sql_statement](Connection::ExecuteSqlParams const& esp) {
         internal::Visit(
-            btp.transaction,
+            esp.transaction,
             [](internal::SessionHolder&, spanner_proto::TransactionSelector& s,
                std::int64_t seqno) {
               EXPECT_TRUE(s.has_begin());
@@ -311,40 +311,15 @@ TEST(ClientTest, ExecuteSqlPartitionedDml_Success) {
               s.set_id("test-txn-id");
               return 0;
             });
-        return std::move(btp.transaction);
-      });
-  EXPECT_CALL(*conn, ExecuteSql(_))
-      .WillOnce([&result_set,
-                 &sql_statement](Connection::ExecuteSqlParams const& params) {
-        EXPECT_EQ(sql_statement, params.statement.sql());
-        EXPECT_FALSE(params.partition_token.has_value());
-        return std::move(result_set);
+        EXPECT_EQ(sql_statement, esp.statement.sql());
+        EXPECT_FALSE(esp.partition_token.has_value());
+        return PartitionedDmlResult{7};
       });
 
   Client client(conn);
-  auto result = client.ExecuteSql(Transaction::PartitionDmlOptions{},
-                                  SqlStatement(sql_statement));
+  auto result = client.ExecutePartitionedDml(SqlStatement(sql_statement));
   EXPECT_STATUS_OK(result);
-}
-
-TEST(ClientTest, ExecuteSqlPartitionedDml_BeginFailure) {
-  auto source = make_unique<MockResultSetSource>();
-  spanner_proto::ResultSetMetadata metadata;
-  EXPECT_CALL(*source, Metadata()).WillRepeatedly(Return(metadata));
-  EXPECT_CALL(*source, Stats())
-      .WillRepeatedly(Return(optional<spanner_proto::ResultSetStats>()));
-  EXPECT_CALL(*source, NextValue()).WillRepeatedly(Return(optional<Value>()));
-
-  std::string const sql_statement = "UPDATE Singers SET MarketingBudget = 1000";
-  ResultSet result_set(std::move(source));
-  auto conn = std::make_shared<MockConnection>();
-  EXPECT_CALL(*conn, BeginTransaction(_))
-      .WillOnce(Return(Status(StatusCode::kPermissionDenied, "uh-oh")));
-
-  Client client(conn);
-  auto result = client.ExecuteSql(Transaction::PartitionDmlOptions{},
-                                  SqlStatement(sql_statement));
-  EXPECT_EQ(StatusCode::kPermissionDenied, result.status().code());
+  EXPECT_EQ(7, result->row_count_lower_bound);
 }
 
 TEST(ClientTest, CommitSuccess) {

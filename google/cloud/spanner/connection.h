@@ -19,6 +19,7 @@
 #include "google/cloud/spanner/connection_options.h"
 #include "google/cloud/spanner/keys.h"
 #include "google/cloud/spanner/mutations.h"
+#include "google/cloud/spanner/partitioned_dml_result.h"
 #include "google/cloud/spanner/read_options.h"
 #include "google/cloud/spanner/result_set.h"
 #include "google/cloud/spanner/sql_statement.h"
@@ -91,21 +92,15 @@ class Connection {
   };
   virtual StatusOr<ResultSet> ExecuteSql(ExecuteSqlParams) = 0;
 
+  virtual StatusOr<PartitionedDmlResult> ExecutePartitionedDml(
+      ExecuteSqlParams) = 0;
+
   struct PartitionQueryParams {
     ExecuteSqlParams sql_params;
     PartitionOptions partition_options;
   };
   virtual StatusOr<std::vector<QueryPartition>> PartitionQuery(
       PartitionQueryParams) = 0;
-
-  struct BeginTransactionParams {
-    Transaction transaction;
-  };
-  /**
-   * Create a transaction using the transaction selector embedded in @p params.
-   */
-  virtual StatusOr<Transaction> BeginTransaction(
-      BeginTransactionParams params) = 0;
 
   struct CommitParams {
     Transaction transaction;

@@ -247,30 +247,30 @@ class Client {
   /**
    * @copydoc ExecuteSql(SqlStatement)
    *
-   * @param transaction_options Execute a Partition DML statement.
+   * @param transaction Execute this query as part of an existing transaction.
+   */
+  StatusOr<ResultSet> ExecuteSql(Transaction transaction,
+                                 SqlStatement statement);
+  //@}
+
+  /**
+   * Executes a Partitioned DML SQL query.
+   *
+   * @param statement the SQL statement to execute. Please see the
+   *     [spanner documentation][dml-partitioned] for the restrictions on the
+   *     SQL statements supported by this function.
    *
    * @par Example
    * @snippet samples.cc execute-sql-partitioned
    *
    * @see
    * https://cloud.google.com/spanner/docs/transactions#partitioned_dml_transactions
-   *   for an overview of Partitioned DML transactions.
-   * @see https://cloud.google.com/spanner/docs/dml-partitioned for a
-   *   description of which SQL statements are supported in Partitioned DML
-   *   transactions.
+   *      for an overview of Partitioned DML transactions.
+   * @see [Partitioned DML][dml-partitioned] for a description of which SQL
+   *     statements are supported in Partitioned DML transactions.
+   * [dml-partitioned]: https://cloud.google.com/spanner/docs/dml-partitioned
    */
-  StatusOr<ResultSet> ExecuteSql(
-      Transaction::PartitionDmlOptions transaction_options,
-      SqlStatement statement);
-
-  /**
-   * @copydoc ExecuteSql(SqlStatement)
-   *
-   * @param transaction Execute this query as part of an existing transaction.
-   */
-  StatusOr<ResultSet> ExecuteSql(Transaction transaction,
-                                 SqlStatement statement);
-  //@}
+  StatusOr<PartitionedDmlResult> ExecutePartitionedDml(SqlStatement statement);
 
   /**
    * Executes a SQL query on a subset of rows in a database. Requires a prior

@@ -50,9 +50,11 @@ class ConnectionImpl : public Connection {
   StatusOr<std::vector<ReadPartition>> PartitionRead(
       PartitionReadParams prp) override;
   StatusOr<ResultSet> ExecuteSql(ExecuteSqlParams esp) override;
+  StatusOr<PartitionedDmlResult> ExecutePartitionedDml(
+      ExecuteSqlParams) override;
+
   StatusOr<std::vector<QueryPartition>> PartitionQuery(
       PartitionQueryParams) override;
-  StatusOr<Transaction> BeginTransaction(BeginTransactionParams btp) override;
   StatusOr<CommitResult> Commit(CommitParams cp) override;
   Status Rollback(RollbackParams rp) override;
 
@@ -75,15 +77,15 @@ class ConnectionImpl : public Connection {
                                  google::spanner::v1::TransactionSelector& s,
                                  std::int64_t seqno, ExecuteSqlParams esp);
 
+  /// Implementation details for ExecutePartitionedDml
+  StatusOr<PartitionedDmlResult> ExecutePartitionedDml(
+      SessionHolder& session, google::spanner::v1::TransactionSelector& s,
+      std::int64_t seqno, ExecuteSqlParams esp);
+
   /// Implementation details for PartitionQuery
   StatusOr<std::vector<QueryPartition>> PartitionQuery(
       SessionHolder& session, google::spanner::v1::TransactionSelector& s,
       ExecuteSqlParams const& esp, PartitionOptions partition_options);
-
-  /// Implementation details for BeginTransaction.
-  StatusOr<Transaction> BeginTransaction(
-      SessionHolder& session, google::spanner::v1::TransactionSelector& s,
-      BeginTransactionParams btp);
 
   /// Implementation details for Commit.
   StatusOr<CommitResult> Commit(SessionHolder& session,
