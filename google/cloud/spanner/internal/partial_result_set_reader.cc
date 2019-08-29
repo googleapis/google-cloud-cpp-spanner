@@ -83,6 +83,11 @@ StatusOr<optional<Value>> PartialResultSetReader::NextValue() {
 
 PartialResultSetReader::~PartialResultSetReader() {
   if (!finished_) {
+    std::cout << metadata_.has_value() << ": ";
+    if (metadata_.has_value()) {
+      std::cout << metadata_->DebugString();
+    }
+    std::cout << std::endl;
     // The user didn't iterate over all the data; finish the stream on their
     // behalf, but we have no way to communicate error status.
     grpc::Status finish_status = grpc_reader_->Finish();
