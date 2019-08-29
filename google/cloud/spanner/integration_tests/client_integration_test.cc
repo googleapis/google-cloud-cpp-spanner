@@ -358,7 +358,8 @@ TEST_F(ClientIntegrationTest, ExecuteSqlPartitionDml) {
   EXPECT_STATUS_OK(insert_result);
 
   auto result = client_->ExecutePartitionedDml(
-      SqlStatement("UPDATE Singers SET LastName = 'test-only'"));
+      SqlStatement("UPDATE Singers SET LastName = 'test-only'"
+                   " WHERE SingerId >= 1"));
   EXPECT_STATUS_OK(result);
 }
 
