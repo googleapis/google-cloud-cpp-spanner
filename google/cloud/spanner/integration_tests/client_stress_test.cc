@@ -28,8 +28,7 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace {
 
-constexpr std::int64_t kMillion = 1000 * 1000;
-std::int64_t flag_table_size = 10 * kMillion;
+std::int64_t flag_table_size = 10 * 1000 * 1000;
 std::int64_t flag_maximum_read_size = 10 * 1000;
 std::chrono::seconds flag_duration(30);
 int flag_threads = 0;  // 0 means use the threads_per_core setting.
@@ -46,9 +45,11 @@ struct Result {
       ++success_count;
     }
   }
-  void Update(Result const& r) {
+
+  Result operator+=(Result const& r) {
     failure_count += r.failure_count;
     success_count += r.success_count;
+    return *this;
   }
 };
 
@@ -77,9 +78,9 @@ TEST(ClientSqlStressTest, UpsertAndSelect) {
       kSelect = 1,
     };
 
-    auto deadline = std::chrono::steady_clock::now() + flag_duration;
-    for (auto start = std::chrono::steady_clock::now(); start < deadline;
-         start = std::chrono::steady_clock::now()) {
+    for (auto start = std::chrono::steady_clock::now(),
+              deadline = start + flag_duration;
+         start < deadline; start = std::chrono::steady_clock::now()) {
       auto key = random_key(generator);
       auto action = static_cast<Action>(random_action(generator));
 
@@ -124,7 +125,7 @@ TEST(ClientSqlStressTest, UpsertAndSelect) {
 
   Result total;
   for (auto& t : tasks) {
-    total.Update(t.get());
+    total += t.get();
   }
 
   auto experiments_count = total.failure_count + total.success_count;
@@ -149,9 +150,9 @@ TEST(ClientStressTest, UpsertAndRead) {
       kSelect = 1,
     };
 
-    auto deadline = std::chrono::steady_clock::now() + flag_duration;
-    for (auto start = std::chrono::steady_clock::now(); start < deadline;
-         start = std::chrono::steady_clock::now()) {
+    for (auto start = std::chrono::steady_clock::now(),
+              deadline = start + flag_duration;
+         start < deadline; start = std::chrono::steady_clock::now()) {
       auto key = random_key(generator);
       auto action = static_cast<Action>(random_action(generator));
 
@@ -197,7 +198,7 @@ TEST(ClientStressTest, UpsertAndRead) {
 
   Result total;
   for (auto& t : tasks) {
-    total.Update(t.get());
+    total += t.get();
   }
 
   auto experiments_count = total.failure_count + total.success_count;
@@ -237,7 +238,7 @@ int main(int argc, char* argv[]) {
       google::cloud::spanner::flag_duration =
           std::chrono::seconds(std::stoi(arg.substr(duration_arg.size())));
     } else if (arg.rfind("--", 0) == 0) {
-      std::cerr << "Unknown flag: " << arg << std::endl;
+      std::cerr << "Unknown flag: " << arg << "\n";
     }
   }
 
