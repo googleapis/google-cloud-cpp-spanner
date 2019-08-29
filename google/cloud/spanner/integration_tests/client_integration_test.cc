@@ -687,7 +687,7 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDmlMany) {
                      [&batch_result_left, &batch_result_right, &left, &right](
                          Client c, Transaction txn) -> StatusOr<Mutations> {
 
-                       batch_result_left = c.ExecuteBatchDml(std::move(txn), left);
+                       batch_result_left = c.ExecuteBatchDml(txn, left);
                        if (!batch_result_left)
                          return batch_result_left.status();
                        if (!batch_result_left->status.ok())
