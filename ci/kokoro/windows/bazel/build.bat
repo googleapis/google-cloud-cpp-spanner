@@ -33,6 +33,17 @@ bazel --output_user_root=C:\b build --keep_going -- ^
 
 if %errorlevel% neq 0 exit /b %errorlevel%
 
+echo "Running unit tests"
+echo %date% %time%
+bazel --output_user_root=C:\b test ^
+  --keep_going ^
+  --test_output=errors ^
+  --verbose_failures=true ^
+  --test_tag_filters=-integration-tests ^
+  -- //google/cloud/spanner/...:all
+
+if %errorlevel% neq 0 exit /b %errorlevel%
+
 @echo %date% %time%
 @echo DONE DONE DONE "============================================="
 @echo DONE DONE DONE "============================================="
