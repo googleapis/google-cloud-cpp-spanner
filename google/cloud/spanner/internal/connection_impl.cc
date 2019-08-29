@@ -335,14 +335,9 @@ StatusOr<BatchDmlResult> ConnectionImpl::ExecuteBatchDml(
 
   BatchDmlResult result;
   result.status = grpc_utils::MakeStatusFromRpcError(response->status());
-  for (std::int64_t i = 0; i < response->result_sets_size(); ++i) {
-    auto const& result_set = response->result_sets(i);
-    // Only the first result contains the ResultSetMetadata, which will contain
-    // the new transaction ID if one was requested.
-    if (i == 0) {
-      if (s.has_begin()) {
-        s.set_id(result_set.metadata().transaction().id());
-      }
+  for (auto const& result_set : response->result_sets()) {
+    if (s.has_begin()) {
+      s.set_id(result_set.metadata().transaction().id());
     }
     result.stats.push_back({result_set.stats().row_count_exact()});
   }
