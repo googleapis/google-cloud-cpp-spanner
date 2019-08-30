@@ -16,6 +16,7 @@
 #include "google/cloud/spanner/internal/session_holder.h"
 #include "google/cloud/spanner/internal/time.h"
 #include "google/cloud/spanner/internal/transaction_impl.h"
+#include "google/cloud//internal/make_unique.h"
 
 namespace google {
 namespace cloud {
@@ -23,6 +24,8 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
 namespace {
+
+using ::google::cloud::internal::make_unique;
 
 google::spanner::v1::TransactionOptions MakeOpts(
     google::spanner::v1::TransactionOptions_ReadOnly ro_opts) {
@@ -96,7 +99,8 @@ Transaction::Transaction(std::string session_id, std::string transaction_id) {
   google::spanner::v1::TransactionSelector selector;
   selector.set_id(std::move(transaction_id));
   impl_ = std::make_shared<internal::TransactionImpl>(
-      internal::SessionHolder(std::move(session_id), /*deleter=*/nullptr),
+      make_unique<internal::SessionHolder>(std::move(session_id),
+                                           /*deleter=*/nullptr),
       std::move(selector));
 }
 
