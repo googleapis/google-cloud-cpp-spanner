@@ -51,7 +51,7 @@ class ConnectionImpl : public Connection {
       PartitionReadParams prp) override;
   StatusOr<ResultSet> ExecuteSql(ExecuteSqlParams esp) override;
   StatusOr<PartitionedDmlResult> ExecutePartitionedDml(
-      ExecuteSqlParams) override;
+      ExecutePartitionedDmlParams) override;
 
   StatusOr<std::vector<QueryPartition>> PartitionQuery(
       PartitionQueryParams) override;
@@ -81,7 +81,7 @@ class ConnectionImpl : public Connection {
   /// Implementation details for ExecutePartitionedDml
   StatusOr<PartitionedDmlResult> ExecutePartitionedDml(
       SessionHolder& session, google::spanner::v1::TransactionSelector& s,
-      std::int64_t seqno, ExecuteSqlParams esp);
+      std::int64_t seqno, ExecutePartitionedDmlParams epdp);
 
   /// Implementation details for PartitionQuery
   StatusOr<std::vector<QueryPartition>> PartitionQuery(

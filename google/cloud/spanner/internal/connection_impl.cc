@@ -57,14 +57,16 @@ StatusOr<ResultSet> ConnectionImpl::ExecuteSql(ExecuteSqlParams esp) {
 }
 
 StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDml(
-    ExecuteSqlParams esp) {
+    ExecutePartitionedDmlParams epdp) {
+  auto txn = MakeReadOnlyTransaction();
   return internal::Visit(
-      std::move(esp.transaction),
-      [this, &esp](SessionHolder& session,
-                   spanner_proto::TransactionSelector& s, std::int64_t seqno) {
-        return ExecutePartitionedDml(session, s, seqno, std::move(esp));
+      txn,
+      [this, &epdp](SessionHolder& session,
+                    spanner_proto::TransactionSelector& s, std::int64_t seqno) {
+        return ExecutePartitionedDml(session, s, seqno, std::move(epdp));
       });
 }
+
 StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
     PartitionQueryParams pqp) {
   return internal::Visit(
@@ -276,7 +278,7 @@ StatusOr<ResultSet> ConnectionImpl::ExecuteSql(
 
 StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDml(
     SessionHolder& session, google::spanner::v1::TransactionSelector& s,
-    std::int64_t seqno, ExecuteSqlParams esp) {
+    std::int64_t seqno, ExecutePartitionedDmlParams epdp) {
   if (session.session_name().empty()) {
     // Since the session may be sent to other machines, it should not be
     // returned to the pool when the Transaction is destroyed (release=true).
@@ -290,7 +292,8 @@ StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDml(
   grpc::ClientContext begin_context;
   spanner_proto::BeginTransactionRequest begin_request;
   begin_request.set_session(session.session_name());
-  *begin_request.mutable_options() = s.begin();
+  *begin_request.mutable_options()->mutable_partitioned_dml() =
+      spanner_proto::TransactionOptions_PartitionedDml();
 
   auto begin_response = stub_->BeginTransaction(begin_context, begin_request);
   if (!begin_response) return std::move(begin_response).status();
@@ -301,7 +304,7 @@ StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDml(
   spanner_proto::ExecuteSqlRequest request;
   request.set_session(session.session_name());
   *request.mutable_transaction() = s;
-  auto sql_statement = internal::ToProto(std::move(esp.statement));
+  auto sql_statement = internal::ToProto(std::move(epdp.statement));
   request.set_sql(std::move(*sql_statement.mutable_sql()));
   *request.mutable_params() = std::move(*sql_statement.mutable_params());
   *request.mutable_param_types() =
