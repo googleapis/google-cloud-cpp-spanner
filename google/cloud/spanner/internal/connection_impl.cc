@@ -311,7 +311,7 @@ StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDml(
   auto response = stub_->ExecuteSql(context, request);
   if (!response) return std::move(response).status();
 
-  PartitionedDmlResult result;
+  PartitionedDmlResult result{0};
   if (response->has_stats()) {
     result.row_count_lower_bound = response->stats().row_count_lower_bound();
   }
