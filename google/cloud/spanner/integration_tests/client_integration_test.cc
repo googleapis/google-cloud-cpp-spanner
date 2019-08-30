@@ -682,25 +682,20 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDmlMany) {
 
   StatusOr<BatchDmlResult> batch_result_left;
   StatusOr<BatchDmlResult> batch_result_right;
-  auto commit_result =
-      RunTransaction(*client_, {},
-                     [&batch_result_left, &batch_result_right, &left, &right](
-                         Client c, Transaction txn) -> StatusOr<Mutations> {
+  auto commit_result = RunTransaction(
+      *client_, {},
+      [&batch_result_left, &batch_result_right, &left, &right](
+          Client c, Transaction txn) -> StatusOr<Mutations> {
+        batch_result_left = c.ExecuteBatchDml(txn, left);
+        if (!batch_result_left) return batch_result_left.status();
+        if (!batch_result_left->status.ok()) return batch_result_left->status;
 
-                       batch_result_left = c.ExecuteBatchDml(txn, left);
-                       if (!batch_result_left)
-                         return batch_result_left.status();
-                       if (!batch_result_left->status.ok())
-                         return batch_result_left->status;
+        batch_result_right = c.ExecuteBatchDml(std::move(txn), right);
+        if (!batch_result_right) return batch_result_right.status();
+        if (!batch_result_right->status.ok()) return batch_result_right->status;
 
-                       batch_result_right = c.ExecuteBatchDml(std::move(txn), right);
-                       if (!batch_result_right)
-                         return batch_result_right.status();
-                       if (!batch_result_right->status.ok())
-                         return batch_result_right->status;
-
-                       return Mutations{};
-                     });
+        return Mutations{};
+      });
 
   ASSERT_STATUS_OK(commit_result);
 

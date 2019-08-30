@@ -38,15 +38,15 @@ inline namespace SPANNER_CLIENT_NS {
  */
 struct BatchDmlResult {
   struct Stats {
-    // The number of rows modified by a DML statement.
+    /// The number of rows modified by a DML statement.
     std::int64_t row_count;
   };
 
-  // The stats for each successfully executed `SqlStatement. The order of the
-  // `SqlStatements` matches the order of the `Stats` in this vector.
+   /// The stats for each successfully executed `SqlStatement`. The order of
+   /// the `SqlStatements` matches the order of the `Stats` in this vector.
   std::vector<Stats> stats;
 
-  // Either OK or the error Status of the `SqlStatement` that failed.
+  /// Either OK or the error Status of the `SqlStatement` that failed.
   Status status;
 };
 
