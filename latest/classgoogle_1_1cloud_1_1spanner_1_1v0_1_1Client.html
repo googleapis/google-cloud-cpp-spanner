@@ -99,9 +99,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a501a9d95abac856b077d1e82c11c4135"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html">QueryPartition</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a501a9d95abac856b077d1e82c11c4135">PartitionQuery</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> transaction, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> statement, <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a715266c430725251bb817767f12bbd4a">PartitionOptions</a> partition_options={})</td></tr>
 <tr class="memdesc:a501a9d95abac856b077d1e82c11c4135"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a set of partitions that can be used to execute a query operation in parallel.  <a href="#a501a9d95abac856b077d1e82c11c4135">More...</a><br /></td></tr>
 <tr class="separator:a501a9d95abac856b077d1e82c11c4135"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9671193497a85579a34936431fc92b82"><td class="memItemLeft" align="right" valign="top">std::vector&lt; StatusOr&lt; google::spanner::v1::ResultSetStats &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a9671193497a85579a34936431fc92b82">ExecuteBatchDml</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> const &amp;transaction, std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> &gt; const &amp;statements)</td></tr>
-<tr class="memdesc:a9671193497a85579a34936431fc92b82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a batch of SQL DML statements.  <a href="#a9671193497a85579a34936431fc92b82">More...</a><br /></td></tr>
-<tr class="separator:a9671193497a85579a34936431fc92b82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c44430c6a1f6c050da8e9a28f0da66d"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1BatchDmlResult.html">BatchDmlResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a7c44430c6a1f6c050da8e9a28f0da66d">ExecuteBatchDml</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> transaction, std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> &gt; statements)</td></tr>
+<tr class="memdesc:a7c44430c6a1f6c050da8e9a28f0da66d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a batch of SQL DML statements.  <a href="#a7c44430c6a1f6c050da8e9a28f0da66d">More...</a><br /></td></tr>
+<tr class="separator:a7c44430c6a1f6c050da8e9a28f0da66d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9349cc0b3fb4d9d83721e642bfcc1102"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html">CommitResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a9349cc0b3fb4d9d83721e642bfcc1102">Commit</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> transaction, <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a283421d14e4073e59922c9168d880cae">Mutations</a> mutations)</td></tr>
 <tr class="memdesc:a9349cc0b3fb4d9d83721e642bfcc1102"><td class="mdescLeft">&#160;</td><td class="mdescRight">Commits a read-write transaction.  <a href="#a9349cc0b3fb4d9d83721e642bfcc1102">More...</a><br /></td></tr>
 <tr class="separator:a9349cc0b3fb4d9d83721e642bfcc1102"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,7 +156,7 @@ Friends</h2></td></tr>
 <dl class="section user"><dt>Error Handling</dt><dd></dd></dl>
 <p>This class uses <code>StatusOr&lt;T&gt;</code> to report errors. When an operation fails to perform its work the returned <code>StatusOr&lt;T&gt;</code> contains the error details. If the <code>ok()</code> member function in the <code>StatusOr&lt;T&gt;</code> returns <code>true</code> then it contains the expected result. Please consult the <a href="#google::cloud::v0::StatusOr"><code>StatusOr&lt;T&gt;</code> documentation</a> for more details.</p>
 <div class="fragment"><div class="line"><span class="keyword">namespace </span>cs = ::google::cloud::spanner;</div><div class="line">using ::google::cloud::StatusOr;</div><div class="line"></div><div class="line"><span class="keyword">auto</span> db = cs::Database(<span class="stringliteral">&quot;my_project&quot;</span>, <span class="stringliteral">&quot;my_instance&quot;</span>, <span class="stringliteral">&quot;my_db_id&quot;</span>));</div><div class="line"><span class="keyword">auto</span> conn = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a34e43f27057136f44b36251a0a379c1b">cs::MakeConnection</a>(db);</div><div class="line"><span class="keyword">auto</span> client = cs::Client(conn);</div><div class="line"></div><div class="line">StatusOr&lt;cs::ResultSet&gt; result = client.Read(...);</div><div class="line"><span class="keywordflow">if</span> (!result) {</div><div class="line">  <span class="keywordflow">return</span> result.status();</div><div class="line">}</div><div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> <span class="keyword">const</span>&amp; row : result.Rows&lt;std::int64_t, std::string&gt;()) {</div><div class="line">  <span class="comment">// ...</span></div><div class="line">}</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00093">93</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00094">94</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac02ff58e375cd0a5150adf7bb0698671"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac02ff58e375cd0a5150adf7bb0698671">&#9670;&nbsp;</a></span>Client() <span class="overload">[1/4]</span></h2>
@@ -185,7 +185,7 @@ Friends</h2></td></tr>
 <p>Constructs a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> object that will use the specified <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code>. </p>
 <p>See <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a34e43f27057136f44b36251a0a379c1b" title="Returns a Connection object that can be used for interacting with Spanner.">MakeConnection()</a></code> for how to create a connection to Spanner. To help with unit testing, callers may create fake/mock <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code> objects that are injected into the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00102">102</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00103">103</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
 
 </div>
 </div>
@@ -307,26 +307,26 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <code>StatusOr</code> containing the result of the commit or error status on failure. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00108">108</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00104">104</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
-<a id="a9671193497a85579a34936431fc92b82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9671193497a85579a34936431fc92b82">&#9670;&nbsp;</a></span>ExecuteBatchDml()</h2>
+<a id="a7c44430c6a1f6c050da8e9a28f0da66d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c44430c6a1f6c050da8e9a28f0da66d">&#9670;&nbsp;</a></span>ExecuteBatchDml()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; StatusOr&lt; spanner_proto::ResultSetStats &gt; &gt; google::cloud::spanner::v0::Client::ExecuteBatchDml </td>
+          <td class="memname">StatusOr&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1BatchDmlResult.html">BatchDmlResult</a> &gt; google::cloud::spanner::v0::Client::ExecuteBatchDml </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>&#160;</td>
           <td class="paramname"><em>transaction</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> &gt; const &amp;&#160;</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> &gt;&#160;</td>
           <td class="paramname"><em>statements</em>&#160;</td>
         </tr>
         <tr>
@@ -339,18 +339,18 @@ Friends</h2></td></tr>
 
 <p>Executes a batch of SQL DML statements. </p>
 <p>This method allows many statements to be run with lower latency than submitting them sequentially with <code>ExecuteSql</code>.</p>
-<dl class="section warning"><dt>Warning</dt><dd>This method is not supported in the alpha release and will return "Unimplemented" status.</dd></dl>
 <p>Statements are executed in order, sequentially. Execution will stop at the first failed statement; the remaining statements will not run.</p>
+<p>As with all read-write transactions, the results will not be visible outside of the transaction until it is committed. For that reason, it is advisable to run this method with <code>RunTransaction</code>.</p>
+<dl class="section warning"><dt>Warning</dt><dd>A returned status of OK from this function does not imply that all the statements were executed successfully. For that, you need to inspect the <code><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1BatchDmlResult.html#a2e1a32b8b3188dd6432715de521c1e7f" title="Either OK or the error Status of the SqlStatement that failed.">BatchDmlResult::status</a></code> field.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">transaction</td><td>The transaction to execute the operation in. </td></tr>
-    <tr><td class="paramname">statements</td><td>The list of statements to execute in this batch. Statements are executed serially, such that the effects of statement i are visible to statement i+1. Each statement must be a DML statement. Execution will stop at the first failed statement; the remaining statements will not run. Must not be empty.</td></tr>
+    <tr><td class="paramname">transaction</td><td>The read-write transaction to execute the operation in. </td></tr>
+    <tr><td class="paramname">statements</td><td>The list of statements to execute in this batch. Statements are executed serially, such that the effects of statement i are visible to statement i+1. Each statement must be a DML statement. Execution will stop at the first failed statement; the remaining statements will not run. Must not be empty. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A vector of <code>StatusOr</code> corresponding to each statement in <code>statements</code>. Statements that were successfully executed return statistics. If a statement fails, its error status is returned and entries for subsequent statements are not present in the returned vector. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00100">100</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00098">98</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -381,7 +381,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <code>StatusOr</code> containing a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html" title="Represents the result of a query operation, such as SpannerClient::Read() or SpannerClient::ExecuteSq...">ResultSet</a></code> or error status on failure. No individual row in the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html" title="Represents the result of a query operation, such as SpannerClient::Read() or SpannerClient::ExecuteSq...">ResultSet</a></code> can exceed 100 MiB, and no column value can exceed 10 MiB. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00071">71</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00069">69</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -428,7 +428,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00077">77</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00075">75</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -475,7 +475,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00084">84</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00082">82</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -505,7 +505,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <code>StatusOr</code> containing a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html" title="Represents the result of a query operation, such as SpannerClient::Read() or SpannerClient::ExecuteSq...">ResultSet</a></code> or error status on failure. No individual row in the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html" title="Represents the result of a query operation, such as SpannerClient::Read() or SpannerClient::ExecuteSq...">ResultSet</a></code> can exceed 100 MiB, and no column value can exceed 10 MiB. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00089">89</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00087">87</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -606,7 +606,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <code>StatusOr</code> containing a vector of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html" title="The QueryPartition class is a regular type that represents a single slice of a parallel SQL read.">QueryPartition</a></code>s or error status on failure. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00093">93</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00091">91</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -677,7 +677,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <code>StatusOr</code> containing a vector of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html" title="The ReadPartition class is a regular type that represents a single slice of a parallel Read operation...">ReadPartition</a></code> or error status on failure. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00061">61</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00059">59</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -732,7 +732,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <code>StatusOr</code> containing a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html" title="Represents the result of a query operation, such as SpannerClient::Read() or SpannerClient::ExecuteSq...">ResultSet</a></code> or error status on failure. No individual row in the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html" title="Represents the result of a query operation, such as SpannerClient::Read() or SpannerClient::ExecuteSq...">ResultSet</a></code> can exceed 100 MiB, and no column value can exceed 10 MiB. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00032">32</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00030">30</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -799,7 +799,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00041">41</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00039">39</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -866,7 +866,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00050">50</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00048">48</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -896,7 +896,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <code>StatusOr</code> containing a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html" title="Represents the result of a query operation, such as SpannerClient::Read() or SpannerClient::ExecuteSq...">ResultSet</a></code> or error status on failure. No individual row in the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html" title="Represents the result of a query operation, such as SpannerClient::Read() or SpannerClient::ExecuteSq...">ResultSet</a></code> can exceed 100 MiB, and no column value can exceed 10 MiB. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00057">57</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00055">55</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -927,7 +927,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The error status of the rollback. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00113">113</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00109">109</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -966,7 +966,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00120">120</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00121">121</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
 
 </div>
 </div>
@@ -1004,7 +1004,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00117">117</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00118">118</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
 
 </div>
 </div>
