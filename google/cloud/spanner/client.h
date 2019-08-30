@@ -270,7 +270,8 @@ class Client {
    *     Partitioned DML transactions.
    * @see [Partitioned DML][dml-partitioned] for a description of which SQL
    *     statements are supported in Partitioned DML transactions.
-   * [txn-partitioned]: https://cloud.google.com/spanner/docs/transactions#partitioned_dml_transactions
+   * [txn-partitioned]:
+   * https://cloud.google.com/spanner/docs/transactions#partitioned_dml_transactions
    * [dml-partitioned]: https://cloud.google.com/spanner/docs/dml-partitioned
    */
   StatusOr<PartitionedDmlResult> ExecutePartitionedDml(SqlStatement statement);
