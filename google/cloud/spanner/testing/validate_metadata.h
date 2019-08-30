@@ -35,7 +35,8 @@ inline namespace SPANNER_CLIENT_NS {
  *
  * @param context the context to validate
  * @param method a gRPC method which which this context will be passed to
- * @param api_client_header expected value for the x-goog-
+ * @param api_client_header expected value for the x-goog-api-client metadata
+ *     header.
  *
  * @warning the `context` will be destroyed and shouldn't be used after passing
  *     it to this function.
