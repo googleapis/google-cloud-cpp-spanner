@@ -91,8 +91,60 @@ Functions</h2></td></tr>
 <tr class="memitem:afb8fa785bfd2f5c2cf90cc644cf4ed11"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner__testing_1_1v0.html#afb8fa785bfd2f5c2cf90cc644cf4ed11">RandomDatabaseName</a> (google::cloud::internal::DefaultPRNG &amp;generator)</td></tr>
 <tr class="memdesc:afb8fa785bfd2f5c2cf90cc644cf4ed11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a random database name given a PRNG generator.  <a href="#afb8fa785bfd2f5c2cf90cc644cf4ed11">More...</a><br /></td></tr>
 <tr class="separator:afb8fa785bfd2f5c2cf90cc644cf4ed11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fd7d2d2bfba536752003106789fe786"><td class="memItemLeft" align="right" valign="top">Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner__testing_1_1v0.html#a2fd7d2d2bfba536752003106789fe786">IsContextMDValid</a> (grpc::ClientContext &amp;context, std::string const  &amp;method, std::string const  &amp;api_client_header)</td></tr>
+<tr class="memdesc:a2fd7d2d2bfba536752003106789fe786"><td class="mdescLeft">&#160;</td><td class="mdescRight">Verify that the metadata in the context is appropriate for a gRPC method.  <a href="#a2fd7d2d2bfba536752003106789fe786">More...</a><br /></td></tr>
+<tr class="separator:a2fd7d2d2bfba536752003106789fe786"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a2fd7d2d2bfba536752003106789fe786"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fd7d2d2bfba536752003106789fe786">&#9670;&nbsp;</a></span>IsContextMDValid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Status google::cloud::spanner_testing::v0::IsContextMDValid </td>
+          <td>(</td>
+          <td class="paramtype">grpc::ClientContext &amp;&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>method</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>api_client_header</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Verify that the metadata in the context is appropriate for a gRPC method. </p>
+<p><code>ClientContext</code> should instruct gRPC to set a <code>x-goog-request-params</code> HTTP header with a value dictated by a <code>google.api.http</code> option in the gRPC service specification. This function checks if the header is set and whether it has a valid value.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">context</td><td>the context to validate </td></tr>
+    <tr><td class="paramname">method</td><td>a gRPC method which which this context will be passed to </td></tr>
+    <tr><td class="paramname">api_client_header</td><td>expected value for the x-goog-api-client metadata header.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section warning"><dt>Warning</dt><dd>the <code>context</code> will be destroyed and shouldn't be used after passing it to this function.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>an OK status if the <code>context</code> is properly set up </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="validate__metadata_8cc_source.html#l00037">37</a> of file <a class="el" href="validate__metadata_8cc_source.html">validate_metadata.cc</a>.</p>
+
+</div>
+</div>
 <a id="a54d01df7703913af345bd9c235578f35"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a54d01df7703913af345bd9c235578f35">&#9670;&nbsp;</a></span>MATCHER_P()</h2>
 
