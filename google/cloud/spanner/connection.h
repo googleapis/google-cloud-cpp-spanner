@@ -93,8 +93,11 @@ class Connection {
   };
   virtual StatusOr<ResultSet> ExecuteSql(ExecuteSqlParams) = 0;
 
+  struct ExecutePartitionedDmlParams {
+    SqlStatement statement;
+  };
   virtual StatusOr<PartitionedDmlResult> ExecutePartitionedDml(
-      ExecuteSqlParams) = 0;
+      ExecutePartitionedDmlParams) = 0;
 
   struct PartitionQueryParams {
     ExecuteSqlParams sql_params;

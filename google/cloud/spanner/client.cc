@@ -81,10 +81,7 @@ StatusOr<ResultSet> Client::ExecuteSql(
 
 StatusOr<PartitionedDmlResult> Client::ExecutePartitionedDml(
     SqlStatement statement) {
-  return conn_->ExecutePartitionedDml(
-      {internal::MakePartitionedDmlTransaction(
-           Transaction::PartitionedDmlOptions{}),
-       std::move(statement)});
+  return conn_->ExecutePartitionedDml({std::move(statement)});
 }
 
 StatusOr<ResultSet> Client::ExecuteSql(Transaction transaction,

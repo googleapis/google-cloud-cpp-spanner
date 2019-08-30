@@ -336,19 +336,9 @@ TEST(ClientTest, ExecuteSqlPartitionedDml_Success) {
   std::string const sql_statement = "UPDATE Singers SET MarketingBudget = 1000";
   auto conn = std::make_shared<MockConnection>();
   EXPECT_CALL(*conn, ExecutePartitionedDml(_))
-      .WillOnce([&sql_statement](Connection::ExecuteSqlParams const& esp) {
-        internal::Visit(
-            esp.transaction,
-            [](internal::SessionHolder&, spanner_proto::TransactionSelector& s,
-               std::int64_t seqno) {
-              EXPECT_TRUE(s.has_begin());
-              EXPECT_TRUE(s.has_begin() && s.begin().has_partitioned_dml());
-              EXPECT_EQ(1, seqno);
-              s.set_id("test-txn-id");
-              return 0;
-            });
-        EXPECT_EQ(sql_statement, esp.statement.sql());
-        EXPECT_FALSE(esp.partition_token.has_value());
+      .WillOnce([&sql_statement](
+                    Connection::ExecutePartitionedDmlParams const& epdp) {
+        EXPECT_EQ(sql_statement, epdp.statement.sql());
         return PartitionedDmlResult{7};
       });
 
