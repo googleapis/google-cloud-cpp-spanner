@@ -664,7 +664,7 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDml) {
 
 TEST_F(ClientIntegrationTest, ExecuteBatchDmlMany) {
   std::vector<SqlStatement> v;
-  constexpr auto kBatchSize = 500;
+  constexpr auto kBatchSize = 200;
   for (int i = 0; i < kBatchSize; ++i) {
     std::string const singer_id = std::to_string(i);
     std::string const first_name = "Foo" + singer_id;
