@@ -42,8 +42,8 @@ struct BatchDmlResult {
     std::int64_t row_count;
   };
 
-   /// The stats for each successfully executed `SqlStatement`. The order of
-   /// the `SqlStatements` matches the order of the `Stats` in this vector.
+  /// The stats for each successfully executed `SqlStatement`. The order of
+  /// the `SqlStatements` matches the order of the `Stats` in this vector.
   std::vector<Stats> stats;
 
   /// Either OK or the error Status of the `SqlStatement` that failed.
