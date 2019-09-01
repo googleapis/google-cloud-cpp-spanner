@@ -12,22 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_TESTING_MOCK_INSTANCE_ADMIN_CONNECTION_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_TESTING_MOCK_INSTANCE_ADMIN_CONNECTION_H_
+#ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_TESTING_MOCK_INSTANCE_ADMIN_STUB_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_TESTING_MOCK_INSTANCE_ADMIN_STUB_H_
 
-#include "google/cloud/spanner/instance_admin_connection.h"
+#include "google/cloud/spanner/internal/instance_admin_stub.h"
 #include <gmock/gmock.h>
 
 namespace google {
 namespace cloud {
 namespace spanner_testing {
 inline namespace SPANNER_CLIENT_NS {
-class MockInstanceAdminConnection
-    : public google::cloud::spanner::InstanceAdminConnection {
+class MockInstanceAdminStub
+    : public google::cloud::spanner::internal::InstanceAdminStub {
  public:
-  MOCK_METHOD1(GetInstance,
-               StatusOr<google::spanner::admin::instance::v1::Instance>(
-                   GetInstanceParams));
+  MOCK_METHOD2(
+      GetInstance,
+      StatusOr<google::spanner::admin::instance::v1::Instance>(
+          grpc::ClientContext&,
+          google::spanner::admin::instance::v1::GetInstanceRequest const&));
 };
 
 }  // namespace SPANNER_CLIENT_NS
@@ -35,4 +37,4 @@ class MockInstanceAdminConnection
 }  // namespace cloud
 }  // namespace google
 
-#endif  // GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_TESTING_MOCK_INSTANCE_ADMIN_CONNECTION_H_
+#endif  // GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_TESTING_MOCK_INSTANCE_ADMIN_STUB_H_

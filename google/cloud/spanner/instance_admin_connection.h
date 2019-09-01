@@ -15,7 +15,7 @@
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INSTANCE_ADMIN_CONNECTION_H_
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INSTANCE_ADMIN_CONNECTION_H_
 
-#include "google/cloud/spanner/connection_options.h"
+#include "google/cloud/spanner/internal/instance_admin_stub.h"
 #include "google/cloud/status_or.h"
 #include <google/spanner/admin/instance/v1/spanner_instance_admin.grpc.pb.h>
 
@@ -60,6 +60,19 @@ class InstanceAdminConnection {
  */
 std::shared_ptr<InstanceAdminConnection> MakeInstanceAdminConnection(
     ConnectionOptions const& options = ConnectionOptions());
+
+namespace internal {
+/**
+ * Create an InstanceAdminConnection using an existing base Stub.
+ *
+ * Returns a new InstanceAdminConnection with all the normal decorators applied
+ * to @p base_stub.
+ */
+/// .
+std::shared_ptr<InstanceAdminConnection> MakeInstanceAdminConnection(
+    std::shared_ptr<internal::InstanceAdminStub> base_stub,
+    ConnectionOptions const& options);
+}  // namespace internal
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner

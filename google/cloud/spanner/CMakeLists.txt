@@ -99,6 +99,10 @@ add_library(spanner_client
             database_admin_client.h
             date.cc
             date.h
+            instance_admin_client.cc
+            instance_admin_client.h
+            instance_admin_connection.cc
+            instance_admin_connection.h
             internal/base64.cc
             internal/base64.h
             internal/build_info.h
@@ -112,6 +116,10 @@ add_library(spanner_client
             internal/database_admin_stub.h
             internal/date.cc
             internal/date.h
+            internal/instance_admin_retry.cc
+            internal/instance_admin_retry.h
+            internal/instance_admin_stub.cc
+            internal/instance_admin_stub.h
             internal/log_wrapper.h
             internal/logging_spanner_stub.cc
             internal/logging_spanner_stub.h
@@ -158,7 +166,7 @@ add_library(spanner_client
             value.h
             version.cc
             version.h
-            version_info.h internal/instance_admin_stub.cc internal/instance_admin_stub.h internal/instance_admin_retry.cc internal/instance_admin_retry.h instance_admin_connection.cc instance_admin_connection.h instance_admin_client.cc instance_admin_client.h)
+            version_info.h)
 target_include_directories(spanner_client
                            PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
                                   $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
@@ -200,6 +208,7 @@ function (spanner_client_define_tests)
                 testing/matchers.h
                 testing/mock_database_admin_stub.h
                 testing/mock_instance_admin_connection.h
+                testing/mock_instance_admin_stub.h
                 testing/mock_spanner_connection.h
                 testing/mock_spanner_stub.h
                 testing/random_database_name.cc
@@ -227,6 +236,7 @@ function (spanner_client_define_tests)
         database_test.cc
         database_admin_client_test.cc
         date_test.cc
+        instance_admin_connection_test.cc
         internal/base64_test.cc
         internal/build_info_test.cc
         internal/compiler_info_test.cc
