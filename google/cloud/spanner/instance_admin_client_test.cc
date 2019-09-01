@@ -22,10 +22,10 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace {
 
+using spanner_testing::MockInstanceAdminConnection;
 using ::testing::_;
 using ::testing::Invoke;
 using ::testing::Return;
-using spanner_testing::MockInstanceAdminConnection;
 
 TEST(InstanceAdminClientTest, CopyAndMove) {
   auto conn1 = std::make_shared<MockInstanceAdminConnection>();
@@ -55,10 +55,11 @@ TEST(InstanceAdminClientTest, CopyAndMove) {
 TEST(InstanceAdminClientTest, GetInstance) {
   auto mock = std::make_shared<MockInstanceAdminConnection>();
   EXPECT_CALL(*mock, GetInstance(_))
-  .WillOnce([](InstanceAdminConnection::GetInstanceParams p) {
-    EXPECT_EQ("projects/test-project/instances/test-instance", p.instance_name);
-    return Status(StatusCode::kPermissionDenied, "uh-oh");
-  });
+      .WillOnce([](InstanceAdminConnection::GetInstanceParams p) {
+        EXPECT_EQ("projects/test-project/instances/test-instance",
+                  p.instance_name);
+        return Status(StatusCode::kPermissionDenied, "uh-oh");
+      });
 
   InstanceAdminClient client(mock);
   auto actual = client.GetInstance("test-project", "test-instance");
