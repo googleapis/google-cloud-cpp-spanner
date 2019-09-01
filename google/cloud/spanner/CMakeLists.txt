@@ -158,7 +158,7 @@ add_library(spanner_client
             value.h
             version.cc
             version.h
-            version_info.h internal/instance_admin_stub.cc internal/instance_admin_stub.h internal/instance_admin_retry.cc internal/instance_admin_retry.h instance_admin_connection.cc instance_admin_connection.h)
+            version_info.h internal/instance_admin_stub.cc internal/instance_admin_stub.h internal/instance_admin_retry.cc internal/instance_admin_retry.h instance_admin_connection.cc instance_admin_connection.h instance_admin_client.cc instance_admin_client.h)
 target_include_directories(spanner_client
                            PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
                                   $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
@@ -199,6 +199,7 @@ function (spanner_client_define_tests)
                 testing/database_environment.h
                 testing/matchers.h
                 testing/mock_database_admin_stub.h
+                testing/mock_instance_admin_connection.h
                 testing/mock_spanner_connection.h
                 testing/mock_spanner_stub.h
                 testing/random_database_name.cc

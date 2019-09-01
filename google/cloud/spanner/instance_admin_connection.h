@@ -40,8 +40,7 @@ class InstanceAdminConnection {
   virtual ~InstanceAdminConnection() = 0;
 
   struct GetInstanceParams {
-    std::string project_id;
-    std::string instance_id;
+    std::string instance_name;
   };
   virtual StatusOr<google::spanner::admin::instance::v1::Instance> GetInstance(
       GetInstanceParams) = 0;
