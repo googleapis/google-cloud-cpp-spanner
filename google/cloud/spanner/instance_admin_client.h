@@ -30,11 +30,12 @@ inline namespace SPANNER_CLIENT_NS {
  *
  * @par Performance
  *
- * `InstanceAdminClient` objects are cheap to create, copy, and move. However, each `Client`
- * object must be created with a `std::shared_ptr<Connection>`, which itself is
- * relatively expensive to create. Therefore, connection instances should be
- * shared when possible. See the `MakeConnection()` method and the `Connection`
- * interface for more details.
+ * `InstanceAdminClient` objects are cheap to create, copy, and move. However,
+ * each `InstanceAdminClient` object must be created with a
+ * `std::shared_ptr<InstanceAdminConnection>`, which itself is relatively
+ * expensive to create. Therefore, connection instances should be shared when
+ * possible. See the `MakeInstanceAdminConnection()` method and the
+ * `InstanceAdminConnection` interface for more details.
  *
  * @par Thread Safety
  *
@@ -58,7 +59,7 @@ inline namespace SPANNER_CLIENT_NS {
 class InstanceAdminClient {
  public:
   explicit InstanceAdminClient(std::shared_ptr<InstanceAdminConnection> conn)
-  : conn_(std::move(conn)) {}
+      : conn_(std::move(conn)) {}
 
   StatusOr<google::spanner::admin::instance::v1::Instance> GetInstance(
       std::string const& project_id, std::string const& instance_id);

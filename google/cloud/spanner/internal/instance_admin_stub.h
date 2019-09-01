@@ -50,4 +50,4 @@ std::shared_ptr<InstanceAdminStub> CreateDefaultInstanceAdminStub(
 }  // namespace cloud
 }  // namespace google
 
-#endif  // GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_DATABASE_ADMIN_STUB_H_
+#endif  // GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_INSTANCE_ADMIN_STUB_H_
