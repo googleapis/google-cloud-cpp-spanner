@@ -54,10 +54,10 @@ void GetInstance(google::cloud::spanner::InstanceAdminClient client,
 
 void GetInstanceCommand(std::vector<std::string> const& argv) {
   if (argv.size() != 2) {
-    throw std::runtime_error(
-        "get-instance <project-id> <instance-id>");
+    throw std::runtime_error("get-instance <project-id> <instance-id>");
   }
-  google::cloud::spanner::InstanceAdminClient client(google::cloud::spanner::MakeInstanceAdminConnection());
+  google::cloud::spanner::InstanceAdminClient client(
+      google::cloud::spanner::MakeInstanceAdminConnection());
   GetInstance(std::move(client), argv[0], argv[1]);
 }
 

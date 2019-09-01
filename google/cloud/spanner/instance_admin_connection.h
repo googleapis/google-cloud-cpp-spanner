@@ -15,9 +15,9 @@
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INSTANCE_ADMIN_CONNECTION_H_
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INSTANCE_ADMIN_CONNECTION_H_
 
+#include "google/cloud/spanner/backoff_policy.h"
 #include "google/cloud/spanner/internal/instance_admin_stub.h"
 #include "google/cloud/spanner/retry_policy.h"
-#include "google/cloud/spanner/backoff_policy.h"
 #include <google/spanner/admin/instance/v1/spanner_instance_admin.grpc.pb.h>
 
 namespace google {
@@ -75,8 +75,7 @@ std::shared_ptr<InstanceAdminConnection> MakeInstanceAdminConnection(
 
 std::shared_ptr<InstanceAdminConnection> MakeInstanceAdminConnection(
     std::shared_ptr<internal::InstanceAdminStub> base_stub,
-    ConnectionOptions const& options,
-    std::unique_ptr<RetryPolicy> retry_policy,
+    ConnectionOptions const& options, std::unique_ptr<RetryPolicy> retry_policy,
     std::unique_ptr<BackoffPolicy> backoff_policy);
 }  // namespace internal
 

@@ -36,8 +36,7 @@ namespace gcsa = ::google::spanner::admin::instance::v1;
 std::shared_ptr<InstanceAdminConnection> MakeTestConnection(
     std::shared_ptr<spanner_testing::MockInstanceAdminStub> mock) {
   return internal::MakeInstanceAdminConnection(
-      std::move(mock),
-      ConnectionOptions(),
+      std::move(mock), ConnectionOptions(),
       LimitedErrorCountRetryPolicy(/*maximum_failures=*/2).clone(),
       ExponentialBackoffPolicy(/*initial_delay=*/std::chrono::microseconds(1),
                                /*maximum_delay=*/std::chrono::microseconds(1),
@@ -57,7 +56,8 @@ TEST(InstanceAdminConnectionTest, GetInstance_Success) {
         display_name: "test display name"
         node_count: 7
         state: CREATING
-      )pb", &expected_instance));
+      )pb",
+      &expected_instance));
 
   auto mock = std::make_shared<spanner_testing::MockInstanceAdminStub>();
   EXPECT_CALL(*mock, GetInstance(_, _))
