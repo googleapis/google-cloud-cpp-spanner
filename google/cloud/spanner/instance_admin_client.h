@@ -61,6 +61,30 @@ class InstanceAdminClient {
   explicit InstanceAdminClient(std::shared_ptr<InstanceAdminConnection> conn)
       : conn_(std::move(conn)) {}
 
+  /// No default construction.
+  /// Use `InstanceAdminClient(std::shared_ptr<InstanceAdminConnection>)`
+  InstanceAdminClient() = delete;
+
+  //@{
+  // @name Copy and move support
+  InstanceAdminClient(InstanceAdminClient const&) = default;
+  InstanceAdminClient& operator=(InstanceAdminClient const&) = default;
+  InstanceAdminClient(InstanceAdminClient&&) = default;
+  InstanceAdminClient& operator=(InstanceAdminClient&&) = default;
+  //@}
+
+  //@{
+  // @name Equality
+  friend bool operator==(InstanceAdminClient const& a,
+                         InstanceAdminClient const& b) {
+    return a.conn_ == b.conn_;
+  }
+  friend bool operator!=(InstanceAdminClient const& a,
+                         InstanceAdminClient const& b) {
+    return !(a == b);
+  }
+  //@}
+
   StatusOr<google::spanner::admin::instance::v1::Instance> GetInstance(
       std::string const& project_id, std::string const& instance_id);
 

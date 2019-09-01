@@ -236,6 +236,7 @@ function (spanner_client_define_tests)
         database_test.cc
         database_admin_client_test.cc
         date_test.cc
+        instance_admin_client_test.cc
         instance_admin_connection_test.cc
         internal/base64_test.cc
         internal/build_info_test.cc
