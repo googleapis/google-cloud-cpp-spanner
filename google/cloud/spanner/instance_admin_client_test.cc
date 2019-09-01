@@ -24,8 +24,6 @@ namespace {
 
 using spanner_testing::MockInstanceAdminConnection;
 using ::testing::_;
-using ::testing::Invoke;
-using ::testing::Return;
 
 TEST(InstanceAdminClientTest, CopyAndMove) {
   auto conn1 = std::make_shared<MockInstanceAdminConnection>();
@@ -55,7 +53,7 @@ TEST(InstanceAdminClientTest, CopyAndMove) {
 TEST(InstanceAdminClientTest, GetInstance) {
   auto mock = std::make_shared<MockInstanceAdminConnection>();
   EXPECT_CALL(*mock, GetInstance(_))
-      .WillOnce([](InstanceAdminConnection::GetInstanceParams p) {
+      .WillOnce([](InstanceAdminConnection::GetInstanceParams const& p) {
         EXPECT_EQ("projects/test-project/instances/test-instance",
                   p.instance_name);
         return Status(StatusCode::kPermissionDenied, "uh-oh");
