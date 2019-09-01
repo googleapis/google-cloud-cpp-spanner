@@ -64,6 +64,7 @@ spanner_client_hdrs = [
     "version_info.h",
     "internal/instance_admin_stub.h",
     "internal/instance_admin_retry.h",
+    "instance_admin_connection.h",
 ]
 
 spanner_client_srcs = [
@@ -97,4 +98,5 @@ spanner_client_srcs = [
     "version.cc",
     "internal/instance_admin_stub.cc",
     "internal/instance_admin_retry.cc",
+    "instance_admin_connection.cc",
 ]

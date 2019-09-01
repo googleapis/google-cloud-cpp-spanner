@@ -157,7 +157,7 @@ add_library(spanner_client
             value.h
             version.cc
             version.h
-            version_info.h internal/instance_admin_stub.cc internal/instance_admin_stub.h internal/instance_admin_retry.cc internal/instance_admin_retry.h)
+            version_info.h internal/instance_admin_stub.cc internal/instance_admin_stub.h internal/instance_admin_retry.cc internal/instance_admin_retry.h instance_admin_connection.cc instance_admin_connection.h)
 target_include_directories(spanner_client
                            PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
                                   $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
