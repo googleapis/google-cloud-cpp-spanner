@@ -42,15 +42,15 @@ namespace internal {
 
 std::unique_ptr<RetryPolicy> DefaultAdminRetryPolicy() {
   return google::cloud::spanner::LimitedTimeRetryPolicy(
-      GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_RETRY_TIMEOUT)
+             GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_RETRY_TIMEOUT)
       .clone();
 }
 
 std::unique_ptr<BackoffPolicy> DefaultAdminBackoffPolicy() {
   return google::cloud::spanner::ExponentialBackoffPolicy(
-      GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_INITIAL_BACKOFF,
-      GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_MAXIMUM_BACKOFF,
-      GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_BACKOFF_SCALING)
+             GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_INITIAL_BACKOFF,
+             GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_MAXIMUM_BACKOFF,
+             GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_BACKOFF_SCALING)
       .clone();
 }
 
@@ -63,8 +63,7 @@ InstanceAdminRetry::InstanceAdminRetry(PrivateConstructorTag,
 namespace gcsa = google::spanner::admin::instance::v1;
 
 StatusOr<gcsa::Instance> InstanceAdminRetry::GetInstance(
-    grpc::ClientContext& context,
-    gcsa::GetInstanceRequest const& request) {
+    grpc::ClientContext& context, gcsa::GetInstanceRequest const& request) {
   return RetryLoop(
       retry_policy_->clone(), backoff_policy_->clone(), true,
       [this](grpc::ClientContext& context,

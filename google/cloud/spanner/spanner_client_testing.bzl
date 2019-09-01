@@ -20,6 +20,7 @@ spanner_client_testing_hdrs = [
     "testing/database_environment.h",
     "testing/matchers.h",
     "testing/mock_instance_admin_connection.h",
+    "testing/mock_instance_admin_stub.h",
     "testing/mock_spanner_stub.h",
     "testing/random_database_name.h",
     "testing/validate_metadata.h",

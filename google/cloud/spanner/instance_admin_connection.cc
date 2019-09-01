@@ -32,7 +32,7 @@ class InstanceAdminConnectionImpl : public InstanceAdminConnection {
   StatusOr<google::spanner::admin::instance::v1::Instance> GetInstance(
       GetInstanceParams gip) override {
     gcsa::GetInstanceRequest request;
-    request.set_name(std::move(gip.instance_name);
+    request.set_name(std::move(gip.instance_name));
     grpc::ClientContext context;
     return stub_->GetInstance(context, request);
   }
@@ -45,10 +45,20 @@ class InstanceAdminConnectionImpl : public InstanceAdminConnection {
 std::shared_ptr<InstanceAdminConnection> MakeInstanceAdminConnection(
     ConnectionOptions const& options) {
   auto stub = internal::CreateDefaultInstanceAdminStub(options);
-  stub = std::make_shared<internal::InstanceAdminRetry>(std::move(stub));
-  return std::make_shared<InstanceAdminConnectionImpl>(std::move(stub));
+  return internal::MakeInstanceAdminConnection(std::move(stub), options);
 }
 
+namespace internal {
+
+std::shared_ptr<InstanceAdminConnection> MakeInstanceAdminConnection(
+    std::shared_ptr<internal::InstanceAdminStub> base_stub,
+    ConnectionOptions const&) {
+  base_stub =
+      std::make_shared<internal::InstanceAdminRetry>(std::move(base_stub));
+  return std::make_shared<InstanceAdminConnectionImpl>(std::move(base_stub));
+}
+
+}  // namespace internal
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
 }  // namespace cloud
