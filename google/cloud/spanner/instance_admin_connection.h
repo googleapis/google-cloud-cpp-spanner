@@ -16,7 +16,8 @@
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INSTANCE_ADMIN_CONNECTION_H_
 
 #include "google/cloud/spanner/internal/instance_admin_stub.h"
-#include "google/cloud/status_or.h"
+#include "google/cloud/spanner/retry_policy.h"
+#include "google/cloud/spanner/backoff_policy.h"
 #include <google/spanner/admin/instance/v1/spanner_instance_admin.grpc.pb.h>
 
 namespace google {
@@ -68,10 +69,15 @@ namespace internal {
  * Returns a new InstanceAdminConnection with all the normal decorators applied
  * to @p base_stub.
  */
-/// .
 std::shared_ptr<InstanceAdminConnection> MakeInstanceAdminConnection(
     std::shared_ptr<internal::InstanceAdminStub> base_stub,
     ConnectionOptions const& options);
+
+std::shared_ptr<InstanceAdminConnection> MakeInstanceAdminConnection(
+    std::shared_ptr<internal::InstanceAdminStub> base_stub,
+    ConnectionOptions const& options,
+    std::unique_ptr<RetryPolicy> retry_policy,
+    std::unique_ptr<BackoffPolicy> backoff_policy);
 }  // namespace internal
 
 }  // namespace SPANNER_CLIENT_NS
