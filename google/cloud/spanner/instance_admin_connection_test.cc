@@ -29,6 +29,7 @@ using ::google::cloud::spanner_testing::IsProtoEqual;
 using ::google::protobuf::TextFormat;
 using ::testing::_;
 using ::testing::Invoke;
+using ::testing::Return;
 
 namespace gcsa = ::google::spanner::admin::instance::v1;
 
@@ -78,6 +79,25 @@ TEST(InstanceAdminConnectionTest, GetInstance_Success) {
   EXPECT_THAT(*actual, IsProtoEqual(expected_instance));
 }
 
+TEST(InstanceAdminConnectionTest, GetInstance_PermanentFailure) {
+  auto mock = std::make_shared<spanner_testing::MockInstanceAdminStub>();
+  EXPECT_CALL(*mock, GetInstance(_, _))
+      .WillOnce(Return(Status(StatusCode::kPermissionDenied, "uh-oh")));
+
+  auto conn = MakeTestConnection(mock);
+  auto actual = conn->GetInstance({"test-name"});
+  EXPECT_EQ(StatusCode::kPermissionDenied, actual.status().code());
+}
+
+TEST(InstanceAdminConnectionTest, GetInstance_TooManyTransients) {
+  auto mock = std::make_shared<spanner_testing::MockInstanceAdminStub>();
+  EXPECT_CALL(*mock, GetInstance(_, _))
+      .WillRepeatedly(Return(Status(StatusCode::kUnavailable, "try-again")));
+
+  auto conn = MakeTestConnection(mock);
+  auto actual = conn->GetInstance({"test-name"});
+  EXPECT_EQ(StatusCode::kUnavailable, actual.status().code());
+}
 }  // namespace
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
