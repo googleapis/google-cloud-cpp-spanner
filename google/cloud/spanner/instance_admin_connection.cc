@@ -32,8 +32,7 @@ class InstanceAdminConnectionImpl : public InstanceAdminConnection {
   StatusOr<google::spanner::admin::instance::v1::Instance> GetInstance(
       GetInstanceParams gip) override {
     gcsa::GetInstanceRequest request;
-    request.set_name("projects/" + gip.project_id + "/instances/" +
-                     gip.instance_id);
+    request.set_name(std::move(gip.instance_name);
     grpc::ClientContext context;
     return stub_->GetInstance(context, request);
   }
