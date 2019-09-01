@@ -42,6 +42,8 @@ class InstanceAdminConnectionImpl : public InstanceAdminConnection {
 };
 }  // namespace
 
+InstanceAdminConnection::~InstanceAdminConnection() = default;
+
 std::shared_ptr<InstanceAdminConnection> MakeInstanceAdminConnection(
     ConnectionOptions const& options) {
   auto stub = internal::CreateDefaultInstanceAdminStub(options);
@@ -53,9 +55,18 @@ namespace internal {
 std::shared_ptr<InstanceAdminConnection> MakeInstanceAdminConnection(
     std::shared_ptr<internal::InstanceAdminStub> base_stub,
     ConnectionOptions const&) {
-  base_stub =
+  auto retry =
       std::make_shared<internal::InstanceAdminRetry>(std::move(base_stub));
-  return std::make_shared<InstanceAdminConnectionImpl>(std::move(base_stub));
+  return std::make_shared<InstanceAdminConnectionImpl>(std::move(retry));
+}
+
+std::shared_ptr<InstanceAdminConnection> MakeInstanceAdminConnection(
+    std::shared_ptr<internal::InstanceAdminStub> base_stub,
+    ConnectionOptions const&, std::unique_ptr<RetryPolicy> retry_policy,
+    std::unique_ptr<BackoffPolicy> backoff_policy) {
+  auto retry = std::make_shared<internal::InstanceAdminRetry>(
+      std::move(base_stub), *retry_policy, *backoff_policy);
+  return std::make_shared<InstanceAdminConnectionImpl>(std::move(retry));
 }
 
 }  // namespace internal
