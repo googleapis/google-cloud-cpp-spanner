@@ -40,13 +40,13 @@ namespace internal {
 #define GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_BACKOFF_SCALING 2.0
 #endif  // GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_BACKOFF_SCALING
 
-std::unique_ptr<RetryPolicy> DefaultAdminRetryPolicy() {
+std::unique_ptr<RetryPolicy> DefaultInstanceAdminRetryPolicy() {
   return google::cloud::spanner::LimitedTimeRetryPolicy(
              GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_RETRY_TIMEOUT)
       .clone();
 }
 
-std::unique_ptr<BackoffPolicy> DefaultAdminBackoffPolicy() {
+std::unique_ptr<BackoffPolicy> DefaultInstanceAdminBackoffPolicy() {
   return google::cloud::spanner::ExponentialBackoffPolicy(
              GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_INITIAL_BACKOFF,
              GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_MAXIMUM_BACKOFF,
@@ -57,8 +57,8 @@ std::unique_ptr<BackoffPolicy> DefaultAdminBackoffPolicy() {
 InstanceAdminRetry::InstanceAdminRetry(PrivateConstructorTag,
                                        std::shared_ptr<InstanceAdminStub> child)
     : child_(std::move(child)),
-      retry_policy_(DefaultAdminRetryPolicy()),
-      backoff_policy_(DefaultAdminBackoffPolicy()) {}
+      retry_policy_(DefaultInstanceAdminRetryPolicy()),
+      backoff_policy_(DefaultInstanceAdminBackoffPolicy()) {}
 
 namespace gcsa = google::spanner::admin::instance::v1;
 

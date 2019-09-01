@@ -85,6 +85,16 @@ class InstanceAdminClient {
   }
   //@}
 
+  /**
+   * Retrieve metadata information about a Cloud Spanner Instance.
+   *
+   * @par Idempotency
+   * This is a read-only operation and therefore it is always treated as
+   * idempotent.
+   *
+   * @par Example
+   * @snippet samples.cc get-instance
+   */
   StatusOr<google::spanner::admin::instance::v1::Instance> GetInstance(
       std::string const& project_id, std::string const& instance_id);
 
