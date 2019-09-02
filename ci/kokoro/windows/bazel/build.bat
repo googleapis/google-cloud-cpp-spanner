@@ -15,6 +15,8 @@ REM limitations under the License.
 echo %date% %time%
 cd github\google-cloud-cpp-spanner
 
+set TMP=T:\tmp
+
 echo "Create the bazel output directory."
 echo %date% %time%
 if not exist "C:\b\" mkdir C:\b
