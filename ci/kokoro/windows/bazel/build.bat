@@ -44,6 +44,28 @@ bazel --output_user_root=C:\b test ^
 
 if %errorlevel% neq 0 exit /b %errorlevel%
 
+echo "Running integration tests"
+call "%KOKORO_GFILE_DIR%/spanner-integration-tests-config.bat"
+
+@rem It seems like redirecting to a file is the easiest way to store the
+@rem command output to a variable.
+bazel --output_user_root=C:\b info output_base > t:\bazel-info.txt
+set /p BAZEL_OUTPUT_DIR=<t:\bazel-info.txt
+del t:\bazel-info.txt
+
+echo %date% %time%
+bazel --output_user_root=C:\b test ^
+  --keep_going ^
+  --test_output=errors ^
+  --verbose_failures=true ^
+  --test_tag_filters=integration-tests ^
+  --test_env GOOGLE_APPLICATION_CREDENTIALS=%KOKORO_GFILE_DIR%/spanner-credentials.json ^
+  --test_env GOOGLE_CLOUD_PROJECT=%GOOGLE_CLOUD_PROJECT% ^
+  --test_env GOOGLE_CLOUD_CPP_SPANNER_INSTANCE=%GOOGLE_CLOUD_CPP_SPANNER_INSTANCE% ^
+  --test_env GOOGLE_CLOUD_CPP_AUTO_RUN_EXAMPLES=yes ^
+  --test_env GRPC_DEFAULT_SSL_ROOTS_FILE_PATH=%BAZEL_OUTPUT_DIR%/external/com_github_grpc_grpc/etc/roots.pem ^
+  -- //google/cloud/spanner/...:all
+
 @echo %date% %time%
 @echo DONE DONE DONE "============================================="
 @echo DONE DONE DONE "============================================="
