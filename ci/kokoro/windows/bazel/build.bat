@@ -66,6 +66,8 @@ bazel --output_user_root=C:\b test ^
   --test_env GRPC_DEFAULT_SSL_ROOTS_FILE_PATH=%BAZEL_OUTPUT_DIR%/external/com_github_grpc_grpc/etc/roots.pem ^
   -- //google/cloud/spanner/...:all
 
+if %errorlevel% neq 0 exit /b %errorlevel%
+
 @echo %date% %time%
 @echo DONE DONE DONE "============================================="
 @echo DONE DONE DONE "============================================="
