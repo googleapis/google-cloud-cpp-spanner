@@ -18,10 +18,10 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
-namespace gcsa = ::google::spanner::admin::instance::v1;
 
-StatusOr<gcsa::Instance> InstanceAdminClient::GetInstance(
-    std::string const& project_id, std::string const& instance_id) {
+StatusOr<google::spanner::admin::instance::v1::Instance>
+InstanceAdminClient::GetInstance(std::string const& project_id,
+                                 std::string const& instance_id) {
   return conn_->GetInstance(
       {"projects/" + project_id + "/instances/" + instance_id});
 }

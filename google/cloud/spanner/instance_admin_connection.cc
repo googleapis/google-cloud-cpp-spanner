@@ -29,8 +29,7 @@ class InstanceAdminConnectionImpl : public InstanceAdminConnection {
       : stub_(std::move(stub)) {}
   ~InstanceAdminConnectionImpl() override = default;
 
-  StatusOr<google::spanner::admin::instance::v1::Instance> GetInstance(
-      GetInstanceParams gip) override {
+  StatusOr<gcsa::Instance> GetInstance(GetInstanceParams gip) override {
     gcsa::GetInstanceRequest request;
     request.set_name(std::move(gip.instance_name));
     grpc::ClientContext context;
@@ -46,8 +45,8 @@ InstanceAdminConnection::~InstanceAdminConnection() = default;
 
 std::shared_ptr<InstanceAdminConnection> MakeInstanceAdminConnection(
     ConnectionOptions const& options) {
-  auto stub = internal::CreateDefaultInstanceAdminStub(options);
-  return internal::MakeInstanceAdminConnection(std::move(stub), options);
+  return internal::MakeInstanceAdminConnection(
+      internal::CreateDefaultInstanceAdminStub(options), options);
 }
 
 namespace internal {
@@ -55,18 +54,17 @@ namespace internal {
 std::shared_ptr<InstanceAdminConnection> MakeInstanceAdminConnection(
     std::shared_ptr<internal::InstanceAdminStub> base_stub,
     ConnectionOptions const&) {
-  auto retry =
-      std::make_shared<internal::InstanceAdminRetry>(std::move(base_stub));
-  return std::make_shared<InstanceAdminConnectionImpl>(std::move(retry));
+  return std::make_shared<InstanceAdminConnectionImpl>(
+      std::make_shared<internal::InstanceAdminRetry>(std::move(base_stub)));
 }
 
 std::shared_ptr<InstanceAdminConnection> MakeInstanceAdminConnection(
     std::shared_ptr<internal::InstanceAdminStub> base_stub,
     ConnectionOptions const&, std::unique_ptr<RetryPolicy> retry_policy,
     std::unique_ptr<BackoffPolicy> backoff_policy) {
-  auto retry = std::make_shared<internal::InstanceAdminRetry>(
-      std::move(base_stub), *retry_policy, *backoff_policy);
-  return std::make_shared<InstanceAdminConnectionImpl>(std::move(retry));
+  return std::make_shared<InstanceAdminConnectionImpl>(
+      std::make_shared<internal::InstanceAdminRetry>(
+          std::move(base_stub), *retry_policy, *backoff_policy));
 }
 
 }  // namespace internal
