@@ -361,6 +361,21 @@ TEST_F(ClientIntegrationTest, ExecuteSqlPartitionDml) {
       SqlStatement("UPDATE Singers SET LastName = 'test-only'"
                    " WHERE SingerId >= 1"));
   EXPECT_STATUS_OK(result);
+
+  auto reader = client_->ExecuteSql(SqlStatement(
+      "SELECT SingerId, LastName FROM Singers WHERE SingerId = 1"));
+  ASSERT_STATUS_OK(reader);
+
+  using RowType = Row<std::int64_t, std::string>;
+  std::vector<RowType> returned_rows;
+  int row_number = 0;
+  for (auto& row : reader->Rows<std::int64_t, std::string>()) {
+    SCOPED_TRACE("Parsing row[" + std::to_string(row_number++) + "]");
+    EXPECT_STATUS_OK(row);
+    if (!row) break;
+    returned_rows.push_back(*std::move(row));
+  }
+  EXPECT_THAT(returned_rows, UnorderedElementsAre(RowType(1, "test-only")));
 }
 
 void CheckReadWithOptions(

@@ -15,8 +15,8 @@
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_PARTITIONED_DML_RESULT_H_
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_PARTITIONED_DML_RESULT_H_
 
-#include "google/cloud/spanner/timestamp.h"
 #include "google/cloud/spanner/version.h"
+#include <cstdint>
 
 namespace google {
 namespace cloud {
