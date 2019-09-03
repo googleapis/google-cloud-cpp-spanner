@@ -93,6 +93,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae79520d087ff55c903e2351c5d36a446"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html">ReadPartition</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae79520d087ff55c903e2351c5d36a446">PartitionRead</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> transaction, std::string table, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> keys, std::vector&lt; std::string &gt; columns, <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadOptions.html">ReadOptions</a> read_options={}, <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a715266c430725251bb817767f12bbd4a">PartitionOptions</a> partition_options={})</td></tr>
 <tr class="memdesc:ae79520d087ff55c903e2351c5d36a446"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a set of partitions that can be used to execute a read operation in parallel.  <a href="#ae79520d087ff55c903e2351c5d36a446">More...</a><br /></td></tr>
 <tr class="separator:ae79520d087ff55c903e2351c5d36a446"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3406a423df179970dbde384695cac96c"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionedDmlResult.html">PartitionedDmlResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a3406a423df179970dbde384695cac96c">ExecutePartitionedDml</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> statement)</td></tr>
+<tr class="memdesc:a3406a423df179970dbde384695cac96c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a Partitioned DML SQL query.  <a href="#a3406a423df179970dbde384695cac96c">More...</a><br /></td></tr>
+<tr class="separator:a3406a423df179970dbde384695cac96c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10b42742418b5b6ccb41bea5d877c056"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html">ResultSet</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a10b42742418b5b6ccb41bea5d877c056">ExecuteSql</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html">QueryPartition</a> const &amp;partition)</td></tr>
 <tr class="memdesc:a10b42742418b5b6ccb41bea5d877c056"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a SQL query on a subset of rows in a database.  <a href="#a10b42742418b5b6ccb41bea5d877c056">More...</a><br /></td></tr>
 <tr class="separator:a10b42742418b5b6ccb41bea5d877c056"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -307,7 +310,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <code>StatusOr</code> containing the result of the commit or error status on failure. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00104">104</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00109">109</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -350,7 +353,39 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00098">98</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00103">103</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+
+</div>
+</div>
+<a id="a3406a423df179970dbde384695cac96c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3406a423df179970dbde384695cac96c">&#9670;&nbsp;</a></span>ExecutePartitionedDml()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">StatusOr&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionedDmlResult.html">PartitionedDmlResult</a> &gt; google::cloud::spanner::v0::Client::ExecutePartitionedDml </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a>&#160;</td>
+          <td class="paramname"><em>statement</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Executes a Partitioned DML SQL query. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">statement</td><td>the SQL statement to execute. Please see the <a href="https://cloud.google.com/spanner/docs/dml-partitioned">spanner documentation</a> for the restrictions on the SQL statements supported by this function.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line"><span class="keywordtype">void</span> DmlPartitionedDelete(google::cloud::spanner::Client client) {</div><div class="line">  <span class="keyword">namespace </span><a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">spanner</a> = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">google::cloud::spanner</a>;</div><div class="line">  <span class="keyword">auto</span> result = client.ExecutePartitionedDml(</div><div class="line">      spanner::SqlStatement(<span class="stringliteral">&quot;DELETE FROM Singers WHERE SingerId &gt; 10&quot;</span>));</div><div class="line">  <span class="keywordflow">if</span> (!result) <span class="keywordflow">throw</span> std::runtime_error(result.status().message());</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Delete was successful [spanner_dml_partitioned_delete]\n&quot;</span>;</div><div class="line">}</div></div><!-- fragment --> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://cloud.google.com/spanner/docs/transactions#partitioned_dml_transactions">Partitioned DML Transactions</a> for an overview of Partitioned DML transactions. </dd>
+<dd>
+<a href="https://cloud.google.com/spanner/docs/dml-partitioned">Partitioned DML</a> for a description of which SQL statements are supported in Partitioned DML transactions. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00082">82</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -475,7 +510,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00082">82</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00087">87</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -505,7 +540,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <code>StatusOr</code> containing a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html" title="Represents the result of a query operation, such as SpannerClient::Read() or SpannerClient::ExecuteSq...">ResultSet</a></code> or error status on failure. No individual row in the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html" title="Represents the result of a query operation, such as SpannerClient::Read() or SpannerClient::ExecuteSq...">ResultSet</a></code> can exceed 100 MiB, and no column value can exceed 10 MiB. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00087">87</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00092">92</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -606,7 +641,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <code>StatusOr</code> containing a vector of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html" title="The QueryPartition class is a regular type that represents a single slice of a parallel SQL read.">QueryPartition</a></code>s or error status on failure. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00091">91</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00096">96</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -927,7 +962,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The error status of the rollback. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00109">109</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00114">114</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>

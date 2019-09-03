@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Google Cloud Spanner C++ Client: samples/samples.cc File Reference</title>
+<title>Google Cloud Spanner C++ Client: google::cloud::spanner::v0::PartitionedDmlResult Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,59 +62,49 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_6f9635d4fbfa321d4c00f29df5cd540c.html">samples</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespacegoogle.html">google</a></li><li class="navelem"><a class="el" href="namespacegoogle_1_1cloud.html">cloud</a></li><li class="navelem"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner.html">spanner</a></li><li class="navelem"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html">v0</a></li><li class="navelem"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionedDmlResult.html">PartitionedDmlResult</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionedDmlResult-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">samples.cc File Reference</div>  </div>
+<div class="title">google::cloud::spanner::v0::PartitionedDmlResult Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="client_8h_source.html">google/cloud/spanner/client.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="database__admin__client_8h_source.html">google/cloud/spanner/database_admin_client.h</a>&quot;</code><br />
-<code>#include &quot;google/cloud/internal/getenv.h&quot;</code><br />
-<code>#include &quot;google/cloud/internal/random.h&quot;</code><br />
-<code>#include &lt;sstream&gt;</code><br />
-<code>#include &lt;tuple&gt;</code><br />
-<code>#include &lt;utility&gt;</code><br />
-</div>
-<p><a href="samples_8cc_source.html">Go to the source code of this file.</a></p>
+
+<p>The result of executing a Partitioned DML query.  
+ <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionedDmlResult.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="partitioned__dml__result_8h_source.html">google/cloud/spanner/partitioned_dml_result.h</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:adacbe0175a79dff748855d8c9839f82b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="samples_8cc.html#adacbe0175a79dff748855d8c9839f82b">main</a> (int ac, char *av[])</td></tr>
-<tr class="separator:adacbe0175a79dff748855d8c9839f82b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:ad5e64214214d6a9834c80f66e02a2dfa"><td class="memItemLeft" align="right" valign="top">std::int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionedDmlResult.html#ad5e64214214d6a9834c80f66e02a2dfa">row_count_lower_bound</a></td></tr>
+<tr class="memdesc:ad5e64214214d6a9834c80f66e02a2dfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">A lower bound on the number of rows modified.  <a href="#ad5e64214214d6a9834c80f66e02a2dfa">More...</a><br /></td></tr>
+<tr class="separator:ad5e64214214d6a9834c80f66e02a2dfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="adacbe0175a79dff748855d8c9839f82b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adacbe0175a79dff748855d8c9839f82b">&#9670;&nbsp;</a></span>main()</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The result of executing a Partitioned DML query. </p>
+
+<p class="definition">Definition at line <a class="el" href="partitioned__dml__result_8h_source.html#l00029">29</a> of file <a class="el" href="partitioned__dml__result_8h_source.html">partitioned_dml_result.h</a>.</p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="ad5e64214214d6a9834c80f66e02a2dfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5e64214214d6a9834c80f66e02a2dfa">&#9670;&nbsp;</a></span>row_count_lower_bound</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int main </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>ac</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>av</em>[]&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">std::int64_t google::cloud::spanner::v0::PartitionedDmlResult::row_count_lower_bound</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="samples_8cc_source.html#l00727">727</a> of file <a class="el" href="samples_8cc_source.html">samples.cc</a>.</p>
+<p>A lower bound on the number of rows modified. </p>
+
+<p class="definition">Definition at line <a class="el" href="partitioned__dml__result_8h_source.html#l00031">31</a> of file <a class="el" href="partitioned__dml__result_8h_source.html">partitioned_dml_result.h</a>.</p>
 
 </div>
 </div>
