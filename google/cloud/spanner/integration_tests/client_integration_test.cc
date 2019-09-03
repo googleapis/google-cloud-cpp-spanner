@@ -185,7 +185,7 @@ TEST_F(ClientIntegrationTest, TransactionRollback) {
             deadline = start + std::chrono::minutes(1);
        start < deadline; start = std::chrono::steady_clock::now()) {
     auto is_retryable_failure = [](StatusOr<ResultSet> const& s) {
-      return s || s.status().code() == StatusCode::kAborted;
+      return !s && s.status().code() == StatusCode::kAborted;
     };
 
     Transaction txn = MakeReadWriteTransaction();
