@@ -27,8 +27,6 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
-using ::google::cloud::internal::make_unique;
-
 namespace spanner_proto = ::google::spanner::v1;
 
 StatusOr<ResultSet> ConnectionImpl::Read(ReadParams rp) {
@@ -472,8 +470,8 @@ StatusOr<std::unique_ptr<SessionHolder>> ConnectionImpl::GetSession(
                      : [this](std::string session) {
                          this->ReleaseSession(std::move(session));
                        };
-  return make_unique<SessionHolder>(std::move(session_name),
-                                    std::move(deleter));
+  return ::google::cloud::internal::make_unique<SessionHolder>(
+      std::move(session_name), std::move(deleter));
 }
 
 void ConnectionImpl::ReleaseSession(std::string session) {

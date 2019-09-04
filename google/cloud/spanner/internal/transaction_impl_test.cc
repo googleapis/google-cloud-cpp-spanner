@@ -34,7 +34,6 @@ inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 namespace {
 
-using ::google::cloud::internal::make_unique;
 using ::google::spanner::v1::TransactionSelector;
 using ::testing::IsNull;
 using ::testing::NotNull;
@@ -135,7 +134,8 @@ ResultSet Client::Read(std::unique_ptr<SessionHolder>& session,
     }
     switch (mode_) {
       case Mode::kReadSucceeds:  // `begin` -> `id`, calls now parallelized
-        session = make_unique<SessionHolder>(session_id_, /*deleter=*/nullptr);
+        session = ::google::cloud::internal::make_unique<SessionHolder>(
+            session_id_, /*deleter=*/nullptr);
         selector.set_id(txn_id_);
         break;
       case Mode::kReadFails:  // leave as `begin`, calls stay serialized
