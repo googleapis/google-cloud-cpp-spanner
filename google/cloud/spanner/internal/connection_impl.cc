@@ -107,45 +107,6 @@ Status ConnectionImpl::Rollback(RollbackParams rp) {
              std::int64_t) { return RollbackImpl(session, s); });
 }
 
-/**
- * Get a session from the pool, or create one if the pool is empty.
- * The `SessionHolder` usually returns the session to the pool when it is
- * destroyed, but if `release` is true the session will never be returned
- * to the pool.
- */
-StatusOr<SessionHolder> ConnectionImpl::GetSession(bool release) {
-  std::string session_name;
-  std::unique_lock<std::mutex> lk(mu_);
-  if (!sessions_.empty()) {
-    session_name = std::move(sessions_.back());
-    sessions_.pop_back();
-  } else {
-    // Release the mutex because we won't be doing any more changes to
-    // `sessions_` in this function and holding mutexes while making RPCs is
-    // (generally) a bad practice.
-    lk.unlock();
-    grpc::ClientContext context;
-    spanner_proto::CreateSessionRequest request;
-    request.set_database(db_.FullName());
-    auto response = stub_->CreateSession(context, request);
-    if (!response) {
-      return response.status();
-    }
-    session_name = std::move(*response->mutable_name());
-  }
-
-  return release ? SessionHolder(std::move(session_name), /*deleter=*/nullptr)
-                 : SessionHolder(std::move(session_name),
-                                 [this](std::string session) {
-                                   ReleaseSession(std::move(session));
-                                 });
-}
-
-void ConnectionImpl::ReleaseSession(std::string session) {
-  std::lock_guard<std::mutex> lk(mu_);
-  sessions_.push_back(std::move(session));
-}
-
 StatusOr<ResultSet> ConnectionImpl::ReadImpl(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
     ReadParams rp) {
@@ -462,6 +423,45 @@ Status ConnectionImpl::RollbackImpl(SessionHolder& session,
   request.set_transaction_id(s.id());
   grpc::ClientContext context;
   return stub_->Rollback(context, request);
+}
+
+/**
+ * Get a session from the pool, or create one if the pool is empty.
+ * The `SessionHolder` usually returns the session to the pool when it is
+ * destroyed, but if `release` is true the session will never be returned
+ * to the pool.
+ */
+StatusOr<SessionHolder> ConnectionImpl::GetSession(bool release) {
+  std::string session_name;
+  std::unique_lock<std::mutex> lk(mu_);
+  if (!sessions_.empty()) {
+    session_name = std::move(sessions_.back());
+    sessions_.pop_back();
+  } else {
+    // Release the mutex because we won't be doing any more changes to
+    // `sessions_` in this function and holding mutexes while making RPCs is
+    // (generally) a bad practice.
+    lk.unlock();
+    grpc::ClientContext context;
+    spanner_proto::CreateSessionRequest request;
+    request.set_database(db_.FullName());
+    auto response = stub_->CreateSession(context, request);
+    if (!response) {
+      return response.status();
+    }
+    session_name = std::move(*response->mutable_name());
+  }
+
+  return release ? SessionHolder(std::move(session_name), /*deleter=*/nullptr)
+                 : SessionHolder(std::move(session_name),
+                                 [this](std::string session) {
+                                   ReleaseSession(std::move(session));
+                                 });
+}
+
+void ConnectionImpl::ReleaseSession(std::string session) {
+  std::lock_guard<std::mutex> lk(mu_);
+  sessions_.push_back(std::move(session));
 }
 
 }  // namespace internal
