@@ -18,6 +18,7 @@ var searchData=
   ['connection_5foptions_2ecc',['connection_options.cc',['../connection__options_8cc.html',1,'']]],
   ['connection_5foptions_2eh',['connection_options.h',['../connection__options_8h.html',1,'']]],
   ['connectionoptions',['ConnectionOptions',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html',1,'google::cloud::spanner::v0::ConnectionOptions'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#ab8485f2902f2308f6440e277072b6974',1,'google::cloud::spanner::v0::ConnectionOptions::ConnectionOptions()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#ab111c74ef432fb97b2dd510b98fd65f7',1,'google::cloud::spanner::v0::ConnectionOptions::ConnectionOptions(std::shared_ptr&lt; grpc::ChannelCredentials &gt; c)']]],
+  ['createchannelarguments',['CreateChannelArguments',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#a6a4cc126a978c0aae6dacf6e3d1f0e99',1,'google::cloud::spanner::v0::ConnectionOptions']]],
   ['createdatabase',['CreateDatabase',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#a08b823f9dfa04793e55977615502d50e',1,'google::cloud::spanner::v0::DatabaseAdminClient']]],
   ['credentials',['credentials',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#abac63734a4843330710586b52d06eb00',1,'google::cloud::spanner::v0::ConnectionOptions']]],
   ['cloud_20spanner_20c_2b_2b_20client_20library',['Cloud Spanner C++ Client Library',['../index.html',1,'']]]
