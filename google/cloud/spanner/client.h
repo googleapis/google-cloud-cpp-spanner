@@ -179,7 +179,6 @@ class Client {
    *
    * @par Example
    * @snippet samples.cc read-read-partition
-
    */
   // TODO(#409): possibly change to pass by value when issue resolved.
   StatusOr<ResultSet> Read(ReadPartition const& partition);
@@ -273,7 +272,6 @@ class Client {
    *
    * @par Example
    * @snippet samples.cc execute-sql-query-partition
-
    */
   StatusOr<ResultSet> ExecuteSql(QueryPartition const& partition);
 

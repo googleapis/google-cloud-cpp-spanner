@@ -527,7 +527,7 @@ void FieldAccessOnNestedStruct(google::cloud::spanner::Client client) {
 }
 //! [END spanner_field_access_on_nested_struct]
 
-void Send(std::string) {}  // NOLINT
+void Send(std::string const&) {}
 
 void SendPartitionToRemoteMachine(
     google::cloud::spanner::ReadPartition const& partition) {
@@ -535,9 +535,10 @@ void SendPartitionToRemoteMachine(
   namespace spanner = google::cloud::spanner;
   google::cloud::StatusOr<std::string> serialized_partition =
       spanner::SerializeReadPartition(partition);
-  if (serialized_partition.ok()) {
-    Send(*serialized_partition);
+  if (!serialized_partition) {
+    throw std::runtime_error(serialized_partition.status().message());
   }
+  Send(*serialized_partition);
   //! [serialize-read-partition]
 }
 
@@ -547,13 +548,14 @@ void SendPartitionToRemoteMachine(
   namespace spanner = google::cloud::spanner;
   google::cloud::StatusOr<std::string> serialized_partition =
       spanner::SerializeQueryPartition(partition);
-  if (serialized_partition.ok()) {
-    Send(*serialized_partition);
+  if (!serialized_partition) {
+    throw std::runtime_error(serialized_partition.status().message());
   }
+  Send(*serialized_partition);
   //! [serialize-query-partition]
 }
 
-std::string Receive() { return std::string(); }  // NOLINT
+std::string Receive() { return std::string(); }
 
 //! [deserialize-read-partition]
 google::cloud::StatusOr<google::cloud::spanner::ReadPartition>
@@ -573,8 +575,7 @@ ReceiveQueryPartitionFromRemoteMachine() {
 //! [deserialize-query-partition]
 
 void ProcessRow(google::cloud::spanner::Row<std::int64_t, std::string,
-                                            std::string>) {  // NOLINT
-}
+                                            std::string> const&) {}
 
 void PartitionRead(google::cloud::spanner::Client client) {
   namespace spanner = google::cloud::spanner;
@@ -590,27 +591,23 @@ void PartitionRead(google::cloud::spanner::Client client) {
   google::cloud::StatusOr<std::vector<spanner::ReadPartition>> partitions =
       client.PartitionRead(ro_transaction, "Singers", key_set,
                            {"SingerId", "FirstName", "LastName"});
-  if (partitions) {
-    for (auto& partition : *partitions) {
-      SendPartitionToRemoteMachine(partition);
-    }
+  if (!partitions) throw std::runtime_error(partitions.status().message());
+  for (auto& partition : *partitions) {
+    SendPartitionToRemoteMachine(partition);
   }
   //! [partition-read]
 
   //! [read-read-partition]
   google::cloud::StatusOr<spanner::ReadPartition> partition =
       ReceiveReadPartitionFromRemoteMachine();
-  if (partition) {
-    auto result_set = client.Read(*partition);
-    if (result_set) {
-      for (auto& row :
-           result_set->Rows<std::int64_t, std::string, std::string>()) {
-        if (row) {
-          ProcessRow(*row);
-        }
-      }
-    }
+  if (!partition) throw std::runtime_error(partition.status().message());
+  auto result_set = client.Read(*partition);
+  if (!result_set) throw std::runtime_error(result_set.status().message());
+  for (auto& row : result_set->Rows<std::int64_t, std::string, std::string>()) {
+    if (!row) throw std::runtime_error(row.status().message());
+    ProcessRow(*row);
   }
+
   //! [read-read-partition]
 }
 
@@ -622,27 +619,22 @@ void PartitionQuery(google::cloud::spanner::Client client) {
       client.PartitionQuery(
           ro_transaction,
           spanner::SqlStatement(
-              "select SingerId, FirstName, LastName from Singers"));
-  if (partitions.ok()) {
-    for (auto& partition : *partitions) {
-      SendPartitionToRemoteMachine(partition);
-    }
+              "SELECT SingerId, FirstName, LastName FROM Singers"));
+  if (!partitions) throw std::runtime_error(partitions.status().message());
+  for (auto& partition : *partitions) {
+    SendPartitionToRemoteMachine(partition);
   }
   //! [partition-query]
 
   //! [execute-sql-query-partition]
   google::cloud::StatusOr<spanner::QueryPartition> partition =
       ReceiveQueryPartitionFromRemoteMachine();
-  if (partition) {
-    auto result_set = client.ExecuteSql(*partition);
-    if (result_set) {
-      for (auto& row :
-           result_set->Rows<std::int64_t, std::string, std::string>()) {
-        if (row) {
-          ProcessRow(*row);
-        }
-      }
-    }
+  if (!partition) throw std::runtime_error(partition.status().message());
+  auto result_set = client.ExecuteSql(*partition);
+  if (!result_set) throw std::runtime_error(result_set.status().message());
+  for (auto& row : result_set->Rows<std::int64_t, std::string, std::string>()) {
+    if (!row) throw std::runtime_error(row.status().message());
+    ProcessRow(*row);
   }
   //! [execute-sql-query-partition]
 }
@@ -802,6 +794,12 @@ void RunAll() {
 
   std::cout << "\nRunning spanner_field_access_on_nested_struct sample\n";
   FieldAccessOnNestedStruct(client);
+
+  std::cout << "\nRunning spanner_partition_read sample\n";
+  PartitionRead(client);
+
+  std::cout << "\nRunning spanner_partition_query sample\n";
+  PartitionQuery(client);
 
   std::cout << "\nRunning spanner_drop_database sample\n";
   RunOneCommand({"", "drop-database", project_id, instance_id, database_id});
