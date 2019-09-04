@@ -1,12 +1,8 @@
 var searchData=
 [
-  ['random_5fdatabase_5fname_2ecc',['random_database_name.cc',['../random__database__name_8cc.html',1,'']]],
-  ['random_5fdatabase_5fname_2eh',['random_database_name.h',['../random__database__name_8h.html',1,'']]],
-  ['read_5foptions_2eh',['read_options.h',['../read__options_8h.html',1,'']]],
-  ['read_5fpartition_2ecc',['read_partition.cc',['../read__partition_8cc.html',1,'']]],
-  ['read_5fpartition_2eh',['read_partition.h',['../read__partition_8h.html',1,'']]],
-  ['result_5fset_2eh',['result_set.h',['../result__set_8h.html',1,'']]],
-  ['retry_5fpolicy_2eh',['retry_policy.h',['../retry__policy_8h.html',1,'']]],
-  ['row_2eh',['row.h',['../row_8h.html',1,'']]],
-  ['row_5fparser_2eh',['row_parser.h',['../row__parser_8h.html',1,'']]]
+  ['samples_2ecc',['samples.cc',['../samples_8cc.html',1,'']]],
+  ['spanner_2dmain_2edox',['spanner-main.dox',['../spanner-main_8dox.html',1,'']]],
+  ['spanner_2dmocking_2edox',['spanner-mocking.dox',['../spanner-mocking_8dox.html',1,'']]],
+  ['sql_5fstatement_2ecc',['sql_statement.cc',['../sql__statement_8cc.html',1,'']]],
+  ['sql_5fstatement_2eh',['sql_statement.h',['../sql__statement_8h.html',1,'']]]
 ];
