@@ -86,6 +86,14 @@ class ConnectionOptions {
     return *this;
   }
 
+  /**
+   * Prepend @p prefix to the user-agent string.
+   *
+   * Libraries or services that use the Cloud Spanner C++ client may want to
+   * set their own user-agent prefix. This can help them develop telemetry
+   * information about number of users running particular versions of their
+   * system or library.
+   */
   ConnectionOptions& add_user_agent_prefix(std::string prefix) {
     prefix += " ";
     prefix += user_agent_prefix_;
