@@ -642,8 +642,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section user"><dt>Example</dt><dd></dd></dl>
-<div class="fragment"><div class="line">std::string serialized_partition = ReceiveFromRemoteMachine();</div><div class="line">spanner::QueryPartition partition =</div><div class="line">  <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a5193c588900afa93d2ba3bd34b698964">spanner::DeserializeQueryPartition</a>(serialized_partition);</div><div class="line"><span class="keyword">auto</span> rows = spanner_client.ExecuteSql(partition);</div></div><!-- fragment --> 
+<dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line">  google::cloud::StatusOr&lt;google::cloud::spanner::QueryPartition&gt;</div><div class="line">  ReceiveQueryPartitionFromRemoteMachine() {</div><div class="line">    std::string serialized_partition = Receive();</div><div class="line">    <span class="keywordflow">return</span> <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a5193c588900afa93d2ba3bd34b698964">google::cloud::spanner::DeserializeQueryPartition</a>(</div><div class="line">        serialized_partition);</div><div class="line">  }</div></div><!-- fragment --></dd></dl>
+
 <p class="definition">Definition at line <a class="el" href="query__partition_8cc_source.html#l00062">62</a> of file <a class="el" href="query__partition_8cc_source.html">query_partition.cc</a>.</p>
 
 </div>
@@ -672,8 +672,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section user"><dt>Example</dt><dd></dd></dl>
-<div class="fragment"><div class="line">std::string serialized_partition = ReceiveFromRemoteMachine();</div><div class="line">StatusOr&lt;spanner::ReadPartition&gt; partition =</div><div class="line">  <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aca3e9bd1afccb8b09a0a01f34c931bd6">spanner::DeserializeReadPartition</a>(serialized_partition);</div><div class="line"><span class="keywordflow">if</span> (partition.ok()) {</div><div class="line">  <span class="keyword">auto</span> rows = spanner_client.Read(*partition);</div><div class="line">}</div></div><!-- fragment --> 
+<dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line">  google::cloud::StatusOr&lt;google::cloud::spanner::ReadPartition&gt;</div><div class="line">  ReceiveReadPartitionFromRemoteMachine() {</div><div class="line">    std::string serialized_partition = Receive();</div><div class="line">    <span class="keywordflow">return</span> <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aca3e9bd1afccb8b09a0a01f34c931bd6">google::cloud::spanner::DeserializeReadPartition</a>(</div><div class="line">        serialized_partition);</div><div class="line">  }</div></div><!-- fragment --></dd></dl>
+
 <p class="definition">Definition at line <a class="el" href="read__partition_8cc_source.html#l00060">60</a> of file <a class="el" href="read__partition_8cc_source.html">read_partition.cc</a>.</p>
 
 </div>
@@ -2013,7 +2013,7 @@ template&lt;typename... Ts&gt; </div>
 <p>The caller-provided function will be passed the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> argument and a newly created read-write <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code>. It should use these objects to issue any <code>Read()</code>s, <code>ExecuteSql()</code>s, etc., and return the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html" title="A wrapper for Cloud Spanner mutations.">Mutation</a></code>s to commit, or an error (which causes the transaction to be rolled back).</p>
 <p>The lock priority of the transaction increases after each prior aborted transaction, meaning that the next attempt has a slightly better chance of success than before. </p>
 
-<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00445">445</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00457">457</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
 
 </div>
 </div>
@@ -2040,8 +2040,8 @@ template&lt;typename... Ts&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section user"><dt>Example</dt><dd></dd></dl>
-<div class="fragment"><div class="line">spanner::SqlStatement stmt(<span class="stringliteral">&quot;select * from Albums&quot;</span>);</div><div class="line">std::vector&lt;spanner::QueryPartition&gt; partitions =</div><div class="line">  spanner_client.PartitionSql(stmt);</div><div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> <span class="keyword">const</span>&amp; partition : partitions) {</div><div class="line">  <span class="keyword">auto</span> serialized_partition = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aa63f906ae239bf9c288c9201ad5e2922">spanner::SerializeQueryPartition</a>(partition);</div><div class="line">  <span class="keywordflow">if</span> (serialized_partition.ok()) {</div><div class="line">    SendToRemoteMachine(*serialized_partition);</div><div class="line">  }</div><div class="line">}</div></div><!-- fragment --> 
+<dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line">    <span class="keyword">namespace </span><a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">spanner</a> = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">google::cloud::spanner</a>;</div><div class="line">    google::cloud::StatusOr&lt;std::string&gt; serialized_partition =</div><div class="line">        <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aa63f906ae239bf9c288c9201ad5e2922">spanner::SerializeQueryPartition</a>(partition);</div><div class="line">    <span class="keywordflow">if</span> (!serialized_partition) {</div><div class="line">      <span class="keywordflow">throw</span> std::runtime_error(serialized_partition.status().message());</div><div class="line">    }</div><div class="line">    Send(*serialized_partition);</div></div><!-- fragment --></dd></dl>
+
 <p class="definition">Definition at line <a class="el" href="query__partition_8cc_source.html#l00040">40</a> of file <a class="el" href="query__partition_8cc_source.html">query_partition.cc</a>.</p>
 
 </div>
@@ -2069,8 +2069,8 @@ template&lt;typename... Ts&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section user"><dt>Example</dt><dd></dd></dl>
-<p>TODO(#388): use snippet in lieu of code/endcode for all examples. </p><div class="fragment"><div class="line">std::vector&lt;spanner::ReadPartition&gt; partitions =</div><div class="line">  spanner_client.PartitionRead(...);</div><div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> <span class="keyword">const</span>&amp; partition : partitions) {</div><div class="line">  <span class="keyword">auto</span> serialized_partition = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a4ff13634f664ceba89bd073110bb5fb8">spanner::SerializeReadPartition</a>(partition);</div><div class="line">  <span class="keywordflow">if</span> (serialized_partition.ok()) {</div><div class="line">    SendToRemoteMachine(*serialized_partition);</div><div class="line">  }</div><div class="line">}</div></div><!-- fragment --> 
+<dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line">    <span class="keyword">namespace </span><a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">spanner</a> = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">google::cloud::spanner</a>;</div><div class="line">    google::cloud::StatusOr&lt;std::string&gt; serialized_partition =</div><div class="line">        <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a4ff13634f664ceba89bd073110bb5fb8">spanner::SerializeReadPartition</a>(partition);</div><div class="line">    <span class="keywordflow">if</span> (!serialized_partition) {</div><div class="line">      <span class="keywordflow">throw</span> std::runtime_error(serialized_partition.status().message());</div><div class="line">    }</div><div class="line">    Send(*serialized_partition);</div></div><!-- fragment --></dd></dl>
+
 <p class="definition">Definition at line <a class="el" href="read__partition_8cc_source.html#l00050">50</a> of file <a class="el" href="read__partition_8cc_source.html">read_partition.cc</a>.</p>
 
 </div>
