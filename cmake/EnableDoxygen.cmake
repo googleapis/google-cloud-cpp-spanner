@@ -65,7 +65,7 @@ else ()
         set(DOXYGEN_SOURCE_BROWSER YES)
         set(DOXYGEN_GENERATE_TAGFILE
             "${CMAKE_CURRENT_BINARY_DIR}/${GOOGLE_CLOUD_CPP_SUBPROJECT}.tag")
-        set(DOXYGEN_EXCLUDE_SYMBOLS "internal")
+        set(DOXYGEN_EXCLUDE_SYMBOLS "internal" "GetElement")
         set(DOXYGEN_PREDEFINED
             "SPANNER_CLIENT_NS=v${SPANNER_CLIENT_VERSION_MAJOR}")
         set(DOXYGEN_EXCLUDE_PATTERNS "*/google/cloud/spanner/README.md"
