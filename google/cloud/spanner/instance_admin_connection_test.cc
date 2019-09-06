@@ -13,8 +13,8 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/instance_admin_connection.h"
-#include "google/cloud/spanner/mocks/mock_instance_admin_stub.h"
 #include "google/cloud/spanner/testing/matchers.h"
+#include "google/cloud/spanner/testing/mock_instance_admin_stub.h"
 #include "google/cloud/testing_util/assert_ok.h"
 #include <google/protobuf/text_format.h>
 #include <gmock/gmock.h>
@@ -34,7 +34,7 @@ using ::testing::Return;
 namespace gcsa = ::google::spanner::admin::instance::v1;
 
 std::shared_ptr<InstanceAdminConnection> MakeTestConnection(
-    std::shared_ptr<spanner_mocks::MockInstanceAdminStub> mock) {
+    std::shared_ptr<spanner_testing::MockInstanceAdminStub> mock) {
   return internal::MakeInstanceAdminConnection(
       std::move(mock), ConnectionOptions(),
       LimitedErrorCountRetryPolicy(/*maximum_failures=*/2).clone(),
@@ -59,7 +59,7 @@ TEST(InstanceAdminConnectionTest, GetInstance_Success) {
       )pb",
       &expected_instance));
 
-  auto mock = std::make_shared<spanner_mocks::MockInstanceAdminStub>();
+  auto mock = std::make_shared<spanner_testing::MockInstanceAdminStub>();
   EXPECT_CALL(*mock, GetInstance(_, _))
       .WillOnce(
           Invoke([&expected_name](grpc::ClientContext&,
@@ -80,7 +80,7 @@ TEST(InstanceAdminConnectionTest, GetInstance_Success) {
 }
 
 TEST(InstanceAdminConnectionTest, GetInstance_PermanentFailure) {
-  auto mock = std::make_shared<spanner_mocks::MockInstanceAdminStub>();
+  auto mock = std::make_shared<spanner_testing::MockInstanceAdminStub>();
   EXPECT_CALL(*mock, GetInstance(_, _))
       .WillOnce(Return(Status(StatusCode::kPermissionDenied, "uh-oh")));
 
@@ -90,7 +90,7 @@ TEST(InstanceAdminConnectionTest, GetInstance_PermanentFailure) {
 }
 
 TEST(InstanceAdminConnectionTest, GetInstance_TooManyTransients) {
-  auto mock = std::make_shared<spanner_mocks::MockInstanceAdminStub>();
+  auto mock = std::make_shared<spanner_testing::MockInstanceAdminStub>();
   EXPECT_CALL(*mock, GetInstance(_, _))
       .WillRepeatedly(Return(Status(StatusCode::kUnavailable, "try-again")));
 

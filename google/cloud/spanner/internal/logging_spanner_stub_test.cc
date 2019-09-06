@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/internal/logging_spanner_stub.h"
-#include "google/cloud/spanner/mocks/mock_spanner_stub.h"
+#include "google/cloud/spanner/testing/mock_spanner_stub.h"
 #include "google/cloud/log.h"
 #include "google/cloud/testing_util/assert_ok.h"
 #include "google/cloud/testing_util/capture_log_lines_backend.h"
@@ -36,7 +36,7 @@ class LoggingSpannerStubTest : public ::testing::Test {
     backend_ =
         std::make_shared<google::cloud::testing_util::CaptureLogLinesBackend>();
     logger_id_ = google::cloud::LogSink::Instance().AddBackend(backend_);
-    mock_ = std::make_shared<spanner_mocks::MockSpannerStub>();
+    mock_ = std::make_shared<spanner_testing::MockSpannerStub>();
   }
 
   void TearDown() override {
@@ -57,7 +57,7 @@ class LoggingSpannerStubTest : public ::testing::Test {
     EXPECT_NE(0, count);
   }
 
-  std::shared_ptr<spanner_mocks::MockSpannerStub> mock_;
+  std::shared_ptr<spanner_testing::MockSpannerStub> mock_;
 
  private:
   std::shared_ptr<google::cloud::testing_util::CaptureLogLinesBackend> backend_;

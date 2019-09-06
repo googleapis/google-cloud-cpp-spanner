@@ -17,11 +17,8 @@
 """Automatically generated source lists for spanner_client_mocks - DO NOT EDIT."""
 
 spanner_client_mocks_hdrs = [
-    "mocks/mock_database_admin_stub.h",
     "mocks/mock_instance_admin_connection.h",
-    "mocks/mock_instance_admin_stub.h",
     "mocks/mock_spanner_connection.h",
-    "mocks/mock_spanner_stub.h",
 ]
 
 spanner_client_mocks_srcs = [

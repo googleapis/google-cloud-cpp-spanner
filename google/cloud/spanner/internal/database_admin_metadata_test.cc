@@ -14,7 +14,7 @@
 
 #include "google/cloud/spanner/internal/database_admin_metadata.h"
 #include "google/cloud/spanner/internal/api_client_header.h"
-#include "google/cloud/spanner/mocks/mock_database_admin_stub.h"
+#include "google/cloud/spanner/testing/mock_database_admin_stub.h"
 #include "google/cloud/spanner/testing/validate_metadata.h"
 #include "google/cloud/testing_util/assert_ok.h"
 #include <gmock/gmock.h>
@@ -33,7 +33,7 @@ namespace gcsa = google::spanner::admin::database::v1;
 class DatabaseAdminMetadataTest : public ::testing::Test {
  protected:
   void SetUp() override {
-    mock_ = std::make_shared<spanner_mocks::MockDatabaseAdminStub>();
+    mock_ = std::make_shared<spanner_testing::MockDatabaseAdminStub>();
     DatabaseAdminMetadata stub(mock_);
     expected_api_client_header_ = ApiClientHeader();
   }
@@ -44,7 +44,7 @@ class DatabaseAdminMetadataTest : public ::testing::Test {
     return Status(StatusCode::kUnavailable, "try-again");
   }
 
-  std::shared_ptr<spanner_mocks::MockDatabaseAdminStub> mock_;
+  std::shared_ptr<spanner_testing::MockDatabaseAdminStub> mock_;
   std::string expected_api_client_header_;
 };
 
