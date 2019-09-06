@@ -14,7 +14,7 @@
 
 #include "google/cloud/spanner/internal/metadata_spanner_stub.h"
 #include "google/cloud/spanner/internal/api_client_header.h"
-#include "google/cloud/spanner/testing/mock_spanner_stub.h"
+#include "google/cloud/spanner/mocks/mock_spanner_stub.h"
 #include "google/cloud/spanner/testing/validate_metadata.h"
 #include "google/cloud/testing_util/assert_ok.h"
 #include <gmock/gmock.h>
@@ -38,7 +38,7 @@ namespace spanner_proto = google::spanner::v1;
 class MetadataSpannerStubTest : public ::testing::Test {
  protected:
   void SetUp() override {
-    mock_ = std::make_shared<spanner_testing::MockSpannerStub>();
+    mock_ = std::make_shared<spanner_mocks::MockSpannerStub>();
     MetadataSpannerStub stub(mock_);
     expected_api_client_header_ = ApiClientHeader();
   }
@@ -82,7 +82,7 @@ class MetadataSpannerStubTest : public ::testing::Test {
     ExpectTransientError(result);
   }
 
-  std::shared_ptr<spanner_testing::MockSpannerStub> mock_;
+  std::shared_ptr<spanner_mocks::MockSpannerStub> mock_;
   std::string expected_api_client_header_;
 };
 
