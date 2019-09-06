@@ -19,10 +19,8 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 StatusOr<google::spanner::admin::instance::v1::Instance>
-InstanceAdminClient::GetInstance(std::string const& project_id,
-                                 std::string const& instance_id) {
-  return conn_->GetInstance(
-      {"projects/" + project_id + "/instances/" + instance_id});
+InstanceAdminClient::GetInstance(Instance const& in) {
+  return conn_->GetInstance({in.FullName()});
 }
 
 ListInstancesRange InstanceAdminClient::ListInstances(std::string project_id,
