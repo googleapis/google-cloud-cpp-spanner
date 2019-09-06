@@ -159,8 +159,6 @@ class DatabaseAdminClient {
   /**
    * Retrieve metadata information about a database.
    *
-   * @param db the name of the database.
-   *
    * @par Idempotency
    * This is a read-only operation and therefore always idempotent. Transient
    * failures are automatically retried.
