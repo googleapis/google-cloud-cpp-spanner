@@ -92,6 +92,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab15edc47e3ec043f3ba97a414ae73dc1"><td class="memItemLeft" align="right" valign="top">Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#ab15edc47e3ec043f3ba97a414ae73dc1">DropDatabase</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;db)</td></tr>
 <tr class="memdesc:ab15edc47e3ec043f3ba97a414ae73dc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Drops (deletes) an existing Cloud Spanner database.  <a href="#ab15edc47e3ec043f3ba97a414ae73dc1">More...</a><br /></td></tr>
 <tr class="separator:ab15edc47e3ec043f3ba97a414ae73dc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8887d3ed408d95b2cfe9d6f37aa4b7b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ab2103cd7782fc4748867fa8ad2b35e09">ListDatabaseRange</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#a8887d3ed408d95b2cfe9d6f37aa4b7b4">ListDatabases</a> (std::string const &amp;project_id, std::string const &amp;instance_id)</td></tr>
+<tr class="memdesc:a8887d3ed408d95b2cfe9d6f37aa4b7b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">List all the databases in a give project and instance.  <a href="#a8887d3ed408d95b2cfe9d6f37aa4b7b4">More...</a><br /></td></tr>
+<tr class="separator:a8887d3ed408d95b2cfe9d6f37aa4b7b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c97182b1d2d562a7f09c42599e31275"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#a6c97182b1d2d562a7f09c42599e31275">DatabaseAdminClient</a> (std::shared_ptr&lt; internal::DatabaseAdminStub &gt; s)</td></tr>
 <tr class="memdesc:a6c97182b1d2d562a7f09c42599e31275"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new client with the given stub. For testing only.  <a href="#a6c97182b1d2d562a7f09c42599e31275">More...</a><br /></td></tr>
 <tr class="separator:a6c97182b1d2d562a7f09c42599e31275"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -108,7 +111,7 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="keyword">namespace </span>cs = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">google::cloud::spanner</a>;</div><div class="line"><span class="keyword">using</span> google::cloud::StatusOr;</div><div class="line">cs::DatabaseAdminClient client = ...;</div><div class="line">StatusOr&lt;google::spanner::admin::database::v1::Database&gt; db =</div><div class="line">    client.CreateDatabase(...).get();</div><div class="line"></div><div class="line"><span class="keywordflow">if</span> (!db) {</div><div class="line">  std::cerr &lt;&lt; <span class="stringliteral">&quot;Error in CreateDatabase: &quot;</span> &lt;&lt; db.status() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div><div class="line">  <span class="keywordflow">return</span>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// Use `db` as a smart pointer here, e.g.:</span></div><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;The database fully qualified name is: &quot;</span> &lt;&lt; db-&gt;name() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div></div><!-- fragment --><dl class="section user"><dt>Long running operations</dt><dd></dd></dl>
 <p>Some operations in this class can take minutes to complete. In this case the class returns a <code>google::cloud::future&lt;StatusOr&lt;T&gt;&gt;</code>, the application can then poll the <code>future</code> or associate a callback to be invoked when the operation completes:</p>
 <div class="fragment"><div class="line"><span class="keyword">namespace </span>cs = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">google::cloud::spanner</a>;</div><div class="line">cs::DatabaseAdminClient client = ...;</div><div class="line"><span class="comment">// Make example less verbose.</span></div><div class="line"><span class="keyword">using</span> google::cloud::future;</div><div class="line"><span class="keyword">using</span> google::cloud::StatusOr;</div><div class="line"><span class="keyword">using</span> std::chrono::chrono_literals; <span class="comment">// C++14</span></div><div class="line"></div><div class="line"><span class="keyword">auto</span> database = client.CreateDatabase(...);</div><div class="line"><span class="keywordflow">if</span> (database.wait_for(5m) == std::future_state::ready) {</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Database created in under 5 minutes, yay!\n&quot;</span>;</div><div class="line">  <span class="keywordflow">return</span>;</div><div class="line">}</div><div class="line"><span class="comment">// Too slow, setup a callback instead:</span></div><div class="line">database.then([](<span class="keyword">auto</span> f) {</div><div class="line">  StatusOr&lt;google::spanner::admin::database::v1::Database&gt; db = f.get();</div><div class="line">  <span class="keywordflow">if</span> (!db) {</div><div class="line">      std::cout &lt;&lt; <span class="stringliteral">&quot;Database created!\n&quot;</span>;</div><div class="line">      <span class="keywordflow">return</span>;</div><div class="line">  }</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Database created!\n&quot;</span>;</div><div class="line">});</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="database__admin__client_8h_source.html#l00107">107</a> of file <a class="el" href="database__admin__client_8h_source.html">database_admin_client.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="database__admin__client_8h_source.html#l00122">122</a> of file <a class="el" href="database__admin__client_8h_source.html">database_admin_client.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5359f2621faada447be80416df5e2eba"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5359f2621faada447be80416df5e2eba">&#9670;&nbsp;</a></span>DatabaseAdminClient() <span class="overload">[1/2]</span></h2>
@@ -164,7 +167,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Create a new client with the given stub. For testing only. </p>
 
-<p class="definition">Definition at line <a class="el" href="database__admin__client_8h_source.html#l00177">177</a> of file <a class="el" href="database__admin__client_8h_source.html">database_admin_client.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="database__admin__client_8h_source.html#l00204">204</a> of file <a class="el" href="database__admin__client_8h_source.html">database_admin_client.h</a>.</p>
 
 </div>
 </div>
@@ -227,6 +230,40 @@ Public Member Functions</h2></td></tr>
 <p>Drops (deletes) an existing Cloud Spanner database. </p>
 <dl class="section warning"><dt>Warning</dt><dd>Dropping a database deletes all the tables and other data in the database. This is an unrecoverable operation.</dd></dl>
 <dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line">  [](std::string <span class="keyword">const</span>&amp; project_id, std::string <span class="keyword">const</span>&amp; instance_id,</div><div class="line">     std::string <span class="keyword">const</span>&amp; database_id) {</div><div class="line">    google::cloud::spanner::DatabaseAdminClient client;</div><div class="line">    google::cloud::spanner::Database database(project_id, instance_id,</div><div class="line">                                              database_id);</div><div class="line">    google::cloud::Status status = client.DropDatabase(database);</div><div class="line">    <span class="keywordflow">if</span> (!status.ok()) {</div><div class="line">      <span class="keywordflow">throw</span> std::runtime_error(status.message());</div><div class="line">    }</div><div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Database &quot;</span> &lt;&lt; database &lt;&lt; <span class="stringliteral">&quot; successfully dropped\n&quot;</span>;</div><div class="line">  }</div></div><!-- fragment --></dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="database__admin__client_8cc_source.html#l00086">86</a> of file <a class="el" href="database__admin__client_8cc_source.html">database_admin_client.cc</a>.</p>
+
+</div>
+</div>
+<a id="a8887d3ed408d95b2cfe9d6f37aa4b7b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8887d3ed408d95b2cfe9d6f37aa4b7b4">&#9670;&nbsp;</a></span>ListDatabases()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ab2103cd7782fc4748867fa8ad2b35e09">ListDatabaseRange</a> google::cloud::spanner::v0::DatabaseAdminClient::ListDatabases </td>
+          <td>(</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>project_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>instance_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>List all the databases in a give project and instance. </p>
+<dl class="section user"><dt>Idempotency</dt><dd>This operation is read-only and therefore always idempotent.</dd></dl>
+<dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#a8887d3ed408d95b2cfe9d6f37aa4b7b4">ListDatabases</a>(google::cloud::spanner::DatabaseAdminClient client,</div><div class="line">                   std::string <span class="keyword">const</span>&amp; project_id,</div><div class="line">                   std::string <span class="keyword">const</span>&amp; instance_id) {</div><div class="line">  <span class="keywordtype">int</span> count = 0;</div><div class="line">  <span class="keywordflow">for</span> (<span class="keyword">auto</span> database : client.ListDatabases(project_id, instance_id)) {</div><div class="line">    <span class="keywordflow">if</span> (!database) <span class="keywordflow">throw</span> std::runtime_error(database.status().message());</div><div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Database &quot;</span> &lt;&lt; database-&gt;name() &lt;&lt; <span class="stringliteral">&quot; full metadata:\n&quot;</span></div><div class="line">              &lt;&lt; database-&gt;DebugString() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div><div class="line">    ++count;</div><div class="line">  }</div><div class="line">  <span class="keywordflow">if</span> (count == 0) {</div><div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;No databases found in instance &quot;</span> &lt;&lt; instance_id</div><div class="line">              &lt;&lt; <span class="stringliteral">&quot; for project &lt;&lt; &quot;</span> &lt;&lt; project_id &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div><div class="line">  }</div><div class="line">}</div></div><!-- fragment --></dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="database__admin__client_8cc_source.html#l00066">66</a> of file <a class="el" href="database__admin__client_8cc_source.html">database_admin_client.cc</a>.</p>
 
