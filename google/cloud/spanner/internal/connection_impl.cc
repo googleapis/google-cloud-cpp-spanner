@@ -63,7 +63,7 @@ StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDml(
   auto txn = MakeReadOnlyTransaction();
   return internal::Visit(
       txn,
-      [this, &epdp](SessionHolder& session,
+      [this, &epdp](std::unique_ptr<SessionHolder>& session,
                     spanner_proto::TransactionSelector& s, std::int64_t seqno) {
         return ExecutePartitionedDmlImpl(session, s, seqno, std::move(epdp));
       });
@@ -82,13 +82,13 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
 
 StatusOr<BatchDmlResult> ConnectionImpl::ExecuteBatchDml(
     BatchDmlParams params) {
-  return internal::Visit(std::move(params.transaction),
-                         [this, &params](SessionHolder& session,
-                                         spanner_proto::TransactionSelector& s,
-                                         std::int64_t seqno) {
-                           return ExecuteBatchDmlImpl(session, s, seqno,
-                                                      std::move(params));
-                         });
+  return internal::Visit(
+      std::move(params.transaction),
+      [this, &params](std::unique_ptr<SessionHolder>& session,
+                      spanner_proto::TransactionSelector& s,
+                      std::int64_t seqno) {
+        return ExecuteBatchDmlImpl(session, s, seqno, std::move(params));
+      });
 }
 
 StatusOr<CommitResult> ConnectionImpl::Commit(CommitParams cp) {
@@ -247,9 +247,7 @@ StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDmlImpl(
     spanner_proto::TransactionSelector& s, std::int64_t seqno,
     ExecutePartitionedDmlParams epdp) {
   if (!session) {
-    // Since the session may be sent to other machines, it should not be
-    // returned to the pool when the Transaction is destroyed (release=true).
-    auto session_or = GetSession(/*release=*/true);
+    auto session_or = GetSession();
     if (!session_or) {
       return std::move(session_or).status();
     }
@@ -407,7 +405,7 @@ StatusOr<CommitResult> ConnectionImpl::CommitImpl(
 }
 
 Status ConnectionImpl::RollbackImpl(std::unique_ptr<SessionHolder>& session,
-                                spanner_proto::TransactionSelector& s) {
+                                    spanner_proto::TransactionSelector& s) {
   if (!session) {
     auto session_or = GetSession();
     if (!session_or) {
