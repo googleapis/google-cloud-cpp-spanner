@@ -302,9 +302,6 @@ Functions</h2></td></tr>
 <tr class="memitem:aca3e9bd1afccb8b09a0a01f34c931bd6"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html">ReadPartition</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aca3e9bd1afccb8b09a0a01f34c931bd6">DeserializeReadPartition</a> (std::string const  &amp;serialized_read_partition)</td></tr>
 <tr class="memdesc:aca3e9bd1afccb8b09a0a01f34c931bd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserializes the provided string into a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html" title="The ReadPartition class is a regular type that represents a single slice of a parallel Read operation...">ReadPartition</a></code>, if able.  <a href="#aca3e9bd1afccb8b09a0a01f34c931bd6">More...</a><br /></td></tr>
 <tr class="separator:aca3e9bd1afccb8b09a0a01f34c931bd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76a64d3ee14907e69b4f3d415a4c3ab5"><td class="memTemplParams" colspan="2">template&lt;std::size_t I, typename... Ts&gt; </td></tr>
-<tr class="memitem:a76a64d3ee14907e69b4f3d415a4c3ab5"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a76a64d3ee14907e69b4f3d415a4c3ab5">GetElement</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Ts... &gt; &amp;row) -&gt; decltype(row.template get&lt; I &gt;())</td></tr>
-<tr class="separator:a76a64d3ee14907e69b4f3d415a4c3ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af19702e3242db4899b9e2d8f974565af"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
 <tr class="memitem:af19702e3242db4899b9e2d8f974565af"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; internal::PromoteLiteral&lt; Ts &gt;... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a> (Ts &amp;&amp;... ts)</td></tr>
 <tr class="memdesc:af19702e3242db4899b9e2d8f974565af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper factory function to construct <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> objects holding the specified values.  <a href="#af19702e3242db4899b9e2d8f974565af">More...</a><br /></td></tr>
@@ -697,28 +694,6 @@ Functions</h2></td></tr>
 <dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line">  google::cloud::StatusOr&lt;google::cloud::spanner::ReadPartition&gt;</div><div class="line">  ReceiveReadPartitionFromRemoteMachine() {</div><div class="line">    std::string serialized_partition = Receive();</div><div class="line">    <span class="keywordflow">return</span> <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aca3e9bd1afccb8b09a0a01f34c931bd6">google::cloud::spanner::DeserializeReadPartition</a>(</div><div class="line">        serialized_partition);</div><div class="line">  }</div></div><!-- fragment --></dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="read__partition_8cc_source.html#l00060">60</a> of file <a class="el" href="read__partition_8cc_source.html">read_partition.cc</a>.</p>
-
-</div>
-</div>
-<a id="a76a64d3ee14907e69b4f3d415a4c3ab5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76a64d3ee14907e69b4f3d415a4c3ab5">&#9670;&nbsp;</a></span>GetElement()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;std::size_t I, typename... Ts&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">auto google::cloud::spanner::v0::GetElement </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Ts... &gt; &amp;&#160;</td>
-          <td class="paramname"><em>row</em></td><td>)</td>
-          <td> -&gt; decltype(row.template get&lt;I&gt;()) </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00279">279</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -1225,7 +1200,7 @@ template&lt;typename... Ts&gt; </div>
 <p>This is helpful because it deduces the types of the arguments, and it promotes integer and string literals to the necessary Spanner types <code>std::int64_t</code> and <code>std::string</code>, respectively.</p>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> row = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(42, <span class="stringliteral">&quot;hello&quot;</span>);</div><div class="line">static_assert(</div><div class="line">    std::is_same&lt;Row&lt;std::int64_t, std::string&gt;, decltype(row)&gt;::value, <span class="stringliteral">&quot;&quot;</span>);</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00332">332</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00339">339</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -1925,7 +1900,7 @@ template&lt;typename... Ts&gt; </div>
 <p>If the specified C++ type is unable to be extracted from a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>, an error <code>Status</code> is returned. The given array size must exactly match the number of specified C++ types.</p>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <div class="fragment"><div class="line">std::array&lt;Value, 3&gt; array = {Value(<span class="keyword">true</span>), Value(42), Value(<span class="stringliteral">&quot;hello&quot;</span>)};</div><div class="line"><span class="keyword">auto</span> row = ParseRow&lt;bool, std::int64_t, std::string&gt;(array);</div><div class="line">assert(row.ok());</div><div class="line">assert(<a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(<span class="keyword">true</span>, 42, <span class="stringliteral">&quot;hello&quot;</span>), *row);</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00352">352</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00359">359</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
