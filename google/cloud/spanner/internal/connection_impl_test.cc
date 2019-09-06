@@ -16,8 +16,8 @@
 #include "google/cloud/spanner/client.h"
 #include "google/cloud/spanner/internal/spanner_stub.h"
 #include "google/cloud/spanner/internal/time.h"
-#include "google/cloud/spanner/mocks/mock_spanner_stub.h"
 #include "google/cloud/spanner/testing/matchers.h"
+#include "google/cloud/spanner/testing/mock_spanner_stub.h"
 #include "google/cloud/internal/make_unique.h"
 #include "google/cloud/testing_util/assert_ok.h"
 #include <google/protobuf/text_format.h>
@@ -79,7 +79,7 @@ class MockGrpcReader
 };
 
 TEST(ConnectionImplTest, ReadGetSessionFailure) {
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   ConnectionImpl conn(db, mock);
@@ -102,7 +102,7 @@ TEST(ConnectionImplTest, ReadGetSessionFailure) {
 }
 
 TEST(ConnectionImplTest, ReadStreamingReadFailure) {
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   ConnectionImpl conn(db, mock);
@@ -136,7 +136,7 @@ TEST(ConnectionImplTest, ReadStreamingReadFailure) {
 }
 
 TEST(ConnectionImplTest, ReadSuccess) {
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   ConnectionImpl conn(db, mock);
@@ -201,7 +201,7 @@ TEST(ConnectionImplTest, ReadSuccess) {
 
 /// @test Verify implicit "begin transaction" in Read() works.
 TEST(ConnectionImplTest, ReadImplicitBeginTransaction) {
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   ConnectionImpl conn(db, mock);
@@ -233,7 +233,7 @@ TEST(ConnectionImplTest, ReadImplicitBeginTransaction) {
 }
 
 TEST(ConnectionImplTest, ExecuteSqlGetSessionFailure) {
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   ConnectionImpl conn(db, mock);
@@ -253,7 +253,7 @@ TEST(ConnectionImplTest, ExecuteSqlGetSessionFailure) {
 }
 
 TEST(ConnectionImplTest, ExecuteSqlStreamingReadFailure) {
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   ConnectionImpl conn(db, mock);
@@ -284,7 +284,7 @@ TEST(ConnectionImplTest, ExecuteSqlStreamingReadFailure) {
 }
 
 TEST(ConnectionImplTest, ExecuteSqlReadSuccess) {
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   ConnectionImpl conn(db, mock);
@@ -346,7 +346,7 @@ TEST(ConnectionImplTest, ExecuteSqlReadSuccess) {
 
 /// @test Verify implicit "begin transaction" in ExecuteSql() works.
 TEST(ConnectionImplTest, ExecuteSqlImplicitBeginTransaction) {
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   ConnectionImpl conn(db, mock);
@@ -378,7 +378,7 @@ TEST(ConnectionImplTest, ExecuteSqlImplicitBeginTransaction) {
 
 TEST(ConnectionImplTest, ExecuteBatchDmlSuccess) {
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
   spanner_proto::Session session;
   session.set_name("session-name");
@@ -418,7 +418,7 @@ TEST(ConnectionImplTest, ExecuteBatchDmlSuccess) {
 
 TEST(ConnectionImplTest, ExecuteBatchDmlFailure) {
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
   spanner_proto::Session session;
   session.set_name("session-name");
@@ -457,7 +457,7 @@ TEST(ConnectionImplTest, ExecuteBatchDmlFailure) {
 }
 
 TEST(ConnectionImplTest, CommitGetSessionFailure) {
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   ConnectionImpl conn(db, mock);
@@ -475,7 +475,7 @@ TEST(ConnectionImplTest, CommitGetSessionFailure) {
 }
 
 TEST(ConnectionImplTest, CommitCommitFailure) {
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   ConnectionImpl conn(db, mock);
@@ -501,7 +501,7 @@ TEST(ConnectionImplTest, CommitCommitFailure) {
 }
 
 TEST(ConnectionImplTest, CommitSuccessWithTransactionId) {
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   ConnectionImpl conn(db, mock);
@@ -540,7 +540,7 @@ TEST(ConnectionImplTest, CommitSuccessWithTransactionId) {
 TEST(ConnectionImplTest, RollbackGetSessionFailure) {
   auto db = Database("project", "instance", "database");
 
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
   EXPECT_CALL(*mock, CreateSession(_, _))
       .WillOnce(
           Invoke([&db](grpc::ClientContext&,
@@ -561,7 +561,7 @@ TEST(ConnectionImplTest, RollbackBeginTransaction) {
   auto db = Database("project", "instance", "database");
   std::string const session_name = "test-session-name";
 
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
   EXPECT_CALL(*mock, CreateSession(_, _))
       .WillOnce(Invoke([&db, &session_name](
                            grpc::ClientContext&,
@@ -583,7 +583,7 @@ TEST(ConnectionImplTest, RollbackSingleUseTransaction) {
   auto db = Database("project", "instance", "database");
   std::string const session_name = "test-session-name";
 
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
   EXPECT_CALL(*mock, CreateSession(_, _))
       .WillOnce(Invoke([&db, &session_name](
                            grpc::ClientContext&,
@@ -608,7 +608,7 @@ TEST(ConnectionImplTest, RollbackFailure) {
   std::string const session_name = "test-session-name";
   std::string const transaction_id = "test-txn-id";
 
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
   EXPECT_CALL(*mock, CreateSession(_, _))
       .WillOnce(Invoke([&db, &session_name](
                            grpc::ClientContext&,
@@ -646,7 +646,7 @@ TEST(ConnectionImplTest, RollbackSuccess) {
   std::string const session_name = "test-session-name";
   std::string const transaction_id = "test-txn-id";
 
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
   EXPECT_CALL(*mock, CreateSession(_, _))
       .WillOnce(Invoke([&db, &session_name](
                            grpc::ClientContext&,
@@ -679,7 +679,7 @@ TEST(ConnectionImplTest, RollbackSuccess) {
 }
 
 TEST(ConnectionImplTest, PartitionReadSuccess) {
-  auto mock_spanner_stub = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock_spanner_stub = std::make_shared<spanner_testing::MockSpannerStub>();
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   ConnectionImpl conn(db, mock_spanner_stub);
   EXPECT_CALL(*mock_spanner_stub, CreateSession(_, _))
@@ -741,7 +741,7 @@ TEST(ConnectionImplTest, PartitionReadSuccess) {
 }
 
 TEST(ConnectionImplTest, PartitionReadFailure) {
-  auto mock_spanner_stub = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock_spanner_stub = std::make_shared<spanner_testing::MockSpannerStub>();
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   ConnectionImpl conn(db, mock_spanner_stub);
   EXPECT_CALL(*mock_spanner_stub, CreateSession(_, _))
@@ -770,7 +770,7 @@ TEST(ConnectionImplTest, PartitionReadFailure) {
 }
 
 TEST(ConnectionImplTest, PartitionQuerySuccess) {
-  auto mock_spanner_stub = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock_spanner_stub = std::make_shared<spanner_testing::MockSpannerStub>();
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   ConnectionImpl conn(db, mock_spanner_stub);
   EXPECT_CALL(*mock_spanner_stub, CreateSession(_, _))
@@ -826,7 +826,7 @@ TEST(ConnectionImplTest, PartitionQuerySuccess) {
 }
 
 TEST(ConnectionImplTest, PartitionQueryFailure) {
-  auto mock_spanner_stub = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock_spanner_stub = std::make_shared<spanner_testing::MockSpannerStub>();
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   ConnectionImpl conn(db, mock_spanner_stub);
   EXPECT_CALL(*mock_spanner_stub, CreateSession(_, _))
@@ -857,7 +857,7 @@ TEST(ConnectionImplTest, MultipleThreads) {
   std::string const transaction_id = "test-txn-id";
   std::atomic<int> session_counter(0);
 
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
   EXPECT_CALL(*mock, CreateSession(_, _))
       .WillRepeatedly(
           Invoke([&db, &session_prefix, &session_counter](
@@ -921,7 +921,7 @@ TEST(ConnectionImplTest, MultipleThreads) {
  * and ensures each Transaction uses the same session consistently.
  */
 TEST(ConnectionImplTest, TransactionSessionBinding) {
-  auto mock = std::make_shared<spanner_mocks::MockSpannerStub>();
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
 
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   ConnectionImpl conn(db, mock);

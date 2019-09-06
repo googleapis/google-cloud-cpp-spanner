@@ -14,7 +14,7 @@
 
 #include "google/cloud/spanner/database_admin_client.h"
 #include "google/cloud/spanner/internal/database_admin_retry.h"
-#include "google/cloud/spanner/mocks/mock_database_admin_stub.h"
+#include "google/cloud/spanner/testing/mock_database_admin_stub.h"
 #include "google/cloud/testing_util/assert_ok.h"
 #include <gmock/gmock.h>
 
@@ -24,7 +24,7 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace {
 
-using ::google::cloud::spanner_mocks::MockDatabaseAdminStub;
+using ::google::cloud::spanner_testing::MockDatabaseAdminStub;
 using ::testing::_;
 using ::testing::ElementsAre;
 using ::testing::Invoke;

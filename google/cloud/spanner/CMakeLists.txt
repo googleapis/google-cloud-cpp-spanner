@@ -217,11 +217,8 @@ function (spanner_client_define_tests)
     target_sources(
         spanner_client_mocks
         INTERFACE
-        ${CMAKE_CURRENT_SOURCE_DIR}/mocks/mock_database_admin_stub.h
         ${CMAKE_CURRENT_SOURCE_DIR}/mocks/mock_instance_admin_connection.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/mocks/mock_instance_admin_stub.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/mocks/mock_spanner_connection.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/mocks/mock_spanner_stub.h)
+        ${CMAKE_CURRENT_SOURCE_DIR}/mocks/mock_spanner_connection.h)
     target_link_libraries(spanner_client_mocks
                           INTERFACE googleapis-c++::spanner_client
                                     google_cloud_cpp_testing
@@ -242,6 +239,9 @@ function (spanner_client_define_tests)
                 testing/database_environment.cc
                 testing/database_environment.h
                 testing/matchers.h
+                testing/mock_database_admin_stub.h
+                testing/mock_instance_admin_stub.h
+                testing/mock_spanner_stub.h
                 testing/random_database_name.cc
                 testing/random_database_name.h
                 testing/validate_metadata.cc

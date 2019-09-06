@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/internal/database_admin_logging.h"
-#include "google/cloud/spanner/mocks/mock_database_admin_stub.h"
+#include "google/cloud/spanner/testing/mock_database_admin_stub.h"
 #include "google/cloud/log.h"
 #include "google/cloud/testing_util/assert_ok.h"
 #include "google/cloud/testing_util/capture_log_lines_backend.h"
@@ -37,7 +37,7 @@ class DatabaseAdminLoggingTest : public ::testing::Test {
     backend_ =
         std::make_shared<google::cloud::testing_util::CaptureLogLinesBackend>();
     logger_id_ = google::cloud::LogSink::Instance().AddBackend(backend_);
-    mock_ = std::make_shared<spanner_mocks::MockDatabaseAdminStub>();
+    mock_ = std::make_shared<spanner_testing::MockDatabaseAdminStub>();
   }
 
   void TearDown() override {
@@ -58,7 +58,7 @@ class DatabaseAdminLoggingTest : public ::testing::Test {
     EXPECT_NE(0, count) << "expected to find line with " << contents;
   }
 
-  std::shared_ptr<spanner_mocks::MockDatabaseAdminStub> mock_;
+  std::shared_ptr<spanner_testing::MockDatabaseAdminStub> mock_;
 
  private:
   std::shared_ptr<google::cloud::testing_util::CaptureLogLinesBackend> backend_;
