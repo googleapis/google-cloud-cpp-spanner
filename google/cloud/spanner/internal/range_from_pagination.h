@@ -30,6 +30,9 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
+/**
+ * An input iterator for a class with the same interface as `PaginationRange`.
+ */
 template <typename T, typename Range>
 class PaginationIterator {
  public:
@@ -121,13 +124,13 @@ class PaginationRange {
   using iterator = PaginationIterator<T, PaginationRange>;
 
   /**
-   * Return an iterator over the list of hmacKeys.
+   * Return an iterator over the range of `T` objects.
    *
-   * The returned iterator is a single-pass input iterator that reads object
-   * metadata from the ListHmacKeysReader when incremented.
+   * The returned iterator is a single-pass input iterator that reads new `T`
+   * objects from the underlying `PaginationRange` when incremented.
    *
    * Creating, and particularly incrementing, multiple iterators on the same
-   * ListHmacKeysReader is unsupported and can produce incorrect results.
+   * PaginationRange<> is unsupported and can produce incorrect results.
    */
   iterator begin() { return GetNext(); }
 
