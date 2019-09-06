@@ -80,7 +80,7 @@ class Client {
 #endif
       return internal::Visit(std::move(txn), std::move(read));
 #if GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
-    } catch (char const* e) {
+    } catch (char const*) {
       return {};
     }
 #endif
