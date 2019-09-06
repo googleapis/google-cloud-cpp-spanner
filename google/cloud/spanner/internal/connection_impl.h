@@ -74,8 +74,9 @@ class ConnectionImpl : public Connection {
       ExecuteSqlParams esp);
 
   StatusOr<PartitionedDmlResult> ExecutePartitionedDmlImpl(
-      SessionHolder& session, google::spanner::v1::TransactionSelector& s,
-      std::int64_t seqno, ExecutePartitionedDmlParams epdp);
+      std::unique_ptr<SessionHolder>& session,
+      google::spanner::v1::TransactionSelector& s, std::int64_t seqno,
+      ExecutePartitionedDmlParams epdp);
 
   StatusOr<std::vector<QueryPartition>> PartitionQueryImpl(
       std::unique_ptr<SessionHolder>& session,
@@ -83,15 +84,16 @@ class ConnectionImpl : public Connection {
       PartitionOptions partition_options);
 
   StatusOr<BatchDmlResult> ExecuteBatchDmlImpl(
-      SessionHolder& session, google::spanner::v1::TransactionSelector& s,
-      std::int64_t seqno, BatchDmlParams params);
+      std::unique_ptr<SessionHolder>& session,
+      google::spanner::v1::TransactionSelector& s, std::int64_t seqno,
+      BatchDmlParams params);
 
   StatusOr<CommitResult> CommitImpl(std::unique_ptr<SessionHolder>& session,
                                     google::spanner::v1::TransactionSelector& s,
                                     CommitParams cp);
 
   Status RollbackImpl(std::unique_ptr<SessionHolder>& session,
-                  google::spanner::v1::TransactionSelector& s);
+                      google::spanner::v1::TransactionSelector& s);
 
   StatusOr<std::unique_ptr<SessionHolder>> GetSession(
       bool dissociate_from_pool = false);
