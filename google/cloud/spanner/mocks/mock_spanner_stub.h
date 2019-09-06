@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_TESTING_MOCK_SPANNER_STUB_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_TESTING_MOCK_SPANNER_STUB_H_
+#ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_MOCKS_MOCK_SPANNER_STUB_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_MOCKS_MOCK_SPANNER_STUB_H_
 
 #include "google/cloud/spanner/internal/spanner_stub.h"
 #include "google/cloud/spanner/version.h"
@@ -21,7 +21,7 @@
 
 namespace google {
 namespace cloud {
-namespace spanner_testing {
+namespace spanner_mocks {
 inline namespace SPANNER_CLIENT_NS {
 
 class MockSpannerStub : public google::cloud::spanner::internal::SpannerStub {
@@ -93,8 +93,8 @@ class MockSpannerStub : public google::cloud::spanner::internal::SpannerStub {
 };
 
 }  // namespace SPANNER_CLIENT_NS
-}  // namespace spanner_testing
+}  // namespace spanner_mocks
 }  // namespace cloud
 }  // namespace google
 
-#endif  // GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_TESTING_MOCK_SPANNER_STUB_H_
+#endif  // GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_MOCKS_MOCK_SPANNER_STUB_H_
