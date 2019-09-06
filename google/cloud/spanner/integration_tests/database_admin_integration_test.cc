@@ -37,6 +37,7 @@ TEST(DatabaseAdminClient, DatabaseBasicCRUD) {
           .value_or("");
   ASSERT_FALSE(project_id.empty());
   ASSERT_FALSE(instance_id.empty());
+  Instance const in(project_id, instance_id);
 
   auto generator = google::cloud::internal::MakeDefaultPRNG();
   std::string database_id = spanner_testing::RandomDatabaseName(generator);
@@ -49,9 +50,9 @@ TEST(DatabaseAdminClient, DatabaseBasicCRUD) {
   // longer returns that name once the database is dropped. Implicitly that also
   // tests that client.DropDatabase() and client.CreateDatabase() do something,
   // which is nice.
-  auto get_current_databases = [&client, project_id, instance_id] {
+  auto get_current_databases = [&client, in] {
     std::vector<std::string> names;
-    for (auto database : client.ListDatabases(project_id, instance_id)) {
+    for (auto database : client.ListDatabases(in)) {
       EXPECT_STATUS_OK(database);
       if (!database) return names;
       names.push_back(database->name());
