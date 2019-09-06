@@ -78,7 +78,7 @@ class SqlStatement {
 
   /**
    * Returns the collection of parameters.
-   * @return If not parameters were specified, the container will be empty.
+   * @return If no parameters were specified, the container will be empty.
    */
   ParamType const& params() const { return params_; }
 
