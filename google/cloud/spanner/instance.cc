@@ -31,11 +31,6 @@ std::string Instance::InstanceId() const {
   return full_name_.substr(pos + sizeof("/instances/") - 1);
 }
 
-std::string Instance::ParentName() const {
-  auto pos = full_name_.rfind("/instances/");
-  return full_name_.substr(0, pos);
-}
-
 bool operator==(Instance const& a, Instance const& b) {
   return a.full_name_ == b.full_name_;
 }

@@ -60,12 +60,6 @@ class Instance {
    */
   std::string FullName() const;
 
-  /**
-   * Returns the fully qualified name of the instance's parent of the form:
-   * "projects/<project-id>"
-   */
-  std::string ParentName() const;
-
   /// @name Equality operators
   //@{
   friend bool operator==(Instance const& a, Instance const& b);

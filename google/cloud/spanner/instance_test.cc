@@ -27,25 +27,21 @@ TEST(Instance, Basics) {
   Instance in("p1", "i1");
   EXPECT_EQ("i1", in.InstanceId());
   EXPECT_EQ("projects/p1/instances/i1", in.FullName());
-  EXPECT_EQ("projects/p1", in.ParentName());
 
   auto copy = in;
   EXPECT_EQ(copy, in);
   EXPECT_EQ("i1", copy.InstanceId());
   EXPECT_EQ("projects/p1/instances/i1", copy.FullName());
-  EXPECT_EQ("projects/p1", in.ParentName());
 
   auto moved = std::move(copy);
   EXPECT_EQ(moved, in);
   EXPECT_EQ("i1", moved.InstanceId());
   EXPECT_EQ("projects/p1/instances/i1", moved.FullName());
-  EXPECT_EQ("projects/p1", in.ParentName());
 
   Instance in2("p2", "i2");
   EXPECT_NE(in2, in);
   EXPECT_EQ("i2", in2.InstanceId());
   EXPECT_EQ("projects/p2/instances/i2", in2.FullName());
-  EXPECT_EQ("projects/p2", in2.ParentName());
 }
 
 TEST(Instance, OutputStream) {
