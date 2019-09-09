@@ -54,8 +54,18 @@ if ($LastExitCode) {
 }
 
 Write-Host "================================================================"
-Write-Host "Compiling with Debug config $(Get-Date -Format o)."
+Write-Host "Compiling the project $(Get-Date -Format o)."
 cmake --build cmake-out/w
 if ($LastExitCode) {
     throw "cmake failed with exit code $LastExitCode"
+}
+
+if (Test-Path env:RUN_INTEGRATION_TESTS ) {
+  Write-Host "================================================================"
+  Write-Host "Run integration tests $(Get-Date -Format o)."
+  cd cmake-out/w
+  ctest --output-on-failure -L integration-tests -j 1
+  if ($LastExitCode) {
+      throw "Integration tests failed with exit code $LastExitCode"
+  }
 }

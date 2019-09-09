@@ -88,7 +88,7 @@ ExternalProject_Add(
                   <BINARY_DIR>
     TEST_COMMAND  ${CMAKE_CTEST_COMMAND}
                   --output-on-failure
-                  -j 1
+                  -LE integration-tests
                   # TODO(#23) - Use this when install is implemented.
     INSTALL_COMMAND ""
     LOG_DOWNLOAD OFF
