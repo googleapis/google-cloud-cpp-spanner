@@ -51,8 +51,8 @@ class PollingPolicy {
    * Return a copy of the current policy.
    *
    * This function is called at the beginning of the polling loop. Policies that
-   * are based on relative time should take a timestamp when this function is
-   * called.
+   * are based on relative time should restart their timers when this function
+   * is called.
    */
   virtual std::unique_ptr<PollingPolicy> clone() const = 0;
 
