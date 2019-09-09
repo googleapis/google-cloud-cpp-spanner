@@ -63,7 +63,7 @@ if ($LastExitCode) {
 if (Test-Path env:RUN_INTEGRATION_TESTS ) {
   Write-Host "================================================================"
   Write-Host "Run integration tests $(Get-Date -Format o)."
-  cd cmake-out/w
+  cd cmake-out\w\build\g-c-spanner\src\g-c-spanner-build
   ctest --output-on-failure -L integration-tests -j 1
   if ($LastExitCode) {
       throw "Integration tests failed with exit code $LastExitCode"
