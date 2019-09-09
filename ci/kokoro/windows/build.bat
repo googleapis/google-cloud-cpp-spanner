@@ -24,6 +24,7 @@ cmd /c gcloud auth activate-service-account --key-file "%KOKORO_GFILE_DIR%/build
 
 call "%KOKORO_GFILE_DIR%/spanner-integration-tests-config.bat"
 set GOOGLE_APPLICATION_CREDENTIALS="%KOKORO_GFILE_DIR%/spanner-credentials.json"
+set GOOGLE_CLOUD_CPP_AUTO_RUN_EXAMPLES=yes
 
 echo %date% %time%
 powershell -exec bypass ci\kokoro\windows\build-dependencies.ps1
