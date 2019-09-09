@@ -17,6 +17,11 @@
 #include <cinttypes>
 #include <cstdio>
 
+// To avoid secure warnings on Windows
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 namespace google {
 namespace cloud {
 namespace spanner {
