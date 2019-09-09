@@ -7,7 +7,6 @@ var searchData=
   ['day',['day',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html#a45aa5e22c824b5ad02b81ccc58efc4ae',1,'google::cloud::spanner::v0::Date']]],
   ['deserializequerypartition',['DeserializeQueryPartition',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a5193c588900afa93d2ba3bd34b698964',1,'google::cloud::spanner::v0']]],
   ['deserializereadpartition',['DeserializeReadPartition',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aca3e9bd1afccb8b09a0a01f34c931bd6',1,'google::cloud::spanner::v0']]],
-  ['disable_5fclog',['disable_clog',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#a29c2bdde7d8675c91d87b314e35f3d51',1,'google::cloud::spanner::v0::ConnectionOptions']]],
   ['disable_5ftracing',['disable_tracing',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#a34dc334bc3c310a1f050cfbe7a4d61f4',1,'google::cloud::spanner::v0::ConnectionOptions']]],
   ['dropdatabase',['DropDatabase',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#ab15edc47e3ec043f3ba97a414ae73dc1',1,'google::cloud::spanner::v0::DatabaseAdminClient']]]
 ];
