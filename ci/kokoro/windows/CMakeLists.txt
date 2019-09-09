@@ -86,9 +86,9 @@ ExternalProject_Add(
     BUILD_COMMAND ${CMAKE_COMMAND}
                   --build
                   <BINARY_DIR>
-                  TEST_COMMAND
-                  ${CMAKE_CTEST_COMMAND}
+    TEST_COMMAND  ${CMAKE_CTEST_COMMAND}
                   --output-on-failure
+                  -j 1
                   # TODO(#23) - Use this when install is implemented.
     INSTALL_COMMAND ""
     LOG_DOWNLOAD OFF
