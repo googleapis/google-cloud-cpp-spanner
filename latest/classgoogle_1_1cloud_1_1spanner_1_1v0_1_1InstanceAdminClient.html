@@ -89,6 +89,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afd8673be3c173565b7021e1aa7dd8285"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; google::spanner::admin::instance::v1::Instance &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminClient.html#afd8673be3c173565b7021e1aa7dd8285">GetInstance</a> (std::string const &amp;project_id, std::string const &amp;instance_id)</td></tr>
 <tr class="memdesc:afd8673be3c173565b7021e1aa7dd8285"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve metadata information about a Cloud Spanner Instance.  <a href="#afd8673be3c173565b7021e1aa7dd8285">More...</a><br /></td></tr>
 <tr class="separator:afd8673be3c173565b7021e1aa7dd8285"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb99d864ef8d18f71cc62baa56758578"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a71cb6e79b7fb96cdd1bf646b8ab8e09b">ListInstancesRange</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminClient.html#adb99d864ef8d18f71cc62baa56758578">ListInstances</a> (std::string project_id, std::string filter)</td></tr>
+<tr class="memdesc:adb99d864ef8d18f71cc62baa56758578"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a list of instances for a given project.  <a href="#adb99d864ef8d18f71cc62baa56758578">More...</a><br /></td></tr>
+<tr class="separator:adb99d864ef8d18f71cc62baa56758578"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a23ac1a041175def4102f55e7a292d59a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminClient.html#a23ac1a041175def4102f55e7a292d59a">InstanceAdminClient</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminClient.html">InstanceAdminClient</a> const &amp;)=default</td></tr>
 <tr class="separator:a23ac1a041175def4102f55e7a292d59a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -258,7 +261,41 @@ Friends</h2></td></tr>
 <dl class="section user"><dt>Idempotency</dt><dd>This is a read-only operation and therefore it is always treated as idempotent.</dd></dl>
 <dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminClient.html#afd8673be3c173565b7021e1aa7dd8285">GetInstance</a>(google::cloud::spanner::InstanceAdminClient client,</div><div class="line">                 std::string <span class="keyword">const</span>&amp; project_id,</div><div class="line">                 std::string <span class="keyword">const</span>&amp; instance_id) {</div><div class="line">  <span class="keyword">auto</span> instance = client.GetInstance(project_id, instance_id);</div><div class="line">  <span class="keywordflow">if</span> (!instance) <span class="keywordflow">throw</span> std::runtime_error(instance.status().message());</div><div class="line"></div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;The instance &quot;</span> &lt;&lt; instance-&gt;name()</div><div class="line">            &lt;&lt; <span class="stringliteral">&quot; exists and its metadata is:\n&quot;</span></div><div class="line">            &lt;&lt; instance-&gt;DebugString() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div><div class="line">}</div></div><!-- fragment --></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="instance__admin__client_8cc_source.html#l00023">23</a> of file <a class="el" href="instance__admin__client_8cc_source.html">instance_admin_client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="instance__admin__client_8cc_source.html#l00022">22</a> of file <a class="el" href="instance__admin__client_8cc_source.html">instance_admin_client.cc</a>.</p>
+
+</div>
+</div>
+<a id="adb99d864ef8d18f71cc62baa56758578"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb99d864ef8d18f71cc62baa56758578">&#9670;&nbsp;</a></span>ListInstances()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a71cb6e79b7fb96cdd1bf646b8ab8e09b">ListInstancesRange</a> google::cloud::spanner::v0::InstanceAdminClient::ListInstances </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>project_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>filter</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieve a list of instances for a given project. </p>
+<dl class="section user"><dt>Idempotency</dt><dd>This is a read-only operation and therefore it is always treated as idempotent.</dd></dl>
+<dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminClient.html#adb99d864ef8d18f71cc62baa56758578">ListInstances</a>(google::cloud::spanner::InstanceAdminClient client,</div><div class="line">                   std::string <span class="keyword">const</span>&amp; project_id) {</div><div class="line">  <span class="keywordtype">int</span> count = 0;</div><div class="line">  <span class="keywordflow">for</span> (<span class="keyword">auto</span> instance : client.ListInstances(project_id, <span class="stringliteral">&quot;&quot;</span>)) {</div><div class="line">    <span class="keywordflow">if</span> (!instance) <span class="keywordflow">throw</span> std::runtime_error(instance.status().message());</div><div class="line">    ++count;</div><div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Instance [&quot;</span> &lt;&lt; count &lt;&lt; <span class="stringliteral">&quot;]:\n&quot;</span></div><div class="line">              &lt;&lt; instance-&gt;DebugString() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div><div class="line">  }</div><div class="line">  <span class="keywordflow">if</span> (count == 0) {</div><div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;No instances found in project &quot;</span> &lt;&lt; project_id;</div><div class="line">  }</div><div class="line">}</div></div><!-- fragment --></dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="instance__admin__client_8cc_source.html#l00028">28</a> of file <a class="el" href="instance__admin__client_8cc_source.html">instance_admin_client.cc</a>.</p>
 
 </div>
 </div>
