@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "google/cloud/spanner/internal/date.h"
-#include <array>
-#include <cinttypes>
-#include <cstdio>
-
 // To avoid secure warnings on Windows
 #ifdef _MSC_VER
 #define _CRT_SECURE_NO_WARNINGS
 #endif
+
+#include "google/cloud/spanner/internal/date.h"
+#include <array>
+#include <cinttypes>
+#include <cstdio>
 
 namespace google {
 namespace cloud {
