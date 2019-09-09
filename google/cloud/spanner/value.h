@@ -523,7 +523,7 @@ class Value {
     google::spanner::v1::Type const& type;
     template <typename T>
     void operator()(T& t) {
-      auto value = GetValue(T{}, list_value.values(i), type);
+      auto value = GetValue(T{}, list_value.values(static_cast<int>(i)), type);
       ++i;
       if (!value) {
         status = std::move(value).status();
@@ -533,8 +533,8 @@ class Value {
     }
     template <typename T>
     void operator()(std::pair<std::string, T>& p) {
-      p.first = type.struct_type().fields(i).name();
-      auto value = GetValue(T{}, list_value.values(i), type);
+      p.first = type.struct_type().fields(static_cast<int>(i)).name();
+      auto value = GetValue(T{}, list_value.values(static_cast<int>(i)), type);
       ++i;
       if (!value) {
         status = std::move(value).status();
