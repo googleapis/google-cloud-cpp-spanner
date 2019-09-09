@@ -518,12 +518,12 @@ class Value {
   // types from a ListValue proto and store then in a tuple.
   struct ExtractTupleValues {
     Status& status;
-    std::size_t i;
+    int i;
     google::protobuf::ListValue const& list_value;
     google::spanner::v1::Type const& type;
     template <typename T>
     void operator()(T& t) {
-      auto value = GetValue(T{}, list_value.values(static_cast<int>(i)), type);
+      auto value = GetValue(T{}, list_value.values(i), type);
       ++i;
       if (!value) {
         status = std::move(value).status();
@@ -533,8 +533,8 @@ class Value {
     }
     template <typename T>
     void operator()(std::pair<std::string, T>& p) {
-      p.first = type.struct_type().fields(static_cast<int>(i)).name();
-      auto value = GetValue(T{}, list_value.values(static_cast<int>(i)), type);
+      p.first = type.struct_type().fields(i).name();
+      auto value = GetValue(T{}, list_value.values(i), type);
       ++i;
       if (!value) {
         status = std::move(value).status();
