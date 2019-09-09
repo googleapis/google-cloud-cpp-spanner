@@ -74,6 +74,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Control the Cloud Spanner C++ client library behavior with respect to polling on long running operations.  
+ <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1PollingPolicy.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="polling__policy_8h_source.html">google/cloud/spanner/polling_policy.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -81,15 +84,23 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afd75230907ff017e9cc6def345700840"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1PollingPolicy.html#afd75230907ff017e9cc6def345700840">~PollingPolicy</a> ()=default</td></tr>
 <tr class="separator:afd75230907ff017e9cc6def345700840"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84ec286d5ba523c4c9816dc95efc4ff3"><td class="memItemLeft" align="right" valign="top">virtual std::unique_ptr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1PollingPolicy.html">PollingPolicy</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1PollingPolicy.html#a84ec286d5ba523c4c9816dc95efc4ff3">clone</a> () const =0</td></tr>
+<tr class="memdesc:a84ec286d5ba523c4c9816dc95efc4ff3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of the current policy.  <a href="#a84ec286d5ba523c4c9816dc95efc4ff3">More...</a><br /></td></tr>
 <tr class="separator:a84ec286d5ba523c4c9816dc95efc4ff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92ca9c4de2b03633f9bd49cb79f618d7"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1PollingPolicy.html#a92ca9c4de2b03633f9bd49cb79f618d7">OnFailure</a> (google::cloud::Status const &amp;status)=0</td></tr>
+<tr class="memdesc:a92ca9c4de2b03633f9bd49cb79f618d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback to indicate that a polling attempt failed.  <a href="#a92ca9c4de2b03633f9bd49cb79f618d7">More...</a><br /></td></tr>
 <tr class="separator:a92ca9c4de2b03633f9bd49cb79f618d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae6c7b0b7f68c57a07f69e6fc43394fe"><td class="memItemLeft" align="right" valign="top">virtual std::chrono::milliseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1PollingPolicy.html#aae6c7b0b7f68c57a07f69e6fc43394fe">WaitPeriod</a> ()=0</td></tr>
+<tr class="memdesc:aae6c7b0b7f68c57a07f69e6fc43394fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">How long should the polling loop wait before trying again.  <a href="#aae6c7b0b7f68c57a07f69e6fc43394fe">More...</a><br /></td></tr>
 <tr class="separator:aae6c7b0b7f68c57a07f69e6fc43394fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="polling__policy_8h_source.html#l00027">27</a> of file <a class="el" href="polling__policy_8h_source.html">polling_policy.h</a>.</p>
+<div class="textblock"><p>Control the Cloud Spanner C++ client library behavior with respect to polling on long running operations. </p>
+<p>Some operations in Cloud Spanner return a <code>google.longrunning.Operation</code> object. As their name implies, these objects represent requests that may take a long time to complete, in the case of Cloud Spanner some operations may take tens of seconds or even 30 minutes to complete.</p>
+<p>The Cloud Spanner C++ client library models these long running operations as a <code>google::cloud::future&lt;StatusOr&lt;T&gt;&gt;</code>, where <code>T</code> represents the final result of the operation. In the background, the library polls the service until the operation completes (or fails) and then satisfies the future.</p>
+<p>This class defines the interface for policies that control the behavior of this polling loop.</p>
+<dl class="section see"><dt>See also</dt><dd><a href="https://aip.dev/151">https://aip.dev/151</a> for more information on long running operations. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="polling__policy_8h_source.html#l00046">46</a> of file <a class="el" href="polling__policy_8h_source.html">polling_policy.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="afd75230907ff017e9cc6def345700840"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afd75230907ff017e9cc6def345700840">&#9670;&nbsp;</a></span>~PollingPolicy()</h2>
@@ -140,6 +151,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Return a copy of the current policy. </p>
+<p>This function is called at the beginning of the polling loop. Policies that are based on relative time should restart their timers when this function is called. </p>
+
 <p>Implemented in <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1GenericPollingPolicy.html#a34768dd99b02713cbc62d4e0608d045e">google::cloud::spanner::v0::GenericPollingPolicy&lt; Retry, Backoff &gt;</a>.</p>
 
 </div>
@@ -168,6 +182,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>A callback to indicate that a polling attempt failed. </p>
+<p>This is called when a polling request fails. Note that this callback is not invoked when the polling request succeeds with "operation not done".</p>
+<dl class="section return"><dt>Returns</dt><dd>true if the failure should be treated as transient and the polling loop should continue. </dd></dl>
+
 <p>Implemented in <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1GenericPollingPolicy.html#ae62739a58c103a4f0d3d3a533ce870a4">google::cloud::spanner::v0::GenericPollingPolicy&lt; Retry, Backoff &gt;</a>.</p>
 
 </div>
@@ -194,6 +212,8 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>How long should the polling loop wait before trying again. </p>
 
 <p>Implemented in <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1GenericPollingPolicy.html#aea74894314f203a8243f50672b305e90">google::cloud::spanner::v0::GenericPollingPolicy&lt; Retry, Backoff &gt;</a>.</p>
 
