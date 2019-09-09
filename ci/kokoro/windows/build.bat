@@ -22,6 +22,9 @@ call "c:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary
 echo %date% %time%
 cmd /c gcloud auth activate-service-account --key-file "%KOKORO_GFILE_DIR%/build-results-service-account.json"
 
+call "%KOKORO_GFILE_DIR%/spanner-integration-tests-config.bat"
+set GOOGLE_APPLICATION_CREDENTIALS="%KOKORO_GFILE_DIR%/spanner-credentials.json"
+
 echo %date% %time%
 powershell -exec bypass ci\kokoro\windows\build-dependencies.ps1
 if %errorlevel% neq 0 exit /b %errorlevel%
