@@ -81,6 +81,8 @@ ExternalProject_Add(
                -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
                -DVCPKG_TARGET_TRIPLET=${VCPKG_TARGET_TRIPLET}
                -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+               "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} \
+                  -I${GOOGLE_CLOUD_CPP_EXTERNAL_PREFIX}/include"
     BUILD_COMMAND ${CMAKE_COMMAND}
                   --build
                   <BINARY_DIR>
