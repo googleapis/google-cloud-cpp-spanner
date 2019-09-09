@@ -83,13 +83,12 @@ ExternalProject_Add(
                -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} \
                   -I${GOOGLE_CLOUD_CPP_EXTERNAL_PREFIX}/include"
-    BUILD_COMMAND ${CMAKE_COMMAND}
-                  --build
-                  <BINARY_DIR>
-    TEST_COMMAND  ${CMAKE_CTEST_COMMAND}
-                  --output-on-failure
-                  -LE integration-tests
-                  # TODO(#23) - Use this when install is implemented.
+    BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR>
+    TEST_COMMAND ${CMAKE_CTEST_COMMAND}
+                 --output-on-failure
+                 -LE
+                 integration-tests
+                 # TODO(#23) - Use this when install is implemented.
     INSTALL_COMMAND ""
     LOG_DOWNLOAD OFF
     LOG_CONFIGURE OFF
