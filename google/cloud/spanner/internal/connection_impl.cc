@@ -464,7 +464,7 @@ StatusOr<std::unique_ptr<SessionHolder>> ConnectionImpl::GetSession(
 
   // TODO(#409) take a (weak) reference to `this` to avoid use-after-free.
   auto deleter = dissociate_from_pool
-                     ? std::function<void(std::string)>(nullptr)
+                     ? std::function<void(std::string)>()
                      : [this](std::string session) {
                          this->ReleaseSession(std::move(session));
                        };
