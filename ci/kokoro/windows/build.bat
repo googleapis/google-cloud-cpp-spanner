@@ -23,7 +23,7 @@ echo %date% %time%
 cmd /c gcloud auth activate-service-account --key-file "%KOKORO_GFILE_DIR%/build-results-service-account.json"
 
 call "%KOKORO_GFILE_DIR%/spanner-integration-tests-config.bat"
-set GOOGLE_APPLICATION_CREDENTIALS="%KOKORO_GFILE_DIR%/spanner-credentials.json"
+set GOOGLE_APPLICATION_CREDENTIALS=%KOKORO_GFILE_DIR%\spanner-credentials.json
 set GOOGLE_CLOUD_CPP_AUTO_RUN_EXAMPLES=yes
 set GRPC_DEFAULT_SSL_ROOTS_FILE_PATH=T:\src\github\vcpkg\packages\grpc_x64-windows-static\share\grpc\roots.pem
 
