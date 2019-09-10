@@ -14,6 +14,7 @@ var searchData=
   ['partitionqueryparams',['PartitionQueryParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1PartitionQueryParams.html',1,'google::cloud::spanner::v0::Connection']]],
   ['partitionread',['PartitionRead',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae79520d087ff55c903e2351c5d36a446',1,'google::cloud::spanner::v0::Client::PartitionRead()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html#a1454df6f87dde5f097df21e2e26d607d',1,'google::cloud::spanner::v0::Connection::PartitionRead()']]],
   ['partitionreadparams',['PartitionReadParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1PartitionReadParams.html',1,'google::cloud::spanner::v0::Connection']]],
+  ['permissions',['permissions',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminConnection_1_1TestIamPermissionsParams.html#abec36bc132511fff17e18524c4e374ed',1,'google::cloud::spanner::v0::InstanceAdminConnection::TestIamPermissionsParams']]],
   ['pointer',['pointer',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html#aa5de4ed0325aa71924d223cc7f9899b8',1,'google::cloud::spanner::v0::RowParser::iterator']]],
   ['polling_5fpolicy_2eh',['polling_policy.h',['../polling__policy_8h.html',1,'']]],
   ['pollingpolicy',['PollingPolicy',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1PollingPolicy.html',1,'google::cloud::spanner::v0']]],
