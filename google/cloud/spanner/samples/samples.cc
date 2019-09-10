@@ -98,9 +98,10 @@ void InstanceTestIamPermissions(
 
   char const* msg = actual->permissions().empty() ? "does not" : "does";
 
-  std::cout << "The caller " << msg
-            << " have permission to databases on the Cloud Spanner instance "
-            << in.InstanceId() << "\n";
+  std::cout
+      << "The caller " << msg
+      << " have permission to list databases on the Cloud Spanner instance "
+      << in.InstanceId() << "\n";
 }
 //! [instance-test-iam-permissions]
 
