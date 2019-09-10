@@ -15,6 +15,10 @@ bazel-*
 .idea/
 cmake-build-*/
 
+# Ignore Visual Studio code directories.
+.vsbuild/
+.vscode/
+
 # This is a staging directory used to upload the documents to gihub.io
 github-io-staging/
 

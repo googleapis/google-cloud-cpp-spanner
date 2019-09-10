@@ -29,6 +29,7 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 # If possible, enable a code coverage build type.
 include(EnableCoverage)
+include(SelectMSVCRuntime)
 
 # C++ Exceptions are enabled by default, but allow the user to turn them off.
 include(EnableCxxExceptions)
