@@ -97,8 +97,7 @@ Transaction::Transaction(std::string session_id, std::string transaction_id) {
   google::spanner::v1::TransactionSelector selector;
   selector.set_id(std::move(transaction_id));
   impl_ = std::make_shared<internal::TransactionImpl>(
-      ::google::cloud::internal::make_unique<internal::Session>(
-          std::move(session_id)),
+      internal::MakeDissociatedSessionHolder(std::move(session_id)),
       std::move(selector));
 }
 

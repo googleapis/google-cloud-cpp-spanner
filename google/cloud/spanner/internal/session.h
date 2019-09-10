@@ -19,6 +19,7 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <utility>
 
 namespace google {
 namespace cloud {
@@ -49,9 +50,21 @@ class Session {
 /**
  * A `SessionHolder` is a unique_ptr with a custom deleter that normally
  * returns the `Session` to the pool it came from (although in some cases it
- * just deletes the `Session`).
+ * just deletes the `Session` - see `MakeDissociatedSessionHolder`)
  */
 using SessionHolder = std::unique_ptr<Session, std::function<void(Session*)>>;
+
+/**
+ * Returns a `SessionHolder` for a new `Session` that is not associated with
+ * any pool; it just deletes the `Session`. This is for use in special cases
+ * like partitioned operations where the `Session` may be used on multiple
+ * machines and should not be returned to the pool.
+ */
+template <typename... Args>
+SessionHolder MakeDissociatedSessionHolder(Args&&... args) {
+  return SessionHolder(new Session(std::forward<Args>(args)...),
+                       std::default_delete<Session>());
+}
 
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS
