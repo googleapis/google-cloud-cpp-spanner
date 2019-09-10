@@ -12,11 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// To avoid secure warnings on Windows
-#ifdef _MSC_VER
-#define _CRT_SECURE_NO_WARNINGS
-#endif
-
 #include "google/cloud/spanner/internal/date.h"
 #include <array>
 #include <cinttypes>
