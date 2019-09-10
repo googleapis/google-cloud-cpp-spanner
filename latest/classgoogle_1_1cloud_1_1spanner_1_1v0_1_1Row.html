@@ -172,7 +172,7 @@ class google::cloud::spanner::v0::Row&lt; Types &gt;</h3>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00070">70</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00071">71</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a90e49e0d45aa1b281e963792880b3b56"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a90e49e0d45aa1b281e963792880b3b56">&#9670;&nbsp;</a></span>Row() <span class="overload">[1/4]</span></h2>
@@ -199,7 +199,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00079">79</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00080">80</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -291,7 +291,7 @@ template&lt;typename... Ts, typename std::enable_if&lt; !google::cloud::internal
 <p>See also the <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af" title="Helper factory function to construct Row&lt;Ts...&gt; objects holding the specified values.">MakeRow()</a></code> helper function template for a convenient way to make rows without having to also specify the value's types.</p>
 <p>This constructor is disabled if any of the specified types is <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a></code>, which prevents this constructor from taking over copy construction. </p>
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00099">99</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00100">100</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -327,7 +327,7 @@ template&lt;std::size_t I&gt; </div>
 <p>The value category of the returned reference matches the value category of <code>this</code>. That is, calling <code>get&lt;I&gt;()</code> on a non-const lvalue returns a non-const lvalue. Calling <code>get&lt;I&gt;()</code> on an rvalue returns an rvalue, etc.</p>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> row = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(<span class="keyword">true</span>, <span class="stringliteral">&quot;foo&quot;</span>);</div><div class="line">assert(row.get&lt;0&gt;() == <span class="keyword">true</span>);</div><div class="line">assert(row.get&lt;1&gt;() == <span class="stringliteral">&quot;foo&quot;</span>);</div><div class="line"></div><div class="line">Row&lt;bool, std::string&gt; F();</div><div class="line">std::string x = F().get&lt;1&gt;();</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00120">120</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00121">121</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -358,7 +358,7 @@ template&lt;std::size_t I&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00124">124</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00125">125</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -389,7 +389,7 @@ template&lt;std::size_t I&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00128">128</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00129">129</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -420,7 +420,7 @@ template&lt;std::size_t I&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00132">132</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00133">133</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -461,7 +461,7 @@ template&lt;std::size_t... Is, typename std::enable_if&lt;(sizeof...(Is) &gt; 1&
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00156">156</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00157">157</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -494,7 +494,7 @@ template&lt;typename... Types&gt; </div>
 <p>This function is const/non-const x lvalue/rvalue overloaded. This enables a caller to move the returned tuple out of the <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>.</p>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> row = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(<span class="keyword">true</span>, <span class="stringliteral">&quot;foo&quot;</span>, 42);</div><div class="line">std::tuple&lt;bool, std::string, std::int64_t&gt; tup</div><div class="line">    = row.get();</div><div class="line">assert(std::get&lt;0&gt;(tup) == <span class="keyword">true</span>);</div><div class="line">assert(std::get&lt;1&gt;(tup) == <span class="stringliteral">&quot;foo&quot;</span>);</div><div class="line">assert(std::get&lt;2&gt;(tup) == 42);</div><div class="line"></div><div class="line"><span class="keyword">auto</span> moved_tup = std::move(row).get();</div><div class="line">assert(moved_tup == tup);</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00181">181</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00182">182</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -523,7 +523,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00182">182</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00183">183</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -552,7 +552,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00183">183</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00184">184</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -581,7 +581,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00184">184</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00185">185</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -668,7 +668,7 @@ template&lt;typename... Types&gt; </div>
 
 <p>Returns the number of columns in this row. </p>
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00076">76</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00077">77</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -701,7 +701,7 @@ template&lt;typename... Types&gt; </div>
 <dl class="section note"><dt>Note</dt><dd>If the <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>'s values are large, it may be more efficient to "move" them into the returned array.</dd></dl>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> row = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(<span class="keyword">true</span>, <span class="stringliteral">&quot;foo&quot;</span>, 42);</div><div class="line">std::array&lt;Value, 3&gt; a = row.values();</div><div class="line">assert(a[0].get&lt;bool&gt;() == <span class="keyword">true</span>);</div><div class="line">assert(a[1].get&lt;std::string&gt;() == <span class="stringliteral">&quot;foo&quot;</span>);</div><div class="line">assert(a[2].get&lt;std::int64_t&gt;() == 42);</div><div class="line"></div><div class="line"><span class="comment">// Potentially more efficient if `row` is no longer needed.</span></div><div class="line">std::array&lt;Value, 3&gt; b = std::move(row).values();</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00205">205</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00206">206</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -734,7 +734,7 @@ template&lt;typename... Types&gt; </div>
 <dl class="section note"><dt>Note</dt><dd>If the <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>'s values are large, it may be more efficient to "move" them into the returned array.</dd></dl>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> row = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(<span class="keyword">true</span>, <span class="stringliteral">&quot;foo&quot;</span>, 42);</div><div class="line">std::array&lt;Value, 3&gt; a = row.values();</div><div class="line">assert(a[0].get&lt;bool&gt;() == <span class="keyword">true</span>);</div><div class="line">assert(a[1].get&lt;std::string&gt;() == <span class="stringliteral">&quot;foo&quot;</span>);</div><div class="line">assert(a[2].get&lt;std::int64_t&gt;() == 42);</div><div class="line"></div><div class="line"><span class="comment">// Potentially more efficient if `row` is no longer needed.</span></div><div class="line">std::array&lt;Value, 3&gt; b = std::move(row).values();</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00211">211</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00212">212</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -775,7 +775,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00222">222</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00223">223</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -815,7 +815,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00229">229</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00230">230</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -855,7 +855,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00232">232</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00233">233</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -895,7 +895,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00219">219</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00220">220</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -935,7 +935,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00235">235</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00236">236</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -975,7 +975,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00238">238</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00239">239</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -1018,7 +1018,7 @@ template&lt;typename... Types&gt; </div>
 <p>Allows Google Test to print internal debugging information when test assertions fail. </p>
 <dl class="section warning"><dt>Warning</dt><dd>This is intended for debugging and human consumption only, not machine consumption as the output format may change without notice. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00250">250</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00251">251</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>

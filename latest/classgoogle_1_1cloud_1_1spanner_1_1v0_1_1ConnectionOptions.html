@@ -127,7 +127,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The configuration parameters for spanner connections. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00038">38</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00039">39</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab8485f2902f2308f6440e277072b6974"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab8485f2902f2308f6440e277072b6974">&#9670;&nbsp;</a></span>ConnectionOptions() <span class="overload">[1/2]</span></h2>
@@ -208,7 +208,7 @@ Public Member Functions</h2></td></tr>
 <p>Prepend <code>prefix</code> to the user-agent string. </p>
 <p>Libraries or services that use the Cloud Spanner C++ client may want to set their own user-agent prefix. This can help them develop telemetry information about number of users running particular versions of their system or library. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00133">133</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00134">134</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -239,7 +239,7 @@ Public Member Functions</h2></td></tr>
 <p>In some cases applications may want to use a separate gRPC connections for different clients. gRPC may share the connection used by separate channels created with the same configuration. The client objects created with this object will create gRPC channels configured with <code>grpc.channel_pooling_domain</code> set to the value returned by <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#aaa36738cbde0febd10f5c98a4bfbfd13" title="Define the gRPC channel domain for clients configured with this object.">channel_pool_domain()</a></code>. gRPC channels with different values for <code>grpc.channel_pooling_domain</code> are guaranteed to use different connections. Note that there is no guarantee that channels with the same value will have the same connection though.</p>
 <p>This option might be useful for applications that want to segregate traffic for whatever reason. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00117">117</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00118">118</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -290,7 +290,7 @@ Public Member Functions</h2></td></tr>
 
 <p>The gRPC credentials used by clients configured with this object. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00055">55</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00056">56</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -320,7 +320,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Disable tracing for <code>component</code> in clients configured with this object. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00096">96</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00097">97</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -350,7 +350,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Enable tracing for <code>component</code> in clients configured with this object. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00090">90</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00091">91</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -379,7 +379,7 @@ Public Member Functions</h2></td></tr>
 
 <p>The endpoint used by clients configured with this object. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00072">72</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00073">73</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -409,7 +409,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Set the value for <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#aaa36738cbde0febd10f5c98a4bfbfd13" title="Define the gRPC channel domain for clients configured with this object.">channel_pool_domain()</a></code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00120">120</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00121">121</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -439,7 +439,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Change the gRPC credentials from the default of <code>grpc::GoogleDefaultCredentials()</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00048">48</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00049">49</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -470,7 +470,7 @@ Public Member Functions</h2></td></tr>
 <p>Change the gRPC endpoint used to contact the Cloud Spanner service. </p>
 <p>In almost all cases the default ("spanner.googleapis.com") is the correct endpoint to use. It may need to be changed to (1) test against a fake or simulator, or (2) to use a beta or EAP version of the service. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00066">66</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00067">67</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -502,7 +502,7 @@ Public Member Functions</h2></td></tr>
 <p>The Cloud Spanner C++ client can log interesting events to help library and application developers troubleshoot problems with the library or their configuration. This flag returns true if tracing should be enabled by clients configured with this option.</p>
 <p>Currently only the <code>rpc</code> component is supported, which enables logging of each RPC, including its parameters and any responses. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00085">85</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00086">86</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -531,7 +531,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Return the current value for the user agent string. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00141">141</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00142">142</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
