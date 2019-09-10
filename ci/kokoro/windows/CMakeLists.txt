@@ -27,12 +27,9 @@ include(external/external-project-helpers)
 google_cloud_cpp_set_prefix_vars()
 
 include(ExternalProject)
-set(
-    GOOGLE_CLOUD_CPP_URL
-    "https://github.com/googleapis/google-cloud-cpp/archive/84772e182e5a82c9f839a9073cef88b9962c48cf.tar.gz"
-    )
+set(GOOGLE_CLOUD_CPP_URL "https://github.com/googleapis/archive/v0.13.0.tar.gz")
 set(GOOGLE_CLOUD_CPP_SHA256
-    "3bdf9266cd16c935f2c62bf6d151df8a15a307d612e966be0f340398785b9d31")
+    "35058ff14e4f9f49f78da2f1bbf1c03f27e8e40ec65c51f62720346e99803392")
 google_cloud_cpp_set_prefix_vars()
 
 ExternalProject_Add(
