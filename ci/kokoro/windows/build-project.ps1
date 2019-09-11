@@ -53,7 +53,7 @@ if ($LastExitCode) {
     throw "cmake failed with exit code $LastExitCode"
 }
 
-if (Test-Path env:RUN_INTEGRATION_TESTS ) {
+if ($env:RUN_INTEGRATION_TESTS -eq "true") {
   Write-Host "================================================================"
   Write-Host "Run integration tests $(Get-Date -Format o)."
   cd cmake-out\w\build\g-c-spanner\src\g-c-spanner-build
