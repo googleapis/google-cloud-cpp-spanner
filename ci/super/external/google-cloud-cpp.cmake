@@ -20,16 +20,15 @@ include(external/curl)
 include(external/crc32c)
 include(external/grpc)
 include(external/googleapis)
+include(external/googletest)
 
 if (NOT TARGET google-cloud-cpp-project)
     # Give application developers a hook to configure the version and hash
     # downloaded from GitHub.
-    set(
-        GOOGLE_CLOUD_CPP_URL
-        "https://github.com/googleapis/google-cloud-cpp/archive/7c4f218dbd9e1fbe08bc7187347d4da80198ec0a.tar.gz"
-        )
+    set(GOOGLE_CLOUD_CPP_URL
+        "https://github.com/googleapis/google-cloud-cpp/archive/v0.13.0.tar.gz")
     set(GOOGLE_CLOUD_CPP_SHA256
-        "a0a0c46afb099d9c36f142ca812d8ef0e15b5ce6a0373fb7cb923683c56256dc")
+        "35058ff14e4f9f49f78da2f1bbf1c03f27e8e40ec65c51f62720346e99803392")
 
     google_cloud_cpp_set_prefix_vars()
 
@@ -38,6 +37,7 @@ if (NOT TARGET google-cloud-cpp-project)
     ExternalProject_Add(
         google-cloud-cpp-project
         DEPENDS googleapis-project
+                googletest-project
                 grpc-project
                 curl-project
                 crc32c-project

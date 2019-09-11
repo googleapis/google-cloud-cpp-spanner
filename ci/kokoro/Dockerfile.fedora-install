@@ -64,9 +64,9 @@ RUN cmake --build cmake-out/gtest --target install -- -j $(nproc)
 # Download and compile googleapis/cpp-cmakefiles:
 
 WORKDIR /var/tmp/build
-RUN wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.4.tar.gz
-RUN tar -xf v0.1.4.tar.gz
-WORKDIR /var/tmp/build/cpp-cmakefiles-0.1.4
+RUN wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
+RUN tar -xf v0.1.5.tar.gz
+WORKDIR /var/tmp/build/cpp-cmakefiles-0.1.5
 # Compile without the tests because we are testing spanner, not the base
 # libraries
 RUN cmake -H. -Bcmake-out \
@@ -78,9 +78,9 @@ RUN cmake --build cmake-out --target install
 
 # Download and compile google-cloud-cpp from source too:
 WORKDIR /var/tmp/build
-RUN wget -q https://github.com/googleapis/google-cloud-cpp/archive/7c4f218dbd9e1fbe08bc7187347d4da80198ec0a.tar.gz
-RUN tar -xf 7c4f218dbd9e1fbe08bc7187347d4da80198ec0a.tar.gz
-WORKDIR /var/tmp/build/google-cloud-cpp-7c4f218dbd9e1fbe08bc7187347d4da80198ec0a
+RUN wget -q https://github.com/googleapis/google-cloud-cpp/archive/v0.13.0.tar.gz
+RUN tar -xf v0.13.0.tar.gz
+WORKDIR /var/tmp/build/google-cloud-cpp-0.13.0
 # Compile without the tests because we are testing spanner, not the base
 # libraries
 RUN cmake -H. -Bcmake-out \
