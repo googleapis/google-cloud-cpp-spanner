@@ -115,9 +115,13 @@ class InstanceAdminClient {
   /**
    * Get the IAM policy in effect for the given instance.
    *
-   * This function retries the IAM policy configured in the give instance, that
-   * is, which roles are enabled in the instance, and what entities are members
-   * of each role.
+   * This function retrieves the IAM policy configured in the given instance,
+   * that is, which roles are enabled in the instance, and what entities are
+   * members of each role.
+   *
+   * @par Idempotency
+   * This is a read-only operation and therefore it is always treated as
+   * idempotent.
    *
    * @par Example
    * @snippet samples.cc instance-get-iam-policy
