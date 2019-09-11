@@ -83,12 +83,17 @@ if [[ -r "${BINARY_DIR}/CTestTestfile.cmake" ]]; then
   echo "================================================================"
 fi
 
-if [[ ${RUN_INTEGRATION_TESTS} == "yes" ]]; then
+# yes: always try to run integration tests.
+# auto: only try to run integration tests if the config file is executable.
+readonly INTEGRATION_TESTS_CONFIG="/c/spanner-integration-tests-config.sh"
+if [[ "${RUN_INTEGRATION_TESTS}" == "yes" || \
+      ( "${RUN_INTEGRATION_TESTS}" == "auto" && \
+        -x "${INTEGRATION_TESTS_CONFIG}" ) ]]; then
   echo "================================================================"
   echo "Running the integration tests $(date)"
   echo "================================================================"
   # shellcheck disable=SC1091
-  source /c/spanner-integration-tests-config.sh
+  source "${INTEGRATION_TESTS_CONFIG}"
   export GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json
   export GOOGLE_CLOUD_CPP_AUTO_RUN_EXAMPLES=yes
 

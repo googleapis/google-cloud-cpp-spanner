@@ -71,12 +71,17 @@ echo "================================================================"
     "${bazel_args[@]}" \
     -- //google/cloud/...:all
 
-if [[ ${RUN_INTEGRATION_TESTS} == "yes" ]]; then
+readonly INTEGRATION_TESTS_CONFIG="/c/spanner-integration-tests-config.sh"
+# yes: always try to run integration tests
+# auto: only try to run integration tests if the config file is executable.
+if [[ "${RUN_INTEGRATION_TESTS}" == "yes" || \
+      ( "${RUN_INTEGRATION_TESTS}" == "auto" && \
+        -x "${INTEGRATION_TESTS_CONFIG}" ) ]]; then
   echo "================================================================"
   echo "Running the integration tests $(date)"
   echo "================================================================"
   # shellcheck disable=SC1091
-  source /c/spanner-integration-tests-config.sh
+  source "${INTEGRATION_TESTS_CONFIG}"
 
   # Run the integration tests using Bazel to drive them.
   "${BAZEL_BIN}" test \
