@@ -1040,13 +1040,11 @@ TEST(ConnectionImplTest, TransactionSessionBinding) {
     EXPECT_EQ(row->get<0>(), 3);
   }
 }
+
 /**
- * @test Verify that if a `Transaction` outlives the `ConnectionImpl` it was
- * used with, it does not call back into the deleted `ConnectionImpl` to release
- * the associated `Session`.
- *
- * TODO(salty) this test fails with the old code under msan, but not in a
- * regular build. That's not optimal, can we do better?
+ * @test Verify if a `Transaction` outlives the `ConnectionImpl` it was used
+ * with, it does not call back into the deleted `ConnectionImpl` to release
+ * the associated `Session` (which would be detected in asan/msan builds.)
  */
 TEST(ConnectionImplTest, TransactionOutlivesConnection) {
   auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
@@ -1079,9 +1077,9 @@ TEST(ConnectionImplTest, TransactionOutlivesConnection) {
   EXPECT_STATUS_OK(result);
   EXPECT_THAT(txn, HasSessionAndTransactionId("test-session-name", "ABCDEF00"));
 
-  // `conn` is the only reference to the `ConnectionImpl`, so this will cause
-  // the `ConnectionImpl` object to be deleted, while `txn` and its associated
-  // `Session` continues to live on.
+  // `conn` is the only reference to the `ConnectionImpl`, so dropping it will
+  // cause the `ConnectionImpl` object to be deleted, while `txn` and its
+  // associated `Session` continues to live on.
   conn.reset();
 }
 

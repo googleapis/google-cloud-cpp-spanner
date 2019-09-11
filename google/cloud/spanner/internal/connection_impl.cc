@@ -461,25 +461,17 @@ StatusOr<SessionHolder> ConnectionImpl::GetSession(bool dissociate_from_pool) {
     return {std::move(session)};
   }
 
-  // TODO(salty) change this to 'if 0' to use the old code; the new test
-  // I added will fail but only under msan.
-#if 1
   std::weak_ptr<ConnectionImpl> connection = shared_from_this();
   return SessionHolder(session.release(), [connection](Session* session) {
     auto shared_connection = connection.lock();
     // If `connection` is still alive, release the `Session` to its pool;
-    // otherwise just delete the `Session`
+    // otherwise just delete the `Session`.
     if (shared_connection) {
       shared_connection->ReleaseSession(session);
     } else {
       delete session;
     }
   });
-#else
-  return SessionHolder(session.release(), [this](Session* session) {
-    this->ReleaseSession(session);
-  });
-#endif
 }
 
 void ConnectionImpl::ReleaseSession(Session* session) {
