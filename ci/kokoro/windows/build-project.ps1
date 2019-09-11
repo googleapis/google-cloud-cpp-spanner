@@ -17,13 +17,6 @@
 $ErrorActionPreference = "Stop"
 
 Write-Host "================================================================"
-Write-Host "Install Pscx module for current user $(Get-Date -Format o)."
-Install-Module Pscx -Force -AllowClobber -Scope CurrentUser
-if ($LastExitCode) {
-    throw "Error installing Pscx module $LastExitCode"
-}
-
-Write-Host "================================================================"
 Write-Host "Run CMake to create build scripts $(Get-Date -Format o)."
 
 # This script expects vcpkg to be installed in ..\vcpkg, discover the full
