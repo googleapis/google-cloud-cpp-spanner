@@ -39,6 +39,7 @@ this library for experimental code, nor for production workloads.
 [![CI status macos/bazel][macos/bazel-shield]][macos/bazel-link]
 [![CI status macos/cmake-super][macos/cmake-super-shield]][macos/cmake-super-link]
 [![CI status windows/bazel][windows/bazel-shield]][windows/bazel-link]
+[![CI status windows/cmake][windows/cmake-shield]][windows/cmake-link]
 [![Code Coverage Status][codecov-io-badge]][codecov-io-link]
 [![Link to Reference Documentation][doxygen-shield]][doxygen-link]
 
@@ -85,6 +86,8 @@ this library for experimental code, nor for production workloads.
 [doxygen-link]: https://googleapis.github.io/google-cloud-cpp-spanner/latest/
 [windows/bazel-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-windows-bazel.svg
 [windows/bazel-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-windows-bazel-link.html
+[windows/cmake-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-windows-cmake.svg
+[windows/cmake-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-windows-cmake-link.html
 
 <!-- End of automatically generated content -->"
 

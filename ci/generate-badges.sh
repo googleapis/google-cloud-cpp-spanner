@@ -36,6 +36,7 @@ find "${BINDIR}/kokoro/macos" "${BINDIR}/kokoro/docker" \
 
 cat <<'_EOF_'
 [![CI status windows/bazel][windows/bazel-shield]][windows/bazel-link]
+[![CI status windows/cmake][windows/cmake-shield]][windows/cmake-link]
 [![Code Coverage Status][codecov-io-badge]][codecov-io-link]
 [![Link to Reference Documentation][doxygen-shield]][doxygen-link]
 
@@ -74,6 +75,8 @@ cat <<'_EOF_'
 [doxygen-link]: https://googleapis.github.io/google-cloud-cpp-spanner/latest/
 [windows/bazel-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-windows-bazel.svg
 [windows/bazel-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-windows-bazel-link.html
+[windows/cmake-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-windows-cmake.svg
+[windows/cmake-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-windows-cmake-link.html
 
 <!-- End of automatically generated content -->"
 _EOF_
