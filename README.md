@@ -89,7 +89,7 @@ this library for experimental code, nor for production workloads.
 [windows/cmake-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-windows-cmake.svg
 [windows/cmake-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-windows-cmake-link.html
 
-<!-- End of automatically generated content -->"
+<!-- End of automatically generated content -->
 
 ## Documentation
 
