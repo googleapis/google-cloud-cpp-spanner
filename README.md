@@ -15,9 +15,12 @@ client library.
 
 ## Status
 
-This library is under active development, it is known to be incomplete,
-and is subject to change without notice. We do not recommend that you use
-this library for experimental code, nor for production workloads.
+This library supports Cloud Spanner at the [Alpha](README.md#versioning) quality
+level. The library should be usable for experimental code, but we do not
+recommend that you use this library for production workloads. Please note that,
+as is often the case with C++ libraries, we do **not** follow semantic
+versioning in the Cloud C++ client libraries. We make every effort to document
+backwards-incompatible API changes in the [release notes](#release-notes) below.
 
 <!-- Start of automatically generated content by ci/generate-badges.sh -->
 
