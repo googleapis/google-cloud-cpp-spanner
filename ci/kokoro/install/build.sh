@@ -86,6 +86,7 @@ if [[ -f "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh" ]]; then
     "--env" "GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json"
     "--env" "GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}"
     "--env" "GOOGLE_CLOUD_CPP_SPANNER_INSTANCE=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}"
+    "--env" "GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA=${GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA}"
 
     # Mount the config directory as a volumne in `/c`
     "--volume" "${CONFIG_DIRECTORY}:/c"

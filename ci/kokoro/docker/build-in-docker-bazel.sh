@@ -85,6 +85,7 @@ if [[ ${RUN_INTEGRATION_TESTS} == "yes" ]]; then
       "--test_env=GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json" \
       "--test_env=GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}" \
       "--test_env=GOOGLE_CLOUD_CPP_SPANNER_INSTANCE=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}" \
+      "--test_env=GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA=${GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA}" \
       "--test_env=GOOGLE_CLOUD_CPP_AUTO_RUN_EXAMPLES=yes" \
       "--test_tag_filters=integration-tests" \
       -- //google/cloud/...:all
