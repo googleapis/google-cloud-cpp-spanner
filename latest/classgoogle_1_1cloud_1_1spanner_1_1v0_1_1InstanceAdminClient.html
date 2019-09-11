@@ -92,6 +92,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adb99d864ef8d18f71cc62baa56758578"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a71cb6e79b7fb96cdd1bf646b8ab8e09b">ListInstancesRange</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminClient.html#adb99d864ef8d18f71cc62baa56758578">ListInstances</a> (std::string project_id, std::string filter)</td></tr>
 <tr class="memdesc:adb99d864ef8d18f71cc62baa56758578"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a list of instances for a given project.  <a href="#adb99d864ef8d18f71cc62baa56758578">More...</a><br /></td></tr>
 <tr class="separator:adb99d864ef8d18f71cc62baa56758578"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a030fef94476f383bed91051c95e2d737"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; google::iam::v1::Policy &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminClient.html#a030fef94476f383bed91051c95e2d737">GetIamPolicy</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Instance.html">Instance</a> const &amp;in)</td></tr>
+<tr class="memdesc:a030fef94476f383bed91051c95e2d737"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the IAM policy in effect for the given instance.  <a href="#a030fef94476f383bed91051c95e2d737">More...</a><br /></td></tr>
+<tr class="separator:a030fef94476f383bed91051c95e2d737"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a978ad8c5d46825a364aeb7e55c4861b0"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; google::iam::v1::TestIamPermissionsResponse &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminClient.html#a978ad8c5d46825a364aeb7e55c4861b0">TestIamPermissions</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Instance.html">Instance</a> const &amp;in, std::vector&lt; std::string &gt; permissions)</td></tr>
 <tr class="memdesc:a978ad8c5d46825a364aeb7e55c4861b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the subset of the permissions the caller has on the given instance.  <a href="#a978ad8c5d46825a364aeb7e55c4861b0">More...</a><br /></td></tr>
 <tr class="separator:a978ad8c5d46825a364aeb7e55c4861b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -234,6 +237,34 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a030fef94476f383bed91051c95e2d737"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a030fef94476f383bed91051c95e2d737">&#9670;&nbsp;</a></span>GetIamPolicy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">StatusOr&lt; google::iam::v1::Policy &gt; google::cloud::spanner::v0::InstanceAdminClient::GetIamPolicy </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Instance.html">Instance</a> const &amp;&#160;</td>
+          <td class="paramname"><em>in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the IAM policy in effect for the given instance. </p>
+<p>This function retrieves the IAM policy configured in the given instance, that is, which roles are enabled in the instance, and what entities are members of each role.</p>
+<dl class="section user"><dt>Idempotency</dt><dd>This is a read-only operation and therefore it is always treated as idempotent.</dd></dl>
+<dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line"><span class="keywordtype">void</span> InstanceGetIamPolicy(google::cloud::spanner::InstanceAdminClient client,</div><div class="line">                          std::string <span class="keyword">const</span>&amp; project_id,</div><div class="line">                          std::string <span class="keyword">const</span>&amp; instance_id) {</div><div class="line">  google::cloud::spanner::Instance in(project_id, instance_id);</div><div class="line">  <span class="keyword">auto</span> actual = client.GetIamPolicy(in);</div><div class="line">  <span class="keywordflow">if</span> (!actual) <span class="keywordflow">throw</span> std::runtime_error(actual.status().message());</div><div class="line"></div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;The IAM policy for instance &quot;</span> &lt;&lt; instance_id &lt;&lt; <span class="stringliteral">&quot; is:\n&quot;</span></div><div class="line">            &lt;&lt; actual-&gt;DebugString() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div><div class="line">}</div></div><!-- fragment --> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>The <a href="https://cloud.google.com/spanner/docs/iam">Cloud Spanner documentation</a> for a description of the roles and permissions supported by Cloud Spanner. </dd>
+<dd>
+<a href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a> for an introduction to Identity and Access Management in Google Cloud Platform. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="instance__admin__client_8cc_source.html#l00031">31</a> of file <a class="el" href="instance__admin__client_8cc_source.html">instance_admin_client.cc</a>.</p>
+
+</div>
+</div>
 <a id="ab2750d0f0b1b0e40e0f1f85017bed1c4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab2750d0f0b1b0e40e0f1f85017bed1c4">&#9670;&nbsp;</a></span>GetInstance()</h2>
 
@@ -378,7 +409,7 @@ Friends</h2></td></tr>
 <dd>
 <a href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a> for an introduction to Identity and Access Management in Google Cloud Platform. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="instance__admin__client_8cc_source.html#l00032">32</a> of file <a class="el" href="instance__admin__client_8cc_source.html">instance_admin_client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="instance__admin__client_8cc_source.html#l00037">37</a> of file <a class="el" href="instance__admin__client_8cc_source.html">instance_admin_client.cc</a>.</p>
 
 </div>
 </div>
