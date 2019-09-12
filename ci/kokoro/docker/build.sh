@@ -77,6 +77,15 @@ if [[ "${BUILD_NAME}" = "clang-tidy" ]]; then
   export CLANG_TIDY=yes
   export TEST_INSTALL=yes
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
+elif [[ "${BUILD_NAME}" = "publish-refdocs" ]]; then
+  export DISTRO=fedora-install
+  export DISTRO_VERSION=30
+  export CC=clang
+  export CXX=clang++
+  export BUILD_TYPE=Debug
+  export GENERATE_DOCS=yes
+  export RUN_INTEGRATION_TESTS=no
+  in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "integration" ]]; then
   export CC=gcc
   export CXX=g++
@@ -330,7 +339,11 @@ if [[ "${exit_status}" != 0 ]]; then
   echo "================================================================"
 fi
 
-"${PROJECT_ROOT}/ci/kokoro/docker/upload-docs.sh"
+if [[ "${BUILD_NAME}" == "publish-refdocs" ]]; then
+  "${PROJECT_ROOT}/ci/kokoro/docker/publish-refdocs.sh"
+else
+  "${PROJECT_ROOT}/ci/kokoro/docker/upload-docs.sh"
+fi
 
 "${PROJECT_ROOT}/ci/kokoro/docker/upload-coverage.sh" "${docker_flags[@]}"
 
