@@ -52,6 +52,18 @@ else
  exit 1
 fi
 
+# If RUN_INTEGRATION_TESTS is set in the environment, always use that value.
+# Otherwise, it's up to individual tests whether to leave RUN_INTEGRATION_TESTS
+# empty or set it to DEFAULT_RUN_INTEGRATION_TESTS.
+#
+# Default to "yes" for kokoro builds and "auto" otherwise (the former fails if
+# no configuration/credentials are available while the latter skips the tests).
+DEFAULT_RUN_INTEGRATION_TESTS="auto"
+if [[ -n "${KOKORO_JOB_NAME:-}" ]]; then
+  DEFAULT_RUN_INTEGRATION_TESTS="yes"
+fi
+export RUN_INTEGRATION_TESTS
+
 if [[ "${BUILD_NAME}" = "clang-tidy" ]]; then
   # Compile with clang-tidy(1) turned on. The build treats clang-tidy warnings
   # as errors.
@@ -68,22 +80,23 @@ if [[ "${BUILD_NAME}" = "clang-tidy" ]]; then
 elif [[ "${BUILD_NAME}" = "integration" ]]; then
   export CC=gcc
   export CXX=g++
-  export RUN_INTEGRATION_TESTS="${RUN_INTEGRATION_TESTS:-yes}"
+  # Integration tests were explicitly requested; use "yes" as the default.
+  : "${RUN_INTEGRATION_TESTS:=yes}"
 elif [[ "${BUILD_NAME}" = "asan" ]]; then
   export BAZEL_CONFIG=asan
   export CC=clang
   export CXX=clang++
-  export RUN_INTEGRATION_TESTS="${RUN_INTEGRATION_TESTS:-yes}"
+  : "${RUN_INTEGRATION_TESTS:=$DEFAULT_RUN_INTEGRATION_TESTS}"
 elif [[ "${BUILD_NAME}" = "ubsan" ]]; then
   export BAZEL_CONFIG=ubsan
   export CC=clang
   export CXX=clang++
-  export RUN_INTEGRATION_TESTS="${RUN_INTEGRATION_TESTS:-yes}"
+  : "${RUN_INTEGRATION_TESTS:=$DEFAULT_RUN_INTEGRATION_TESTS}"
 elif [[ "${BUILD_NAME}" = "tsan" ]]; then
   export BAZEL_CONFIG=tsan
   export CC=clang
   export CXX=clang++
-  export RUN_INTEGRATION_TESTS="${RUN_INTEGRATION_TESTS:-yes}"
+  : "${RUN_INTEGRATION_TESTS:=$DEFAULT_RUN_INTEGRATION_TESTS}"
 elif [[ "${BUILD_NAME}" = "noex" ]]; then
   export DISTRO=fedora-install
   export DISTRO_VERSION=30
@@ -98,7 +111,7 @@ elif [[ "${BUILD_NAME}" = "msan" ]]; then
   export BAZEL_CONFIG=msan
   export CC=clang
   export CXX=clang++
-  export RUN_INTEGRATION_TESTS="${RUN_INTEGRATION_TESTS:-yes}"
+  : "${RUN_INTEGRATION_TESTS:=$DEFAULT_RUN_INTEGRATION_TESTS}"
 elif [[ "${BUILD_NAME}" = "cmake" ]]; then
   export DISTRO=fedora-install
   export DISTRO_VERSION=30
@@ -133,7 +146,7 @@ elif [[ "${BUILD_NAME}" = "coverage" ]]; then
   export BUILD_TYPE=Coverage
   export DISTRO=fedora-install
   export DISTRO_VERSION=30
-  export RUN_INTEGRATION_TESTS="${RUN_INTEGRATION_TESTS:-yes}"
+  : "${RUN_INTEGRATION_TESTS:=$DEFAULT_RUN_INTEGRATION_TESTS}"
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "bazel-dependency" ]]; then
   export DISTRO=ubuntu
@@ -225,8 +238,9 @@ docker_flags=(
     # only the CMake builds use this flag.
     "--env" "CLANG_TIDY=${CLANG_TIDY:-}"
 
-    # If set to 'yes', run the integration tests. Currently only the Bazel
-    # builds use this flag.
+    # Whether to run the integration tests. 'yes' always runs the tests, 'auto'
+    # only runs the test if credentials are configured, 'no' (or any other
+    # value) does not run them.
     "--env" "RUN_INTEGRATION_TESTS=${RUN_INTEGRATION_TESTS:-}"
 
     # If set to 'yes', run Doxygen to generate the documents and detect simple
