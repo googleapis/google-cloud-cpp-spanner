@@ -116,6 +116,8 @@ Apache 2.0; see [`LICENSE`](LICENSE) for details.
 
 ## Release Notes
 
+### v0.2.x - 2019-XX
+
 ### v0.1.x - 2019-09
 
 * This is the initial Alpha release of the library.
