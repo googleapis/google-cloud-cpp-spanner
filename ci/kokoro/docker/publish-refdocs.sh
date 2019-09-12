@@ -58,7 +58,7 @@ readonly BRANCH
 
 echo "================================================================"
 echo "Installing docuploader package $(date)."
-python3 -m pip install gcp-docuploader
+python3 -m pip install --user gcp-docuploader
 
 cd "${BUILD_OUTPUT}/google/cloud/spanner/html"
 
@@ -82,7 +82,10 @@ python3 -m docuploader create-metadata \
   --language cpp
 
 echo "================================================================"
-echo "Publishing the docs $(date)."
+echo "Publishing the docs with the following metadata $(date)."
+
+cat docs.metadata
+echo "================================================================"
 
 python3 -m docuploader upload . \
   --credentials "${CREDENTIALS_FILE}" \
