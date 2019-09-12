@@ -20,7 +20,8 @@ level. The library should be usable for experimental code, but we do not
 recommend that you use this library for production workloads. Please note that,
 as is often the case with C++ libraries, we do **not** follow semantic
 versioning in the Cloud C++ client libraries. We make every effort to document
-backwards-incompatible API changes in the [release notes](#release-notes) below.
+backwards-incompatible API changes in the
+[release notes](README.md#release-notes) below.
 
 <!-- Start of automatically generated content by ci/generate-badges.sh -->
 
@@ -115,7 +116,19 @@ Apache 2.0; see [`LICENSE`](LICENSE) for details.
 
 ## Release Notes
 
-### v0.1.x - TBD
+### v0.1.x - 2019-09
+
+* This is the initial Alpha release of the library.
+* While this version is not recommended for production workloads it is stable
+  enough to use in experimental code. We welcome feedback about the library
+  through [GitHub issues][GitHub-new-issue].
+* The API is expected to undergo incompatible changes before Beta and GA.
+* The library supports all the operations to read and write data into Cloud
+  Spanner.
+* The library supports some administrative operations such as creating,
+  updating, and dropping databases.
+
+[GitHub-new-issue]: https://github.com/googleapis/google-cloud-cpp-spanner/issues/new
 
 ## Versioning
 
