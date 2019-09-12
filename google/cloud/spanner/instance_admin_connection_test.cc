@@ -28,6 +28,7 @@ namespace {
 using ::google::cloud::spanner_testing::IsProtoEqual;
 using ::google::protobuf::TextFormat;
 using ::testing::_;
+using ::testing::AtLeast;
 using ::testing::Invoke;
 using ::testing::Return;
 
@@ -341,6 +342,7 @@ TEST(InstanceAdminConnectionTest, TestIamPermissions_PermanentFailure) {
 TEST(InstanceAdminConnectionTest, TestIamPermissions_TooManyTransients) {
   auto mock = std::make_shared<spanner_testing::MockInstanceAdminStub>();
   EXPECT_CALL(*mock, TestIamPermissions(_, _))
+      .Times(AtLeast(2))
       .WillRepeatedly(Return(Status(StatusCode::kUnavailable, "try-again")));
 
   auto conn = MakeTestConnection(mock);
