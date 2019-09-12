@@ -15,7 +15,7 @@ First you should collect and update the release notes for the project. Prepare
 a pull request (PR) with the necessary changes to the README files in each
 project.
 
-Assuming you are working on your own fork of the `google-cloud-cpp-spanner` 
+Assuming you are working on your own fork of the `google-cloud-cpp-spanner`
 project, and `upstream` points to the `googleapis/google-cloud-cpp-spanner`
 remote, these commands should be useful in identifying important changes:
 
