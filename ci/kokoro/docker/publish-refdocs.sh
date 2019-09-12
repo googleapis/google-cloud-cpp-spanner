@@ -19,6 +19,11 @@ set -eu
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
 
+# docuploader needs python 3.5 or higher so run this on Kokoro
+if [[ -n "${KOKORO_JOB_NAME:-}" ]]; then
+  pyenv global 3.6.1
+fi
+
 if [[ -z "${CREDENTIALS_FILE:-}" ]]; then
   CREDENTIALS_FILE="${KOKORO_KEYSTORE_DIR}/73713_docuploader_service_account"
 fi
