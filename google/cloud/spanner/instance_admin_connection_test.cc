@@ -290,6 +290,7 @@ TEST(InstanceAdminConnectionTest, SetIamPolicy_NonIdempotent) {
 TEST(InstanceAdminConnectionTest, SetIamPolicy_Idempotent) {
   auto mock = std::make_shared<spanner_testing::MockInstanceAdminStub>();
   EXPECT_CALL(*mock, SetIamPolicy(_, _))
+      .Times(AtLeast(2))
       .WillRepeatedly(Return(Status(StatusCode::kUnavailable, "try-again")));
 
   auto conn = MakeTestConnection(mock);
