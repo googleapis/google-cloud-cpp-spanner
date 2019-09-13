@@ -65,6 +65,7 @@ bazel --output_user_root=C:\b test ^
   --test_env GOOGLE_APPLICATION_CREDENTIALS=%KOKORO_GFILE_DIR%/spanner-credentials.json ^
   --test_env GOOGLE_CLOUD_PROJECT=%GOOGLE_CLOUD_PROJECT% ^
   --test_env GOOGLE_CLOUD_CPP_SPANNER_INSTANCE=%GOOGLE_CLOUD_CPP_SPANNER_INSTANCE% ^
+  --test_env GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA=%GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA% ^
   --test_env GOOGLE_CLOUD_CPP_AUTO_RUN_EXAMPLES=yes ^
   --test_env GRPC_DEFAULT_SSL_ROOTS_FILE_PATH=%BAZEL_OUTPUT_DIR%/external/com_github_grpc_grpc/etc/roots.pem ^
   -- //google/cloud/spanner/...:all
