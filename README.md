@@ -87,7 +87,7 @@ backwards-incompatible API changes in the
 [codecov-io-badge]: https://codecov.io/gh/googleapis/google-cloud-cpp-spanner/branch/master/graph/badge.svg
 [codecov-io-link]: https://codecov.io/gh/googleapis/google-cloud-cpp-spanner
 [doxygen-shield]: https://img.shields.io/badge/documentation-master-brightgreen.svg
-[doxygen-link]: https://googleapis.github.io/google-cloud-cpp-spanner/latest/
+[doxygen-link]: https://googleapis.dev/cpp/google-cloud-spanner/latest/
 [windows/bazel-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-windows-bazel.svg
 [windows/bazel-link]:   https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-windows-bazel-link.html
 [windows/cmake-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner-windows-cmake.svg
