@@ -63,12 +63,7 @@ readonly BRANCH
 
 echo "================================================================"
 echo "Installing docuploader package $(date)."
-python3 -m pip install --user gcp-docuploader
-
-
-echo "================================================================"
-echo "Upgrading protobuf package $(date)."
-python3 -m pip install --user protobuf --upgrade
+python3 -m pip install --user gcp-docuploader protobuf --upgrade
 
 cd "${BUILD_OUTPUT}/google/cloud/spanner/html"
 
