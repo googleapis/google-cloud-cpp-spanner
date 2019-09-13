@@ -341,6 +341,7 @@ fi
 
 if [[ "${BUILD_NAME}" == "publish-refdocs" ]]; then
   "${PROJECT_ROOT}/ci/kokoro/docker/publish-refdocs.sh"
+  exit_status=$?
 else
   "${PROJECT_ROOT}/ci/kokoro/docker/upload-docs.sh"
 fi
