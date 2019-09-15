@@ -187,7 +187,7 @@ class RowParser {
       }
       values[i] = **std::move(v);
     }
-    curr_ = ParseRow<T, Ts...>(values);
+    curr_ = ParseRow<RowType>(values);
   }
 
   ValueSource value_source_;  // nullpr is end
