@@ -342,10 +342,12 @@ Row<internal::PromoteLiteral<Ts>...> MakeRow(Ts&&... ts) {
 }
 
 /**
- * Parses a `std::array` of `Value` objects into a `Row<Ts...>` holding C++ types.
+ * Parses a `std::array` of `Value` objects into a `Row<Ts...>` holding C++
+ * types.
  *
  * If parsing fails, an error `Status` is returned. The given array size must
- * exactly match the number of types in the specified `Row<Ts...>`. See `Row::size()`.
+ * exactly match the number of types in the specified `Row<Ts...>`. See
+ * `Row::size()`.
  *
  * @par Example
  *
