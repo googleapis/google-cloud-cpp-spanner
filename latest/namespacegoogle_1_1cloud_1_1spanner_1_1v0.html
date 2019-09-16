@@ -321,10 +321,10 @@ Functions</h2></td></tr>
 <tr class="memitem:af19702e3242db4899b9e2d8f974565af"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; internal::PromoteLiteral&lt; Ts &gt;... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a> (Ts &amp;&amp;... ts)</td></tr>
 <tr class="memdesc:af19702e3242db4899b9e2d8f974565af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper factory function to construct <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> objects holding the specified values.  <a href="#af19702e3242db4899b9e2d8f974565af">More...</a><br /></td></tr>
 <tr class="separator:af19702e3242db4899b9e2d8f974565af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a6319e9526591fe4496f5e0876c99ec"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
-<tr class="memitem:a6a6319e9526591fe4496f5e0876c99ec"><td class="memTemplItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; internal::PromoteLiteral&lt; Ts &gt;... &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a6a6319e9526591fe4496f5e0876c99ec">ParseRow</a> (std::array&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>, sizeof...(Ts)&gt; const &amp;array)</td></tr>
-<tr class="memdesc:a6a6319e9526591fe4496f5e0876c99ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a <code>std::array</code> of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects into the specified C++ types and returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> with all the parsed values.  <a href="#a6a6319e9526591fe4496f5e0876c99ec">More...</a><br /></td></tr>
-<tr class="separator:a6a6319e9526591fe4496f5e0876c99ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6c8b9c1f7a0e201a56202b8efb750c9"><td class="memTemplParams" colspan="2">template&lt;typename RowType &gt; </td></tr>
+<tr class="memitem:ac6c8b9c1f7a0e201a56202b8efb750c9"><td class="memTemplItemLeft" align="right" valign="top">StatusOr&lt; RowType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ac6c8b9c1f7a0e201a56202b8efb750c9">ParseRow</a> (std::array&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>, RowType::size()&gt; const &amp;array)</td></tr>
+<tr class="memdesc:ac6c8b9c1f7a0e201a56202b8efb750c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a <code>std::array</code> of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects into a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> holding C++ types.  <a href="#ac6c8b9c1f7a0e201a56202b8efb750c9">More...</a><br /></td></tr>
+<tr class="separator:ac6c8b9c1f7a0e201a56202b8efb750c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a782a4a4617b9017586334db8e1eb6ff6"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a782a4a4617b9017586334db8e1eb6ff6">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;stmt)</td></tr>
 <tr class="separator:a782a4a4617b9017586334db8e1eb6ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7aedae28062a59c9b7e809205ebe09be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7aedae28062a59c9b7e809205ebe09be">MakeReadOnlyTransaction</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1ReadOnlyOptions.html">Transaction::ReadOnlyOptions</a> opts={})</td></tr>
@@ -2010,29 +2010,29 @@ template&lt;typename... Ts&gt; </div>
 
 </div>
 </div>
-<a id="a6a6319e9526591fe4496f5e0876c99ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a6319e9526591fe4496f5e0876c99ec">&#9670;&nbsp;</a></span>ParseRow()</h2>
+<a id="ac6c8b9c1f7a0e201a56202b8efb750c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6c8b9c1f7a0e201a56202b8efb750c9">&#9670;&nbsp;</a></span>ParseRow()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename... Ts&gt; </div>
+template&lt;typename RowType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">StatusOr&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt;internal::PromoteLiteral&lt;Ts&gt;...&gt; &gt; google::cloud::spanner::v0::ParseRow </td>
+          <td class="memname">StatusOr&lt;RowType&gt; google::cloud::spanner::v0::ParseRow </td>
           <td>(</td>
-          <td class="paramtype">std::array&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>, sizeof...(Ts)&gt; const &amp;&#160;</td>
+          <td class="paramtype">std::array&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>, RowType::size()&gt; const &amp;&#160;</td>
           <td class="paramname"><em>array</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Parses a <code>std::array</code> of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects into the specified C++ types and returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> with all the parsed values. </p>
-<p>If the specified C++ type is unable to be extracted from a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>, an error <code>Status</code> is returned. The given array size must exactly match the number of specified C++ types.</p>
+<p>Parses a <code>std::array</code> of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects into a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> holding C++ types. </p>
+<p>If parsing fails, an error <code>Status</code> is returned. The given array size must exactly match the number of types in the specified <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code>. See <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ab683b2a27b1d53af35a0e1311f448cbe" title="Returns the number of columns in this row.">Row::size()</a></code>.</p>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
-<div class="fragment"><div class="line">std::array&lt;Value, 3&gt; array = {Value(<span class="keyword">true</span>), Value(42), Value(<span class="stringliteral">&quot;hello&quot;</span>)};</div><div class="line"><span class="keyword">auto</span> row = ParseRow&lt;bool, std::int64_t, std::string&gt;(array);</div><div class="line">assert(row.ok());</div><div class="line">assert(<a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(<span class="keyword">true</span>, 42, <span class="stringliteral">&quot;hello&quot;</span>), *row);</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00360">360</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<div class="fragment"><div class="line">std::array&lt;Value, 3&gt; array = {Value(<span class="keyword">true</span>), Value(42), Value(<span class="stringliteral">&quot;hello&quot;</span>)};</div><div class="line"><span class="keyword">using</span> RowType = Row&lt;bool, std::int64_t, std::string&gt;;</div><div class="line"><span class="keyword">auto</span> row = ParseRow&lt;RowType&gt;(array);</div><div class="line">assert(row.ok());</div><div class="line">assert(<a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(<span class="keyword">true</span>, 42, <span class="stringliteral">&quot;hello&quot;</span>), *row);</div></div><!-- fragment --> 
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00363">363</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -2142,7 +2142,7 @@ template&lt;typename... Ts&gt; </div>
 <p>The caller-provided function will be passed the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> argument and a newly created read-write <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code>. It should use these objects to issue any <code>Read()</code>s, <code>ExecuteSql()</code>s, etc., and return the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html" title="A wrapper for Cloud Spanner mutations.">Mutation</a></code>s to commit, or an error (which causes the transaction to be rolled back).</p>
 <p>The lock priority of the transaction increases after each prior aborted transaction, meaning that the next attempt has a slightly better chance of success than before. </p>
 
-<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00456">456</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00457">457</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
 
 </div>
 </div>

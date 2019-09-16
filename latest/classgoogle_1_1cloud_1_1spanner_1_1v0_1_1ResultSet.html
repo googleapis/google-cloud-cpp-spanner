@@ -90,10 +90,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa771d81f5dd2e3f61e07575b8209e6e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90f65f863e00f73af83b2a9433ce56d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html">ResultSet</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html#a90f65f863e00f73af83b2a9433ce56d3">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html">ResultSet</a> &amp;&amp;)=default</td></tr>
 <tr class="separator:a90f65f863e00f73af83b2a9433ce56d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4b5fade261d8fd52008710f3ed96aa9"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
-<tr class="memitem:aa4b5fade261d8fd52008710f3ed96aa9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt; Ts... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html#aa4b5fade261d8fd52008710f3ed96aa9">Rows</a> ()</td></tr>
-<tr class="memdesc:aa4b5fade261d8fd52008710f3ed96aa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of Row&lt;Ts....">RowParser</a></code> which can be used to iterate the returned <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a></code>s.  <a href="#aa4b5fade261d8fd52008710f3ed96aa9">More...</a><br /></td></tr>
-<tr class="separator:aa4b5fade261d8fd52008710f3ed96aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d665bc624f84f98d6ddf2c51758571f"><td class="memTemplParams" colspan="2">template&lt;typename RowType &gt; </td></tr>
+<tr class="memitem:a7d665bc624f84f98d6ddf2c51758571f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt; RowType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html#a7d665bc624f84f98d6ddf2c51758571f">Rows</a> ()</td></tr>
+<tr class="memdesc:a7d665bc624f84f98d6ddf2c51758571f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of Row&lt;Ts....">RowParser</a></code> which can be used to iterate the returned <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a></code>s.  <a href="#a7d665bc624f84f98d6ddf2c51758571f">More...</a><br /></td></tr>
+<tr class="separator:a7d665bc624f84f98d6ddf2c51758571f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc5f0ac8712c43e46e1a1c46ecd6c578"><td class="memItemLeft" align="right" valign="top">optional&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9711d66cf02a8305d987474ac7c5efca">Timestamp</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html#afc5f0ac8712c43e46e1a1c46ecd6c578">ReadTimestamp</a> () const</td></tr>
 <tr class="memdesc:afc5f0ac8712c43e46e1a1c46ecd6c578"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the timestamp at which the read occurred.  <a href="#afc5f0ac8712c43e46e1a1c46ecd6c578">More...</a><br /></td></tr>
 <tr class="separator:afc5f0ac8712c43e46e1a1c46ecd6c578"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -104,7 +104,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents the result of a query operation, such as <code>SpannerClient::Read()</code> or <code>SpannerClient::ExecuteSql()</code>. </p>
 <p>This class encapsulates the result of a Cloud Spanner query, including all DML operations, i.e., <code>UPDATE</code> and <code>DELETE</code> also return a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html" title="Represents the result of a query operation, such as SpannerClient::Read() or SpannerClient::ExecuteSq...">ResultSet</a></code>.</p>
-<p>Note that a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html" title="Represents the result of a query operation, such as SpannerClient::Read() or SpannerClient::ExecuteSq...">ResultSet</a></code> returns both the data for the operation, as a single-pass, input range returned by <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html#aa4b5fade261d8fd52008710f3ed96aa9" title="Returns a RowParser which can be used to iterate the returned Rows.">Rows()</a></code>, as well as the metadata for the results, and execution statistics (if requested). </p>
+<p>Note that a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html" title="Represents the result of a query operation, such as SpannerClient::Read() or SpannerClient::ExecuteSq...">ResultSet</a></code> returns both the data for the operation, as a single-pass, input range returned by <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html#a7d665bc624f84f98d6ddf2c51758571f" title="Returns a RowParser which can be used to iterate the returned Rows.">Rows()</a></code>, as well as the metadata for the results, and execution statistics (if requested). </p>
 
 <p class="definition">Definition at line <a class="el" href="result__set_8h_source.html#l00051">51</a> of file <a class="el" href="result__set_8h_source.html">result_set.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -240,23 +240,23 @@ Public Member Functions</h2></td></tr>
 <p>Retrieve the timestamp at which the read occurred. </p>
 <p>Only available if a read-only transaction was used, and the timestamp was requested by setting <code>return_read_timestamp</code> true. </p>
 
-<p class="definition">Definition at line <a class="el" href="result__set_8h_source.html#l00080">80</a> of file <a class="el" href="result__set_8h_source.html">result_set.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="result__set_8h_source.html#l00081">81</a> of file <a class="el" href="result__set_8h_source.html">result_set.h</a>.</p>
 
 </div>
 </div>
-<a id="aa4b5fade261d8fd52008710f3ed96aa9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4b5fade261d8fd52008710f3ed96aa9">&#9670;&nbsp;</a></span>Rows()</h2>
+<a id="a7d665bc624f84f98d6ddf2c51758571f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d665bc624f84f98d6ddf2c51758571f">&#9670;&nbsp;</a></span>Rows()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename... Ts&gt; </div>
+template&lt;typename RowType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt;Ts...&gt; google::cloud::spanner::v0::ResultSet::Rows </td>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt;RowType&gt; google::cloud::spanner::v0::ResultSet::Rows </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -300,9 +300,9 @@ template&lt;typename... Ts&gt; </div>
 </div><div class="memdoc">
 
 <p>Return statistics about the transaction. </p>
-<p>Statistics are only available for SQL requests with <code>query_mode</code> set to <code>PROFILE</code>, and only after consuming the entire result stream (i.e. iterating through <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html#aa4b5fade261d8fd52008710f3ed96aa9" title="Returns a RowParser which can be used to iterate the returned Rows.">Rows()</a></code> until the end). </p>
+<p>Statistics are only available for SQL requests with <code>query_mode</code> set to <code>PROFILE</code>, and only after consuming the entire result stream (i.e. iterating through <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html#a7d665bc624f84f98d6ddf2c51758571f" title="Returns a RowParser which can be used to iterate the returned Rows.">Rows()</a></code> until the end). </p>
 
-<p class="definition">Definition at line <a class="el" href="result__set_8h_source.html#l00096">96</a> of file <a class="el" href="result__set_8h_source.html">result_set.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="result__set_8h_source.html#l00097">97</a> of file <a class="el" href="result__set_8h_source.html">result_set.h</a>.</p>
 
 </div>
 </div>
