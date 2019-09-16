@@ -566,8 +566,7 @@ void ReadWriteTransaction(google::cloud::spanner::Client client) {
     if (!read) {
       throw std::runtime_error(read.status().message());
     }
-    using RowType = spanner::Row<std::int64_t>;
-    for (auto row : read->Rows<RowType>()) {
+    for (auto row : read->Rows<spanner::Row<std::int64_t>>()) {
       if (!row) {
         throw std::runtime_error(read.status().message());
       }
@@ -720,8 +719,7 @@ void QueryDataWithStruct(google::cloud::spanner::Client client) {
   //! [spanner-sql-statement-params]
   if (!reader) throw std::runtime_error(reader.status().message());
 
-  using RowType = spanner::Row<std::int64_t>;
-  for (auto row : reader->Rows<RowType>()) {
+  for (auto row : reader->Rows<spanner::Row<std::int64_t>>()) {
     if (!row) throw std::runtime_error(row.status().message());
     std::cout << "SingerId: " << row->get<0>() << "\n";
   }
@@ -756,8 +754,7 @@ void QueryDataWithArrayOfStruct(google::cloud::spanner::Client client) {
       {{"names", spanner::Value(singer_info)}}));
   if (!reader) throw std::runtime_error(reader.status().message());
 
-  using RowType = spanner::Row<std::int64_t>;
-  for (auto row : reader->Rows<RowType>()) {
+  for (auto row : reader->Rows<spanner::Row<std::int64_t>>()) {
     if (!row) throw std::runtime_error(row.status().message());
     std::cout << "SingerId: " << row->get<0>() << "\n";
   }
@@ -781,8 +778,7 @@ void FieldAccessOnStructParameters(google::cloud::spanner::Client client) {
       {{"name", spanner::Value(name)}}));
   if (!reader) throw std::runtime_error(reader.status().message());
 
-  using RowType = spanner::Row<std::int64_t>;
-  for (auto row : reader->Rows<RowType>()) {
+  for (auto row : reader->Rows<spanner::Row<std::int64_t>>()) {
     if (!row) throw std::runtime_error(row.status().message());
     std::cout << "SingerId: " << row->get<0>() << "\n";
   }
