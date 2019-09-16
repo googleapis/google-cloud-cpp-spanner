@@ -562,7 +562,8 @@ void ReadWriteTransaction(google::cloud::spanner::Client client) {
     auto key = spanner::KeySetBuilder<spanner::Row<std::int64_t, std::int64_t>>(
                    spanner::MakeRow(singer_id, album_id))
                    .Build();
-    auto read = client.Read(txn, "Albums", std::move(key), {"MarketingBudget"});
+    auto read = client.Read(std::move(txn), "Albums", std::move(key),
+                            {"MarketingBudget"});
     if (!read) throw std::runtime_error(read.status().message());
     for (auto row : read->Rows<spanner::Row<std::int64_t>>()) {
       if (!row) throw std::runtime_error(read.status().message());
@@ -576,7 +577,8 @@ void ReadWriteTransaction(google::cloud::spanner::Client client) {
 
   auto commit = spanner::RunTransaction(
       client, {},
-      [&get_current_budget](spanner::Client client, spanner::Transaction txn)
+      [&get_current_budget](spanner::Client const& client,
+                            spanner::Transaction const& txn)
           -> google::cloud::StatusOr<spanner::Mutations> {
         auto b1 = get_current_budget(client, txn, 1, 1);
         auto b2 = get_current_budget(client, txn, 2, 2);
