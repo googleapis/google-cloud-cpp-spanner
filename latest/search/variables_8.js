@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['read_5foptions',['read_options',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ReadParams.html#aebbc3d1e8aa6ccb148c77a79cb346bdd',1,'google::cloud::spanner::v0::Connection::ReadParams']]],
-  ['read_5fparams',['read_params',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1PartitionReadParams.html#a443a8d382b44c50ed7c08672291e128f',1,'google::cloud::spanner::v0::Connection::PartitionReadParams']]],
-  ['row_5fcount',['row_count',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1BatchDmlResult_1_1Stats.html#a8587ad4c5fcdfc4fb3a640c4dfb2d7a4',1,'google::cloud::spanner::v0::BatchDmlResult::Stats']]],
-  ['row_5fcount_5flower_5fbound',['row_count_lower_bound',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionedDmlResult.html#ad5e64214214d6a9834c80f66e02a2dfa',1,'google::cloud::spanner::v0::PartitionedDmlResult']]]
+  ['partition_5foptions',['partition_options',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1PartitionReadParams.html#ac1653d72b2088000e858b07358733561',1,'google::cloud::spanner::v0::Connection::PartitionReadParams::partition_options()'],['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1PartitionQueryParams.html#a0f7b608d5556fff4c8025be7d61e9128',1,'google::cloud::spanner::v0::Connection::PartitionQueryParams::partition_options()']]],
+  ['partition_5ftoken',['partition_token',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ReadParams.html#aad2f07fa9317b6376b2b4ff027528fe1',1,'google::cloud::spanner::v0::Connection::ReadParams::partition_token()'],['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ExecuteSqlParams.html#aa9c8e3b426d747ad72a59713018813d6',1,'google::cloud::spanner::v0::Connection::ExecuteSqlParams::partition_token()']]],
+  ['permissions',['permissions',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminConnection_1_1TestIamPermissionsParams.html#abec36bc132511fff17e18524c4e374ed',1,'google::cloud::spanner::v0::InstanceAdminConnection::TestIamPermissionsParams']]],
+  ['policy',['policy',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminConnection_1_1SetIamPolicyParams.html#a7d31f4b9d2d8aba0f93b0a9cf103bde1',1,'google::cloud::spanner::v0::InstanceAdminConnection::SetIamPolicyParams']]],
+  ['project_5fid',['project_id',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminConnection_1_1ListInstancesParams.html#a5250411040f24bed3ee460d1a8410640',1,'google::cloud::spanner::v0::InstanceAdminConnection::ListInstancesParams']]]
 ];
