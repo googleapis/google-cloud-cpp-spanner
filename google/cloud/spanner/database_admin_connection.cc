@@ -32,9 +32,9 @@ class DatabaseAdminConnectionImpl : public DatabaseAdminConnection {
   future<StatusOr<google::spanner::admin::database::v1::Database>>
   CreateDatabase(CreateDatabaseParams p) override {
     gcsa::CreateDatabaseRequest request;
-    request.set_parent(p.database_name.ParentName());
-    request.set_create_statement("CREATE DATABASE `" +
-                                 p.database_name.DatabaseId() + "`");
+    request.set_parent(p.database.ParentName());
+    request.set_create_statement("CREATE DATABASE `" + p.database.DatabaseId() +
+                                 "`");
     for (auto& s : p.extra_statements) {
       *request.add_extra_statements() = std::move(s);
     }
@@ -52,7 +52,7 @@ class DatabaseAdminConnectionImpl : public DatabaseAdminConnection {
   StatusOr<google::spanner::admin::database::v1::Database> GetDatabase(
       GetDatabaseParams p) override {
     gcsa::GetDatabaseRequest request;
-    request.set_name(p.database_name.FullName());
+    request.set_name(p.database.FullName());
     grpc::ClientContext context;
     return stub_->GetDatabase(context, request);
   }
@@ -60,7 +60,7 @@ class DatabaseAdminConnectionImpl : public DatabaseAdminConnection {
   StatusOr<google::spanner::admin::database::v1::GetDatabaseDdlResponse>
   GetDatabaseDdl(GetDatabaseDdlParams p) override {
     gcsa::GetDatabaseDdlRequest request;
-    request.set_database(p.database_name.FullName());
+    request.set_database(p.database.FullName());
     grpc::ClientContext context;
     return stub_->GetDatabaseDdl(context, request);
   }
@@ -69,7 +69,7 @@ class DatabaseAdminConnectionImpl : public DatabaseAdminConnection {
       StatusOr<google::spanner::admin::database::v1::UpdateDatabaseDdlMetadata>>
   UpdateDatabase(UpdateDatabaseParams p) override {
     gcsa::UpdateDatabaseDdlRequest request;
-    request.set_database(p.database_name.FullName());
+    request.set_database(p.database.FullName());
     for (auto& s : p.statements) {
       *request.add_statements() = std::move(s);
     }
@@ -85,14 +85,14 @@ class DatabaseAdminConnectionImpl : public DatabaseAdminConnection {
 
   Status DropDatabase(DropDatabaseParams p) override {
     google::spanner::admin::database::v1::DropDatabaseRequest request;
-    request.set_database(p.database_name.FullName());
+    request.set_database(p.database.FullName());
     grpc::ClientContext context;
     return stub_->DropDatabase(context, request);
   }
 
   ListDatabaseRange ListDatabases(ListDatabasesParams p) override {
     gcsa::ListDatabasesRequest request;
-    request.set_parent(p.instance_name.FullName());
+    request.set_parent(p.instance.FullName());
     request.clear_page_token();
     auto stub = stub_;
     return ListDatabaseRange(

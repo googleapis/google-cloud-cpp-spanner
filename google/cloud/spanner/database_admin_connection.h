@@ -71,7 +71,7 @@ class DatabaseAdminConnection {
   /// Wrap the arguments for `CreateDatabase()`.
   struct CreateDatabaseParams {
     /// The name of the database.
-    Database database_name;
+    Database database;
     /// Any additional statements to execute after creating the database.
     std::vector<std::string> extra_statements;
   };
@@ -79,19 +79,19 @@ class DatabaseAdminConnection {
   /// Wrap the arguments for `GetDatabase()`.
   struct GetDatabaseParams {
     /// The name of the database.
-    Database database_name;
+    Database database;
   };
 
   /// Wrap the arguments for `GetDatabaseDdl()`.
   struct GetDatabaseDdlParams {
     /// The name of the database.
-    Database database_name;
+    Database database;
   };
 
   /// Wrap the arguments for `CreateDatabase()`.
   struct UpdateDatabaseParams {
     /// The name of the database.
-    Database database_name;
+    Database database;
     /// The DDL statements updating the database schema.
     std::vector<std::string> statements;
   };
@@ -99,14 +99,13 @@ class DatabaseAdminConnection {
   /// Wrap the arguments for `DropDatabase()`.
   struct DropDatabaseParams {
     /// The name of the database.
-    Database database_name;
+    Database database;
   };
 
   /// Wrap the arguments for `ListDatabases()`.
   struct ListDatabasesParams {
-    /// The full name of the instance in
-    /// `projects/<project-id>/instances/<instance-id>` format.
-    Instance instance_name;
+    /// The name of the instance.
+    Instance instance;
   };
   //@}
 

@@ -22,6 +22,7 @@ namespace google {
 namespace cloud {
 namespace spanner_mocks {
 inline namespace SPANNER_CLIENT_NS {
+
 /**
  * A class to mock `google::cloud::spanner::DatabaseAdminConnection`.
  *
