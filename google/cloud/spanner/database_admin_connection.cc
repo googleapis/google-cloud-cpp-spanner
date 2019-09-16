@@ -32,9 +32,9 @@ class DatabaseAdminConnectionImpl : public DatabaseAdminConnection {
   future<StatusOr<google::spanner::admin::database::v1::Database>>
   CreateDatabase(CreateDatabaseParams p) override {
     gcsa::CreateDatabaseRequest request;
-    request.set_parent(p.database.ParentName());
-    request.set_create_statement("CREATE DATABASE `" + p.database.DatabaseId() +
-                                 "`");
+    request.set_parent(p.database.instance().FullName());
+    request.set_create_statement("CREATE DATABASE `" +
+                                 p.database.database_id() + "`");
     for (auto& s : p.extra_statements) {
       *request.add_extra_statements() = std::move(s);
     }
