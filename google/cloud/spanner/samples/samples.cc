@@ -576,7 +576,7 @@ void ReadWriteTransaction(google::cloud::spanner::Client client) {
   };
 
   auto commit = spanner::RunTransaction(
-      client, {},
+      std::move(client), {},
       [&get_current_budget](spanner::Client const& client,
                             spanner::Transaction const& txn)
           -> google::cloud::StatusOr<spanner::Mutations> {
