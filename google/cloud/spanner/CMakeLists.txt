@@ -39,9 +39,7 @@ function (google_cloud_cpp_spanner_initialize_git_head var)
             # Run `git rev-parse --short HEAD` and capture the output in a
             # variable.
             execute_process(COMMAND "${GOOGLE_CLOUD_CPP_SPANNER_GIT_PROGRAM}"
-                                    rev-parse
-                                    --short
-                                    HEAD
+                                    rev-parse --short HEAD
                             OUTPUT_VARIABLE GIT_HEAD_LOG
                             ERROR_VARIABLE GIT_HEAD_LOG)
             string(REPLACE "\n"
