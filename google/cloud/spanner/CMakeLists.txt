@@ -393,6 +393,8 @@ install(TARGETS spanner_client
                 NAMELINK_SKIP
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
                 COMPONENT google_cloud_cpp_spanner_development)
+# With CMake-3.12 and higher we could avoid this separate command (and the
+# duplication).
 install(TARGETS spanner_client
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
                 COMPONENT google_cloud_cpp_spanner_development
