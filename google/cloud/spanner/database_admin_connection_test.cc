@@ -34,8 +34,10 @@ namespace gcsa = ::google::spanner::admin::database::v1;
 std::shared_ptr<DatabaseAdminConnection> CreateTestingConnection(
     std::shared_ptr<internal::DatabaseAdminStub> mock) {
   LimitedErrorCountRetryPolicy retry(/*maximum_failures=*/2);
-  ExponentialBackoffPolicy backoff(std::chrono::microseconds(1),
-                                   std::chrono::microseconds(1), 2.0);
+  ExponentialBackoffPolicy backoff(
+      /*initial_delay=*/std::chrono::microseconds(1),
+      /*maximum_delay=*/std::chrono::microseconds(1),
+      /*scaling=*/2.0);
   GenericPollingPolicy<LimitedErrorCountRetryPolicy> polling(retry, backoff);
   return internal::MakeDatabaseAdminConnection(
       std::move(mock), retry.clone(), backoff.clone(), polling.clone());

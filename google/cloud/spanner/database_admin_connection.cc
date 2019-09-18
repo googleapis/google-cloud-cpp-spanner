@@ -200,8 +200,9 @@ class DatabaseAdminConnectionImpl : public DatabaseAdminConnection {
     auto stub = stub_;
     // Because we do not have C++14 generalized lambda captures we cannot just
     // use the unique_ptr<> here, so convert to shared_ptr<> instead.
-    auto retry = std::shared_ptr<RetryPolicy>(retry_policy_->clone());
-    auto backoff = std::shared_ptr<BackoffPolicy>(backoff_policy_->clone());
+    auto retry = std::shared_ptr<RetryPolicy const>(retry_policy_->clone());
+    auto backoff =
+        std::shared_ptr<BackoffPolicy const>(backoff_policy_->clone());
 
     char const* function_name = __func__;
     return ListDatabaseRange(
@@ -246,12 +247,9 @@ class DatabaseAdminConnectionImpl : public DatabaseAdminConnection {
               },
               std::move(operation), location);
 
-          // Release the stub before signalling the promise, this works around a
-          // peculiar behavior of googlemock: if the stub is a mock, it should
-          // be deleted before the test function returns. Otherwise the mock is
-          // declared "leaked" even if it is released later. Holding on to the
-          // stub here could extend its lifetime beyond the test function, as
-          // the detached thread may take a bit to terminate.
+          // Drop our reference to stub; ideally we'd have std::moved into the
+          // lambda. Doing this also prevents a false leak from being reported
+          // when using googlemock.
           stub.reset();
           promise.set_value(std::move(result));
         },
@@ -285,12 +283,9 @@ class DatabaseAdminConnectionImpl : public DatabaseAdminConnection {
                   },
                   std::move(operation), location);
 
-          // Release the stub before signalling the promise, this works around a
-          // peculiar behavior of googlemock: if the stub is a mock, it should
-          // be deleted before the test function returns. Otherwise the mock is
-          // declared "leaked" even if it is released later. Holding on to the
-          // stub here could extend its lifetime beyond the test function, as
-          // the detached thread may take a bit to terminate.
+          // Drop our reference to stub; ideally we'd have std::moved into the
+          // lambda. Doing this also prevents a false leak from being reported
+          // when using googlemock.
           stub.reset();
           promise.set_value(std::move(result));
         },
@@ -317,11 +312,6 @@ std::shared_ptr<DatabaseAdminConnection> MakeDatabaseAdminConnection(
 }
 
 namespace internal {
-
-std::shared_ptr<DatabaseAdminConnection> MakePlainDatabaseAdminConnection(
-    std::shared_ptr<internal::DatabaseAdminStub> stub) {
-  return std::make_shared<DatabaseAdminConnectionImpl>(std::move(stub));
-}
 
 std::shared_ptr<DatabaseAdminConnection> MakeDatabaseAdminConnection(
     std::shared_ptr<internal::DatabaseAdminStub> stub,

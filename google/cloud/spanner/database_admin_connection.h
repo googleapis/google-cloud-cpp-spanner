@@ -162,9 +162,6 @@ std::shared_ptr<DatabaseAdminConnection> MakeDatabaseAdminConnection(
     std::unique_ptr<RetryPolicy> retry_policy,
     std::unique_ptr<BackoffPolicy> backoff_policy,
     std::unique_ptr<PollingPolicy> polling_policy);
-
-std::shared_ptr<DatabaseAdminConnection> MakePlainDatabaseAdminConnection(
-    std::shared_ptr<internal::DatabaseAdminStub> stub);
 }  // namespace internal
 
 }  // namespace SPANNER_CLIENT_NS
