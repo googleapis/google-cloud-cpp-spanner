@@ -95,6 +95,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1GetDatabaseParams.html">GetDatabaseParams</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the arguments for <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection.html#ad3bbf42d5519338cf5332db38dc29f9b" title="Define the interface for a google.spanner.v1.DatabaseAdmin.GetDatabase RPC.">GetDatabase()</a></code>.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1GetDatabaseParams.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1GetIamPolicyParams.html">GetIamPolicyParams</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the arguments for <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection.html#afb716874e28920af8cde9bd698f5a39b" title="Define the interface for a google.spanner.v1.DatabaseAdmin.GetIamPolicy RPC.">GetIamPolicy()</a></code>.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1GetIamPolicyParams.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1ListDatabasesParams.html">ListDatabasesParams</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the arguments for <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection.html#a66c441b8690c734cf8670164f1104ac1" title="Define the interface for a google.spanner.v1.DatabaseAdmin.DropDatabase RPC.">ListDatabases()</a></code>.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1ListDatabasesParams.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -124,13 +127,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a66c441b8690c734cf8670164f1104ac1"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ab2103cd7782fc4748867fa8ad2b35e09">ListDatabaseRange</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection.html#a66c441b8690c734cf8670164f1104ac1">ListDatabases</a> (<a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1ListDatabasesParams.html">ListDatabasesParams</a>)=0</td></tr>
 <tr class="memdesc:a66c441b8690c734cf8670164f1104ac1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the interface for a google.spanner.v1.DatabaseAdmin.DropDatabase RPC.  <a href="#a66c441b8690c734cf8670164f1104ac1">More...</a><br /></td></tr>
 <tr class="separator:a66c441b8690c734cf8670164f1104ac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb716874e28920af8cde9bd698f5a39b"><td class="memItemLeft" align="right" valign="top">virtual StatusOr&lt; google::iam::v1::Policy &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection.html#afb716874e28920af8cde9bd698f5a39b">GetIamPolicy</a> (<a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1GetIamPolicyParams.html">GetIamPolicyParams</a>)=0</td></tr>
+<tr class="memdesc:afb716874e28920af8cde9bd698f5a39b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the interface for a google.spanner.v1.DatabaseAdmin.GetIamPolicy RPC.  <a href="#afb716874e28920af8cde9bd698f5a39b">More...</a><br /></td></tr>
+<tr class="separator:afb716874e28920af8cde9bd698f5a39b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A connection to the Cloud Spanner instance administration service. </p>
 <p>This interface defines pure-virtual methods for each of the user-facing overload sets in <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html" title="Performs database administration operations on Spanner.">DatabaseAdminClient</a></code>. This allows users to inject custom behavior (e.g., with a Google Mock object) in a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html" title="Performs database administration operations on Spanner.">DatabaseAdminClient</a></code> object for use in their own tests.</p>
 <p>To create a concrete instance that connects you to a real Cloud Spanner instance administration service, see <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a6f04fd3d19b7e1f291bdc7f5a9ed6a77" title="Returns an DatabaseAdminConnection object that can be used for interacting with Cloud Spanner&#39;s admin...">MakeDatabaseAdminConnection()</a></code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="database__admin__connection_8h_source.html#l00058">58</a> of file <a class="el" href="database__admin__connection_8h_source.html">database_admin_connection.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="database__admin__connection_8h_source.html#l00059">59</a> of file <a class="el" href="database__admin__connection_8h_source.html">database_admin_connection.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a85ce17451ad612ad4bc72b2e97f06110"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a85ce17451ad612ad4bc72b2e97f06110">&#9670;&nbsp;</a></span>~DatabaseAdminConnection()</h2>
@@ -267,6 +273,34 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Define the interface for a google.spanner.v1.DatabaseAdmin.GetDatabaseDdl RPC. </p>
+
+</div>
+</div>
+<a id="afb716874e28920af8cde9bd698f5a39b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb716874e28920af8cde9bd698f5a39b">&#9670;&nbsp;</a></span>GetIamPolicy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual StatusOr&lt;google::iam::v1::Policy&gt; google::cloud::spanner::v0::DatabaseAdminConnection::GetIamPolicy </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1GetIamPolicyParams.html">GetIamPolicyParams</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Define the interface for a google.spanner.v1.DatabaseAdmin.GetIamPolicy RPC. </p>
 
 </div>
 </div>
