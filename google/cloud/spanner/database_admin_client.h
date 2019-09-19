@@ -215,6 +215,8 @@ class DatabaseAdminClient {
    * @par Idempotency
    * This operation is read-only and therefore always idempotent.
    *
+   * @par Example
+   * @snippet samples.cc database-get-iam-policy
    */
   StatusOr<google::iam::v1::Policy> GetIamPolicy(Database db);
 
