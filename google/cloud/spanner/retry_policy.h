@@ -28,8 +28,24 @@ namespace internal {
 /// Define the gRPC status code semantics for retrying requests.
 struct SafeGrpcRetry {
   static inline bool IsTransientFailure(google::cloud::StatusCode code) {
-    return code == StatusCode::kAborted || code == StatusCode::kUnavailable ||
-           code == StatusCode::kDeadlineExceeded;
+    return code == StatusCode::kUnavailable ||
+           code == StatusCode::kResourceExhausted;
+  }
+  static inline bool IsOk(google::cloud::Status const& status) {
+    return status.ok();
+  }
+  static inline bool IsTransientFailure(google::cloud::Status const& status) {
+    return IsTransientFailure(status.code());
+  }
+  static inline bool IsPermanentFailure(google::cloud::Status const& status) {
+    return !IsOk(status) && !IsTransientFailure(status);
+  }
+};
+
+/// Define the gRPC status code semantics for rerunning transactions.
+struct SafeTransactionReRun {
+  static inline bool IsTransientFailure(google::cloud::StatusCode code) {
+    return code == StatusCode::kAborted;
   }
   static inline bool IsOk(google::cloud::Status const& status) {
     return status.ok();
@@ -57,6 +73,21 @@ using LimitedTimeRetryPolicy =
 using LimitedErrorCountRetryPolicy =
     google::cloud::internal::LimitedErrorCountRetryPolicy<
         google::cloud::Status, internal::SafeGrpcRetry>;
+
+/// The base class for transaction re-run policies.
+using TransactionReRunPolicy =
+    google::cloud::internal::RetryPolicy<google::cloud::Status,
+                                         internal::SafeTransactionReRun>;
+
+/// A transaction re-run policy that limits the duration of the re-run loop.
+using LimitedTimeTransactionReRunPolicy =
+    google::cloud::internal::LimitedTimeRetryPolicy<
+        google::cloud::Status, internal::SafeTransactionReRun>;
+
+/// A transaction re-run policy that limits the number of failures.
+using LimitedErrorCountTransactionReRunPolicy =
+    google::cloud::internal::LimitedErrorCountRetryPolicy<
+        google::cloud::Status, internal::SafeTransactionReRun>;
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
