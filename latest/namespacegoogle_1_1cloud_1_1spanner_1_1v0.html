@@ -213,6 +213,15 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a261401d138e3aa98ea260e0fc1e95637"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a261401d138e3aa98ea260e0fc1e95637">LimitedErrorCountRetryPolicy</a> = google::cloud::internal::LimitedErrorCountRetryPolicy&lt; google::cloud::Status, internal::SafeGrpcRetry &gt;</td></tr>
 <tr class="memdesc:a261401d138e3aa98ea260e0fc1e95637"><td class="mdescLeft">&#160;</td><td class="mdescRight">A retry policy that limits the number of times a request can fail.  <a href="#a261401d138e3aa98ea260e0fc1e95637">More...</a><br /></td></tr>
 <tr class="separator:a261401d138e3aa98ea260e0fc1e95637"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52b5d68feb45c40d761c79ee360b804c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a52b5d68feb45c40d761c79ee360b804c">TransactionRerunPolicy</a> = google::cloud::internal::RetryPolicy&lt; google::cloud::Status, internal::SafeTransactionRerun &gt;</td></tr>
+<tr class="memdesc:a52b5d68feb45c40d761c79ee360b804c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The base class for transaction rerun policies.  <a href="#a52b5d68feb45c40d761c79ee360b804c">More...</a><br /></td></tr>
+<tr class="separator:a52b5d68feb45c40d761c79ee360b804c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0703e4c1046052758dcfb11f0fb0f2a6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a0703e4c1046052758dcfb11f0fb0f2a6">LimitedTimeTransactionRerunPolicy</a> = google::cloud::internal::LimitedTimeRetryPolicy&lt; google::cloud::Status, internal::SafeTransactionRerun &gt;</td></tr>
+<tr class="memdesc:a0703e4c1046052758dcfb11f0fb0f2a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">A transaction rerun policy that limits the duration of the rerun loop.  <a href="#a0703e4c1046052758dcfb11f0fb0f2a6">More...</a><br /></td></tr>
+<tr class="separator:a0703e4c1046052758dcfb11f0fb0f2a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6094ab0a6ec6c6fb30b4e3a6a9431a5c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a6094ab0a6ec6c6fb30b4e3a6a9431a5c">LimitedErrorCountTransactionRerunPolicy</a> = google::cloud::internal::LimitedErrorCountRetryPolicy&lt; google::cloud::Status, internal::SafeTransactionRerun &gt;</td></tr>
+<tr class="memdesc:a6094ab0a6ec6c6fb30b4e3a6a9431a5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A transaction rerun policy that limits the number of failures.  <a href="#a6094ab0a6ec6c6fb30b4e3a6a9431a5c">More...</a><br /></td></tr>
+<tr class="separator:a6094ab0a6ec6c6fb30b4e3a6a9431a5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24c2736cb64e83e464aa7fff4bde52fb"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a24c2736cb64e83e464aa7fff4bde52fb">ValueSource</a> = std::function&lt; StatusOr&lt; optional&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> &gt; &gt;()&gt;</td></tr>
 <tr class="memdesc:a24c2736cb64e83e464aa7fff4bde52fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">A functor that consumes and yields a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> object from some source.  <a href="#a24c2736cb64e83e464aa7fff4bde52fb">More...</a><br /></td></tr>
 <tr class="separator:a24c2736cb64e83e464aa7fff4bde52fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -480,7 +489,25 @@ Functions</h2></td></tr>
 
 <p>A retry policy that limits the number of times a request can fail. </p>
 
-<p class="definition">Definition at line <a class="el" href="retry__policy_8h_source.html#l00059">59</a> of file <a class="el" href="retry__policy_8h_source.html">retry_policy.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="retry__policy_8h_source.html#l00075">75</a> of file <a class="el" href="retry__policy_8h_source.html">retry_policy.h</a>.</p>
+
+</div>
+</div>
+<a id="a6094ab0a6ec6c6fb30b4e3a6a9431a5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6094ab0a6ec6c6fb30b4e3a6a9431a5c">&#9670;&nbsp;</a></span>LimitedErrorCountTransactionRerunPolicy</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a6094ab0a6ec6c6fb30b4e3a6a9431a5c">google::cloud::spanner::v0::LimitedErrorCountTransactionRerunPolicy</a> = typedef google::cloud::internal::LimitedErrorCountRetryPolicy&lt; google::cloud::Status, internal::SafeTransactionRerun&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A transaction rerun policy that limits the number of failures. </p>
+
+<p class="definition">Definition at line <a class="el" href="retry__policy_8h_source.html#l00090">90</a> of file <a class="el" href="retry__policy_8h_source.html">retry_policy.h</a>.</p>
 
 </div>
 </div>
@@ -498,7 +525,25 @@ Functions</h2></td></tr>
 
 <p>A retry policy that limits based on time. </p>
 
-<p class="definition">Definition at line <a class="el" href="retry__policy_8h_source.html#l00054">54</a> of file <a class="el" href="retry__policy_8h_source.html">retry_policy.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="retry__policy_8h_source.html#l00070">70</a> of file <a class="el" href="retry__policy_8h_source.html">retry_policy.h</a>.</p>
+
+</div>
+</div>
+<a id="a0703e4c1046052758dcfb11f0fb0f2a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0703e4c1046052758dcfb11f0fb0f2a6">&#9670;&nbsp;</a></span>LimitedTimeTransactionRerunPolicy</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a0703e4c1046052758dcfb11f0fb0f2a6">google::cloud::spanner::v0::LimitedTimeTransactionRerunPolicy</a> = typedef google::cloud::internal::LimitedTimeRetryPolicy&lt; google::cloud::Status, internal::SafeTransactionRerun&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A transaction rerun policy that limits the duration of the rerun loop. </p>
+
+<p class="definition">Definition at line <a class="el" href="retry__policy_8h_source.html#l00085">85</a> of file <a class="el" href="retry__policy_8h_source.html">retry_policy.h</a>.</p>
 
 </div>
 </div>
@@ -611,7 +656,7 @@ Functions</h2></td></tr>
 
 <p>The base class for retry policies. </p>
 
-<p class="definition">Definition at line <a class="el" href="retry__policy_8h_source.html#l00049">49</a> of file <a class="el" href="retry__policy_8h_source.html">retry_policy.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="retry__policy_8h_source.html#l00065">65</a> of file <a class="el" href="retry__policy_8h_source.html">retry_policy.h</a>.</p>
 
 </div>
 </div>
@@ -633,6 +678,24 @@ Functions</h2></td></tr>
 <p>Note that this may differ from std::chrono::system_clock::time_point on a particular platform. </p>
 
 <p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00038">38</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
+
+</div>
+</div>
+<a id="a52b5d68feb45c40d761c79ee360b804c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52b5d68feb45c40d761c79ee360b804c">&#9670;&nbsp;</a></span>TransactionRerunPolicy</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a52b5d68feb45c40d761c79ee360b804c">google::cloud::spanner::v0::TransactionRerunPolicy</a> = typedef google::cloud::internal::RetryPolicy&lt;google::cloud::Status, internal::SafeTransactionRerun&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The base class for transaction rerun policies. </p>
+
+<p class="definition">Definition at line <a class="el" href="retry__policy_8h_source.html#l00080">80</a> of file <a class="el" href="retry__policy_8h_source.html">retry_policy.h</a>.</p>
 
 </div>
 </div>
