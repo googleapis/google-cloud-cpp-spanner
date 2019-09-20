@@ -44,10 +44,7 @@ TEST(DatabaseAdminClient, DatabaseBasicCRUD) {
   auto test_iam_service_account =
       google::cloud::internal::GetEnv("GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA")
           .value_or("");
-  if (test_iam_service_account.empty()) {
-    throw std::runtime_error(
-        "GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA is not set or is empty");
-  }
+  ASSERT_TRUE(test_iam_service_account.has_value());
 
   Instance const in(project_id, *instance_id);
 
@@ -58,9 +55,9 @@ TEST(DatabaseAdminClient, DatabaseBasicCRUD) {
   // We test client.ListDatabases() by verifying that (a) it does not return a
   // randomly generated database name before we create a database with that
   // name, (b) it *does* return that database name once created, and (c) it no
-  // longer returns that name once the database is dropped. Implicitly that
-  // also tests that client.DropDatabase() and client.CreateDatabase() do
-  // something, which is nice.
+  // longer returns that name once the database is dropped. Implicitly that also
+  // tests that client.DropDatabase() and client.CreateDatabase() do something,
+  // which is nice.
   auto get_current_databases = [&client, in] {
     std::vector<std::string> names;
     for (auto database : client.ListDatabases(in)) {
