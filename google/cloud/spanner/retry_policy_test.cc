@@ -35,17 +35,17 @@ TEST(RetryPolicyTest, PermanentFailure) {
       Status(StatusCode::kPermissionDenied, "uh oh")));
 }
 
-TEST(TransactionReRunPolicyTest, PermanentFailure) {
-  EXPECT_FALSE(internal::SafeTransactionReRun::IsPermanentFailure(Status()));
-  EXPECT_FALSE(internal::SafeTransactionReRun::IsPermanentFailure(
+TEST(TransactionRerunPolicyTest, PermanentFailure) {
+  EXPECT_FALSE(internal::SafeTransactionRerun::IsPermanentFailure(Status()));
+  EXPECT_FALSE(internal::SafeTransactionRerun::IsPermanentFailure(
       Status(StatusCode::kAborted, "nothing done")));
-  EXPECT_TRUE(internal::SafeTransactionReRun::IsPermanentFailure(
+  EXPECT_TRUE(internal::SafeTransactionRerun::IsPermanentFailure(
       Status(StatusCode::kUnavailable, "try again")));
-  EXPECT_TRUE(internal::SafeTransactionReRun::IsPermanentFailure(
+  EXPECT_TRUE(internal::SafeTransactionRerun::IsPermanentFailure(
       Status(StatusCode::kResourceExhausted, "slow down please")));
-  EXPECT_TRUE(internal::SafeTransactionReRun::IsPermanentFailure(
+  EXPECT_TRUE(internal::SafeTransactionRerun::IsPermanentFailure(
       Status(StatusCode::kDeadlineExceeded, "not enough time")));
-  EXPECT_TRUE(internal::SafeTransactionReRun::IsPermanentFailure(
+  EXPECT_TRUE(internal::SafeTransactionRerun::IsPermanentFailure(
       Status(StatusCode::kPermissionDenied, "uh oh")));
 }
 

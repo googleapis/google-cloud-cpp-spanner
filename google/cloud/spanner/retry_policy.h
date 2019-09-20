@@ -43,7 +43,7 @@ struct SafeGrpcRetry {
 };
 
 /// Define the gRPC status code semantics for rerunning transactions.
-struct SafeTransactionReRun {
+struct SafeTransactionRerun {
   static inline bool IsTransientFailure(google::cloud::StatusCode code) {
     return code == StatusCode::kAborted;
   }
@@ -74,20 +74,20 @@ using LimitedErrorCountRetryPolicy =
     google::cloud::internal::LimitedErrorCountRetryPolicy<
         google::cloud::Status, internal::SafeGrpcRetry>;
 
-/// The base class for transaction re-run policies.
-using TransactionReRunPolicy =
+/// The base class for transaction rerun policies.
+using TransactionRerunPolicy =
     google::cloud::internal::RetryPolicy<google::cloud::Status,
-                                         internal::SafeTransactionReRun>;
+                                         internal::SafeTransactionRerun>;
 
-/// A transaction re-run policy that limits the duration of the re-run loop.
-using LimitedTimeTransactionReRunPolicy =
+/// A transaction rerun policy that limits the duration of the rerun loop.
+using LimitedTimeTransactionRerunPolicy =
     google::cloud::internal::LimitedTimeRetryPolicy<
-        google::cloud::Status, internal::SafeTransactionReRun>;
+        google::cloud::Status, internal::SafeTransactionRerun>;
 
-/// A transaction re-run policy that limits the number of failures.
-using LimitedErrorCountTransactionReRunPolicy =
+/// A transaction rerun policy that limits the number of failures.
+using LimitedErrorCountTransactionRerunPolicy =
     google::cloud::internal::LimitedErrorCountRetryPolicy<
-        google::cloud::Status, internal::SafeTransactionReRun>;
+        google::cloud::Status, internal::SafeTransactionRerun>;
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
