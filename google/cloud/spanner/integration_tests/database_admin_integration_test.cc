@@ -44,7 +44,7 @@ TEST(DatabaseAdminClient, DatabaseBasicCRUD) {
   auto test_iam_service_account =
       google::cloud::internal::GetEnv("GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA")
           .value_or("");
-  ASSERT_TRUE(test_iam_service_account.has_value());
+  ASSERT_FALSE(test_iam_service_account.empty());
 
   Instance const in(project_id, *instance_id);
 
