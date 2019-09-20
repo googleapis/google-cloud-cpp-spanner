@@ -104,6 +104,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1SetIamPolicyParams.html">SetIamPolicyParams</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the arguments for <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection.html#a56a011f222acd250de58580bafa6f80d" title="Define the interface for a google.spanner.v1.DatabaseAdmin.SetIamPolicy RPC.">SetIamPolicy()</a></code>.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1SetIamPolicyParams.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1TestIamPermissionsParams.html">TestIamPermissionsParams</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the arguments for <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection.html#aad49a910e50a3a803243aed73792cb59" title="Define the interface for a google.spanner.v1.DatabaseAdmin.TestIamPermissions RPC.">TestIamPermissions()</a></code>.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1TestIamPermissionsParams.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1UpdateDatabaseParams.html">UpdateDatabaseParams</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the arguments for <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection.html#af86cb958cb5f4d3fca5c94cc017b9ad5" title="Define the interface for a google.spanner.v1.DatabaseAdmin.CreateDatabase RPC.">CreateDatabase()</a></code>.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1UpdateDatabaseParams.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -136,6 +139,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a56a011f222acd250de58580bafa6f80d"><td class="memItemLeft" align="right" valign="top">virtual StatusOr&lt; google::iam::v1::Policy &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection.html#a56a011f222acd250de58580bafa6f80d">SetIamPolicy</a> (<a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1SetIamPolicyParams.html">SetIamPolicyParams</a>)=0</td></tr>
 <tr class="memdesc:a56a011f222acd250de58580bafa6f80d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the interface for a google.spanner.v1.DatabaseAdmin.SetIamPolicy RPC.  <a href="#a56a011f222acd250de58580bafa6f80d">More...</a><br /></td></tr>
 <tr class="separator:a56a011f222acd250de58580bafa6f80d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad49a910e50a3a803243aed73792cb59"><td class="memItemLeft" align="right" valign="top">virtual StatusOr&lt; google::iam::v1::TestIamPermissionsResponse &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection.html#aad49a910e50a3a803243aed73792cb59">TestIamPermissions</a> (<a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1TestIamPermissionsParams.html">TestIamPermissionsParams</a>)=0</td></tr>
+<tr class="memdesc:aad49a910e50a3a803243aed73792cb59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the interface for a google.spanner.v1.DatabaseAdmin.TestIamPermissions RPC.  <a href="#aad49a910e50a3a803243aed73792cb59">More...</a><br /></td></tr>
+<tr class="separator:aad49a910e50a3a803243aed73792cb59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A connection to the Cloud Spanner instance administration service. </p>
@@ -363,6 +369,34 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Define the interface for a google.spanner.v1.DatabaseAdmin.SetIamPolicy RPC. </p>
+
+</div>
+</div>
+<a id="aad49a910e50a3a803243aed73792cb59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad49a910e50a3a803243aed73792cb59">&#9670;&nbsp;</a></span>TestIamPermissions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual StatusOr&lt;google::iam::v1::TestIamPermissionsResponse&gt; google::cloud::spanner::v0::DatabaseAdminConnection::TestIamPermissions </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1TestIamPermissionsParams.html">TestIamPermissionsParams</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Define the interface for a google.spanner.v1.DatabaseAdmin.TestIamPermissions RPC. </p>
 
 </div>
 </div>
