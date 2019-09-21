@@ -683,6 +683,7 @@ TEST(ConnectionImplTest, CommitCommit_IdempotentTransientSuccess) {
         return response;
       }));
 
+  // Set the id because that makes the commit idempotent.
   auto txn = MakeReadWriteTransaction();
   internal::Visit(txn, [](SessionHolder&, spanner_proto::TransactionSelector& s,
                           std::int64_t) {
@@ -692,6 +693,7 @@ TEST(ConnectionImplTest, CommitCommit_IdempotentTransientSuccess) {
 
   auto commit = conn->Commit({txn, {}});
   EXPECT_STATUS_OK(commit);
+  EXPECT_EQ(Timestamp(std::chrono::seconds(123)), commit->commit_timestamp);
 }
 
 TEST(ConnectionImplTest, CommitCommit_NonIdempotentTransientFailure) {
@@ -749,6 +751,7 @@ TEST(ConnectionImplTest, CommitSuccessWithTransactionId) {
         return response;
       }));
 
+  // Set the id because that makes the commit idempotent.
   auto txn = MakeReadWriteTransaction();
   internal::Visit(txn, [](SessionHolder&, spanner_proto::TransactionSelector& s,
                           std::int64_t) {
