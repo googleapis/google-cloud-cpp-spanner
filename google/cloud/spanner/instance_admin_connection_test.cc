@@ -211,6 +211,7 @@ TEST(InstanceAdminConnectionTest, ListInstanceConfigs_PermanentFailure) {
 TEST(InstanceAdminConnectionTest, ListInstanceConfigs_TooManyTransients) {
   auto mock = std::make_shared<spanner_testing::MockInstanceAdminStub>();
   EXPECT_CALL(*mock, ListInstanceConfigs(_, _))
+      .Times(AtLeast(2))
       .WillRepeatedly(Return(Status(StatusCode::kUnavailable, "try-again")));
 
   auto conn = MakeTestConnection(mock);

@@ -75,7 +75,7 @@ TEST(InstanceAdminClient, InstanceConfig) {
     }
     return names;
   }();
-  EXPECT_LE(1, instance_config_names.size());
+  ASSERT_FALSE(instance_config_names.empty());
   // Use the name of the first element from the list of instance configs.
   auto instance_config = client.GetInstanceConfig(instance_config_names[0]);
   EXPECT_STATUS_OK(instance_config);
