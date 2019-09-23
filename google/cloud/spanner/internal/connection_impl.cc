@@ -28,6 +28,37 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
+class DefaultPartialResultSetReader : public PartialResultSetReader {
+ public:
+  DefaultPartialResultSetReader(
+      std::unique_ptr<grpc::ClientContext> context,
+      std::unique_ptr<
+          grpc::ClientReaderInterface<google::spanner::v1::PartialResultSet>>
+          reader)
+      : context_(std::move(context)), reader_(std::move(reader)) {}
+
+  ~DefaultPartialResultSetReader() override = default;
+
+  void TryCancel() override { context_->TryCancel(); }
+
+  optional<google::spanner::v1::PartialResultSet> Read() override {
+    google::spanner::v1::PartialResultSet result;
+    bool success = reader_->Read(&result);
+    if (!success) return {};
+    return result;
+  }
+
+  Status Finish() override {
+    return grpc_utils::MakeStatusFromRpcError(reader_->Finish());
+  }
+
+ private:
+  std::unique_ptr<grpc::ClientContext> context_;
+  std::unique_ptr<
+      grpc::ClientReaderInterface<google::spanner::v1::PartialResultSet>>
+      reader_;
+};
+
 namespace spanner_proto = ::google::spanner::v1;
 
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_DEFAULT_RETRY_TIMEOUT
@@ -165,9 +196,11 @@ StatusOr<ResultSet> ConnectionImpl::ReadImpl(
   }
 
   auto context = google::cloud::internal::make_unique<grpc::ClientContext>();
-  auto rpc = stub_->StreamingRead(*context, request);
-  auto reader = internal::PartialResultSetSource::Create(std::move(context),
-                                                         std::move(rpc));
+  auto rpc =
+      google::cloud::internal::make_unique<DefaultPartialResultSetReader>(
+          std::move(context), stub_->StreamingRead(*context, request));
+
+  auto reader = PartialResultSetSource::Create(std::move(rpc));
   if (!reader.ok()) {
     return std::move(reader).status();
   }
@@ -180,7 +213,7 @@ StatusOr<ResultSet> ConnectionImpl::ReadImpl(
     }
     s.set_id(metadata->transaction().id());
   }
-  return ResultSet(std::move(*reader));
+  return ResultSet(*std::move(reader));
 }
 
 StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionReadImpl(
@@ -258,9 +291,10 @@ StatusOr<ResultSet> ConnectionImpl::ExecuteSqlImpl(
   }
 
   auto context = google::cloud::internal::make_unique<grpc::ClientContext>();
-  auto rpc = stub_->ExecuteStreamingSql(*context, request);
-  auto reader = internal::PartialResultSetSource::Create(std::move(context),
-                                                         std::move(rpc));
+  auto rpc =
+      google::cloud::internal::make_unique<DefaultPartialResultSetReader>(
+          std::move(context), stub_->ExecuteStreamingSql(*context, request));
+  auto reader = internal::PartialResultSetSource::Create(std::move(rpc));
   if (!reader.ok()) {
     return std::move(reader).status();
   }

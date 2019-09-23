@@ -191,7 +191,8 @@ StatusOr<spanner_proto::ResultSet> DefaultSpannerStub::Read(
   return response;
 }
 
-std::unique_ptr<grpc::ClientReaderInterface<spanner_proto::PartialResultSet>>
+std::unique_ptr<
+    grpc::ClientReaderInterface<google::spanner::v1::PartialResultSet>>
 DefaultSpannerStub::StreamingRead(grpc::ClientContext& client_context,
                                   spanner_proto::ReadRequest const& request) {
   return grpc_stub_->StreamingRead(&client_context, request);
