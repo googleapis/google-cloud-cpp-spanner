@@ -28,6 +28,11 @@ using ::testing::UnorderedElementsAre;
 
 /// @test Verify the basic CRUD operations for instances work.
 TEST(InstanceAdminClient, InstanceBasicCRUD) {
+  auto run_instance_admin_it =
+      google::cloud::internal::GetEnv("RUN_INSTANCE_ADMIN_IT").value_or("");
+  if (run_instance_admin_it != "yes") {
+    GTEST_SKIP();
+  }
   auto project_id =
       google::cloud::internal::GetEnv("GOOGLE_CLOUD_PROJECT").value_or("");
   auto instance_id =
@@ -59,6 +64,11 @@ TEST(InstanceAdminClient, InstanceBasicCRUD) {
 }
 
 TEST(InstanceAdminClient, InstanceConfig) {
+  auto run_instance_admin_it =
+      google::cloud::internal::GetEnv("RUN_INSTANCE_ADMIN_IT").value_or("");
+  if (run_instance_admin_it != "yes") {
+    GTEST_SKIP();
+  }
   auto project_id =
       google::cloud::internal::GetEnv("GOOGLE_CLOUD_PROJECT").value_or("");
   ASSERT_FALSE(project_id.empty());
@@ -86,6 +96,11 @@ TEST(InstanceAdminClient, InstanceConfig) {
 }
 
 TEST(InstanceAdminClient, InstanceIam) {
+  auto run_instance_admin_it =
+      google::cloud::internal::GetEnv("RUN_INSTANCE_ADMIN_IT").value_or("");
+  if (run_instance_admin_it != "yes") {
+    GTEST_SKIP();
+  }
   auto project_id =
       google::cloud::internal::GetEnv("GOOGLE_CLOUD_PROJECT").value_or("");
   auto instance_id =
