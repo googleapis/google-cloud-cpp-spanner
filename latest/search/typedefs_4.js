@@ -5,5 +5,6 @@ var searchData=
   ['limitedtimeretrypolicy',['LimitedTimeRetryPolicy',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ab1f307578e2cae145104cae9703811a1',1,'google::cloud::spanner::v0']]],
   ['limitedtimetransactionrerunpolicy',['LimitedTimeTransactionRerunPolicy',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a0703e4c1046052758dcfb11f0fb0f2a6',1,'google::cloud::spanner::v0']]],
   ['listdatabaserange',['ListDatabaseRange',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ab2103cd7782fc4748867fa8ad2b35e09',1,'google::cloud::spanner::v0']]],
+  ['listinstanceconfigsrange',['ListInstanceConfigsRange',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a26a21e57b79a55456e5eb82ea075cdf9',1,'google::cloud::spanner::v0']]],
   ['listinstancesrange',['ListInstancesRange',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a71cb6e79b7fb96cdd1bf646b8ab8e09b',1,'google::cloud::spanner::v0']]]
 ];

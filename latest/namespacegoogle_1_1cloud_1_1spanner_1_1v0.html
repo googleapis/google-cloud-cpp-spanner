@@ -181,8 +181,11 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:ab2103cd7782fc4748867fa8ad2b35e09"><td class="mdescLeft">&#160;</td><td class="mdescRight">An input range to stream all the databases in a Cloud Spanner instance.  <a href="#ab2103cd7782fc4748867fa8ad2b35e09">More...</a><br /></td></tr>
 <tr class="separator:ab2103cd7782fc4748867fa8ad2b35e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71cb6e79b7fb96cdd1bf646b8ab8e09b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a71cb6e79b7fb96cdd1bf646b8ab8e09b">ListInstancesRange</a> = internal::PaginationRange&lt; google::spanner::admin::instance::v1::Instance, google::spanner::admin::instance::v1::ListInstancesRequest, google::spanner::admin::instance::v1::ListInstancesResponse &gt;</td></tr>
-<tr class="memdesc:a71cb6e79b7fb96cdd1bf646b8ab8e09b"><td class="mdescLeft">&#160;</td><td class="mdescRight">An input range to stream all the databases in a Cloud Spanner instance.  <a href="#a71cb6e79b7fb96cdd1bf646b8ab8e09b">More...</a><br /></td></tr>
+<tr class="memdesc:a71cb6e79b7fb96cdd1bf646b8ab8e09b"><td class="mdescLeft">&#160;</td><td class="mdescRight">An input range to stream all the instances in a Cloud project.  <a href="#a71cb6e79b7fb96cdd1bf646b8ab8e09b">More...</a><br /></td></tr>
 <tr class="separator:a71cb6e79b7fb96cdd1bf646b8ab8e09b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26a21e57b79a55456e5eb82ea075cdf9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a26a21e57b79a55456e5eb82ea075cdf9">ListInstanceConfigsRange</a> = internal::PaginationRange&lt; google::spanner::admin::instance::v1::InstanceConfig, google::spanner::admin::instance::v1::ListInstanceConfigsRequest, google::spanner::admin::instance::v1::ListInstanceConfigsResponse &gt;</td></tr>
+<tr class="memdesc:a26a21e57b79a55456e5eb82ea075cdf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">An input range to stream all the instance configs in a Cloud project.  <a href="#a26a21e57b79a55456e5eb82ea075cdf9">More...</a><br /></td></tr>
+<tr class="separator:a26a21e57b79a55456e5eb82ea075cdf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a283421d14e4073e59922c9168d880cae"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a283421d14e4073e59922c9168d880cae">Mutations</a> = std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html">Mutation</a> &gt;</td></tr>
 <tr class="memdesc:a283421d14e4073e59922c9168d880cae"><td class="mdescLeft">&#160;</td><td class="mdescRight">An ordered sequence of mutations to pass to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a9349cc0b3fb4d9d83721e642bfcc1102" title="Commits a read-write transaction.">Client::Commit()</a></code> or return from the <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#acb2c5cba976c895ac6de8054d8970eb7" title="Execute a function in the context of a read-write transaction, with automatic retries if the transact...">Client::RunTransaction()</a></code> functor.  <a href="#a283421d14e4073e59922c9168d880cae">More...</a><br /></td></tr>
 <tr class="separator:a283421d14e4073e59922c9168d880cae"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -566,6 +569,25 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a26a21e57b79a55456e5eb82ea075cdf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26a21e57b79a55456e5eb82ea075cdf9">&#9670;&nbsp;</a></span>ListInstanceConfigsRange</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a26a21e57b79a55456e5eb82ea075cdf9">google::cloud::spanner::v0::ListInstanceConfigsRange</a> = typedef internal::PaginationRange&lt; google::spanner::admin::instance::v1::InstanceConfig, google::spanner::admin::instance::v1::ListInstanceConfigsRequest, google::spanner::admin::instance::v1::ListInstanceConfigsResponse&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>An input range to stream all the instance configs in a Cloud project. </p>
+<p>This type models an <a href="https://en.cppreference.com/w/cpp/ranges/input_range">input range</a> of <code>google::spanner::admin::v1::Instance</code> objects. Applications can make a single pass through the results. </p>
+
+<p class="definition">Definition at line <a class="el" href="instance__admin__connection_8h_source.html#l00055">55</a> of file <a class="el" href="instance__admin__connection_8h_source.html">instance_admin_connection.h</a>.</p>
+
+</div>
+</div>
 <a id="a71cb6e79b7fb96cdd1bf646b8ab8e09b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a71cb6e79b7fb96cdd1bf646b8ab8e09b">&#9670;&nbsp;</a></span>ListInstancesRange</h2>
 
@@ -578,8 +600,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>An input range to stream all the databases in a Cloud Spanner instance. </p>
-<p>This type models an <a href="https://en.cppreference.com/w/cpp/ranges/input_range">input range</a> of <code>google::spanner::admin::v1::Database</code> objects. Applications can make a single pass through the results. </p>
+<p>An input range to stream all the instances in a Cloud project. </p>
+<p>This type models an <a href="https://en.cppreference.com/w/cpp/ranges/input_range">input range</a> of <code>google::spanner::admin::v1::Instance</code> objects. Applications can make a single pass through the results. </p>
 
 <p class="definition">Definition at line <a class="el" href="instance__admin__connection_8h_source.html#l00041">41</a> of file <a class="el" href="instance__admin__connection_8h_source.html">instance_admin_connection.h</a>.</p>
 
@@ -1019,7 +1041,7 @@ template&lt;typename... Ts&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="instance__admin__connection_8cc_source.html#l00185">185</a> of file <a class="el" href="instance__admin__connection_8cc_source.html">instance_admin_connection.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="instance__admin__connection_8cc_source.html#l00217">217</a> of file <a class="el" href="instance__admin__connection_8cc_source.html">instance_admin_connection.cc</a>.</p>
 
 </div>
 </div>
