@@ -41,7 +41,7 @@ StatusOr<google::longrunning::Operation> InstanceAdminMetadata::CreateInstance(
 
 StatusOr<google::longrunning::Operation> InstanceAdminMetadata::UpdateInstance(
     grpc::ClientContext& context, gcsa::UpdateInstanceRequest const& request) {
-  SetMetadata(context, "instance=" + request.instance().name());
+  SetMetadata(context, "instance.name=" + request.instance().name());
   return child_->UpdateInstance(context, request);
 }
 
