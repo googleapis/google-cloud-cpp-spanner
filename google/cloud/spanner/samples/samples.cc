@@ -1241,7 +1241,6 @@ void RunAll() {
   }
 
   std::string instance_id = *std::move(random_instance);
-
   std::cout << "Running instance admin samples on " << instance_id << "\n";
 
   std::cout << "\nRunning get-instance sample\n";
