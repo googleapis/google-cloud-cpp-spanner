@@ -12,6 +12,9 @@ REM WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 REM See the License for the specific language governing permissions and
 REM limitations under the License.
 
+REM Set it to "no" for any value other than "yes".
+if "%RUN_SLOW_INTEGRATION_TESTS%"!="yes" set RUN_SLOW_INTEGRATION_TESTS=no
+
 echo %date% %time%
 cd github\google-cloud-cpp-spanner
 
@@ -67,6 +70,7 @@ bazel --output_user_root=C:\b test ^
   --test_env GOOGLE_CLOUD_CPP_SPANNER_INSTANCE=%GOOGLE_CLOUD_CPP_SPANNER_INSTANCE% ^
   --test_env GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA=%GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA% ^
   --test_env GOOGLE_CLOUD_CPP_AUTO_RUN_EXAMPLES=yes ^
+  --test_env RUN_SLOW_INTEGRATION_TESTS=%RUN_SLOW_INTEGRATION_TESTS% ^
   --test_env GRPC_DEFAULT_SSL_ROOTS_FILE_PATH=%BAZEL_OUTPUT_DIR%/external/com_github_grpc_grpc/etc/roots.pem ^
   -- //google/cloud/spanner/...:all
 

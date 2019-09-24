@@ -12,6 +12,9 @@ REM WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 REM See the License for the specific language governing permissions and
 REM limitations under the License.
 
+REM Set it to "no" for any value other than "yes".
+if "%RUN_SLOW_INTEGRATION_TESTS%"!="yes" set RUN_SLOW_INTEGRATION_TESTS=no
+
 echo %date% %time%
 cd github\google-cloud-cpp-spanner
 
