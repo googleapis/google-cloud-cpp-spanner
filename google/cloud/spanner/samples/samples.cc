@@ -1215,7 +1215,7 @@ int RunOneCommand(std::vector<std::string> argv) {
 }
 
 void RunAll() {
-  auto run_slow_it =
+  auto run_slow_integration_tests =
       google::cloud::internal::GetEnv("RUN_SLOW_INTEGRATION_TESTS")
           .value_or("");
   auto project_id =
@@ -1259,7 +1259,7 @@ void RunAll() {
   std::cout << "\nRunning (instance) get-iam-policy sample\n";
   RunOneCommand({"", "instance-get-iam-policy", project_id, instance_id});
 
-  if (run_slow_it == "yes") {
+  if (run_slow_integration_tests == "yes") {
     std::cout << "\nRunning (instance) add-database-reader sample\n";
     RunOneCommand({"", "add-database-reader", project_id, instance_id,
                    "serviceAccount:" + test_iam_service_account});
