@@ -24,6 +24,12 @@ export CMAKE_SOURCE_DIR="."
 
 in_docker_script="ci/kokoro/docker/build-in-docker-bazel.sh"
 
+# Set it to "no" for any value other than "yes".
+if [[ "${RUN_SLOW_INTEGRATION_TESTS:-}" != "yes" ]]; then
+  RUN_SLOW_INTEGRATION_TESTS="no"
+fi
+export RUN_SLOW_INTEGRATION_TESTS
+
 if [[ $# -eq 1 ]]; then
   export BUILD_NAME="${1}"
 elif [[ -n "${KOKORO_JOB_NAME:-}" ]]; then
@@ -251,6 +257,11 @@ docker_flags=(
     # only runs the test if credentials are configured, 'no' (or any other
     # value) does not run them.
     "--env" "RUN_INTEGRATION_TESTS=${RUN_INTEGRATION_TESTS:-}"
+
+    # Whether to run integration tests which are too slow, or too problematic on
+    # the ci builds. If the value is "yes", runs the tests, if the value is
+    # "no" (or any other value) does not run them.
+    "--env" "RUN_SLOW_INTEGRATION_TESTS=${RUN_SLOW_INTEGRATION_TESTS:-}"
 
     # If set to 'yes', run Doxygen to generate the documents and detect simple
     # errors in the documentation (e.g. partially documented parameter lists,

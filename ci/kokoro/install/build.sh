@@ -16,6 +16,12 @@
 
 set -eu
 
+# Set it to "no" for any value other than "yes".
+if [[ "${RUN_SLOW_INTEGRATION_TESTS:-}" != "yes" ]]; then
+  RUN_SLOW_INTEGRATION_TESTS="no"
+fi
+export RUN_SLOW_INTEGRATION_TESTS
+
 if [[ $# -eq 1 ]]; then
   export DISTRO="${1}"
 elif [[ -n "${KOKORO_JOB_NAME:-}" ]]; then
@@ -85,6 +91,7 @@ if [[ -f "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh" ]]; then
     # Set the environment variables for the test program.
     "--env" "GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json"
     "--env" "GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}"
+    "--env" "RUN_SLOW_INTEGRATION_TESTS=${RUN_SLOW_INTEGRATION_TESTS}"
     "--env" "GOOGLE_CLOUD_CPP_SPANNER_INSTANCE=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}"
     "--env" "GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA=${GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA}"
 
