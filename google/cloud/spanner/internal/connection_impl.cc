@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/internal/connection_impl.h"
+#include "google/cloud/spanner/internal/partial_result_set_resume.h"
 #include "google/cloud/spanner/internal/partial_result_set_source.h"
 #include "google/cloud/spanner/internal/retry_loop.h"
 #include "google/cloud/spanner/internal/time.h"
@@ -196,10 +197,18 @@ StatusOr<ResultSet> ConnectionImpl::ReadImpl(
     request.set_partition_token(*std::move(rp.partition_token));
   }
 
-  auto context = google::cloud::internal::make_unique<grpc::ClientContext>();
-  auto rpc =
-      google::cloud::internal::make_unique<DefaultPartialResultSetReader>(
-          std::move(context), stub_->StreamingRead(*context, request));
+  // Make a copy of `stub_`, which is a `shared_ptr<>`, to ensure it remains
+  // valid at least as long as the lambda does.
+  auto stub = stub_;
+  auto factory = [stub, request](std::string const& resume_token) mutable {
+    request.set_resume_token(resume_token);
+    auto context = google::cloud::internal::make_unique<grpc::ClientContext>();
+    return google::cloud::internal::make_unique<DefaultPartialResultSetReader>(
+        std::move(context), stub->StreamingRead(*context, request));
+  };
+  auto rpc = google::cloud::internal::make_unique<PartialResultSetResume>(
+      std::move(factory), /*is_idempotent=*/true, retry_policy_->clone(),
+      backoff_policy_->clone());
   auto reader = PartialResultSetSource::Create(std::move(rpc));
   if (!reader.ok()) {
     return std::move(reader).status();
