@@ -57,7 +57,7 @@ struct MockFactory {
 
 std::unique_ptr<PartialResultSetReader> MakeTestResume(
     PartialResultSetReaderFactory factory, bool is_idempotent) {
-  return make_unique<PartialResultSetResume>(
+  return google::cloud::internal::make_unique<PartialResultSetResume>(
       std::move(factory), is_idempotent,
       LimitedErrorCountRetryPolicy(/*maximum_failures=*/2).clone(),
       ExponentialBackoffPolicy(/*initial_delay=*/std::chrono::microseconds(1),
