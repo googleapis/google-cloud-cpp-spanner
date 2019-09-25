@@ -17,6 +17,7 @@
 
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/optional.h"
+#include "google/cloud/status.h"
 #include <google/spanner/v1/spanner.grpc.pb.h>
 #include <google/spanner/v1/spanner.pb.h>
 #include <grpcpp/grpcpp.h>

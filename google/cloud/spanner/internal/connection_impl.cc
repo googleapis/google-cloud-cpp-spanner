@@ -21,6 +21,7 @@
 #include "google/cloud/grpc_utils/grpc_error_delegate.h"
 #include "google/cloud/internal/make_unique.h"
 #include <google/spanner/v1/spanner.pb.h>
+#include <memory>
 
 namespace google {
 namespace cloud {
@@ -199,7 +200,6 @@ StatusOr<ResultSet> ConnectionImpl::ReadImpl(
   auto rpc =
       google::cloud::internal::make_unique<DefaultPartialResultSetReader>(
           std::move(context), stub_->StreamingRead(*context, request));
-
   auto reader = PartialResultSetSource::Create(std::move(rpc));
   if (!reader.ok()) {
     return std::move(reader).status();
