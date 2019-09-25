@@ -207,7 +207,7 @@ StatusOr<ResultSet> ConnectionImpl::ReadImpl(
         std::move(context), stub->StreamingRead(*context, request));
   };
   auto rpc = google::cloud::internal::make_unique<PartialResultSetResume>(
-      std::move(factory), /*is_idempotent=*/true, retry_policy_->clone(),
+      std::move(factory), Idempotency::kIdempotent, retry_policy_->clone(),
       backoff_policy_->clone());
   auto reader = PartialResultSetSource::Create(std::move(rpc));
   if (!reader.ok()) {

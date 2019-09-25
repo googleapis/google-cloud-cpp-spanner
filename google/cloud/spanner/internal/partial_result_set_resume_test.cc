@@ -56,7 +56,7 @@ struct MockFactory {
 };
 
 std::unique_ptr<PartialResultSetReader> MakeTestResume(
-    PartialResultSetReaderFactory factory, bool is_idempotent) {
+    PartialResultSetReaderFactory factory, Idempotency is_idempotent) {
   return google::cloud::internal::make_unique<PartialResultSetResume>(
       std::move(factory), is_idempotent,
       LimitedErrorCountRetryPolicy(/*maximum_failures=*/2).clone(),
@@ -99,7 +99,7 @@ TEST(PartialResultSetResume, Success) {
   auto factory = [&mock_factory](std::string const& token) {
     return mock_factory.MakeReader(token);
   };
-  auto reader = MakeTestResume(factory, /*is_idempotent=*/true);
+  auto reader = MakeTestResume(factory, Idempotency::kIdempotent);
   auto v = reader->Read();
   ASSERT_TRUE(v.has_value());
   EXPECT_THAT(*v, IsProtoEqual(response));
@@ -168,7 +168,7 @@ TEST(PartialResultSetResume, SuccessWithRestart) {
   auto factory = [&mock_factory](std::string const& token) {
     return mock_factory.MakeReader(token);
   };
-  auto reader = MakeTestResume(factory, /*is_idempotent=*/true);
+  auto reader = MakeTestResume(factory, Idempotency::kIdempotent);
   auto v = reader->Read();
   ASSERT_TRUE(v.has_value());
   EXPECT_THAT(*v, IsProtoEqual(r0));
@@ -223,7 +223,7 @@ TEST(PartialResultSetResume, PermanentError) {
   auto factory = [&mock_factory](std::string const& token) {
     return mock_factory.MakeReader(token);
   };
-  auto reader = MakeTestResume(factory, /*is_idempotent=*/true);
+  auto reader = MakeTestResume(factory, Idempotency::kIdempotent);
   auto v = reader->Read();
   ASSERT_TRUE(v.has_value());
   EXPECT_THAT(*v, IsProtoEqual(r0));
@@ -268,7 +268,7 @@ TEST(PartialResultSetResume, TransientNonIdempotent) {
   auto factory = [&mock_factory](std::string const& token) {
     return mock_factory.MakeReader(token);
   };
-  auto reader = MakeTestResume(factory, /*is_idempotent=*/false);
+  auto reader = MakeTestResume(factory, Idempotency::kNotIdempotent);
   auto v = reader->Read();
   ASSERT_TRUE(v.has_value());
   EXPECT_THAT(*v, IsProtoEqual(r0));
@@ -295,7 +295,7 @@ TEST(PartialResultSetResume, TooManyTransients) {
   auto factory = [&mock_factory](std::string const& token) {
     return mock_factory.MakeReader(token);
   };
-  auto reader = MakeTestResume(factory, /*is_idempotent=*/true);
+  auto reader = MakeTestResume(factory, Idempotency::kIdempotent);
   auto v = reader->Read();
   ASSERT_FALSE(v.has_value());
   auto status = reader->Finish();

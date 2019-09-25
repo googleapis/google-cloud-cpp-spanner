@@ -31,13 +31,18 @@ namespace internal {
 using PartialResultSetReaderFactory =
     std::function<std::unique_ptr<PartialResultSetReader>(std::string)>;
 
+enum class Idempotency {
+  kNotIdempotent,
+  kIdempotent,
+};
+
 /**
  * A PartialResultSetReader that resumes the streaming RPC on retryable errors.
  */
 class PartialResultSetResume : public PartialResultSetReader {
  public:
   PartialResultSetResume(PartialResultSetReaderFactory factory,
-                         bool is_idempotent,
+                         Idempotency is_idempotent,
                          std::unique_ptr<RetryPolicy> retry_policy,
                          std::unique_ptr<BackoffPolicy> backoff_policy)
       : factory_(std::move(factory)),
@@ -54,7 +59,7 @@ class PartialResultSetResume : public PartialResultSetReader {
 
  private:
   PartialResultSetReaderFactory factory_;
-  bool is_idempotent_;
+  Idempotency is_idempotent_;
   std::unique_ptr<RetryPolicy> retry_policy_;
   std::unique_ptr<BackoffPolicy> backoff_policy_;
   std::string last_resume_token_;

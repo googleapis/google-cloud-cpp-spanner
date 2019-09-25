@@ -32,7 +32,10 @@ optional<google::spanner::v1::PartialResultSet> PartialResultSetResume::Read() {
     }
     auto status = Finish();
     if (status.ok()) return {};
-    if (!is_idempotent_ || !retry_policy_->OnFailure(status)) return {};
+    if (is_idempotent_ == Idempotency::kNotIdempotent ||
+        !retry_policy_->OnFailure(status)) {
+      return {};
+    }
     std::this_thread::sleep_for(backoff_policy_->OnCompletion());
     last_status_.reset();
     child_ = factory_(last_resume_token_);
