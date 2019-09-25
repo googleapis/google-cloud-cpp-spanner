@@ -199,7 +199,7 @@ StatusOr<ResultSet> ConnectionImpl::ReadImpl(
 
   // Make a copy of `stub_`, which is a `shared_ptr<>`, to ensure it remains
   // valid at least as long as the lambda does.
-  auto stub = stub_;
+  auto const& stub = stub_;
   auto factory = [stub, request](std::string const& resume_token) mutable {
     request.set_resume_token(resume_token);
     auto context = google::cloud::internal::make_unique<grpc::ClientContext>();
