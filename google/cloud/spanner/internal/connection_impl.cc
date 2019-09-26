@@ -197,9 +197,10 @@ StatusOr<ResultSet> ConnectionImpl::ReadImpl(
     request.set_partition_token(*std::move(rp.partition_token));
   }
 
-  // Make a copy of `stub_`, which is a `shared_ptr<>`, to ensure it remains
-  // valid at least as long as the lambda does.
   auto const& stub = stub_;
+  // Capture a copy of `stub` to ensure the `shared_ptr<>` remains valid through
+  // the lifetime of the lambda. Note that the local variable `stub` is a
+  // reference to avoid increasing refcounts twice, but the capture is by value.
   auto factory = [stub, request](std::string const& resume_token) mutable {
     request.set_resume_token(resume_token);
     auto context = google::cloud::internal::make_unique<grpc::ClientContext>();
