@@ -63,6 +63,38 @@ void GetInstanceCommand(std::vector<std::string> const& argv) {
   GetInstance(std::move(client), argv[0], argv[1]);
 }
 
+//! [create-instance]
+void CreateInstance(google::cloud::spanner::InstanceAdminClient client,
+                    std::string const& project_id,
+                    std::string const& instance_id,
+                    std::string const& display_name) {
+  using google::cloud::future;
+  using google::cloud::StatusOr;
+  google::cloud::spanner::Instance in(project_id, instance_id);
+
+  future<StatusOr<google::spanner::admin::instance::v1::Instance>> f =
+      client.CreateInstance(
+          project_id, instance_id, display_name,
+          "projects/" + project_id + "/instanceConfigs/regional-us-central1", 1,
+          std::map<std::string, std::string>{{"label-key", "label-value"}});
+  StatusOr<google::spanner::admin::instance::v1::Instance> instance = f.get();
+  if (!instance) {
+    throw std::runtime_error(instance.status().message());
+  }
+  std::cout << "Created instance [" << in << "]\n";
+}
+//! [create-instance]
+
+void CreateInstanceCommand(std::vector<std::string> const& argv) {
+  if (argv.size() != 3) {
+    throw std::runtime_error(
+        "create-instance <project-id> <instance-id> <display_name>");
+  }
+  google::cloud::spanner::InstanceAdminClient client(
+      google::cloud::spanner::MakeInstanceAdminConnection());
+  CreateInstance(std::move(client), argv[0], argv[1], argv[2]);
+}
+
 //! [list-instance-configs]
 void ListInstanceConfigs(google::cloud::spanner::InstanceAdminClient client,
                          std::string const& project_id) {
@@ -1133,6 +1165,7 @@ int RunOneCommand(std::vector<std::string> argv) {
 
   CommandMap commands = {
       {"get-instance", &GetInstanceCommand},
+      {"create-instance", &CreateInstanceCommand},
       {"list-instance-configs", &ListInstanceConfigsCommand},
       {"get-instance-config", &GetInstanceConfigCommand},
       {"list-instances", &ListInstancesCommand},
@@ -1260,6 +1293,10 @@ void RunAll() {
   RunOneCommand({"", "instance-get-iam-policy", project_id, instance_id});
 
   if (run_slow_integration_tests == "yes") {
+    std::cout << "\nRunning create-instance sample\n";
+    RunOneCommand(
+        {"", "create-instance", project_id, "test-instance", "Test Instance"});
+
     std::cout << "\nRunning (instance) add-database-reader sample\n";
     RunOneCommand({"", "add-database-reader", project_id, instance_id,
                    "serviceAccount:" + test_iam_service_account});

@@ -36,6 +36,9 @@ class MockInstanceAdminConnection
   MOCK_METHOD1(GetInstance,
                StatusOr<google::spanner::admin::instance::v1::Instance>(
                    GetInstanceParams));
+  MOCK_METHOD1(CreateInstance,
+               future<StatusOr<google::spanner::admin::instance::v1::Instance>>(
+                   CreateInstanceParams));
   MOCK_METHOD1(GetInstanceConfig,
                StatusOr<google::spanner::admin::instance::v1::InstanceConfig>(
                    GetInstanceConfigParams));
