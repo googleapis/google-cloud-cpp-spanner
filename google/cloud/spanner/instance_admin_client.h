@@ -107,7 +107,7 @@ class InstanceAdminClient {
    * start with a lowercase letter (`[a-z]`), it must end with a lowercase
    * letter or a number (`[a-z0-9]`) and any characters between the beginning
    * and ending characters must be lower case letters, numbers, or dashes (`-`),
-   * that is, they must belong to the `[a-z0-9-]` character set.
+   * that is, they must belong to the `[-a-z0-9]` character set.
    *
    * @par Example
    * @snippet samples.cc create-instance
@@ -119,6 +119,17 @@ class InstanceAdminClient {
                  std::string const& instance_config, int node_count,
                  std::map<std::string, std::string> const& labels =
                      std::map<std::string, std::string>());
+  /**
+   * Deletes an existing Cloud Spanner instance.
+   *
+   * @warning Deleting an instance deletes all the databases in the
+   * instance. This is an unrecoverable operation.
+   *
+   * @par Example
+   * @snippet samples.cc delete-instance
+   */
+  Status DeleteInstance(Instance const& in);
+
   /**
    * Retrieve information about a Cloud Spanner Instance Config.
    *

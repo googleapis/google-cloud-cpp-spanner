@@ -170,6 +170,50 @@ TEST(InstanceAdminClientTest, CreateInstanceError) {
   EXPECT_EQ(StatusCode::kPermissionDenied, instance.status().code());
 }
 
+TEST(InstanceAdminConnectionTest, DeleteInstance_Success) {
+  std::string const expected_name =
+      "projects/test-project/instances/test-instance";
+
+  auto mock = std::make_shared<spanner_testing::MockInstanceAdminStub>();
+  EXPECT_CALL(*mock, DeleteInstance(_, _))
+      .WillOnce(
+          Invoke([&expected_name](grpc::ClientContext&,
+                                  gcsa::DeleteInstanceRequest const& request) {
+            EXPECT_EQ(expected_name, request.name());
+            return Status(StatusCode::kUnavailable, "try-again");
+          }))
+      .WillOnce(
+          Invoke([&expected_name](grpc::ClientContext&,
+                                  gcsa::DeleteInstanceRequest const& request) {
+            EXPECT_EQ(expected_name, request.name());
+            return Status();
+          }));
+
+  auto conn = MakeTestConnection(mock);
+  auto status = conn->DeleteInstance({expected_name});
+  ASSERT_STATUS_OK(status);
+}
+
+TEST(InstanceAdminConnectionTest, DeleteInstance_PermanentFailure) {
+  auto mock = std::make_shared<spanner_testing::MockInstanceAdminStub>();
+  EXPECT_CALL(*mock, DeleteInstance(_, _))
+      .WillOnce(Return(Status(StatusCode::kPermissionDenied, "uh-oh")));
+
+  auto conn = MakeTestConnection(mock);
+  auto status = conn->DeleteInstance({"test-name"});
+  EXPECT_EQ(StatusCode::kPermissionDenied, status.code());
+}
+
+TEST(InstanceAdminConnectionTest, DeleteInstance_TooManyTransients) {
+  auto mock = std::make_shared<spanner_testing::MockInstanceAdminStub>();
+  EXPECT_CALL(*mock, DeleteInstance(_, _))
+      .WillRepeatedly(Return(Status(StatusCode::kUnavailable, "try-again")));
+
+  auto conn = MakeTestConnection(mock);
+  auto status = conn->DeleteInstance({"test-name"});
+  EXPECT_EQ(StatusCode::kUnavailable, status.code());
+}
+
 TEST(InstanceAdminConnectionTest, GetInstanceConfig_Success) {
   std::string const expected_name =
       "projects/test-project/instanceConfigs/test-instance-config";

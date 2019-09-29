@@ -83,6 +83,29 @@ void CreateInstanceCommand(std::vector<std::string> const& argv) {
   CreateInstance(std::move(client), argv[0], argv[1], argv[2]);
 }
 
+//! [delete-instance]
+void DeleteInstance(google::cloud::spanner::InstanceAdminClient client,
+                    std::string const& project_id,
+                    std::string const& instance_id) {
+  google::cloud::spanner::Instance in(project_id, instance_id);
+
+  auto status = client.DeleteInstance(in);
+  if (!status.ok()) {
+    throw std::runtime_error(status.message());
+  }
+  std::cout << "Deleted instance [" << in << "]\n";
+}
+//! [delete-instance]
+
+void DeleteInstanceCommand(std::vector<std::string> const& argv) {
+  if (argv.size() != 2) {
+    throw std::runtime_error("delete-instance <project-id> <instance-id>");
+  }
+  google::cloud::spanner::InstanceAdminClient client(
+      google::cloud::spanner::MakeInstanceAdminConnection());
+  DeleteInstance(std::move(client), argv[0], argv[1]);
+}
+
 //! [list-instance-configs]
 void ListInstanceConfigs(google::cloud::spanner::InstanceAdminClient client,
                          std::string const& project_id) {
@@ -1154,6 +1177,7 @@ int RunOneCommand(std::vector<std::string> argv) {
   CommandMap commands = {
       {"get-instance", &GetInstanceCommand},
       {"create-instance", &CreateInstanceCommand},
+      {"delete-instance", &DeleteInstanceCommand},
       {"list-instance-configs", &ListInstanceConfigsCommand},
       {"get-instance-config", &GetInstanceConfigCommand},
       {"list-instances", &ListInstancesCommand},
@@ -1281,19 +1305,21 @@ void RunAll() {
   RunOneCommand({"", "instance-get-iam-policy", project_id, instance_id});
 
   if (run_slow_integration_tests == "yes") {
-    std::string instance_id =
+    std::string crud_instance_id =
         google::cloud::spanner_testing::RandomInstanceName(
             generator, "instance-admin-crud-samples-instance-");
     std::cout << "\nRunning create-instance sample\n";
     RunOneCommand(
-        {"", "create-instance", project_id, instance_id, "Test Instance"});
+        {"", "create-instance", project_id, crud_instance_id, "Test Instance"});
 
     std::cout << "\nRunning (instance) add-database-reader sample\n";
-    RunOneCommand({"", "add-database-reader", project_id, instance_id,
+    RunOneCommand({"", "add-database-reader", project_id, crud_instance_id,
                    "serviceAccount:" + test_iam_service_account});
     std::cout << "\nRunning (instance) remove-database-reader sample\n";
-    RunOneCommand({"", "remove-database-reader", project_id, instance_id,
+    RunOneCommand({"", "remove-database-reader", project_id, crud_instance_id,
                    "serviceAccount:" + test_iam_service_account});
+    std::cout << "\nRunning delete-instance sample\n";
+    RunOneCommand({"", "delete-instance", project_id, crud_instance_id});
   }
 
   std::cout << "\nRunning (instance) test-iam-permissions sample\n";

@@ -151,6 +151,18 @@ class InstanceAdminConnectionImpl : public InstanceAdminConnection {
     return AwaitCreateInstance(*std::move(operation));
   }
 
+  Status DeleteInstance(DeleteInstanceParams p) override {
+    gcsa::DeleteInstanceRequest request;
+    request.set_name(std::move(p.instance_name));
+    return internal::RetryLoop(
+        retry_policy_->clone(), backoff_policy_->clone(), true,
+        [this](grpc::ClientContext& context,
+               gcsa::DeleteInstanceRequest const& request) {
+          return stub_->DeleteInstance(context, request);
+        },
+        request, __func__);
+  }
+
   StatusOr<gcsa::InstanceConfig> GetInstanceConfig(
       GetInstanceConfigParams p) override {
     gcsa::GetInstanceConfigRequest request;

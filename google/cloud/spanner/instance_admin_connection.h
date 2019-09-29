@@ -98,6 +98,11 @@ class InstanceAdminConnection {
     std::map<std::string, std::string> labels;
   };
 
+  /// Wrap the arguments for `DeleteInstance()`.
+  struct DeleteInstanceParams {
+    std::string instance_name;
+  };
+
   /// Wrap the arguments for `GetInstanceConfig()`.
   struct GetInstanceConfigParams {
     std::string instance_config_name;
@@ -156,6 +161,8 @@ class InstanceAdminConnection {
 
   virtual future<StatusOr<google::spanner::admin::instance::v1::Instance>>
   CreateInstance(CreateInstanceParams p) = 0;
+
+  virtual Status DeleteInstance(DeleteInstanceParams p) = 0;
 
   /// Return the InstanceConfig with the given name.
   virtual StatusOr<google::spanner::admin::instance::v1::InstanceConfig>

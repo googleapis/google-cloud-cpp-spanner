@@ -33,6 +33,10 @@ InstanceAdminClient::CreateInstance(
                                 instance_config, node_count, labels});
 }
 
+Status InstanceAdminClient::DeleteInstance(Instance const& in) {
+  return conn_->DeleteInstance({in.FullName()});
+}
+
 StatusOr<google::spanner::admin::instance::v1::InstanceConfig>
 InstanceAdminClient::GetInstanceConfig(std::string const& name) {
   return conn_->GetInstanceConfig({name});
