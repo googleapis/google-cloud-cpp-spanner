@@ -18,6 +18,8 @@
 #include "google/cloud/spanner/database_admin_client.h"
 #include "google/cloud/spanner/instance_admin_client.h"
 #include "google/cloud/spanner/testing/pick_random_instance.h"
+#include "google/cloud/spanner/testing/random_database_name.h"
+#include "google/cloud/spanner/testing/random_instance_name.h"
 #include "google/cloud/internal/getenv.h"
 #include "google/cloud/internal/random.h"
 #include <sstream>
@@ -25,20 +27,6 @@
 #include <utility>
 
 namespace {
-
-std::string RandomDatabaseName(
-    google::cloud::internal::DefaultPRNG& generator) {
-  // A database ID must be between 2 and 30 characters, fitting the regular
-  // expression `[a-z][a-z0-9_\-]*[a-z0-9]`
-  int max_size = 30;
-  std::string const prefix = "db-";
-  auto size = static_cast<int>(max_size - 1 - prefix.size());
-  return prefix +
-         google::cloud::internal::Sample(
-             generator, size, "abcdefghijlkmnopqrstuvwxyz012345689_-") +
-         google::cloud::internal::Sample(generator, 1,
-                                         "abcdefghijlkmnopqrstuvwxyz");
-}
 
 //! [get-instance]
 void GetInstance(google::cloud::spanner::InstanceAdminClient client,
@@ -1293,9 +1281,12 @@ void RunAll() {
   RunOneCommand({"", "instance-get-iam-policy", project_id, instance_id});
 
   if (run_slow_integration_tests == "yes") {
+    std::string instance_id =
+        google::cloud::spanner_testing::RandomInstanceName(
+            generator, "instance-admin-crud-samples-instance-");
     std::cout << "\nRunning create-instance sample\n";
     RunOneCommand(
-        {"", "create-instance", project_id, "test-instance", "Test Instance"});
+        {"", "create-instance", project_id, instance_id, "Test Instance"});
 
     std::cout << "\nRunning (instance) add-database-reader sample\n";
     RunOneCommand({"", "add-database-reader", project_id, instance_id,
@@ -1308,7 +1299,8 @@ void RunAll() {
   std::cout << "\nRunning (instance) test-iam-permissions sample\n";
   RunOneCommand({"", "instance-test-iam-permissions", project_id, instance_id});
 
-  std::string database_id = RandomDatabaseName(generator);
+  std::string database_id =
+      google::cloud::spanner_testing::RandomDatabaseName(generator);
 
   std::cout << "Running samples in database " << database_id << "\n";
 
