@@ -72,6 +72,8 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="instance__admin__connection_8h_source.html">google/cloud/spanner/instance_admin_connection.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="instance_8h_source.html">google/cloud/spanner/instance.h</a>&quot;</code><br />
+<code>#include &quot;google/cloud/spanner/internal/polling_loop.h&quot;</code><br />
 <code>#include &quot;google/cloud/spanner/internal/retry_loop.h&quot;</code><br />
 </div>
 <p><a href="instance__admin__connection_8cc_source.html">Go to the source code of this file.</a></p>
@@ -100,6 +102,14 @@ Macros</h2></td></tr>
 <tr class="separator:a2ed3c49f553b5217de6e81791d430fc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c809a995589327697012c14339e1547"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="instance__admin__connection_8cc.html#a2c809a995589327697012c14339e1547">GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_BACKOFF_SCALING</a>&#160;&#160;&#160;2.0</td></tr>
 <tr class="separator:a2c809a995589327697012c14339e1547"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0239d69999796dc357deb0f0c1168d6b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="instance__admin__connection_8cc.html#a0239d69999796dc357deb0f0c1168d6b">GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_POLLING_TIMEOUT</a>&#160;&#160;&#160;std::chrono::minutes(30)</td></tr>
+<tr class="separator:a0239d69999796dc357deb0f0c1168d6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3147b752cb58996d10a8dd6fef9b7e6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="instance__admin__connection_8cc.html#ab3147b752cb58996d10a8dd6fef9b7e6">GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_POLLING_INITIAL_BACKOFF</a>&#160;&#160;&#160;std::chrono::seconds(10)</td></tr>
+<tr class="separator:ab3147b752cb58996d10a8dd6fef9b7e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13d1a1ded6f6dc90798d4cd7f477f75e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="instance__admin__connection_8cc.html#a13d1a1ded6f6dc90798d4cd7f477f75e">GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_POLLING_MAXIMUM_BACKOFF</a>&#160;&#160;&#160;std::chrono::minutes(5)</td></tr>
+<tr class="separator:a13d1a1ded6f6dc90798d4cd7f477f75e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbbee5450c84639cd9802aecfba2c955"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="instance__admin__connection_8cc.html#adbbee5450c84639cd9802aecfba2c955">GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_POLLING_BACKOFF_SCALING</a>&#160;&#160;&#160;2.0</td></tr>
+<tr class="separator:adbbee5450c84639cd9802aecfba2c955"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -120,7 +130,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="instance__admin__connection_8cc_source.html#l00041">41</a> of file <a class="el" href="instance__admin__connection_8cc_source.html">instance_admin_connection.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="instance__admin__connection_8cc_source.html#l00043">43</a> of file <a class="el" href="instance__admin__connection_8cc_source.html">instance_admin_connection.cc</a>.</p>
 
 </div>
 </div>
@@ -136,7 +146,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="instance__admin__connection_8cc_source.html#l00031">31</a> of file <a class="el" href="instance__admin__connection_8cc_source.html">instance_admin_connection.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="instance__admin__connection_8cc_source.html#l00033">33</a> of file <a class="el" href="instance__admin__connection_8cc_source.html">instance_admin_connection.cc</a>.</p>
 
 </div>
 </div>
@@ -152,7 +162,71 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="instance__admin__connection_8cc_source.html#l00036">36</a> of file <a class="el" href="instance__admin__connection_8cc_source.html">instance_admin_connection.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="instance__admin__connection_8cc_source.html#l00038">38</a> of file <a class="el" href="instance__admin__connection_8cc_source.html">instance_admin_connection.cc</a>.</p>
+
+</div>
+</div>
+<a id="adbbee5450c84639cd9802aecfba2c955"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbbee5450c84639cd9802aecfba2c955">&#9670;&nbsp;</a></span>GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_POLLING_BACKOFF_SCALING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_POLLING_BACKOFF_SCALING&#160;&#160;&#160;2.0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="instance__admin__connection_8cc_source.html#l00062">62</a> of file <a class="el" href="instance__admin__connection_8cc_source.html">instance_admin_connection.cc</a>.</p>
+
+</div>
+</div>
+<a id="ab3147b752cb58996d10a8dd6fef9b7e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3147b752cb58996d10a8dd6fef9b7e6">&#9670;&nbsp;</a></span>GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_POLLING_INITIAL_BACKOFF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_POLLING_INITIAL_BACKOFF&#160;&#160;&#160;std::chrono::seconds(10)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="instance__admin__connection_8cc_source.html#l00052">52</a> of file <a class="el" href="instance__admin__connection_8cc_source.html">instance_admin_connection.cc</a>.</p>
+
+</div>
+</div>
+<a id="a13d1a1ded6f6dc90798d4cd7f477f75e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13d1a1ded6f6dc90798d4cd7f477f75e">&#9670;&nbsp;</a></span>GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_POLLING_MAXIMUM_BACKOFF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_POLLING_MAXIMUM_BACKOFF&#160;&#160;&#160;std::chrono::minutes(5)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="instance__admin__connection_8cc_source.html#l00057">57</a> of file <a class="el" href="instance__admin__connection_8cc_source.html">instance_admin_connection.cc</a>.</p>
+
+</div>
+</div>
+<a id="a0239d69999796dc357deb0f0c1168d6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0239d69999796dc357deb0f0c1168d6b">&#9670;&nbsp;</a></span>GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_POLLING_TIMEOUT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GOOGLE_CLOUD_CPP_SPANNER_ADMIN_DEFAULT_POLLING_TIMEOUT&#160;&#160;&#160;std::chrono::minutes(30)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="instance__admin__connection_8cc_source.html#l00047">47</a> of file <a class="el" href="instance__admin__connection_8cc_source.html">instance_admin_connection.cc</a>.</p>
 
 </div>
 </div>
@@ -168,7 +242,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="instance__admin__connection_8cc_source.html#l00026">26</a> of file <a class="el" href="instance__admin__connection_8cc_source.html">instance_admin_connection.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="instance__admin__connection_8cc_source.html#l00028">28</a> of file <a class="el" href="instance__admin__connection_8cc_source.html">instance_admin_connection.cc</a>.</p>
 
 </div>
 </div>

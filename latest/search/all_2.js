@@ -20,6 +20,8 @@ var searchData=
   ['createchannelarguments',['CreateChannelArguments',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#a6a4cc126a978c0aae6dacf6e3d1f0e99',1,'google::cloud::spanner::v0::ConnectionOptions']]],
   ['createdatabase',['CreateDatabase',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#af19c5d53e7f32bba140cd74fdf4dfe05',1,'google::cloud::spanner::v0::DatabaseAdminClient::CreateDatabase()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection.html#af86cb958cb5f4d3fca5c94cc017b9ad5',1,'google::cloud::spanner::v0::DatabaseAdminConnection::CreateDatabase()']]],
   ['createdatabaseparams',['CreateDatabaseParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1CreateDatabaseParams.html',1,'google::cloud::spanner::v0::DatabaseAdminConnection']]],
+  ['createinstance',['CreateInstance',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminClient.html#ab97880cec5264ebaf3ce26f85d9dd61b',1,'google::cloud::spanner::v0::InstanceAdminClient::CreateInstance()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminConnection.html#a9571dc0b510361e4b88b8df44032ef4f',1,'google::cloud::spanner::v0::InstanceAdminConnection::CreateInstance()']]],
+  ['createinstanceparams',['CreateInstanceParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminConnection_1_1CreateInstanceParams.html',1,'google::cloud::spanner::v0::InstanceAdminConnection']]],
   ['credentials',['credentials',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#abac63734a4843330710586b52d06eb00',1,'google::cloud::spanner::v0::ConnectionOptions']]],
   ['cloud_20spanner_20c_2b_2b_20client_20library',['Cloud Spanner C++ Client Library',['../index.html',1,'']]]
 ];

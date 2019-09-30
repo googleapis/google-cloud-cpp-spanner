@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['sql_5fparams',['sql_params',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1PartitionQueryParams.html#a80b518edf98c55179a53ff8c1645e41d',1,'google::cloud::spanner::v0::Connection::PartitionQueryParams']]],
-  ['statement',['statement',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ExecuteSqlParams.html#a62bbdf511297e5c246237b89395e4aa4',1,'google::cloud::spanner::v0::Connection::ExecuteSqlParams::statement()'],['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ExecutePartitionedDmlParams.html#ad1cd449456acaf0cf33ae3196080991c',1,'google::cloud::spanner::v0::Connection::ExecutePartitionedDmlParams::statement()']]],
-  ['statements',['statements',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ExecuteBatchDmlParams.html#ace8bc2b5c06d20e33ecc03d242b625f8',1,'google::cloud::spanner::v0::Connection::ExecuteBatchDmlParams::statements()'],['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1UpdateDatabaseParams.html#a4c064ba71102144b7c7e3a93075de937',1,'google::cloud::spanner::v0::DatabaseAdminConnection::UpdateDatabaseParams::statements()']]],
-  ['stats',['stats',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1BatchDmlResult.html#afb272a505b0d3c39891ee1063d0c1d5b',1,'google::cloud::spanner::v0::BatchDmlResult']]],
-  ['status',['status',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1BatchDmlResult.html#a2e1a32b8b3188dd6432715de521c1e7f',1,'google::cloud::spanner::v0::BatchDmlResult']]]
+  ['read_5foptions',['read_options',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ReadParams.html#aebbc3d1e8aa6ccb148c77a79cb346bdd',1,'google::cloud::spanner::v0::Connection::ReadParams']]],
+  ['read_5fparams',['read_params',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1PartitionReadParams.html#a443a8d382b44c50ed7c08672291e128f',1,'google::cloud::spanner::v0::Connection::PartitionReadParams']]],
+  ['row_5fcount',['row_count',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1BatchDmlResult_1_1Stats.html#a8587ad4c5fcdfc4fb3a640c4dfb2d7a4',1,'google::cloud::spanner::v0::BatchDmlResult::Stats']]],
+  ['row_5fcount_5flower_5fbound',['row_count_lower_bound',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionedDmlResult.html#ad5e64214214d6a9834c80f66e02a2dfa',1,'google::cloud::spanner::v0::PartitionedDmlResult']]]
 ];
