@@ -31,7 +31,8 @@ function (spanner_client_define_integration_tests)
         database_admin_integration_test.cc
         client_stress_test.cc
         instance_admin_integration_test.cc
-        rpc_failure_threshold_integration_test.cc)
+        rpc_failure_threshold_integration_test.cc
+        throughput_benchmark.cc)
 
     # Export the list of unit tests to a .bzl file so we do not need to maintain
     # the list in two places.
