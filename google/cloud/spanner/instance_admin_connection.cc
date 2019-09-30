@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/instance_admin_connection.h"
+#include "google/cloud/spanner/instance.h"
 #include "google/cloud/spanner/internal/polling_loop.h"
 #include "google/cloud/spanner/internal/retry_loop.h"
 
@@ -123,13 +124,12 @@ class InstanceAdminConnectionImpl : public InstanceAdminConnection {
   future<StatusOr<gcsa::Instance>> CreateInstance(
       CreateInstanceParams p) override {
     gcsa::CreateInstanceRequest request;
-    std::string instance_name =
-        "projects/" + p.project_id + "/instances/" + p.instance_id;
+    google::cloud::spanner::Instance in(p.project_id, p.instance_id);
     request.set_parent("projects/" + p.project_id);
     request.set_instance_id(std::move(p.instance_id));
     auto instance = request.mutable_instance();
     instance->set_config(std::move(p.instance_config));
-    instance->set_name(std::move(instance_name));
+    instance->set_name(in.FullName());
     instance->set_display_name(std::move(p.display_name));
     instance->set_node_count(p.node_count);
     auto mutable_labels = instance->mutable_labels();

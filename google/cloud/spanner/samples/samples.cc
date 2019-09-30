@@ -1319,8 +1319,7 @@ void RunAll() {
 
   if (run_slow_integration_tests == "yes") {
     std::string crud_instance_id =
-        google::cloud::spanner_testing::RandomInstanceName(
-            generator, "instance-admin-crud-samples-instance-");
+        google::cloud::spanner_testing::RandomInstanceName(generator);
     std::cout << "\nRunning create-instance sample\n";
     RunOneCommand(
         {"", "create-instance", project_id, crud_instance_id, "Test Instance"});

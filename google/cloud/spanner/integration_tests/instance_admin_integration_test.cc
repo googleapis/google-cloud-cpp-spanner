@@ -71,8 +71,8 @@ TEST(InstanceAdminClient, InstanceCRUDOperations) {
   auto project_id =
       google::cloud::internal::GetEnv("GOOGLE_CLOUD_PROJECT").value_or("");
   auto generator = google::cloud::internal::MakeDefaultPRNG();
-  std::string instance_id = google::cloud::spanner_testing::RandomInstanceName(
-      generator, "instance-admin-crud-integration-tests-instance-");
+  std::string instance_id =
+      google::cloud::spanner_testing::RandomInstanceName(generator);
   ASSERT_FALSE(project_id.empty());
   ASSERT_FALSE(instance_id.empty());
   Instance in(project_id, instance_id);

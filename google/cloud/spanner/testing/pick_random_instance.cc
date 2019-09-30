@@ -24,6 +24,14 @@ StatusOr<std::string> PickRandomInstance(
     std::string const& project_id) {
   spanner::InstanceAdminClient client(spanner::MakeInstanceAdminConnection());
 
+  /**
+   * We started to have integration tests for InstanceAdminClient which creates
+   * and deletes temporary instances. If we pick one of those instnaces here,
+   * the following tests will fail after the deletion.
+   * InstanceAdminClient's integration tests are using instances prefixed with
+   * "temporary-instances-", so we only pick instances prefixed with
+   * "test-instance-" here for isolation.
+   */
   std::vector<std::string> instance_ids;
   for (auto instance : client.ListInstances(project_id, "")) {
     if (!instance) return std::move(instance).status();

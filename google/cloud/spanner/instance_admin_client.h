@@ -117,8 +117,7 @@ class InstanceAdminClient {
   CreateInstance(std::string const& project_id, std::string const& instance_id,
                  std::string const& display_name,
                  std::string const& instance_config, int node_count,
-                 std::map<std::string, std::string> const& labels =
-                     std::map<std::string, std::string>());
+                 std::map<std::string, std::string> const& labels = {});
   /**
    * Deletes an existing Cloud Spanner instance.
    *

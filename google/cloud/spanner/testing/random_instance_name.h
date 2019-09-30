@@ -25,8 +25,7 @@ namespace spanner_testing {
 inline namespace SPANNER_CLIENT_NS {
 
 /// Create a random instance name given a PRNG generator.
-std::string RandomInstanceName(google::cloud::internal::DefaultPRNG& generator,
-                               const std::string& prefix);
+std::string RandomInstanceName(google::cloud::internal::DefaultPRNG& generator);
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner_testing

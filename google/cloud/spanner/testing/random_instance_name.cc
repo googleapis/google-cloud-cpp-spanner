@@ -13,16 +13,26 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/testing/random_instance_name.h"
+#include <chrono>
+#include <ctime>
+#include <iomanip>
+#include <sstream>
 
 namespace google {
 namespace cloud {
 namespace spanner_testing {
 inline namespace SPANNER_CLIENT_NS {
-std::string RandomInstanceName(google::cloud::internal::DefaultPRNG& generator,
-                               const std::string& prefix) {
+std::string RandomInstanceName(
+    google::cloud::internal::DefaultPRNG& generator) {
   // A instance ID must be between 2 and 64 characters, fitting the regular
   // expression `[a-z][-a-z0-9]*[a-z0-9]`
   int max_size = 64;
+  auto now = std::chrono::system_clock::now();
+  auto time_t = std::chrono::system_clock::to_time_t(now);
+  std::stringstream ss;
+  ss << "temporary-instance-"
+     << std::put_time(std::localtime(&time_t), "%Y-%m-%d") << "-";
+  std::string prefix = ss.str();
   auto size = static_cast<int>(max_size - 1 - prefix.size());
   return prefix +
          google::cloud::internal::Sample(
