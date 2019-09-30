@@ -22,7 +22,7 @@ std::string RandomDatabaseName(
     google::cloud::internal::DefaultPRNG& generator) {
   // A database ID must be between 2 and 30 characters, fitting the regular
   // expression `[a-z][a-z0-9_\-]*[a-z0-9]`
-  int max_size = 30;
+  std::size_t const max_size = 30;
   std::string const prefix = "db-";
   auto size = static_cast<int>(max_size - 1 - prefix.size());
   return prefix +
