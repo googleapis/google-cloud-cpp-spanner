@@ -140,6 +140,12 @@ class Connection {
       PartitionReadParams) = 0;
 
   /// Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC
+  virtual ExecuteQueryResult ExecuteQuery(ExecuteSqlParams) = 0;
+
+  /// Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC
+  virtual ExecuteDmlResult ExecuteDml(ExecuteSqlParams) = 0;
+
+  /// Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC
   virtual StatusOr<ResultSet> ExecuteSql(ExecuteSqlParams) = 0;
 
   /// Define the interface for a google.spanner.v1.Spanner.ExecutePartitionedDml
