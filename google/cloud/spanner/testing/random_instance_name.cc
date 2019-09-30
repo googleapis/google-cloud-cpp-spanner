@@ -15,8 +15,6 @@
 #include "google/cloud/spanner/testing/random_instance_name.h"
 #include <chrono>
 #include <ctime>
-#include <iomanip>
-#include <sstream>
 
 namespace google {
 namespace cloud {
@@ -29,10 +27,9 @@ std::string RandomInstanceName(
   int max_size = 64;
   auto now = std::chrono::system_clock::now();
   auto time_t = std::chrono::system_clock::to_time_t(now);
-  std::stringstream ss;
-  ss << "temporary-instance-"
-     << std::put_time(std::localtime(&time_t), "%Y-%m-%d") << "-";
-  std::string prefix = ss.str();
+  std::string date = "1973-03-01";
+  std::strftime(&date[0], date.size() + 1, "%Y-%m-%d", std::localtime(&time_t));
+  std::string prefix = "temporary-instance-" + date + "-";
   auto size = static_cast<int>(max_size - 1 - prefix.size());
   return prefix +
          google::cloud::internal::Sample(
