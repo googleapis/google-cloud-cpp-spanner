@@ -162,6 +162,7 @@ elif [[ "${BUILD_NAME}" = "coverage" ]]; then
   export DISTRO=fedora-install
   export DISTRO_VERSION=30
   : "${RUN_INTEGRATION_TESTS:=$DEFAULT_RUN_INTEGRATION_TESTS}"
+  export RUN_SLOW_INTEGRATION_TESTS=yes
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "bazel-dependency" ]]; then
   export DISTRO=ubuntu
