@@ -26,7 +26,7 @@ StatusOr<std::string> PickRandomInstance(
 
   /**
    * We started to have integration tests for InstanceAdminClient which creates
-   * and deletes temporary instances. If we pick one of those instnaces here,
+   * and deletes temporary instances. If we pick one of those instances here,
    * the following tests will fail after the deletion.
    * InstanceAdminClient's integration tests are using instances prefixed with
    * "temporary-instances-", so we only pick instances prefixed with

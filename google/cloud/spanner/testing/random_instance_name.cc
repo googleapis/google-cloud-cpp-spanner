@@ -22,9 +22,9 @@ namespace spanner_testing {
 inline namespace SPANNER_CLIENT_NS {
 std::string RandomInstanceName(
     google::cloud::internal::DefaultPRNG& generator) {
-  // A instance ID must be between 2 and 64 characters, fitting the regular
+  // An instance ID must be between 2 and 64 characters, fitting the regular
   // expression `[a-z][-a-z0-9]*[a-z0-9]`
-  int max_size = 64;
+  std::size_t const max_size = 64;
   auto now = std::chrono::system_clock::now();
   auto time_t = std::chrono::system_clock::to_time_t(now);
   std::string date = "1973-03-01";
