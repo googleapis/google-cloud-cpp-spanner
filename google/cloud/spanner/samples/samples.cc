@@ -60,10 +60,23 @@ void CreateInstance(google::cloud::spanner::InstanceAdminClient client,
   using google::cloud::StatusOr;
   google::cloud::spanner::Instance in(project_id, instance_id);
 
+  std::vector<std::string> instance_config_names = [client,
+                                                    project_id]() mutable {
+    std::vector<std::string> names;
+    for (auto instance_config : client.ListInstanceConfigs(project_id)) {
+      if (!instance_config) break;
+      names.push_back(instance_config->name());
+    }
+    return names;
+  }();
+  if (instance_config_names.empty()) {
+    throw std::runtime_error("Can not retrieve the list of instance configs.");
+  }
+  // Use the name of the first element from the list of instance configs.
+  auto instance_config = instance_config_names[0];
   future<StatusOr<google::spanner::admin::instance::v1::Instance>> f =
       client.CreateInstance(
-          project_id, instance_id, display_name,
-          "projects/" + project_id + "/instanceConfigs/regional-us-central1", 1,
+          project_id, instance_id, display_name, instance_config, 1,
           std::map<std::string, std::string>{{"label-key", "label-value"}});
   StatusOr<google::spanner::admin::instance::v1::Instance> instance = f.get();
   if (!instance) {
