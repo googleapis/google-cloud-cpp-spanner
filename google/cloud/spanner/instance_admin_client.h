@@ -122,6 +122,9 @@ class InstanceAdminClient {
   /**
    * Updates a Cloud Spanner instance.
    *
+   * Note that when updating a field, you have to set the field mask on the
+   * `UpdateInstanceRequest` with the field name.
+   *
    * @par Example
    * @snippet samples.cc update-instance
    *
