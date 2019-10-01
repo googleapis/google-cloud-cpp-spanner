@@ -170,6 +170,61 @@ TEST(InstanceAdminClientTest, CreateInstanceError) {
   EXPECT_EQ(StatusCode::kPermissionDenied, instance.status().code());
 }
 
+TEST(InstanceAdminClientTest, UpdateInstanceSuccess) {
+  auto mock = std::make_shared<spanner_testing::MockInstanceAdminStub>();
+  std::string expected_name = "projects/test-project/instances/test-instance";
+
+  EXPECT_CALL(*mock, UpdateInstance(_, _))
+      .WillOnce(Invoke([&expected_name](grpc::ClientContext&,
+                                        gcsa::UpdateInstanceRequest const& r) {
+        EXPECT_EQ(expected_name, r.instance().name());
+        google::longrunning::Operation op;
+        op.set_name("test-operation-name");
+        op.set_done(false);
+        return make_status_or(op);
+      }));
+  EXPECT_CALL(*mock, GetOperation(_, _))
+      .WillOnce(Invoke(
+          [&expected_name](grpc::ClientContext&,
+                           google::longrunning::GetOperationRequest const& r) {
+            EXPECT_EQ("test-operation-name", r.name());
+            google::longrunning::Operation op;
+            op.set_name(r.name());
+            op.set_done(true);
+            gcsa::Instance instance;
+            instance.set_name(expected_name);
+            op.mutable_response()->PackFrom(instance);
+            return make_status_or(op);
+          }));
+
+  auto conn = MakeTestConnection(std::move(mock));
+  gcsa::UpdateInstanceRequest req;
+  req.mutable_instance()->set_name(expected_name);
+  auto fut = conn->UpdateInstance({req});
+  EXPECT_EQ(std::future_status::ready, fut.wait_for(std::chrono::seconds(10)));
+  auto instance = fut.get();
+  EXPECT_STATUS_OK(instance);
+
+  EXPECT_EQ(expected_name, instance->name());
+}
+
+TEST(InstanceAdminClientTest, UpdateInstanceError) {
+  auto mock = std::make_shared<spanner_testing::MockInstanceAdminStub>();
+
+  EXPECT_CALL(*mock, UpdateInstance(_, _))
+      .WillOnce(
+          Invoke([](grpc::ClientContext&, gcsa::UpdateInstanceRequest const&) {
+            return StatusOr<google::longrunning::Operation>(
+                Status(StatusCode::kPermissionDenied, "uh-oh"));
+          }));
+
+  auto conn = MakeTestConnection(std::move(mock));
+  auto fut = conn->UpdateInstance({gcsa::UpdateInstanceRequest()});
+  EXPECT_EQ(std::future_status::ready, fut.wait_for(std::chrono::seconds(0)));
+  auto instance = fut.get();
+  EXPECT_EQ(StatusCode::kPermissionDenied, instance.status().code());
+}
+
 TEST(InstanceAdminConnectionTest, DeleteInstance_Success) {
   std::string const expected_name =
       "projects/test-project/instances/test-instance";

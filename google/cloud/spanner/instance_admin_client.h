@@ -118,6 +118,18 @@ class InstanceAdminClient {
                  std::string const& display_name,
                  std::string const& instance_config, int node_count,
                  std::map<std::string, std::string> const& labels = {});
+
+  /**
+   * Updates a Cloud Spanner instance.
+   *
+   * @par Example
+   * @snippet samples.cc update-instance
+   *
+   */
+  future<StatusOr<google::spanner::admin::instance::v1::Instance>>
+  UpdateInstance(
+      google::spanner::admin::instance::v1::UpdateInstanceRequest const&);
+
   /**
    * Deletes an existing Cloud Spanner instance.
    *

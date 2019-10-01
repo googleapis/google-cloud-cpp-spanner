@@ -101,11 +101,24 @@ TEST(InstanceAdminClient, InstanceCRUDOperations) {
   EXPECT_STATUS_OK(instance.status());
   EXPECT_THAT(instance->name(), HasSubstr(project_id));
   EXPECT_THAT(instance->name(), HasSubstr(instance_id));
+  EXPECT_EQ("test-display-name", instance->display_name());
   EXPECT_NE(0, instance->node_count());
   EXPECT_NE(0, instance->labels_size());
   EXPECT_EQ(instance_config, instance->config());
   EXPECT_EQ("label-value", instance->labels().at("label-key"));
 
+  // Then update the instance
+  instance->set_display_name("New display name");
+  instance->mutable_labels()->insert({"new-key", "new-value"});
+  google::spanner::admin::instance::v1::UpdateInstanceRequest update_request;
+  *update_request.mutable_instance() = std::move(*instance);
+  update_request.mutable_field_mask()->add_paths("display_name");
+  update_request.mutable_field_mask()->add_paths("labels");
+  f = client.UpdateInstance(update_request);
+  instance = f.get();
+  EXPECT_EQ("New display name", instance->display_name());
+  EXPECT_EQ(2, instance->labels_size());
+  EXPECT_EQ("new-value", instance->labels().at("new-key"));
   auto status = client.DeleteInstance(in);
   EXPECT_STATUS_OK(status);
 }
