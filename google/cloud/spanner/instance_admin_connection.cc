@@ -154,7 +154,7 @@ class InstanceAdminConnectionImpl : public InstanceAdminConnection {
   future<StatusOr<gcsa::Instance>> UpdateInstance(
       UpdateInstanceParams p) override {
     auto operation = RetryLoop(
-        retry_policy_->clone(), backoff_policy_->clone(), false,
+        retry_policy_->clone(), backoff_policy_->clone(), true,
         [this](grpc::ClientContext& context,
                gcsa::UpdateInstanceRequest const& request) {
           return stub_->UpdateInstance(context, request);
