@@ -126,9 +126,9 @@ class InstanceAdminClient {
    * `google::spanner::admin::instance::v1::UpdateInstanceRequest` object.
    *
    * @par Idempotency
-   * Strictly saying, this operation is not idempotent, but we treat this as a
-   * retryable operation. If a request returns a transient error, it will be
-   * retried according to the given RetryPolicy.
+   * Strictly saying, this operation is not idempotent if other thread or
+   * process is trying to modify the same field on the same Cloud Spanner
+   * instance, but we treat this API call as an idempotent operation.
    *
    * @par Example
    * @snippet samples.cc update-instance
