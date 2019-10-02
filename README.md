@@ -99,7 +99,7 @@ backwards-incompatible API changes in the
 
 The [reference documentation][doxygen-link] for this client library is available online.
 Please consult the [Cloud Spanner website][cloud-spanner-docs] for
-general documentation on Cloud Spanner features, APIS, other client
+general documentation on Cloud Spanner features, APIs, other client
 libraries, etc.
 
 [cloud-spanner-docs]: https://cloud.google.com/spanner/docs/
