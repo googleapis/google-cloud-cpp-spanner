@@ -88,6 +88,7 @@ if (MSVC)
     # This is a relatively obscure feature to add compile flags to just one
     # source:
     set_property(SOURCE value.cc internal/date.cc
+                        integration_tests/instance_admin_integration_test.cc
                  APPEND_STRING
                  PROPERTY COMPILE_DEFINITIONS "_CRT_SECURE_NO_WARNINGS")
 endif ()

@@ -21,6 +21,7 @@
 #include <gmock/gmock.h>
 #include <chrono>
 #include <ctime>
+#include <regex>
 
 namespace google {
 namespace cloud {
@@ -58,35 +59,41 @@ class InstanceAdminClientTest : public testing::Test {
 
 class InstanceAdminClientTestWithCleanup : public InstanceAdminClientTest {
  protected:
-  void TearDown() override {
-    // Deletes leaked temporary instances.
-    // This code should be updated when changing the naming pattern in
-    // `google::cloud::spanner::testing::RandomInstanceName()`.
+  // Deletes leaked temporary instances.
+  void SetUp() override {
+    InstanceAdminClientTest::SetUp();
     if (run_slow_integration_tests_ != "yes") {
       return;
     }
-    std::vector<std::string> instance_ids = [this]() mutable {
+    // Check the current format of `RandomInstanceName()`.
+    std::regex re(
+        R"(projects/.+/instances/(temporary-instance-(\d{4}-\d{2}-\d{2})-.+))");
+    std::smatch m;
+    auto generator = google::cloud::internal::MakeDefaultPRNG();
+    std::string random_instance_id =
+        google::cloud::spanner_testing::RandomInstanceName(generator);
+    auto random_instance_full_name =
+        Instance(project_id_, random_instance_id).FullName();
+    // Make sure we're using correct regex.
+    EXPECT_TRUE(std::regex_match(random_instance_full_name, m, re));
+    std::vector<std::string> instance_ids = [this, &re, &m]() mutable {
       std::vector<std::string> instance_ids;
       for (auto instance : client_.ListInstances(project_id_, "")) {
         EXPECT_STATUS_OK(instance);
         if (!instance) break;
         auto name = instance->name();
-        std::string const sep = "/instances/";
-        std::string const temporary_instance_name = sep + "temporary-instance-";
-        auto pos = name.rfind(temporary_instance_name);
-        if (pos == std::string::npos) {
-          continue;
-        }
-        // Extraxt ${YYYY-MM-DD} part.
-        auto date_str = name.substr(pos + temporary_instance_name.size(), 10);
-        std::string cut_off_date = "1973-03-01";
-        auto cut_off_time_t = std::chrono::system_clock::to_time_t(
-            std::chrono::system_clock::now() - std::chrono::hours(48));
-        std::strftime(&cut_off_date[0], cut_off_date.size() + 1, "%Y-%m-%d",
-                      std::localtime(&cut_off_time_t));
-        // Compare the strings
-        if (date_str < cut_off_date) {
-          instance_ids.push_back(name.substr(pos + sep.size()));
+        if (std::regex_match(name, m, re)) {
+          auto instance_id = m[1];
+          auto date_str = m[2];
+          std::string cut_off_date = "1973-03-01";
+          auto cut_off_time_t = std::chrono::system_clock::to_time_t(
+              std::chrono::system_clock::now() - std::chrono::hours(48));
+          std::strftime(&cut_off_date[0], cut_off_date.size() + 1, "%Y-%m-%d",
+                        std::localtime(&cut_off_time_t));
+          // Compare the strings
+          if (date_str < cut_off_date) {
+            instance_ids.push_back(instance_id);
+          }
         }
       }
       return instance_ids;

@@ -22,8 +22,6 @@ namespace spanner_testing {
 inline namespace SPANNER_CLIENT_NS {
 /**
  * Generate a random instance name for InstanceAdminClient CRUD tests.
- * When changing the code here, be sure to look at the cleanup code in
- * "google/cloud/spanner/integration_tests/instance_admin_integration_test.cc".
  */
 std::string RandomInstanceName(
     google::cloud::internal::DefaultPRNG& generator) {
