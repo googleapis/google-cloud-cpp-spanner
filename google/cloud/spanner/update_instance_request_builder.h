@@ -56,6 +56,7 @@ class UpdateInstanceRequestBuilder {
   explicit UpdateInstanceRequestBuilder(Instance in) {
     request_.mutable_instance()->set_name(in.FullName());
   }
+
   /**
    * Constructs `UpdateInstanceRequestBuilder` with
    * google::spanner::admin::instance::v1::Instance. It's particulaly useful if
@@ -76,9 +77,12 @@ class UpdateInstanceRequestBuilder {
       std::map<std::string, std::string> const&);
   UpdateInstanceRequestBuilder& SetLabels(
       std::map<std::string, std::string> const&);
-  google::spanner::admin::instance::v1::UpdateInstanceRequest Build() {
+  google::spanner::admin::instance::v1::UpdateInstanceRequest& Build() & {
     return request_;
-  };
+  }
+  google::spanner::admin::instance::v1::UpdateInstanceRequest&& Build() && {
+    return std::move(request_);
+  }
 
  private:
   google::spanner::admin::instance::v1::UpdateInstanceRequest request_;

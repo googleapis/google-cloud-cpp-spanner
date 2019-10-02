@@ -126,9 +126,10 @@ class InstanceAdminClient {
    * `google::spanner::admin::instance::v1::UpdateInstanceRequest` object.
    *
    * @par Idempotency
-   * Strictly saying, this operation is not idempotent if other thread or
-   * process is trying to modify the same field on the same Cloud Spanner
-   * instance, but we treat this API call as an idempotent operation.
+   * This operation is idempotent as its result does not depend on the previous
+   * state of the instance. Note that, as is the case with all operations, it is
+   * subject to race conditions if multiple tasks are attempting the same fields
+   * in the same instance.
    *
    * @par Example
    * @snippet samples.cc update-instance
