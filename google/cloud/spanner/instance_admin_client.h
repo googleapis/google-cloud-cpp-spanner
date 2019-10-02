@@ -128,8 +128,8 @@ class InstanceAdminClient {
    * @par Idempotency
    * This operation is idempotent as its result does not depend on the previous
    * state of the instance. Note that, as is the case with all operations, it is
-   * subject to race conditions if multiple tasks are attempting the same fields
-   * in the same instance.
+   * subject to race conditions if multiple tasks are attempting to change the
+   * same fields in the same instance.
    *
    * @par Example
    * @snippet samples.cc update-instance
