@@ -20,6 +20,7 @@
 #include "google/cloud/spanner/testing/pick_random_instance.h"
 #include "google/cloud/spanner/testing/random_database_name.h"
 #include "google/cloud/spanner/testing/random_instance_name.h"
+#include "google/cloud/spanner/update_instance_request_builder.h"
 #include "google/cloud/internal/getenv.h"
 #include "google/cloud/internal/random.h"
 #include <sstream>
@@ -105,19 +106,11 @@ void UpdateInstance(google::cloud::spanner::InstanceAdminClient client,
   using google::cloud::StatusOr;
   google::cloud::spanner::Instance in(project_id, instance_id);
 
-  StatusOr<google::spanner::admin::instance::v1::Instance> instance =
-      client.GetInstance(in);
-  if (!instance) {
-    throw std::runtime_error(instance.status().message());
-  }
-  google::spanner::admin::instance::v1::UpdateInstanceRequest request;
-  instance->set_display_name(new_display_name);
-  *request.mutable_instance() = std::move(*instance);
-  // Need to set the field mask for updating the field.
-  request.mutable_field_mask()->add_paths("display_name");
-  future<StatusOr<google::spanner::admin::instance::v1::Instance>> f =
-      client.UpdateInstance(request);
-  instance = f.get();
+  auto f = client.UpdateInstance(
+      google::cloud::spanner::UpdateInstanceRequestBuilder(in)
+          .SetDisplayName(new_display_name)
+          .Build());
+  auto instance = f.get();
   if (!instance) {
     throw std::runtime_error(instance.status().message());
   }
