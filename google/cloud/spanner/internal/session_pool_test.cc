@@ -30,7 +30,6 @@ inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 namespace {
 
-using ::google::cloud::internal::make_unique;
 using ::testing::ByMove;
 using ::testing::Return;
 
@@ -46,13 +45,14 @@ std::vector<std::unique_ptr<Session>> MakeSessions(
   std::vector<std::unique_ptr<Session>> ret;
   ret.reserve(session_names.size());
   for (auto& name : session_names) {
-    ret.push_back(make_unique<Session>(std::move(name)));
+    ret.push_back(
+        google::cloud::internal::make_unique<Session>(std::move(name)));
   }
   return ret;
 }
 
 TEST(SessionPool, Allocate) {
-  auto mock = make_unique<MockSessionManager>();
+  auto mock = google::cloud::internal::make_unique<MockSessionManager>();
   EXPECT_CALL(*mock, CreateSessions(1))
       .WillOnce(Return(ByMove(MakeSessions({"session1"}))));
 
@@ -63,7 +63,7 @@ TEST(SessionPool, Allocate) {
 }
 
 TEST(SessionPool, CreateError) {
-  auto mock = make_unique<MockSessionManager>();
+  auto mock = google::cloud::internal::make_unique<MockSessionManager>();
   EXPECT_CALL(*mock, CreateSessions(1))
       .WillOnce(Return(ByMove(Status(StatusCode::kInternal, "some failure"))));
 
@@ -74,7 +74,7 @@ TEST(SessionPool, CreateError) {
 }
 
 TEST(SessionPool, ReuseSession) {
-  auto mock = make_unique<MockSessionManager>();
+  auto mock = google::cloud::internal::make_unique<MockSessionManager>();
   EXPECT_CALL(*mock, CreateSessions(1))
       .WillOnce(Return(ByMove(MakeSessions({"session1"}))));
 
@@ -91,7 +91,7 @@ TEST(SessionPool, ReuseSession) {
 }
 
 TEST(SessionPool, Lifo) {
-  auto mock = make_unique<MockSessionManager>();
+  auto mock = google::cloud::internal::make_unique<MockSessionManager>();
   EXPECT_CALL(*mock, CreateSessions(1))
       .WillOnce(Return(ByMove(MakeSessions({"session1"}))))
       .WillOnce(Return(ByMove(MakeSessions({"session2"}))));
