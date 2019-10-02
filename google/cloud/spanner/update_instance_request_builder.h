@@ -26,7 +26,14 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
 /**
- * UpdateInstanceRequestBuilder
+ * UpdateInstanceRequestBuilder is a builder class for
+ * `google::spanner::admin::instance::v1::UpdateInstanceRequest`
+ *
+ * This is useful when calling
+ * `google::cloud::spanner::InstanceAdminClient::UpdateInstance()` function.
+ *
+ * @par Example
+ * @snippet samples.cc update-instance
  */
 class UpdateInstanceRequestBuilder {
  public:
@@ -59,6 +66,10 @@ class UpdateInstanceRequestBuilder {
     *request_.mutable_instance() = std::move(in);
   }
 
+  UpdateInstanceRequestBuilder& SetName(std::string name) {
+    request_.mutable_instance()->set_name(std::move(name));
+    return *this;
+  }
   UpdateInstanceRequestBuilder& SetDisplayName(std::string);
   UpdateInstanceRequestBuilder& SetNodeCount(int);
   UpdateInstanceRequestBuilder& AddLabels(

@@ -122,8 +122,13 @@ class InstanceAdminClient {
   /**
    * Updates a Cloud Spanner instance.
    *
-   * Note that when updating a field, you have to set the field mask on the
-   * `UpdateInstanceRequest` with the field name.
+   * Use `google::cloud::spanner::UpdateInstanceRequestBuilder` to build the
+   * `google::spanner::admin::instance::v1::UpdateInstanceRequest` object.
+   *
+   * @par Idempotency
+   * Strictly saying, this operation is not idempotent, but we treat this as a
+   * retryable operation. If a request returns a transient error, it will be
+   * retried according to the given RetryPolicy.
    *
    * @par Example
    * @snippet samples.cc update-instance

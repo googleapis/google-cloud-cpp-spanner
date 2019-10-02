@@ -37,6 +37,9 @@ TEST(UpdateInstanceRequestBuilder, Constructors) {
   builder = UpdateInstanceRequestBuilder(instance);
   req = builder.Build();
   EXPECT_EQ(expected_name, req.instance().name());
+
+  req = UpdateInstanceRequestBuilder().SetName(expected_name).Build();
+  EXPECT_EQ(expected_name, req.instance().name());
 }
 
 TEST(UpdateInstanceRequestBuilder, AddLabels) {
