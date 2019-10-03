@@ -53,7 +53,7 @@ class UpdateInstanceRequestBuilder {
   explicit UpdateInstanceRequestBuilder(std::string instance_name) {
     request_.mutable_instance()->set_name(std::move(instance_name));
   }
-  explicit UpdateInstanceRequestBuilder(Instance in) {
+  explicit UpdateInstanceRequestBuilder(Instance const& in) {
     request_.mutable_instance()->set_name(in.FullName());
   }
 
@@ -67,16 +67,26 @@ class UpdateInstanceRequestBuilder {
     *request_.mutable_instance() = std::move(in);
   }
 
-  UpdateInstanceRequestBuilder& SetName(std::string name) {
+  UpdateInstanceRequestBuilder& SetName(std::string name) & {
     request_.mutable_instance()->set_name(std::move(name));
     return *this;
   }
-  UpdateInstanceRequestBuilder& SetDisplayName(std::string);
-  UpdateInstanceRequestBuilder& SetNodeCount(int);
+  UpdateInstanceRequestBuilder&& SetName(std::string name) && {
+    request_.mutable_instance()->set_name(std::move(name));
+    return std::move(*this);
+  }
+  UpdateInstanceRequestBuilder& SetDisplayName(std::string) &;
+  UpdateInstanceRequestBuilder&& SetDisplayName(std::string) &&;
+  UpdateInstanceRequestBuilder& SetNodeCount(int) &;
+  UpdateInstanceRequestBuilder&& SetNodeCount(int) &&;
   UpdateInstanceRequestBuilder& AddLabels(
-      std::map<std::string, std::string> const&);
+      std::map<std::string, std::string> const&) &;
+  UpdateInstanceRequestBuilder&& AddLabels(
+      std::map<std::string, std::string> const&) &&;
   UpdateInstanceRequestBuilder& SetLabels(
-      std::map<std::string, std::string> const&);
+      std::map<std::string, std::string> const&) &;
+  UpdateInstanceRequestBuilder&& SetLabels(
+      std::map<std::string, std::string> const&) &&;
   google::spanner::admin::instance::v1::UpdateInstanceRequest& Build() & {
     return request_;
   }
@@ -86,6 +96,9 @@ class UpdateInstanceRequestBuilder {
 
  private:
   google::spanner::admin::instance::v1::UpdateInstanceRequest request_;
+  void ActuallySetDisplayName(std::string);
+  void ActuallySetNodeCount(int);
+  void ActuallyAddLabels(std::map<std::string, std::string> const&);
 };
 
 }  // namespace SPANNER_CLIENT_NS

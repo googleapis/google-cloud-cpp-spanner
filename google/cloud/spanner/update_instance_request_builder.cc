@@ -21,26 +21,73 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
 UpdateInstanceRequestBuilder& UpdateInstanceRequestBuilder::SetDisplayName(
+    std::string display_name) & {
+  ActuallySetDisplayName(std::move(display_name));
+  return *this;
+}
+
+UpdateInstanceRequestBuilder&& UpdateInstanceRequestBuilder::SetDisplayName(
+    std::string display_name) && {
+  ActuallySetDisplayName(std::move(display_name));
+  return std::move(*this);
+}
+
+UpdateInstanceRequestBuilder& UpdateInstanceRequestBuilder::SetNodeCount(
+    int node_count) & {
+  ActuallySetNodeCount(node_count);
+  return *this;
+}
+
+UpdateInstanceRequestBuilder&& UpdateInstanceRequestBuilder::SetNodeCount(
+    int node_count) && {
+  ActuallySetNodeCount(node_count);
+  return std::move(*this);
+}
+
+UpdateInstanceRequestBuilder& UpdateInstanceRequestBuilder::AddLabels(
+    std::map<std::string, std::string> const& labels) & {
+  ActuallyAddLabels(labels);
+  return *this;
+}
+
+UpdateInstanceRequestBuilder&& UpdateInstanceRequestBuilder::AddLabels(
+    std::map<std::string, std::string> const& labels) && {
+  ActuallyAddLabels(labels);
+  return std::move(*this);
+}
+
+UpdateInstanceRequestBuilder& UpdateInstanceRequestBuilder::SetLabels(
+    std::map<std::string, std::string> const& labels) & {
+  request_.mutable_instance()->clear_labels();
+  ActuallyAddLabels(labels);
+  return *this;
+}
+
+UpdateInstanceRequestBuilder&& UpdateInstanceRequestBuilder::SetLabels(
+    std::map<std::string, std::string> const& labels) && {
+  request_.mutable_instance()->clear_labels();
+  ActuallyAddLabels(labels);
+  return std::move(*this);
+}
+
+void UpdateInstanceRequestBuilder::ActuallySetDisplayName(
     std::string display_name) {
   if (!google::protobuf::util::FieldMaskUtil::IsPathInFieldMask(
           "display_name", request_.field_mask())) {
     request_.mutable_field_mask()->add_paths("display_name");
   }
   request_.mutable_instance()->set_display_name(std::move(display_name));
-  return *this;
 }
 
-UpdateInstanceRequestBuilder& UpdateInstanceRequestBuilder::SetNodeCount(
-    int node_count) {
+void UpdateInstanceRequestBuilder::ActuallySetNodeCount(int node_count) {
   if (!google::protobuf::util::FieldMaskUtil::IsPathInFieldMask(
           "node_count", request_.field_mask())) {
     request_.mutable_field_mask()->add_paths("node_count");
   }
   request_.mutable_instance()->set_node_count(node_count);
-  return *this;
 }
 
-UpdateInstanceRequestBuilder& UpdateInstanceRequestBuilder::AddLabels(
+void UpdateInstanceRequestBuilder::ActuallyAddLabels(
     std::map<std::string, std::string> const& labels) {
   if (!google::protobuf::util::FieldMaskUtil::IsPathInFieldMask(
           "labels", request_.field_mask())) {
@@ -50,13 +97,6 @@ UpdateInstanceRequestBuilder& UpdateInstanceRequestBuilder::AddLabels(
     request_.mutable_instance()->mutable_labels()->insert(
         {pair.first, pair.second});
   }
-  return *this;
-}
-
-UpdateInstanceRequestBuilder& UpdateInstanceRequestBuilder::SetLabels(
-    std::map<std::string, std::string> const& labels) {
-  request_.mutable_instance()->clear_labels();
-  return AddLabels(labels);
 }
 
 }  // namespace SPANNER_CLIENT_NS
