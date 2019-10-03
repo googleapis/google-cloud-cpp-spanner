@@ -64,9 +64,13 @@ function (spanner_client_define_integration_tests)
 
         # With googletest it is relatively easy to exceed the default number of
         # sections (~65,000) in a single .obj file. Add the /bigobj option to
-        # all the tests, even if it is not needed.
+        # all the tests, even if it is not needed. Also suppress warning about
+        # localtime().
         if (MSVC)
             target_compile_options(${target} PRIVATE "/bigobj")
+            set_property(SOURCE instance_admin_integration_test.cc
+                         APPEND_STRING
+                         PROPERTY COMPILE_DEFINITIONS "_CRT_SECURE_NO_WARNINGS")
         endif ()
         add_test(NAME ${target} COMMAND ${target})
         set_tests_properties(${target} PROPERTIES LABELS "integration-tests")

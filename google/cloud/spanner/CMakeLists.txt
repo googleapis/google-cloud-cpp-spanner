@@ -87,10 +87,7 @@ if (MSVC)
     # want to disable for everything. But for these files the usage is "safe".
     # This is a relatively obscure feature to add compile flags to just few
     # sources:
-    set(suppress_windows_warnings
-        value.cc internal/date.cc
-        integration_tests/instance_admin_integration_test.cc)
-    set_property(SOURCE ${suppress_windows_warnings}
+    set_property(SOURCE value.cc internal/date.cc
                  APPEND_STRING
                  PROPERTY COMPILE_DEFINITIONS "_CRT_SECURE_NO_WARNINGS")
 endif ()
