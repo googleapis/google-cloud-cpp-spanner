@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/internal/session_pool.h"
-#include "google/cloud/spanner/internal/connection_impl.h"
 #include "google/cloud/spanner/internal/session.h"
 #include "google/cloud/internal/make_unique.h"
 #include "google/cloud/status.h"
@@ -82,12 +81,12 @@ TEST(SessionPool, ReuseSession) {
   auto session = pool.Allocate();
   ASSERT_STATUS_OK(session);
   EXPECT_EQ((*session)->session_name(), "session1");
-  pool.Release((*session).release());
+  pool.Release(*std::move(session));
 
   auto session2 = pool.Allocate();
   ASSERT_STATUS_OK(session2);
   EXPECT_EQ((*session2)->session_name(), "session1");
-  pool.Release((*session2).release());
+  pool.Release(*std::move(session2));
 }
 
 TEST(SessionPool, Lifo) {
@@ -105,10 +104,11 @@ TEST(SessionPool, Lifo) {
   ASSERT_STATUS_OK(session2);
   EXPECT_EQ((*session2)->session_name(), "session2");
 
-  pool.Release((*session).release());
-  pool.Release((*session2).release());
+  pool.Release(*std::move(session));
+  pool.Release(*std::move(session2));
 
-  // We should get the sessions back in the reverse order they were released.
+  // The pool is Last-In-First-Out (LIFO), so we expect to get the sessions
+  // back in the reverse order they were released.
   auto session3 = pool.Allocate();
   ASSERT_STATUS_OK(session3);
   EXPECT_EQ((*session3)->session_name(), "session2");

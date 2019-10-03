@@ -58,15 +58,6 @@ std::shared_ptr<ConnectionImpl> MakeConnection(
     std::unique_ptr<BackoffPolicy> backoff_policy =
         DefaultConnectionBackoffPolicy());
 
-// Interface used by the SessionPool to manage sessions
-class SessionManager {
- public:
-  virtual ~SessionManager() = default;
-  // Create up to `num_sessions` sessions (note that fewer may be returned).
-  virtual StatusOr<std::vector<std::unique_ptr<Session>>> CreateSessions(
-      size_t num_sessions) = 0;
-};
-
 /**
  * A concrete `Connection` subclass that uses gRPC to actually talk to a real
  * Spanner instance. See `MakeConnection()` for a factory function that creates
@@ -143,7 +134,9 @@ class ConnectionImpl : public Connection,
   // Forwards calls for the `SessionPool`; used in the `SessionHolder` deleter
   // so it can hold a `weak_ptr` to `ConnectionImpl` (it's already reference
   // counted, and manages the lifetime of `SessionPool`).
-  void ReleaseSession(Session* session) { session_pool_.Release(session); }
+  void ReleaseSession(Session* session) {
+    session_pool_.Release(std::unique_ptr<Session>(session));
+  }
 
   // `SessionManager` methods; used by the `SessionPool`
   StatusOr<std::vector<std::unique_ptr<Session>>> CreateSessions(
@@ -155,7 +148,6 @@ class ConnectionImpl : public Connection,
   std::unique_ptr<RetryPolicy> retry_policy_;
   std::unique_ptr<BackoffPolicy> backoff_policy_;
 
-  friend class SessionPool;
   SessionPool session_pool_;
 };
 

@@ -29,7 +29,7 @@ StatusOr<std::unique_ptr<Session>> SessionPool::Allocate() {
     if (!sessions_.empty()) {
       auto session = std::move(sessions_.back());
       sessions_.pop_back();
-      return {std::move(session)};
+      return session;
     }
   }
 
@@ -38,13 +38,13 @@ StatusOr<std::unique_ptr<Session>> SessionPool::Allocate() {
     return std::move(sessions).status();
   }
   // TODO(#307) for now, assume CreateSessions() returns exactly one Session on
-  // success. Rewrite this to accommodate multiple sessions.
+  // success (as we requested). Rewrite this to accommodate multiple sessions.
   return {std::move((*sessions)[0])};
 }
 
-void SessionPool::Release(Session* session) {
+void SessionPool::Release(std::unique_ptr<Session> session) {
   std::lock_guard<std::mutex> lk(mu_);
-  sessions_.emplace_back(session);
+  sessions_.push_back(std::move(session));
 }
 
 }  // namespace internal

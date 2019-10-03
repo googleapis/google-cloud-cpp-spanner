@@ -28,7 +28,14 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
-class SessionManager;
+// Interface used by the `SessionPool` to manage sessions.
+class SessionManager {
+ public:
+  virtual ~SessionManager() = default;
+  // Create up to `num_sessions` sessions (note that fewer may be returned).
+  virtual StatusOr<std::vector<std::unique_ptr<Session>>> CreateSessions(
+      size_t num_sessions) = 0;
+};
 
 /**
  * Maintains a pool of `Session` objects.
@@ -49,7 +56,7 @@ class SessionPool {
   StatusOr<std::unique_ptr<Session>> Allocate();
 
   /// Release `session` back to the pool.
-  void Release(Session* session);
+  void Release(std::unique_ptr<Session> session);
 
  private:
   std::mutex mu_;
