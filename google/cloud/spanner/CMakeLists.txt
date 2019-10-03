@@ -90,7 +90,7 @@ if (MSVC)
     set(suppress_windows_warnings
         value.cc internal/date.cc
         integration_tests/instance_admin_integration_test.cc)
-    set_property(SOURCE ${spanner_client_unit_tests}
+    set_property(SOURCE ${suppress_windows_warnings}
                  APPEND_STRING
                  PROPERTY COMPILE_DEFINITIONS "_CRT_SECURE_NO_WARNINGS")
 endif ()
