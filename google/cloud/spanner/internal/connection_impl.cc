@@ -589,7 +589,7 @@ StatusOr<std::vector<std::unique_ptr<Session>>> ConnectionImpl::CreateSessions(
   ret.reserve(1);
   ret.push_back(google::cloud::internal::make_unique<Session>(
       std::move(*response->mutable_name())));
-  return std::move(ret);
+  return {std::move(ret)};
 }
 
 }  // namespace internal
