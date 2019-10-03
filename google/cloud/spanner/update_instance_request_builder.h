@@ -17,6 +17,7 @@
 
 #include "google/cloud/spanner/instance.h"
 #include "google/cloud/spanner/version.h"
+#include <google/protobuf/util/field_mask_util.h>
 #include <google/spanner/admin/instance/v1/spanner_instance_admin.pb.h>
 #include <map>
 
@@ -75,18 +76,44 @@ class UpdateInstanceRequestBuilder {
     request_.mutable_instance()->set_name(std::move(name));
     return std::move(*this);
   }
-  UpdateInstanceRequestBuilder& SetDisplayName(std::string) &;
-  UpdateInstanceRequestBuilder&& SetDisplayName(std::string) &&;
-  UpdateInstanceRequestBuilder& SetNodeCount(int) &;
-  UpdateInstanceRequestBuilder&& SetNodeCount(int) &&;
+  UpdateInstanceRequestBuilder& SetDisplayName(std::string display_name) & {
+    SetDisplayNameImpl(std::move(display_name));
+    return *this;
+  }
+  UpdateInstanceRequestBuilder&& SetDisplayName(std::string display_name) && {
+    SetDisplayNameImpl(std::move(display_name));
+    return std::move(*this);
+  }
+  UpdateInstanceRequestBuilder& SetNodeCount(int node_count) & {
+    SetNodeCountImpl(node_count);
+    return *this;
+  }
+  UpdateInstanceRequestBuilder&& SetNodeCount(int node_count) && {
+    SetNodeCountImpl(node_count);
+    return std::move(*this);
+  }
   UpdateInstanceRequestBuilder& AddLabels(
-      std::map<std::string, std::string> const&) &;
+      std::map<std::string, std::string> const& labels) & {
+    AddLabelsImpl(labels);
+    return *this;
+  }
   UpdateInstanceRequestBuilder&& AddLabels(
-      std::map<std::string, std::string> const&) &&;
+      std::map<std::string, std::string> const& labels) && {
+    AddLabelsImpl(labels);
+    return std::move(*this);
+  }
   UpdateInstanceRequestBuilder& SetLabels(
-      std::map<std::string, std::string> const&) &;
+      std::map<std::string, std::string> const& labels) & {
+    request_.mutable_instance()->clear_labels();
+    AddLabelsImpl(labels);
+    return *this;
+  }
   UpdateInstanceRequestBuilder&& SetLabels(
-      std::map<std::string, std::string> const&) &&;
+      std::map<std::string, std::string> const& labels) && {
+    request_.mutable_instance()->clear_labels();
+    AddLabelsImpl(labels);
+    return std::move(*this);
+  }
   google::spanner::admin::instance::v1::UpdateInstanceRequest& Build() & {
     return request_;
   }
@@ -96,9 +123,30 @@ class UpdateInstanceRequestBuilder {
 
  private:
   google::spanner::admin::instance::v1::UpdateInstanceRequest request_;
-  void ActuallySetDisplayName(std::string);
-  void ActuallySetNodeCount(int);
-  void ActuallyAddLabels(std::map<std::string, std::string> const&);
+  void SetDisplayNameImpl(std::string display_name) {
+    if (!google::protobuf::util::FieldMaskUtil::IsPathInFieldMask(
+            "display_name", request_.field_mask())) {
+      request_.mutable_field_mask()->add_paths("display_name");
+    }
+    request_.mutable_instance()->set_display_name(std::move(display_name));
+  }
+  void SetNodeCountImpl(int node_count) {
+    if (!google::protobuf::util::FieldMaskUtil::IsPathInFieldMask(
+            "node_count", request_.field_mask())) {
+      request_.mutable_field_mask()->add_paths("node_count");
+    }
+    request_.mutable_instance()->set_node_count(node_count);
+  }
+  void AddLabelsImpl(std::map<std::string, std::string> const& labels) {
+    if (!google::protobuf::util::FieldMaskUtil::IsPathInFieldMask(
+            "labels", request_.field_mask())) {
+      request_.mutable_field_mask()->add_paths("labels");
+    }
+    for (auto const& pair : labels) {
+      request_.mutable_instance()->mutable_labels()->insert(
+          {pair.first, pair.second});
+    }
+  }
 };
 
 }  // namespace SPANNER_CLIENT_NS
