@@ -29,7 +29,7 @@ StatusOr<std::unique_ptr<Session>> SessionPool::Allocate() {
     if (!sessions_.empty()) {
       auto session = std::move(sessions_.back());
       sessions_.pop_back();
-      return session;
+      return {std::move(session)};
     }
   }
 

@@ -39,6 +39,16 @@ class SessionManager {
 
 /**
  * Maintains a pool of `Session` objects.
+ *
+ * Session creation is relatively expensive (30-100ms), so we keep a pool of
+ * Sessions to avoid incurring the overhead of creating a Session for every
+ * Transaction. Typically, we will allocate a `Session` from the pool the
+ * first time we use a `Transaction`, then return it to the pool when the
+ * `Transaction` finishes.
+ *
+ * Allocation from the pool is LIFO to take advantage of the fact the Spanner
+ * backends maintain a cache of sessions which is valid for 30 seconds, so
+ * re-using Sessions as quickly as possible has performance advantages.
  */
 class SessionPool {
  public:
