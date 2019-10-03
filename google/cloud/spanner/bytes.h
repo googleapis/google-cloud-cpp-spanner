@@ -19,7 +19,6 @@
 #include "google/cloud/status_or.h"
 #include <array>
 #include <cstddef>
-#include <cstring>
 #include <iterator>
 #include <string>
 
@@ -29,7 +28,7 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
 /**
- * A representation of the Spanner BYTES type ... variable-length binary data.
+ * A representation of the Spanner BYTES type: variable-length binary data.
  *
  * A `Bytes` value can be constructed from, and converted to (1) a sequence of
  * octets, or (2) a base64-encoded US-ASCII `std::string`. The base64 alphabet
@@ -49,7 +48,6 @@ class Bytes {
 
   /// Construction from a sequence of octets.
   ///@{
-  explicit Bytes(char const* p) : Bytes(p, p + std::strlen(p)) {}
   template <typename InputIt>
   Bytes(InputIt first, InputIt last) {
     Encoder encoder(base64_rep_);
@@ -60,10 +58,11 @@ class Bytes {
     if (encoder.len_ != 0) encoder.FlushAndPad();
   }
   template <typename Container>
-  explicit Bytes(Container const& c) : Bytes(c.begin(), c.end()) {}
+  explicit Bytes(Container const& c) : Bytes(std::begin(c), std::end(c)) {}
   ///@}
 
-  /// Conversion to a sequence of octets.
+  /// Conversion to a sequence of octets.  The `Container` must support
+  /// construction from a range specified as a pair of input iterators.
   template <typename Container>
   Container get() const {
     Decoder decoder(base64_rep_);
