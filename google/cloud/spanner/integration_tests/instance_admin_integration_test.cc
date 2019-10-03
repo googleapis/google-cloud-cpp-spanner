@@ -59,30 +59,22 @@ class InstanceAdminClientTest : public testing::Test {
 
 class InstanceAdminClientTestWithCleanup : public InstanceAdminClientTest {
  protected:
-  // Deletes leaked temporary instances.
   void SetUp() override {
     InstanceAdminClientTest::SetUp();
+    instance_name_regex_ = std::regex(
+        R"(projects/.+/instances/(temporary-instance-(\d{4}-\d{2}-\d{2})-.+))");
     if (run_slow_integration_tests_ != "yes") {
       return;
     }
-    // Check the current format of `RandomInstanceName()`.
-    std::regex re(
-        R"(projects/.+/instances/(temporary-instance-(\d{4}-\d{2}-\d{2})-.+))");
-    std::smatch m;
-    auto generator = google::cloud::internal::MakeDefaultPRNG();
-    std::string random_instance_id =
-        google::cloud::spanner_testing::RandomInstanceName(generator);
-    auto random_instance_full_name =
-        Instance(project_id_, random_instance_id).FullName();
-    // Make sure we're using correct regex.
-    EXPECT_TRUE(std::regex_match(random_instance_full_name, m, re));
-    std::vector<std::string> instance_ids = [this, &re, &m]() mutable {
+    // Deletes leaked temporary instances.
+    std::vector<std::string> instance_ids = [this]() mutable {
       std::vector<std::string> instance_ids;
       for (auto instance : client_.ListInstances(project_id_, "")) {
         EXPECT_STATUS_OK(instance);
         if (!instance) break;
         auto name = instance->name();
-        if (std::regex_match(name, m, re)) {
+        std::smatch m;
+        if (std::regex_match(name, m, instance_name_regex_)) {
           auto instance_id = m[1];
           auto date_str = m[2];
           std::string cut_off_date = "1973-03-01";
@@ -98,11 +90,14 @@ class InstanceAdminClientTestWithCleanup : public InstanceAdminClientTest {
       }
       return instance_ids;
     }();
+    // Let it fail if we have too many leaks.
+    EXPECT_GT(20, instance_ids.size());
     for (auto const& id_to_delete : instance_ids) {
-      // Ignore failures
+      // Probably better to ignore failures.
       client_.DeleteInstance(Instance(project_id_, id_to_delete));
     }
   }
+  std::regex instance_name_regex_;
 };
 
 /// @test Verify the basic read operations for instances work.
@@ -143,6 +138,10 @@ TEST_F(InstanceAdminClientTestWithCleanup, InstanceCRUDOperations) {
   ASSERT_FALSE(instance_id.empty());
   Instance in(project_id_, instance_id);
 
+  // Make sure we're using correct regex.
+  std::smatch m;
+  auto full_name = in.FullName();
+  EXPECT_TRUE(std::regex_match(full_name, m, instance_name_regex_));
   std::vector<std::string> instance_config_names = [this]() mutable {
     std::vector<std::string> names;
     for (auto instance_config : client_.ListInstanceConfigs(project_id_)) {

@@ -85,10 +85,12 @@ configure_file(internal/build_info.cc.in internal/build_info.cc)
 if (MSVC)
     # MSVC warns about using sscanf(), this is a valuable warning, so we do not
     # want to disable for everything. But for these files the usage is "safe".
-    # This is a relatively obscure feature to add compile flags to just one
-    # source:
-    set_property(SOURCE value.cc internal/date.cc
-                        integration_tests/instance_admin_integration_test.cc
+    # This is a relatively obscure feature to add compile flags to just few
+    # sources:
+    set(suppress_windows_warnings
+        value.cc internal/date.cc
+        integration_tests/instance_admin_integration_test.cc)
+    set_property(SOURCE ${spanner_client_unit_tests}
                  APPEND_STRING
                  PROPERTY COMPILE_DEFINITIONS "_CRT_SECURE_NO_WARNINGS")
 endif ()
