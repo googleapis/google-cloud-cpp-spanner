@@ -46,7 +46,7 @@ class ResultSetSource {
 /**
  * Represents the result of a read operation using `spanner::Client::Read()`.
  *
- * Note that a `ReadResult` returns both the data for the operation, as a
+ * Note that a `ReadResult` returns the data for the operation, as a
  * single-pass, input range returned by `Rows()`.
  */
 class ReadResult {
@@ -143,6 +143,7 @@ class ExecuteQueryResult {
   /**
    * Returns a collection of key value pair statistics for the query execution.
    *
+   * @warning Not yet implemented per issue #930.
    * @note Only available when the query is profiled and all results have been
    * read.
    */
@@ -151,6 +152,7 @@ class ExecuteQueryResult {
   /**
    * Returns the plan of execution for the query.
    *
+   * @warning Not yet implemented per issue #930.
    * @note Only available when the query is profiled or when the plan is
    * explicitly requested.
    */
@@ -191,6 +193,7 @@ class ExecuteDmlResult {
   /**
    * Returns a collection of key value pair statistics for the query execution.
    *
+   * @warning Not yet implemented per issue #930.
    * @note Only available when the query is profiled and all results have been
    * read.
    */
@@ -199,6 +202,7 @@ class ExecuteDmlResult {
   /**
    * Returns the plan of execution for the query.
    *
+   * @warning Not yet implemented per issue #930.
    * @note Only available when the query is profiled or when the plan is
    * explicitly requested.
    */

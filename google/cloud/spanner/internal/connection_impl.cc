@@ -305,12 +305,8 @@ StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionReadImpl(
 
 class StatusOnlyResultSetSource : public internal::ResultSetSource {
  public:
-  /// Factory method to create a PartialResultSetSource.
-  static StatusOr<std::unique_ptr<StatusOnlyResultSetSource>> Create(
-      google::cloud::Status status) {
-    return std::unique_ptr<StatusOnlyResultSetSource>(
-        new StatusOnlyResultSetSource(std::move(status)));
-  }
+  explicit StatusOnlyResultSetSource(google::cloud::Status status)
+      : status_(std::move(status)) {}
   ~StatusOnlyResultSetSource() override = default;
 
   StatusOr<optional<Value>> NextValue() override { return status_; }
@@ -326,9 +322,6 @@ class StatusOnlyResultSetSource : public internal::ResultSetSource {
   optional<QueryPlan> QueryExecutionPlan() const override { return {}; }
 
  private:
-  explicit StatusOnlyResultSetSource(google::cloud::Status status)
-      : status_(std::move(status)) {}
-
   google::cloud::Status status_;
 };
 
@@ -338,8 +331,9 @@ ExecuteQueryResult ConnectionImpl::ExecuteQueryImpl(
   if (!session) {
     auto session_or = AllocateSession();
     if (!session_or) {
-      return ExecuteQueryResult(std::move(
-          *StatusOnlyResultSetSource::Create(std::move(session_or).status())));
+      return ExecuteQueryResult(
+          google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
+              std::move(session_or).status()));
     }
     session = std::move(*session_or);
   }
@@ -373,16 +367,18 @@ ExecuteQueryResult ConnectionImpl::ExecuteQueryImpl(
   auto reader = PartialResultSetSource::Create(std::move(rpc));
 
   if (!reader.ok()) {
-    return ExecuteQueryResult(std::move(
-        *StatusOnlyResultSetSource::Create(std::move(reader).status())));
+    return ExecuteQueryResult(
+        google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
+            std::move(reader).status()));
   }
   if (s.has_begin()) {
     auto metadata = (*reader)->Metadata();
     if (!metadata || metadata->transaction().id().empty()) {
-      return ExecuteQueryResult(std::move(*StatusOnlyResultSetSource::Create(
-          Status(StatusCode::kInternal,
-                 "Begin transaction requested but no transaction returned "
-                 "(in ExecuteQuery)."))));
+      return ExecuteQueryResult(
+          google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
+              Status(StatusCode::kInternal,
+                     "Begin transaction requested but no transaction returned "
+                     "(in ExecuteQuery).")));
     }
     s.set_id(metadata->transaction().id());
   }
@@ -435,10 +431,11 @@ StatusOr<ExecuteDmlResult> ConnectionImpl::ExecuteDmlImpl(
   if (s.has_begin()) {
     auto metadata = (*reader)->Metadata();
     if (!metadata || metadata->transaction().id().empty()) {
-      return ExecuteDmlResult(std::move(*StatusOnlyResultSetSource::Create(
-          Status(StatusCode::kInternal,
-                 "Begin transaction requested but no transaction returned "
-                 "(in ExecuteDml)."))));
+      return ExecuteDmlResult(
+          google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
+              Status(StatusCode::kInternal,
+                     "Begin transaction requested but no transaction returned "
+                     "(in ExecuteDml).")));
     }
     s.set_id(metadata->transaction().id());
   }
