@@ -93,7 +93,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the arguments to <code>ExecutePartitionedDmlParams()</code>.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ExecutePartitionedDmlParams.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ExecuteSqlParams.html">ExecuteSqlParams</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the arguments to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html#a395bd34d78f39aca169f0792991f7942" title="Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC.">ExecuteSql()</a></code>.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ExecuteSqlParams.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the arguments to <code>ExecuteSql()</code>.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ExecuteSqlParams.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1PartitionQueryParams.html">PartitionQueryParams</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the arguments to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html#a692dd4b55392f2b1146c903ffdea9538" title="Define the interface for a google.spanner.v1.Spanner.PartitionQuery RPC.">PartitionQuery()</a></code>.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1PartitionQueryParams.html#details">More...</a><br /></td></tr>
@@ -118,9 +118,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1454df6f87dde5f097df21e2e26d607d"><td class="memItemLeft" align="right" valign="top">virtual StatusOr&lt; std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html">ReadPartition</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html#a1454df6f87dde5f097df21e2e26d607d">PartitionRead</a> (<a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1PartitionReadParams.html">PartitionReadParams</a>)=0</td></tr>
 <tr class="memdesc:a1454df6f87dde5f097df21e2e26d607d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the interface for a google.spanner.v1.Spanner.PartitionRead RPC.  <a href="#a1454df6f87dde5f097df21e2e26d607d">More...</a><br /></td></tr>
 <tr class="separator:a1454df6f87dde5f097df21e2e26d607d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a395bd34d78f39aca169f0792991f7942"><td class="memItemLeft" align="right" valign="top">virtual StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html">ResultSet</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html#a395bd34d78f39aca169f0792991f7942">ExecuteSql</a> (<a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ExecuteSqlParams.html">ExecuteSqlParams</a>)=0</td></tr>
-<tr class="memdesc:a395bd34d78f39aca169f0792991f7942"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC.  <a href="#a395bd34d78f39aca169f0792991f7942">More...</a><br /></td></tr>
-<tr class="separator:a395bd34d78f39aca169f0792991f7942"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefcb1ecd0e5133030ddb645acc30dc30"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ExecuteQueryResult.html">ExecuteQueryResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html#aefcb1ecd0e5133030ddb645acc30dc30">ExecuteQuery</a> (<a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ExecuteSqlParams.html">ExecuteSqlParams</a>)=0</td></tr>
+<tr class="memdesc:aefcb1ecd0e5133030ddb645acc30dc30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC.  <a href="#aefcb1ecd0e5133030ddb645acc30dc30">More...</a><br /></td></tr>
+<tr class="separator:aefcb1ecd0e5133030ddb645acc30dc30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43ca26e9879d7305a40f7299d890372b"><td class="memItemLeft" align="right" valign="top">virtual StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ExecuteDmlResult.html">ExecuteDmlResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html#a43ca26e9879d7305a40f7299d890372b">ExecuteDml</a> (<a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ExecuteSqlParams.html">ExecuteSqlParams</a>)=0</td></tr>
+<tr class="memdesc:a43ca26e9879d7305a40f7299d890372b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC.  <a href="#a43ca26e9879d7305a40f7299d890372b">More...</a><br /></td></tr>
+<tr class="separator:a43ca26e9879d7305a40f7299d890372b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4bbb597566c5b3acce2ddfd34feefaf"><td class="memItemLeft" align="right" valign="top">virtual StatusOr&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionedDmlResult.html">PartitionedDmlResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html#af4bbb597566c5b3acce2ddfd34feefaf">ExecutePartitionedDml</a> (<a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ExecutePartitionedDmlParams.html">ExecutePartitionedDmlParams</a>)=0</td></tr>
 <tr class="memdesc:af4bbb597566c5b3acce2ddfd34feefaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the interface for a google.spanner.v1.Spanner.ExecutePartitionedDml RPC.  <a href="#af4bbb597566c5b3acce2ddfd34feefaf">More...</a><br /></td></tr>
 <tr class="separator:af4bbb597566c5b3acce2ddfd34feefaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -226,6 +229,34 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a43ca26e9879d7305a40f7299d890372b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43ca26e9879d7305a40f7299d890372b">&#9670;&nbsp;</a></span>ExecuteDml()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual StatusOr&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ExecuteDmlResult.html">ExecuteDmlResult</a>&gt; google::cloud::spanner::v0::Connection::ExecuteDml </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ExecuteSqlParams.html">ExecuteSqlParams</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC. </p>
+
+</div>
+</div>
 <a id="af4bbb597566c5b3acce2ddfd34feefaf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af4bbb597566c5b3acce2ddfd34feefaf">&#9670;&nbsp;</a></span>ExecutePartitionedDml()</h2>
 
@@ -254,8 +285,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a395bd34d78f39aca169f0792991f7942"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a395bd34d78f39aca169f0792991f7942">&#9670;&nbsp;</a></span>ExecuteSql()</h2>
+<a id="aefcb1ecd0e5133030ddb645acc30dc30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefcb1ecd0e5133030ddb645acc30dc30">&#9670;&nbsp;</a></span>ExecuteQuery()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -264,7 +295,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual StatusOr&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html">ResultSet</a>&gt; google::cloud::spanner::v0::Connection::ExecuteSql </td>
+          <td class="memname">virtual <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ExecuteQueryResult.html">ExecuteQueryResult</a> google::cloud::spanner::v0::Connection::ExecuteQuery </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ExecuteSqlParams.html">ExecuteSqlParams</a>&#160;</td>
           <td class="paramname"></td><td>)</td>
