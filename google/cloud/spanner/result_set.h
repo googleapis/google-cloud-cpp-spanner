@@ -44,7 +44,7 @@ class ResultSetSource {
 }  // namespace internal
 
 /**
- * Represents the result of a read operation using `SpannerClient::Read()`.
+ * Represents the result of a read operation using `spanner::Client::Read()`.
  *
  * Note that a `ReadResult` returns both the data for the operation, as a
  * single-pass, input range returned by `Rows()`.
@@ -94,7 +94,7 @@ class ReadResult {
 
 /**
  * Represents the result of a query operation using
- * `SpannerClient::ExecuteQuery()`.
+ * `spanner::Client::ExecuteQuery()`.
  *
  * @note `ExecuteQueryResult` returns both the data for the operation, as
  * a single-pass, input range returned by `Rows()`, as well as the metadata for
@@ -162,7 +162,7 @@ class ExecuteQueryResult {
 
 /**
  * Represents the result of a data modifying operation using
- * `SpannerClient::ExecuteDML()`.
+ * `spanner::Client::ExecuteDML()`.
  *
  * This class encapsulates the result of a Cloud Spanner DML operation, i.e.,
  * `INSERT`, `UPDATE`, or `DELETE`.
