@@ -102,8 +102,7 @@ int main(int argc, char* argv[]) try {
   spanner::Client client(spanner::MakeConnection(database));
 
   auto reader =
-      client.ExecuteSql(spanner::SqlStatement("SELECT 'Hello World'"));
-  if (!reader) throw std::runtime_error(reader.status().message());
+      client.ExecuteQuery(spanner::SqlStatement("SELECT 'Hello World'"));
 
   for (auto&& row : reader->Rows<spanner::Row<std::string>>()) {
     if (!row) throw std::runtime_error(row.status().message());

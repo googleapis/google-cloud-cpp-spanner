@@ -173,7 +173,7 @@ TEST(ClientTest, ReadFailure) {
   EXPECT_EQ((*iter).status().code(), StatusCode::kDeadlineExceeded);
 }
 
-TEST(ClientTest, ExecuteSqlSuccess) {
+TEST(ClientTest, ExecuteQuerySuccess) {
   auto conn = std::make_shared<MockConnection>();
   Client client(conn);
 
@@ -325,7 +325,7 @@ TEST(ClientTest, ExecuteBatchDmlError) {
   EXPECT_EQ(actual->stats.size(), 1);
 }
 
-TEST(ClientTest, ExecuteSqlPartitionedDml_Success) {
+TEST(ClientTest, ExecutePartitionedDml_Success) {
   auto source = make_unique<MockResultSetSource>();
   spanner_proto::ResultSetMetadata metadata;
   EXPECT_CALL(*source, Metadata()).WillRepeatedly(Return(metadata));
