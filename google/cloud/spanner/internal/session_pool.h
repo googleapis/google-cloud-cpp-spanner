@@ -18,6 +18,7 @@
 #include "google/cloud/spanner/internal/session.h"
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/status_or.h"
+#include <condition_variable>
 #include <memory>
 #include <mutex>
 #include <vector>
@@ -37,6 +38,33 @@ class SessionManager {
       size_t num_sessions) = 0;
 };
 
+// What action to take if the session pool is exhausted.
+enum class ActionOnExhaustion { BLOCK, FAIL };
+
+struct SessionPoolOptions {
+  // The minimum number of sessions to keep in the pool.
+  int min_sessions = 0;
+
+  // The maximum number of sessions to create. This should be the number of
+  // channels * 100.
+  int max_sessions = 100;  // Channel Count * 100
+
+  // The maximum number of sessions that can be in the pool in an idle state.
+  int max_idle_sessions = 0;
+
+  // The fraction of sessions to prepare for write in advance.
+  // This fraction represents observed cloud spanner usage as of May 2019.
+  float write_sessions_fraction = 0.25;
+
+  // Decide whether to block or fail on pool exhaustion.
+  ActionOnExhaustion action_on_exhaustion = ActionOnExhaustion::BLOCK;
+
+  // This is the interval at which we refresh sessions so they don't get
+  // collected by the backend GC. The GC collects objects older than 60
+  // minutes, so any number below 60 should suffice.
+  int keep_alive_interval_minutes = 55;
+};
+
 /**
  * Maintains a pool of `Session` objects.
  *
@@ -53,26 +81,34 @@ class SessionManager {
 class SessionPool {
  public:
   /**
-   * Create a `SessionPool`. Uses `manager` to create, delete, and refresh
-   * sessions in the pool.
+   * Create a `SessionPool`.
+   * Uses `manager` to create, delete, and refresh sessions in the pool.
    */
-  SessionPool(SessionManager* manager) : manager_(manager) {}
+  SessionPool(SessionManager* manager,
+              SessionPoolOptions options = SessionPoolOptions());
 
   /**
    * Allocate a session from the pool, creating a new `Session` if necessary.
+   * If `dissociate_from_pool` is true, the caller does not intend to return
+   * this `Session` to the pool.
    * @returns an error if session creation fails; always returns a non-null
    * pointer on success.
    */
-  StatusOr<std::unique_ptr<Session>> Allocate();
+  StatusOr<std::unique_ptr<Session>> Allocate(
+      bool dissociate_from_pool = false);
 
   /// Release `session` back to the pool.
   void Release(std::unique_ptr<Session> session);
 
  private:
   std::mutex mu_;
+  std::condition_variable cond_;
   std::vector<std::unique_ptr<Session>> sessions_;  // GUARDED_BY(mu_)
+  int total_sessions_ = 0;                          // GUARDED_BY(mu_)
+  bool create_in_progress_ = false;                 // GUARDED_BY(mu_)
 
   SessionManager* manager_;
+  const SessionPoolOptions options_;
 };
 
 }  // namespace internal
