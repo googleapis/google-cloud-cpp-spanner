@@ -43,7 +43,8 @@ class MockConnection : public spanner::Connection {
   MOCK_METHOD1(PartitionRead, StatusOr<std::vector<spanner::ReadPartition>>(
                                   PartitionReadParams));
   MOCK_METHOD1(ExecuteQuery, spanner::ExecuteQueryResult(ExecuteSqlParams));
-  MOCK_METHOD1(ExecuteDml, spanner::ExecuteDmlResult(ExecuteSqlParams));
+  MOCK_METHOD1(ExecuteDml,
+               StatusOr<spanner::ExecuteDmlResult>(ExecuteSqlParams));
   MOCK_METHOD1(ExecuteSql, StatusOr<spanner::ResultSet>(ExecuteSqlParams));
   MOCK_METHOD1(ExecutePartitionedDml, StatusOr<spanner::PartitionedDmlResult>(
                                           ExecutePartitionedDmlParams));
@@ -64,6 +65,10 @@ class MockResultSetSource : public spanner::internal::ResultSetSource {
  public:
   MOCK_METHOD0(NextValue, StatusOr<optional<spanner::Value>>());
   MOCK_METHOD0(Metadata, optional<google::spanner::v1::ResultSetMetadata>());
+  MOCK_CONST_METHOD0(RowsModified, std::int64_t());
+  MOCK_CONST_METHOD0(QueryStats,
+                     optional<std::unordered_map<std::string, std::string>>());
+  MOCK_CONST_METHOD0(QueryExecutionPlan, optional<spanner::QueryPlan>());
   MOCK_METHOD0(Stats, optional<google::spanner::v1::ResultSetStats>());
 };
 

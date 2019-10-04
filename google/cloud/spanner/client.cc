@@ -95,21 +95,8 @@ StatusOr<std::vector<QueryPartition>> Client::PartitionQuery(
                                 std::move(partition_options)});
 }
 
-ExecuteDmlResult Client::ExecuteDml(SqlStatement statement) {
-  return conn_->ExecuteDml(
-      {internal::MakeSingleUseTransaction(Transaction::ReadOnlyOptions()),
-       std::move(statement)});
-}
-
-ExecuteDmlResult Client::ExecuteDml(
-    Transaction::SingleUseOptions transaction_options, SqlStatement statement) {
-  return conn_->ExecuteDml(
-      {internal::MakeSingleUseTransaction(std::move(transaction_options)),
-       std::move(statement)});
-}
-
-ExecuteDmlResult Client::ExecuteDml(Transaction transaction,
-                                    SqlStatement statement) {
+StatusOr<ExecuteDmlResult> Client::ExecuteDml(Transaction transaction,
+                                              SqlStatement statement) {
   return conn_->ExecuteDml({std::move(transaction), std::move(statement)});
 }
 

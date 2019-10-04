@@ -300,38 +300,19 @@ class Client {
       Transaction transaction, SqlStatement statement,
       PartitionOptions partition_options = {});
 
-  //@{
   /**
    * Executes a SQL DML statement.
    *
    * Operations inside read-write transactions might return `ABORTED`. If this
    * occurs, the application should restart the transaction from the beginning.
    *
-   * Callers can optionally supply a `Transaction` or
-   * `Transaction::SingleUseOptions` used to create a single-use transaction -
-   * or neither, in which case a single-use transaction with default options
-   * is used.
-   *
+   * @note Single-use transactions are not supported with DML statements.
+
+   * @param transaction Execute this query as part of an existing transaction.
    * @param statement The SQL statement to execute.
    */
-  ExecuteDmlResult ExecuteDml(SqlStatement statement);
-
-  /**
-   * @copydoc ExecuteDml(SqlStatement)
-   *
-   * @param transaction_options Execute this query in a single-use transaction
-   *     with these options.
-   */
-  ExecuteDmlResult ExecuteDml(Transaction::SingleUseOptions transaction_options,
-                              SqlStatement statement);
-
-  /**
-   * @copydoc ExecuteDml(SqlStatement)
-   *
-   * @param transaction Execute this query as part of an existing transaction.
-   */
-  ExecuteDmlResult ExecuteDml(Transaction transaction, SqlStatement statement);
-  //@}
+  StatusOr<ExecuteDmlResult> ExecuteDml(Transaction transaction,
+                                        SqlStatement statement);
 
   /**
    * Executes a batch of SQL DML statements. This method allows many statements

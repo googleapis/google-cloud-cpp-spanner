@@ -25,6 +25,7 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
+using QueryPlan = google::spanner::v1::QueryPlan;
 
 namespace internal {
 class ResultSetSource {
@@ -33,6 +34,11 @@ class ResultSetSource {
   // Returns OK Status with no Value to indicate end-of-stream.
   virtual StatusOr<optional<Value>> NextValue() = 0;
   virtual optional<google::spanner::v1::ResultSetMetadata> Metadata() = 0;
+  virtual std::int64_t RowsModified() const = 0;
+  virtual optional<std::unordered_map<std::string, std::string>> QueryStats()
+      const = 0;
+  virtual optional<QueryPlan> QueryExecutionPlan() const = 0;
+
   virtual optional<google::spanner::v1::ResultSetStats> Stats() = 0;
 };
 }  // namespace internal
@@ -49,7 +55,7 @@ class ReadResult {
   explicit ReadResult(std::unique_ptr<internal::ResultSetSource> source)
       : source_(std::move(source)) {}
 
-  // This class is moveable but not copyable.
+  // This class is movable but not copyable.
   ReadResult(ReadResult&&) = default;
   ReadResult& operator=(ReadResult&&) = default;
 
@@ -90,9 +96,10 @@ class ReadResult {
  * Represents the result of a query operation using
  * `SpannerClient::ExecuteQuery()`.
  *
- * Note that a `ExecuteQueryResult` returns both the data for the operation, as
+ * @note `ExecuteQueryResult` returns both the data for the operation, as
  * a single-pass, input range returned by `Rows()`, as well as the metadata for
- * the results, and execution statistics (if requested).
+ * the results, query plan (if requested), and execution statistics
+ * (if requested).
  */
 class ExecuteQueryResult {
  public:
@@ -100,10 +107,7 @@ class ExecuteQueryResult {
   explicit ExecuteQueryResult(std::unique_ptr<internal::ResultSetSource> source)
       : source_(std::move(source)) {}
 
-  //  explicit ExecuteQueryResult(google::cloud::Status status)
-  //      : source_() {}
-
-  // This class is moveable but not copyable.
+  // This class is movable but not copyable.
   ExecuteQueryResult(ExecuteQueryResult&&) = default;
   ExecuteQueryResult& operator=(ExecuteQueryResult&&) = default;
 
@@ -137,15 +141,20 @@ class ExecuteQueryResult {
   }
 
   /**
-   * Return statistics about the transaction.
+   * Returns a collection of key value pair statistics for the query execution.
    *
-   * Statistics are only available for SQL requests with `query_mode` set to
-   * `PROFILE`, and only after consuming the entire result stream (i.e.
-   * iterating through `Rows()` until the end).
+   * @note Only available when the query is profiled and all results have been
+   * read.
    */
-  optional<google::spanner::v1::ResultSetStats> Stats() {
-    return source_->Stats();
-  }
+  optional<std::unordered_map<std::string, std::string>> QueryStats() const;
+
+  /**
+   * Returns the plan of execution for the query.
+   *
+   * @note Only available when the query is profiled or when the plan is
+   * explicitly requested.
+   */
+  optional<QueryPlan> QueryExecutionPlan() const;
 
  private:
   std::unique_ptr<internal::ResultSetSource> source_;
@@ -158,8 +167,8 @@ class ExecuteQueryResult {
  * This class encapsulates the result of a Cloud Spanner DML operation, i.e.,
  * `INSERT`, `UPDATE`, or `DELETE`.
  *
- * Note that a `ExecuteDmlResult` returns the number of rows modified, as well
- * as the metadata for the results, and execution statistics (if requested).
+ * @note `ExecuteDmlResult` returns the number of rows modified, query plan
+ * (if requested), and execution statistics (if requested).
  */
 class ExecuteDmlResult {
  public:
@@ -167,20 +176,35 @@ class ExecuteDmlResult {
   explicit ExecuteDmlResult(std::unique_ptr<internal::ResultSetSource> source)
       : source_(std::move(source)) {}
 
-  // This class is moveable but not copyable.
+  // This class is movable but not copyable.
   ExecuteDmlResult(ExecuteDmlResult&&) = default;
   ExecuteDmlResult& operator=(ExecuteDmlResult&&) = default;
 
   /**
-   * Return statistics about the transaction.
+   * Returns the number of rows modified by the DML statement.
    *
-   * Statistics are only available for SQL requests with `query_mode` set to
-   * `PROFILE`, and only after consuming the entire result stream (i.e.
-   * iterating through `Rows()` until the end).
+   * @note Partitioned DML only provides a lower bound of the rows modified, all
+   * other DML statements provide an exact count.
    */
-  optional<google::spanner::v1::ResultSetStats> Stats() {
-    return source_->Stats();
+  StatusOr<std::int64_t> RowsModified() const {
+    return source_->RowsModified();
   }
+
+  /**
+   * Returns a collection of key value pair statistics for the query execution.
+   *
+   * @note Only available when the query is profiled and all results have been
+   * read.
+   */
+  optional<std::unordered_map<std::string, std::string>> QueryStats() const;
+
+  /**
+   * Returns the plan of execution for the query.
+   *
+   * @note Only available when the query is profiled or when the plan is
+   * explicitly requested.
+   */
+  optional<QueryPlan> QueryExecutionPlan() const;
 
  private:
   std::unique_ptr<internal::ResultSetSource> source_;
