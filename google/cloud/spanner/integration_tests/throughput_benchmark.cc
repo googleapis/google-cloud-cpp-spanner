@@ -306,6 +306,7 @@ void SmokeTest(Config const& setup, spanner::Database const& database,
   Config config = setup;
   config.duration = std::chrono::seconds(1);
   config.threads = 1;
+  config.table_size = 1000;
   // Keep the regression test logs clean by logging as little as possible.
   int error_count = 0;
   int success_count = 0;
