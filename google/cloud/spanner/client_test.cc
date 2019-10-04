@@ -203,13 +203,12 @@ TEST(ClientTest, ExecuteSqlSuccess) {
       .WillOnce(Return(optional<Value>(42)))
       .WillOnce(Return(optional<Value>()));
 
-  ResultSet result_set(std::move(source));
-  EXPECT_CALL(*conn, ExecuteSql(_))
+  ExecuteQueryResult result_set(std::move(source));
+  EXPECT_CALL(*conn, ExecuteQuery(_))
       .WillOnce(Return(ByMove(std::move(result_set))));
 
   KeySet keys = KeySet::All();
-  auto result = client.ExecuteSql(SqlStatement("select * from table;"));
-  EXPECT_STATUS_OK(result);
+  auto result = client.ExecuteQuery(SqlStatement("select * from table;"));
 
   using RowType = Row<std::string, std::int64_t>;
   auto expected = std::vector<RowType>{
@@ -217,7 +216,7 @@ TEST(ClientTest, ExecuteSqlSuccess) {
       RowType("Ann", 42),
   };
   int row_number = 0;
-  for (auto& row : result->Rows<RowType>()) {
+  for (auto& row : result.Rows<RowType>()) {
     EXPECT_STATUS_OK(row);
     EXPECT_EQ(*row, expected[row_number]);
     ++row_number;
@@ -225,7 +224,7 @@ TEST(ClientTest, ExecuteSqlSuccess) {
   EXPECT_EQ(row_number, expected.size());
 }
 
-TEST(ClientTest, ExecuteSqlFailure) {
+TEST(ClientTest, ExecuteQueryFailure) {
   auto conn = std::make_shared<MockConnection>();
   Client client(conn);
 
@@ -249,15 +248,14 @@ TEST(ClientTest, ExecuteSqlFailure) {
       .WillOnce(Return(optional<Value>("Ann")))
       .WillOnce(Return(Status(StatusCode::kDeadlineExceeded, "deadline!")));
 
-  ResultSet result_set(std::move(source));
-  EXPECT_CALL(*conn, ExecuteSql(_))
+  ExecuteQueryResult result_set(std::move(source));
+  EXPECT_CALL(*conn, ExecuteQuery(_))
       .WillOnce(Return(ByMove(std::move(result_set))));
 
   KeySet keys = KeySet::All();
-  auto result = client.ExecuteSql(SqlStatement("select * from table;"));
-  EXPECT_STATUS_OK(result);
+  auto result = client.ExecuteQuery(SqlStatement("select * from table;"));
 
-  auto rows = result->Rows<Row<std::string>>();
+  auto rows = result.Rows<Row<std::string>>();
   auto iter = rows.begin();
   EXPECT_NE(iter, rows.end());
   EXPECT_STATUS_OK(*iter);

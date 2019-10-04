@@ -99,29 +99,6 @@ StatusOr<ExecuteDmlResult> Client::ExecuteDml(Transaction transaction,
                                               SqlStatement statement) {
   return conn_->ExecuteDml({std::move(transaction), std::move(statement)});
 }
-
-StatusOr<ResultSet> Client::ExecuteSql(SqlStatement statement) {
-  return conn_->ExecuteSql(
-      {internal::MakeSingleUseTransaction(Transaction::ReadOnlyOptions()),
-       std::move(statement)});
-}
-
-StatusOr<ResultSet> Client::ExecuteSql(
-    Transaction::SingleUseOptions transaction_options, SqlStatement statement) {
-  return conn_->ExecuteSql(
-      {internal::MakeSingleUseTransaction(std::move(transaction_options)),
-       std::move(statement)});
-}
-
-StatusOr<ResultSet> Client::ExecuteSql(Transaction transaction,
-                                       SqlStatement statement) {
-  return conn_->ExecuteSql({std::move(transaction), std::move(statement)});
-}
-
-StatusOr<ResultSet> Client::ExecuteSql(QueryPartition const& partition) {
-  return conn_->ExecuteSql(internal::MakeExecuteSqlParams(partition));
-}
-
 StatusOr<BatchDmlResult> Client::ExecuteBatchDml(
     Transaction transaction, std::vector<SqlStatement> statements) {
   return conn_->ExecuteBatchDml(

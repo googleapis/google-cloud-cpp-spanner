@@ -397,60 +397,6 @@ class Client {
    */
   StatusOr<PartitionedDmlResult> ExecutePartitionedDml(SqlStatement statement);
 
-  //@{
-  /**
-   * Executes a SQL query.
-   *
-   * Operations inside read-write transactions might return `ABORTED`. If this
-   * occurs, the application should restart the transaction from the beginning.
-   *
-   * Callers can optionally supply a `Transaction` or
-   * `Transaction::SingleUseOptions` used to create a single-use transaction -
-   * or neither, in which case a single-use transaction with default options
-   * is used.
-   *
-   * @param statement The SQL statement to execute.
-   *
-   * @return A `StatusOr` containing a `ResultSet` or error status on failure.
-   *     No individual row in the `ResultSet` can exceed 100 MiB, and no column
-   *     value can exceed 10 MiB.
-   */
-  StatusOr<ResultSet> ExecuteSql(SqlStatement statement);
-
-  /**
-   * @copydoc ExecuteSql(SqlStatement)
-   *
-   * @param transaction_options Execute this query in a single-use transaction
-   *     with these options.
-   */
-  StatusOr<ResultSet> ExecuteSql(
-      Transaction::SingleUseOptions transaction_options,
-      SqlStatement statement);
-
-  /**
-   * @copydoc ExecuteSql(SqlStatement)
-   *
-   * @param transaction Execute this query as part of an existing transaction.
-   */
-  StatusOr<ResultSet> ExecuteSql(Transaction transaction,
-                                 SqlStatement statement);
-  /**
-   * Executes a SQL query on a subset of rows in a database. Requires a prior
-   * call to `PartitionQuery` to obtain the partition information; see the
-   * documentation of that method for full details.
-   *
-   * @param partition A `QueryPartition`, obtained by calling `PartitionRead`.
-   *
-   * @return A `StatusOr` containing a `ResultSet` or error status on failure.
-   *     No individual row in the `ResultSet` can exceed 100 MiB, and no column
-   *     value can exceed 10 MiB.
-   *
-   * @par Example
-   * @snippet samples.cc execute-sql-query-partition
-   */
-  StatusOr<ResultSet> ExecuteSql(QueryPartition const& partition);
-  //@}
-
  private:
   std::shared_ptr<Connection> conn_;
 };

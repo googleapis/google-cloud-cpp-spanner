@@ -150,15 +150,6 @@ StatusOr<ExecuteDmlResult> ConnectionImpl::ExecuteDml(ExecuteSqlParams esp) {
       });
 }
 
-StatusOr<ResultSet> ConnectionImpl::ExecuteSql(ExecuteSqlParams esp) {
-  return internal::Visit(
-      std::move(esp.transaction),
-      [this, &esp](SessionHolder& session,
-                   spanner_proto::TransactionSelector& s, std::int64_t seqno) {
-        return ExecuteSqlImpl(session, s, seqno, std::move(esp));
-      });
-}
-
 StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDml(
     ExecutePartitionedDmlParams epdp) {
   auto txn = MakeReadOnlyTransaction();
@@ -381,12 +372,6 @@ ExecuteQueryResult ConnectionImpl::ExecuteQueryImpl(
       backoff_policy_->clone());
   auto reader = PartialResultSetSource::Create(std::move(rpc));
 
-  //  auto context =
-  //  google::cloud::internal::make_unique<grpc::ClientContext>(); auto rpc =
-  //      google::cloud::internal::make_unique<DefaultPartialResultSetReader>(
-  //          std::move(context), stub_->ExecuteStreamingSql(*context,
-  //          request));
-  //  auto reader = internal::PartialResultSetSource::Create(std::move(rpc));
   if (!reader.ok()) {
     return ExecuteQueryResult(std::move(
         *StatusOnlyResultSetSource::Create(std::move(reader).status())));
@@ -444,12 +429,6 @@ StatusOr<ExecuteDmlResult> ConnectionImpl::ExecuteDmlImpl(
       backoff_policy_->clone());
   auto reader = PartialResultSetSource::Create(std::move(rpc));
 
-  //  auto context =
-  //  google::cloud::internal::make_unique<grpc::ClientContext>(); auto rpc =
-  //      google::cloud::internal::make_unique<DefaultPartialResultSetReader>(
-  //          std::move(context), stub_->ExecuteStreamingSql(*context,
-  //          request));
-  //  auto reader = internal::PartialResultSetSource::Create(std::move(rpc));
   if (!reader.ok()) {
     return std::move(reader).status();
   }
@@ -464,50 +443,6 @@ StatusOr<ExecuteDmlResult> ConnectionImpl::ExecuteDmlImpl(
     s.set_id(metadata->transaction().id());
   }
   return ExecuteDmlResult(std::move(*reader));
-}
-
-StatusOr<ResultSet> ConnectionImpl::ExecuteSqlImpl(
-    SessionHolder& session, spanner_proto::TransactionSelector& s,
-    std::int64_t seqno, ExecuteSqlParams esp) {
-  if (!session) {
-    auto session_or = AllocateSession();
-    if (!session_or) {
-      return std::move(session_or).status();
-    }
-    session = std::move(*session_or);
-  }
-
-  spanner_proto::ExecuteSqlRequest request;
-  request.set_session(session->session_name());
-  *request.mutable_transaction() = s;
-  auto sql_statement = internal::ToProto(std::move(esp.statement));
-  request.set_sql(std::move(*sql_statement.mutable_sql()));
-  *request.mutable_params() = std::move(*sql_statement.mutable_params());
-  *request.mutable_param_types() =
-      std::move(*sql_statement.mutable_param_types());
-  request.set_seqno(seqno);
-  if (esp.partition_token) {
-    request.set_partition_token(*std::move(esp.partition_token));
-  }
-
-  auto context = google::cloud::internal::make_unique<grpc::ClientContext>();
-  auto rpc =
-      google::cloud::internal::make_unique<DefaultPartialResultSetReader>(
-          std::move(context), stub_->ExecuteStreamingSql(*context, request));
-  auto reader = internal::PartialResultSetSource::Create(std::move(rpc));
-  if (!reader.ok()) {
-    return std::move(reader).status();
-  }
-  if (s.has_begin()) {
-    auto metadata = (*reader)->Metadata();
-    if (!metadata || metadata->transaction().id().empty()) {
-      return Status(StatusCode::kInternal,
-                    "Begin transaction requested but no transaction returned "
-                    "(in ExecuteSql).");
-    }
-    s.set_id(metadata->transaction().id());
-  }
-  return ResultSet(std::move(*reader));
 }
 
 StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQueryImpl(
