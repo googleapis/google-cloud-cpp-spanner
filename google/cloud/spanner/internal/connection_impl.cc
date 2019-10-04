@@ -695,7 +695,7 @@ StatusOr<std::vector<std::unique_ptr<Session>>> ConnectionImpl::CreateSessions(
     sessions.push_back(google::cloud::internal::make_unique<Session>(
         std::move(*session.mutable_name())));
   }
-  return sessions;
+  return {std::move(sessions)};
 }
 
 }  // namespace internal
