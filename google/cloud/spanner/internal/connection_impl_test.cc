@@ -558,7 +558,7 @@ TEST(ConnectionImplTest, ExecuteDmlDeleteSuccess) {
   auto result = conn->ExecuteDml({txn, SqlStatement("delete * from table")});
 
   ASSERT_STATUS_OK(result);
-  EXPECT_EQ(*result->RowsModified(), 42);
+  EXPECT_EQ(result->RowsModified(), 42);
 }
 
 TEST(ConnectionImplTest, ExecuteBatchDmlSuccess) {

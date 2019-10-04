@@ -186,9 +186,7 @@ class ExecuteDmlResult {
    * @note Partitioned DML only provides a lower bound of the rows modified, all
    * other DML statements provide an exact count.
    */
-  StatusOr<std::int64_t> RowsModified() const {
-    return source_->RowsModified();
-  }
+  std::int64_t RowsModified() const { return source_->RowsModified(); }
 
   /**
    * Returns a collection of key value pair statistics for the query execution.
