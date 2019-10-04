@@ -59,12 +59,8 @@ int main(int argc, char* argv[]) try {
     if (names.empty()) throw std::runtime_error("No instances in the project");
 
     return names[std::uniform_int_distribution<std::size_t>(
-        0, names.size())(generator)];
+        0, names.size() - 1)(generator)];
   }();
-
-  if (instance_id.empty()) {
-    throw std::runtime_error("Could not select an instance id");
-  }
 
   auto database_id =
       "db-" + google::cloud::internal::Sample(
