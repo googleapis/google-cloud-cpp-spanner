@@ -26,10 +26,12 @@ workspace(name = "com_github_googleapis_google_cloud_cpp_spanner_test_install")
 #     sha256 = "...",
 # )
 #
-# But we want to test that the *current* version is correct.
+
+# But we want to test that the *current* version is correct, the CI builds
+# always have the source in /v.
 local_repository(
     name = "com_github_googleapis_google_cloud_cpp_spanner",
-    path = "../..",
+    path = "/v",
 )
 
 load("@com_github_googleapis_google_cloud_cpp_spanner//bazel:google_cloud_cpp_spanner_deps.bzl", "google_cloud_cpp_spanner_deps")
