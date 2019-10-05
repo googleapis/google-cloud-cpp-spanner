@@ -29,7 +29,7 @@ inline namespace SPANNER_CLIENT_NS {
  * CreateInstanceRequestBuilderTemplate turns on the field bit once it is set
  * and carries the bit as the template argument.
  */
-template <unsigned CurrentBit>
+template <unsigned CurrentMask>
 class CreateInstanceRequestBuilderTemplate {
   struct FieldBits {
     enum {
@@ -60,61 +60,61 @@ class CreateInstanceRequestBuilderTemplate {
     request_.mutable_instance()->set_name(in.FullName());
   }
 
-  CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::DisplayName>&
+  CreateInstanceRequestBuilderTemplate<CurrentMask | FieldBits::DisplayName>&
   SetDisplayName(std::string display_name) & {
     request_.mutable_instance()->set_display_name(std::move(display_name));
     return reinterpret_cast<CreateInstanceRequestBuilderTemplate<
-        CurrentBit | FieldBits::DisplayName>&>(*this);
+        CurrentMask | FieldBits::DisplayName>&>(*this);
   }
 
-  CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::DisplayName>&&
+  CreateInstanceRequestBuilderTemplate<CurrentMask | FieldBits::DisplayName>&&
   SetDisplayName(std::string display_name) && {
     request_.mutable_instance()->set_display_name(std::move(display_name));
     return std::move(reinterpret_cast<CreateInstanceRequestBuilderTemplate<
-                         CurrentBit | FieldBits::DisplayName>&>(*this));
+                         CurrentMask | FieldBits::DisplayName>&>(*this));
   }
 
-  CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::NodeCount>&
+  CreateInstanceRequestBuilderTemplate<CurrentMask | FieldBits::NodeCount>&
   SetNodeCount(int node_count) & {
     request_.mutable_instance()->set_node_count(node_count);
     return reinterpret_cast<CreateInstanceRequestBuilderTemplate<
-        CurrentBit | FieldBits::NodeCount>&>(*this);
+        CurrentMask | FieldBits::NodeCount>&>(*this);
   }
 
-  CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::NodeCount>&&
+  CreateInstanceRequestBuilderTemplate<CurrentMask | FieldBits::NodeCount>&&
   SetNodeCount(int node_count) && {
     request_.mutable_instance()->set_node_count(node_count);
     return std::move(reinterpret_cast<CreateInstanceRequestBuilderTemplate<
-                         CurrentBit | FieldBits::NodeCount>&>(*this));
+                         CurrentMask | FieldBits::NodeCount>&>(*this));
   }
 
-  CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::Config>&
+  CreateInstanceRequestBuilderTemplate<CurrentMask | FieldBits::Config>&
   SetConfig(std::string config) & {
     request_.mutable_instance()->set_config(std::move(config));
     return reinterpret_cast<
-        CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::Config>&>(
+        CreateInstanceRequestBuilderTemplate<CurrentMask | FieldBits::Config>&>(
         *this);
   }
 
-  CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::Config>&&
+  CreateInstanceRequestBuilderTemplate<CurrentMask | FieldBits::Config>&&
   SetConfig(std::string config) && {
     request_.mutable_instance()->set_config(std::move(config));
     return std::move(reinterpret_cast<CreateInstanceRequestBuilderTemplate<
-                         CurrentBit | FieldBits::Config>&>(*this));
+                         CurrentMask | FieldBits::Config>&>(*this));
   }
 
-  CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::Labels>&
+  CreateInstanceRequestBuilderTemplate<CurrentMask | FieldBits::Labels>&
   SetLabels(std::map<std::string, std::string> const& labels) & {
     for (auto const& pair : labels) {
       request_.mutable_instance()->mutable_labels()->insert(
           {pair.first, pair.second});
     }
     return reinterpret_cast<
-        CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::Labels>&>(
+        CreateInstanceRequestBuilderTemplate<CurrentMask | FieldBits::Labels>&>(
         *this);
   }
 
-  CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::Labels>&&
+  CreateInstanceRequestBuilderTemplate<CurrentMask | FieldBits::Labels>&&
   SetLabels(std::map<std::string, std::string> const& labels) && {
     CreateInstanceRequestBuilderTemplate next = *this;
     for (auto const& pair : labels) {
@@ -122,12 +122,12 @@ class CreateInstanceRequestBuilderTemplate {
           {pair.first, pair.second});
     }
     return std::move(reinterpret_cast<CreateInstanceRequestBuilderTemplate<
-                         CurrentBit | FieldBits::Labels>&>(*this));
+                         CurrentMask | FieldBits::Labels>&>(*this));
   }
 
   google::spanner::admin::instance::v1::CreateInstanceRequest& Build() & {
     static_assert(
-        (CurrentBit &
+        (CurrentMask &
          (FieldBits::DisplayName | FieldBits::NodeCount | FieldBits::Config)) ==
             (FieldBits::DisplayName | FieldBits::NodeCount | FieldBits::Config),
         "Call SetDisplayName(), SetNodeCount(), and SetConfig() before calling "
@@ -136,7 +136,7 @@ class CreateInstanceRequestBuilderTemplate {
   }
   google::spanner::admin::instance::v1::CreateInstanceRequest&& Build() && {
     static_assert(
-        (CurrentBit &
+        (CurrentMask &
          (FieldBits::DisplayName | FieldBits::NodeCount | FieldBits::Config)) ==
             (FieldBits::DisplayName | FieldBits::NodeCount | FieldBits::Config),
         "Call SetDisplayName(), SetNodeCount(), and SetConfig() before calling "
