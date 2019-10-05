@@ -22,6 +22,23 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
+TEST(CreateInstanceRequestBuilder, DefaultValues) {
+  std::string expected_name = "projects/test-project/instances/test-instance";
+  std::string expected_config =
+      "projects/test-project/instanceConfigs/test-config";
+  std::string expected_display_name = "test-instance";
+  CreateInstanceRequestBuilder builder(
+      Instance("test-project", "test-instance"), expected_config);
+  auto req = builder.Build();
+  EXPECT_EQ("projects/test-project", req.parent());
+  EXPECT_EQ("test-instance", req.instance_id());
+  EXPECT_EQ(expected_name, req.instance().name());
+  EXPECT_EQ(expected_config, req.instance().config());
+  EXPECT_EQ(1, req.instance().node_count());
+  EXPECT_EQ(0, req.instance().labels_size());
+  EXPECT_EQ(expected_display_name, req.instance().display_name());
+}
+
 TEST(CreateInstanceRequestBuilder, RvalueReference) {
   std::string expected_name = "projects/test-project/instances/test-instance";
   std::string expected_config =
@@ -29,10 +46,9 @@ TEST(CreateInstanceRequestBuilder, RvalueReference) {
   std::string expected_display_name = "test-display-name";
   Instance in("test-project", "test-instance");
 
-  auto req = CreateInstanceRequestBuilder(in)
+  auto req = CreateInstanceRequestBuilder(in, expected_config)
                  .SetDisplayName(expected_display_name)
                  .SetNodeCount(1)
-                 .SetConfig(expected_config)
                  .SetLabels({{"key", "value"}})
                  .Build();
   EXPECT_EQ("projects/test-project", req.parent());
@@ -52,10 +68,9 @@ TEST(CreateInstanceRequestBuilder, Lvalue) {
   std::string expected_display_name = "test-display-name";
   Instance in("test-project", "test-instance");
 
-  auto builder = CreateInstanceRequestBuilder(in);
+  auto builder = CreateInstanceRequestBuilder(in, expected_config);
   auto req = builder.SetDisplayName(expected_display_name)
                  .SetNodeCount(1)
-                 .SetConfig(expected_config)
                  .SetLabels({{"key", "value"}})
                  .Build();
   EXPECT_EQ("projects/test-project", req.parent());

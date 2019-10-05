@@ -78,10 +78,10 @@ void CreateInstance(google::cloud::spanner::InstanceAdminClient client,
   auto instance_config = instance_config_names[0];
   future<StatusOr<google::spanner::admin::instance::v1::Instance>> f =
       client.CreateInstance(
-          google::cloud::spanner::CreateInstanceRequestBuilder(in)
+          google::cloud::spanner::CreateInstanceRequestBuilder(in,
+                                                               instance_config)
               .SetDisplayName(display_name)
               .SetNodeCount(1)
-              .SetConfig(instance_config)
               .SetLabels({{"label-key", "label-value"}})
               .Build());
   StatusOr<google::spanner::admin::instance::v1::Instance> instance = f.get();

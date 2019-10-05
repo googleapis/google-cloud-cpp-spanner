@@ -157,10 +157,9 @@ TEST_F(InstanceAdminClientTestWithCleanup, InstanceCRUDOperations) {
   auto instance_config = instance_config_names[0];
 
   future<StatusOr<google::spanner::admin::instance::v1::Instance>> f =
-      client_.CreateInstance(CreateInstanceRequestBuilder(in)
+      client_.CreateInstance(CreateInstanceRequestBuilder(in, instance_config)
                                  .SetDisplayName("test-display-name")
                                  .SetNodeCount(1)
-                                 .SetConfig(instance_config)
                                  .SetLabels({{"label-key", "label-value"}})
                                  .Build());
   StatusOr<google::spanner::admin::instance::v1::Instance> instance = f.get();

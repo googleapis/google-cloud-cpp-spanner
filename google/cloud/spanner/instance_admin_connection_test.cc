@@ -141,12 +141,12 @@ TEST(InstanceAdminClientTest, CreateInstanceSuccess) {
 
   auto conn = MakeTestConnection(std::move(mock));
   Instance in("test-project", "test-instance");
-  auto fut = conn->CreateInstance({CreateInstanceRequestBuilder(in)
-                                       .SetDisplayName("test-display-name")
-                                       .SetNodeCount(1)
-                                       .SetConfig("test-instance-config")
-                                       .SetLabels({{"key", "value"}})
-                                       .Build()});
+  auto fut = conn->CreateInstance(
+      {CreateInstanceRequestBuilder(in, "test-instance-config")
+           .SetDisplayName("test-display-name")
+           .SetNodeCount(1)
+           .SetLabels({{"key", "value"}})
+           .Build()});
   EXPECT_EQ(std::future_status::ready, fut.wait_for(std::chrono::seconds(10)));
   auto instance = fut.get();
   EXPECT_STATUS_OK(instance);
@@ -166,12 +166,12 @@ TEST(InstanceAdminClientTest, CreateInstanceError) {
 
   auto conn = MakeTestConnection(std::move(mock));
   Instance in("test-project", "test-instance");
-  auto fut = conn->CreateInstance({CreateInstanceRequestBuilder(in)
-                                       .SetDisplayName("test-display-name")
-                                       .SetNodeCount(1)
-                                       .SetConfig("test-instance-config")
-                                       .SetLabels({{"key", "value"}})
-                                       .Build()});
+  auto fut = conn->CreateInstance(
+      {CreateInstanceRequestBuilder(in, "test-instnace-config")
+           .SetDisplayName("test-display-name")
+           .SetNodeCount(1)
+           .SetLabels({{"key", "value"}})
+           .Build()});
   EXPECT_EQ(std::future_status::ready, fut.wait_for(std::chrono::seconds(0)));
   auto instance = fut.get();
   EXPECT_EQ(StatusCode::kPermissionDenied, instance.status().code());
