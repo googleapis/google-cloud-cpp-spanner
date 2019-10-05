@@ -26,103 +26,140 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
 /**
- * CreateInstanceRequestBuilder is a builder class for
- * `google::spanner::admin::instance::v1::CreateInstanceRequest`
- *
- * This is useful when calling InstanceAdminClient::CreateInstance()
- * function. If you see an error message like "error: no member named 'Build'",
- * this means you don't set a mandatory field.
- *
- * @par Example
- * @snippet samples.cc create-instance
+ * CreateInstanceRequestBuilderTemplate turns on the field bit once it is set
+ * and carries the bit as the template argument.
  */
-class CreateInstanceRequestBuilder {
+template <unsigned CurrentBit>
+class CreateInstanceRequestBuilderTemplate {
+  struct FieldBits {
+    enum {
+      DisplayName = (1 << 0),
+      NodeCount = (1 << 1),
+      Config = (1 << 2),
+      Labels = (1 << 3)
+    };
+  };
+
  public:
   // Copy and move.
-  CreateInstanceRequestBuilder(CreateInstanceRequestBuilder const&) = default;
-  CreateInstanceRequestBuilder(CreateInstanceRequestBuilder&&) = default;
-  CreateInstanceRequestBuilder& operator=(CreateInstanceRequestBuilder const&) =
+  CreateInstanceRequestBuilderTemplate(
+      CreateInstanceRequestBuilderTemplate const&) = default;
+  CreateInstanceRequestBuilderTemplate(CreateInstanceRequestBuilderTemplate&&) =
       default;
-  CreateInstanceRequestBuilder& operator=(CreateInstanceRequestBuilder&&) =
-      default;
+  CreateInstanceRequestBuilderTemplate& operator=(
+      CreateInstanceRequestBuilderTemplate const&) = default;
+  CreateInstanceRequestBuilderTemplate& operator=(
+      CreateInstanceRequestBuilderTemplate&&) = default;
 
   /**
-   * Only constructor that accepts Instance.
+   * Constructor that accepts Instance.
    */
-  explicit CreateInstanceRequestBuilder(Instance const& in) {
+  explicit CreateInstanceRequestBuilderTemplate(Instance const& in) {
     request_.set_parent("projects/" + in.project_id());
     request_.set_instance_id(in.instance_id());
     request_.mutable_instance()->set_name(in.FullName());
   }
 
-  class NodeCountSetter;
-  class ConfigSetter;
-  class Builder;
-
-  NodeCountSetter& SetDisplayName(std::string const& display_name) & {
+  CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::DisplayName>&
+  SetDisplayName(std::string display_name) & {
     request_.mutable_instance()->set_display_name(std::move(display_name));
-    return reinterpret_cast<NodeCountSetter&>(*this);
+    return reinterpret_cast<CreateInstanceRequestBuilderTemplate<
+        CurrentBit | FieldBits::DisplayName>&>(*this);
   }
 
-  NodeCountSetter&& SetDisplayName(std::string const& display_name) && {
+  CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::DisplayName>&&
+  SetDisplayName(std::string display_name) && {
     request_.mutable_instance()->set_display_name(std::move(display_name));
-    return std::move(reinterpret_cast<NodeCountSetter&>(*this));
+    return std::move(reinterpret_cast<CreateInstanceRequestBuilderTemplate<
+                         CurrentBit | FieldBits::DisplayName>&>(*this));
   }
 
- protected:
-  google::spanner::admin::instance::v1::CreateInstanceRequest request_;
-};
-
-class CreateInstanceRequestBuilder::NodeCountSetter
-    : public CreateInstanceRequestBuilder {
- public:
-  ConfigSetter& SetNodeCount(int node_count) & {
+  CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::NodeCount>&
+  SetNodeCount(int node_count) & {
     request_.mutable_instance()->set_node_count(node_count);
-    return reinterpret_cast<ConfigSetter&>(*this);
+    return reinterpret_cast<CreateInstanceRequestBuilderTemplate<
+        CurrentBit | FieldBits::NodeCount>&>(*this);
   }
-  ConfigSetter&& SetNodeCount(int node_count) && {
+
+  CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::NodeCount>&&
+  SetNodeCount(int node_count) && {
     request_.mutable_instance()->set_node_count(node_count);
-    return std::move(reinterpret_cast<ConfigSetter&>(*this));
+    return std::move(reinterpret_cast<CreateInstanceRequestBuilderTemplate<
+                         CurrentBit | FieldBits::NodeCount>&>(*this));
   }
-};
 
-class CreateInstanceRequestBuilder::ConfigSetter
-    : public CreateInstanceRequestBuilder {
- public:
-  Builder& SetConfig(std::string config) & {
+  CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::Config>&
+  SetConfig(std::string config) & {
     request_.mutable_instance()->set_config(std::move(config));
-    return reinterpret_cast<Builder&>(*this);
+    return reinterpret_cast<
+        CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::Config>&>(
+        *this);
   }
-  Builder&& SetConfig(std::string config) && {
-    request_.mutable_instance()->set_config(std::move(config));
-    return std::move(reinterpret_cast<Builder&>(*this));
-  }
-};
 
-class CreateInstanceRequestBuilder::Builder
-    : public CreateInstanceRequestBuilder {
- public:
-  Builder& SetLabels(std::map<std::string, std::string> const& labels) & {
+  CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::Config>&&
+  SetConfig(std::string config) && {
+    request_.mutable_instance()->set_config(std::move(config));
+    return std::move(reinterpret_cast<CreateInstanceRequestBuilderTemplate<
+                         CurrentBit | FieldBits::Config>&>(*this));
+  }
+
+  CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::Labels>&
+  SetLabels(std::map<std::string, std::string> const& labels) & {
     for (auto const& pair : labels) {
       request_.mutable_instance()->mutable_labels()->insert(
           {pair.first, pair.second});
     }
-    return *this;
+    return reinterpret_cast<
+        CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::Labels>&>(
+        *this);
   }
-  Builder&& SetLabels(std::map<std::string, std::string> const& labels) && {
+
+  CreateInstanceRequestBuilderTemplate<CurrentBit | FieldBits::Labels>&&
+  SetLabels(std::map<std::string, std::string> const& labels) && {
+    CreateInstanceRequestBuilderTemplate next = *this;
     for (auto const& pair : labels) {
       request_.mutable_instance()->mutable_labels()->insert(
           {pair.first, pair.second});
     }
-    return std::move(*this);
+    return std::move(reinterpret_cast<CreateInstanceRequestBuilderTemplate<
+                         CurrentBit | FieldBits::Labels>&>(*this));
   }
+
   google::spanner::admin::instance::v1::CreateInstanceRequest& Build() & {
+    static_assert(
+        (CurrentBit &
+         (FieldBits::DisplayName | FieldBits::NodeCount | FieldBits::Config)) ==
+            (FieldBits::DisplayName | FieldBits::NodeCount | FieldBits::Config),
+        "Call SetDisplayName(), SetNodeCount(), and SetConfig() before calling "
+        "Build().");
     return request_;
   }
   google::spanner::admin::instance::v1::CreateInstanceRequest&& Build() && {
+    static_assert(
+        (CurrentBit &
+         (FieldBits::DisplayName | FieldBits::NodeCount | FieldBits::Config)) ==
+            (FieldBits::DisplayName | FieldBits::NodeCount | FieldBits::Config),
+        "Call SetDisplayName(), SetNodeCount(), and SetConfig() before calling "
+        "Build().");
     return std::move(request_);
   }
+
+ private:
+  google::spanner::admin::instance::v1::CreateInstanceRequest request_;
 };
+
+/**
+ * CreateInstanceRequestBuilder is a builder class for
+ * `google::spanner::admin::instance::v1::CreateInstanceRequest`
+ *
+ * This is useful when calling InstanceAdminClient::CreateInstance()
+ * function. Call SetDiplayName(), SetNodeCount(), and SetConfig() before
+ * calling Build().
+ *
+ * @par Example
+ * @snippet samples.cc create-instance
+ */
+typedef CreateInstanceRequestBuilderTemplate<0> CreateInstanceRequestBuilder;
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
