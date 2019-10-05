@@ -29,7 +29,7 @@ inline namespace SPANNER_CLIENT_NS {
  * CreateInstanceRequestBuilder is a builder class for
  * `google::spanner::admin::instance::v1::CreateInstanceRequest`
  *
- * This is useful when calling InstanceAdminClient::CreateInstance()
+ * This is useful when calling the `InstanceAdminClient::CreateInstance()`
  * function.
  *
  * @par Example
@@ -47,7 +47,7 @@ class CreateInstanceRequestBuilder {
 
   /**
    * Constructor requires Instance and Cloud Spanner instance config name. It
-   * sets node_count = 1, and display_name = instance_id as the default value.
+   * sets node_count = 1, and display_name = instance_id as the default values.
    */
   explicit CreateInstanceRequestBuilder(Instance const& in,
                                         std::string config) {

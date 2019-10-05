@@ -167,7 +167,7 @@ TEST(InstanceAdminClientTest, CreateInstanceError) {
   auto conn = MakeTestConnection(std::move(mock));
   Instance in("test-project", "test-instance");
   auto fut = conn->CreateInstance(
-      {CreateInstanceRequestBuilder(in, "test-instnace-config")
+      {CreateInstanceRequestBuilder(in, "test-instance-config")
            .SetDisplayName("test-display-name")
            .SetNodeCount(1)
            .SetLabels({{"key", "value"}})
