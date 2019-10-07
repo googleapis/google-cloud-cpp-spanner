@@ -66,10 +66,10 @@ MATCHER_P(ReadRequestHasSessionAndBeginTransaction, session,
   return arg.session() == session && arg.transaction().has_begin();
 }
 
-// Matches a spanner_proto::BatchCreateSessionRequests with the specified
+// Matches a spanner_proto::BatchCreateSessionsRequest with the specified
 // `database`.
 MATCHER_P(BatchCreateSessionsRequestHasDatabase, database,
-          "BatchCreateSessionRequests has expected database") {
+          "BatchCreateSessionsRequest has expected database") {
   return arg.database() == database.FullName();
 }
 
@@ -475,10 +475,10 @@ TEST(ConnectionImplTest, ExecuteDmlGetSessionFailure) {
   auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   auto conn = MakeConnection(db, mock);
-  EXPECT_CALL(*mock, CreateSession(_, _))
+  EXPECT_CALL(*mock, BatchCreateSessions(_, _))
       .WillOnce(::testing::Invoke(
           [&db](grpc::ClientContext&,
-                spanner_proto::CreateSessionRequest const& request) {
+                spanner_proto::BatchCreateSessionsRequest const& request) {
             EXPECT_EQ(db.FullName(), request.database());
             return Status(StatusCode::kPermissionDenied, "uh-oh in GetSession");
           }));
@@ -495,14 +495,12 @@ TEST(ConnectionImplTest, ExecuteDmlStreamingReadFailure) {
 
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   auto conn = MakeConnection(db, mock);
-  EXPECT_CALL(*mock, CreateSession(_, _))
+  EXPECT_CALL(*mock, BatchCreateSessions(_, _))
       .WillOnce(::testing::Invoke(
           [&db](grpc::ClientContext&,
-                spanner_proto::CreateSessionRequest const& request) {
+                spanner_proto::BatchCreateSessionsRequest const& request) {
             EXPECT_EQ(db.FullName(), request.database());
-            spanner_proto::Session session;
-            session.set_name("test-session-name");
-            return session;
+            return MakeSessionsResponse({"test-session-name"});
           }));
 
   auto grpc_reader = make_unique<MockGrpcReader>();
@@ -526,14 +524,12 @@ TEST(ConnectionImplTest, ExecuteDmlDeleteSuccess) {
 
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   auto conn = MakeConnection(db, mock);
-  EXPECT_CALL(*mock, CreateSession(_, _))
+  EXPECT_CALL(*mock, BatchCreateSessions(_, _))
       .WillOnce(::testing::Invoke(
           [&db](grpc::ClientContext&,
-                spanner_proto::CreateSessionRequest const& request) {
+                spanner_proto::BatchCreateSessionsRequest const& request) {
             EXPECT_EQ(db.FullName(), request.database());
-            spanner_proto::Session session;
-            session.set_name("test-session-name");
-            return session;
+            return MakeSessionsResponse({"test-session-name"});
           }));
 
   auto grpc_reader = make_unique<MockGrpcReader>();
