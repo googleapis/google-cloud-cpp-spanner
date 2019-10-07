@@ -572,15 +572,10 @@ StatusOr<SessionHolder> ConnectionImpl::AllocateSession(
 }
 
 StatusOr<std::vector<std::unique_ptr<Session>>> ConnectionImpl::CreateSessions(
-    size_t num_sessions) {
+    int num_sessions) {
   spanner_proto::BatchCreateSessionsRequest request;
   request.set_database(db_.FullName());
-  // TODO(#307) should the parameter be int32_t? For now, make sure it fits
-  // which is ok since we're allowed to return fewer sessions than requested.
-  if (num_sessions > std::numeric_limits<std::int32_t>::max()) {
-    num_sessions = std::numeric_limits<std::int32_t>::max();
-  }
-  request.set_session_count(static_cast<std::int32_t>(num_sessions));
+  request.set_session_count(std::int32_t{num_sessions});
   auto response = RetryLoop(
       retry_policy_->clone(), backoff_policy_->clone(), true,
       [this](grpc::ClientContext& context,
