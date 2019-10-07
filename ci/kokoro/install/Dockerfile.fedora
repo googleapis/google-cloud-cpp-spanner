@@ -90,6 +90,7 @@ RUN cmake --build . --target install
 WORKDIR /home/build/test-install-cmake
 ENV LD_LIBRARY_PATH=/home/build/google-cloud-spanner-install/lib64
 COPY ci/test-install /home/build/test-install-cmake
+COPY google/cloud/spanner/integration_tests/spanner_install_test.cc /home/build/test-install-cmake
 RUN env -u PKG_CONFIG_PATH cmake \
     -DCMAKE_PREFIX_PATH=/home/build/google-cloud-spanner-install \
     -H. -B/o

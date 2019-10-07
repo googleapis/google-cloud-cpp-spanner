@@ -52,7 +52,10 @@ if [[ -n "${BAZEL_CONFIG}" ]]; then
     bazel_args+=(--config "${BAZEL_CONFIG}")
 fi
 
-cd ci/test-install
+cp -r ci/test-install /var/tmp/test-install
+cp google/cloud/spanner/integration_tests/spanner_install_test.cc /var/tmp/test-install
+cd /var/tmp/test-install
+
 "${BAZEL_BIN}" build  "${bazel_args[@]}" \
     -- //...:all
 
