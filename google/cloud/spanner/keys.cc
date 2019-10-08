@@ -22,24 +22,23 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
-bool operator==(KeySet const& lhs, KeySet const& rhs) {
-  google::protobuf::util::MessageDifferencer differencer;
-  return differencer.Compare(lhs.proto_, rhs.proto_);
-}
-
-bool operator!=(KeySet const& lhs, KeySet const& rhs) { return !(lhs == rhs); }
-
 namespace internal {
 
-::google::spanner::v1::KeySet ToProto(KeySet keyset) {
-  return std::move(keyset.proto_);
+::google::spanner::v1::KeySet ToProto(KeySet ks) {
+  return std::move(ks.proto_);
 }
 
-KeySet FromProto(::google::spanner::v1::KeySet keyset) {
-  return KeySet(std::move(keyset));
+KeySet FromProto(::google::spanner::v1::KeySet proto) {
+  return KeySet(std::move(proto));
 }
 
 }  // namespace internal
+
+bool operator==(KeySet const& a, KeySet const& b) {
+  google::protobuf::util::MessageDifferencer differencer;
+  return differencer.Compare(a.proto_, b.proto_);
+}
+
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
 }  // namespace cloud
