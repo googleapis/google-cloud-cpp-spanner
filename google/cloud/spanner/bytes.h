@@ -38,16 +38,12 @@ std::string BytesToBase64(Bytes const& b);
 /**
  * A representation of the Spanner BYTES type: variable-length binary data.
  *
- * A `Bytes` value can be constructed from, and converted to (1) a sequence of
- * octets, or (2) a base64-encoded US-ASCII `std::string`. The base64 alphabet
- * is "A-Za-z+/", with "=" padding characters. Construction from a base64
- * string can fail if the input string is unparsable.
+ * A `Bytes` value can be constructed from, and converted to any sequence of
+ * octets. All functions/operators should interpret the data as raw bytes (in
+ * contrast to the Spanner STRING type, where the data should be interpreted
+ * as Unicode characters).
  *
  * `Bytes` values can be compared for equality.
- *
- * All functions/operators should interpret the data as raw bytes (in contrast
- * to the Spanner STRING type, where the data should be interpreted as Unicode
- * characters).
  */
 class Bytes {
  public:
