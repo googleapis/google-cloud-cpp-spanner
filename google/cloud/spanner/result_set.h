@@ -114,10 +114,10 @@ class ExecuteQueryResult {
   /**
    * Returns a `RowParser` which can be used to iterate the returned `Row`s.
    *
-   * Since there is a single result stream for each `ResultSet` instance, users
-   * should not use multiple `RowParser`s from the same `ResultSet` at the same
-   * time. Doing so is not thread safe, and may result in errors or data
-   * corruption.
+   * Since there is a single result stream for each `ExecuteQueryResult`
+   * instance, users should not use multiple `RowParser`s from the same
+   * `ExecuteQueryResult` at the same time. Doing so is not thread safe, and may
+   * result in errors or data corruption.
    */
   template <typename RowType>
   RowParser<RowType> Rows() {

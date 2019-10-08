@@ -96,8 +96,6 @@ TEST(ClientTest, ReadSuccess) {
       )pb",
       &metadata));
   EXPECT_CALL(*source, Metadata()).WillRepeatedly(Return(metadata));
-  //  EXPECT_CALL(*source, Stats())
-  //      .WillRepeatedly(Return(optional<spanner_proto::ResultSetStats>()));
   EXPECT_CALL(*source, NextValue())
       .WillOnce(Return(optional<Value>("Steve")))
       .WillOnce(Return(optional<Value>(12)))
@@ -142,8 +140,6 @@ TEST(ClientTest, ReadFailure) {
       )pb",
       &metadata));
   EXPECT_CALL(*source, Metadata()).WillRepeatedly(Return(metadata));
-  //  EXPECT_CALL(*source, Stats())
-  //      .WillRepeatedly(Return(optional<spanner_proto::ResultSetStats>()));
   EXPECT_CALL(*source, NextValue())
       .WillOnce(Return(optional<Value>("Steve")))
       .WillOnce(Return(optional<Value>("Ann")))
@@ -192,8 +188,6 @@ TEST(ClientTest, ExecuteQuerySuccess) {
       )pb",
       &metadata));
   EXPECT_CALL(*source, Metadata()).WillRepeatedly(Return(metadata));
-  //  EXPECT_CALL(*source, Stats())
-  //      .WillRepeatedly(Return(optional<spanner_proto::ResultSetStats>()));
   EXPECT_CALL(*source, NextValue())
       .WillOnce(Return(optional<Value>("Steve")))
       .WillOnce(Return(optional<Value>(12)))
@@ -239,8 +233,6 @@ TEST(ClientTest, ExecuteQueryFailure) {
       )pb",
       &metadata));
   EXPECT_CALL(*source, Metadata()).WillRepeatedly(Return(metadata));
-  //  EXPECT_CALL(*source, Stats())
-  //      .WillRepeatedly(Return(optional<spanner_proto::ResultSetStats>()));
   EXPECT_CALL(*source, NextValue())
       .WillOnce(Return(optional<Value>("Steve")))
       .WillOnce(Return(optional<Value>("Ann")))
@@ -327,8 +319,6 @@ TEST(ClientTest, ExecutePartitionedDml_Success) {
   auto source = make_unique<MockResultSetSource>();
   spanner_proto::ResultSetMetadata metadata;
   EXPECT_CALL(*source, Metadata()).WillRepeatedly(Return(metadata));
-  //  EXPECT_CALL(*source, Stats())
-  //      .WillRepeatedly(Return(optional<spanner_proto::ResultSetStats>()));
   EXPECT_CALL(*source, NextValue()).WillRepeatedly(Return(optional<Value>()));
 
   std::string const sql_statement = "UPDATE Singers SET MarketingBudget = 1000";

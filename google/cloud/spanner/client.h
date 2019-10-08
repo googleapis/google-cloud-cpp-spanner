@@ -81,10 +81,7 @@ inline namespace SPANNER_CLIENT_NS {
  * auto conn = cs::MakeConnection(db);
  * auto client = cs::Client(conn);
  *
- * StatusOr<cs::ResultSet> result = client.Read(...);
- * if (!result) {
- *   return result.status();
- * }
+ * ReadResult result = client.Read(...);
  * using RowType = Row<std::int64_t, std::string>;
  * for (auto const& row : result.Rows<RowType>()) {
  *   // ...
@@ -235,8 +232,8 @@ class Client {
    *
    * @param statement The SQL statement to execute.
    *
-   * @note No individual row in the `ResultSet` can exceed 100 MiB, and no
-   * column value can exceed 10 MiB.
+   * @note No individual row in the `ExecuteQueryResult` can exceed 100 MiB, and
+   * no column value can exceed 10 MiB.
    */
   ExecuteQueryResult ExecuteQuery(SqlStatement statement);
 
@@ -264,8 +261,8 @@ class Client {
    *
    * @param partition A `QueryPartition`, obtained by calling `PartitionRead`.
    *
-   * @note No individual row in the `ResultSet` can exceed 100 MiB, and no
-   * column value can exceed 10 MiB.
+   * @note No individual row in the `ExecuteQueryResult` can exceed 100 MiB, and
+   * no column value can exceed 10 MiB.
    *
    * @par Example
    * @snippet samples.cc execute-sql-query-partition
