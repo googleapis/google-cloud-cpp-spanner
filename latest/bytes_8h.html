@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Google Cloud Spanner C++ Client: value.h File Reference</title>
+<title>Google Cloud Spanner C++ Client: bytes.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -65,36 +65,26 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">value.h File Reference</div>  </div>
+<div class="title">bytes.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="bytes_8h_source.html">google/cloud/spanner/bytes.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="date_8h_source.html">google/cloud/spanner/date.h</a>&quot;</code><br />
-<code>#include &quot;google/cloud/spanner/internal/tuple_utils.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="timestamp_8h_source.html">google/cloud/spanner/timestamp.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="version_8h_source.html">google/cloud/spanner/version.h</a>&quot;</code><br />
-<code>#include &quot;google/cloud/internal/throw_delegate.h&quot;</code><br />
-<code>#include &quot;google/cloud/optional.h&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="version_8h_source.html">google/cloud/spanner/version.h</a>&quot;</code><br />
 <code>#include &quot;google/cloud/status_or.h&quot;</code><br />
-<code>#include &lt;google/protobuf/struct.pb.h&gt;</code><br />
-<code>#include &lt;google/protobuf/util/message_differencer.h&gt;</code><br />
-<code>#include &lt;google/spanner/v1/type.pb.h&gt;</code><br />
-<code>#include &lt;chrono&gt;</code><br />
-<code>#include &lt;ostream&gt;</code><br />
+<code>#include &lt;array&gt;</code><br />
+<code>#include &lt;cstddef&gt;</code><br />
+<code>#include &lt;iterator&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
-<code>#include &lt;tuple&gt;</code><br />
-<code>#include &lt;type_traits&gt;</code><br />
-<code>#include &lt;utility&gt;</code><br />
 </div>
-<p><a href="value_8h_source.html">Go to the source code of this file.</a></p>
+<p><a href="bytes_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">google::cloud::spanner::v0::Value</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a> class represents a type-safe, nullable Spanner value.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bytes.html">google::cloud::spanner::v0::Bytes</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A representation of the Spanner BYTES type: variable-length binary data.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bytes.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bytes_1_1Decoder_1_1iterator.html">google::cloud::spanner::v0::Bytes::Decoder::iterator</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -110,13 +100,6 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacegoogle_1_1cloud_1_1spanner_1_1v0"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html">google::cloud::spanner::v0</a></td></tr>
 <tr class="memdesc:namespacegoogle_1_1cloud_1_1spanner_1_1v0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The inlined, versioned namespace for the Cloud Spanner C++ client APIs. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ae3b5712ab2b1add6e7e610effc5f35b4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ae3b5712ab2b1add6e7e610effc5f35b4"><td class="memTemplItemLeft" align="right" valign="top">Value&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ae3b5712ab2b1add6e7e610effc5f35b4">google::cloud::spanner::v0::MakeNullValue</a> ()</td></tr>
-<tr class="memdesc:ae3b5712ab2b1add6e7e610effc5f35b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory to construct a "null" <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a> of the specified type <code>T</code>.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ae3b5712ab2b1add6e7e610effc5f35b4">More...</a><br /></td></tr>
-<tr class="separator:ae3b5712ab2b1add6e7e610effc5f35b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
