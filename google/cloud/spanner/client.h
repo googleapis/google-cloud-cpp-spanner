@@ -75,13 +75,12 @@ inline namespace SPANNER_CLIENT_NS {
  *
  * @code
  * namespace cs = ::google::cloud::spanner;
- * using ::google::cloud::StatusOr;
  *
  * auto db = cs::Database("my_project", "my_instance", "my_db_id"));
  * auto conn = cs::MakeConnection(db);
  * auto client = cs::Client(conn);
  *
- * ReadResult result = client.Read(...);
+ * cs::ReadResult result = client.Read(...);
  * using RowType = Row<std::int64_t, std::string>;
  * for (auto const& row : result.Rows<RowType>()) {
  *   // ...
