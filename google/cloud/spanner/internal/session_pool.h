@@ -18,7 +18,9 @@
 #include "google/cloud/spanner/internal/session.h"
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/status_or.h"
+#include <chrono>
 #include <condition_variable>
+#include <cstddef>
 #include <memory>
 #include <mutex>
 #include <vector>
@@ -44,26 +46,32 @@ enum class ActionOnExhaustion { BLOCK, FAIL };
 
 struct SessionPoolOptions {
   // The minimum number of sessions to keep in the pool.
+  // Values <= 0 are treated as 0.
   int min_sessions = 0;
 
-  // The maximum number of sessions to create. This should be the number of
-  // channels * 100.
+  // The maximum number of sessions to create. This should be the number
+  // of channels * 100.
+  // Values <= 1 are treated as 1.
+  // If this is less than `min_sessions`, it will be set to `min_sessions`.
   int max_sessions = 100;  // Channel Count * 100
 
   // The maximum number of sessions that can be in the pool in an idle state.
+  // Values <= 0 are treated as 0.
   int max_idle_sessions = 0;
 
   // The fraction of sessions to prepare for write in advance.
   // This fraction represents observed cloud spanner usage as of May 2019.
-  float write_sessions_fraction = 0.25;
+  // Values <= 0.0 are treated as 0.0; values >= 1.0 are treated as 1.0.
+  double write_sessions_fraction = 0.25;
 
   // Decide whether to block or fail on pool exhaustion.
   ActionOnExhaustion action_on_exhaustion = ActionOnExhaustion::BLOCK;
 
   // This is the interval at which we refresh sessions so they don't get
   // collected by the backend GC. The GC collects objects older than 60
-  // minutes, so any number below 60 should suffice.
-  int keep_alive_interval_minutes = 55;
+  // minutes, so any duration below that (less some slack to allow the calls
+  // to be made to refresh the sessions) should suffice.
+  std::chrono::minutes keep_alive_interval = std::chrono::minutes(55);
 };
 
 /**
@@ -109,7 +117,7 @@ class SessionPool {
   bool create_in_progress_ = false;                 // GUARDED_BY(mu_)
 
   SessionManager* manager_;
-  const SessionPoolOptions options_;
+  SessionPoolOptions options_;
 };
 
 }  // namespace internal
