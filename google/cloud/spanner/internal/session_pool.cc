@@ -27,16 +27,29 @@ namespace internal {
 
 SessionPool::SessionPool(SessionManager* manager, SessionPoolOptions options)
     : manager_(manager), options_(options) {
+  // Ensure the options have sensible values.
+  options_.min_sessions = (std::max)(options_.min_sessions, 0);
+  options_.max_sessions = (std::max)(options_.max_sessions, 1);
+  if (options_.max_sessions < options_.min_sessions) {
+    options_.max_sessions = options_.min_sessions;
+  }
+  options_.max_idle_sessions = (std::max)(options_.max_idle_sessions, 0);
+  options_.write_sessions_fraction =
+      (std::max)(options_.write_sessions_fraction, 0.0);
+  options_.write_sessions_fraction =
+      (std::min)(options_.write_sessions_fraction, 1.0);
+
   // Eagerly initialize the pool with `min_sessions` sessions.
-  if (options_.min_sessions > 0) {
-    auto sessions = manager_->CreateSessions(options_.min_sessions);
-    if (sessions.ok()) {
-      std::unique_lock<std::mutex> lk(mu_);
-      total_sessions_ += sessions->size();
-      sessions_.insert(sessions_.end(),
-                       std::make_move_iterator(sessions->begin()),
-                       std::make_move_iterator(sessions->end()));
-    }
+  if (options_.min_sessions == 0) {
+    return;
+  }
+  auto sessions = manager_->CreateSessions(options_.min_sessions);
+  if (sessions.ok()) {
+    std::unique_lock<std::mutex> lk(mu_);
+    total_sessions_ += sessions->size();
+    sessions_.insert(sessions_.end(),
+                     std::make_move_iterator(sessions->begin()),
+                     std::make_move_iterator(sessions->end()));
   }
 }
 
@@ -66,9 +79,12 @@ StatusOr<std::unique_ptr<Session>> SessionPool::Allocate(
       continue;
     }
 
-    // Create new sessions for the pool. We only allow one thread to do this at
-    // a time; a possible enhancement is tracking the number of waiters and
-    // issuing more simulaneous calls if additional sessions are needed.
+    // Create new sessions for the pool.
+    //
+    // TODO(#307) Currently we only allow one thread to do this at a time; a
+    // possible enhancement is tracking the number of waiters and issuing more
+    // simulaneous calls if additional sessions are needed. We can also use the
+    // number of waiters in the `sessions_to_create` calculation below.
     if (create_in_progress_) {
       cond_.wait(lk,
                  [this] { return !sessions_.empty() || !create_in_progress_; });
@@ -77,8 +93,8 @@ StatusOr<std::unique_ptr<Session>> SessionPool::Allocate(
 
     // Add `min_sessions` to the pool (plus the one we're going to return),
     // subject to the `max_sessions` cap.
-    int sessions_to_create = std::min(options_.min_sessions + 1,
-                                      options_.max_sessions - total_sessions_);
+    int sessions_to_create = (std::min)(
+        options_.min_sessions + 1, options_.max_sessions - total_sessions_);
     create_in_progress_ = true;
     lk.unlock();
     // TODO(#307) do we need to limit the call rate here?
@@ -120,7 +136,7 @@ void SessionPool::Release(std::unique_ptr<Session> session) {
   std::unique_lock<std::mutex> lk(mu_);
   bool notify = sessions_.empty();
   sessions_.push_back(std::move(session));
-  // If sessions_ was empty, wake up someone who was waiting for a sessiion.
+  // If sessions_ was empty, wake up someone who was waiting for a session.
   if (notify) {
     lk.unlock();
     cond_.notify_one();
