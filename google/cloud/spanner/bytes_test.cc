@@ -40,7 +40,7 @@ TEST(Bytes, RoundTrip) {
   // Empty string.
   std::string data;
   Bytes bytes(data);
-  EXPECT_EQ("", bytes.ToBase64());
+  EXPECT_EQ("", internal::BytesToBase64(bytes));
   EXPECT_EQ(data, bytes.get<std::string>());
 
   // All 1-char strings.
@@ -48,7 +48,7 @@ TEST(Bytes, RoundTrip) {
   for (auto c : chars) {
     data[0] = c;
     Bytes bytes(data);
-    EXPECT_EQ(4, bytes.ToBase64().size());
+    EXPECT_EQ(4, internal::BytesToBase64(bytes).size());
     EXPECT_EQ(data, bytes.get<std::string>());
   }
 
@@ -59,7 +59,7 @@ TEST(Bytes, RoundTrip) {
     for (auto c1 : chars) {
       data[1] = c1;
       Bytes bytes(data);
-      EXPECT_EQ(4, bytes.ToBase64().size());
+      EXPECT_EQ(4, internal::BytesToBase64(bytes).size());
       EXPECT_EQ(data, bytes.get<std::string>());
     }
   }
@@ -73,7 +73,7 @@ TEST(Bytes, RoundTrip) {
       for (auto c2 : chars) {
         data[2] = c2;
         Bytes bytes(data);
-        EXPECT_EQ(4, bytes.ToBase64().size());
+        EXPECT_EQ(4, internal::BytesToBase64(bytes).size());
         EXPECT_EQ(data, bytes.get<std::string>());
       }
     }
@@ -108,11 +108,12 @@ TEST(Bytes, LongerRoundTrip) {
   };
   for (auto const& test_case : test_cases) {
     Bytes bytes(test_case.first);
-    EXPECT_EQ(test_case.second, bytes.ToBase64());
+    EXPECT_EQ(test_case.second, internal::BytesToBase64(bytes));
     EXPECT_EQ(test_case.first, bytes.get<std::string>());
-    auto decoded = Bytes::FromBase64(test_case.second);
+    auto decoded = internal::BytesFromBase64(test_case.second);
     EXPECT_STATUS_OK(decoded) << test_case.first;
     EXPECT_EQ(test_case.first, decoded->get<std::string>());
+    EXPECT_EQ(bytes, *decoded);
   }
 }
 
@@ -129,11 +130,12 @@ TEST(Bytes, RFC4648TestVectors) {
   };
   for (auto const& test_case : test_cases) {
     Bytes bytes(test_case.first);
-    EXPECT_EQ(test_case.second, bytes.ToBase64());
+    EXPECT_EQ(test_case.second, internal::BytesToBase64(bytes));
     EXPECT_EQ(test_case.first, bytes.get<std::string>());
-    auto decoded = Bytes::FromBase64(test_case.second);
+    auto decoded = internal::BytesFromBase64(test_case.second);
     EXPECT_STATUS_OK(decoded) << test_case.first;
     EXPECT_EQ(test_case.first, decoded->get<std::string>());
+    EXPECT_EQ(bytes, *decoded);
   }
 }
 
@@ -152,17 +154,18 @@ TEST(Bytes, WikiExample) {
       "LCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4"
       "=";
   Bytes bytes(plain);
-  EXPECT_EQ(coded, bytes.ToBase64());
+  EXPECT_EQ(coded, internal::BytesToBase64(bytes));
   EXPECT_EQ(plain, bytes.get<std::string>());
-  auto decoded = Bytes::FromBase64(coded);
+  auto decoded = internal::BytesFromBase64(coded);
   EXPECT_STATUS_OK(decoded) << coded;
   EXPECT_EQ(plain, decoded->get<std::string>());
+  EXPECT_EQ(bytes, *decoded);
 }
 
 TEST(Bytes, FromBase64Failures) {
   // Bad lengths.
   for (std::string const base64 : {"x", "xx", "xxx"}) {
-    auto decoded = Bytes::FromBase64(base64);
+    auto decoded = internal::BytesFromBase64(base64);
     EXPECT_FALSE(decoded.ok());
     if (!decoded) {
       EXPECT_THAT(decoded.status().message(), HasSubstr("Invalid base64"));
@@ -170,7 +173,7 @@ TEST(Bytes, FromBase64Failures) {
     }
   }
   for (std::string const base64 : {"xxxxx", "xxxxxx", "xxxxxxx"}) {
-    auto decoded = Bytes::FromBase64(base64);
+    auto decoded = internal::BytesFromBase64(base64);
     EXPECT_FALSE(decoded.ok());
     if (!decoded) {
       EXPECT_THAT(decoded.status().message(), HasSubstr("Invalid base64"));
@@ -180,7 +183,7 @@ TEST(Bytes, FromBase64Failures) {
 
   // Chars outside base64 alphabet.
   for (std::string const base64 : {".xxx", "x.xx", "xx.x", "xxx.", "xx.="}) {
-    auto decoded = Bytes::FromBase64(base64);
+    auto decoded = internal::BytesFromBase64(base64);
     EXPECT_FALSE(decoded.ok());
     if (!decoded) {
       EXPECT_THAT(decoded.status().message(), HasSubstr("Invalid base64"));
@@ -190,7 +193,7 @@ TEST(Bytes, FromBase64Failures) {
 
   // Non-zero padding bits.
   for (std::string const base64 : {"xx==", "xxx="}) {
-    auto decoded = Bytes::FromBase64(base64);
+    auto decoded = internal::BytesFromBase64(base64);
     EXPECT_FALSE(decoded.ok());
     if (!decoded) {
       EXPECT_THAT(decoded.status().message(), HasSubstr("Invalid base64"));
@@ -205,27 +208,27 @@ TEST(Bytes, Conversions) {
   std::deque<char> const d_plain(s_plain.begin(), s_plain.end());
   std::vector<std::uint8_t> const v_plain(s_plain.begin(), s_plain.end());
 
-  auto bytes = Bytes::FromBase64(s_coded);
+  auto bytes = internal::BytesFromBase64(s_coded);
   EXPECT_STATUS_OK(bytes) << s_coded;
-  EXPECT_EQ(s_coded, bytes->ToBase64());
+  EXPECT_EQ(s_coded, internal::BytesToBase64(*bytes));
   EXPECT_EQ(s_plain, bytes->get<std::string>());
   EXPECT_EQ(d_plain, bytes->get<std::deque<char>>());
   EXPECT_EQ(v_plain, bytes->get<std::vector<std::uint8_t>>());
 
   bytes = Bytes(s_plain);
-  EXPECT_EQ(s_coded, bytes->ToBase64());
+  EXPECT_EQ(s_coded, internal::BytesToBase64(*bytes));
   EXPECT_EQ(s_plain, bytes->get<std::string>());
   EXPECT_EQ(d_plain, bytes->get<std::deque<char>>());
   EXPECT_EQ(v_plain, bytes->get<std::vector<std::uint8_t>>());
 
   bytes = Bytes(d_plain);
-  EXPECT_EQ(s_coded, bytes->ToBase64());
+  EXPECT_EQ(s_coded, internal::BytesToBase64(*bytes));
   EXPECT_EQ(s_plain, bytes->get<std::string>());
   EXPECT_EQ(d_plain, bytes->get<std::deque<char>>());
   EXPECT_EQ(v_plain, bytes->get<std::vector<std::uint8_t>>());
 
   bytes = Bytes(v_plain);
-  EXPECT_EQ(s_coded, bytes->ToBase64());
+  EXPECT_EQ(s_coded, internal::BytesToBase64(*bytes));
   EXPECT_EQ(s_plain, bytes->get<std::string>());
   EXPECT_EQ(d_plain, bytes->get<std::deque<char>>());
   EXPECT_EQ(v_plain, bytes->get<std::vector<std::uint8_t>>());

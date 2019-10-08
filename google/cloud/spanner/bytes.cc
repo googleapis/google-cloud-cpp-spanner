@@ -110,7 +110,10 @@ void Bytes::Decoder::iterator::Fill() {
   }
 }
 
-StatusOr<Bytes> Bytes::FromBase64(std::string input) {
+namespace internal {
+
+// Construction from a base64-encoded US-ASCII `std::string`.
+StatusOr<Bytes> BytesFromBase64(std::string input) {
   auto* p = reinterpret_cast<unsigned char const*>(input.data());
   auto* ep = p + input.size();
   while (ep - p >= 4) {
@@ -144,6 +147,10 @@ StatusOr<Bytes> Bytes::FromBase64(std::string input) {
   return bytes;
 }
 
+// Conversion to a base64-encoded US-ASCII `std::string`.
+std::string BytesToBase64(Bytes const& b) { return b.base64_rep_; }
+
+}  // namespace internal
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
 }  // namespace cloud

@@ -27,6 +27,14 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
+class Bytes;  // defined below
+
+// Internal forward declarations to befriend.
+namespace internal {
+StatusOr<Bytes> BytesFromBase64(std::string input);
+std::string BytesToBase64(Bytes const& b);
+}  // namespace internal
+
 /**
  * A representation of the Spanner BYTES type: variable-length binary data.
  *
@@ -69,12 +77,6 @@ class Bytes {
     return Container(decoder.begin(), decoder.end());
   }
 
-  /// Construction from a base64-encoded US-ASCII `std::string`.
-  static StatusOr<Bytes> FromBase64(std::string input);
-
-  /// Conversion to a base64-encoded US-ASCII `std::string`.
-  std::string ToBase64() const { return base64_rep_; }
-
   /// @name Relational operators
   ///@{
   friend bool operator==(Bytes const& a, Bytes const& b) {
@@ -84,6 +86,9 @@ class Bytes {
   ///@}
 
  private:
+  friend StatusOr<Bytes> internal::BytesFromBase64(std::string input);
+  friend std::string internal::BytesToBase64(Bytes const& b);
+
   struct Encoder {
     Encoder(std::string& rep) : rep_(rep), len_(0) {}
     void Flush();

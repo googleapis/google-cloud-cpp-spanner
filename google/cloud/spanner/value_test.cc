@@ -474,7 +474,7 @@ TEST(Value, ProtoConversionBytes) {
     auto const p = internal::ToProto(v);
     EXPECT_EQ(v, internal::FromProto(p.first, p.second));
     EXPECT_EQ(google::spanner::v1::TypeCode::BYTES, p.first.code());
-    EXPECT_EQ(x.ToBase64(), p.second.string_value());
+    EXPECT_EQ(internal::BytesToBase64(x), p.second.string_value());
   }
 }
 

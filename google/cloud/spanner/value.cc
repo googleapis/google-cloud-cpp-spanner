@@ -203,7 +203,7 @@ google::protobuf::Value Value::MakeValueProto(std::string s) {
 
 google::protobuf::Value Value::MakeValueProto(Bytes const& bytes) {
   google::protobuf::Value v;
-  v.set_string_value(bytes.ToBase64());
+  v.set_string_value(internal::BytesToBase64(bytes));
   return v;
 }
 
@@ -292,7 +292,7 @@ StatusOr<Bytes> Value::GetValue(Bytes const&, google::protobuf::Value const& pv,
   if (pv.kind_case() != google::protobuf::Value::kStringValue) {
     return Status(StatusCode::kUnknown, "missing BYTES");
   }
-  auto decoded = Bytes::FromBase64(pv.string_value());
+  auto decoded = internal::BytesFromBase64(pv.string_value());
   if (!decoded) return decoded.status();
   return *decoded;
 }
