@@ -143,31 +143,30 @@ class Client {
    *     this request.
    * @param read_options `ReadOptions` used for this request.
    *
-   * @return A `StatusOr` containing a `ResultSet` or error status on failure.
-   *     No individual row in the `ResultSet` can exceed 100 MiB, and no column
-   *     value can exceed 10 MiB.
+   * @note No individual row in the `ReadResult` can exceed 100 MiB, and no
+   *     column value can exceed 10 MiB.
    */
-  StatusOr<ResultSet> Read(std::string table, KeySet keys,
-                           std::vector<std::string> columns,
-                           ReadOptions read_options = {});
+  ReadResult Read(std::string table, KeySet keys,
+                  std::vector<std::string> columns,
+                  ReadOptions read_options = {});
   /**
    * @copydoc Read
    *
    * @param transaction_options Execute this read in a single-use transaction
    * with these options.
    */
-  StatusOr<ResultSet> Read(Transaction::SingleUseOptions transaction_options,
-                           std::string table, KeySet keys,
-                           std::vector<std::string> columns,
-                           ReadOptions read_options = {});
+  ReadResult Read(Transaction::SingleUseOptions transaction_options,
+                  std::string table, KeySet keys,
+                  std::vector<std::string> columns,
+                  ReadOptions read_options = {});
   /**
    * @copydoc Read
    *
    * @param transaction Execute this read as part of an existing transaction.
    */
-  StatusOr<ResultSet> Read(Transaction transaction, std::string table,
-                           KeySet keys, std::vector<std::string> columns,
-                           ReadOptions read_options = {});
+  ReadResult Read(Transaction transaction, std::string table, KeySet keys,
+                  std::vector<std::string> columns,
+                  ReadOptions read_options = {});
   //@}
 
   /**
@@ -177,14 +176,13 @@ class Client {
    *
    * @param partition A `ReadPartition`, obtained by calling `PartitionRead`.
    *
-   * @return A `StatusOr` containing a `ResultSet` or error status on failure.
-   *     No individual row in the `ResultSet` can exceed 100 MiB, and no column
-   *     value can exceed 10 MiB.
+   * @note No individual row in the `ReadResult` can exceed 100 MiB, and no
+   *     column value can exceed 10 MiB.
    *
    * @par Example
    * @snippet samples.cc read-read-partition
    */
-  StatusOr<ResultSet> Read(ReadPartition const& partition);
+  ReadResult Read(ReadPartition const& partition);
 
   /**
    * Creates a set of partitions that can be used to execute a read
