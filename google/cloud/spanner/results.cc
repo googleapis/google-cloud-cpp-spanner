@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "google/cloud/spanner/result_set.h"
+#include "google/cloud/spanner/results.h"
 #include "google/cloud/spanner/internal/time.h"
 #include "google/cloud/optional.h"
 #include <google/spanner/v1/result_set.pb.h>

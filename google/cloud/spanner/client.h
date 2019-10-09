@@ -25,7 +25,7 @@
 #include "google/cloud/spanner/mutations.h"
 #include "google/cloud/spanner/query_partition.h"
 #include "google/cloud/spanner/read_partition.h"
-#include "google/cloud/spanner/result_set.h"
+#include "google/cloud/spanner/results.h"
 #include "google/cloud/spanner/retry_policy.h"
 #include "google/cloud/spanner/sql_statement.h"
 #include "google/cloud/spanner/transaction.h"

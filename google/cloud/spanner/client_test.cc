@@ -17,7 +17,7 @@
 #include "google/cloud/spanner/internal/time.h"
 #include "google/cloud/spanner/mocks/mock_spanner_connection.h"
 #include "google/cloud/spanner/mutations.h"
-#include "google/cloud/spanner/result_set.h"
+#include "google/cloud/spanner/results.h"
 #include "google/cloud/spanner/timestamp.h"
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/internal/make_unique.h"

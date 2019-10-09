@@ -16,7 +16,7 @@
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_PARTIAL_RESULT_SET_SOURCE_H_
 
 #include "google/cloud/spanner/internal/partial_result_set_reader.h"
-#include "google/cloud/spanner/result_set.h"
+#include "google/cloud/spanner/results.h"
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/optional.h"
 #include "google/cloud/status.h"

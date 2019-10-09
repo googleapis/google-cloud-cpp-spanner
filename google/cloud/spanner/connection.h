@@ -22,7 +22,7 @@
 #include "google/cloud/spanner/mutations.h"
 #include "google/cloud/spanner/partitioned_dml_result.h"
 #include "google/cloud/spanner/read_options.h"
-#include "google/cloud/spanner/result_set.h"
+#include "google/cloud/spanner/results.h"
 #include "google/cloud/spanner/sql_statement.h"
 #include "google/cloud/spanner/transaction.h"
 #include "google/cloud/spanner/version.h"
