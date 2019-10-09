@@ -185,7 +185,6 @@ TEST(ProfileQueryResult, ExecutionStats) {
         }
       )pb",
       &stats));
-
   EXPECT_CALL(*mock_source, Stats()).WillOnce(Return(stats));
 
   std::vector<std::pair<const std::string, std::string>> expected;
@@ -203,7 +202,6 @@ TEST(ProfileQueryResult, ExecutionPlan) {
         query_plan { plan_nodes: { index: 42 } }
       )pb",
       &stats));
-
   EXPECT_CALL(*mock_source, Stats()).WillRepeatedly(Return(stats));
 
   ProfileQueryResult query_result(std::move(mock_source));
@@ -219,7 +217,6 @@ TEST(DmlResult, RowsModified) {
         row_count_exact: 42
       )pb",
       &stats));
-
   EXPECT_CALL(*mock_source, Stats()).WillOnce(Return(stats));
 
   DmlResult dml_result(std::move(mock_source));
@@ -234,7 +231,6 @@ TEST(ProfileDmlResult, RowsModified) {
         row_count_exact: 42
       )pb",
       &stats));
-
   EXPECT_CALL(*mock_source, Stats()).WillOnce(Return(stats));
 
   ProfileDmlResult dml_result(std::move(mock_source));
@@ -254,7 +250,6 @@ TEST(ProfileDmlResult, ExecutionStats) {
         }
       )pb",
       &stats));
-
   EXPECT_CALL(*mock_source, Stats()).WillOnce(Return(stats));
 
   std::vector<std::pair<const std::string, std::string>> expected;
