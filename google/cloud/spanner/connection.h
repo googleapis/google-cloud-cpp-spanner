@@ -133,17 +133,17 @@ class Connection {
   //@}
 
   /// Define the interface for a google.spanner.v1.Spanner.Read RPC
-  virtual ReadResult Read(ReadParams) = 0;
+  virtual QueryResult Read(ReadParams) = 0;
 
   /// Define the interface for a google.spanner.v1.Spanner.PartitionRead RPC
   virtual StatusOr<std::vector<ReadPartition>> PartitionRead(
       PartitionReadParams) = 0;
 
   /// Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC
-  virtual ExecuteQueryResult ExecuteQuery(ExecuteSqlParams) = 0;
+  virtual QueryResult ExecuteQuery(ExecuteSqlParams) = 0;
 
   /// Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC
-  virtual StatusOr<ExecuteDmlResult> ExecuteDml(ExecuteSqlParams) = 0;
+  virtual StatusOr<DmlResult> ExecuteDml(ExecuteSqlParams) = 0;
 
   /// Define the interface for a google.spanner.v1.Spanner.ExecutePartitionedDml
   /// RPC

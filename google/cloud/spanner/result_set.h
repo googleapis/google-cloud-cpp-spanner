@@ -15,17 +15,19 @@
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_RESULT_SET_H_
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_RESULT_SET_H_
 
-#include "google/cloud/spanner/internal/time.h"
 #include "google/cloud/spanner/row_parser.h"
 #include "google/cloud/spanner/timestamp.h"
 #include "google/cloud/optional.h"
 #include <google/spanner/v1/spanner.pb.h>
+#include <memory>
+#include <string>
+#include <unordered_map>
 
 namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
-using QueryPlan = google::spanner::v1::QueryPlan;
+using ExecutionPlan = google::spanner::v1::QueryPlan;
 
 namespace internal {
 class ResultSetSource {
@@ -34,35 +36,98 @@ class ResultSetSource {
   // Returns OK Status with no Value to indicate end-of-stream.
   virtual StatusOr<optional<Value>> NextValue() = 0;
   virtual optional<google::spanner::v1::ResultSetMetadata> Metadata() = 0;
-  virtual std::int64_t RowsModified() const = 0;
-  virtual optional<std::unordered_map<std::string, std::string>> QueryStats()
-      const = 0;
-  virtual optional<QueryPlan> QueryExecutionPlan() const = 0;
-
-  virtual optional<google::spanner::v1::ResultSetStats> Stats() = 0;
+  virtual optional<google::spanner::v1::ResultSetStats> Stats() const = 0;
 };
 }  // namespace internal
 
 /**
  * Represents the result of a read operation using `spanner::Client::Read()`.
  *
- * Note that a `ReadResult` returns the data for the operation, as a
+ * Note that a `QueryResult` returns the data for the operation, as a
  * single-pass, input range returned by `Rows()`.
  */
-class ReadResult {
+class QueryResult {
  public:
-  ReadResult() = default;
-  explicit ReadResult(std::unique_ptr<internal::ResultSetSource> source)
+  QueryResult() = default;
+  explicit QueryResult(std::unique_ptr<internal::ResultSetSource> source)
       : source_(std::move(source)) {}
 
   // This class is movable but not copyable.
-  ReadResult(ReadResult&&) = default;
-  ReadResult& operator=(ReadResult&&) = default;
+  QueryResult(QueryResult&&) = default;
+  QueryResult& operator=(QueryResult&&) = default;
 
   /**
    * Returns a `RowParser` which can be used to iterate the returned `Row`s.
    *
-   * Since there is a single result stream for each `ReadResult` instance, users
+   * Since there is a single result stream for each `QueryResult` instance,
+   * users should not use multiple `RowParser`s from the same `QueryResult` at
+   * the same time. Doing so is not thread safe, and may result in errors or
+   * data corruption.
+   */
+  template <typename RowType>
+  RowParser<RowType> Rows() {
+    return RowParser<RowType>(
+        [this]() mutable { return source_->NextValue(); });
+  }
+
+  /**
+   * Retrieve the timestamp at which the read occurred.
+   *
+   * Only available if a read-only transaction was used, and the timestamp
+   * was requested by setting `return_read_timestamp` true.
+   */
+  optional<Timestamp> ReadTimestamp() const;
+
+ private:
+  std::unique_ptr<internal::ResultSetSource> source_;
+};
+
+/**
+ * Represents the result of a data modifying operation using
+ * `spanner::Client::ExecuteDML()`.
+ *
+ * This class encapsulates the result of a Cloud Spanner DML operation, i.e.,
+ * `INSERT`, `UPDATE`, or `DELETE`.
+ *
+ * @note `ExecuteDmlResult` returns the number of rows modified, query plan
+ * (if requested), and execution statistics (if requested).
+ */
+class DmlResult {
+ public:
+  DmlResult() = default;
+  explicit DmlResult(std::unique_ptr<internal::ResultSetSource> source)
+      : source_(std::move(source)) {}
+
+  // This class is movable but not copyable.
+  DmlResult(DmlResult&&) = default;
+  DmlResult& operator=(DmlResult&&) = default;
+
+  /**
+   * Returns the number of rows modified by the DML statement.
+   *
+   * @note Partitioned DML only provides a lower bound of the rows modified, all
+   * other DML statements provide an exact count.
+   */
+  std::int64_t RowsModified() const;
+
+ private:
+  std::unique_ptr<internal::ResultSetSource> source_;
+};
+
+class ProfileQueryResult {
+ public:
+  ProfileQueryResult() = default;
+  explicit ProfileQueryResult(std::unique_ptr<internal::ResultSetSource> source)
+      : source_(std::move(source)) {}
+
+  // This class is movable but not copyable.
+  ProfileQueryResult(ProfileQueryResult&&) = default;
+  ProfileQueryResult& operator=(ProfileQueryResult&&) = default;
+
+  /**
+   * Returns a `RowParser` which can be used to iterate the returned `Row`s.
+   *
+   * Since there is a single result stream for each `ResultRows` instance, users
    * should not use multiple `RowParser`s from the same `ReadResult` at the same
    * time. Doing so is not thread safe, and may result in errors or data
    * corruption.
@@ -79,108 +144,38 @@ class ReadResult {
    * Only available if a read-only transaction was used, and the timestamp
    * was requested by setting `return_read_timestamp` true.
    */
-  optional<Timestamp> ReadTimestamp() const {
-    auto metadata = source_->Metadata();
-    if (metadata.has_value() && metadata->has_transaction() &&
-        metadata->transaction().has_read_timestamp()) {
-      return internal::FromProto(metadata->transaction().read_timestamp());
-    }
-    return optional<Timestamp>();
-  }
+  optional<Timestamp> ReadTimestamp() const;
+
+  /**
+   * Returns a collection of key value pair statistics for the SQL statement
+   * execution.
+   *
+   * @warning Not yet implemented per issue #930.
+   * @note Only available when the statement is executed and all results have
+   * been read.
+   */
+  optional<std::unordered_map<std::string, std::string>> ExecutionStats() const;
+
+  /**
+   * Returns the plan of execution for the SQL statement.
+   *
+   * @warning Not yet implemented per issue #930.
+   */
+  optional<spanner::ExecutionPlan> ExecutionPlan() const;
 
  private:
   std::unique_ptr<internal::ResultSetSource> source_;
 };
 
-/**
- * Represents the result of a query operation using
- * `spanner::Client::ExecuteQuery()`.
- *
- * @note `ExecuteQueryResult` returns both the data for the operation, as
- * a single-pass, input range returned by `Rows()`, as well as the metadata for
- * the results, query plan (if requested), and execution statistics
- * (if requested).
- */
-class ExecuteQueryResult {
+class ProfileDmlResult {
  public:
-  ExecuteQueryResult() = default;
-  explicit ExecuteQueryResult(std::unique_ptr<internal::ResultSetSource> source)
+  ProfileDmlResult() = default;
+  explicit ProfileDmlResult(std::unique_ptr<internal::ResultSetSource> source)
       : source_(std::move(source)) {}
 
   // This class is movable but not copyable.
-  ExecuteQueryResult(ExecuteQueryResult&&) = default;
-  ExecuteQueryResult& operator=(ExecuteQueryResult&&) = default;
-
-  /**
-   * Returns a `RowParser` which can be used to iterate the returned `Row`s.
-   *
-   * Since there is a single result stream for each `ExecuteQueryResult`
-   * instance, users should not use multiple `RowParser`s from the same
-   * `ExecuteQueryResult` at the same time. Doing so is not thread safe, and may
-   * result in errors or data corruption.
-   */
-  template <typename RowType>
-  RowParser<RowType> Rows() {
-    return RowParser<RowType>(
-        [this]() mutable { return source_->NextValue(); });
-  }
-
-  /**
-   * Retrieve the timestamp at which the read occurred.
-   *
-   * Only available if a read-only transaction was used, and the timestamp
-   * was requested by setting `return_read_timestamp` true.
-   */
-  optional<Timestamp> ReadTimestamp() const {
-    auto metadata = source_->Metadata();
-    if (metadata.has_value() && metadata->has_transaction() &&
-        metadata->transaction().has_read_timestamp()) {
-      return internal::FromProto(metadata->transaction().read_timestamp());
-    }
-    return optional<Timestamp>();
-  }
-
-  /**
-   * Returns a collection of key value pair statistics for the query execution.
-   *
-   * @warning Not yet implemented per issue #930.
-   * @note Only available when the query is profiled and all results have been
-   * read.
-   */
-  optional<std::unordered_map<std::string, std::string>> QueryStats() const;
-
-  /**
-   * Returns the plan of execution for the query.
-   *
-   * @warning Not yet implemented per issue #930.
-   * @note Only available when the query is profiled or when the plan is
-   * explicitly requested.
-   */
-  optional<QueryPlan> QueryExecutionPlan() const;
-
- private:
-  std::unique_ptr<internal::ResultSetSource> source_;
-};
-
-/**
- * Represents the result of a data modifying operation using
- * `spanner::Client::ExecuteDML()`.
- *
- * This class encapsulates the result of a Cloud Spanner DML operation, i.e.,
- * `INSERT`, `UPDATE`, or `DELETE`.
- *
- * @note `ExecuteDmlResult` returns the number of rows modified, query plan
- * (if requested), and execution statistics (if requested).
- */
-class ExecuteDmlResult {
- public:
-  ExecuteDmlResult() = default;
-  explicit ExecuteDmlResult(std::unique_ptr<internal::ResultSetSource> source)
-      : source_(std::move(source)) {}
-
-  // This class is movable but not copyable.
-  ExecuteDmlResult(ExecuteDmlResult&&) = default;
-  ExecuteDmlResult& operator=(ExecuteDmlResult&&) = default;
+  ProfileDmlResult(ProfileDmlResult&&) = default;
+  ProfileDmlResult& operator=(ProfileDmlResult&&) = default;
 
   /**
    * Returns the number of rows modified by the DML statement.
@@ -188,30 +183,27 @@ class ExecuteDmlResult {
    * @note Partitioned DML only provides a lower bound of the rows modified, all
    * other DML statements provide an exact count.
    */
-  std::int64_t RowsModified() const { return source_->RowsModified(); }
+  std::int64_t RowsModified() const;
 
   /**
-   * Returns a collection of key value pair statistics for the query execution.
+   * Returns a collection of key value pair statistics for the SQL statement
+   * execution.
    *
    * @warning Not yet implemented per issue #930.
-   * @note Only available when the query is profiled and all results have been
-   * read.
+   * @note Only available when the SQL statement is executed.
    */
-  optional<std::unordered_map<std::string, std::string>> QueryStats() const;
+  optional<std::unordered_map<std::string, std::string>> ExecutionStats() const;
 
   /**
-   * Returns the plan of execution for the query.
+   * Returns the plan of execution for the SQL statement.
    *
    * @warning Not yet implemented per issue #930.
-   * @note Only available when the query is profiled or when the plan is
-   * explicitly requested.
    */
-  optional<QueryPlan> QueryExecutionPlan() const;
+  optional<spanner::ExecutionPlan> ExecutionPlan() const;
 
  private:
   std::unique_ptr<internal::ResultSetSource> source_;
 };
-
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
 }  // namespace cloud

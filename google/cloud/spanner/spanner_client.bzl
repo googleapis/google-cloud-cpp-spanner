@@ -116,6 +116,7 @@ spanner_client_srcs = [
     "mutations.cc",
     "query_partition.cc",
     "read_partition.cc",
+    "result_set.cc",
     "sql_statement.cc",
     "transaction.cc",
     "value.cc",

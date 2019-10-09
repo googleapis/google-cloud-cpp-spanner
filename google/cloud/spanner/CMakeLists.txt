@@ -180,6 +180,7 @@ add_library(spanner_client
             read_options.h
             read_partition.cc
             read_partition.h
+            result_set.cc
             result_set.h
             retry_policy.h
             row.h
