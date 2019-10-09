@@ -57,13 +57,14 @@ Key MakeKey(Ts&&... ts) {
  * The `KeyBound` class is a regular type that represents an open or closed
  * endpoint for a range of keys.
  *
+ * A range of keys is defined by a starting `KeyBound` and an ending
+ * `KeyBound`, and it logically includes all intermediate keys, optionally
+ * including/excluding the bounds.
+ *
  * `KeyBound`s can be "open", meaning the matching row will be excluded from
  * the results, or "closed" meaning the matching row will be included.
  * `KeyBound` instances should be created with the `MakeKeyBoundOpen()` or
  * `MakeKeyBoundClosed()` factory functions.
- *
- * See the `MakeKeyBoundClosed()` and `MakeKeyBoundOpen()` factory functions
- * below for convenient ways to construct instances of KeyBound.
  */
 class KeyBound {
  public:
