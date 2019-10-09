@@ -119,7 +119,8 @@ uploaded documentation will generally be live in an hour at the following URLs:
 
 Working in your fork of `gooogle-cloud-cpp-spanner`: bump the version numbers
 to the *next* version (i.e., one version past the release you just did above),
-and send the PR for review against `master`.
+and send the PR for review against `master`. For an example, look at
+[#943](https://github.com/googleapis/google-cloud-cpp-spanner/pull/943)
 
 ## Review the branch protections
 
