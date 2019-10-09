@@ -756,11 +756,11 @@ void DeleteData(google::cloud::spanner::Client client) {
                                                    .AddKey(2, 2)
                                                    .AddKey(2, 3))
           .Build();
-  auto delete_singers = spanner::DeleteMutationBuilder(
-                            "Singers", spanner::KeySet().AddRange(
-                                           spanner::MakeKeyBoundClosed(1),
-                                           spanner::MakeKeyBoundClosed(5)))
-                            .Build();
+  auto delete_singers =
+      spanner::DeleteMutationBuilder(
+          "Singers", spanner::KeySet().AddRange(spanner::MakeKeyBoundClosed(1),
+                                                spanner::MakeKeyBoundClosed(5)))
+          .Build();
 
   auto commit_result = client.Commit(spanner::MakeReadWriteTransaction(),
                                      {delete_albums, delete_singers});

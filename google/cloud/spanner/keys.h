@@ -42,10 +42,10 @@ using Key = std::vector<Value>;
  * @par Example
  *
  * @code
-*  Key key = MakeKey(123, "hello");
-*  assert(key.size() == 2);
-*  assert(key[0] == Value(123));
-*  assert(key[1] == Value("hello"));
+ *  Key key = MakeKey(123, "hello");
+ *  assert(key.size() == 2);
+ *  assert(key[0] == Value(123));
+ *  assert(key[1] == Value("hello"));
  * @endcode
  */
 template <typename... Ts>
@@ -103,8 +103,8 @@ class KeyBound {
   ///@}
 
  private:
-   Key key_;
-   Bound bound_;
+  Key key_;
+  Bound bound_;
 };
 
 /**
@@ -160,7 +160,7 @@ class KeySet {
   KeySet& operator=(KeySet&& rhs) = default;
 
   /// Adds the given @p key to the `KeySet`.
-  KeySet& AddKey(Key key); 
+  KeySet& AddKey(Key key);
 
   /// Constructs a `Key` from the given args and adds it to the `KeySet`.
   template <typename... Ts>
