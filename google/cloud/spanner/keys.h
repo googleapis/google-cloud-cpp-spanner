@@ -160,7 +160,7 @@ class KeySet {
   KeySet& operator=(KeySet&& rhs) = default;
 
   /// Adds the given @p key to the `KeySet`.
-  KeySet& AddKey(Key key); 
+  KeySet& AddKey(Key key);
 
   /// Constructs a `Key` from the given args and adds it to the `KeySet`.
   template <typename... Ts>
