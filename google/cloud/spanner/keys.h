@@ -15,13 +15,11 @@
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_KEYS_H_
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_KEYS_H_
 
-#include "google/cloud/spanner/row.h"
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/spanner/version.h"
-#include "google/cloud/status_or.h"
 #include <google/spanner/v1/keys.pb.h>
 #include <string>
-#include <type_traits>
+#include <utility>
 #include <vector>
 
 namespace google {
@@ -69,14 +67,17 @@ Key MakeKey(Ts&&... ts) {
  */
 class KeyBound {
  public:
+  /// An enum indicating whether the `Key` is included (closed) or excluded
+  /// (open).
   enum Bound { kClosed, kOpen };
 
+  /// No default constructor.
   KeyBound() = delete;
 
   /// Constructs an instance with the given @p key and @p bound.
   KeyBound(Key key, Bound bound) : key_(std::move(key)), bound_(bound) {}
 
-  /// @name Copy and move
+  /// @name Copy and move semantics.
   ///@{
   KeyBound(KeyBound const&) = default;
   KeyBound& operator=(KeyBound const&) = default;
@@ -84,20 +85,18 @@ class KeyBound {
   KeyBound& operator=(KeyBound&&) = default;
   ///@}
 
-  /// @name Returns the `Key`.
-  ///@{
+  /// Returns the `Key`.
   Key const& key() const& { return key_; }
-  Key&& key() && { return std::move(key_); }
-  ///@}
 
-  /// Returns the bound.
+  /// Returns the `Key` (by move).
+  Key&& key() && { return std::move(key_); }
+
+  /// Returns the `Bound`.
   Bound bound() const { return bound_; }
 
   /// @name Equality.
   ///@{
-  friend bool operator==(KeyBound const& a, KeyBound const& b) {
-    return a.key_ == b.key_ && a.bound_ == b.bound_;
-  }
+  friend bool operator==(KeyBound const& a, KeyBound const& b);
   friend bool operator!=(KeyBound const& a, KeyBound const& b) {
     return !(a == b);
   }
@@ -133,13 +132,14 @@ KeySet FromProto(::google::spanner::v1::KeySet);
 }  // namespace internal
 
 /**
- * The `KeySet` class is a regular type that represents some collection of `Key`s.
+ * The `KeySet` class is a regular type that represents a collection of `Key`s.
  *
- * Users can construct a `KeySet` instance, then add `Key`s and and ranges of
- * `Key`s. Users may also optionally construct an instance that represents all
- * keys with `KeySet::All()`.
+ * Users can construct a `KeySet` instance, then add `Key`s and ranges of
+ * `Key`s to the set. The caller is responsible for ensuring that all keys in a
+ * given `KeySet` instance contain the same number and types of values.
  *
- *
+ * Users may also optionally construct an instance that
+ * represents all keys with `KeySet::All()`.
  */
 class KeySet {
  public:
@@ -160,10 +160,7 @@ class KeySet {
   KeySet& operator=(KeySet&& rhs) = default;
 
   /// Adds the given @p key to the `KeySet`.
-  KeySet& AddKey(Key key) {
-    AppendKey(proto_.add_keys(), std::move(key));
-    return *this;
-  }
+  KeySet& AddKey(Key key); 
 
   /// Constructs a `Key` from the given args and adds it to the `KeySet`.
   template <typename... Ts>
@@ -172,18 +169,7 @@ class KeySet {
   }
 
   /// Adds a range of keys defined by the given `KeyBound`s.
-  KeySet& AddRange(KeyBound start, KeyBound end) {
-    auto* kr = proto_.add_ranges();
-    auto* start_proto = start.bound() == KeyBound::kClosed
-                            ? kr->mutable_start_closed()
-                            : kr->mutable_start_open();
-    AppendKey(start_proto, std::move(start).key());
-    auto* end_proto = end.bound() == KeyBound::kClosed
-                          ? kr->mutable_end_closed()
-                          : kr->mutable_end_open();
-    AppendKey(end_proto, std::move(end).key());
-    return *this;
-  }
+  KeySet& AddRange(KeyBound start, KeyBound end);
 
   /// @name Equality
   ///@{
@@ -192,15 +178,8 @@ class KeySet {
   ///@}
 
  private:
-  friend ::google::spanner::v1::KeySet internal::ToProto(KeySet keyset);
-  friend KeySet internal::FromProto(::google::spanner::v1::KeySet proto);
-  static void AppendKey(google::protobuf::ListValue* lv,
-                        std::vector<Value>&& values) {
-    for (auto& v : values) {
-      *lv->add_values() = internal::ToProto(std::move(v)).second;
-    }
-  }
-
+  friend ::google::spanner::v1::KeySet internal::ToProto(KeySet);
+  friend KeySet internal::FromProto(::google::spanner::v1::KeySet);
   explicit KeySet(google::spanner::v1::KeySet proto)
       : proto_(std::move(proto)) {}
 

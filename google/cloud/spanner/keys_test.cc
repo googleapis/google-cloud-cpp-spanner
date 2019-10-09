@@ -56,6 +56,8 @@ TEST(KeyTest, MakeKey) {
   EXPECT_NE(key, Key{});
   EXPECT_EQ(key.size(), 2);
   EXPECT_EQ(key, MakeKey(std::int64_t{123}, std::string("hello")));
+
+  EXPECT_EQ(key, MakeKey(Value(123), Value("hello")));
 }
 
 TEST(KeyBoundTest, ValueSemantics) {
@@ -150,6 +152,10 @@ TEST(KeySetTest, EqualityAll) {
   KeySet empty;
   EXPECT_NE(expected, empty);
   KeySet actual = KeySet::All();
+  EXPECT_EQ(expected, actual);
+
+  // Adding keys to an "all" KeySet still logically represents "all".
+  actual.AddKey(123);
   EXPECT_EQ(expected, actual);
 }
 
