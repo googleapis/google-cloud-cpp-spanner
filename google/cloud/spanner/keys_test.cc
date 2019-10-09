@@ -155,19 +155,19 @@ TEST(KeySetTest, EqualityAll) {
   EXPECT_EQ(expected, actual);
 
   // Adding keys to an "all" KeySet still logically represents "all".
-  actual.AddKey(123);
+  actual.AddKey(MakeKey(123));
   EXPECT_EQ(expected, actual);
 }
 
 TEST(KeySetTest, EqualityKeys) {
   auto ks0 = KeySet();
-  ks0.AddKey("foo0", "bar0");
-  ks0.AddKey("foo1", "bar1");
+  ks0.AddKey(MakeKey("foo0", "bar0"));
+  ks0.AddKey(MakeKey("foo1", "bar1"));
 
   auto ks1 = KeySet();
-  ks1.AddKey("foo0", "bar0");
+  ks1.AddKey(MakeKey("foo0", "bar0"));
   EXPECT_NE(ks0, ks1);
-  ks1.AddKey("foo1", "bar1");
+  ks1.AddKey(MakeKey("foo1", "bar1"));
   EXPECT_EQ(ks0, ks1);
 }
 
@@ -190,13 +190,13 @@ TEST(KeySetTest, RoundTripProtos) {
       KeySet(),                                      //
       KeySet::All(),                                 //
       KeySet()                                       //
-          .AddKey(42),                               //
+          .AddKey(MakeKey(42)),                      //
       KeySet()                                       //
-          .AddKey(42)                                //
-          .AddKey(123),                              //
+          .AddKey(MakeKey(42))                       //
+          .AddKey(MakeKey(123)),                     //
       KeySet()                                       //
-          .AddKey(42, "hi")                          //
-          .AddKey(123, "bye"),                       //
+          .AddKey(MakeKey(42, "hi"))                 //
+          .AddKey(MakeKey(123, "bye")),              //
       KeySet()                                       //
           .AddRange(MakeKeyBoundClosed(42, "hi"),    //
                     MakeKeyBoundClosed(43, "bye")),  //

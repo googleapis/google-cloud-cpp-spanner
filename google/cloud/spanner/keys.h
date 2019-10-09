@@ -163,12 +163,6 @@ class KeySet {
   /// Adds the given @p key to the `KeySet`.
   KeySet& AddKey(Key key);
 
-  /// Constructs a `Key` from the given args and adds it to the `KeySet`.
-  template <typename... Ts>
-  KeySet& AddKey(Ts&&... ts) {
-    return AddKey(MakeKey(std::forward<Ts>(ts)...));
-  }
-
   /// Adds a range of keys defined by the given `KeyBound`s.
   KeySet& AddRange(KeyBound start, KeyBound end);
 

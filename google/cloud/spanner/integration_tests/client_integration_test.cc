@@ -93,7 +93,8 @@ TEST_F(ClientIntegrationTest, DeleteAndCommit) {
 
   auto commit_result =
       RunTransaction(*client_, {}, [](Client const&, Transaction const&) {
-        return Mutations{MakeDeleteMutation("Singers", KeySet().AddKey(1))};
+        return Mutations{
+            MakeDeleteMutation("Singers", KeySet().AddKey(MakeKey(1)))};
       });
   EXPECT_STATUS_OK(commit_result);
 
@@ -246,7 +247,8 @@ TEST_F(ClientIntegrationTest, RunTransaction) {
 
   // Delete SingerId 102.
   auto deleter = [](Client const&, Transaction const&) {
-    auto mutation = MakeDeleteMutation("Singers", KeySet().AddKey(102));
+    auto mutation =
+        MakeDeleteMutation("Singers", KeySet().AddKey(MakeKey(102)));
     return Mutations{mutation};
   };
   auto delete_result = RunTransaction(*client_, {}, deleter);

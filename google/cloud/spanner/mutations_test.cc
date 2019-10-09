@@ -306,7 +306,7 @@ TEST(MutationsTest, ReplaceComplex) {
 }
 
 TEST(MutationsTest, DeleteSimple) {
-  auto ks = KeySet().AddKey("key-to-delete");
+  auto ks = KeySet().AddKey(MakeKey("key-to-delete"));
   Mutation dele = MakeDeleteMutation("table-name", std::move(ks));
   EXPECT_EQ(dele, dele);
 
