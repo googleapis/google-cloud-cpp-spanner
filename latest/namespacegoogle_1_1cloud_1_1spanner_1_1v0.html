@@ -157,16 +157,13 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html" title="The QueryPartition class is a regular type that represents a single slice of a parallel SQL read.">QueryPartition</a></code> class is a regular type that represents a single slice of a parallel SQL read.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadOptions.html">ReadOptions</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options passed to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ac64bed9459ae5a535cc2574e651a2f7d" title="Reads rows from the database using key lookups and scans, as a simple key/value style alternative to ...">Client::Read</a></code> or <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae79520d087ff55c903e2351c5d36a446" title="Creates a set of partitions that can be used to execute a read operation in parallel.">Client::PartitionRead</a></code>.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadOptions.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options passed to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a246a31ad0aa5a035580369db41a19ef4" title="Reads rows from the database using key lookups and scans, as a simple key/value style alternative to ...">Client::Read</a></code> or <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae79520d087ff55c903e2351c5d36a446" title="Creates a set of partitions that can be used to execute a read operation in parallel.">Client::PartitionRead</a></code>.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html">ReadPartition</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html" title="The ReadPartition class is a regular type that represents a single slice of a parallel Read operation...">ReadPartition</a></code> class is a regular type that represents a single slice of a parallel Read operation.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadResult.html">ReadResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the result of a read operation using <code>spanner::Client::Read()</code>.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadResult.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html">ResultSet</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the result of a query operation, such as <code>SpannerClient::Read()</code> or <code>SpannerClient::ExecuteSql()</code>.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ResultSet.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> class template represents a heterogeneous set of C++ values.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#details">More...</a><br /></td></tr>
@@ -897,7 +894,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00122">122</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00123">123</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -2299,7 +2296,7 @@ template&lt;typename RowType &gt; </div>
 <p>The caller-provided function will be passed the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> argument and a newly created read-write <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code>. It should use these objects to issue any <code>Read()</code>s, <code>ExecuteSql()</code>s, etc., and return the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html" title="A wrapper for Cloud Spanner mutations.">Mutation</a></code>s to commit, or an error (which causes the transaction to be rolled back).</p>
 <p>The lock priority of the transaction increases after each prior aborted transaction, meaning that the next attempt has a slightly better chance of success than before. </p>
 
-<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00468">468</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00462">462</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
 
 </div>
 </div>
