@@ -33,7 +33,7 @@ set(
     "https://github.com/googleapis/google-cloud-cpp-common/archive/v0.13.0.tar.gz"
     )
 set(GOOGLE_CLOUD_CPP_SHA256
-    "35058ff14e4f9f49f78da2f1bbf1c03f27e8e40ec65c51f62720346e99803392")
+    "ea7f8f64ee8a6964f8755d1024b908bf13170e505f54b57ffc72c0002d478b8c")
 google_cloud_cpp_set_prefix_vars()
 
 ExternalProject_Add(
