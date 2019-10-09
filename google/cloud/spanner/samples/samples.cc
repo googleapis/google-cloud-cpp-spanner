@@ -811,7 +811,7 @@ void ReadWriteTransaction(google::cloud::spanner::Client client) {
   // A helper to read a single album MarketingBudget.
   auto get_current_budget = [](spanner::Client client, spanner::Transaction txn,
                                std::int64_t singer_id, std::int64_t album_id) {
-    auto key = spanner::KeySet().AddKey(spanner::MakeKey(singer_id, album_id));
+    auto key = spanner::KeySet().AddKey(singer_id, album_id);
     auto read = client.Read(std::move(txn), "Albums", std::move(key),
                             {"MarketingBudget"});
     if (!read) throw std::runtime_error(read.status().message());

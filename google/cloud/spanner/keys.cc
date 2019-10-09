@@ -22,6 +22,15 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
+namespace {
+// Appends the values in the given `key` to the `lv` proto.
+void AppendKey(google::protobuf::ListValue& lv, Key&& key) {
+  for (auto& v : key) {
+    *lv.add_values() = internal::ToProto(std::move(v)).second;
+  }
+}
+}  // namespace
+
 namespace internal {
 
 ::google::spanner::v1::KeySet ToProto(KeySet ks) {
@@ -33,6 +42,30 @@ KeySet FromProto(::google::spanner::v1::KeySet proto) {
 }
 
 }  // namespace internal
+
+bool operator==(KeyBound const& a, KeyBound const& b) {
+  return a.key_ == b.key_ && a.bound_ == b.bound_;
+}
+
+KeySet& KeySet::AddKey(Key key) {
+  if (proto_.all()) return *this;
+  AppendKey(*proto_.add_keys(), std::move(key));
+  return *this;
+}
+
+KeySet& KeySet::AddRange(KeyBound start, KeyBound end) {
+  if (proto_.all()) return *this;
+  auto* range = proto_.add_ranges();
+  auto* start_proto = start.bound() == KeyBound::kClosed
+                          ? range->mutable_start_closed()
+                          : range->mutable_start_open();
+  AppendKey(*start_proto, std::move(start).key());
+  auto* end_proto = end.bound() == KeyBound::kClosed
+                        ? range->mutable_end_closed()
+                        : range->mutable_end_open();
+  AppendKey(*end_proto, std::move(end).key());
+  return *this;
+}
 
 bool operator==(KeySet const& a, KeySet const& b) {
   google::protobuf::util::MessageDifferencer differencer;
