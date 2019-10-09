@@ -58,6 +58,7 @@ fi
 # shellcheck disable=SC2086
 cmake "-DCMAKE_INSTALL_PREFIX=$HOME/staging" \
       -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+      "-DGOOGLE_CLOUD_CPP_ENABLE_CCACHE=OFF" \
       ${CMAKE_FLAGS:-} \
       "-H${SOURCE_DIR}" "-B${BINARY_DIR}" "${cmake_flags[@]}"
 cmake --build "${BINARY_DIR}" -- -j "$(nproc)"
