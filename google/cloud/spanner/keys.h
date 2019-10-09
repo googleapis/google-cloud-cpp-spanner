@@ -70,7 +70,7 @@ class KeyBound {
  public:
   /// An enum indicating whether the `Key` is included (closed) or excluded
   /// (open).
-  enum Bound { kClosed, kOpen };
+  enum class Bound { kClosed, kOpen };
 
   /// Not default constructible
   KeyBound() = delete;
@@ -114,7 +114,7 @@ class KeyBound {
  */
 template <typename... Ts>
 KeyBound MakeKeyBoundClosed(Ts&&... ts) {
-  return KeyBound(MakeKey(std::forward<Ts>(ts)...), KeyBound::kClosed);
+  return KeyBound(MakeKey(std::forward<Ts>(ts)...), KeyBound::Bound::kClosed);
 }
 
 /**
@@ -123,7 +123,7 @@ KeyBound MakeKeyBoundClosed(Ts&&... ts) {
  */
 template <typename... Ts>
 KeyBound MakeKeyBoundOpen(Ts&&... ts) {
-  return KeyBound(MakeKey(std::forward<Ts>(ts)...), KeyBound::kOpen);
+  return KeyBound(MakeKey(std::forward<Ts>(ts)...), KeyBound::Bound::kOpen);
 }
 
 class KeySet;

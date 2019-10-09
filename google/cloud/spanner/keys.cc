@@ -56,11 +56,11 @@ KeySet& KeySet::AddKey(Key key) {
 KeySet& KeySet::AddRange(KeyBound start, KeyBound end) {
   if (proto_.all()) return *this;
   auto* range = proto_.add_ranges();
-  auto* start_proto = start.bound() == KeyBound::kClosed
+  auto* start_proto = start.bound() == KeyBound::Bound::kClosed
                           ? range->mutable_start_closed()
                           : range->mutable_start_open();
   AppendKey(*start_proto, std::move(start).key());
-  auto* end_proto = end.bound() == KeyBound::kClosed
+  auto* end_proto = end.bound() == KeyBound::Bound::kClosed
                         ? range->mutable_end_closed()
                         : range->mutable_end_open();
   AppendKey(*end_proto, std::move(end).key());

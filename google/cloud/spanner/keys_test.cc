@@ -72,7 +72,7 @@ TEST(KeyBoundTest, ValueSemantics) {
 
   kb2 = std::move(kb1);
   EXPECT_EQ(kb2.key(), MakeKey(123));
-  EXPECT_EQ(kb2.bound(), KeyBound::kOpen);
+  EXPECT_EQ(kb2.bound(), KeyBound::Bound::kOpen);
 }
 
 TEST(KeyBoundTest, Open) {
@@ -81,8 +81,8 @@ TEST(KeyBoundTest, Open) {
   KeyBound kb2 = MakeKeyBoundOpen(456);
   EXPECT_NE(kb1, kb2);
 
-  EXPECT_EQ(kb1.bound(), KeyBound::kOpen);
-  EXPECT_EQ(kb2.bound(), KeyBound::kOpen);
+  EXPECT_EQ(kb1.bound(), KeyBound::Bound::kOpen);
+  EXPECT_EQ(kb2.bound(), KeyBound::Bound::kOpen);
 }
 
 TEST(KeyBoundTest, Closed) {
@@ -91,8 +91,8 @@ TEST(KeyBoundTest, Closed) {
   KeyBound kb2 = MakeKeyBoundClosed(456);
   EXPECT_NE(kb1, kb2);
 
-  EXPECT_EQ(kb1.bound(), KeyBound::kClosed);
-  EXPECT_EQ(kb2.bound(), KeyBound::kClosed);
+  EXPECT_EQ(kb1.bound(), KeyBound::Bound::kClosed);
+  EXPECT_EQ(kb2.bound(), KeyBound::Bound::kClosed);
 }
 
 TEST(KeyBoundTest, RvalueKeyAccessor) {
