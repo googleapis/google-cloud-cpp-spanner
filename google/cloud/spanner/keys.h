@@ -32,7 +32,7 @@ inline namespace SPANNER_CLIENT_NS {
  * to the i'th component of the table or primary index key.
  *
  * In C++, this is implemented as a `std::vector<Value>`. See the `MakeKey`
- * factory function below for easy way to construct a valid `Key` instance.
+ * factory function below for an easy way to construct a valid `Key` instance.
  */
 using Key = std::vector<Value>;
 
@@ -71,7 +71,7 @@ class KeyBound {
   /// (open).
   enum Bound { kClosed, kOpen };
 
-  /// No default constructor.
+  /// Not default constructible
   KeyBound() = delete;
 
   /// Constructs an instance with the given @p key and @p bound.
