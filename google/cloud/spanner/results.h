@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_RESULT_SET_H_
-#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_RESULT_SET_H_
+#ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_RESULTS_H_
+#define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_RESULTS_H_
 
 #include "google/cloud/spanner/row_parser.h"
 #include "google/cloud/spanner/timestamp.h"
@@ -127,10 +127,10 @@ class ProfileQueryResult {
   /**
    * Returns a `RowParser` which can be used to iterate the returned `Row`s.
    *
-   * Since there is a single result stream for each `ResultRows` instance, users
-   * should not use multiple `RowParser`s from the same `ReadResult` at the same
-   * time. Doing so is not thread safe, and may result in errors or data
-   * corruption.
+   * Since there is a single result stream for each `ProfileQueryResult`
+   * instance, users should not use multiple `RowParser`s from the same
+   * `ProfileQueryResult` at the same time. Doing so is not thread safe, and may
+   * result in errors or data corruption.
    */
   template <typename RowType>
   RowParser<RowType> Rows() {
@@ -209,4 +209,4 @@ class ProfileDmlResult {
 }  // namespace cloud
 }  // namespace google
 
-#endif  // GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_RESULT_SET_H_
+#endif  // GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_RESULTS_H_
