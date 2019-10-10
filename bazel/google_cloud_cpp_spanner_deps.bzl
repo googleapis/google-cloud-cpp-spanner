@@ -27,8 +27,8 @@ def google_cloud_cpp_spanner_deps():
     they want to use.
     """
 
-    # Load a newer version of google test than what gRPC does.
-    if "com_github_googleapis_google_cloud_cpp" not in native.existing_rules():
+    # Load google-cloud-cpp-common.
+    if "com_github_googleapis_google_cloud_cpp_common" not in native.existing_rules():
         http_archive(
             name = "com_github_googleapis_google_cloud_cpp_common",
             strip_prefix = "google-cloud-cpp-common-0.13.0",
