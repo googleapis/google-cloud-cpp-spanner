@@ -23,7 +23,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(GOOGLE_CLOUD_CPP_SPANNER_ROOT "${PROJECT_SOURCE_DIR}/../..")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
 
-include(external/google-cloud-cpp)
+include(external/google-cloud-cpp-common)
 include(external/googletest)
 include(external/external-project-helpers)
 
@@ -34,7 +34,7 @@ set_external_project_build_parallel_level(PARALLEL)
 include(ExternalProject)
 ExternalProject_Add(
     google-cloud-cpp-spanner-as-external
-    DEPENDS google-cloud-cpp-project googletest-project
+    DEPENDS google-cloud-cpp-common-project googletest-project
     EXCLUDE_FROM_ALL OFF
     BUILD_ALWAYS 1
     PREFIX "${CMAKE_BINARY_DIR}/build/google-cloud-cpp-spanner"
@@ -64,5 +64,5 @@ ExternalProject_Add(
 
 # This makes it easy to compile the dependencies before the code.
 add_custom_target(google-cloud-cpp-spanner-dependencies)
-add_dependencies(google-cloud-cpp-spanner-dependencies google-cloud-cpp-project
-                 googletest-project)
+add_dependencies(google-cloud-cpp-spanner-dependencies
+                 google-cloud-cpp-common-project googletest-project)

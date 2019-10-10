@@ -16,33 +16,29 @@
 
 include(ExternalProject)
 include(external/external-project-helpers)
-include(external/curl)
-include(external/crc32c)
 include(external/grpc)
 include(external/googleapis)
 include(external/googletest)
 
-if (NOT TARGET google-cloud-cpp-project)
+if (NOT TARGET google-cloud-cpp-common-project)
     # Give application developers a hook to configure the version and hash
     # downloaded from GitHub.
-    set(GOOGLE_CLOUD_CPP_URL
-        "https://github.com/googleapis/google-cloud-cpp/archive/v0.13.0.tar.gz")
+    set(
+        GOOGLE_CLOUD_CPP_URL
+        "https://github.com/googleapis/google-cloud-cpp-common/archive/v0.13.0.tar.gz"
+        )
     set(GOOGLE_CLOUD_CPP_SHA256
-        "35058ff14e4f9f49f78da2f1bbf1c03f27e8e40ec65c51f62720346e99803392")
+        "ea7f8f64ee8a6964f8755d1024b908bf13170e505f54b57ffc72c0002d478b8c")
 
     google_cloud_cpp_set_prefix_vars()
 
     set_external_project_build_parallel_level(PARALLEL)
 
     ExternalProject_Add(
-        google-cloud-cpp-project
-        DEPENDS googleapis-project
-                googletest-project
-                grpc-project
-                curl-project
-                crc32c-project
+        google-cloud-cpp-common-project
+        DEPENDS googleapis-project googletest-project grpc-project
         EXCLUDE_FROM_ALL ON
-        PREFIX "${CMAKE_BINARY_DIR}/external/google-cloud-cpp"
+        PREFIX "${CMAKE_BINARY_DIR}/external/google-cloud-cpp-common"
         INSTALL_DIR "${GOOGLE_CLOUD_CPP_EXTERNAL_PREFIX}"
         URL ${GOOGLE_CLOUD_CPP_URL}
         URL_HASH SHA256=${GOOGLE_CLOUD_CPP_SHA256}
