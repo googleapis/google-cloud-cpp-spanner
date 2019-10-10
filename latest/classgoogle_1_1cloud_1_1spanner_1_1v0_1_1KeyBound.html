@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Google Cloud Spanner C++ Client: google::cloud::spanner::v0::KeyBound&lt; RowType &gt; Class Template Reference</title>
+<title>Google Cloud Spanner C++ Client: google::cloud::spanner::v0::KeyBound Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -68,81 +68,111 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#friends">Friends</a> &#124;
 <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">google::cloud::spanner::v0::KeyBound&lt; RowType &gt; Class Template Reference</div>  </div>
+<div class="title">google::cloud::spanner::v0::KeyBound Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents one endpoint of an interval of keys.">KeyBound</a></code> class is a regular type that represents one endpoint of an interval of keys.  
+<p>The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents an open or closed endpoint for a range of keys.">KeyBound</a></code> class is a regular type that represents an open or closed endpoint for a range of keys.  
  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="keys_8h_source.html">google/cloud/spanner/keys.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a20fa34400f69db573d9f20d403cde4e6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a20fa34400f69db573d9f20d403cde4e6">Bound</a> { <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a20fa34400f69db573d9f20d403cde4e6af9be16a4ac9fcc9b545ff52f0606eb09">Bound::kClosed</a>, 
+<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a20fa34400f69db573d9f20d403cde4e6ac76ad31b0ff1fcbb03eeae06f73420c8">Bound::kOpen</a>
+ }</td></tr>
+<tr class="memdesc:a20fa34400f69db573d9f20d403cde4e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum indicating whether the <code>Key</code> is included (closed) or excluded (open).  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a20fa34400f69db573d9f20d403cde4e6">More...</a><br /></td></tr>
+<tr class="separator:a20fa34400f69db573d9f20d403cde4e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6c975c0df01b32136c7ab66e60d9e6d4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a6c975c0df01b32136c7ab66e60d9e6d4">KeyBound</a> ()=delete</td></tr>
-<tr class="separator:a6c975c0df01b32136c7ab66e60d9e6d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2aa2787e72e37c67912e8deed18ec4c6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a2aa2787e72e37c67912e8deed18ec4c6">KeyBound</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;key_range)=default</td></tr>
-<tr class="separator:a2aa2787e72e37c67912e8deed18ec4c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6566549895788bbd52358ed15cc7a602"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a6566549895788bbd52358ed15cc7a602">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;rhs)=default</td></tr>
-<tr class="separator:a6566549895788bbd52358ed15cc7a602"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e5ce37beca2734eac2c0e049c222305"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a4e5ce37beca2734eac2c0e049c222305">KeyBound</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> &amp;&amp;key_range)=default</td></tr>
-<tr class="separator:a4e5ce37beca2734eac2c0e049c222305"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a743c7ac1d8647fe43f8a272060c90d10"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a743c7ac1d8647fe43f8a272060c90d10">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> &amp;&amp;rhs)=default</td></tr>
-<tr class="separator:a743c7ac1d8647fe43f8a272060c90d10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7672e79914bda8691c54877d5abdc677"><td class="memItemLeft" align="right" valign="top">RowType const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a7672e79914bda8691c54877d5abdc677">key</a> () const &amp;</td></tr>
-<tr class="separator:a7672e79914bda8691c54877d5abdc677"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4aed6111f852428f0bbfae85e2d0b570"><td class="memItemLeft" align="right" valign="top">RowType &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a4aed6111f852428f0bbfae85e2d0b570">key</a> () &amp;&amp;</td></tr>
-<tr class="separator:a4aed6111f852428f0bbfae85e2d0b570"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba3650ea10a0919612d2cfd1ade26463"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#aba3650ea10a0919612d2cfd1ade26463">IsClosed</a> () const</td></tr>
-<tr class="separator:aba3650ea10a0919612d2cfd1ade26463"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16b2c5a46937b4a3db92bda376773614"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a16b2c5a46937b4a3db92bda376773614">IsOpen</a> () const</td></tr>
-<tr class="separator:a16b2c5a46937b4a3db92bda376773614"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b0743a5e765e8080fbccf4c4de7e130"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a7b0743a5e765e8080fbccf4c4de7e130">KeyBound</a> ()=delete</td></tr>
+<tr class="memdesc:a7b0743a5e765e8080fbccf4c4de7e130"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not default constructible.  <a href="#a7b0743a5e765e8080fbccf4c4de7e130">More...</a><br /></td></tr>
+<tr class="separator:a7b0743a5e765e8080fbccf4c4de7e130"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fbc9662c952dd719e8882623d39a3ec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a8fbc9662c952dd719e8882623d39a3ec">KeyBound</a> (<a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a26f3fe00592b6234496f6cc9a5503e98">Key</a> <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a68582e620c937f8e4d87e9a5c172f73e">key</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a20fa34400f69db573d9f20d403cde4e6">Bound</a> <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a1d2f3096e957c209864ac92008e5388e">bound</a>)</td></tr>
+<tr class="memdesc:a8fbc9662c952dd719e8882623d39a3ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an instance with the given <code>key</code> and <code>bound</code>.  <a href="#a8fbc9662c952dd719e8882623d39a3ec">More...</a><br /></td></tr>
+<tr class="separator:a8fbc9662c952dd719e8882623d39a3ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68582e620c937f8e4d87e9a5c172f73e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a26f3fe00592b6234496f6cc9a5503e98">Key</a> const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a68582e620c937f8e4d87e9a5c172f73e">key</a> () const &amp;</td></tr>
+<tr class="memdesc:a68582e620c937f8e4d87e9a5c172f73e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code>Key</code>.  <a href="#a68582e620c937f8e4d87e9a5c172f73e">More...</a><br /></td></tr>
+<tr class="separator:a68582e620c937f8e4d87e9a5c172f73e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18a84624ff2f7f12778e5fa0c830249a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a26f3fe00592b6234496f6cc9a5503e98">Key</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a18a84624ff2f7f12778e5fa0c830249a">key</a> () &amp;&amp;</td></tr>
+<tr class="memdesc:a18a84624ff2f7f12778e5fa0c830249a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code>Key</code> (by move).  <a href="#a18a84624ff2f7f12778e5fa0c830249a">More...</a><br /></td></tr>
+<tr class="separator:a18a84624ff2f7f12778e5fa0c830249a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d2f3096e957c209864ac92008e5388e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a20fa34400f69db573d9f20d403cde4e6">Bound</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a1d2f3096e957c209864ac92008e5388e">bound</a> () const</td></tr>
+<tr class="memdesc:a1d2f3096e957c209864ac92008e5388e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code>Bound</code>.  <a href="#a1d2f3096e957c209864ac92008e5388e">More...</a><br /></td></tr>
+<tr class="separator:a1d2f3096e957c209864ac92008e5388e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Copy and move semantics.</div></td></tr>
+<tr class="memitem:acf32fba625f6912594bd11d40838c942"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#acf32fba625f6912594bd11d40838c942">KeyBound</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;)=default</td></tr>
+<tr class="separator:acf32fba625f6912594bd11d40838c942"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0aa523a7d391b0d054a5f363e0f83ff0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a0aa523a7d391b0d054a5f363e0f83ff0">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;)=default</td></tr>
+<tr class="separator:a0aa523a7d391b0d054a5f363e0f83ff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba8dc8764d584d7685a3d3d0023d1083"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#aba8dc8764d584d7685a3d3d0023d1083">KeyBound</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> &amp;&amp;)=default</td></tr>
+<tr class="separator:aba8dc8764d584d7685a3d3d0023d1083"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c4eea5b83aa0a154101e88876de02a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a8c4eea5b83aa0a154101e88876de02a1">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> &amp;&amp;)=default</td></tr>
+<tr class="separator:a8c4eea5b83aa0a154101e88876de02a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:afcf6aa1bf11dc4b76fb0ecc242f74d7c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#afcf6aa1bf11dc4b76fb0ecc242f74d7c">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;lhs, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;rhs)</td></tr>
-<tr class="separator:afcf6aa1bf11dc4b76fb0ecc242f74d7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3fbd5e2aed2f8d65995092ae899f290"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#ae3fbd5e2aed2f8d65995092ae899f290">operator!=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;lhs, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;rhs)</td></tr>
-<tr class="separator:ae3fbd5e2aed2f8d65995092ae899f290"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5e59bb10ca1c4eb5fc5ce4e35608bfb"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ad5e59bb10ca1c4eb5fc5ce4e35608bfb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#ad5e59bb10ca1c4eb5fc5ce4e35608bfb">MakeKeyBoundClosed</a> (T <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a7672e79914bda8691c54877d5abdc677">key</a>)</td></tr>
-<tr class="separator:ad5e59bb10ca1c4eb5fc5ce4e35608bfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b5c7992374ada0f584bea66aa26697e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a4b5c7992374ada0f584bea66aa26697e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a4b5c7992374ada0f584bea66aa26697e">MakeKeyBoundOpen</a> (T <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a7672e79914bda8691c54877d5abdc677">key</a>)</td></tr>
-<tr class="separator:a4b5c7992374ada0f584bea66aa26697e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Equality.</div></td></tr>
+<tr class="memitem:a787c8402c7cf3e21bc94c0eaccf2741b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a787c8402c7cf3e21bc94c0eaccf2741b">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;b)</td></tr>
+<tr class="separator:a787c8402c7cf3e21bc94c0eaccf2741b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a956baf44463ab88efff47cce6029e4a7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a956baf44463ab88efff47cce6029e4a7">operator!=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;b)</td></tr>
+<tr class="separator:a956baf44463ab88efff47cce6029e4a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename RowType&gt;<br />
-class google::cloud::spanner::v0::KeyBound&lt; RowType &gt;</h3>
+<div class="textblock"><p>The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents an open or closed endpoint for a range of keys.">KeyBound</a></code> class is a regular type that represents an open or closed endpoint for a range of keys. </p>
+<p>A range of keys is defined by a starting <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents an open or closed endpoint for a range of keys.">KeyBound</a></code> and an ending <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents an open or closed endpoint for a range of keys.">KeyBound</a></code>, and it logically includes all intermediate keys, optionally including/excluding the bounds.</p>
+<p><code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents an open or closed endpoint for a range of keys.">KeyBound</a></code>s can be "open", meaning the matching row will be excluded from the results, or "closed" meaning the matching row will be included. <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents an open or closed endpoint for a range of keys.">KeyBound</a></code> instances should be created with the <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a85e61ada57767e3226f600348b1fae97" title="Returns an &quot;open&quot; KeyBound with a Key constructed from the given arguments.">MakeKeyBoundOpen()</a></code> or <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a305a6a298067b692cdb195296474bc15" title="Returns a &quot;closed&quot; KeyBound with a Key constructed from the given arguments.">MakeKeyBoundClosed()</a></code> factory functions. </p>
 
-<p>The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents one endpoint of an interval of keys.">KeyBound</a></code> class is a regular type that represents one endpoint of an interval of keys. </p>
-<p><code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents one endpoint of an interval of keys.">KeyBound</a></code>s can be "open", meaning the matching row will be excluded from the results, or "closed" meaning the matching row will be included. <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents one endpoint of an interval of keys.">KeyBound</a></code> instances should be created with the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a4b5c7992374ada0f584bea66aa26697e">MakeKeyBoundOpen()</a></code> or <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#ad5e59bb10ca1c4eb5fc5ce4e35608bfb">MakeKeyBoundClosed()</a></code> factory functions.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">KeyType</td><td>spanner::Row&lt;Types...&gt; that corresponds to the desired index definition. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00060">60</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6c975c0df01b32136c7ab66e60d9e6d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c975c0df01b32136c7ab66e60d9e6d4">&#9670;&nbsp;</a></span>KeyBound() <span class="overload">[1/3]</span></h2>
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00069">69</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a20fa34400f69db573d9f20d403cde4e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20fa34400f69db573d9f20d403cde4e6">&#9670;&nbsp;</a></span>Bound</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename RowType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">google::cloud::spanner::v0::KeyBound</a>&lt; RowType &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> </td>
+          <td class="memname">enum <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a20fa34400f69db573d9f20d403cde4e6">google::cloud::spanner::v0::KeyBound::Bound</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>An enum indicating whether the <code>Key</code> is included (closed) or excluded (open). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a20fa34400f69db573d9f20d403cde4e6af9be16a4ac9fcc9b545ff52f0606eb09"></a>kClosed&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a20fa34400f69db573d9f20d403cde4e6ac76ad31b0ff1fcbb03eeae06f73420c8"></a>kOpen&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00073">73</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a7b0743a5e765e8080fbccf4c4de7e130"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b0743a5e765e8080fbccf4c4de7e130">&#9670;&nbsp;</a></span>KeyBound() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">google::cloud::spanner::v0::KeyBound::KeyBound </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -155,24 +185,64 @@ template&lt;typename RowType&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Not default constructible. </p>
+
 </div>
 </div>
-<a id="a2aa2787e72e37c67912e8deed18ec4c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2aa2787e72e37c67912e8deed18ec4c6">&#9670;&nbsp;</a></span>KeyBound() <span class="overload">[2/3]</span></h2>
+<a id="a8fbc9662c952dd719e8882623d39a3ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fbc9662c952dd719e8882623d39a3ec">&#9670;&nbsp;</a></span>KeyBound() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename RowType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">google::cloud::spanner::v0::KeyBound</a>&lt; RowType &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> </td>
+          <td class="memname">google::cloud::spanner::v0::KeyBound::KeyBound </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&lt; RowType &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>key_range</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a26f3fe00592b6234496f6cc9a5503e98">Key</a>&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a20fa34400f69db573d9f20d403cde4e6">Bound</a>&#160;</td>
+          <td class="paramname"><em>bound</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs an instance with the given <code>key</code> and <code>bound</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00079">79</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+
+</div>
+</div>
+<a id="acf32fba625f6912594bd11d40838c942"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf32fba625f6912594bd11d40838c942">&#9670;&nbsp;</a></span>KeyBound() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">google::cloud::spanner::v0::KeyBound::KeyBound </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -185,22 +255,20 @@ template&lt;typename RowType&gt; </div>
 
 </div>
 </div>
-<a id="a4e5ce37beca2734eac2c0e049c222305"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e5ce37beca2734eac2c0e049c222305">&#9670;&nbsp;</a></span>KeyBound() <span class="overload">[3/3]</span></h2>
+<a id="aba8dc8764d584d7685a3d3d0023d1083"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba8dc8764d584d7685a3d3d0023d1083">&#9670;&nbsp;</a></span>KeyBound() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename RowType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">google::cloud::spanner::v0::KeyBound</a>&lt; RowType &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> </td>
+          <td class="memname">google::cloud::spanner::v0::KeyBound::KeyBound </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&lt; RowType &gt; &amp;&amp;&#160;</td>
-          <td class="paramname"><em>key_range</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -214,19 +282,17 @@ template&lt;typename RowType&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aba3650ea10a0919612d2cfd1ade26463"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba3650ea10a0919612d2cfd1ade26463">&#9670;&nbsp;</a></span>IsClosed()</h2>
+<a id="a1d2f3096e957c209864ac92008e5388e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d2f3096e957c209864ac92008e5388e">&#9670;&nbsp;</a></span>bound()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename RowType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">google::cloud::spanner::v0::KeyBound</a>&lt; RowType &gt;::IsClosed </td>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a20fa34400f69db573d9f20d403cde4e6">Bound</a> google::cloud::spanner::v0::KeyBound::bound </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -239,52 +305,23 @@ template&lt;typename RowType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00077">77</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p>Returns the <code>Bound</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00096">96</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
-<a id="a16b2c5a46937b4a3db92bda376773614"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16b2c5a46937b4a3db92bda376773614">&#9670;&nbsp;</a></span>IsOpen()</h2>
+<a id="a68582e620c937f8e4d87e9a5c172f73e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68582e620c937f8e4d87e9a5c172f73e">&#9670;&nbsp;</a></span>key() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename RowType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">google::cloud::spanner::v0::KeyBound</a>&lt; RowType &gt;::IsOpen </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00078">78</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
-
-</div>
-</div>
-<a id="a7672e79914bda8691c54877d5abdc677"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7672e79914bda8691c54877d5abdc677">&#9670;&nbsp;</a></span>key() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename RowType&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">RowType const&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">google::cloud::spanner::v0::KeyBound</a>&lt; RowType &gt;::key </td>
+          <td class="memname"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a26f3fe00592b6234496f6cc9a5503e98">Key</a> const&amp; google::cloud::spanner::v0::KeyBound::key </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const &amp;</td>
@@ -297,23 +334,23 @@ template&lt;typename RowType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00074">74</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p>Returns the <code>Key</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00090">90</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
-<a id="a4aed6111f852428f0bbfae85e2d0b570"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4aed6111f852428f0bbfae85e2d0b570">&#9670;&nbsp;</a></span>key() <span class="overload">[2/2]</span></h2>
+<a id="a18a84624ff2f7f12778e5fa0c830249a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18a84624ff2f7f12778e5fa0c830249a">&#9670;&nbsp;</a></span>key() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename RowType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">RowType&amp;&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">google::cloud::spanner::v0::KeyBound</a>&lt; RowType &gt;::key </td>
+          <td class="memname"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a26f3fe00592b6234496f6cc9a5503e98">Key</a>&amp;&amp; google::cloud::spanner::v0::KeyBound::key </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> &amp;&amp;</td>
@@ -326,26 +363,26 @@ template&lt;typename RowType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00075">75</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p>Returns the <code>Key</code> (by move). </p>
+
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00093">93</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
-<a id="a6566549895788bbd52358ed15cc7a602"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6566549895788bbd52358ed15cc7a602">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+<a id="a0aa523a7d391b0d054a5f363e0f83ff0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0aa523a7d391b0d054a5f363e0f83ff0">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename RowType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">google::cloud::spanner::v0::KeyBound</a>&lt; RowType &gt;::operator= </td>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&amp; google::cloud::spanner::v0::KeyBound::operator= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&lt; RowType &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -358,22 +395,20 @@ template&lt;typename RowType&gt; </div>
 
 </div>
 </div>
-<a id="a743c7ac1d8647fe43f8a272060c90d10"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a743c7ac1d8647fe43f8a272060c90d10">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+<a id="a8c4eea5b83aa0a154101e88876de02a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c4eea5b83aa0a154101e88876de02a1">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename RowType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">google::cloud::spanner::v0::KeyBound</a>&lt; RowType &gt;::operator= </td>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&amp; google::cloud::spanner::v0::KeyBound::operator= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&lt; RowType &gt; &amp;&amp;&#160;</td>
-          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -387,73 +422,11 @@ template&lt;typename RowType&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a id="ad5e59bb10ca1c4eb5fc5ce4e35608bfb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5e59bb10ca1c4eb5fc5ce4e35608bfb">&#9670;&nbsp;</a></span>MakeKeyBoundClosed</h2>
+<a id="a956baf44463ab88efff47cce6029e4a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a956baf44463ab88efff47cce6029e4a7">&#9670;&nbsp;</a></span>operator!=</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename RowType&gt; </div>
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&lt;T&gt; MakeKeyBoundClosed </td>
-          <td>(</td>
-          <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>key</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a4b5c7992374ada0f584bea66aa26697e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b5c7992374ada0f584bea66aa26697e">&#9670;&nbsp;</a></span>MakeKeyBoundOpen</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename RowType&gt; </div>
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&lt;T&gt; MakeKeyBoundOpen </td>
-          <td>(</td>
-          <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>key</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae3fbd5e2aed2f8d65995092ae899f290"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3fbd5e2aed2f8d65995092ae899f290">&#9670;&nbsp;</a></span>operator!=</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename RowType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -461,14 +434,14 @@ template&lt;typename RowType&gt; </div>
         <tr>
           <td class="memname">bool operator!= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&lt; RowType &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>lhs</em>, </td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&lt; RowType &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>rhs</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -483,17 +456,15 @@ template&lt;typename RowType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00083">83</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00101">101</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
-<a id="afcf6aa1bf11dc4b76fb0ecc242f74d7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afcf6aa1bf11dc4b76fb0ecc242f74d7c">&#9670;&nbsp;</a></span>operator==</h2>
+<a id="a787c8402c7cf3e21bc94c0eaccf2741b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a787c8402c7cf3e21bc94c0eaccf2741b">&#9670;&nbsp;</a></span>operator==</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename RowType&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -501,14 +472,14 @@ template&lt;typename RowType&gt; </div>
         <tr>
           <td class="memname">bool operator== </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&lt; RowType &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>lhs</em>, </td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&lt; RowType &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>rhs</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -523,7 +494,7 @@ template&lt;typename RowType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00080">80</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8cc_source.html#l00046">46</a> of file <a class="el" href="keys_8cc_source.html">keys.cc</a>.</p>
 
 </div>
 </div>

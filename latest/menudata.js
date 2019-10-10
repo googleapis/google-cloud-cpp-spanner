@@ -32,6 +32,7 @@ var menudata={children:[
 {text:"d",url:"namespacemembers.html#index_d"},
 {text:"e",url:"namespacemembers.html#index_e"},
 {text:"i",url:"namespacemembers.html#index_i"},
+{text:"k",url:"namespacemembers.html#index_k"},
 {text:"l",url:"namespacemembers.html#index_l"},
 {text:"m",url:"namespacemembers.html#index_m"},
 {text:"o",url:"namespacemembers.html#index_o"},
@@ -116,9 +117,9 @@ var menudata={children:[
 {text:"s",url:"functions_vars.html#index_s"},
 {text:"t",url:"functions_vars.html#index_t"}]},
 {text:"Typedefs",url:"functions_type.html"},
+{text:"Enumerations",url:"functions_enum.html"},
 {text:"Related Functions",url:"functions_rela.html",children:[
 {text:"d",url:"functions_rela.html#index_d"},
-{text:"m",url:"functions_rela.html#index_m"},
 {text:"o",url:"functions_rela.html#index_o"},
 {text:"p",url:"functions_rela.html#index_p"},
 {text:"q",url:"functions_rela.html#index_q"},

@@ -66,38 +66,28 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">keys.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="row_8h_source.html">google/cloud/spanner/row.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="value_8h_source.html">google/cloud/spanner/value.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="value_8h_source.html">google/cloud/spanner/value.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="version_8h_source.html">google/cloud/spanner/version.h</a>&quot;</code><br />
-<code>#include &quot;google/cloud/status_or.h&quot;</code><br />
 <code>#include &lt;google/spanner/v1/keys.pb.h&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
-<code>#include &lt;type_traits&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 </div>
 <p><a href="keys_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">google::cloud::spanner::v0::KeySetBuilder&lt; RowType &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code> class is a regular type that represents the collection of <code>spanner::Row</code>s necessary to uniquely identify a arbitrary group of rows in its index.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">google::cloud::spanner::v0::KeyBound&lt; RowType &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents one endpoint of an interval of keys.">KeyBound</a></code> class is a regular type that represents one endpoint of an interval of keys.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html">google::cloud::spanner::v0::KeyRange&lt; RowType &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html" title="The KeyRange class is a regular type that represents the pair of KeyBounds necessary to uniquely iden...">KeyRange</a></code> class is a regular type that represents the pair of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents one endpoint of an interval of keys.">KeyBound</a></code>s necessary to uniquely identify a contiguous group of key <code>spanner::Row</code>s in its index.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">google::cloud::spanner::v0::KeyBound</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents an open or closed endpoint for a range of keys.">KeyBound</a></code> class is a regular type that represents an open or closed endpoint for a range of keys.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">google::cloud::spanner::v0::KeySet</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents the collection of spanner::Rows necessary to uniqu...">KeySet</a></code> class is a regular type that represents the collection of <code>spanner::Row</code>s necessary to uniquely identify a arbitrary group of rows in its index, or all the keys in an index.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html">google::cloud::spanner::v0::KeySetBuilder&lt; RowType &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code> class is a regular type that represents the collection of <code>spanner::Row</code>s necessary to uniquely identify a arbitrary group of rows in its index.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents a collection of Keys.">KeySet</a></code> class is a regular type that represents a collection of <code>Key</code>s.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -114,24 +104,26 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespacegoogle_1_1cloud_1_1spanner_1_1v0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The inlined, versioned namespace for the Cloud Spanner C++ client APIs. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a26f3fe00592b6234496f6cc9a5503e98"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a26f3fe00592b6234496f6cc9a5503e98">google::cloud::spanner::v0::Key</a> = std::vector&lt; Value &gt;</td></tr>
+<tr class="memdesc:a26f3fe00592b6234496f6cc9a5503e98"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code>Key</code> is a collection of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects where the i'th value corresponds to the i'th component of the table or primary index key.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a26f3fe00592b6234496f6cc9a5503e98">More...</a><br /></td></tr>
+<tr class="separator:a26f3fe00592b6234496f6cc9a5503e98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a91e3fd35be38fd51df1755fc613ede6c"><td class="memTemplParams" colspan="2">template&lt;typename RowType &gt; </td></tr>
-<tr class="memitem:a91e3fd35be38fd51df1755fc613ede6c"><td class="memTemplItemLeft" align="right" valign="top">KeyBound&lt; RowType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a91e3fd35be38fd51df1755fc613ede6c">google::cloud::spanner::v0::MakeKeyBoundClosed</a> (RowType key)</td></tr>
-<tr class="memdesc:a91e3fd35be38fd51df1755fc613ede6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to create a closed <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents one endpoint of an interval of keys.">KeyBound</a></code> on the key <code>spanner::Row</code> provided.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a91e3fd35be38fd51df1755fc613ede6c">More...</a><br /></td></tr>
-<tr class="separator:a91e3fd35be38fd51df1755fc613ede6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cdaddcb9d16a5e6f0d53b71f63397e8"><td class="memTemplParams" colspan="2">template&lt;typename RowType &gt; </td></tr>
-<tr class="memitem:a2cdaddcb9d16a5e6f0d53b71f63397e8"><td class="memTemplItemLeft" align="right" valign="top">KeyBound&lt; RowType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a2cdaddcb9d16a5e6f0d53b71f63397e8">google::cloud::spanner::v0::MakeKeyBoundOpen</a> (RowType key)</td></tr>
-<tr class="memdesc:a2cdaddcb9d16a5e6f0d53b71f63397e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to create an open <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents one endpoint of an interval of keys.">KeyBound</a></code> on the key <code>spanner::Row</code> provided.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a2cdaddcb9d16a5e6f0d53b71f63397e8">More...</a><br /></td></tr>
-<tr class="separator:a2cdaddcb9d16a5e6f0d53b71f63397e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa65e6a686b9299524cd9b8f5d4837b55"><td class="memTemplParams" colspan="2">template&lt;typename RowType &gt; </td></tr>
-<tr class="memitem:aa65e6a686b9299524cd9b8f5d4837b55"><td class="memTemplItemLeft" align="right" valign="top">KeyRange&lt; RowType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aa65e6a686b9299524cd9b8f5d4837b55">google::cloud::spanner::v0::MakeKeyRangeClosed</a> (RowType start, RowType end)</td></tr>
-<tr class="memdesc:aa65e6a686b9299524cd9b8f5d4837b55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to create a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html" title="The KeyRange class is a regular type that represents the pair of KeyBounds necessary to uniquely iden...">KeyRange</a></code> between two keys <code>spanner::Row</code>s with both <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents one endpoint of an interval of keys.">KeyBound</a></code>s closed.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aa65e6a686b9299524cd9b8f5d4837b55">More...</a><br /></td></tr>
-<tr class="separator:aa65e6a686b9299524cd9b8f5d4837b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad8ba59ede29fdb53b93d6ab3fac6e17"><td class="memTemplParams" colspan="2">template&lt;typename RowType &gt; </td></tr>
-<tr class="memitem:aad8ba59ede29fdb53b93d6ab3fac6e17"><td class="memTemplItemLeft" align="right" valign="top">KeyRange&lt; RowType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aad8ba59ede29fdb53b93d6ab3fac6e17">google::cloud::spanner::v0::MakeKeyRange</a> (KeyBound&lt; RowType &gt; start, KeyBound&lt; RowType &gt; end)</td></tr>
-<tr class="memdesc:aad8ba59ede29fdb53b93d6ab3fac6e17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to create a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyRange.html" title="The KeyRange class is a regular type that represents the pair of KeyBounds necessary to uniquely iden...">KeyRange</a></code> between the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents one endpoint of an interval of keys.">KeyBound</a></code>s provided.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aad8ba59ede29fdb53b93d6ab3fac6e17">More...</a><br /></td></tr>
-<tr class="separator:aad8ba59ede29fdb53b93d6ab3fac6e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0e37eff0bde88b72ccb2e60480e8cc1"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
+<tr class="memitem:ab0e37eff0bde88b72ccb2e60480e8cc1"><td class="memTemplItemLeft" align="right" valign="top">Key&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ab0e37eff0bde88b72ccb2e60480e8cc1">google::cloud::spanner::v0::MakeKey</a> (Ts &amp;&amp;... ts)</td></tr>
+<tr class="memdesc:ab0e37eff0bde88b72ccb2e60480e8cc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a <code>Key</code> from the given arguments.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ab0e37eff0bde88b72ccb2e60480e8cc1">More...</a><br /></td></tr>
+<tr class="separator:ab0e37eff0bde88b72ccb2e60480e8cc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a305a6a298067b692cdb195296474bc15"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
+<tr class="memitem:a305a6a298067b692cdb195296474bc15"><td class="memTemplItemLeft" align="right" valign="top">KeyBound&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a305a6a298067b692cdb195296474bc15">google::cloud::spanner::v0::MakeKeyBoundClosed</a> (Ts &amp;&amp;... ts)</td></tr>
+<tr class="memdesc:a305a6a298067b692cdb195296474bc15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a "closed" <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents an open or closed endpoint for a range of keys.">KeyBound</a></code> with a <code>Key</code> constructed from the given arguments.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a305a6a298067b692cdb195296474bc15">More...</a><br /></td></tr>
+<tr class="separator:a305a6a298067b692cdb195296474bc15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85e61ada57767e3226f600348b1fae97"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
+<tr class="memitem:a85e61ada57767e3226f600348b1fae97"><td class="memTemplItemLeft" align="right" valign="top">KeyBound&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a85e61ada57767e3226f600348b1fae97">google::cloud::spanner::v0::MakeKeyBoundOpen</a> (Ts &amp;&amp;... ts)</td></tr>
+<tr class="memdesc:a85e61ada57767e3226f600348b1fae97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an "open" <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents an open or closed endpoint for a range of keys.">KeyBound</a></code> with a <code>Key</code> constructed from the given arguments.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a85e61ada57767e3226f600348b1fae97">More...</a><br /></td></tr>
+<tr class="separator:a85e61ada57767e3226f600348b1fae97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

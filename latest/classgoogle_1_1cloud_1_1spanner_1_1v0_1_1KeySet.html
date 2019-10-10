@@ -76,7 +76,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents the collection of spanner::Rows necessary to uniqu...">KeySet</a></code> class is a regular type that represents the collection of <code>spanner::Row</code>s necessary to uniquely identify a arbitrary group of rows in its index, or all the keys in an index.  
+<p>The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents a collection of Keys.">KeySet</a></code> class is a regular type that represents a collection of <code>Key</code>s.  
  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="keys_8h_source.html">google/cloud/spanner/keys.h</a>&gt;</code></p>
@@ -84,7 +84,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a603ad3a1e5a8da2822f9e4f7615be398"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#a603ad3a1e5a8da2822f9e4f7615be398">KeySet</a> ()=default</td></tr>
-<tr class="memdesc:a603ad3a1e5a8da2822f9e4f7615be398"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an empty <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents the collection of spanner::Rows necessary to uniqu...">KeySet</a></code>.  <a href="#a603ad3a1e5a8da2822f9e4f7615be398">More...</a><br /></td></tr>
+<tr class="memdesc:a603ad3a1e5a8da2822f9e4f7615be398"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an empty <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents a collection of Keys.">KeySet</a></code>.  <a href="#a603ad3a1e5a8da2822f9e4f7615be398">More...</a><br /></td></tr>
 <tr class="separator:a603ad3a1e5a8da2822f9e4f7615be398"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a159a105604637d2c713f0d360c0fd23e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#a159a105604637d2c713f0d360c0fd23e">KeySet</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> const &amp;key_range)=default</td></tr>
 <tr class="separator:a159a105604637d2c713f0d360c0fd23e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -94,28 +94,33 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a08761129d21cc8ad29e8146d951b70ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad26559d74b54e76eead63263a80a548e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#ad26559d74b54e76eead63263a80a548e">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> &amp;&amp;rhs)=default</td></tr>
 <tr class="separator:ad26559d74b54e76eead63263a80a548e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe285d80c754f3fd58b535752b7f6b56"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#abe285d80c754f3fd58b535752b7f6b56">AddKey</a> (<a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a26f3fe00592b6234496f6cc9a5503e98">Key</a> key)</td></tr>
+<tr class="memdesc:abe285d80c754f3fd58b535752b7f6b56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the given <code>key</code> to the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents a collection of Keys.">KeySet</a></code>.  <a href="#abe285d80c754f3fd58b535752b7f6b56">More...</a><br /></td></tr>
+<tr class="separator:abe285d80c754f3fd58b535752b7f6b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f7b3a03d987b376fe652f8e9abe06c9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#a5f7b3a03d987b376fe652f8e9abe06c9">AddRange</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> start, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a> end)</td></tr>
+<tr class="memdesc:a5f7b3a03d987b376fe652f8e9abe06c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a range of keys defined by the given <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents an open or closed endpoint for a range of keys.">KeyBound</a></code>s.  <a href="#a5f7b3a03d987b376fe652f8e9abe06c9">More...</a><br /></td></tr>
+<tr class="separator:a5f7b3a03d987b376fe652f8e9abe06c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:acb0dec7f5540b5b567fc157f04a6d4a7"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#acb0dec7f5540b5b567fc157f04a6d4a7">All</a> ()</td></tr>
-<tr class="memdesc:acb0dec7f5540b5b567fc157f04a6d4a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents the collection of spanner::Rows necessary to uniqu...">KeySet</a></code> that represents the set of "All" keys for the index.  <a href="#acb0dec7f5540b5b567fc157f04a6d4a7">More...</a><br /></td></tr>
+<tr class="memdesc:acb0dec7f5540b5b567fc157f04a6d4a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents a collection of Keys.">KeySet</a></code> that represents the set of "All" keys for the index.  <a href="#acb0dec7f5540b5b567fc157f04a6d4a7">More...</a><br /></td></tr>
 <tr class="separator:acb0dec7f5540b5b567fc157f04a6d4a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Equality</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p>Order of keys and key ranges in the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents the collection of spanner::Rows necessary to uniqu...">KeySet</a></code> is considered. </p>
-</div></td></tr>
-<tr class="memitem:a8d836032ccb3d2cab4ce9064631e786d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#a8d836032ccb3d2cab4ce9064631e786d">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> const &amp;lhs, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> const &amp;rhs)</td></tr>
-<tr class="separator:a8d836032ccb3d2cab4ce9064631e786d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88ce8d058b977cbec44a0b1bf405b352"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#a88ce8d058b977cbec44a0b1bf405b352">operator!=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> const &amp;lhs, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> const &amp;rhs)</td></tr>
-<tr class="separator:a88ce8d058b977cbec44a0b1bf405b352"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab32f611a2805c444dbcd5b020c4201a2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#ab32f611a2805c444dbcd5b020c4201a2">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> const &amp;b)</td></tr>
+<tr class="separator:ab32f611a2805c444dbcd5b020c4201a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ae69fe0f10521a7d3a0cfe4984fd13c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#a3ae69fe0f10521a7d3a0cfe4984fd13c">operator!=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> const &amp;b)</td></tr>
+<tr class="separator:a3ae69fe0f10521a7d3a0cfe4984fd13c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents the collection of spanner::Rows necessary to uniqu...">KeySet</a></code> class is a regular type that represents the collection of <code>spanner::Row</code>s necessary to uniquely identify a arbitrary group of rows in its index, or all the keys in an index. </p>
-<p>Unlike <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySetBuilder.html" title="The KeySetBuilder class is a regular type that represents the collection of spanner::Rows necessary t...">KeySetBuilder</a></code>, <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents the collection of spanner::Rows necessary to uniqu...">KeySet</a></code> stores its keys and key ranges in a type erased fashion. </p>
+<div class="textblock"><p>The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents a collection of Keys.">KeySet</a></code> class is a regular type that represents a collection of <code>Key</code>s. </p>
+<p>Users can construct a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents a collection of Keys.">KeySet</a></code> instance, then add <code>Key</code>s and ranges of <code>Key</code>s to the set. The caller is responsible for ensuring that all keys in a given <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents a collection of Keys.">KeySet</a></code> instance contain the same number and types of values.</p>
+<p>Users may also optionally construct an instance that represents all keys with <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#acb0dec7f5540b5b567fc157f04a6d4a7" title="Returns a KeySet that represents the set of &quot;All&quot; keys for the index.">KeySet::All()</a></code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00216">216</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00145">145</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a603ad3a1e5a8da2822f9e4f7615be398"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a603ad3a1e5a8da2822f9e4f7615be398">&#9670;&nbsp;</a></span>KeySet() <span class="overload">[1/3]</span></h2>
@@ -140,7 +145,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Constructs an empty <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents the collection of spanner::Rows necessary to uniqu...">KeySet</a></code>. </p>
+<p>Constructs an empty <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents a collection of Keys.">KeySet</a></code>. </p>
 
 </div>
 </div>
@@ -197,6 +202,60 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="abe285d80c754f3fd58b535752b7f6b56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe285d80c754f3fd58b535752b7f6b56">&#9670;&nbsp;</a></span>AddKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> &amp; google::cloud::spanner::v0::KeySet::AddKey </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a26f3fe00592b6234496f6cc9a5503e98">Key</a>&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds the given <code>key</code> to the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents a collection of Keys.">KeySet</a></code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="keys_8cc_source.html#l00050">50</a> of file <a class="el" href="keys_8cc_source.html">keys.cc</a>.</p>
+
+</div>
+</div>
+<a id="a5f7b3a03d987b376fe652f8e9abe06c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f7b3a03d987b376fe652f8e9abe06c9">&#9670;&nbsp;</a></span>AddRange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> &amp; google::cloud::spanner::v0::KeySet::AddRange </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html">KeyBound</a>&#160;</td>
+          <td class="paramname"><em>end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds a range of keys defined by the given <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html" title="The KeyBound class is a regular type that represents an open or closed endpoint for a range of keys.">KeyBound</a></code>s. </p>
+
+<p class="definition">Definition at line <a class="el" href="keys_8cc_source.html#l00056">56</a> of file <a class="el" href="keys_8cc_source.html">keys.cc</a>.</p>
+
+</div>
+</div>
 <a id="acb0dec7f5540b5b567fc157f04a6d4a7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acb0dec7f5540b5b567fc157f04a6d4a7">&#9670;&nbsp;</a></span>All()</h2>
 
@@ -220,9 +279,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents the collection of spanner::Rows necessary to uniqu...">KeySet</a></code> that represents the set of "All" keys for the index. </p>
+<p>Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html" title="The KeySet class is a regular type that represents a collection of Keys.">KeySet</a></code> that represents the set of "All" keys for the index. </p>
 
-<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00221">221</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00148">148</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
@@ -279,8 +338,8 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a id="a88ce8d058b977cbec44a0b1bf405b352"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a88ce8d058b977cbec44a0b1bf405b352">&#9670;&nbsp;</a></span>operator!=</h2>
+<a id="a3ae69fe0f10521a7d3a0cfe4984fd13c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ae69fe0f10521a7d3a0cfe4984fd13c">&#9670;&nbsp;</a></span>operator!=</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -292,13 +351,13 @@ Friends</h2></td></tr>
           <td class="memname">bool operator!= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> const &amp;&#160;</td>
-          <td class="paramname"><em>lhs</em>, </td>
+          <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> const &amp;&#160;</td>
-          <td class="paramname"><em>rhs</em>&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -313,12 +372,12 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="keys_8cc_source.html#l00030">30</a> of file <a class="el" href="keys_8cc_source.html">keys.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8h_source.html#l00172">172</a> of file <a class="el" href="keys_8h_source.html">keys.h</a>.</p>
 
 </div>
 </div>
-<a id="a8d836032ccb3d2cab4ce9064631e786d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d836032ccb3d2cab4ce9064631e786d">&#9670;&nbsp;</a></span>operator==</h2>
+<a id="ab32f611a2805c444dbcd5b020c4201a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab32f611a2805c444dbcd5b020c4201a2">&#9670;&nbsp;</a></span>operator==</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -330,13 +389,13 @@ Friends</h2></td></tr>
           <td class="memname">bool operator== </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> const &amp;&#160;</td>
-          <td class="paramname"><em>lhs</em>, </td>
+          <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> const &amp;&#160;</td>
-          <td class="paramname"><em>rhs</em>&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -351,7 +410,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="keys_8cc_source.html#l00025">25</a> of file <a class="el" href="keys_8cc_source.html">keys.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="keys_8cc_source.html#l00070">70</a> of file <a class="el" href="keys_8cc_source.html">keys.cc</a>.</p>
 
 </div>
 </div>
