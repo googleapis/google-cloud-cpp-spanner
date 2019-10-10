@@ -200,7 +200,7 @@ Status ConnectionImpl::Rollback(RollbackParams rp) {
              std::int64_t) { return this->RollbackImpl(session, s); });
 }
 
-class StatusOnlyResultSetSource : public internal::ResultSetSource {
+class StatusOnlyResultSetSource : public internal::ResultSourceInterface {
  public:
   explicit StatusOnlyResultSetSource(google::cloud::Status status)
       : status_(std::move(status)) {}

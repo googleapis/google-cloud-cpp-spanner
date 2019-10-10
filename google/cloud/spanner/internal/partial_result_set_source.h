@@ -37,7 +37,7 @@ namespace internal {
  * reader and the spanner `ResultSet`, which is used to iterate over the rows
  * returned from a read operation.
  */
-class PartialResultSetSource : public internal::ResultSetSource {
+class PartialResultSetSource : public internal::ResultSourceInterface {
  public:
   /// Factory method to create a PartialResultSetSource.
   static StatusOr<std::unique_ptr<PartialResultSetSource>> Create(

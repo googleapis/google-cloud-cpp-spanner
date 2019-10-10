@@ -27,7 +27,7 @@ inline namespace SPANNER_CLIENT_NS {
 namespace {
 
 optional<Timestamp> GetReadTimestamp(
-    std::unique_ptr<internal::ResultSetSource> const& source) {
+    std::unique_ptr<internal::ResultSourceInterface> const& source) {
   auto metadata = source->Metadata();
   if (metadata.has_value() && metadata->has_transaction() &&
       metadata->transaction().has_read_timestamp()) {
@@ -37,17 +37,16 @@ optional<Timestamp> GetReadTimestamp(
 }
 
 std::int64_t GetRowsModified(
-    std::unique_ptr<internal::ResultSetSource> const& source) {
+    std::unique_ptr<internal::ResultSourceInterface> const& source) {
   return source->Stats()->row_count_exact();
 }
 
 optional<std::unordered_map<std::string, std::string>> GetExecutionStats(
-    std::unique_ptr<internal::ResultSetSource> const& source) {
+    std::unique_ptr<internal::ResultSourceInterface> const& source) {
   auto stats = source->Stats();
   if (stats && stats->has_query_stats()) {
     std::unordered_map<std::string, std::string> execution_stats;
-    auto map = stats->query_stats().fields();
-    for (auto const& entry : map) {
+    for (auto const& entry : stats->query_stats().fields()) {
       execution_stats.insert(
           std::make_pair(entry.first, entry.second.string_value()));
     }
@@ -57,7 +56,7 @@ optional<std::unordered_map<std::string, std::string>> GetExecutionStats(
 }
 
 optional<spanner::ExecutionPlan> GetExecutionPlan(
-    std::unique_ptr<internal::ResultSetSource> const& source) {
+    std::unique_ptr<internal::ResultSourceInterface> const& source) {
   auto stats = source->Stats();
   if (stats && stats->has_query_plan()) {
     return source->Stats()->query_plan();

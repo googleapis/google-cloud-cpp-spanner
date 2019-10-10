@@ -59,7 +59,7 @@ class MockConnection : public spanner::Connection {
  *
  * @see @ref spanner-mocking for an example using this class.
  */
-class MockResultSetSource : public spanner::internal::ResultSetSource {
+class MockResultSetSource : public spanner::internal::ResultSourceInterface {
  public:
   MOCK_METHOD0(NextValue, StatusOr<optional<spanner::Value>>());
   MOCK_METHOD0(Metadata, optional<google::spanner::v1::ResultSetMetadata>());

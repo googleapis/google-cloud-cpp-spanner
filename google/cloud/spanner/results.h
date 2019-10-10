@@ -27,12 +27,19 @@ namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
+
+/**
+ * Contains a hierarchical representation of the operations the database server
+ * performs in order to execute a particular SQL statement.
+ * [Query Plan
+ * proto](https://github.com/googleapis/googleapis/blob/master/google/spanner/v1/query_plan.proto)
+ */
 using ExecutionPlan = google::spanner::v1::QueryPlan;
 
 namespace internal {
-class ResultSetSource {
+class ResultSourceInterface {
  public:
-  virtual ~ResultSetSource() = default;
+  virtual ~ResultSourceInterface() = default;
   // Returns OK Status with no Value to indicate end-of-stream.
   virtual StatusOr<optional<Value>> NextValue() = 0;
   virtual optional<google::spanner::v1::ResultSetMetadata> Metadata() = 0;
@@ -49,7 +56,7 @@ class ResultSetSource {
 class QueryResult {
  public:
   QueryResult() = default;
-  explicit QueryResult(std::unique_ptr<internal::ResultSetSource> source)
+  explicit QueryResult(std::unique_ptr<internal::ResultSourceInterface> source)
       : source_(std::move(source)) {}
 
   // This class is movable but not copyable.
@@ -79,7 +86,7 @@ class QueryResult {
   optional<Timestamp> ReadTimestamp() const;
 
  private:
-  std::unique_ptr<internal::ResultSetSource> source_;
+  std::unique_ptr<internal::ResultSourceInterface> source_;
 };
 
 /**
@@ -95,7 +102,7 @@ class QueryResult {
 class DmlResult {
  public:
   DmlResult() = default;
-  explicit DmlResult(std::unique_ptr<internal::ResultSetSource> source)
+  explicit DmlResult(std::unique_ptr<internal::ResultSourceInterface> source)
       : source_(std::move(source)) {}
 
   // This class is movable but not copyable.
@@ -111,13 +118,14 @@ class DmlResult {
   std::int64_t RowsModified() const;
 
  private:
-  std::unique_ptr<internal::ResultSetSource> source_;
+  std::unique_ptr<internal::ResultSourceInterface> source_;
 };
 
 class ProfileQueryResult {
  public:
   ProfileQueryResult() = default;
-  explicit ProfileQueryResult(std::unique_ptr<internal::ResultSetSource> source)
+  explicit ProfileQueryResult(
+      std::unique_ptr<internal::ResultSourceInterface> source)
       : source_(std::move(source)) {}
 
   // This class is movable but not copyable.
@@ -150,7 +158,6 @@ class ProfileQueryResult {
    * Returns a collection of key value pair statistics for the SQL statement
    * execution.
    *
-   * @warning Not yet implemented per issue #930.
    * @note Only available when the statement is executed and all results have
    * been read.
    */
@@ -158,19 +165,18 @@ class ProfileQueryResult {
 
   /**
    * Returns the plan of execution for the SQL statement.
-   *
-   * @warning Not yet implemented per issue #930.
    */
   optional<spanner::ExecutionPlan> ExecutionPlan() const;
 
  private:
-  std::unique_ptr<internal::ResultSetSource> source_;
+  std::unique_ptr<internal::ResultSourceInterface> source_;
 };
 
 class ProfileDmlResult {
  public:
   ProfileDmlResult() = default;
-  explicit ProfileDmlResult(std::unique_ptr<internal::ResultSetSource> source)
+  explicit ProfileDmlResult(
+      std::unique_ptr<internal::ResultSourceInterface> source)
       : source_(std::move(source)) {}
 
   // This class is movable but not copyable.
@@ -189,20 +195,17 @@ class ProfileDmlResult {
    * Returns a collection of key value pair statistics for the SQL statement
    * execution.
    *
-   * @warning Not yet implemented per issue #930.
    * @note Only available when the SQL statement is executed.
    */
   optional<std::unordered_map<std::string, std::string>> ExecutionStats() const;
 
   /**
    * Returns the plan of execution for the SQL statement.
-   *
-   * @warning Not yet implemented per issue #930.
    */
   optional<spanner::ExecutionPlan> ExecutionPlan() const;
 
  private:
-  std::unique_ptr<internal::ResultSetSource> source_;
+  std::unique_ptr<internal::ResultSourceInterface> source_;
 };
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
