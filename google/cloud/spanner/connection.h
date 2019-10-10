@@ -90,16 +90,28 @@ class Connection {
     PartitionOptions partition_options;
   };
 
-  /// Wrap the arguments to `ExecuteSql()`.
+  /// Wrap the arguments to `ExecuteQuery()`, `ExecuteDml()`, `ProfileQuery()`,
+  /// or `ProfileDml()`.
   struct ExecuteSqlParams {
+    enum class QueryMode { kNormal = 0, kPlan = 1, kProfile = 2 };
     Transaction transaction;
     SqlStatement statement;
+    QueryMode query_mode;
     google::cloud::optional<std::string> partition_token;
 
     ExecuteSqlParams(Transaction transaction, SqlStatement statement,
                      google::cloud::optional<std::string> partition_token = {})
         : transaction(std::move(transaction)),
           statement(std::move(statement)),
+          query_mode(QueryMode::kNormal),
+          partition_token(std::move(partition_token)) {}
+
+    ExecuteSqlParams(Transaction transaction, SqlStatement statement,
+                     QueryMode query_mode,
+                     google::cloud::optional<std::string> partition_token = {})
+        : transaction(std::move(transaction)),
+          statement(std::move(statement)),
+          query_mode(std::move(query_mode)),
           partition_token(std::move(partition_token)) {}
   };
 
@@ -144,6 +156,12 @@ class Connection {
 
   /// Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC
   virtual StatusOr<DmlResult> ExecuteDml(ExecuteSqlParams) = 0;
+
+  /// Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC
+  virtual ProfileQueryResult ProfileQuery(ExecuteSqlParams) = 0;
+
+  /// Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC
+  virtual StatusOr<ProfileDmlResult> ProfileDml(ExecuteSqlParams) = 0;
 
   /// Define the interface for a google.spanner.v1.Spanner.ExecutePartitionedDml
   /// RPC
