@@ -53,12 +53,16 @@ fi
 # branch as an enviroment variable, like other CI systems do). We use the
 # following trick:
 # - Find out the current commit using git rev-parse HEAD.
-# - Find out what branches contain that commit.
 # - Exclude "HEAD detached" branches (they are not really branches).
-# - Typically this is the single branch that was checked out by Kokoro.
-BRANCH="$(git branch --no-color --contains "$(git rev-parse HEAD)" | \
-    grep -v 'HEAD detached' || exit 0)"
-BRANCH="${BRANCH/  /}"
+# - Choose the branch from the bottom of the list.
+# - Typically this is the branch that was checked out by Kokoro.
+BRANCH="$(git branch --all --no-color --contains "$(git rev-parse HEAD)" | \
+  grep -v 'HEAD' | tail -1 || exit 0)"
+# Enable extglob if not enabled
+shopt -q extglob || shopt -s extglob
+BRANCH="${BRANCH##*( )}"
+BRANCH="${BRANCH%%*( )}"
+BRANCH="${BRANCH##remotes/origin/}"
 readonly BRANCH
 
 echo "================================================================"
