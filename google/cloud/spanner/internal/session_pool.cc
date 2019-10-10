@@ -46,7 +46,7 @@ SessionPool::SessionPool(SessionManager* manager, SessionPoolOptions options)
   auto sessions = manager_->CreateSessions(options_.min_sessions);
   if (sessions.ok()) {
     std::unique_lock<std::mutex> lk(mu_);
-    total_sessions_ += sessions->size();
+    total_sessions_ += static_cast<int>(sessions->size());
     sessions_.insert(sessions_.end(),
                      std::make_move_iterator(sessions->begin()),
                      std::make_move_iterator(sessions->end()));
@@ -113,7 +113,7 @@ StatusOr<std::unique_ptr<Session>> SessionPool::Allocate(
       continue;
     }
 
-    total_sessions_ += sessions->size();
+    total_sessions_ += static_cast<int>(sessions->size());
     // Return one of the sessions and add the rest to the pool.
     auto session = std::move(sessions->back());
     sessions->pop_back();
