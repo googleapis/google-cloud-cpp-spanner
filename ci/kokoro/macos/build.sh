@@ -58,7 +58,7 @@ if [[ "${BUILD_NAME}" = "bazel" ]]; then
   driver_script="ci/kokoro/macos/build-bazel.sh"
 elif [[ "${BUILD_NAME}" = "cmake-super" ]]; then
   driver_script="ci/kokoro/macos/build-cmake.sh"
-  script_flags+=("ci/super" "cmake-out/macos")
+  script_flags+=("super" "cmake-out/macos")
 else
   echo "Unknown BUILD_NAME (${BUILD_NAME})."
   exit 1
