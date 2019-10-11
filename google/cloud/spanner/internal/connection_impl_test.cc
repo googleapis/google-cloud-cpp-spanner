@@ -543,8 +543,8 @@ TEST(ConnectionImplTest, ExecuteDmlDelete_PermanentFailure) {
       &response));
 
   EXPECT_CALL(*mock, ExecuteSql(_, _))
-      .WillOnce(Return(
-          Status(StatusCode::kPermissionDenied, "uh-oh in ExecuteDml")));
+      .WillOnce(
+          Return(Status(StatusCode::kPermissionDenied, "uh-oh in ExecuteDml")));
 
   Transaction txn = MakeReadWriteTransaction(Transaction::ReadWriteOptions());
   auto result = conn->ExecuteDml({txn, SqlStatement("delete * from table")});
@@ -571,15 +571,14 @@ TEST(ConnectionImplTest, ExecuteDmlDelete_TooManyTransientFailures) {
 
   EXPECT_CALL(*mock, ExecuteSql(_, _))
       .Times(AtLeast(2))
-      .WillRepeatedly(Return(
-          Status(StatusCode::kUnavailable, "try-again in ExecuteDml")));
+      .WillRepeatedly(
+          Return(Status(StatusCode::kUnavailable, "try-again in ExecuteDml")));
 
   Transaction txn = MakeReadWriteTransaction(Transaction::ReadWriteOptions());
   auto result = conn->ExecuteDml({txn, SqlStatement("delete * from table")});
 
   EXPECT_EQ(StatusCode::kUnavailable, result.status().code());
-  EXPECT_THAT(result.status().message(),
-              HasSubstr("try-again in ExecuteDml"));
+  EXPECT_THAT(result.status().message(), HasSubstr("try-again in ExecuteDml"));
 }
 
 TEST(ConnectionImplTest, ExecuteBatchDmlSuccess) {
