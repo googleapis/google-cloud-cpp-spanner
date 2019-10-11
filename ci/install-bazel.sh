@@ -18,7 +18,7 @@ set -eu
 readonly PLATFORM=$(printf "%s-%s" "$(uname -s)" "$(uname -m)" \
   |  tr '[:upper:]' '[:lower:]')
 
-readonly BAZEL_VERSION="1.0.0"
+readonly BAZEL_VERSION="0.28.0"
 readonly GITHUB_DL="https://github.com/bazelbuild/bazel/releases/download"
 readonly SCRIPT_NAME="bazel-${BAZEL_VERSION}-installer-${PLATFORM}.sh"
 wget -q "${GITHUB_DL}/${BAZEL_VERSION}/${SCRIPT_NAME}"
