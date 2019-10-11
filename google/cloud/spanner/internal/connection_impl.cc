@@ -220,8 +220,6 @@ class StatusOnlyResultSetSource : public internal::ResultSourceInterface {
 
 class DmlResultSetSource : public internal::ResultSourceInterface {
  public:
-  explicit DmlResultSetSource(google::cloud::Status status)
-      : status_(std::move(status)) {}
   explicit DmlResultSetSource(spanner_proto::ResultSet result_set)
       : result_set_(std::move(result_set)) {}
   ~DmlResultSetSource() override = default;
@@ -234,6 +232,7 @@ class DmlResultSetSource : public internal::ResultSourceInterface {
     }
     return {};
   }
+
   optional<google::spanner::v1::ResultSetStats> Stats() const override {
     if (result_set_.has_stats()) {
       return result_set_.stats();
@@ -242,7 +241,6 @@ class DmlResultSetSource : public internal::ResultSourceInterface {
   }
 
  private:
-  google::cloud::Status status_;
   spanner_proto::ResultSet result_set_;
 };
 
