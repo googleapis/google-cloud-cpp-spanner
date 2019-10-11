@@ -47,7 +47,7 @@ directory), and compile the project against these libraries. The installation
 needs to be done every time the version of the dependencies is changed, and it
 is not done automatically. But once installed you can use them for any build.
 
-Configure the super-build to install in `$HOME/local-spanner`, we recommend that
+Configure the super-build to install in `$HOME/local-spanner`. We recommend that
 you use Ninja for this build because it is substantially faster than Make in
 this case. Note that if Ninja is not installed in your workstation you may need
 to remove the `-GNinja` flag:
