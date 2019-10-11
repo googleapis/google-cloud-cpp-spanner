@@ -152,7 +152,6 @@ elif [[ "${BUILD_NAME}" = "clang-3.8" ]]; then
   export DISTRO_VERSION=16.04
   export CC=clang
   export CXX=clang++
-  in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "cxx17" ]]; then
   export GOOGLE_CLOUD_CPP_CXX_STANDARD=17
   export DISTRO=fedora-install
