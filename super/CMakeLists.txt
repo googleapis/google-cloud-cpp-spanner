@@ -20,7 +20,7 @@ project(google-cloud-cpp-spanner-super-build CXX C)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(GOOGLE_CLOUD_CPP_SPANNER_ROOT "${PROJECT_SOURCE_DIR}/../..")
+set(GOOGLE_CLOUD_CPP_SPANNER_ROOT "${PROJECT_SOURCE_DIR}/..")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
 
 include(external/google-cloud-cpp-common)
@@ -55,14 +55,12 @@ ExternalProject_Add(
                  --output-on-failure
                  -LE
                  integration-tests
-                 # TODO(#23) - Use this when install is implemented.
-    INSTALL_COMMAND ""
     LOG_DOWNLOAD OFF
     LOG_CONFIGURE OFF
     LOG_BUILD OFF
     LOG_INSTALL OFF)
 
 # This makes it easy to compile the dependencies before the code.
-add_custom_target(google-cloud-cpp-spanner-dependencies)
-add_dependencies(google-cloud-cpp-spanner-dependencies
-                 google-cloud-cpp-common-project googletest-project)
+add_custom_target(project-dependencies)
+add_dependencies(project-dependencies google-cloud-cpp-common-project
+                 googletest-project)

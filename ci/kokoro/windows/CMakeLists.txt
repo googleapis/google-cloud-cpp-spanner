@@ -22,7 +22,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(GOOGLE_CLOUD_CPP_SPANNER_ROOT "${PROJECT_SOURCE_DIR}/../../..")
 list(APPEND CMAKE_MODULE_PATH "${GOOGLE_CLOUD_CPP_SPANNER_ROOT}/cmake"
-            "${GOOGLE_CLOUD_CPP_SPANNER_ROOT}/ci/super")
+            "${GOOGLE_CLOUD_CPP_SPANNER_ROOT}/super")
 
 include(external/external-project-helpers)
 google_cloud_cpp_set_prefix_vars()
