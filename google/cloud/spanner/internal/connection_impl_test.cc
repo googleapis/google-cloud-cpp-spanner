@@ -526,6 +526,62 @@ TEST(ConnectionImplTest, ExecuteDmlDeleteSuccess) {
   EXPECT_EQ(result->RowsModified(), 42);
 }
 
+TEST(ConnectionImplTest, ExecuteDmlDelete_PermanentFailure) {
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
+  auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
+  auto conn = MakeConnection(db, mock);
+
+  EXPECT_CALL(*mock, BatchCreateSessions(_, _))
+      .WillOnce(Return(MakeSessionsResponse({"session-name"})));
+
+  spanner_proto::ResultSet response;
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        metadata: { transaction: { id: "1234567890" } }
+        stats: { row_count_exact: 42 }
+      )pb",
+      &response));
+
+  EXPECT_CALL(*mock, ExecuteSql(_, _))
+      .WillOnce(Return(
+          Status(StatusCode::kPermissionDenied, "uh-oh in ExecuteDml")));
+
+  Transaction txn = MakeReadWriteTransaction(Transaction::ReadWriteOptions());
+  auto result = conn->ExecuteDml({txn, SqlStatement("delete * from table")});
+
+  EXPECT_EQ(StatusCode::kPermissionDenied, result.status().code());
+  EXPECT_THAT(result.status().message(), HasSubstr("uh-oh in ExecuteDml"));
+}
+
+TEST(ConnectionImplTest, ExecuteDmlDelete_TooManyTransientFailures) {
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
+  auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
+  auto conn = MakeTestConnection(db, mock);
+
+  EXPECT_CALL(*mock, BatchCreateSessions(_, _))
+      .WillOnce(Return(MakeSessionsResponse({"session-name"})));
+
+  spanner_proto::ResultSet response;
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        metadata: { transaction: { id: "1234567890" } }
+        stats: { row_count_exact: 42 }
+      )pb",
+      &response));
+
+  EXPECT_CALL(*mock, ExecuteSql(_, _))
+      .Times(AtLeast(2))
+      .WillRepeatedly(Return(
+          Status(StatusCode::kUnavailable, "try-again in ExecuteDml")));
+
+  Transaction txn = MakeReadWriteTransaction(Transaction::ReadWriteOptions());
+  auto result = conn->ExecuteDml({txn, SqlStatement("delete * from table")});
+
+  EXPECT_EQ(StatusCode::kUnavailable, result.status().code());
+  EXPECT_THAT(result.status().message(),
+              HasSubstr("try-again in ExecuteDml"));
+}
+
 TEST(ConnectionImplTest, ExecuteBatchDmlSuccess) {
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
