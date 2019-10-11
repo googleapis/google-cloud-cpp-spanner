@@ -218,6 +218,37 @@ class StatusOnlyResultSetSource : public internal::ResultSourceInterface {
   google::cloud::Status status_;
 };
 
+class DmlResultSetSource : public internal::ResultSourceInterface {
+ public:
+  explicit DmlResultSetSource(google::cloud::Status status)
+      : status_(std::move(status)) {}
+  explicit DmlResultSetSource(spanner_proto::ResultSet result_set)
+      : result_set_(std::move(result_set)) {}
+  ~DmlResultSetSource() override = default;
+
+  StatusOr<optional<Value>> NextValue() override {
+    return {};
+  }
+
+  optional<google::spanner::v1::ResultSetMetadata> Metadata() override {
+    if (result_set_.has_metadata()) {
+      return result_set_.metadata();
+    }
+    return {};
+  }
+  optional<google::spanner::v1::ResultSetStats> Stats() const override {
+    if (result_set_.has_stats()) {
+      return result_set_.stats();
+    }
+    return {};
+  }
+
+ private:
+  google::cloud::Status status_;
+  spanner_proto::ResultSet result_set_;
+};
+
+
 QueryResult ConnectionImpl::ReadImpl(SessionHolder& session,
                                      spanner_proto::TransactionSelector& s,
                                      ReadParams rp) {
@@ -412,6 +443,10 @@ StatusOr<DmlResult> ConnectionImpl::ExecuteDmlImpl(
     request.set_partition_token(*std::move(esp.partition_token));
   }
 
+  //
+  //
+  //
+#if 0
   auto const& stub = stub_;
   // Capture a copy of `stub` to ensure the `shared_ptr<>` remains valid through
   // the lifetime of the lambda. Note that the local variable `stub` is a
@@ -427,12 +462,38 @@ StatusOr<DmlResult> ConnectionImpl::ExecuteDmlImpl(
       std::move(factory), Idempotency::kIdempotent, retry_policy_->clone(),
       backoff_policy_->clone());
   auto reader = PartialResultSetSource::Create(std::move(rpc));
+#endif
+  //
+  //
+  //
 
-  if (!reader.ok()) {
-    return std::move(reader).status();
+  StatusOr<spanner_proto::ResultSet> response = internal::RetryLoop(
+      retry_policy_->clone(), backoff_policy_->clone(), true,
+      [this](grpc::ClientContext& context,
+             spanner_proto::ExecuteSqlRequest const& request) {
+        return stub_->ExecuteSql(context, request);
+      },
+      request, __func__);
+  if (!response) {
+    return std::move(response).status();
   }
+
+  auto reader = google::cloud::internal::make_unique<DmlResultSetSource>(std::move(*response));
+
+#if 0
+  if (response->result_sets_size() > 0 && s.has_begin()) {
+    s.set_id(response->result_sets(0).metadata().transaction().id());
+  }
+
+  BatchDmlResult result;
+  result.status = grpc_utils::MakeStatusFromRpcError(response->status());
+  for (auto const& result_set : response->result_sets()) {
+    result.stats.push_back({result_set.stats().row_count_exact()});
+  }
+#endif
+
   if (s.has_begin()) {
-    auto metadata = (*reader)->Metadata();
+    auto metadata = (reader)->Metadata();
     if (!metadata || metadata->transaction().id().empty()) {
       return DmlResult(
           google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
@@ -442,7 +503,7 @@ StatusOr<DmlResult> ConnectionImpl::ExecuteDmlImpl(
     }
     s.set_id(metadata->transaction().id());
   }
-  return DmlResult(std::move(*reader));
+  return DmlResult(std::move(reader));
 }
 
 StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQueryImpl(
