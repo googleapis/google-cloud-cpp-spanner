@@ -113,7 +113,7 @@ the Cloud C++ internal testing dashboard and specify the branch name
 (e.g. `v0.2.x`) in the `Committish` field. This job will generate and upload
 the doxygen documentation to the staging bucket for googleapis.dev hosting. The
 uploaded documentation will generally be live in an hour at the following URLs:
-`https://googleapis.dev/cpp/google-cloud-spanner/latest/`.
+* https://googleapis.dev/cpp/google-cloud-spanner/latest/
 
 ## Bump the version numbers in `master`
 
