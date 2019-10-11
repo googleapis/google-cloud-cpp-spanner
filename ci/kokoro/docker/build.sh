@@ -141,6 +141,8 @@ elif [[ "${BUILD_NAME}" = "gcc-4.8" ]]; then
   # (and its commercial cousin: RHEL 7).
   export DISTRO=centos
   export DISTRO_VERSION=7
+  export CMAKE_SOURCE_DIR="super"
+  in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "clang-3.8" ]]; then
   # The oldest version of Clang we actively test is 3.8. There is nothing
   # particularly interesting about that version. It is simply the version
@@ -150,6 +152,7 @@ elif [[ "${BUILD_NAME}" = "clang-3.8" ]]; then
   export DISTRO_VERSION=16.04
   export CC=clang
   export CXX=clang++
+  in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "cxx17" ]]; then
   export GOOGLE_CLOUD_CPP_CXX_STANDARD=17
   export DISTRO=fedora-install
