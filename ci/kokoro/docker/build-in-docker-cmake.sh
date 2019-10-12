@@ -44,7 +44,18 @@ echo "================================================================"
 echo "Compiling on $(date)"
 echo "================================================================"
 cd "${PROJECT_ROOT}"
-cmake_flags=()
+cmake_flags=(
+    # Configure the build type (Debug, Release, etc)
+    "-DCMAKE_BUILD_TYPE=${BUILD_TYPE}"
+
+    # Always disable ccache in the CI builds because they can flake if the
+    # ccache.conf file is not created properly
+    "-DGOOGLE_CLOUD_CPP_ENABLE_CCACHE=OFF"
+
+    # To test installs without root privileges we cannot install in the default
+    # directory (typically /usr/local)
+    "-DCMAKE_INSTALL_PREFIX=$HOME/staging"
+)
 if [[ "${CLANG_TIDY:-}" = "yes" ]]; then
   cmake_flags+=("-DGOOGLE_CLOUD_CPP_CLANG_TIDY=yes")
 fi
@@ -56,11 +67,7 @@ fi
 # We disable the shellcheck warning because we want ${CMAKE_FLAGS} to expand as
 # separate arguments.
 # shellcheck disable=SC2086
-cmake "-DCMAKE_INSTALL_PREFIX=$HOME/staging" \
-      -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-      "-DGOOGLE_CLOUD_CPP_ENABLE_CCACHE=OFF" \
-      ${CMAKE_FLAGS:-} \
-      "-H${SOURCE_DIR}" "-B${BINARY_DIR}" "${cmake_flags[@]}"
+cmake ${CMAKE_FLAGS:-} "-H${SOURCE_DIR}" "-B${BINARY_DIR}" "${cmake_flags[@]}"
 cmake --build "${BINARY_DIR}" -- -j "$(nproc)"
 
 TEST_JOB_COUNT="$(nproc)"
