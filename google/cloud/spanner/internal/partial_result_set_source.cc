@@ -34,7 +34,7 @@ PartialResultSetSource::Create(std::unique_ptr<PartialResultSetReader> reader) {
   }
 
   // The first response must contain metadata.
-  if (!source->last_result_.has_metadata()) {
+  if (!source->metadata_) {
     return Status(StatusCode::kInternal, "response contained no metadata");
   }
 
@@ -63,14 +63,15 @@ StatusOr<optional<Value>> PartialResultSetSource::NextValue() {
     // continue reading until we do get at least one value.
   }
 
-  if (last_result_.metadata().row_type().fields().empty()) {
+  if (metadata_->row_type().fields().empty()) {
     return Status(StatusCode::kInternal,
                   "response metadata is missing row type information");
   }
 
   // The metadata tells us the sequence of types for the field Values;
   // when we reach the end of the sequence start over at the beginning.
-  auto const& fields = last_result_.metadata().row_type().fields();
+  /* auto const& fields = last_result_.metadata().row_type().fields(); */
+  auto const& fields = metadata_->row_type().fields();
   if (next_value_type_index_ >= fields.size()) {
     next_value_type_index_ = 0;
   }
@@ -105,19 +106,19 @@ Status PartialResultSetSource::ReadFromStream() {
   }
 
   if (result_set->has_metadata()) {
-    if (!last_result_.has_metadata()) {
-      last_result_.mutable_metadata()->Swap(result_set->mutable_metadata());
+    if (!metadata_) {
+      metadata_ = *result_set->release_metadata();
     } else {
       GCP_LOG(WARNING) << "Unexpectedly received two sets of metadata";
     }
   }
 
   if (result_set->has_stats()) {
-    // We should only get stats once; if not, use the last one.
-    if (last_result_.has_stats()) {
+    // If we got stats more than once, log it, but use the last one.
+    if (stats_) {
       GCP_LOG(WARNING) << "Unexpectedly received two sets of stats";
     }
-    last_result_.mutable_stats()->Swap(result_set->mutable_stats());
+    stats_ = *result_set->release_stats();
   }
 
   last_result_.mutable_resume_token()->swap(

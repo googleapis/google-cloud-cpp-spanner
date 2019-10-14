@@ -46,17 +46,11 @@ class PartialResultSetSource : public internal::ResultSourceInterface {
 
   StatusOr<optional<Value>> NextValue() override;
   optional<google::spanner::v1::ResultSetMetadata> Metadata() override {
-    if (last_result_.has_metadata()) {
-      return last_result_.metadata();
-    }
-    return {};
+    return metadata_;
   }
 
   optional<google::spanner::v1::ResultSetStats> Stats() const override {
-    if (last_result_.has_stats()) {
-      return last_result_.stats();
-    }
-    return {};
+    return stats_;
   }
 
  private:
@@ -65,6 +59,9 @@ class PartialResultSetSource : public internal::ResultSourceInterface {
       : reader_(std::move(reader)) {}
 
   Status ReadFromStream();
+
+  optional<google::spanner::v1::ResultSetMetadata> metadata_;
+  optional<google::spanner::v1::ResultSetStats> stats_;
 
   std::unique_ptr<PartialResultSetReader> reader_;
   google::spanner::v1::PartialResultSet last_result_;
