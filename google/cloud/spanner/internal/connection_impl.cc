@@ -238,6 +238,12 @@ class StatusOnlyResultSetSource : public internal::ResultSourceInterface {
 
 class DmlResultSetSource : public internal::ResultSourceInterface {
  public:
+  static StatusOr<std::unique_ptr<ResultSourceInterface>> Create(
+      spanner_proto::ResultSet result_set) {
+    return std::unique_ptr<ResultSourceInterface>(
+        new DmlResultSetSource(std::move(result_set)));
+  }
+
   explicit DmlResultSetSource(spanner_proto::ResultSet result_set)
       : result_set_(std::move(result_set)) {}
   ~DmlResultSetSource() override = default;
@@ -372,70 +378,15 @@ StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionReadImpl(
   return read_partitions;
 }
 
-QueryResult ConnectionImpl::ExecuteQueryImpl(
-    SessionHolder& session, spanner_proto::TransactionSelector& s,
-    std::int64_t seqno, ExecuteSqlParams esp) {
-  if (!session) {
-    auto session_or = AllocateSession();
-    if (!session_or) {
-      return QueryResult(
-          google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
-              std::move(session_or).status()));
-    }
-    session = std::move(*session_or);
-  }
-
-  spanner_proto::ExecuteSqlRequest request;
-  request.set_session(session->session_name());
-  *request.mutable_transaction() = s;
-  auto sql_statement = internal::ToProto(std::move(esp.statement));
-  request.set_sql(std::move(*sql_statement.mutable_sql()));
-  *request.mutable_params() = std::move(*sql_statement.mutable_params());
-  *request.mutable_param_types() =
-      std::move(*sql_statement.mutable_param_types());
-  request.set_seqno(seqno);
-  if (esp.partition_token) {
-    request.set_partition_token(*std::move(esp.partition_token));
-  }
-  request.set_query_mode(spanner_proto::ExecuteSqlRequest::NORMAL);
-
-  auto const& stub = stub_;
-  // Capture a copy of `stub` to ensure the `shared_ptr<>` remains valid through
-  // the lifetime of the lambda. Note that the local variable `stub` is a
-  // reference to avoid increasing refcounts twice, but the capture is by value.
-  auto factory = [stub, request](std::string const& resume_token) mutable {
-    request.set_resume_token(resume_token);
-    auto context = google::cloud::internal::make_unique<grpc::ClientContext>();
-    return google::cloud::internal::make_unique<DefaultPartialResultSetReader>(
-        std::move(context), stub->ExecuteStreamingSql(*context, request));
-  };
-  auto rpc = google::cloud::internal::make_unique<PartialResultSetResume>(
-      std::move(factory), Idempotency::kIdempotent, retry_policy_->clone(),
-      backoff_policy_->clone());
-  auto reader = PartialResultSetSource::Create(std::move(rpc));
-
-  if (!reader.ok()) {
-    return QueryResult(
-        google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
-            std::move(reader).status()));
-  }
-  if (s.has_begin()) {
-    auto metadata = (*reader)->Metadata();
-    if (!metadata || metadata->transaction().id().empty()) {
-      return QueryResult(
-          google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
-              Status(StatusCode::kInternal,
-                     "Begin transaction requested but no transaction returned "
-                     "(in ExecuteQuery).")));
-    }
-    s.set_id(metadata->transaction().id());
-  }
-  return QueryResult(std::move(*reader));
-}
-
-StatusOr<DmlResult> ConnectionImpl::ExecuteDmlImpl(
-    SessionHolder& session, spanner_proto::TransactionSelector& s,
-    std::int64_t seqno, ExecuteSqlParams esp) {
+template <typename T>
+StatusOr<T> ConnectionImpl::ExecuteSqlImpl(
+    SessionHolder& session, google::spanner::v1::TransactionSelector& s,
+    std::int64_t seqno, ExecuteSqlParams esp,
+    google::spanner::v1::ExecuteSqlRequest::QueryMode query_mode,
+    std::function<StatusOr<std::unique_ptr<ResultSourceInterface>>(
+        google::spanner::v1 ::ExecuteSqlRequest& request)> const&
+        retry_resume_fn,
+    std::string const& begin_transaction_error_message) {
   if (!session) {
     auto session_or = AllocateSession();
     if (!session_or) {
@@ -456,158 +407,160 @@ StatusOr<DmlResult> ConnectionImpl::ExecuteDmlImpl(
   if (esp.partition_token) {
     request.set_partition_token(*std::move(esp.partition_token));
   }
-  request.set_query_mode(spanner_proto::ExecuteSqlRequest::NORMAL);
+  request.set_query_mode(query_mode);
 
-  StatusOr<spanner_proto::ResultSet> response = internal::RetryLoop(
-      retry_policy_->clone(), backoff_policy_->clone(), true,
-      [this](grpc::ClientContext& context,
-             spanner_proto::ExecuteSqlRequest const& request) {
-        return stub_->ExecuteSql(context, request);
-      },
-      request, __func__);
-  if (!response) {
-    return std::move(response).status();
-  }
-
-  auto reader = google::cloud::internal::make_unique<DmlResultSetSource>(
-      std::move(*response));
-  if (s.has_begin()) {
-    auto metadata = (reader)->Metadata();
-    if (!metadata || metadata->transaction().id().empty()) {
-      return DmlResult(
-          google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
-              Status(StatusCode::kInternal,
-                     "Begin transaction requested but no transaction returned "
-                     "(in ExecuteDml).")));
-    }
-    s.set_id(metadata->transaction().id());
-  }
-  return DmlResult(std::move(reader));
-}
-
-ProfileQueryResult ConnectionImpl::ProfileQueryImpl(
-    SessionHolder& session, google::spanner::v1::TransactionSelector& s,
-    std::int64_t seqno, ExecuteSqlParams esp) {
-  if (!session) {
-    auto session_or = AllocateSession();
-    if (!session_or) {
-      return ProfileQueryResult(
-          google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
-              std::move(session_or).status()));
-    }
-    session = std::move(*session_or);
-  }
-
-  spanner_proto::ExecuteSqlRequest request;
-  request.set_session(session->session_name());
-  *request.mutable_transaction() = s;
-  auto sql_statement = internal::ToProto(std::move(esp.statement));
-  request.set_sql(std::move(*sql_statement.mutable_sql()));
-  *request.mutable_params() = std::move(*sql_statement.mutable_params());
-  *request.mutable_param_types() =
-      std::move(*sql_statement.mutable_param_types());
-  request.set_seqno(seqno);
-  if (esp.partition_token) {
-    request.set_partition_token(*std::move(esp.partition_token));
-  }
-  request.set_query_mode(
-      (esp.query_mode == Connection::ExecuteSqlParams::QueryMode::kPlan)
-          ? spanner_proto::ExecuteSqlRequest::PLAN
-          : spanner_proto::ExecuteSqlRequest::PROFILE);
-
-  auto const& stub = stub_;
-  // Capture a copy of `stub` to ensure the `shared_ptr<>` remains valid through
-  // the lifetime of the lambda. Note that the local variable `stub` is a
-  // reference to avoid increasing refcounts twice, but the capture is by value.
-  auto factory = [stub, request](std::string const& resume_token) mutable {
-    request.set_resume_token(resume_token);
-    auto context = google::cloud::internal::make_unique<grpc::ClientContext>();
-    return google::cloud::internal::make_unique<DefaultPartialResultSetReader>(
-        std::move(context), stub->ExecuteStreamingSql(*context, request));
-  };
-  auto rpc = google::cloud::internal::make_unique<PartialResultSetResume>(
-      std::move(factory), Idempotency::kIdempotent, retry_policy_->clone(),
-      backoff_policy_->clone());
-  auto reader = PartialResultSetSource::Create(std::move(rpc));
-
-  if (!reader.ok()) {
-    return ProfileQueryResult(
-        google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
-            std::move(reader).status()));
-  }
-  if (s.has_begin()) {
-    auto metadata = (*reader)->Metadata();
-    if (!metadata || metadata->transaction().id().empty()) {
-      return ProfileQueryResult(
-          google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
-              Status(StatusCode::kInternal,
-                     "Begin transaction requested but no transaction returned "
-                     "(in ExecuteQuery).")));
-    }
-    s.set_id(metadata->transaction().id());
-  }
-  return ProfileQueryResult(std::move(*reader));
-}
-
-StatusOr<ProfileDmlResult> ConnectionImpl::ProfileDmlImpl(
-    SessionHolder& session, google::spanner::v1::TransactionSelector& s,
-    std::int64_t seqno, ExecuteSqlParams esp) {
-  if (!session) {
-    auto session_or = AllocateSession();
-    if (!session_or) {
-      return std::move(session_or).status();
-    }
-    session = std::move(*session_or);
-  }
-
-  spanner_proto::ExecuteSqlRequest request;
-  request.set_session(session->session_name());
-  *request.mutable_transaction() = s;
-  auto sql_statement = internal::ToProto(std::move(esp.statement));
-  request.set_sql(std::move(*sql_statement.mutable_sql()));
-  *request.mutable_params() = std::move(*sql_statement.mutable_params());
-  *request.mutable_param_types() =
-      std::move(*sql_statement.mutable_param_types());
-  request.set_seqno(seqno);
-  if (esp.partition_token) {
-    request.set_partition_token(*std::move(esp.partition_token));
-  }
-  request.set_query_mode(
-      (esp.query_mode == Connection::ExecuteSqlParams::QueryMode::kPlan)
-          ? spanner_proto::ExecuteSqlRequest::PLAN
-          : spanner_proto::ExecuteSqlRequest::PROFILE);
-
-  auto const& stub = stub_;
-  // Capture a copy of `stub` to ensure the `shared_ptr<>` remains valid through
-  // the lifetime of the lambda. Note that the local variable `stub` is a
-  // reference to avoid increasing refcounts twice, but the capture is by value.
-  auto factory = [stub, request](std::string const& resume_token) mutable {
-    request.set_resume_token(resume_token);
-    auto context = google::cloud::internal::make_unique<grpc::ClientContext>();
-    return google::cloud::internal::make_unique<DefaultPartialResultSetReader>(
-        std::move(context), stub->ExecuteStreamingSql(*context, request));
-  };
-
-  auto rpc = google::cloud::internal::make_unique<PartialResultSetResume>(
-      std::move(factory), Idempotency::kIdempotent, retry_policy_->clone(),
-      backoff_policy_->clone());
-  auto reader = PartialResultSetSource::Create(std::move(rpc));
-
+  auto reader = retry_resume_fn(request);
   if (!reader.ok()) {
     return std::move(reader).status();
   }
   if (s.has_begin()) {
     auto metadata = (*reader)->Metadata();
     if (!metadata || metadata->transaction().id().empty()) {
-      return ProfileDmlResult(
-          google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
-              Status(StatusCode::kInternal,
-                     "Begin transaction requested but no transaction returned "
-                     "(in ExecuteDml).")));
+      return T(google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
+          Status(StatusCode::kInternal, begin_transaction_error_message)));
     }
     s.set_id(metadata->transaction().id());
   }
-  return ProfileDmlResult(std::move(*reader));
+  return T(std::move(*reader));
+}
+
+QueryResult ConnectionImpl::ExecuteQueryImpl(
+    SessionHolder& session, spanner_proto::TransactionSelector& s,
+    std::int64_t seqno, ExecuteSqlParams esp) {
+  auto const& stub = stub_;
+  auto retry_resume_fn =
+      [stub, this](spanner_proto::ExecuteSqlRequest& request) mutable
+      -> StatusOr<std::unique_ptr<ResultSourceInterface>> {
+    // Capture a copy of `stub` to ensure the `shared_ptr<>` remains valid
+    // through the lifetime of the lambda. Note that the local variable `stub`
+    // is a reference to avoid increasing refcounts twice, but the capture is by
+    // value.
+    auto factory = [stub, request](std::string const& resume_token) mutable {
+      request.set_resume_token(resume_token);
+      auto context =
+          google::cloud::internal::make_unique<grpc::ClientContext>();
+      return google::cloud::internal::make_unique<
+          DefaultPartialResultSetReader>(
+          std::move(context), stub->ExecuteStreamingSql(*context, request));
+    };
+    auto rpc = google::cloud::internal::make_unique<PartialResultSetResume>(
+        std::move(factory), Idempotency::kIdempotent,
+        this->retry_policy_->clone(), this->backoff_policy_->clone());
+
+    return PartialResultSetSource::Create(std::move(rpc));
+  };
+
+  auto ret_val = ExecuteSqlImpl<QueryResult>(
+      session, s, seqno, std::move(esp),
+      spanner_proto::ExecuteSqlRequest::NORMAL, std::move(retry_resume_fn),
+      "Begin transaction requested but no transaction returned "
+      "(in ExecuteQuery).");
+  if (!ret_val) {
+    return QueryResult(
+        google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
+            std::move(ret_val).status()));
+  }
+  return std::move(*ret_val);
+}
+
+StatusOr<DmlResult> ConnectionImpl::ExecuteDmlImpl(
+    SessionHolder& session, spanner_proto::TransactionSelector& s,
+    std::int64_t seqno, ExecuteSqlParams esp) {
+  auto function_name = __func__;
+  auto retry_resume_fn =
+      [this, function_name](spanner_proto::ExecuteSqlRequest& request) mutable
+      -> StatusOr<std::unique_ptr<ResultSourceInterface>> {
+    StatusOr<spanner_proto::ResultSet> response = internal::RetryLoop(
+        this->retry_policy_->clone(), this->backoff_policy_->clone(), true,
+        [this](grpc::ClientContext& context,
+               spanner_proto::ExecuteSqlRequest const& request) {
+          return stub_->ExecuteSql(context, request);
+        },
+        request, function_name);
+    if (!response) {
+      return std::move(response).status();
+    }
+
+    return DmlResultSetSource::Create(std::move(*response));
+  };
+
+  return ExecuteSqlImpl<DmlResult>(
+      session, s, seqno, std::move(esp),
+      spanner_proto::ExecuteSqlRequest::NORMAL, std::move(retry_resume_fn),
+      "Begin transaction requested but no transaction returned "
+      "(in ExecuteDml).");
+}
+
+ProfileQueryResult ConnectionImpl::ProfileQueryImpl(
+    SessionHolder& session, google::spanner::v1::TransactionSelector& s,
+    std::int64_t seqno, ExecuteSqlParams esp) {
+  auto const& stub = stub_;
+  auto retry_resume_fn =
+      [stub, this](spanner_proto::ExecuteSqlRequest& request) mutable
+      -> StatusOr<std::unique_ptr<ResultSourceInterface>> {
+    // Capture a copy of `stub` to ensure the `shared_ptr<>` remains valid
+    // through the lifetime of the lambda. Note that the local variable `stub`
+    // is a reference to avoid increasing refcounts twice, but the capture is by
+    // value.
+    auto factory = [stub, request](std::string const& resume_token) mutable {
+      request.set_resume_token(resume_token);
+      auto context =
+          google::cloud::internal::make_unique<grpc::ClientContext>();
+      return google::cloud::internal::make_unique<
+          DefaultPartialResultSetReader>(
+          std::move(context), stub->ExecuteStreamingSql(*context, request));
+    };
+    auto rpc = google::cloud::internal::make_unique<PartialResultSetResume>(
+        std::move(factory), Idempotency::kIdempotent,
+        this->retry_policy_->clone(), this->backoff_policy_->clone());
+    return PartialResultSetSource::Create(std::move(rpc));
+  };
+
+  auto query_mode =
+      (esp.query_mode == Connection::ExecuteSqlParams::QueryMode::kPlan)
+          ? spanner_proto::ExecuteSqlRequest::PLAN
+          : spanner_proto::ExecuteSqlRequest::PROFILE;
+  auto ret_val = ExecuteSqlImpl<ProfileQueryResult>(
+      session, s, seqno, std::move(esp), query_mode, std::move(retry_resume_fn),
+      "Begin transaction requested but no transaction returned "
+      "(in ProfileQuery).");
+  if (!ret_val) {
+    return ProfileQueryResult(
+        google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
+            std::move(ret_val).status()));
+  }
+  return std::move(*ret_val);
+}
+
+StatusOr<ProfileDmlResult> ConnectionImpl::ProfileDmlImpl(
+    SessionHolder& session, google::spanner::v1::TransactionSelector& s,
+    std::int64_t seqno, ExecuteSqlParams esp) {
+  auto function_name = __func__;
+  auto retry_resume_fn =
+      [this, function_name](spanner_proto::ExecuteSqlRequest& request) mutable
+      -> StatusOr<std::unique_ptr<ResultSourceInterface>> {
+    StatusOr<spanner_proto::ResultSet> response = internal::RetryLoop(
+        this->retry_policy_->clone(), this->backoff_policy_->clone(), true,
+        [this](grpc::ClientContext& context,
+               spanner_proto::ExecuteSqlRequest const& request) {
+          return stub_->ExecuteSql(context, request);
+        },
+        request, function_name);
+    if (!response) {
+      return std::move(response).status();
+    }
+    return DmlResultSetSource::Create(std::move(*response));
+  };
+
+  auto query_mode =
+      (esp.query_mode == Connection::ExecuteSqlParams::QueryMode::kPlan)
+          ? spanner_proto::ExecuteSqlRequest::PLAN
+          : spanner_proto::ExecuteSqlRequest::PROFILE;
+  auto ret_val = ExecuteSqlImpl<ProfileDmlResult>(
+      session, s, seqno, std::move(esp), query_mode, std::move(retry_resume_fn),
+      "Begin transaction requested but no transaction returned "
+      "(in ExecuteDml).");
+  return ret_val;
 }
 
 StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQueryImpl(

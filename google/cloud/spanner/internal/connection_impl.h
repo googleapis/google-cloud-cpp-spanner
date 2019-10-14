@@ -157,6 +157,16 @@ class ConnectionImpl : public Connection,
   StatusOr<std::vector<std::unique_ptr<Session>>> CreateSessions(
       int num_sessions) override;
 
+  template <typename T>
+  StatusOr<T> ExecuteSqlImpl(
+      SessionHolder& session, google::spanner::v1::TransactionSelector& s,
+      std::int64_t seqno, ExecuteSqlParams esp,
+      google::spanner::v1::ExecuteSqlRequest::QueryMode query_mode,
+      std::function<StatusOr<std::unique_ptr<ResultSourceInterface>>(
+          google::spanner::v1 ::ExecuteSqlRequest& request)> const&
+          retry_resume_fn,
+      std::string const& begin_transaction_error_message);
+
   Database db_;
   std::shared_ptr<SpannerStub> stub_;
 
