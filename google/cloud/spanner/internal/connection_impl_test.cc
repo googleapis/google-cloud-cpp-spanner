@@ -581,6 +581,10 @@ TEST(ConnectionImplTest, ExecuteDmlDelete_TooManyTransientFailures) {
   EXPECT_THAT(result.status().message(), HasSubstr("try-again in ExecuteDml"));
 }
 
+TEST(ConnectionImplTest, ProfileQuery) { EXPECT_TRUE(false); }
+
+TEST(ConnectionImplTest, ProfileDml) { EXPECT_TRUE(false); }
+
 TEST(ConnectionImplTest, ExecuteBatchDmlSuccess) {
   auto db = Database("dummy_project", "dummy_instance", "dummy_database_id");
   auto mock = std::make_shared<spanner_testing::MockSpannerStub>();

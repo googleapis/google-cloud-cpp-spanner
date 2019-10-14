@@ -167,6 +167,20 @@ class ConnectionImpl : public Connection,
           retry_resume_fn,
       std::string const& begin_transaction_error_message);
 
+  template <typename T>
+  T CommonQueryImpl(
+      SessionHolder& session, google::spanner::v1::TransactionSelector& s,
+      std::int64_t seqno, ExecuteSqlParams esp,
+      google::spanner::v1::ExecuteSqlRequest::QueryMode query_mode,
+      std::string const& begin_transaction_error_message);
+
+  template <typename T>
+  StatusOr<T> CommonDmlImpl(
+      SessionHolder& session, google::spanner::v1::TransactionSelector& s,
+      std::int64_t seqno, ExecuteSqlParams esp,
+      google::spanner::v1::ExecuteSqlRequest::QueryMode query_mode,
+      std::string const& begin_transaction_error_message);
+
   Database db_;
   std::shared_ptr<SpannerStub> stub_;
 
