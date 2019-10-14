@@ -147,12 +147,11 @@ TEST(ConnectionOptionsTest, CreateChannelArguments_WithChannelPool) {
 }
 
 TEST(ConnectionOptionsTest, DefaultBackgroundThreads) {
-  ConnectionOptions options;
+  auto options = ConnectionOptions(grpc::InsecureChannelCredentials());
   auto background = options.background_threads_factory()();
 
   using ms = std::chrono::milliseconds;
 
-  auto expired = background->cq().MakeRelativeTimer(ms(0));
   // Verify the background thread is not the main thread.
   auto background_thread_id = background->cq().MakeRelativeTimer(ms(0)).then(
       [](future<std::chrono::system_clock::time_point>) {
@@ -168,7 +167,8 @@ TEST(ConnectionOptionsTest, CustomBackgroundThreads) {
   grpc_utils::CompletionQueue cq;
   std::thread t([&cq] { cq.Run(); });
 
-  auto options = ConnectionOptions{}.DisableBackgroundThreads(cq);
+  auto options = ConnectionOptions(grpc::InsecureChannelCredentials())
+                     .DisableBackgroundThreads(cq);
   auto background = options.background_threads_factory()();
 
   using ms = std::chrono::milliseconds;
