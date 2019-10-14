@@ -121,9 +121,6 @@ Status PartialResultSetSource::ReadFromStream() {
     stats_ = *result_set->release_stats();
   }
 
-  last_result_.mutable_resume_token()->swap(
-      *result_set->mutable_resume_token());
-
   last_result_.mutable_values()->Swap(result_set->mutable_values());
 
   // Merge values if necessary, as described in:
