@@ -70,7 +70,6 @@ StatusOr<optional<Value>> PartialResultSetSource::NextValue() {
 
   // The metadata tells us the sequence of types for the field Values;
   // when we reach the end of the sequence start over at the beginning.
-  /* auto const& fields = last_result_.metadata().row_type().fields(); */
   auto const& fields = metadata_->row_type().fields();
   if (next_value_type_index_ >= fields.size()) {
     next_value_type_index_ = 0;
