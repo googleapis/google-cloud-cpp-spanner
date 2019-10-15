@@ -102,7 +102,7 @@ Status PartialResultSetSource::ReadFromStream() {
     if (metadata_) {
       GCP_LOG(WARNING) << "Unexpectedly received two sets of metadata";
     } else {
-      metadata_ = *result_set->release_metadata();
+      metadata_ = std::move(*result_set->mutable_metadata());
     }
   }
 
@@ -111,7 +111,7 @@ Status PartialResultSetSource::ReadFromStream() {
     if (stats_) {
       GCP_LOG(WARNING) << "Unexpectedly received two sets of stats";
     }
-    stats_ = *result_set->release_stats();
+    stats_ = std::move(*result_set->mutable_stats());
   }
 
   auto& new_values = *result_set->mutable_values();
