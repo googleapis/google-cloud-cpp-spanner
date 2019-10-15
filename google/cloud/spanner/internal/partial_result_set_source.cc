@@ -159,7 +159,7 @@ Status PartialResultSetSource::ReadFromStream() {
     new_values.RemoveLast();
   }
 
-  // Copies all the remaining in new_values to values_
+  // Moves all the remaining in new_values to values_
   for (auto& value_proto : new_values) {
     values_.push_back(std::move(value_proto));
   }

@@ -24,8 +24,8 @@
 #include <google/spanner/v1/spanner.grpc.pb.h>
 #include <google/spanner/v1/spanner.pb.h>
 #include <grpcpp/grpcpp.h>
-#include <memory>
 #include <deque>
+#include <memory>
 
 namespace google {
 namespace cloud {
