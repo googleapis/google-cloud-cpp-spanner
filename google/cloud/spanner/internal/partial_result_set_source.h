@@ -25,6 +25,7 @@
 #include <google/spanner/v1/spanner.pb.h>
 #include <grpcpp/grpcpp.h>
 #include <memory>
+#include <deque>
 
 namespace google {
 namespace cloud {
@@ -45,6 +46,7 @@ class PartialResultSetSource : public internal::ResultSourceInterface {
   ~PartialResultSetSource() override;
 
   StatusOr<optional<Value>> NextValue() override;
+
   optional<google::spanner::v1::ResultSetMetadata> Metadata() override {
     return metadata_;
   }
@@ -60,15 +62,13 @@ class PartialResultSetSource : public internal::ResultSourceInterface {
 
   Status ReadFromStream();
 
+  std::unique_ptr<PartialResultSetReader> reader_;
   optional<google::spanner::v1::ResultSetMetadata> metadata_;
   optional<google::spanner::v1::ResultSetStats> stats_;
-
-  std::unique_ptr<PartialResultSetReader> reader_;
-  google::spanner::v1::PartialResultSet last_result_;
-  optional<google::protobuf::Value> partial_chunked_value_;
+  std::deque<google::protobuf::Value> values_;
+  optional<google::protobuf::Value> chunk_;
+  int index_ = 0;
   bool finished_ = false;
-  int next_value_index_ = 0;
-  int next_value_type_index_ = 0;
 };
 
 }  // namespace internal
