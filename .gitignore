@@ -8,6 +8,9 @@ cmake-out/
 bazel-*
 !bazel-*.cfg
 
+# File used by clang-based refactoring tools
+compile_commands.json
+
 # Backup files for Emacs
 *~
 
