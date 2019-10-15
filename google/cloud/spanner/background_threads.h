@@ -32,9 +32,6 @@ class BackgroundThreads {
 
   /// The completion queue used for the background operations.
   virtual grpc_utils::CompletionQueue cq() const = 0;
-
-  /// Terminate any automatically created threads.
-  virtual void Shutdown() = 0;
 };
 
 }  // namespace SPANNER_CLIENT_NS

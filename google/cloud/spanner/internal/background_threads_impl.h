@@ -33,7 +33,6 @@ class CustomerSuppliedBackgroundThreads : public BackgroundThreads {
   ~CustomerSuppliedBackgroundThreads() override = default;
 
   grpc_utils::CompletionQueue cq() const override { return cq_; }
-  void Shutdown() override {}
 
  private:
   grpc_utils::CompletionQueue cq_;
@@ -46,7 +45,7 @@ class AutomaticallyCreatedBackgroundThreads : public BackgroundThreads {
   ~AutomaticallyCreatedBackgroundThreads() override;
 
   grpc_utils::CompletionQueue cq() const override { return cq_; }
-  void Shutdown() override;
+  void Shutdown();
 
  private:
   grpc_utils::CompletionQueue cq_;

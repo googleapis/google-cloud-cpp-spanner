@@ -32,10 +32,7 @@ TEST(CustomerSuppliedBackgroundThreads, LifecycleNoShutdown) {
     p.set_value();
   });
 
-  {
-    CustomerSuppliedBackgroundThreads actual(cq);
-    actual.Shutdown();
-  }
+  { CustomerSuppliedBackgroundThreads actual(cq); }
 
   using ms = std::chrono::milliseconds;
 

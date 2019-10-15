@@ -161,7 +161,9 @@ class ConnectionOptions {
    * Connections need to perform background work on behalf of the application.
    * Normally they just create a background thread and a `CompletionQueue` for
    * this work, but the application may need more fine-grained control of their
-   * threads. In this case the application can provide the
+   * threads. In this case the application can provide the `CompletionQueue` and
+   * it assumes responsibility for creating one or more threads blocked on
+   * `CompletionQueue::Run()`.
    */
   ConnectionOptions& DisableBackgroundThreads(
       google::cloud::grpc_utils::CompletionQueue const& cq);
