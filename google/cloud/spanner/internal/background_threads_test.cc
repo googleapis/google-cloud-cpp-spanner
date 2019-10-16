@@ -79,8 +79,8 @@ TEST(AutomaticallyCreatedBackgroundThreads, IsActive) {
   EXPECT_EQ(std::future_status::ready, expired.wait_for(ms(100)));
 }
 
-/// @test Verify the background thread is not the main thread.
-TEST(AutomaticallyCreatedBackgroundThreads, IsNotMain) {
+/// @test Verify the background thread is not the thread the current thread.
+TEST(AutomaticallyCreatedBackgroundThreads, IsNotCurrentThread) {
   AutomaticallyCreatedBackgroundThreads actual;
 
   using ms = std::chrono::milliseconds;

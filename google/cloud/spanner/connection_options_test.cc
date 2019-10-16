@@ -152,7 +152,7 @@ TEST(ConnectionOptionsTest, DefaultBackgroundThreads) {
 
   using ms = std::chrono::milliseconds;
 
-  // Verify the background thread is not the main thread.
+  // Verify the background thread is not this thread.
   auto background_thread_id = background->cq().MakeRelativeTimer(ms(0)).then(
       [](future<std::chrono::system_clock::time_point>) {
         return std::this_thread::get_id();
