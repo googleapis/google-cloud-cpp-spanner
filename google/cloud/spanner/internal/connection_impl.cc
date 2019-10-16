@@ -425,8 +425,7 @@ StatusOr<T> ConnectionImpl::ExecuteSqlImpl(
   if (s.has_begin()) {
     auto metadata = (*reader)->Metadata();
     if (!metadata || metadata->transaction().id().empty()) {
-      return T(google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
-          Status(StatusCode::kInternal, begin_transaction_error_message)));
+      return Status(StatusCode::kInternal, begin_transaction_error_message);
     }
     s.set_id(metadata->transaction().id());
   }

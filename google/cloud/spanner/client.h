@@ -282,6 +282,9 @@ class Client {
    * or neither, in which case a single-use transaction with default options
    * is used.
    *
+   * @note Callers must consume all rows from the result before execution
+   * statistics and `ExecutionPlan` are available.
+   *
    * @param statement The SQL statement to execute.
    *
    * @note No individual row in the `ProfileQueryResult` can exceed 100 MiB, and
@@ -350,7 +353,7 @@ class Client {
   /**
    * Profiles a SQL DML statement.
    *
-   * Profiling executes the query, provides the modified row count,
+   * Profiling executes the DMl statement, provides the modified row count,
    * `ExecutionPlan`, and execution statistics.
    *
    * Operations inside read-write transactions might return `ABORTED`. If this
