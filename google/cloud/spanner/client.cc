@@ -124,8 +124,8 @@ StatusOr<ProfileDmlResult> Client::ProfileDml(Transaction transaction,
   return conn_->ProfileDml({std::move(transaction), std::move(statement)});
 }
 
-StatusOr<ExecutionPlan> Client::AnalyzeSqlStatement(Transaction transaction,
-                                                    SqlStatement statement) {
+StatusOr<ExecutionPlan> Client::AnalyzeSql(Transaction transaction,
+                                           SqlStatement statement) {
   return conn_->AnalyzeSql({std::move(transaction), std::move(statement)});
 }
 

@@ -378,8 +378,8 @@ class Client {
    * @param transaction Execute this query as part of an existing transaction.
    * @param statement The SQL statement to execute.
    */
-  StatusOr<ExecutionPlan> AnalyzeSqlStatement(Transaction transaction,
-                                              SqlStatement statement);
+  StatusOr<ExecutionPlan> AnalyzeSql(Transaction transaction,
+                                     SqlStatement statement);
   /**
    * Executes a batch of SQL DML statements. This method allows many statements
    * to be run with lower latency than submitting them sequentially with
