@@ -42,8 +42,8 @@ class MockConnection : public spanner::Connection {
   MOCK_METHOD1(Read, spanner::QueryResult(ReadParams));
   MOCK_METHOD1(PartitionRead, StatusOr<std::vector<spanner::ReadPartition>>(
                                   PartitionReadParams));
-  MOCK_METHOD1(ExecuteQuery, spanner::QueryResult(ExecuteSqlParams));
-  MOCK_METHOD1(ExecuteDml, StatusOr<spanner::DmlResult>(ExecuteSqlParams));
+  MOCK_METHOD1(ExecuteQuery, spanner::QueryResult(ExecuteQueryParams));
+  MOCK_METHOD1(ExecuteDml, StatusOr<spanner::DmlResult>(ExecuteDmlParams));
   MOCK_METHOD1(ExecutePartitionedDml, StatusOr<spanner::PartitionedDmlResult>(
                                           ExecutePartitionedDmlParams));
   MOCK_METHOD1(PartitionQuery, StatusOr<std::vector<spanner::QueryPartition>>(

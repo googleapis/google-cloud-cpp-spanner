@@ -70,8 +70,8 @@ class ConnectionImpl : public Connection,
   QueryResult Read(ReadParams) override;
   StatusOr<std::vector<ReadPartition>> PartitionRead(
       PartitionReadParams) override;
-  QueryResult ExecuteQuery(ExecuteSqlParams) override;
-  StatusOr<DmlResult> ExecuteDml(ExecuteSqlParams) override;
+  QueryResult ExecuteQuery(ExecuteQueryParams) override;
+  StatusOr<DmlResult> ExecuteDml(ExecuteDmlParams) override;
   StatusOr<PartitionedDmlResult> ExecutePartitionedDml(
       ExecutePartitionedDmlParams) override;
   StatusOr<std::vector<QueryPartition>> PartitionQuery(
@@ -99,11 +99,11 @@ class ConnectionImpl : public Connection,
 
   QueryResult ExecuteQueryImpl(SessionHolder& session,
                                google::spanner::v1::TransactionSelector& s,
-                               std::int64_t seqno, ExecuteSqlParams params);
+                               std::int64_t seqno, ExecuteQueryParams params);
 
   StatusOr<DmlResult> ExecuteDmlImpl(
       SessionHolder& session, google::spanner::v1::TransactionSelector& s,
-      std::int64_t seqno, ExecuteSqlParams params);
+      std::int64_t seqno, ExecuteDmlParams params);
 
   StatusOr<PartitionedDmlResult> ExecutePartitionedDmlImpl(
       SessionHolder& session, google::spanner::v1::TransactionSelector& s,
@@ -111,7 +111,7 @@ class ConnectionImpl : public Connection,
 
   StatusOr<std::vector<QueryPartition>> PartitionQueryImpl(
       SessionHolder& session, google::spanner::v1::TransactionSelector& s,
-      ExecuteSqlParams const& params, PartitionOptions partition_options);
+      ExecuteQueryParams const& params, PartitionOptions partition_options);
 
   StatusOr<BatchDmlResult> ExecuteBatchDmlImpl(
       SessionHolder& session, google::spanner::v1::TransactionSelector& s,
