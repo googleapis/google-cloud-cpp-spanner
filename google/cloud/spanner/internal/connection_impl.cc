@@ -133,21 +133,21 @@ StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionRead(
       });
 }
 
-QueryResult ConnectionImpl::ExecuteQuery(ExecuteSqlParams esp) {
+QueryResult ConnectionImpl::ExecuteQuery(ExecuteQueryParams eqp) {
   return internal::Visit(
-      std::move(esp.transaction),
-      [this, &esp](SessionHolder& session,
+      std::move(eqp.transaction),
+      [this, &eqp](SessionHolder& session,
                    spanner_proto::TransactionSelector& s, std::int64_t seqno) {
-        return ExecuteQueryImpl(session, s, seqno, std::move(esp));
+        return ExecuteQueryImpl(session, s, seqno, std::move(eqp));
       });
 }
 
-StatusOr<DmlResult> ConnectionImpl::ExecuteDml(ExecuteSqlParams esp) {
+StatusOr<DmlResult> ConnectionImpl::ExecuteDml(ExecuteDmlParams edp) {
   return internal::Visit(
-      std::move(esp.transaction),
-      [this, &esp](SessionHolder& session,
+      std::move(edp.transaction),
+      [this, &edp](SessionHolder& session,
                    spanner_proto::TransactionSelector& s, std::int64_t seqno) {
-        return ExecuteDmlImpl(session, s, seqno, std::move(esp));
+        return ExecuteDmlImpl(session, s, seqno, std::move(edp));
       });
 }
 
@@ -165,10 +165,10 @@ StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDml(
 StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
     PartitionQueryParams pqp) {
   return internal::Visit(
-      std::move(pqp.sql_params.transaction),
+      std::move(pqp.query_params.transaction),
       [this, &pqp](SessionHolder& session,
                    spanner_proto::TransactionSelector& s, std::int64_t) {
-        return PartitionQueryImpl(session, s, pqp.sql_params,
+        return PartitionQueryImpl(session, s, pqp.query_params,
                                   std::move(pqp.partition_options));
       });
 }
@@ -356,7 +356,7 @@ StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionReadImpl(
 
 QueryResult ConnectionImpl::ExecuteQueryImpl(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
-    std::int64_t seqno, ExecuteSqlParams esp) {
+    std::int64_t seqno, ExecuteQueryParams eqp) {
   if (!session) {
     auto session_or = AllocateSession();
     if (!session_or) {
@@ -370,14 +370,14 @@ QueryResult ConnectionImpl::ExecuteQueryImpl(
   spanner_proto::ExecuteSqlRequest request;
   request.set_session(session->session_name());
   *request.mutable_transaction() = s;
-  auto sql_statement = internal::ToProto(std::move(esp.statement));
+  auto sql_statement = internal::ToProto(std::move(eqp.statement));
   request.set_sql(std::move(*sql_statement.mutable_sql()));
   *request.mutable_params() = std::move(*sql_statement.mutable_params());
   *request.mutable_param_types() =
       std::move(*sql_statement.mutable_param_types());
   request.set_seqno(seqno);
-  if (esp.partition_token) {
-    request.set_partition_token(*std::move(esp.partition_token));
+  if (eqp.partition_token) {
+    request.set_partition_token(*std::move(eqp.partition_token));
   }
 
   auto const& stub = stub_;
@@ -416,7 +416,7 @@ QueryResult ConnectionImpl::ExecuteQueryImpl(
 
 StatusOr<DmlResult> ConnectionImpl::ExecuteDmlImpl(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
-    std::int64_t seqno, ExecuteSqlParams esp) {
+    std::int64_t seqno, ExecuteDmlParams edp) {
   if (!session) {
     auto session_or = AllocateSession();
     if (!session_or) {
@@ -428,15 +428,12 @@ StatusOr<DmlResult> ConnectionImpl::ExecuteDmlImpl(
   spanner_proto::ExecuteSqlRequest request;
   request.set_session(session->session_name());
   *request.mutable_transaction() = s;
-  auto sql_statement = internal::ToProto(std::move(esp.statement));
+  auto sql_statement = internal::ToProto(std::move(edp.statement));
   request.set_sql(std::move(*sql_statement.mutable_sql()));
   *request.mutable_params() = std::move(*sql_statement.mutable_params());
   *request.mutable_param_types() =
       std::move(*sql_statement.mutable_param_types());
   request.set_seqno(seqno);
-  if (esp.partition_token) {
-    request.set_partition_token(*std::move(esp.partition_token));
-  }
 
   StatusOr<spanner_proto::ResultSet> response = internal::RetryLoop(
       retry_policy_->clone(), backoff_policy_->clone(), true,
@@ -467,7 +464,7 @@ StatusOr<DmlResult> ConnectionImpl::ExecuteDmlImpl(
 
 StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQueryImpl(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
-    ExecuteSqlParams const& esp, PartitionOptions partition_options) {
+    ExecuteQueryParams const& eqp, PartitionOptions partition_options) {
   if (!session) {
     // Since the session may be sent to other machines, it should not be
     // returned to the pool when the Transaction is destroyed.
@@ -481,7 +478,7 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQueryImpl(
   spanner_proto::PartitionQueryRequest request;
   request.set_session(session->session_name());
   *request.mutable_transaction() = s;
-  auto sql_statement = internal::ToProto(esp.statement);
+  auto sql_statement = internal::ToProto(eqp.statement);
   request.set_sql(std::move(*sql_statement.mutable_sql()));
   *request.mutable_params() = std::move(*sql_statement.mutable_params());
   *request.mutable_param_types() =
@@ -507,7 +504,7 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQueryImpl(
   for (auto& partition : response->partitions()) {
     query_partitions.push_back(internal::MakeQueryPartition(
         response->transaction().id(), session->session_name(),
-        partition.partition_token(), esp.statement));
+        partition.partition_token(), eqp.statement));
   }
 
   return query_partitions;

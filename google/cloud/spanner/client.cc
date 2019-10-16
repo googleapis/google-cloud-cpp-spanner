@@ -86,7 +86,7 @@ QueryResult Client::ExecuteQuery(Transaction transaction,
 }
 
 QueryResult Client::ExecuteQuery(QueryPartition const& partition) {
-  return conn_->ExecuteQuery(internal::MakeExecuteSqlParams(partition));
+  return conn_->ExecuteQuery(internal::MakeExecuteQueryParams(partition));
 }
 
 StatusOr<std::vector<QueryPartition>> Client::PartitionQuery(

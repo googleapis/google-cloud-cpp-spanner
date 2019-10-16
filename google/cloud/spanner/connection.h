@@ -90,17 +90,28 @@ class Connection {
     PartitionOptions partition_options;
   };
 
-  /// Wrap the arguments to `ExecuteSql()`.
-  struct ExecuteSqlParams {
+  /// Wrap the arguments to `ExecuteQuery()`.
+  struct ExecuteQueryParams {
     Transaction transaction;
     SqlStatement statement;
     google::cloud::optional<std::string> partition_token;
 
-    ExecuteSqlParams(Transaction transaction, SqlStatement statement,
-                     google::cloud::optional<std::string> partition_token = {})
+    ExecuteQueryParams(
+        Transaction transaction, SqlStatement statement,
+        google::cloud::optional<std::string> partition_token = {})
         : transaction(std::move(transaction)),
           statement(std::move(statement)),
           partition_token(std::move(partition_token)) {}
+  };
+
+  /// Wrap the arguments to `ExecuteDml()`.
+  struct ExecuteDmlParams {
+    Transaction transaction;
+    SqlStatement statement;
+
+    ExecuteDmlParams(Transaction transaction, SqlStatement statement)
+        : transaction(std::move(transaction)),
+          statement(std::move(statement)) {}
   };
 
   /// Wrap the arguments to `ExecutePartitionedDmlParams()`.
@@ -110,7 +121,7 @@ class Connection {
 
   /// Wrap the arguments to `PartitionQuery()`.
   struct PartitionQueryParams {
-    ExecuteSqlParams sql_params;
+    ExecuteQueryParams query_params;
     PartitionOptions partition_options;
   };
 
@@ -140,10 +151,10 @@ class Connection {
       PartitionReadParams) = 0;
 
   /// Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC
-  virtual QueryResult ExecuteQuery(ExecuteSqlParams) = 0;
+  virtual QueryResult ExecuteQuery(ExecuteQueryParams) = 0;
 
   /// Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC
-  virtual StatusOr<DmlResult> ExecuteDml(ExecuteSqlParams) = 0;
+  virtual StatusOr<DmlResult> ExecuteDml(ExecuteDmlParams) = 0;
 
   /// Define the interface for a google.spanner.v1.Spanner.ExecutePartitionedDml
   /// RPC
