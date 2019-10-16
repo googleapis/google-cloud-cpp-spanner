@@ -67,7 +67,7 @@ class PartialResultSetSource : public internal::ResultSourceInterface {
   optional<google::spanner::v1::ResultSetStats> stats_;
   std::deque<google::protobuf::Value> values_;
   optional<google::protobuf::Value> chunk_;
-  int index_ = 0;
+  int field_index_ = 0;
   bool finished_ = false;
 };
 

@@ -66,8 +66,8 @@ StatusOr<optional<Value>> PartialResultSetSource::NextValue() {
                   "response metadata is missing row type information");
   }
 
-  auto t = fields.Get(index_).type();
-  index_ = (index_ + 1) % fields.size();
+  auto t = fields.Get(field_index_).type();
+  field_index_ = (field_index_ + 1) % fields.size();
   auto v = std::move(values_.front());
   values_.pop_front();
   return {FromProto(std::move(t), std::move(v))};
