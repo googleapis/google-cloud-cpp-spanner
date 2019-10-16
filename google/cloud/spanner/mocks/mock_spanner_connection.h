@@ -47,6 +47,7 @@ class MockConnection : public spanner::Connection {
   MOCK_METHOD1(ProfileQuery, spanner::ProfileQueryResult(ExecuteSqlParams));
   MOCK_METHOD1(ProfileDml,
                StatusOr<spanner::ProfileDmlResult>(ExecuteSqlParams));
+  MOCK_METHOD1(AnalyzeSql, StatusOr<spanner::ExecutionPlan>(ExecuteSqlParams));
   MOCK_METHOD1(ExecutePartitionedDml, StatusOr<spanner::PartitionedDmlResult>(
                                           ExecutePartitionedDmlParams));
   MOCK_METHOD1(PartitionQuery, StatusOr<std::vector<spanner::QueryPartition>>(

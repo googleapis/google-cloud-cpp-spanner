@@ -89,35 +89,22 @@ QueryResult Client::ExecuteQuery(QueryPartition const& partition) {
   return conn_->ExecuteQuery(internal::MakeExecuteSqlParams(partition));
 }
 
-ProfileQueryResult Client::ProfileQuery(SqlStatement statement,
-                                        ProfileMode mode) {
+ProfileQueryResult Client::ProfileQuery(SqlStatement statement) {
   return conn_->ProfileQuery(
       {internal::MakeSingleUseTransaction(Transaction::ReadOnlyOptions()),
-       std::move(statement),
-       (mode == ProfileMode::kExecuteWithProfile)
-           ? Connection::ExecuteSqlParams::QueryMode::kProfile
-           : Connection::ExecuteSqlParams::QueryMode::kPlan});
+       std::move(statement)});
 }
 
 ProfileQueryResult Client::ProfileQuery(
-    Transaction::SingleUseOptions transaction_options, SqlStatement statement,
-    ProfileMode mode) {
+    Transaction::SingleUseOptions transaction_options, SqlStatement statement) {
   return conn_->ProfileQuery(
       {internal::MakeSingleUseTransaction(std::move(transaction_options)),
-       std::move(statement),
-       (mode == ProfileMode::kExecuteWithProfile)
-           ? Connection::ExecuteSqlParams::QueryMode::kProfile
-           : Connection::ExecuteSqlParams::QueryMode::kPlan});
+       std::move(statement)});
 }
 
 ProfileQueryResult Client::ProfileQuery(Transaction transaction,
-                                        SqlStatement statement,
-                                        ProfileMode mode) {
-  return conn_->ProfileQuery(
-      {std::move(transaction), std::move(statement),
-       (mode == ProfileMode::kExecuteWithProfile)
-           ? Connection::ExecuteSqlParams::QueryMode::kProfile
-           : Connection::ExecuteSqlParams::QueryMode::kPlan});
+                                        SqlStatement statement) {
+  return conn_->ProfileQuery({std::move(transaction), std::move(statement)});
 }
 
 StatusOr<std::vector<QueryPartition>> Client::PartitionQuery(
@@ -133,13 +120,13 @@ StatusOr<DmlResult> Client::ExecuteDml(Transaction transaction,
 }
 
 StatusOr<ProfileDmlResult> Client::ProfileDml(Transaction transaction,
-                                              SqlStatement statement,
-                                              ProfileMode mode) {
-  return conn_->ProfileDml(
-      {std::move(transaction), std::move(statement),
-       (mode == ProfileMode::kExecuteWithProfile)
-           ? Connection::ExecuteSqlParams::QueryMode::kProfile
-           : Connection::ExecuteSqlParams::QueryMode::kPlan});
+                                              SqlStatement statement) {
+  return conn_->ProfileDml({std::move(transaction), std::move(statement)});
+}
+
+StatusOr<ExecutionPlan> Client::AnalyzeSqlStatement(Transaction transaction,
+                                                    SqlStatement statement) {
+  return conn_->AnalyzeSql({std::move(transaction), std::move(statement)});
 }
 
 StatusOr<BatchDmlResult> Client::ExecuteBatchDml(

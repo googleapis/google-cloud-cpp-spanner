@@ -169,6 +169,15 @@ StatusOr<ProfileDmlResult> ConnectionImpl::ProfileDml(ExecuteSqlParams esp) {
       });
 }
 
+StatusOr<ExecutionPlan> ConnectionImpl::AnalyzeSql(ExecuteSqlParams esp) {
+  return internal::Visit(
+      std::move(esp.transaction),
+      [this, &esp](SessionHolder& session,
+                   spanner_proto::TransactionSelector& s, std::int64_t seqno) {
+        return AnalyzeSqlImpl(session, s, seqno, std::move(esp));
+      });
+}
+
 StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDml(
     ExecutePartitionedDmlParams epdp) {
   auto txn = MakeReadOnlyTransaction();
@@ -475,12 +484,9 @@ QueryResult ConnectionImpl::ExecuteQueryImpl(
 ProfileQueryResult ConnectionImpl::ProfileQueryImpl(
     SessionHolder& session, google::spanner::v1::TransactionSelector& s,
     std::int64_t seqno, ExecuteSqlParams esp) {
-  auto query_mode =
-      (esp.query_mode == Connection::ExecuteSqlParams::QueryMode::kPlan)
-          ? spanner_proto::ExecuteSqlRequest::PLAN
-          : spanner_proto::ExecuteSqlRequest::PROFILE;
   return CommonQueryImpl<ProfileQueryResult>(
-      session, s, seqno, std::move(esp), query_mode,
+      session, s, seqno, std::move(esp),
+      spanner_proto::ExecuteSqlRequest::PROFILE,
       "Begin transaction requested but no transaction returned "
       "(in ProfileQuery).");
 }
@@ -525,15 +531,24 @@ StatusOr<DmlResult> ConnectionImpl::ExecuteDmlImpl(
 StatusOr<ProfileDmlResult> ConnectionImpl::ProfileDmlImpl(
     SessionHolder& session, google::spanner::v1::TransactionSelector& s,
     std::int64_t seqno, ExecuteSqlParams esp) {
-  auto query_mode =
-      (esp.query_mode == Connection::ExecuteSqlParams::QueryMode::kPlan)
-          ? spanner_proto::ExecuteSqlRequest::PLAN
-          : spanner_proto::ExecuteSqlRequest::PROFILE;
-
   return CommonDmlImpl<ProfileDmlResult>(
-      session, s, seqno, std::move(esp), query_mode,
+      session, s, seqno, std::move(esp),
+      spanner_proto::ExecuteSqlRequest::PROFILE,
       "Begin transaction requested but no transaction returned "
       "(in ProfileDml).");
+}
+
+StatusOr<ExecutionPlan> ConnectionImpl::AnalyzeSqlImpl(
+    SessionHolder& session, google::spanner::v1::TransactionSelector& s,
+    std::int64_t seqno, ExecuteSqlParams esp) {
+  auto result = CommonDmlImpl<ProfileDmlResult>(
+      session, s, seqno, std::move(esp), spanner_proto::ExecuteSqlRequest::PLAN,
+      "Begin transaction requested but no transaction returned "
+      "(in AnalyzeSql).");
+  if (result.status().ok()) {
+    return *result->ExecutionPlan();
+  }
+  return result.status();
 }
 
 StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQueryImpl(

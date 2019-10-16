@@ -267,21 +267,12 @@ class Client {
   QueryResult ExecuteQuery(QueryPartition const& partition);
   //@}
 
-  /**
-   * Selects profile mode:
-   *  - kExecuteWithProfile - executes SQL statement and returns result rows,
-   *      execution stats, and execution plan.
-   *  - kExecutionPlanOnly - does NOT execute the SQL statement, only returns
-   *      the execution plan.
-   */
-  enum class ProfileMode { kExecuteWithProfile, kExecutionPlanOnly };
-
   //@{
   /**
    * Profiles a SQL query.
    *
-   * Profiling provides the `ExecutionPlan` and depending on `ProfileMode` can
-   * also execute the query and provide execution statistics.
+   * Profiling executes the query, provides the resulting rows, `ExecutionPlan`,
+   * and execution statistics.
    *
    * Operations inside read-write transactions might return `ABORTED`. If this
    * occurs, the application should restart the transaction from the beginning.
@@ -292,33 +283,29 @@ class Client {
    * is used.
    *
    * @param statement The SQL statement to execute.
-   * @param mode `ProfileMode`
    *
    * @note No individual row in the `ProfileQueryResult` can exceed 100 MiB, and
    * no column value can exceed 10 MiB.
    */
-  ProfileQueryResult ProfileQuery(
-      SqlStatement statement,
-      ProfileMode mode = ProfileMode::kExecuteWithProfile);
+  ProfileQueryResult ProfileQuery(SqlStatement statement);
 
   /**
-   * @copydoc ProfileQuery(SqlStatement, ProfileMode)
+   * @copydoc ProfileQuery(SqlStatement)
    *
    * @param transaction_options Execute this query in a single-use transaction
    *     with these options.
    */
   ProfileQueryResult ProfileQuery(
-      Transaction::SingleUseOptions transaction_options, SqlStatement statement,
-      ProfileMode mode = ProfileMode::kExecuteWithProfile);
+      Transaction::SingleUseOptions transaction_options,
+      SqlStatement statement);
 
   /**
-   * @copydoc ProfileQuery(SqlStatement, ProfileMode)
+   * @copydoc ProfileQuery(SqlStatement)
    *
    * @param transaction Execute this query as part of an existing transaction.
    */
-  ProfileQueryResult ProfileQuery(
-      Transaction transaction, SqlStatement statement,
-      ProfileMode mode = ProfileMode::kExecuteWithProfile);
+  ProfileQueryResult ProfileQuery(Transaction transaction,
+                                  SqlStatement statement);
   //@}
 
   /**
@@ -363,8 +350,8 @@ class Client {
   /**
    * Profiles a SQL DML statement.
    *
-   * Profiling provides the `ExecutionPlan` and depending on `ProfileMode` can
-   * also execute the DML statement and provide execution statistics.
+   * Profiling executes the query, provides the modified row count,
+   * `ExecutionPlan`, and execution statistics.
    *
    * Operations inside read-write transactions might return `ABORTED`. If this
    * occurs, the application should restart the transaction from the beginning.
@@ -373,12 +360,26 @@ class Client {
 
    * @param transaction Execute this query as part of an existing transaction.
    * @param statement The SQL statement to execute.
-   * @param mode `ProfileMode`
    */
-  StatusOr<ProfileDmlResult> ProfileDml(
-      Transaction transaction, SqlStatement statement,
-      ProfileMode mode = ProfileMode::kExecuteWithProfile);
+  StatusOr<ProfileDmlResult> ProfileDml(Transaction transaction,
+                                        SqlStatement statement);
 
+  /**
+   * Analyzes the execution plan of a SQL statement.
+   *
+   * Analyzing provides the `ExecutionPlan`, but does not execute the SQL
+   * statement.
+   *
+   * Operations inside read-write transactions might return `ABORTED`. If this
+   * occurs, the application should restart the transaction from the beginning.
+   *
+   * @note Single-use transactions are not supported with DML statements.
+
+   * @param transaction Execute this query as part of an existing transaction.
+   * @param statement The SQL statement to execute.
+   */
+  StatusOr<ExecutionPlan> AnalyzeSqlStatement(Transaction transaction,
+                                              SqlStatement statement);
   /**
    * Executes a batch of SQL DML statements. This method allows many statements
    * to be run with lower latency than submitting them sequentially with
