@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['background_5fthreads_5ffactory',['background_threads_factory',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#adc661bebc7bd2e34db60a9dd8dd83a3f',1,'google::cloud::spanner::v0::ConnectionOptions']]],
   ['begin',['begin',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#a7383330774a77f78693cc721f92bd21b',1,'google::cloud::spanner::v0::RowParser']]],
   ['bound',['bound',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a1d2f3096e957c209864ac92008e5388e',1,'google::cloud::spanner::v0::KeyBound']]],
   ['build',['Build',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1CreateInstanceRequestBuilder.html#a63f3f226bc07f3b454120427b101a9b7',1,'google::cloud::spanner::v0::CreateInstanceRequestBuilder::Build() &amp;'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1CreateInstanceRequestBuilder.html#aced428b2f0db0c6b74bc341db7a4555e',1,'google::cloud::spanner::v0::CreateInstanceRequestBuilder::Build() &amp;&amp;'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1UpdateInstanceRequestBuilder.html#a1354f21671a396e71f33de0a1e437722',1,'google::cloud::spanner::v0::UpdateInstanceRequestBuilder::Build() &amp;'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1UpdateInstanceRequestBuilder.html#ae24f8e5fcb2af6f7f1390f0eed6e85b1',1,'google::cloud::spanner::v0::UpdateInstanceRequestBuilder::Build() &amp;&amp;']]],

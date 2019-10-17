@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['_7ebackgroundthreads',['~BackgroundThreads',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1BackgroundThreads.html#a98f674b21c9c9419e5372580b4ba15b6',1,'google::cloud::spanner::v0::BackgroundThreads']]],
   ['_7econnection',['~Connection',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html#a607c0d58ee08ad7bf31a4ad82eb6782d',1,'google::cloud::spanner::v0::Connection']]],
   ['_7edatabaseadminconnection',['~DatabaseAdminConnection',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection.html#a85ce17451ad612ad4bc72b2e97f06110',1,'google::cloud::spanner::v0::DatabaseAdminConnection']]],
   ['_7einstanceadminconnection',['~InstanceAdminConnection',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminConnection.html#a66f31f03cf5b5f14e3dc271be4271361',1,'google::cloud::spanner::v0::InstanceAdminConnection']]],

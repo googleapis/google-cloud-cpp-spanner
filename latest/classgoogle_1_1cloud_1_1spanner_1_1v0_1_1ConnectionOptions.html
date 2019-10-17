@@ -68,6 +68,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -80,6 +81,11 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="connection__options_8h_source.html">google/cloud/spanner/connection_options.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a98ec1c95e6deeef05f713c257a979dcd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#a98ec1c95e6deeef05f713c257a979dcd">BackgroundThreadsFactory</a> = std::function&lt; std::unique_ptr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1BackgroundThreads.html">BackgroundThreads</a> &gt;()&gt;</td></tr>
+<tr class="separator:a98ec1c95e6deeef05f713c257a979dcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab8485f2902f2308f6440e277072b6974"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#ab8485f2902f2308f6440e277072b6974">ConnectionOptions</a> ()</td></tr>
@@ -124,12 +130,34 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6a4cc126a978c0aae6dacf6e3d1f0e99"><td class="memItemLeft" align="right" valign="top">grpc::ChannelArguments&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#a6a4cc126a978c0aae6dacf6e3d1f0e99">CreateChannelArguments</a> () const</td></tr>
 <tr class="memdesc:a6a4cc126a978c0aae6dacf6e3d1f0e99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new <code>grpc::ChannelArguments</code> configured with the options in this object.  <a href="#a6a4cc126a978c0aae6dacf6e3d1f0e99">More...</a><br /></td></tr>
 <tr class="separator:a6a4cc126a978c0aae6dacf6e3d1f0e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ce20c4f71057cdc5e6f108a0c0547e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#a1ce20c4f71057cdc5e6f108a0c0547e2">DisableBackgroundThreads</a> (google::cloud::grpc_utils::CompletionQueue const &amp;cq)</td></tr>
+<tr class="memdesc:a1ce20c4f71057cdc5e6f108a0c0547e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the connection to use <code>cq</code> for all background work.  <a href="#a1ce20c4f71057cdc5e6f108a0c0547e2">More...</a><br /></td></tr>
+<tr class="separator:a1ce20c4f71057cdc5e6f108a0c0547e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc661bebc7bd2e34db60a9dd8dd83a3f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#a98ec1c95e6deeef05f713c257a979dcd">BackgroundThreadsFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#adc661bebc7bd2e34db60a9dd8dd83a3f">background_threads_factory</a> ()</td></tr>
+<tr class="separator:adc661bebc7bd2e34db60a9dd8dd83a3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The configuration parameters for spanner connections. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00039">39</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00042">42</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a98ec1c95e6deeef05f713c257a979dcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98ec1c95e6deeef05f713c257a979dcd">&#9670;&nbsp;</a></span>BackgroundThreadsFactory</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#a98ec1c95e6deeef05f713c257a979dcd">google::cloud::spanner::v0::ConnectionOptions::BackgroundThreadsFactory</a> =  std::function&lt;std::unique_ptr&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1BackgroundThreads.html">BackgroundThreads</a>&gt;()&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00172">172</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab8485f2902f2308f6440e277072b6974"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab8485f2902f2308f6440e277072b6974">&#9670;&nbsp;</a></span>ConnectionOptions() <span class="overload">[1/2]</span></h2>
 
@@ -147,7 +175,7 @@ Public Member Functions</h2></td></tr>
 
 <p>The default options, using <code>grpc::GoogleDefaultCredentials()</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8cc_source.html#l00054">54</a> of file <a class="el" href="connection__options_8cc_source.html">connection_options.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8cc_source.html#l00059">59</a> of file <a class="el" href="connection__options_8cc_source.html">connection_options.cc</a>.</p>
 
 </div>
 </div>
@@ -177,7 +205,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Default parameters, using an explicit credentials object. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8cc_source.html#l00033">33</a> of file <a class="el" href="connection__options_8cc_source.html">connection_options.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8cc_source.html#l00034">34</a> of file <a class="el" href="connection__options_8cc_source.html">connection_options.cc</a>.</p>
 
 </div>
 </div>
@@ -209,7 +237,34 @@ Public Member Functions</h2></td></tr>
 <p>Prepend <code>prefix</code> to the user-agent string. </p>
 <p>Libraries or services that use the Cloud Spanner C++ client may want to set their own user-agent prefix. This can help them develop telemetry information about number of users running particular versions of their system or library. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00136">136</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00139">139</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+
+</div>
+</div>
+<a id="adc661bebc7bd2e34db60a9dd8dd83a3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc661bebc7bd2e34db60a9dd8dd83a3f">&#9670;&nbsp;</a></span>background_threads_factory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#a98ec1c95e6deeef05f713c257a979dcd">BackgroundThreadsFactory</a> google::cloud::spanner::v0::ConnectionOptions::background_threads_factory </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00173">173</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -240,7 +295,7 @@ Public Member Functions</h2></td></tr>
 <p>In some cases applications may want to use a separate gRPC connections for different clients. gRPC may share the connection used by separate channels created with the same configuration. The client objects created with this object will create gRPC channels configured with <code>grpc.channel_pooling_domain</code> set to the value returned by <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#ae04d0f3399b79148069c770031f7f4a2" title="Define the gRPC channel domain for clients configured with this object.">channel_pool_domain()</a></code>. gRPC channels with different values for <code>grpc.channel_pooling_domain</code> are guaranteed to use different connections. Note that there is no guarantee that channels with the same value will have the same connection though.</p>
 <p>This option might be useful for applications that want to segregate traffic for whatever reason. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00118">118</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00121">121</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -262,7 +317,7 @@ Public Member Functions</h2></td></tr>
 <p>Create a new <code>grpc::ChannelArguments</code> configured with the options in this object. </p>
 <p>The caller would typically pass this argument to <code>grpc::CreateCustomChannel</code> and create one more more gRPC channels. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8cc_source.html#l00057">57</a> of file <a class="el" href="connection__options_8cc_source.html">connection_options.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8cc_source.html#l00062">62</a> of file <a class="el" href="connection__options_8cc_source.html">connection_options.cc</a>.</p>
 
 </div>
 </div>
@@ -291,7 +346,7 @@ Public Member Functions</h2></td></tr>
 
 <p>The gRPC credentials used by clients configured with this object. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00056">56</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00059">59</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -321,7 +376,30 @@ Public Member Functions</h2></td></tr>
 
 <p>Disable tracing for <code>component</code> in clients configured with this object. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00097">97</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00100">100</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+
+</div>
+</div>
+<a id="a1ce20c4f71057cdc5e6f108a0c0547e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ce20c4f71057cdc5e6f108a0c0547e2">&#9670;&nbsp;</a></span>DisableBackgroundThreads()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a> &amp; google::cloud::spanner::v0::ConnectionOptions::DisableBackgroundThreads </td>
+          <td>(</td>
+          <td class="paramtype">google::cloud::grpc_utils::CompletionQueue const &amp;&#160;</td>
+          <td class="paramname"><em>cq</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Configure the connection to use <code>cq</code> for all background work. </p>
+<p>Connections need to perform background work on behalf of the application. Normally they just create a background thread and a <code>CompletionQueue</code> for this work, but the application may need more fine-grained control of their threads. In this case the application can provide the <code>CompletionQueue</code> and it assumes responsibility for creating one or more threads blocked on <code>CompletionQueue::Run()</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="connection__options_8cc_source.html#l00077">77</a> of file <a class="el" href="connection__options_8cc_source.html">connection_options.cc</a>.</p>
 
 </div>
 </div>
@@ -351,7 +429,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Enable tracing for <code>component</code> in clients configured with this object. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00091">91</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00094">94</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -380,7 +458,7 @@ Public Member Functions</h2></td></tr>
 
 <p>The endpoint used by clients configured with this object. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00073">73</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00076">76</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -410,7 +488,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Set the value for <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#ae04d0f3399b79148069c770031f7f4a2" title="Define the gRPC channel domain for clients configured with this object.">channel_pool_domain()</a></code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00123">123</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00126">126</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -440,7 +518,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Change the gRPC credentials from the default of <code>grpc::GoogleDefaultCredentials()</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00049">49</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00052">52</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -471,7 +549,7 @@ Public Member Functions</h2></td></tr>
 <p>Change the gRPC endpoint used to contact the Cloud Spanner service. </p>
 <p>In almost all cases the default ("spanner.googleapis.com") is the correct endpoint to use. It may need to be changed to (1) test against a fake or simulator, or (2) to use a beta or EAP version of the service. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00067">67</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00070">70</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -503,7 +581,7 @@ Public Member Functions</h2></td></tr>
 <p>The Cloud Spanner C++ client can log interesting events to help library and application developers troubleshoot problems with the library or their configuration. This flag returns true if tracing should be enabled by clients configured with this option.</p>
 <p>Currently only the <code>rpc</code> component is supported, which enables logging of each RPC, including its parameters and any responses. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00086">86</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00089">89</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
@@ -532,7 +610,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Return the current value for the user agent string. </p>
 
-<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00144">144</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="connection__options_8h_source.html#l00147">147</a> of file <a class="el" href="connection__options_8h_source.html">connection_options.h</a>.</p>
 
 </div>
 </div>
