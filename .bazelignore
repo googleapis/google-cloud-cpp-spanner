@@ -1,0 +1,3 @@
+ci/
+cmake-out/
+cmake-build-*/
