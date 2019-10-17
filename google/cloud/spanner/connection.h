@@ -108,10 +108,6 @@ class Connection {
   struct ExecuteDmlParams {
     Transaction transaction;
     SqlStatement statement;
-
-    ExecuteDmlParams(Transaction transaction, SqlStatement statement)
-        : transaction(std::move(transaction)),
-          statement(std::move(statement)) {}
   };
 
   /// Wrap the arguments to `ExecutePartitionedDmlParams()`.
