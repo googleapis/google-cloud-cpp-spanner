@@ -76,8 +76,8 @@ using ValueSource = std::function<StatusOr<optional<Value>>()>;
  *     // handle error
  *     break;
  *   }
- *   bool b = row->get<0>();
- *   std::int64_t i = row->get<1>();
+ *   bool b = std::get<0>(row->get());
+ *   std::int64_t i = std::get<1>(row->get());
  *
  *   // Using C++17 structured bindings
  *   auto [b2, i2] = row->get();

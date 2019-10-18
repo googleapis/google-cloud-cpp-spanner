@@ -70,15 +70,15 @@ TEST(QueryResult, IterateOverRows) {
     EXPECT_TRUE(row.ok());
     switch (num_rows++) {
       case 0:
-        EXPECT_EQ(row->get<0>(), 5);
-        EXPECT_EQ(row->get<1>(), true);
-        EXPECT_EQ(row->get<2>(), "foo");
+        EXPECT_EQ(std::get<0>(row->get()), 5);
+        EXPECT_EQ(std::get<1>(row->get()), true);
+        EXPECT_EQ(std::get<2>(row->get()), "foo");
         break;
 
       case 1:
-        EXPECT_EQ(row->get<0>(), 10);
-        EXPECT_EQ(row->get<1>(), false);
-        EXPECT_EQ(row->get<2>(), "bar");
+        EXPECT_EQ(std::get<0>(row->get()), 10);
+        EXPECT_EQ(std::get<1>(row->get()), false);
+        EXPECT_EQ(std::get<2>(row->get()), "bar");
         break;
 
       default:
@@ -105,9 +105,9 @@ TEST(QueryResult, IterateError) {
     switch (num_rows++) {
       case 0:
         EXPECT_TRUE(row.ok());
-        EXPECT_EQ(row->get<0>(), 5);
-        EXPECT_EQ(row->get<1>(), true);
-        EXPECT_EQ(row->get<2>(), "foo");
+        EXPECT_EQ(std::get<0>(row->get()), 5);
+        EXPECT_EQ(std::get<1>(row->get()), true);
+        EXPECT_EQ(std::get<2>(row->get()), "foo");
         break;
 
       case 1:

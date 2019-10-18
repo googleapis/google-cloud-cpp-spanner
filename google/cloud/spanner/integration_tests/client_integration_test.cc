@@ -262,7 +262,7 @@ TEST_F(ClientIntegrationTest, RunTransaction) {
   auto results = client_->Read("Singers", std::move(ks), {"SingerId"});
   for (auto& row : results.Rows<RowType>()) {
     EXPECT_STATUS_OK(row);
-    if (row) ids.push_back(row->get<0>());
+    if (row) ids.push_back(std::get<0>(row->get()));
   }
   EXPECT_THAT(ids, UnorderedElementsAre(100, 199));
 }
@@ -665,9 +665,9 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDml) {
   for (auto const& row :
        query.Rows<TypedRow<std::int64_t, std::string, std::string>>()) {
     ASSERT_STATUS_OK(row);
-    ASSERT_EQ(row->get<0>(), expected[counter].id);
-    ASSERT_EQ(row->get<1>(), expected[counter].fname);
-    ASSERT_EQ(row->get<2>(), expected[counter].lname);
+    ASSERT_EQ(std::get<0>(row->get()), expected[counter].id);
+    ASSERT_EQ(std::get<1>(row->get()), expected[counter].fname);
+    ASSERT_EQ(std::get<2>(row->get()), expected[counter].lname);
     ++counter;
   }
   ASSERT_EQ(counter, expected.size());
@@ -734,9 +734,9 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDmlMany) {
     std::string const singer_id = std::to_string(counter);
     std::string const first_name = "Foo" + singer_id;
     std::string const last_name = "Bar" + singer_id;
-    ASSERT_EQ(row->get<0>(), counter);
-    ASSERT_EQ(row->get<1>(), first_name);
-    ASSERT_EQ(row->get<2>(), last_name);
+    ASSERT_EQ(std::get<0>(row->get()), counter);
+    ASSERT_EQ(std::get<1>(row->get()), first_name);
+    ASSERT_EQ(std::get<2>(row->get()), last_name);
     ++counter;
   }
 

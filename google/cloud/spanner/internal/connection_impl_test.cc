@@ -1474,7 +1474,7 @@ TEST(ConnectionImplTest, TransactionSessionBinding) {
   for (auto& row : result.Rows<TypedRow<std::int64_t>>()) {
     EXPECT_STATUS_OK(row);
     EXPECT_EQ(row->size(), 1);
-    EXPECT_EQ(row->get<0>(), 0);
+    EXPECT_EQ(std::get<0>(row->get()), 0);
   }
 
   Transaction txn2 = MakeReadOnlyTransaction(Transaction::ReadOnlyOptions());
@@ -1484,7 +1484,7 @@ TEST(ConnectionImplTest, TransactionSessionBinding) {
   for (auto& row : result.Rows<TypedRow<std::int64_t>>()) {
     EXPECT_STATUS_OK(row);
     EXPECT_EQ(row->size(), 1);
-    EXPECT_EQ(row->get<0>(), 1);
+    EXPECT_EQ(std::get<0>(row->get()), 1);
   }
 
   result =
@@ -1493,7 +1493,7 @@ TEST(ConnectionImplTest, TransactionSessionBinding) {
   for (auto& row : result.Rows<TypedRow<std::int64_t>>()) {
     EXPECT_STATUS_OK(row);
     EXPECT_EQ(row->size(), 1);
-    EXPECT_EQ(row->get<0>(), 2);
+    EXPECT_EQ(std::get<0>(row->get()), 2);
   }
 
   result =
@@ -1502,7 +1502,7 @@ TEST(ConnectionImplTest, TransactionSessionBinding) {
   for (auto& row : result.Rows<TypedRow<std::int64_t>>()) {
     EXPECT_STATUS_OK(row);
     EXPECT_EQ(row->size(), 1);
-    EXPECT_EQ(row->get<0>(), 3);
+    EXPECT_EQ(std::get<0>(row->get()), 3);
   }
 }
 

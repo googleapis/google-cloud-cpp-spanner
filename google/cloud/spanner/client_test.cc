@@ -155,12 +155,12 @@ TEST(ClientTest, ReadFailure) {
   auto iter = rows.begin();
   EXPECT_NE(iter, rows.end());
   EXPECT_STATUS_OK(*iter);
-  EXPECT_EQ((*iter)->get<0>(), "Steve");
+  EXPECT_EQ(std::get<0>((*iter)->get()), "Steve");
 
   ++iter;
   EXPECT_NE(iter, rows.end());
   EXPECT_STATUS_OK(*iter);
-  EXPECT_EQ((*iter)->get<0>(), "Ann");
+  EXPECT_EQ(std::get<0>((*iter)->get()), "Ann");
 
   ++iter;
   EXPECT_FALSE((*iter).ok());
@@ -249,12 +249,12 @@ TEST(ClientTest, ExecuteQueryFailure) {
   auto iter = rows.begin();
   EXPECT_NE(iter, rows.end());
   EXPECT_STATUS_OK(*iter);
-  EXPECT_EQ((*iter)->get<0>(), "Steve");
+  EXPECT_EQ(std::get<0>((*iter)->get()), "Steve");
 
   ++iter;
   EXPECT_NE(iter, rows.end());
   EXPECT_STATUS_OK(*iter);
-  EXPECT_EQ((*iter)->get<0>(), "Ann");
+  EXPECT_EQ(std::get<0>((*iter)->get()), "Ann");
 
   ++iter;
   EXPECT_FALSE((*iter).ok());

@@ -673,7 +673,7 @@ void Quickstart(std::string const& project_id, std::string const& instance_id,
   using RowType = spanner::TypedRow<std::string>;
   for (auto row : reader.Rows<RowType>()) {
     if (!row) throw std::runtime_error(row.status().message());
-    std::cout << row->get<0>() << "\n";
+    std::cout << std::get<0>(row->get()) << "\n";
   }
 }
 //! [quickstart] [END spanner_quickstart]
@@ -787,8 +787,8 @@ void ReadOnlyTransaction(google::cloud::spanner::Client client) {
     if (!row) {
       throw std::runtime_error(row.status().message());
     }
-    std::cout << "SingerId: " << row->get<0>() << " AlbumId: " << row->get<1>()
-              << " AlbumTitle: " << row->get<2>() << "\n";
+    std::cout << "SingerId: " << std::get<0>(row->get()) << " AlbumId: " << std::get<1>(row->get())
+              << " AlbumTitle: " << std::get<2>(row->get()) << "\n";
   }
   // Read#2. Even if changes occur in-between the reads the transaction ensures
   // that Read #1 and Read #2 return the same data.
@@ -798,8 +798,8 @@ void ReadOnlyTransaction(google::cloud::spanner::Client client) {
     if (!row) {
       throw std::runtime_error(row.status().message());
     }
-    std::cout << "SingerId: " << row->get<0>() << " AlbumId: " << row->get<1>()
-              << " AlbumTitle: " << row->get<2>() << "\n";
+    std::cout << "SingerId: " << std::get<0>(row->get()) << " AlbumId: " << std::get<1>(row->get())
+              << " AlbumTitle: " << std::get<2>(row->get()) << "\n";
   }
 }
 //! [END spanner_read_only_transaction]
@@ -823,7 +823,7 @@ void ReadWriteTransaction(google::cloud::spanner::Client client) {
       if (!row) return std::move(row).status();
       // We expect at most one result from the `Read()` request. Return
       // the first one.
-      return row->get<0>();
+      return std::get<0>(row->get());
     }
     // Throw an exception because this should terminate the transaction.
     throw std::runtime_error("Key not found (" + std::to_string(singer_id) +
@@ -978,7 +978,7 @@ void QueryDataWithStruct(google::cloud::spanner::Client client) {
 
   for (auto row : reader.Rows<spanner::TypedRow<std::int64_t>>()) {
     if (!row) throw std::runtime_error(row.status().message());
-    std::cout << "SingerId: " << row->get<0>() << "\n";
+    std::cout << "SingerId: " << std::get<0>(row->get()) << "\n";
   }
   std::cout << "Query completed for [spanner_query_data_with_struct]\n";
 }
@@ -1012,7 +1012,7 @@ void QueryDataWithArrayOfStruct(google::cloud::spanner::Client client) {
 
   for (auto row : reader.Rows<spanner::TypedRow<std::int64_t>>()) {
     if (!row) throw std::runtime_error(row.status().message());
-    std::cout << "SingerId: " << row->get<0>() << "\n";
+    std::cout << "SingerId: " << std::get<0>(row->get()) << "\n";
   }
   std::cout << "Query completed for"
             << " [spanner_query_data_with_array_of_struct]\n";
@@ -1035,7 +1035,7 @@ void FieldAccessOnStructParameters(google::cloud::spanner::Client client) {
 
   for (auto row : reader.Rows<spanner::TypedRow<std::int64_t>>()) {
     if (!row) throw std::runtime_error(row.status().message());
-    std::cout << "SingerId: " << row->get<0>() << "\n";
+    std::cout << "SingerId: " << std::get<0>(row->get()) << "\n";
   }
   std::cout << "Query completed for"
             << " [spanner_field_access_on_struct_parameters]\n";
@@ -1071,7 +1071,7 @@ void FieldAccessOnNestedStruct(google::cloud::spanner::Client client) {
   using RowType = spanner::TypedRow<std::int64_t, std::string>;
   for (auto row : reader.Rows<RowType>()) {
     if (!row) throw std::runtime_error(row.status().message());
-    std::cout << "SingerId: " << row->get<0>() << " SongName: " << row->get<1>()
+    std::cout << "SingerId: " << std::get<0>(row->get()) << " SongName: " << std::get<1>(row->get())
               << "\n";
   }
   std::cout << "Query completed for [spanner_field_access_on_nested_struct]\n";
