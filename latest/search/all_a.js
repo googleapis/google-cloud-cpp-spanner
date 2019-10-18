@@ -14,7 +14,6 @@ var searchData=
   ['makereadonlytransaction',['MakeReadOnlyTransaction',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7aedae28062a59c9b7e809205ebe09be',1,'google::cloud::spanner::v0']]],
   ['makereadwritetransaction',['MakeReadWriteTransaction',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9f3bcd8c67681dbd1c77df4e157f0110',1,'google::cloud::spanner::v0']]],
   ['makereplacemutation',['MakeReplaceMutation',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a23d60b161bb989e8d1f299d45ed0f741',1,'google::cloud::spanner::v0']]],
-  ['makerow',['MakeRow',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af',1,'google::cloud::spanner::v0']]],
   ['makeupdatemutation',['MakeUpdateMutation',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a0c3def39cf255dbb69ebf246930199f5',1,'google::cloud::spanner::v0']]],
   ['mock_5fconst_5fmethod0',['MOCK_CONST_METHOD0',['../classgoogle_1_1cloud_1_1spanner__mocks_1_1v0_1_1MockResultSetSource.html#a6d238ec602a69af5ac196880267b4059',1,'google::cloud::spanner_mocks::v0::MockResultSetSource']]],
   ['mock_5fdatabase_5fadmin_5fconnection_2eh',['mock_database_admin_connection.h',['../mock__database__admin__connection_8h.html',1,'']]],

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Google Cloud Spanner C++ Client: google::cloud::spanner::v0::RowParser&lt; RowType &gt; Class Template Reference</title>
+<title>Google Cloud Spanner C++ Client: google::cloud::spanner::v0::RowParser&lt; TupleType &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -73,11 +73,11 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">google::cloud::spanner::v0::RowParser&lt; RowType &gt; Class Template Reference</div>  </div>
+<div class="title">google::cloud::spanner::v0::RowParser&lt; TupleType &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of Row&lt;Ts....">RowParser</a></code> converts the given <code>ValueSource</code> into a single-pass iterable range of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> objects.  
+<p>A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of std::tuple&lt;Ts....">RowParser</a></code> converts the given <code>ValueSource</code> into a single-pass iterable range of <code>std::tuple&lt;Ts...&gt;</code> objects.  
  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="row__parser_8h_source.html">google/cloud/spanner/row_parser.h</a>&gt;</code></p>
@@ -85,83 +85,83 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html">iterator</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single-pass input iterator that coalesces multiple <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> results into a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code>.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single-pass input iterator that coalesces multiple <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> results into a <code>std::tuple&lt;Ts...&gt;</code>.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aef49f3b969e30bc310a77b6e228e3631"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#aef49f3b969e30bc310a77b6e228e3631">value_type</a> = StatusOr&lt; RowType &gt;</td></tr>
-<tr class="separator:aef49f3b969e30bc310a77b6e228e3631"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac5dd2d9191cc27c3414107ad8c58b35"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#aac5dd2d9191cc27c3414107ad8c58b35">value_type</a> = StatusOr&lt; TupleType &gt;</td></tr>
+<tr class="separator:aac5dd2d9191cc27c3414107ad8c58b35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a54f5628a2a927fc22863620915acdea7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#a54f5628a2a927fc22863620915acdea7">RowParser</a> (<a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a24c2736cb64e83e464aa7fff4bde52fb">ValueSource</a> vs)</td></tr>
-<tr class="memdesc:a54f5628a2a927fc22863620915acdea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of Row&lt;Ts....">RowParser</a></code> for the given <code>ValueSource</code>.  <a href="#a54f5628a2a927fc22863620915acdea7">More...</a><br /></td></tr>
-<tr class="separator:a54f5628a2a927fc22863620915acdea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26950826b8a819fcf438e8d234871bc6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#a26950826b8a819fcf438e8d234871bc6">RowParser</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> const &amp;)=default</td></tr>
-<tr class="separator:a26950826b8a819fcf438e8d234871bc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa89f98b363e3be9d0103911dd168b74"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#afa89f98b363e3be9d0103911dd168b74">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> const &amp;)=default</td></tr>
-<tr class="separator:afa89f98b363e3be9d0103911dd168b74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a011178a0b5f6c14fe9ec24fb0512c652"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#a011178a0b5f6c14fe9ec24fb0512c652">RowParser</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> &amp;&amp;)=default</td></tr>
-<tr class="separator:a011178a0b5f6c14fe9ec24fb0512c652"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e28408541b6b5607201a32cbe7f2f6c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#a8e28408541b6b5607201a32cbe7f2f6c">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> &amp;&amp;)=default</td></tr>
-<tr class="separator:a8e28408541b6b5607201a32cbe7f2f6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7383330774a77f78693cc721f92bd21b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#a7383330774a77f78693cc721f92bd21b">begin</a> ()</td></tr>
-<tr class="memdesc:a7383330774a77f78693cc721f92bd21b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the begin iterator.  <a href="#a7383330774a77f78693cc721f92bd21b">More...</a><br /></td></tr>
-<tr class="separator:a7383330774a77f78693cc721f92bd21b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0f83ad6d67a1b6c14f11f7a0dadfd17"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#af0f83ad6d67a1b6c14f11f7a0dadfd17">end</a> ()</td></tr>
-<tr class="memdesc:af0f83ad6d67a1b6c14f11f7a0dadfd17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the end iterator.  <a href="#af0f83ad6d67a1b6c14f11f7a0dadfd17">More...</a><br /></td></tr>
-<tr class="separator:af0f83ad6d67a1b6c14f11f7a0dadfd17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af71a2f27488ac82e91b8476391042f7a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#af71a2f27488ac82e91b8476391042f7a">RowParser</a> (<a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a24c2736cb64e83e464aa7fff4bde52fb">ValueSource</a> vs)</td></tr>
+<tr class="memdesc:af71a2f27488ac82e91b8476391042f7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of std::tuple&lt;Ts....">RowParser</a></code> for the given <code>ValueSource</code>.  <a href="#af71a2f27488ac82e91b8476391042f7a">More...</a><br /></td></tr>
+<tr class="separator:af71a2f27488ac82e91b8476391042f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa423e98c5500f86d3803407ef44cd00f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#aa423e98c5500f86d3803407ef44cd00f">RowParser</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> const &amp;)=default</td></tr>
+<tr class="separator:aa423e98c5500f86d3803407ef44cd00f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae572182f189550455931ac942e5df2dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#ae572182f189550455931ac942e5df2dc">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> const &amp;)=default</td></tr>
+<tr class="separator:ae572182f189550455931ac942e5df2dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a232f1033095eaa3f87cbe7daa397978f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#a232f1033095eaa3f87cbe7daa397978f">RowParser</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> &amp;&amp;)=default</td></tr>
+<tr class="separator:a232f1033095eaa3f87cbe7daa397978f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf1d9dc2ad2a6b93b317b75f8309339f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#abf1d9dc2ad2a6b93b317b75f8309339f">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> &amp;&amp;)=default</td></tr>
+<tr class="separator:abf1d9dc2ad2a6b93b317b75f8309339f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae1cc39f35ff8523bdc248007284d5ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#aae1cc39f35ff8523bdc248007284d5ff">begin</a> ()</td></tr>
+<tr class="memdesc:aae1cc39f35ff8523bdc248007284d5ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the begin iterator.  <a href="#aae1cc39f35ff8523bdc248007284d5ff">More...</a><br /></td></tr>
+<tr class="separator:aae1cc39f35ff8523bdc248007284d5ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecd39af0b56532cfbd0e27a90bf08aca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#aecd39af0b56532cfbd0e27a90bf08aca">end</a> ()</td></tr>
+<tr class="memdesc:aecd39af0b56532cfbd0e27a90bf08aca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the end iterator.  <a href="#aecd39af0b56532cfbd0e27a90bf08aca">More...</a><br /></td></tr>
+<tr class="separator:aecd39af0b56532cfbd0e27a90bf08aca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename RowType&gt;<br />
-class google::cloud::spanner::v0::RowParser&lt; RowType &gt;</h3>
+<div class="textblock"><h3>template&lt;typename TupleType&gt;<br />
+class google::cloud::spanner::v0::RowParser&lt; TupleType &gt;</h3>
 
-<p>A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of Row&lt;Ts....">RowParser</a></code> converts the given <code>ValueSource</code> into a single-pass iterable range of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> objects. </p>
-<p>Instances of this class are typically obtained from the <code>ResultSet::Rows&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;&gt;</code> member function. Callers should iterate <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of Row&lt;Ts....">RowParser</a></code> using a range-for loop as follows.</p>
-<dl class="section warning"><dt>Warning</dt><dd>Moving a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of Row&lt;Ts....">RowParser</a></code> invalidates all iterators referring to the moved-from instance.</dd></dl>
+<p>A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of std::tuple&lt;Ts....">RowParser</a></code> converts the given <code>ValueSource</code> into a single-pass iterable range of <code>std::tuple&lt;Ts...&gt;</code> objects. </p>
+<p>Instances of this class are typically obtained from the <code>ResultSet::Rows&lt;std::tuple&lt;Ts...&gt;&gt;</code> member function. Callers should iterate <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of std::tuple&lt;Ts....">RowParser</a></code> using a range-for loop as follows.</p>
+<dl class="section warning"><dt>Warning</dt><dd>Moving a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of std::tuple&lt;Ts....">RowParser</a></code> invalidates all iterators referring to the moved-from instance.</dd></dl>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
-<div class="fragment"><div class="line"><a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a24c2736cb64e83e464aa7fff4bde52fb">ValueSource</a> vs = ...</div><div class="line">RowParser&lt;Row&lt;bool, std::int64_t&gt;&gt; rp(std::move(vs));</div><div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> row : rp) {</div><div class="line">  <span class="keywordflow">if</span> (!row) {</div><div class="line">    <span class="comment">// handle error</span></div><div class="line">    <span class="keywordflow">break</span>;</div><div class="line">  }</div><div class="line">  <span class="keywordtype">bool</span> b = row-&gt;get&lt;0&gt;();</div><div class="line">  std::int64_t i = row-&gt;get&lt;1&gt;();</div><div class="line"></div><div class="line">  <span class="comment">// Using C++17 structured bindings</span></div><div class="line">  <span class="keyword">auto</span> [b2, i2] = row-&gt;get();</div><div class="line">}</div></div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
+<div class="fragment"><div class="line"><a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a24c2736cb64e83e464aa7fff4bde52fb">ValueSource</a> vs = ...</div><div class="line">RowParser&lt;std::tuple&lt;bool, std::int64_t&gt;&gt; rp(std::move(vs));</div><div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> row : rp) {</div><div class="line">  <span class="keywordflow">if</span> (!row) {</div><div class="line">    <span class="comment">// handle error</span></div><div class="line">    <span class="keywordflow">break</span>;</div><div class="line">  }</div><div class="line">  <span class="keywordtype">bool</span> b = std::get&lt;0&gt;(*row);</div><div class="line">  std::int64_t i = std::get&lt;1&gt;(*row);</div><div class="line"></div><div class="line">  <span class="comment">// Using C++17 structured bindings</span></div><div class="line">  <span class="keyword">auto</span> [b2, i2] = *row;</div><div class="line">}</div></div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">RowType</td><td>a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> </td></tr>
+    <tr><td class="paramname">TupleType</td><td>a <code>std::tuple&lt;Ts...&gt;</code> </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="row__parser_8h_source.html#l00090">90</a> of file <a class="el" href="row__parser_8h_source.html">row_parser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row__parser_8h_source.html#l00091">91</a> of file <a class="el" href="row__parser_8h_source.html">row_parser.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="aef49f3b969e30bc310a77b6e228e3631"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef49f3b969e30bc310a77b6e228e3631">&#9670;&nbsp;</a></span>value_type</h2>
+<a id="aac5dd2d9191cc27c3414107ad8c58b35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac5dd2d9191cc27c3414107ad8c58b35">&#9670;&nbsp;</a></span>value_type</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename RowType &gt; </div>
+template&lt;typename TupleType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser</a>&lt; RowType &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#aef49f3b969e30bc310a77b6e228e3631">value_type</a> =  StatusOr&lt;RowType&gt;</td>
+          <td class="memname">using <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser</a>&lt; TupleType &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#aac5dd2d9191cc27c3414107ad8c58b35">value_type</a> =  StatusOr&lt;TupleType&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row__parser_8h_source.html#l00092">92</a> of file <a class="el" href="row__parser_8h_source.html">row_parser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row__parser_8h_source.html#l00093">93</a> of file <a class="el" href="row__parser_8h_source.html">row_parser.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a54f5628a2a927fc22863620915acdea7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a54f5628a2a927fc22863620915acdea7">&#9670;&nbsp;</a></span>RowParser() <span class="overload">[1/3]</span></h2>
+<a id="af71a2f27488ac82e91b8476391042f7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af71a2f27488ac82e91b8476391042f7a">&#9670;&nbsp;</a></span>RowParser() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename RowType &gt; </div>
+template&lt;typename TupleType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser</a>&lt; RowType &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> </td>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser</a>&lt; TupleType &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a24c2736cb64e83e464aa7fff4bde52fb">ValueSource</a>&#160;</td>
           <td class="paramname"><em>vs</em></td><td>)</td>
@@ -175,27 +175,27 @@ template&lt;typename RowType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Constructs a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of Row&lt;Ts....">RowParser</a></code> for the given <code>ValueSource</code>. </p>
+<p>Constructs a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of std::tuple&lt;Ts....">RowParser</a></code> for the given <code>ValueSource</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="row__parser_8h_source.html#l00149">149</a> of file <a class="el" href="row__parser_8h_source.html">row_parser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row__parser_8h_source.html#l00150">150</a> of file <a class="el" href="row__parser_8h_source.html">row_parser.h</a>.</p>
 
 </div>
 </div>
-<a id="a26950826b8a819fcf438e8d234871bc6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26950826b8a819fcf438e8d234871bc6">&#9670;&nbsp;</a></span>RowParser() <span class="overload">[2/3]</span></h2>
+<a id="aa423e98c5500f86d3803407ef44cd00f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa423e98c5500f86d3803407ef44cd00f">&#9670;&nbsp;</a></span>RowParser() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename RowType &gt; </div>
+template&lt;typename TupleType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser</a>&lt; RowType &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> </td>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser</a>&lt; TupleType &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt; RowType &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt; TupleType &gt; const &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -209,21 +209,21 @@ template&lt;typename RowType &gt; </div>
 
 </div>
 </div>
-<a id="a011178a0b5f6c14fe9ec24fb0512c652"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a011178a0b5f6c14fe9ec24fb0512c652">&#9670;&nbsp;</a></span>RowParser() <span class="overload">[3/3]</span></h2>
+<a id="a232f1033095eaa3f87cbe7daa397978f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a232f1033095eaa3f87cbe7daa397978f">&#9670;&nbsp;</a></span>RowParser() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename RowType &gt; </div>
+template&lt;typename TupleType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser</a>&lt; RowType &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> </td>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser</a>&lt; TupleType &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt; RowType &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt; TupleType &gt; &amp;&amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -238,19 +238,19 @@ template&lt;typename RowType &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7383330774a77f78693cc721f92bd21b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7383330774a77f78693cc721f92bd21b">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="aae1cc39f35ff8523bdc248007284d5ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae1cc39f35ff8523bdc248007284d5ff">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename RowType &gt; </div>
+template&lt;typename TupleType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html">iterator</a> <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser</a>&lt; RowType &gt;::begin </td>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html">iterator</a> <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser</a>&lt; TupleType &gt;::begin </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -265,23 +265,23 @@ template&lt;typename RowType &gt; </div>
 
 <p>Returns the begin iterator. </p>
 
-<p class="definition">Definition at line <a class="el" href="row__parser_8h_source.html#l00158">158</a> of file <a class="el" href="row__parser_8h_source.html">row_parser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row__parser_8h_source.html#l00159">159</a> of file <a class="el" href="row__parser_8h_source.html">row_parser.h</a>.</p>
 
 </div>
 </div>
-<a id="af0f83ad6d67a1b6c14f11f7a0dadfd17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0f83ad6d67a1b6c14f11f7a0dadfd17">&#9670;&nbsp;</a></span>end()</h2>
+<a id="aecd39af0b56532cfbd0e27a90bf08aca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecd39af0b56532cfbd0e27a90bf08aca">&#9670;&nbsp;</a></span>end()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename RowType &gt; </div>
+template&lt;typename TupleType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html">iterator</a> <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser</a>&lt; RowType &gt;::end </td>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser_1_1iterator.html">iterator</a> <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser</a>&lt; TupleType &gt;::end </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -296,25 +296,25 @@ template&lt;typename RowType &gt; </div>
 
 <p>Returns the end iterator. </p>
 
-<p class="definition">Definition at line <a class="el" href="row__parser_8h_source.html#l00161">161</a> of file <a class="el" href="row__parser_8h_source.html">row_parser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row__parser_8h_source.html#l00162">162</a> of file <a class="el" href="row__parser_8h_source.html">row_parser.h</a>.</p>
 
 </div>
 </div>
-<a id="afa89f98b363e3be9d0103911dd168b74"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa89f98b363e3be9d0103911dd168b74">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+<a id="ae572182f189550455931ac942e5df2dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae572182f189550455931ac942e5df2dc">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename RowType &gt; </div>
+template&lt;typename TupleType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser</a>&lt; RowType &gt;::operator= </td>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser</a>&lt; TupleType &gt;::operator= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt; RowType &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt; TupleType &gt; const &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -328,21 +328,21 @@ template&lt;typename RowType &gt; </div>
 
 </div>
 </div>
-<a id="a8e28408541b6b5607201a32cbe7f2f6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e28408541b6b5607201a32cbe7f2f6c">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+<a id="abf1d9dc2ad2a6b93b317b75f8309339f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf1d9dc2ad2a6b93b317b75f8309339f">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename RowType &gt; </div>
+template&lt;typename TupleType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser</a>&lt; RowType &gt;::operator= </td>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">google::cloud::spanner::v0::RowParser</a>&lt; TupleType &gt;::operator= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt; RowType &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt; TupleType &gt; &amp;&amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
