@@ -110,7 +110,7 @@ int main(int argc, char* argv[]) try {
   auto reader =
       client.ExecuteQuery(spanner::SqlStatement("SELECT 'Hello World'"));
 
-  for (auto&& row : reader.Rows<spanner::Row<std::string>>()) {
+  for (auto&& row : reader.Rows<spanner::TypedRow<std::string>>()) {
     if (!row) throw std::runtime_error(row.status().message());
     std::cout << row->get<0>() << "\n";
   }

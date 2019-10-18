@@ -54,28 +54,28 @@ void VerifyRegularType(Ts&&... ts) {
                 "This method must be constexpr");
 }
 
-TEST(Row, RegularType) {
+TEST(TypedRow, RegularType) {
   VerifyRegularType();
   VerifyRegularType(true);
   VerifyRegularType(true, std::int64_t{42});
 }
 
-TEST(Row, ZeroTypes) {
-  Row<> const row;
+TEST(TypedRow, ZeroTypes) {
+  TypedRow<> const row;
   EXPECT_EQ(0, row.size());
   EXPECT_EQ(std::tuple<>{}, row.get());
 }
 
-TEST(Row, OneType) {
-  Row<bool> row;
+TEST(TypedRow, OneType) {
+  TypedRow<bool> row;
   EXPECT_EQ(1, row.size());
-  row = Row<bool>{true};
+  row = TypedRow<bool>{true};
   EXPECT_EQ(true, row.get<0>());
   EXPECT_EQ(std::make_tuple(true), row.get());
 }
 
-TEST(Row, TwoTypes) {
-  Row<bool, std::int64_t> const row(true, 42);
+TEST(TypedRow, TwoTypes) {
+  TypedRow<bool, std::int64_t> const row(true, 42);
   EXPECT_EQ(2, row.size());
   EXPECT_EQ(true, row.get<0>());
   EXPECT_EQ(42, row.get<1>());
@@ -84,22 +84,22 @@ TEST(Row, TwoTypes) {
   EXPECT_EQ(std::make_tuple(std::int64_t{42}, true), (row.get<1, 0>()));
 }
 
-TEST(Row, WithValues) {
-  Row<Value, Value> row(Value(42), Value("hello"));
+TEST(TypedRow, WithValues) {
+  TypedRow<Value, Value> row(Value(42), Value("hello"));
   EXPECT_EQ(2, row.size());
   EXPECT_EQ(Value(42), row.get<0>());
   EXPECT_EQ(Value("hello"), row.get<1>());
 }
 
-TEST(Row, WithMixedValues) {
-  Row<std::int64_t, Value> row(42, Value("hello"));
+TEST(TypedRow, WithMixedValues) {
+  TypedRow<std::int64_t, Value> row(42, Value("hello"));
   EXPECT_EQ(2, row.size());
   EXPECT_EQ(42, row.get<0>());
   EXPECT_EQ(Value("hello"), row.get<1>());
 }
 
-TEST(Row, ThreeTypes) {
-  Row<bool, std::int64_t, std::string> const row(true, 42, "hello");
+TEST(TypedRow, ThreeTypes) {
+  TypedRow<bool, std::int64_t, std::string> const row(true, 42, "hello");
   EXPECT_EQ(3, row.size());
   EXPECT_EQ(true, row.get<0>());
   EXPECT_EQ(42, row.get<1>());
@@ -111,7 +111,7 @@ TEST(Row, ThreeTypes) {
   EXPECT_EQ(std::int64_t{42}, (row.get<1>()));
 }
 
-TEST(Row, WorksWithOptional) {
+TEST(TypedRow, WorksWithOptional) {
   auto row_null = MakeRow(optional<std::string>{});
   EXPECT_EQ(1, row_null.size());
   EXPECT_FALSE(row_null.get<0>().has_value());
@@ -132,14 +132,14 @@ TEST(Row, WorksWithOptional) {
   EXPECT_EQ("hello", *val);
 }
 
-TEST(Row, Equality) {
+TEST(TypedRow, Equality) {
   EXPECT_EQ(MakeRow(), MakeRow());
   EXPECT_EQ(MakeRow(true, 42), MakeRow(true, 42));
   EXPECT_NE(MakeRow(true, 42), MakeRow(false, 42));
   EXPECT_NE(MakeRow(true, 42), MakeRow(true, 99));
 }
 
-TEST(Row, Relational) {
+TEST(TypedRow, Relational) {
   EXPECT_LE(MakeRow(), MakeRow());
   EXPECT_GE(MakeRow(), MakeRow());
   EXPECT_LT(MakeRow(10), MakeRow(20));
@@ -148,7 +148,7 @@ TEST(Row, Relational) {
   EXPECT_GT(MakeRow("abc"), MakeRow("ab"));
 }
 
-TEST(Row, MoveFromNonConstGet) {
+TEST(TypedRow, MoveFromNonConstGet) {
   // This test relies on common, but unspecified behavior of std::string.
   // Specifically this test creates a string that is bigger than the SSO so it
   // will likely be heap allocated, and it "moves" that string, which will
@@ -169,7 +169,7 @@ TEST(Row, MoveFromNonConstGet) {
   EXPECT_NE(row, copy);  // The two original Rows are no longer equal
 }
 
-TEST(Row, SetUsingNonConstGet) {
+TEST(TypedRow, SetUsingNonConstGet) {
   std::string const data = "data";
   auto row = MakeRow(data, data, data);
   auto const copy = row;
@@ -182,14 +182,14 @@ TEST(Row, SetUsingNonConstGet) {
   EXPECT_EQ("hello", row.get<0>());
 }
 
-Row<bool, std::string> F() { return MakeRow(true, "hello"); }
+TypedRow<bool, std::string> F() { return MakeRow(true, "hello"); }
 
-TEST(Row, RvalueGet) {
+TEST(TypedRow, RvalueGet) {
   EXPECT_TRUE(F().get<0>());
   EXPECT_EQ("hello", F().get<1>());
 }
 
-TEST(Row, GetAllRefOverloads) {
+TEST(TypedRow, GetAllRefOverloads) {
   // Note: This test relies on unspecified moved-from behavior of std::string.
   // See the comment in "MoveFromNonConstGet" for more details.
   std::string const long_string = "12345678901234567890";
@@ -202,53 +202,53 @@ TEST(Row, GetAllRefOverloads) {
   EXPECT_EQ(tup_const, tup_moved);
 }
 
-TEST(Row, MakeRowTypePromotion) {
+TEST(TypedRow, MakeRowTypePromotion) {
   auto row = MakeRow(true, 42, "hello");
-  static_assert(
-      std::is_same<Row<bool, std::int64_t, std::string>, decltype(row)>::value,
-      "Promotes int -> std::int64_t and char const* -> std::string");
+  static_assert(std::is_same<TypedRow<bool, std::int64_t, std::string>,
+                             decltype(row)>::value,
+                "Promotes int -> std::int64_t and char const* -> std::string");
 }
 
-TEST(Row, MakeRowCVQualifications) {
+TEST(TypedRow, MakeRowCVQualifications) {
   std::string const s = "hello";
   static_assert(std::is_same<std::string const, decltype(s)>::value,
                 "s is an lvalue const string");
   auto row = MakeRow(s);
-  static_assert(std::is_same<Row<std::string>, decltype(row)>::value,
+  static_assert(std::is_same<TypedRow<std::string>, decltype(row)>::value,
                 "row holds a non-const string value");
 }
 
-TEST(Row, ParseRowEmpty) {
+TEST(TypedRow, ParseRowEmpty) {
   std::array<Value, 0> const array = {};
-  auto const row = ParseRow<Row<>>(array);
+  auto const row = ParseRow<TypedRow<>>(array);
   EXPECT_TRUE(row.ok());
   EXPECT_EQ(MakeRow(), *row);
   EXPECT_EQ(array, row->values());
 }
 
-TEST(Row, ParseRowOneValue) {
+TEST(TypedRow, ParseRowOneValue) {
   // The extra braces are working around an old clang bug that was fixed in 6.0
   // https://bugs.llvm.org/show_bug.cgi?id=21629
   std::array<Value, 1> const array = {{Value(42)}};
-  auto const row = ParseRow<Row<std::int64_t>>(array);
+  auto const row = ParseRow<TypedRow<std::int64_t>>(array);
   EXPECT_TRUE(row.ok());
   EXPECT_EQ(MakeRow(42), *row);
   EXPECT_EQ(array, row->values());
   // Tests parsing the Value with the wrong type.
-  auto const error_row = ParseRow<Row<double>>(array);
+  auto const error_row = ParseRow<TypedRow<double>>(array);
   EXPECT_FALSE(error_row.ok());
 }
 
-TEST(Row, ParseRowThree) {
+TEST(TypedRow, ParseRowThree) {
   // The extra braces are working around an old clang bug that was fixed in 6.0
   // https://bugs.llvm.org/show_bug.cgi?id=21629
   std::array<Value, 3> array = {{Value(true), Value(42), Value("hello")}};
-  auto row = ParseRow<Row<bool, std::int64_t, std::string>>(array);
+  auto row = ParseRow<TypedRow<bool, std::int64_t, std::string>>(array);
   EXPECT_TRUE(row.ok());
   EXPECT_EQ(MakeRow(true, 42, "hello"), *row);
   EXPECT_EQ(array, row->values());
   // Tests parsing the Value with the wrong type.
-  auto const error_row = ParseRow<Row<bool, double, std::string>>(array);
+  auto const error_row = ParseRow<TypedRow<bool, double, std::string>>(array);
   EXPECT_FALSE(error_row.ok());
 }
 
@@ -260,7 +260,7 @@ void RoundTripRow(RowType const& row) {
   EXPECT_EQ(row, *parsed);
 }
 
-TEST(Row, UnparseRow) {
+TEST(TypedRow, UnparseRow) {
   RoundTripRow(MakeRow());
   RoundTripRow(MakeRow(42));
   RoundTripRow(MakeRow(42, 42));
@@ -273,7 +273,7 @@ TEST(Row, UnparseRow) {
   RoundTripRow(MakeRow(Value(42), Value("hello"), Value(3.14)));
 }
 
-TEST(Row, ValuesAccessorRvalue) {
+TEST(TypedRow, ValuesAccessorRvalue) {
   // There's no good way to test that move semantics actually *work* when using
   // types that you don't own. So this test just verifies that properly written
   // move-the-values-from-the-row code compiles and produces the results users
@@ -287,7 +287,7 @@ TEST(Row, ValuesAccessorRvalue) {
   EXPECT_EQ(kData, *v);
 }
 
-TEST(Row, ValuesConst) {
+TEST(TypedRow, ValuesConst) {
   auto const row = MakeRow("foo", 12345, "bar");
   auto values = row.values();
   EXPECT_EQ(3, values.size());
@@ -296,7 +296,7 @@ TEST(Row, ValuesConst) {
   EXPECT_EQ(Value("bar"), values[2]);
 }
 
-TEST(Row, ValuesMove) {
+TEST(TypedRow, ValuesMove) {
   auto row = MakeRow("foo", 12345, "bar");
   auto values = std::move(row).values();
   EXPECT_EQ(3, values.size());
@@ -305,7 +305,7 @@ TEST(Row, ValuesMove) {
   EXPECT_EQ(Value("bar"), values[2]);
 }
 
-TEST(Row, PrintTo) {
+TEST(TypedRow, PrintTo) {
   auto row = MakeRow(1234, "foo", 2345, "bar", "baz");
   std::ostringstream os;
   PrintTo(row, &os);

@@ -57,10 +57,10 @@ using ValueSource = std::function<StatusOr<optional<Value>>()>;
 
 /**
  * A `RowParser` converts the given `ValueSource` into a single-pass iterable
- * range of `Row<Ts...>` objects.
+ * range of `TypedRow<Ts...>` objects.
  *
  * Instances of this class are typically obtained from the
- * `ResultSet::Rows<Row<Ts...>>` member function. Callers should iterate
+ * `ResultSet::Rows<TypedRow<Ts...>>` member function. Callers should iterate
  * `RowParser` using a range-for loop as follows.
  *
  * @warning Moving a `RowParser` invalidates all iterators referring to the
@@ -70,7 +70,7 @@ using ValueSource = std::function<StatusOr<optional<Value>>()>;
  *
  * @code
  * ValueSource vs = ...
- * RowParser<Row<bool, std::int64_t>> rp(std::move(vs));
+ * RowParser<TypedRow<bool, std::int64_t>> rp(std::move(vs));
  * for (auto row : rp) {
  *   if (!row) {
  *     // handle error
@@ -84,7 +84,7 @@ using ValueSource = std::function<StatusOr<optional<Value>>()>;
  * }
  * @endcode
  *
- * @tparam RowType a `Row<Ts...>`
+ * @tparam RowType a `TypedRow<Ts...>`
  */
 template <typename RowType>
 class RowParser {
@@ -92,7 +92,7 @@ class RowParser {
   using value_type = StatusOr<RowType>;
 
   /// A single-pass input iterator that coalesces multiple `Value` results into
-  /// a `Row<Ts...>`.
+  /// a `TypedRow<Ts...>`.
   class iterator {
    public:
     using iterator_category = std::input_iterator_tag;
@@ -161,8 +161,8 @@ class RowParser {
   iterator end() { return iterator(nullptr); }
 
  private:
-  // Consumes Values from value_source_ and stores the consumed Row in curr_.
-  // Called by iterator::operator++().
+  // Consumes Values from value_source_ and stores the consumed TypedRow in
+  // curr_. Called by iterator::operator++().
   void Advance() {
     if (curr_ && !*curr_) {  // Last row was an error; jump to end
       value_source_ = nullptr;

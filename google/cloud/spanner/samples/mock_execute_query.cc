@@ -96,7 +96,7 @@ TEST(MockSpannerClient, SuccessfulExecuteQuery) {
 
   //! [expected-results]
   int count = 0;
-  using RowType = spanner::Row<std::int64_t, std::string>;
+  using RowType = spanner::TypedRow<std::int64_t, std::string>;
   for (auto row : reader.Rows<RowType>()) {
     ASSERT_TRUE(row);
     auto expected_id = ++count;

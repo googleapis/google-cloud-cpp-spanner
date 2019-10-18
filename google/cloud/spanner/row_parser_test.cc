@@ -49,7 +49,7 @@ RowParser<RowType> MakeRowParser(std::vector<Value> const& v) {
 TEST(RowParser, IteratorEquality) {
   // Empty range of values.
   std::vector<Value> values = {};
-  auto rp = MakeRowParser<Row<std::int64_t>>(values);
+  auto rp = MakeRowParser<TypedRow<std::int64_t>>(values);
   auto it = rp.begin();
   EXPECT_EQ(it, it);
   auto end = rp.end();
@@ -58,7 +58,7 @@ TEST(RowParser, IteratorEquality) {
 
   // Non-empty range of values.
   values = {Value(0), Value(1), Value(2)};
-  rp = MakeRowParser<Row<std::int64_t>>(values);
+  rp = MakeRowParser<TypedRow<std::int64_t>>(values);
   it = rp.begin();
   EXPECT_EQ(it, it);
   end = rp.end();
@@ -68,7 +68,7 @@ TEST(RowParser, IteratorEquality) {
 
 TEST(RowParser, SuccessEmpty) {
   std::vector<Value> const values = {};
-  auto rp = MakeRowParser<Row<std::int64_t>>(values);
+  auto rp = MakeRowParser<TypedRow<std::int64_t>>(values);
   auto it = rp.begin();
   auto end = rp.end();
   EXPECT_EQ(it, end);
@@ -76,13 +76,13 @@ TEST(RowParser, SuccessEmpty) {
 
 TEST(RowParser, SuccessOneColumn) {
   std::vector<Value> const values = {
-      Value(0),  // Row 0
-      Value(1),  // Row 1
-      Value(2),  // Row 2
-      Value(3),  // Row 3
+      Value(0),  // TypedRow 0
+      Value(1),  // TypedRow 1
+      Value(2),  // TypedRow 2
+      Value(3),  // TypedRow 3
   };
   std::int64_t expected_value = 0;
-  for (auto row : MakeRowParser<Row<std::int64_t>>(values)) {
+  for (auto row : MakeRowParser<TypedRow<std::int64_t>>(values)) {
     EXPECT_TRUE(row.ok());
     EXPECT_EQ(expected_value, row->get<0>());
     ++expected_value;
@@ -92,13 +92,13 @@ TEST(RowParser, SuccessOneColumn) {
 
 TEST(RowParser, SuccessTwoColumns) {
   std::vector<Value> const values = {
-      Value(true), Value(0),  // Row 0
-      Value(true), Value(1),  // Row 1
-      Value(true), Value(2),  // Row 2
-      Value(true), Value(3),  // Row 3
+      Value(true), Value(0),  // TypedRow 0
+      Value(true), Value(1),  // TypedRow 1
+      Value(true), Value(2),  // TypedRow 2
+      Value(true), Value(3),  // TypedRow 3
   };
   std::int64_t expected_value = 0;
-  for (auto row : MakeRowParser<Row<bool, std::int64_t>>(values)) {
+  for (auto row : MakeRowParser<TypedRow<bool, std::int64_t>>(values)) {
     EXPECT_TRUE(row.ok());
     EXPECT_EQ(true, row->get<0>());
     EXPECT_EQ(expected_value, row->get<1>());
@@ -109,14 +109,14 @@ TEST(RowParser, SuccessTwoColumns) {
 
 TEST(RowParser, SuccessMovedRowParser) {
   std::vector<Value> const values = {
-      Value(0),  // Row 0
-      Value(1),  // Row 1
-      Value(2),  // Row 2
-      Value(3),  // Row 3
+      Value(0),  // TypedRow 0
+      Value(1),  // TypedRow 1
+      Value(2),  // TypedRow 2
+      Value(3),  // TypedRow 3
   };
 
   // Makes a RowParser, and consumes the first two values.
-  auto rp1 = MakeRowParser<Row<std::int64_t>>(values);
+  auto rp1 = MakeRowParser<TypedRow<std::int64_t>>(values);
   auto it1 = rp1.begin();
   auto end1 = rp1.end();
 
@@ -160,13 +160,13 @@ TEST(RowParser, SuccessMovedRowParser) {
 
 TEST(RowParser, ConstructingRowParserDoesNotConsume) {
   std::vector<Value> const values = {
-      Value(0),  // Row 0
-      Value(1),  // Row 1
-      Value(2),  // Row 2
-      Value(3),  // Row 3
+      Value(0),  // TypedRow 0
+      Value(1),  // TypedRow 1
+      Value(2),  // TypedRow 2
+      Value(3),  // TypedRow 3
   };
   ValueSource vs = MakeSharedValueSource(values);
-  using RowType = Row<std::int64_t>;
+  using RowType = TypedRow<std::int64_t>;
   auto rp1_ignored = RowParser<RowType>(vs);
   static_cast<void>(rp1_ignored);
   auto rp2_ignored = RowParser<RowType>(vs);
@@ -182,13 +182,13 @@ TEST(RowParser, ConstructingRowParserDoesNotConsume) {
 
 TEST(RowParser, RowParserCopiesValueSource) {
   std::vector<Value> const values = {
-      Value(0),  // Row 0
-      Value(1),  // Row 1
-      Value(2),  // Row 2
-      Value(3),  // Row 3
+      Value(0),  // TypedRow 0
+      Value(1),  // TypedRow 1
+      Value(2),  // TypedRow 2
+      Value(3),  // TypedRow 3
   };
 
-  using RowType = Row<std::int64_t>;
+  using RowType = TypedRow<std::int64_t>;
   RowParser<RowType> rp1(MakeUnsharedValueSource(values));
   RowParser<RowType> rp2 = rp1;
 
@@ -221,13 +221,13 @@ TEST(RowParser, RowParserCopiesValueSource) {
 
 TEST(RowParser, FailOneIncompleteRow) {
   std::vector<Value> const values = {
-      Value(true)  // Row 0 (incomplete)
+      Value(true)  // TypedRow 0 (incomplete)
   };
-  auto rp = MakeRowParser<Row<bool, std::int64_t>>(values);
+  auto rp = MakeRowParser<TypedRow<bool, std::int64_t>>(values);
   auto it = rp.begin();
   auto end = rp.end();
 
-  // Row 0
+  // TypedRow 0
   EXPECT_NE(it, end);
   EXPECT_FALSE(it->ok());
   EXPECT_THAT(it->status().message(), testing::HasSubstr("incomplete row"));
@@ -239,28 +239,28 @@ TEST(RowParser, FailOneIncompleteRow) {
 TEST(RowParser, FailOneRow) {
   // 4 rows of bool, std::int64_t
   std::vector<Value> const values = {
-      Value(true),  Value(0),             // Row 0
-      Value(false), Value(1),             // Row 1
-      Value(true),  Value("WRONG TYPE"),  // Row 2
-      Value(false), Value(3),             // Row 3
+      Value(true),  Value(0),             // TypedRow 0
+      Value(false), Value(1),             // TypedRow 1
+      Value(true),  Value("WRONG TYPE"),  // TypedRow 2
+      Value(false), Value(3),             // TypedRow 3
   };
-  auto rp = MakeRowParser<Row<bool, std::int64_t>>(values);
+  auto rp = MakeRowParser<TypedRow<bool, std::int64_t>>(values);
   auto it = rp.begin();
   auto end = rp.end();
 
-  // Row 0
+  // TypedRow 0
   EXPECT_NE(it, end);
   EXPECT_TRUE(it->ok());
   EXPECT_EQ(MakeRow(true, 0), **it);
   ++it;
 
-  // Row 1
+  // TypedRow 1
   EXPECT_NE(it, end);
   EXPECT_TRUE(it->ok());
   EXPECT_EQ(MakeRow(false, 1), **it);
   ++it;
 
-  // Row 2 (this row fails to parse)
+  // TypedRow 2 (this row fails to parse)
   EXPECT_NE(it, end);
   EXPECT_FALSE(it->ok());  // Error
   EXPECT_THAT(it->status().message(), testing::HasSubstr("wrong type"));
@@ -272,12 +272,12 @@ TEST(RowParser, FailOneRow) {
 TEST(RowParser, FailAllRows) {
   // 4 rows of bool, std::int64_t
   std::vector<Value> const values = {
-      Value(true),  Value(0),  // Row 0
-      Value(false), Value(1),  // Row 1
-      Value(true),  Value(2),  // Row 2
-      Value(false), Value(3),  // Row 3
+      Value(true),  Value(0),  // TypedRow 0
+      Value(false), Value(1),  // TypedRow 1
+      Value(true),  Value(2),  // TypedRow 2
+      Value(false), Value(3),  // TypedRow 3
   };
-  auto rp = MakeRowParser<Row<std::string>>(values);
+  auto rp = MakeRowParser<TypedRow<std::string>>(values);
   auto it = rp.begin();
   auto end = rp.end();
 
@@ -294,7 +294,7 @@ TEST(RowParser, InputIteratorTraits) {
   // tested in the .h file, but that'd be a bunch of noise in the header.
 
   std::vector<Value> const values = {Value(true), Value(0)};
-  auto rp = MakeRowParser<Row<bool, std::int64_t>>(values);
+  auto rp = MakeRowParser<TypedRow<bool, std::int64_t>>(values);
 
   auto it = rp.begin();
   auto end = rp.end();
@@ -307,7 +307,7 @@ TEST(RowParser, InputIteratorTraits) {
                              typename It::iterator_category>::value,
                 "");
   // Member alias: value_type
-  static_assert(std::is_same<StatusOr<Row<bool, std::int64_t>>,
+  static_assert(std::is_same<StatusOr<TypedRow<bool, std::int64_t>>,
                              typename It::value_type>::value,
                 "");
 

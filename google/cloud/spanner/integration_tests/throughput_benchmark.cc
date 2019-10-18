@@ -271,7 +271,7 @@ class SelectSingleRow : public Experiment {
       auto key = random_key(generator);
       auto start_query = std::chrono::steady_clock::now();
       using RowType =
-          cloud_spanner::Row<std::int64_t, std::string, std::string>;
+          cloud_spanner::TypedRow<std::int64_t, std::string, std::string>;
       cloud_spanner::SqlStatement statement(
           R"sql(
         SELECT SingerId, FirstName, LastName

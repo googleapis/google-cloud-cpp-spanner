@@ -73,7 +73,7 @@ TEST_F(ClientIntegrationTest, InsertAndCommit) {
 
   auto reader = client_->Read("Singers", KeySet::All(),
                               {"SingerId", "FirstName", "LastName"});
-  using RowType = Row<std::int64_t, std::string, std::string>;
+  using RowType = TypedRow<std::int64_t, std::string, std::string>;
   std::vector<RowType> returned_rows;
   int row_number = 0;
   for (auto& row : reader.Rows<RowType>()) {
@@ -101,7 +101,7 @@ TEST_F(ClientIntegrationTest, DeleteAndCommit) {
   auto reader = client_->Read("Singers", KeySet::All(),
                               {"SingerId", "FirstName", "LastName"});
 
-  using RowType = Row<std::int64_t, std::string, std::string>;
+  using RowType = TypedRow<std::int64_t, std::string, std::string>;
   std::vector<RowType> returned_rows;
   int row_number = 0;
   for (auto& row : reader.Rows<RowType>()) {
@@ -144,7 +144,7 @@ TEST_F(ClientIntegrationTest, MultipleInserts) {
   auto reader = client_->Read("Singers", KeySet::All(),
                               {"SingerId", "FirstName", "LastName"});
 
-  using RowType = Row<std::int64_t, std::string, std::string>;
+  using RowType = TypedRow<std::int64_t, std::string, std::string>;
   std::vector<RowType> returned_rows;
   int row_number = 0;
   for (auto& row : reader.Rows<RowType>()) {
@@ -164,7 +164,7 @@ TEST_F(ClientIntegrationTest, MultipleInserts) {
 TEST_F(ClientIntegrationTest, TransactionRollback) {
   ASSERT_NO_FATAL_FAILURE(InsertTwoSingers());
 
-  using RowType = Row<std::int64_t, std::string, std::string>;
+  using RowType = TypedRow<std::int64_t, std::string, std::string>;
 
   // Cannot use RunTransaction in this test because we want to call Rollback
   // explicitly. This means we need to retry ABORTED calls ourselves.
@@ -256,7 +256,7 @@ TEST_F(ClientIntegrationTest, RunTransaction) {
   EXPECT_LT(insert_result->commit_timestamp, delete_result->commit_timestamp);
 
   // Read SingerIds [100 ... 200).
-  using RowType = Row<std::int64_t>;
+  using RowType = TypedRow<std::int64_t>;
   std::vector<std::int64_t> ids;
   auto ks = KeySet().AddRange(MakeKeyBoundClosed(100), MakeKeyBoundOpen(200));
   auto results = client_->Read("Singers", std::move(ks), {"SingerId"});
@@ -283,7 +283,7 @@ TEST_F(ClientIntegrationTest, ExecuteQueryDml) {
       });
   EXPECT_STATUS_OK(insert_result);
 
-  using RowType = Row<std::int64_t, std::string, std::string>;
+  using RowType = TypedRow<std::int64_t, std::string, std::string>;
   std::vector<RowType> expected_rows;
   auto commit_result = RunTransaction(
       *client_, {},
@@ -380,7 +380,8 @@ void CheckReadWithOptions(
 
   std::vector<RowValues> actual_rows;
   int row_number = 0;
-  for (auto& row : reader.Rows<Row<std::int64_t, std::string, std::string>>()) {
+  for (auto& row :
+       reader.Rows<TypedRow<std::int64_t, std::string, std::string>>()) {
     SCOPED_TRACE("Reading row[" + std::to_string(row_number++) + "]");
     EXPECT_STATUS_OK(row);
     if (!row) break;
@@ -459,7 +460,8 @@ void CheckExecuteQueryWithSingleUseOptions(
 
   std::vector<RowValues> actual_rows;
   int row_number = 0;
-  for (auto& row : reader.Rows<Row<std::int64_t, std::string, std::string>>()) {
+  for (auto& row :
+       reader.Rows<TypedRow<std::int64_t, std::string, std::string>>()) {
     SCOPED_TRACE("Reading row[" + std::to_string(row_number++) + "]");
     EXPECT_STATUS_OK(row);
     if (!row) break;
@@ -563,7 +565,7 @@ TEST_F(ClientIntegrationTest, PartitionRead) {
     ASSERT_STATUS_OK(deserialized_partition);
     auto result_set = client_->Read(*deserialized_partition);
     for (auto& row :
-         result_set.Rows<Row<std::int64_t, std::string, std::string>>()) {
+         result_set.Rows<TypedRow<std::int64_t, std::string, std::string>>()) {
       SCOPED_TRACE("Reading partition[" + std::to_string(partition_number++) +
                    "] row[" + std::to_string(row_number++) + "]");
       EXPECT_STATUS_OK(row);
@@ -601,7 +603,7 @@ TEST_F(ClientIntegrationTest, PartitionQuery) {
     ASSERT_STATUS_OK(deserialized_partition);
     auto result_set = client_->ExecuteQuery(*deserialized_partition);
     for (auto& row :
-         result_set.Rows<Row<std::int64_t, std::string, std::string>>()) {
+         result_set.Rows<TypedRow<std::int64_t, std::string, std::string>>()) {
       SCOPED_TRACE("Reading partition[" + std::to_string(partition_number++) +
                    "] row[" + std::to_string(row_number++) + "]");
       EXPECT_STATUS_OK(row);
@@ -661,7 +663,7 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDml) {
   };
   std::size_t counter = 0;
   for (auto const& row :
-       query.Rows<Row<std::int64_t, std::string, std::string>>()) {
+       query.Rows<TypedRow<std::int64_t, std::string, std::string>>()) {
     ASSERT_STATUS_OK(row);
     ASSERT_EQ(row->get<0>(), expected[counter].id);
     ASSERT_EQ(row->get<1>(), expected[counter].fname);
@@ -727,7 +729,7 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDmlMany) {
 
   auto counter = 0;
   for (auto const& row :
-       query.Rows<Row<std::int64_t, std::string, std::string>>()) {
+       query.Rows<TypedRow<std::int64_t, std::string, std::string>>()) {
     ASSERT_STATUS_OK(row);
     std::string const singer_id = std::to_string(counter);
     std::string const first_name = "Foo" + singer_id;

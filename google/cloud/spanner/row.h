@@ -32,24 +32,25 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
 /**
- * The `Row<Ts...>` class template represents a heterogeneous set of C++ values.
+ * The `TypedRow<Ts...>` class template represents a heterogeneous set of C++
+ * values.
  *
  * The values stored in a row may have any of the valid Spanner types that can
  * be stored in `Value`. Each value in a row is identified by its column index,
  * with the first value corresponding to column 0. The number of columns in the
- * row is given by the `Row::size()` member function (This exactly matches the
- * number of types the `Row` was created with).
+ * row is given by the `TypedRow::size()` member function (This exactly matches
+ * the number of types the `TypedRow` was created with).
  *
- * A `Row<Ts...>` is a regular C++ type, supporting default construction, copy,
- * assignment, move, and equality as expected. It should typically be
+ * A `TypedRow<Ts...>` is a regular C++ type, supporting default construction,
+ * copy, assignment, move, and equality as expected. It should typically be
  * constructed with values using the non-member `spanner::MakeRow(Ts...)`
  * function template (see below). Once an instance is created, you can access
- * the values in the row using the `Row::get()` overloaded functions.
+ * the values in the row using the `TypedRow::get()` overloaded functions.
  *
  * @par Example
  *
  * @code
- * spanner::Row<bool, std::int64_t, std::string> row;
+ * spanner::TypedRow<bool, std::int64_t, std::string> row;
  * row = spanner::MakeRow(true, 42, "hello");
  * static_assert(row.size() == 3, "Created with three types");
  *
@@ -68,7 +69,7 @@ inline namespace SPANNER_CLIENT_NS {
  * @tparam Types... The C++ types for each column in the row.
  */
 template <typename... Types>
-class Row {
+class TypedRow {
   template <std::size_t I>
   using ColumnType = typename std::tuple_element<I, std::tuple<Types...>>::type;
 
@@ -77,27 +78,27 @@ class Row {
   static constexpr std::size_t size() { return sizeof...(Types); }
 
   // Regular value type, supporting copy, assign, move, etc.
-  Row() {}
-  Row(Row const&) = default;
-  Row& operator=(Row const&) = default;
-  Row(Row&&) = default;
-  Row& operator=(Row&&) = default;
+  TypedRow() {}
+  TypedRow(TypedRow const&) = default;
+  TypedRow& operator=(TypedRow const&) = default;
+  TypedRow(TypedRow&&) = default;
+  TypedRow& operator=(TypedRow&&) = default;
 
   /**
-   * Constructs a Row from the specified values.
+   * Constructs a TypedRow from the specified values.
    *
    * See also the `MakeRow()` helper function template for a convenient way to
    * make rows without having to also specify the value's types.
    *
-   * This constructor is disabled if any of the specified types is `Row`, which
-   * prevents this constructor from taking over copy construction.
+   * This constructor is disabled if any of the specified types is `TypedRow`,
+   * which prevents this constructor from taking over copy construction.
    */
   template <typename... Ts,
             typename std::enable_if<
-                !google::cloud::internal::disjunction<
-                    std::is_same<typename std::decay<Ts>::type, Row>...>::value,
+                !google::cloud::internal::disjunction<std::is_same<
+                    typename std::decay<Ts>::type, TypedRow>...>::value,
                 int>::type = 0>
-  explicit Row(Ts&&... ts) : values_(std::forward<Ts>(ts)...) {}
+  explicit TypedRow(Ts&&... ts) : values_(std::forward<Ts>(ts)...) {}
 
   /**
    * Returns a reference to the value at position `I`.
@@ -113,7 +114,7 @@ class Row {
    * assert(row.get<0>() == true);
    * assert(row.get<1>() == "foo");
    *
-   * Row<bool, std::string> F();
+   * TypedRow<bool, std::string> F();
    * std::string x = F().get<1>();
    * @endcode
    */
@@ -163,7 +164,7 @@ class Row {
    * the row.
    *
    * This function is const/non-const x lvalue/rvalue overloaded. This enables
-   * a caller to move the returned tuple out of the Row.
+   * a caller to move the returned tuple out of the TypedRow.
    *
    * @par Example
    *
@@ -187,8 +188,8 @@ class Row {
   /**
    * Returns a std::array of `Value` objects holding all the items in this row.
    *
-   * @note If the Row's values are large, it may be more efficient to "move"
-   *     them into the returned array.
+   * @note If the TypedRow's values are large, it may be more efficient to
+   * "move" them into the returned array.
    *
    * @par Example
    *
@@ -217,26 +218,26 @@ class Row {
 
   /// @name Equality operators
   ///@{
-  friend bool operator==(Row const& a, Row const& b) {
+  friend bool operator==(TypedRow const& a, TypedRow const& b) {
     return a.values_ == b.values_;
   }
-  friend bool operator!=(Row const& a, Row const& b) {
+  friend bool operator!=(TypedRow const& a, TypedRow const& b) {
     return a.values_ != b.values_;
   }
   ///@}
 
   /// @name Relational operators
   ///@{
-  friend bool operator<(Row const& a, Row const& b) {
+  friend bool operator<(TypedRow const& a, TypedRow const& b) {
     return a.values_ < b.values_;
   }
-  friend bool operator<=(Row const& a, Row const& b) {
+  friend bool operator<=(TypedRow const& a, TypedRow const& b) {
     return a.values_ <= b.values_;
   }
-  friend bool operator>(Row const& a, Row const& b) {
+  friend bool operator>(TypedRow const& a, TypedRow const& b) {
     return a.values_ > b.values_;
   }
-  friend bool operator>=(Row const& a, Row const& b) {
+  friend bool operator>=(TypedRow const& a, TypedRow const& b) {
     return a.values_ >= b.values_;
   }
   ///@}
@@ -248,7 +249,7 @@ class Row {
    * @warning This is intended for debugging and human consumption only, not
    *   machine consumption as the output format may change without notice.
    */
-  friend void PrintTo(Row const& r, std::ostream* os) {
+  friend void PrintTo(TypedRow const& r, std::ostream* os) {
     char const* sep = "{";
     for (auto const& v : r.values()) {
       *os << sep;
@@ -279,12 +280,12 @@ class Row {
  * @note Library users should not need to call this function directly; instead,
  *     simply call `row.get<I>()`.
  *
- * This function makes `Row<Ts...>` usable in as a tuple-like class in the
+ * This function makes `TypedRow<Ts...>` usable in as a tuple-like class in the
  * library implementation. For example, `internal::ForEach` finds this function
  * via ADL.
  */
 template <std::size_t I, typename... Ts>
-auto GetElement(Row<Ts...>& row) -> decltype(row.template get<I>()) {
+auto GetElement(TypedRow<Ts...>& row) -> decltype(row.template get<I>()) {
   return row.template get<I>();
 }
 
@@ -301,7 +302,7 @@ template <typename T>
 using PromoteLiteral = decltype(PromoteLiteralImpl(std::declval<T>()));
 
 // A helper functor to be used with `internal::ForEach` to iterate the columns
-// of a `Row<Ts...>` in the ParseRow() function.
+// of a `TypedRow<Ts...>` in the ParseRow() function.
 struct ExtractValue {
   Status& status;
   template <typename T, typename It>
@@ -321,7 +322,7 @@ struct ExtractValue {
 }  // namespace internal
 
 /**
- * Helper factory function to construct `Row<Ts...>` objects holding the
+ * Helper factory function to construct `TypedRow<Ts...>` objects holding the
  * specified values.
  *
  * This is helpful because it deduces the types of the arguments, and it
@@ -333,27 +334,28 @@ struct ExtractValue {
  * @code
  * auto row = MakeRow(42, "hello");
  * static_assert(
- *     std::is_same<Row<std::int64_t, std::string>, decltype(row)>::value, "");
+ *     std::is_same<TypedRow<std::int64_t, std::string>, decltype(row)>::value,
+ * "");
  * @endcode
  */
 template <typename... Ts>
-Row<internal::PromoteLiteral<Ts>...> MakeRow(Ts&&... ts) {
-  return Row<internal::PromoteLiteral<Ts>...>{std::forward<Ts>(ts)...};
+TypedRow<internal::PromoteLiteral<Ts>...> MakeRow(Ts&&... ts) {
+  return TypedRow<internal::PromoteLiteral<Ts>...>{std::forward<Ts>(ts)...};
 }
 
 /**
- * Parses a `std::array` of `Value` objects into a `Row<Ts...>` holding C++
+ * Parses a `std::array` of `Value` objects into a `TypedRow<Ts...>` holding C++
  * types.
  *
  * If parsing fails, an error `Status` is returned. The given array size must
- * exactly match the number of types in the specified `Row<Ts...>`. See
- * `Row::size()`.
+ * exactly match the number of types in the specified `TypedRow<Ts...>`. See
+ * `TypedRow::size()`.
  *
  * @par Example
  *
  * @code
  * std::array<Value, 3> array = {Value(true), Value(42), Value("hello")};
- * using RowType = Row<bool, std::int64_t, std::string>;
+ * using RowType = TypedRow<bool, std::int64_t, std::string>;
  * auto row = ParseRow<RowType>(array);
  * assert(row.ok());
  * assert(MakeRow(true, 42, "hello"), *row);
