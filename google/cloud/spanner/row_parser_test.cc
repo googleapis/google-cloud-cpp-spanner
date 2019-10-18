@@ -76,10 +76,10 @@ TEST(RowParser, SuccessEmpty) {
 
 TEST(RowParser, SuccessOneColumn) {
   std::vector<Value> const values = {
-      Value(0),  // std::tuple 0
-      Value(1),  // std::tuple 1
-      Value(2),  // std::tuple 2
-      Value(3),  // std::tuple 3
+      Value(0),  // Row 0
+      Value(1),  // Row 1
+      Value(2),  // Row 2
+      Value(3),  // Row 3
   };
   std::int64_t expected_value = 0;
   for (auto row : MakeRowParser<std::tuple<std::int64_t>>(values)) {
@@ -92,10 +92,10 @@ TEST(RowParser, SuccessOneColumn) {
 
 TEST(RowParser, SuccessTwoColumns) {
   std::vector<Value> const values = {
-      Value(true), Value(0),  // std::tuple 0
-      Value(true), Value(1),  // std::tuple 1
-      Value(true), Value(2),  // std::tuple 2
-      Value(true), Value(3),  // std::tuple 3
+      Value(true), Value(0),  // Row 0
+      Value(true), Value(1),  // Row 1
+      Value(true), Value(2),  // Row 2
+      Value(true), Value(3),  // Row 3
   };
   std::int64_t expected_value = 0;
   for (auto row : MakeRowParser<std::tuple<bool, std::int64_t>>(values)) {
@@ -109,10 +109,10 @@ TEST(RowParser, SuccessTwoColumns) {
 
 TEST(RowParser, SuccessMovedRowParser) {
   std::vector<Value> const values = {
-      Value(0),  // std::tuple 0
-      Value(1),  // std::tuple 1
-      Value(2),  // std::tuple 2
-      Value(3),  // std::tuple 3
+      Value(0),  // Row 0
+      Value(1),  // Row 1
+      Value(2),  // Row 2
+      Value(3),  // Row 3
   };
 
   // Makes a RowParser, and consumes the first two values.
@@ -161,10 +161,10 @@ TEST(RowParser, SuccessMovedRowParser) {
 
 TEST(RowParser, ConstructingRowParserDoesNotConsume) {
   std::vector<Value> const values = {
-      Value(0),  // std::tuple 0
-      Value(1),  // std::tuple 1
-      Value(2),  // std::tuple 2
-      Value(3),  // std::tuple 3
+      Value(0),  // Row 0
+      Value(1),  // Row 1
+      Value(2),  // Row 2
+      Value(3),  // Row 3
   };
   ValueSource vs = MakeSharedValueSource(values);
   using RowType = std::tuple<std::int64_t>;
@@ -183,10 +183,10 @@ TEST(RowParser, ConstructingRowParserDoesNotConsume) {
 
 TEST(RowParser, RowParserCopiesValueSource) {
   std::vector<Value> const values = {
-      Value(0),  // std::tuple 0
-      Value(1),  // std::tuple 1
-      Value(2),  // std::tuple 2
-      Value(3),  // std::tuple 3
+      Value(0),  // Row 0
+      Value(1),  // Row 1
+      Value(2),  // Row 2
+      Value(3),  // Row 3
   };
 
   using RowType = std::tuple<std::int64_t>;
@@ -222,13 +222,13 @@ TEST(RowParser, RowParserCopiesValueSource) {
 
 TEST(RowParser, FailOneIncompleteRow) {
   std::vector<Value> const values = {
-      Value(true)  // std::tuple 0 (incomplete)
+      Value(true)  // Row 0 (incomplete)
   };
   auto rp = MakeRowParser<std::tuple<bool, std::int64_t>>(values);
   auto it = rp.begin();
   auto end = rp.end();
 
-  // std::tuple 0
+  // Row 0
   EXPECT_NE(it, end);
   EXPECT_FALSE(it->ok());
   EXPECT_THAT(it->status().message(), testing::HasSubstr("incomplete row"));
@@ -240,28 +240,28 @@ TEST(RowParser, FailOneIncompleteRow) {
 TEST(RowParser, FailOneRow) {
   // 4 rows of bool, std::int64_t
   std::vector<Value> const values = {
-      Value(true),  Value(0),             // std::tuple 0
-      Value(false), Value(1),             // std::tuple 1
-      Value(true),  Value("WRONG TYPE"),  // std::tuple 2
-      Value(false), Value(3),             // std::tuple 3
+      Value(true),  Value(0),             // Row 0
+      Value(false), Value(1),             // Row 1
+      Value(true),  Value("WRONG TYPE"),  // Row 2
+      Value(false), Value(3),             // Row 3
   };
   auto rp = MakeRowParser<std::tuple<bool, std::int64_t>>(values);
   auto it = rp.begin();
   auto end = rp.end();
 
-  // std::tuple 0
+  // Row 0
   EXPECT_NE(it, end);
   EXPECT_TRUE(it->ok());
   EXPECT_EQ(std::make_tuple(true, 0), **it);
   ++it;
 
-  // std::tuple 1
+  // Row 1
   EXPECT_NE(it, end);
   EXPECT_TRUE(it->ok());
   EXPECT_EQ(std::make_tuple(false, 1), **it);
   ++it;
 
-  // std::tuple 2 (this row fails to parse)
+  // Row 2 (this row fails to parse)
   EXPECT_NE(it, end);
   EXPECT_FALSE(it->ok());  // Error
   EXPECT_THAT(it->status().message(), testing::HasSubstr("wrong type"));
@@ -273,10 +273,10 @@ TEST(RowParser, FailOneRow) {
 TEST(RowParser, FailAllRows) {
   // 4 rows of bool, std::int64_t
   std::vector<Value> const values = {
-      Value(true),  Value(0),  // std::tuple 0
-      Value(false), Value(1),  // std::tuple 1
-      Value(true),  Value(2),  // std::tuple 2
-      Value(false), Value(3),  // std::tuple 3
+      Value(true),  Value(0),  // Row 0
+      Value(false), Value(1),  // Row 1
+      Value(true),  Value(2),  // Row 2
+      Value(false), Value(3),  // Row 3
   };
   auto rp = MakeRowParser<std::tuple<std::string>>(values);
   auto it = rp.begin();
