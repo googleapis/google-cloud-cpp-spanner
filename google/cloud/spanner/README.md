@@ -21,17 +21,17 @@ production workloads.
 ### v0.2.x - 2019-10
 * **Breaking Changes**
   * refactor `Read` to return `ReadResult`; remove `ResultSet` (#935)
-  * removed `std::tuple<>` from mutations API (#938). Removes the `AddRow(std::tuple<Ts...>)`
+  * removed `Row<>` from mutations API (#938). Removes the `AddRow(Row<Ts...>)`
     member function on the `WriteMutation` API. In place of this method there
     is now an `AddRow(std::vector<Value>)` method.
   * Change `Value::Bytes` to `google::cloud::spanner::Bytes` (#920)
   * implement `CreateInstanceRequestBuilder` (#933). Changed the function
     signature of `InstanceAdminClient::CreateInstance()`.
   * Replace `ExecuteSql` with `ExecuteQuery` and `ExecuteDml` (#927)
-  * Changed `RowParser` to require a `std::tuple<Ts...>` template param (#653).
+  * Changed `RowParser` to require a `Row<Ts...>` template param (#653).
     `ResultSet::Rows` used to be a variadic template that took the individual
      C++ types for each row. With this change that function is now a template
-     with one parameter, which must be a `std::tuple<...>` type.
+     with one parameter, which must be a `Row<...>` type.
   * Implements `Database` in terms of `Instance` (#652). This PR removes
     renames some accessors like `InstanceId` -> `instance_id` due to their
     trivial nature now (style guide). It also removes some methods like
