@@ -84,7 +84,7 @@ TEST(RowParser, SuccessOneColumn) {
   std::int64_t expected_value = 0;
   for (auto row : MakeRowParser<TypedRow<std::int64_t>>(values)) {
     EXPECT_TRUE(row.ok());
-    EXPECT_EQ(expected_value, std::get<0>(row->get()));
+    EXPECT_EQ(expected_value, std::get<0>(*row));
     ++expected_value;
   }
   EXPECT_EQ(values.size(), expected_value);
@@ -100,8 +100,8 @@ TEST(RowParser, SuccessTwoColumns) {
   std::int64_t expected_value = 0;
   for (auto row : MakeRowParser<TypedRow<bool, std::int64_t>>(values)) {
     EXPECT_TRUE(row.ok());
-    EXPECT_EQ(true, std::get<0>(row->get()));
-    EXPECT_EQ(expected_value, std::get<1>(row->get()));
+    EXPECT_EQ(true, std::get<0>(*row));
+    EXPECT_EQ(expected_value, std::get<1>(*row));
     ++expected_value;
   }
   EXPECT_EQ(values.size() / 2, expected_value);
@@ -123,13 +123,13 @@ TEST(RowParser, SuccessMovedRowParser) {
   EXPECT_NE(it1, end1);
   auto row = *it1;
   EXPECT_TRUE(row.ok());
-  EXPECT_EQ(0, std::get<0>(row->get()));
+  EXPECT_EQ(0, std::get<0>(*row));
 
   ++it1;
   EXPECT_NE(it1, end1);
   row = *it1;
   EXPECT_TRUE(row.ok());
-  EXPECT_EQ(1, std::get<0>(row->get()));  // <-- Line (A)
+  EXPECT_EQ(1, std::get<0>(*row));  // <-- Line (A)
 
   // Now we move the RowParser to a new object, and continue the iteration.
   // We should resume consuming where the first RowParser left off.
@@ -140,19 +140,19 @@ TEST(RowParser, SuccessMovedRowParser) {
   EXPECT_NE(it2, end2);
   row = *it2;
   EXPECT_TRUE(row.ok());
-  EXPECT_EQ(1, std::get<0>(row->get()));  // Same value as line (A) since op++ not called
+  EXPECT_EQ(1, std::get<0>(*row));  // Same value as line (A) since op++ not called
 
   ++it2;
   EXPECT_NE(it2, end2);
   row = *it2;
   EXPECT_TRUE(row.ok());
-  EXPECT_EQ(2, std::get<0>(row->get()));
+  EXPECT_EQ(2, std::get<0>(*row));
 
   ++it2;
   EXPECT_NE(it2, end2);
   row = *it2;
   EXPECT_TRUE(row.ok());
-  EXPECT_EQ(3, std::get<0>(row->get()));
+  EXPECT_EQ(3, std::get<0>(*row));
 
   ++it2;
   EXPECT_EQ(it2, end2);
@@ -175,7 +175,7 @@ TEST(RowParser, ConstructingRowParserDoesNotConsume) {
   std::int64_t expected = 0;
   for (auto row : RowParser<RowType>(vs)) {
     EXPECT_TRUE(row.ok());
-    EXPECT_EQ(expected++, std::get<0>(row->get()));
+    EXPECT_EQ(expected++, std::get<0>(*row));
   }
   EXPECT_EQ(values.size(), expected);
 }
@@ -195,14 +195,14 @@ TEST(RowParser, RowParserCopiesValueSource) {
   std::int64_t expected = 0;
   for (auto row : rp1) {
     EXPECT_TRUE(row.ok());
-    EXPECT_EQ(expected++, std::get<0>(row->get()));
+    EXPECT_EQ(expected++, std::get<0>(*row));
   }
   EXPECT_EQ(values.size(), expected);
 
   expected = 0;
   for (auto row : rp2) {
     EXPECT_TRUE(row.ok());
-    EXPECT_EQ(expected++, std::get<0>(row->get()));
+    EXPECT_EQ(expected++, std::get<0>(*row));
   }
   EXPECT_EQ(values.size(), expected);
 
@@ -212,7 +212,7 @@ TEST(RowParser, RowParserCopiesValueSource) {
   expected = 0;
   for (auto row : rp3) {
     EXPECT_TRUE(row.ok());
-    EXPECT_EQ(expected++, std::get<0>(row->get()));
+    EXPECT_EQ(expected++, std::get<0>(*row));
   }
   EXPECT_EQ(values.size(), expected);
 
@@ -251,13 +251,13 @@ TEST(RowParser, FailOneRow) {
   // TypedRow 0
   EXPECT_NE(it, end);
   EXPECT_TRUE(it->ok());
-  EXPECT_EQ(MakeRow(true, 0), **it);
+  EXPECT_EQ(std::make_tuple(true, 0), **it);
   ++it;
 
   // TypedRow 1
   EXPECT_NE(it, end);
   EXPECT_TRUE(it->ok());
-  EXPECT_EQ(MakeRow(false, 1), **it);
+  EXPECT_EQ(std::make_tuple(false, 1), **it);
   ++it;
 
   // TypedRow 2 (this row fails to parse)

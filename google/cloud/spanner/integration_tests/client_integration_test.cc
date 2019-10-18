@@ -262,7 +262,7 @@ TEST_F(ClientIntegrationTest, RunTransaction) {
   auto results = client_->Read("Singers", std::move(ks), {"SingerId"});
   for (auto& row : results.Rows<RowType>()) {
     EXPECT_STATUS_OK(row);
-    if (row) ids.push_back(std::get<0>(row->get()));
+    if (row) ids.push_back(std::get<0>(*row));
   }
   EXPECT_THAT(ids, UnorderedElementsAre(100, 199));
 }
@@ -301,7 +301,7 @@ TEST_F(ClientIntegrationTest, ExecuteQueryDml) {
                                  {"lname", Value("test-lname-" + s)}}));
           if (!insert) return std::move(insert).status();
           expected_rows.push_back(
-              MakeRow(i, "test-fname-" + s, "test-lname-" + s));
+              std::make_tuple(i, "test-fname-" + s, "test-lname-" + s));
         }
 
         auto delete_result =
@@ -385,8 +385,8 @@ void CheckReadWithOptions(
     SCOPED_TRACE("Reading row[" + std::to_string(row_number++) + "]");
     EXPECT_STATUS_OK(row);
     if (!row) break;
-    auto array = std::move(row)->values();
-    actual_rows.emplace_back(array.begin(), array.end());
+    auto v = MakeValues(*std::move(row));
+    actual_rows.emplace_back(v.begin(), v.end());
   }
   EXPECT_THAT(actual_rows, UnorderedElementsAreArray(expected_rows));
 }
@@ -465,8 +465,8 @@ void CheckExecuteQueryWithSingleUseOptions(
     SCOPED_TRACE("Reading row[" + std::to_string(row_number++) + "]");
     EXPECT_STATUS_OK(row);
     if (!row) break;
-    auto array = std::move(row)->values();
-    actual_rows.emplace_back(array.begin(), array.end());
+    auto v = MakeValues(*std::move(row));
+    actual_rows.emplace_back(v.begin(), v.end());
   }
 
   EXPECT_THAT(actual_rows, UnorderedElementsAreArray(expected_rows));
@@ -570,8 +570,8 @@ TEST_F(ClientIntegrationTest, PartitionRead) {
                    "] row[" + std::to_string(row_number++) + "]");
       EXPECT_STATUS_OK(row);
       if (!row) break;
-      auto array = std::move(row)->values();
-      actual_rows.emplace_back(array.begin(), array.end());
+      auto v = MakeValues(*std::move(row));
+      actual_rows.emplace_back(v.begin(), v.end());
     }
   }
 
@@ -608,8 +608,8 @@ TEST_F(ClientIntegrationTest, PartitionQuery) {
                    "] row[" + std::to_string(row_number++) + "]");
       EXPECT_STATUS_OK(row);
       if (!row) break;
-      auto array = std::move(row)->values();
-      actual_rows.emplace_back(array.begin(), array.end());
+      auto v = MakeValues(*std::move(row));
+      actual_rows.emplace_back(v.begin(), v.end());
     }
   }
 
@@ -665,9 +665,9 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDml) {
   for (auto const& row :
        query.Rows<TypedRow<std::int64_t, std::string, std::string>>()) {
     ASSERT_STATUS_OK(row);
-    ASSERT_EQ(std::get<0>(row->get()), expected[counter].id);
-    ASSERT_EQ(std::get<1>(row->get()), expected[counter].fname);
-    ASSERT_EQ(std::get<2>(row->get()), expected[counter].lname);
+    ASSERT_EQ(std::get<0>(*row), expected[counter].id);
+    ASSERT_EQ(std::get<1>(*row), expected[counter].fname);
+    ASSERT_EQ(std::get<2>(*row), expected[counter].lname);
     ++counter;
   }
   ASSERT_EQ(counter, expected.size());
@@ -734,9 +734,9 @@ TEST_F(ClientIntegrationTest, ExecuteBatchDmlMany) {
     std::string const singer_id = std::to_string(counter);
     std::string const first_name = "Foo" + singer_id;
     std::string const last_name = "Bar" + singer_id;
-    ASSERT_EQ(std::get<0>(row->get()), counter);
-    ASSERT_EQ(std::get<1>(row->get()), first_name);
-    ASSERT_EQ(std::get<2>(row->get()), last_name);
+    ASSERT_EQ(std::get<0>(*row), counter);
+    ASSERT_EQ(std::get<1>(*row), first_name);
+    ASSERT_EQ(std::get<2>(*row), last_name);
     ++counter;
   }
 

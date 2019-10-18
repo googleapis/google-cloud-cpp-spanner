@@ -68,238 +68,20 @@ inline namespace SPANNER_CLIENT_NS {
  *
  * @tparam Types... The C++ types for each column in the row.
  */
-template <typename... Types>
-class TypedRow {
-  template <std::size_t I>
-  using ColumnType = typename std::tuple_element<I, std::tuple<Types...>>::type;
-
- public:
-  /// Returns the number of columns in this row.
-  static constexpr std::size_t size() { return sizeof...(Types); }
-
-  // Regular value type, supporting copy, assign, move, etc.
-  TypedRow() {}
-  TypedRow(TypedRow const&) = default;
-  TypedRow& operator=(TypedRow const&) = default;
-  TypedRow(TypedRow&&) = default;
-  TypedRow& operator=(TypedRow&&) = default;
-
-  /**
-   * Constructs a TypedRow from the specified values.
-   *
-   * See also the `MakeRow()` helper function template for a convenient way to
-   * make rows without having to also specify the value's types.
-   *
-   * This constructor is disabled if any of the specified types is `TypedRow`,
-   * which prevents this constructor from taking over copy construction.
-   */
-  template <typename... Ts,
-            typename std::enable_if<
-                !google::cloud::internal::disjunction<std::is_same<
-                    typename std::decay<Ts>::type, TypedRow>...>::value,
-                int>::type = 0>
-  explicit TypedRow(Ts&&... ts) : values_(std::forward<Ts>(ts)...) {}
-
-  /**
-   * Returns a reference to the value at position `I`.
-   *
-   * The value category of the returned reference matches the value category
-   * of `this`. That is, calling `get<I>()` on a non-const lvalue returns a
-   * non-const lvalue. Calling `get<I>()` on an rvalue returns an rvalue, etc.
-   *
-   * @par Example
-   *
-   * @code
-   * auto row = MakeRow(true, "foo");
-   * assert(row.get<0>() == true);
-   * assert(row.get<1>() == "foo");
-   *
-   * TypedRow<bool, std::string> F();
-   * std::string x = F().get<1>();
-   * @endcode
-   */
-  template <std::size_t I>
-  ColumnType<I>& get() & {
-    return std::get<I>(values_);
-  }
-  template <std::size_t I>
-  ColumnType<I> const& get() const& {
-    return std::get<I>(values_);
-  }
-  template <std::size_t I>
-  ColumnType<I>&& get() && {
-    return std::get<I>(std::move(values_));
-  }
-  template <std::size_t I>
-  ColumnType<I> const&& get() const&& {
-    return std::get<I>(std::move(values_));
-  }
-
-  /**
-   * Returns a std::tuple of the values at the specified positions (specified
-   * in any order).
-   *
-   * This overload is only available if 2 or more index template arguments are
-   * specified, thus the result is returned as a std::tuple.
-   *
-   * @par Example
-   *
-   * @code
-   * auto row = MakeRow(true, "foo", 42);
-   * std::tuple<std::int64_t, bool> tup = row.get<2, 0>();
-   * assert(std::get<0>(tup) == 42);
-   * assert(std::get<1>(tup) == true);
-   * @endcode
-   *
-   * @tparam Is... a list of indexes to be returned in a `std::tuple`
-   */
-  template <std::size_t... Is,
-            typename std::enable_if<(sizeof...(Is) > 1), int>::type = 0>
-  std::tuple<ColumnType<Is>...> get() const& {
-    return std::make_tuple(get<Is>()...);
-  }
-
-  /**
-   * Returns a reference to the const std::tuple containing all the values in
-   * the row.
-   *
-   * This function is const/non-const x lvalue/rvalue overloaded. This enables
-   * a caller to move the returned tuple out of the TypedRow.
-   *
-   * @par Example
-   *
-   * @code
-   * auto row = MakeRow(true, "foo", 42);
-   * std::tuple<bool, std::string, std::int64_t> tup
-   *     = row.get();
-   * assert(std::get<0>(tup) == true);
-   * assert(std::get<1>(tup) == "foo");
-   * assert(std::get<2>(tup) == 42);
-   *
-   * auto moved_tup = std::move(row).get();
-   * assert(moved_tup == tup);
-   * @endcode
-   */
-  std::tuple<Types...>& get() & { return values_; }
-  std::tuple<Types...> const& get() const& { return values_; }
-  std::tuple<Types...>&& get() && { return std::move(values_); }
-  std::tuple<Types...> const&& get() const&& { return std::move(values_); }
-
-  /**
-   * Returns a std::array of `Value` objects holding all the items in this row.
-   *
-   * @note If the TypedRow's values are large, it may be more efficient to
-   * "move" them into the returned array.
-   *
-   * @par Example
-   *
-   * @code
-   * auto row = MakeRow(true, "foo", 42);
-   * std::array<Value, 3> a = row.values();
-   * assert(a[0].get<bool>() == true);
-   * assert(a[1].get<std::string>() == "foo");
-   * assert(a[2].get<std::int64_t>() == 42);
-   *
-   * // Potentially more efficient if `row` is no longer needed.
-   * std::array<Value, 3> b = std::move(row).values();
-   * @endcode
-   */
-  std::array<Value, size()> values() const& {
-    std::array<Value, size()> array;
-    internal::ForEach(values_, InsertValue{array, 0});
-    return array;
-  }
-  /// @copydoc values()
-  std::array<Value, size()> values() && {
-    std::array<Value, size()> array;
-    internal::ForEach(std::move(values_), InsertValue{array, 0});
-    return array;
-  }
-
-  /// @name Equality operators
-  ///@{
-  friend bool operator==(TypedRow const& a, TypedRow const& b) {
-    return a.values_ == b.values_;
-  }
-  friend bool operator!=(TypedRow const& a, TypedRow const& b) {
-    return a.values_ != b.values_;
-  }
-  ///@}
-
-  /// @name Relational operators
-  ///@{
-  friend bool operator<(TypedRow const& a, TypedRow const& b) {
-    return a.values_ < b.values_;
-  }
-  friend bool operator<=(TypedRow const& a, TypedRow const& b) {
-    return a.values_ <= b.values_;
-  }
-  friend bool operator>(TypedRow const& a, TypedRow const& b) {
-    return a.values_ > b.values_;
-  }
-  friend bool operator>=(TypedRow const& a, TypedRow const& b) {
-    return a.values_ >= b.values_;
-  }
-  ///@}
-
-  /**
-   * Allows Google Test to print internal debugging information when test
-   * assertions fail.
-   *
-   * @warning This is intended for debugging and human consumption only, not
-   *   machine consumption as the output format may change without notice.
-   */
-  friend void PrintTo(TypedRow const& r, std::ostream* os) {
-    char const* sep = "{";
-    for (auto const& v : r.values()) {
-      *os << sep;
-      PrintTo(v, os);
-      sep = ", ";
-    }
-    *os << "}";
-  }
-
- private:
-  // A helper functor to be used with `internal::ForEach` that adds each
-  // element of the values_ tuple to an array of `Value` objects.
-  struct InsertValue {
-    std::array<Value, size()>& array;
-    std::size_t i;
-    template <typename T>
-    void operator()(T&& t) {
-      array[i++] = Value(std::forward<T>(t));
-    }
-  };
-
-  std::tuple<Types...> values_;
-};
-
-/**
- * Returns the row-element at column `I`.
- *
- * @note Library users should not need to call this function directly; instead,
- *     simply call `row.get<I>()`.
- *
- * This function makes `TypedRow<Ts...>` usable in as a tuple-like class in the
- * library implementation. For example, `internal::ForEach` finds this function
- * via ADL.
- */
-template <std::size_t I, typename... Ts>
-auto GetElement(TypedRow<Ts...>& row) -> decltype(row.template get<I>()) {
-  return row.template get<I>();
-}
+template <typename... Ts>
+using TypedRow = std::tuple<Ts...>;
 
 namespace internal {
-// A helper metafunction that promots some C++ literal types to the types
-// required by Cloud Spanner. For example, a literal 42 is of type int, but
-// this will promote it to type std::int64_t. Similarly, a C++ string literal
-// will be "promoted" to type std::string.
-template <typename T>
-T PromoteLiteralImpl(T);
-std::string PromoteLiteralImpl(char const*);
-std::int64_t PromoteLiteralImpl(int);
-template <typename T>
-using PromoteLiteral = decltype(PromoteLiteralImpl(std::declval<T>()));
+
+// A helper functor to be used with `internal::ForEach` that adds each
+// element of the values_ tuple to an array of `Value` objects.
+struct PushBackValue {
+  std::vector<Value>& v;
+  template <typename T>
+  void operator()(T&& t) {
+    v.push_back(Value(std::forward<T>(t)));
+  }
+};
 
 // A helper functor to be used with `internal::ForEach` to iterate the columns
 // of a `TypedRow<Ts...>` in the ParseRow() function.
@@ -314,33 +96,15 @@ struct ExtractValue {
       t = *std::move(x);
     }
   }
-  template <typename It>
-  void operator()(Value& v, It& it) const {
-    v = *it++;
-  }
 };
+
 }  // namespace internal
 
-/**
- * Helper factory function to construct `TypedRow<Ts...>` objects holding the
- * specified values.
- *
- * This is helpful because it deduces the types of the arguments, and it
- * promotes integer and string literals to the necessary Spanner types
- * `std::int64_t` and `std::string`, respectively.
- *
- * @par Example
- *
- * @code
- * auto row = MakeRow(42, "hello");
- * static_assert(
- *     std::is_same<TypedRow<std::int64_t, std::string>, decltype(row)>::value,
- * "");
- * @endcode
- */
 template <typename... Ts>
-TypedRow<internal::PromoteLiteral<Ts>...> MakeRow(Ts&&... ts) {
-  return TypedRow<internal::PromoteLiteral<Ts>...>{std::forward<Ts>(ts)...};
+std::vector<Value> MakeValues(TypedRow<Ts...> row) {
+  std::vector<Value> v;
+  internal::ForEach(std::move(std::move(row)), internal::PushBackValue{v});
+  return v;
 }
 
 /**
@@ -361,8 +125,8 @@ TypedRow<internal::PromoteLiteral<Ts>...> MakeRow(Ts&&... ts) {
  * assert(MakeRow(true, 42, "hello"), *row);
  * @endcode
  */
-template <typename RowType>
-StatusOr<RowType> ParseRow(std::array<Value, RowType::size()> const& array) {
+template <typename RowType, std::size_t N>
+StatusOr<RowType> ParseRow(std::array<Value, N> const& array) {
   RowType row;
   auto it = array.begin();
   Status status;

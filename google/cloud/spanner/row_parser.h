@@ -76,11 +76,11 @@ using ValueSource = std::function<StatusOr<optional<Value>>()>;
  *     // handle error
  *     break;
  *   }
- *   bool b = std::get<0>(row->get());
- *   std::int64_t i = std::get<1>(row->get());
+ *   bool b = std::get<0>(*row);
+ *   std::int64_t i = std::get<1>(*row);
  *
  *   // Using C++17 structured bindings
- *   auto [b2, i2] = row->get();
+ *   auto [b2, i2] = *row;
  * }
  * @endcode
  *
@@ -168,7 +168,7 @@ class RowParser {
       value_source_ = nullptr;
       return;
     }
-    std::array<Value, RowType::size()> values;
+    std::array<Value, std::tuple_size<RowType>::value> values;
     for (std::size_t i = 0; i < values.size(); ++i) {
       StatusOr<optional<Value>> v = value_source_();
       if (!v) {

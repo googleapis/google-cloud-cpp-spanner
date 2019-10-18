@@ -100,8 +100,8 @@ TEST(MockSpannerClient, SuccessfulExecuteQuery) {
   for (auto row : reader.Rows<RowType>()) {
     ASSERT_TRUE(row);
     auto expected_id = ++count;
-    EXPECT_EQ(expected_id, std::get<0>(row->get()));
-    EXPECT_EQ("Hello World", std::get<1>(row->get()));
+    EXPECT_EQ(expected_id, std::get<0>(*row));
+    EXPECT_EQ("Hello World", std::get<1>(*row));
   }
   //! [expected-results]
 }

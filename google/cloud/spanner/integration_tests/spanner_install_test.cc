@@ -112,7 +112,7 @@ int main(int argc, char* argv[]) try {
 
   for (auto&& row : reader.Rows<spanner::TypedRow<std::string>>()) {
     if (!row) throw std::runtime_error(row.status().message());
-    std::cout << std::get<0>(row->get()) << "\n";
+    std::cout << std::get<0>(*row) << "\n";
   }
 
   drop_database();
