@@ -123,7 +123,7 @@ TEST(ConnectionImplTest, ReadGetSessionFailure) {
                   KeySet::All(),
                   {"column1"},
                   ReadOptions()});
-  for (auto& row : result.Rows<TypedRow<std::string>>()) {
+  for (auto& row : result.Rows<std::tuple<std::string>>()) {
     EXPECT_EQ(StatusCode::kPermissionDenied, row.status().code());
     EXPECT_THAT(row.status().message(), HasSubstr("uh-oh in GetSession"));
   }
@@ -157,7 +157,7 @@ TEST(ConnectionImplTest, ReadStreamingReadFailure) {
                   KeySet::All(),
                   {"column1"},
                   ReadOptions()});
-  for (auto& row : result.Rows<TypedRow<std::string>>()) {
+  for (auto& row : result.Rows<std::tuple<std::string>>()) {
     EXPECT_EQ(StatusCode::kPermissionDenied, row.status().code());
     EXPECT_THAT(row.status().message(),
                 HasSubstr("uh-oh in GrpcReader::Finish"));
@@ -219,7 +219,7 @@ TEST(ConnectionImplTest, ReadSuccess) {
                   KeySet::All(),
                   {"UserId", "UserName"},
                   ReadOptions()});
-  using RowType = TypedRow<std::int64_t, std::string>;
+  using RowType = std::tuple<std::int64_t, std::string>;
   auto expected = std::vector<RowType>{
       RowType(12, "Steve"),
       RowType(42, "Ann"),
@@ -260,7 +260,7 @@ TEST(ConnectionImplTest, Read_PermanentFailure) {
                   KeySet::All(),
                   {"UserId", "UserName"},
                   ReadOptions()});
-  for (auto& row : result.Rows<TypedRow<std::string>>()) {
+  for (auto& row : result.Rows<std::tuple<std::string>>()) {
     EXPECT_EQ(StatusCode::kPermissionDenied, row.status().code());
     EXPECT_THAT(row.status().message(), HasSubstr("uh-oh"));
   }
@@ -297,7 +297,7 @@ TEST(ConnectionImplTest, Read_TooManyTransientFailures) {
                   KeySet::All(),
                   {"UserId", "UserName"},
                   ReadOptions()});
-  for (auto& row : result.Rows<TypedRow<std::string>>()) {
+  for (auto& row : result.Rows<std::tuple<std::string>>()) {
     EXPECT_EQ(StatusCode::kUnavailable, row.status().code());
     EXPECT_THAT(row.status().message(), HasSubstr("try-again"));
   }
@@ -331,7 +331,7 @@ TEST(ConnectionImplTest, ReadImplicitBeginTransaction) {
   Transaction txn = MakeReadOnlyTransaction(Transaction::ReadOnlyOptions());
   auto result = conn->Read(
       {txn, "table", KeySet::All(), {"UserId", "UserName"}, ReadOptions()});
-  for (auto& row : result.Rows<TypedRow<std::string>>()) {
+  for (auto& row : result.Rows<std::tuple<std::string>>()) {
     EXPECT_STATUS_OK(row);
   }
   EXPECT_THAT(txn, HasSessionAndTransactionId("test-session-name", "ABCDEF00"));
@@ -352,7 +352,7 @@ TEST(ConnectionImplTest, ExecuteQueryGetSessionFailure) {
   auto result = conn->ExecuteQuery(
       {MakeSingleUseTransaction(Transaction::ReadOnlyOptions()),
        SqlStatement("select * from table")});
-  for (auto& row : result.Rows<TypedRow<std::int64_t>>()) {
+  for (auto& row : result.Rows<std::tuple<std::int64_t>>()) {
     EXPECT_EQ(StatusCode::kPermissionDenied, row.status().code());
     EXPECT_THAT(row.status().message(), HasSubstr("uh-oh in GetSession"));
   }
@@ -382,7 +382,7 @@ TEST(ConnectionImplTest, ExecuteQueryStreamingReadFailure) {
   auto result = conn->ExecuteQuery(
       {MakeSingleUseTransaction(Transaction::ReadOnlyOptions()),
        SqlStatement("select * from table")});
-  for (auto& row : result.Rows<TypedRow<std::int64_t>>()) {
+  for (auto& row : result.Rows<std::tuple<std::int64_t>>()) {
     EXPECT_EQ(StatusCode::kPermissionDenied, row.status().code());
     EXPECT_THAT(row.status().message(),
                 HasSubstr("uh-oh in GrpcReader::Finish"));
@@ -434,7 +434,7 @@ TEST(ConnectionImplTest, ExecuteQueryReadSuccess) {
   auto result = conn->ExecuteQuery(
       {MakeSingleUseTransaction(Transaction::ReadOnlyOptions()),
        SqlStatement("select * from table")});
-  using RowType = TypedRow<std::int64_t, std::string>;
+  using RowType = std::tuple<std::int64_t, std::string>;
   auto expected = std::vector<RowType>{
       RowType(12, "Steve"),
       RowType(42, "Ann"),
@@ -475,7 +475,7 @@ TEST(ConnectionImplTest, ExecuteQueryImplicitBeginTransaction) {
 
   Transaction txn = MakeReadOnlyTransaction(Transaction::ReadOnlyOptions());
   auto result = conn->ExecuteQuery({txn, SqlStatement("select * from table")});
-  for (auto& row : result.Rows<TypedRow<std::int64_t>>()) {
+  for (auto& row : result.Rows<std::tuple<std::int64_t>>()) {
     EXPECT_STATUS_OK(row);
   }
   EXPECT_THAT(txn, HasSessionAndTransactionId("test-session-name", "00FEDCBA"));
@@ -1471,7 +1471,7 @@ TEST(ConnectionImplTest, TransactionSessionBinding) {
   auto result =
       conn->Read({txn1, "table", KeySet::All(), {"Number"}, ReadOptions()});
   EXPECT_THAT(txn1, HasSessionAndTransactionId("session-1", "ABCDEF01"));
-  for (auto& row : result.Rows<TypedRow<std::int64_t>>()) {
+  for (auto& row : result.Rows<std::tuple<std::int64_t>>()) {
     EXPECT_STATUS_OK(row);
     EXPECT_EQ(std::get<0>(*row), 0);
   }
@@ -1480,7 +1480,7 @@ TEST(ConnectionImplTest, TransactionSessionBinding) {
   result =
       conn->Read({txn2, "table", KeySet::All(), {"Number"}, ReadOptions()});
   EXPECT_THAT(txn2, HasSessionAndTransactionId("session-2", "ABCDEF02"));
-  for (auto& row : result.Rows<TypedRow<std::int64_t>>()) {
+  for (auto& row : result.Rows<std::tuple<std::int64_t>>()) {
     EXPECT_STATUS_OK(row);
     EXPECT_EQ(std::get<0>(*row), 1);
   }
@@ -1488,7 +1488,7 @@ TEST(ConnectionImplTest, TransactionSessionBinding) {
   result =
       conn->Read({txn1, "table", KeySet::All(), {"Number"}, ReadOptions()});
   EXPECT_THAT(txn1, HasSessionAndTransactionId("session-1", "ABCDEF01"));
-  for (auto& row : result.Rows<TypedRow<std::int64_t>>()) {
+  for (auto& row : result.Rows<std::tuple<std::int64_t>>()) {
     EXPECT_STATUS_OK(row);
     EXPECT_EQ(std::get<0>(*row), 2);
   }
@@ -1496,7 +1496,7 @@ TEST(ConnectionImplTest, TransactionSessionBinding) {
   result =
       conn->Read({txn2, "table", KeySet::All(), {"Number"}, ReadOptions()});
   EXPECT_THAT(txn2, HasSessionAndTransactionId("session-2", "ABCDEF02"));
-  for (auto& row : result.Rows<TypedRow<std::int64_t>>()) {
+  for (auto& row : result.Rows<std::tuple<std::int64_t>>()) {
     EXPECT_STATUS_OK(row);
     EXPECT_EQ(std::get<0>(*row), 3);
   }

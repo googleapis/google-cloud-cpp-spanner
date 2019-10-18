@@ -65,7 +65,7 @@ class QueryResult {
 
   /**
    * Returns a `RowParser` which can be used to iterate the returned
-   * `TypedRow`s.
+   * `std::tuple`s.
    *
    * Since there is a single result stream for each `QueryResult` instance,
    * users should not use multiple `RowParser`s from the same `QueryResult` at
@@ -135,7 +135,7 @@ class ProfileQueryResult {
 
   /**
    * Returns a `RowParser` which can be used to iterate the returned
-   * `TypedRow`s.
+   * `std::tuple`s.
    *
    * Since there is a single result stream for each `ProfileQueryResult`
    * instance, users should not use multiple `RowParser`s from the same

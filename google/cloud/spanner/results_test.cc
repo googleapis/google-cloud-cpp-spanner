@@ -45,7 +45,7 @@ TEST(QueryResult, IterateNoRows) {
 
   QueryResult result_set(std::move(mock_source));
   int num_rows = 0;
-  for (auto const& row : result_set.Rows<TypedRow<bool>>()) {
+  for (auto const& row : result_set.Rows<std::tuple<bool>>()) {
     static_cast<void>(row);
     ++num_rows;
   }
@@ -66,7 +66,7 @@ TEST(QueryResult, IterateOverRows) {
   QueryResult result_set(std::move(mock_source));
   int num_rows = 0;
   for (auto const& row :
-       result_set.Rows<TypedRow<std::int64_t, bool, std::string>>()) {
+       result_set.Rows<std::tuple<std::int64_t, bool, std::string>>()) {
     EXPECT_TRUE(row.ok());
     switch (num_rows++) {
       case 0:
@@ -101,7 +101,7 @@ TEST(QueryResult, IterateError) {
   QueryResult result_set(std::move(mock_source));
   int num_rows = 0;
   for (auto const& row :
-       result_set.Rows<TypedRow<std::int64_t, bool, std::string>>()) {
+       result_set.Rows<std::tuple<std::int64_t, bool, std::string>>()) {
     switch (num_rows++) {
       case 0:
         EXPECT_TRUE(row.ok());

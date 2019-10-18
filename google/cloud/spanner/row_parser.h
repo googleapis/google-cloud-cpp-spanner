@@ -15,6 +15,7 @@
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_ROW_PARSER_H_
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_ROW_PARSER_H_
 
+#include "google/cloud/spanner/internal/tuple_utils.h"
 #include "google/cloud/spanner/row.h"
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/spanner/version.h"
@@ -57,10 +58,10 @@ using ValueSource = std::function<StatusOr<optional<Value>>()>;
 
 /**
  * A `RowParser` converts the given `ValueSource` into a single-pass iterable
- * range of `TypedRow<Ts...>` objects.
+ * range of `std::tuple<Ts...>` objects.
  *
  * Instances of this class are typically obtained from the
- * `ResultSet::Rows<TypedRow<Ts...>>` member function. Callers should iterate
+ * `ResultSet::Rows<std::tuple<Ts...>>` member function. Callers should iterate
  * `RowParser` using a range-for loop as follows.
  *
  * @warning Moving a `RowParser` invalidates all iterators referring to the
@@ -70,7 +71,7 @@ using ValueSource = std::function<StatusOr<optional<Value>>()>;
  *
  * @code
  * ValueSource vs = ...
- * RowParser<TypedRow<bool, std::int64_t>> rp(std::move(vs));
+ * RowParser<std::tuple<bool, std::int64_t>> rp(std::move(vs));
  * for (auto row : rp) {
  *   if (!row) {
  *     // handle error
@@ -84,15 +85,15 @@ using ValueSource = std::function<StatusOr<optional<Value>>()>;
  * }
  * @endcode
  *
- * @tparam RowType a `TypedRow<Ts...>`
+ * @tparam TupleType a `std::tuple<Ts...>`
  */
-template <typename RowType>
+template <typename TupleType>
 class RowParser {
  public:
-  using value_type = StatusOr<RowType>;
+  using value_type = StatusOr<TupleType>;
 
   /// A single-pass input iterator that coalesces multiple `Value` results into
-  /// a `TypedRow<Ts...>`.
+  /// a `std::tuple<Ts...>`.
   class iterator {
    public:
     using iterator_category = std::input_iterator_tag;
@@ -161,14 +162,39 @@ class RowParser {
   iterator end() { return iterator(nullptr); }
 
  private:
-  // Consumes Values from value_source_ and stores the consumed TypedRow in
+  // A helper used with `internal::ForEach` to convert an array of `Value`
+  // objects into a std::tuple.
+  struct ExtractValue {
+    Status& status;
+    template <typename T, typename It>
+    void operator()(T& t, It& it) const {
+      auto x = it++->template get<T>();
+      if (!x) {
+        status = std::move(x).status();
+      } else {
+        t = *std::move(x);
+      }
+    }
+  };
+
+  template <std::size_t N>
+  StatusOr<TupleType> ParseRow(std::array<Value, N> const& array) {
+    TupleType row;
+    auto it = array.begin();
+    Status status;
+    internal::ForEach(row, ExtractValue{status}, it);
+    if (!status.ok()) return status;
+    return row;
+  }
+
+  // Consumes Values from value_source_ and stores the consumed std::tuple in
   // curr_. Called by iterator::operator++().
   void Advance() {
     if (curr_ && !*curr_) {  // Last row was an error; jump to end
       value_source_ = nullptr;
       return;
     }
-    std::array<Value, std::tuple_size<RowType>::value> values;
+    std::array<Value, std::tuple_size<TupleType>::value> values;
     for (std::size_t i = 0; i < values.size(); ++i) {
       StatusOr<optional<Value>> v = value_source_();
       if (!v) {
@@ -185,7 +211,7 @@ class RowParser {
       }
       values[i] = **std::move(v);
     }
-    curr_ = ParseRow<RowType>(values);
+    curr_ = ParseRow(values);
   }
 
   ValueSource value_source_;  // nullpr is end

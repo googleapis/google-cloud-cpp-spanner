@@ -670,7 +670,7 @@ void Quickstart(std::string const& project_id, std::string const& instance_id,
   auto reader =
       client.ExecuteQuery(spanner::SqlStatement("SELECT 'Hello World'"));
 
-  using RowType = spanner::TypedRow<std::string>;
+  using RowType = std::tuple<std::string>;
   for (auto row : reader.Rows<RowType>()) {
     if (!row) throw std::runtime_error(row.status().message());
     std::cout << std::get<0>(*row) << "\n";
@@ -778,7 +778,7 @@ void ReadOnlyTransaction(google::cloud::spanner::Client client) {
 
   spanner::SqlStatement select(
       "SELECT SingerId, AlbumId, AlbumTitle FROM Albums");
-  using RowType = spanner::TypedRow<std::int64_t, std::int64_t, std::string>;
+  using RowType = std::tuple<std::int64_t, std::int64_t, std::string>;
 
   // Read#1.
   auto read1 = client.ExecuteQuery(read_only, select);
@@ -787,7 +787,8 @@ void ReadOnlyTransaction(google::cloud::spanner::Client client) {
     if (!row) {
       throw std::runtime_error(row.status().message());
     }
-    std::cout << "SingerId: " << std::get<0>(*row) << " AlbumId: " << std::get<1>(*row)
+    std::cout << "SingerId: " << std::get<0>(*row)
+              << " AlbumId: " << std::get<1>(*row)
               << " AlbumTitle: " << std::get<2>(*row) << "\n";
   }
   // Read#2. Even if changes occur in-between the reads the transaction ensures
@@ -798,7 +799,8 @@ void ReadOnlyTransaction(google::cloud::spanner::Client client) {
     if (!row) {
       throw std::runtime_error(row.status().message());
     }
-    std::cout << "SingerId: " << std::get<0>(*row) << " AlbumId: " << std::get<1>(*row)
+    std::cout << "SingerId: " << std::get<0>(*row)
+              << " AlbumId: " << std::get<1>(*row)
               << " AlbumTitle: " << std::get<2>(*row) << "\n";
   }
 }
@@ -817,7 +819,7 @@ void ReadWriteTransaction(google::cloud::spanner::Client client) {
     auto key = spanner::KeySet().AddKey(spanner::MakeKey(singer_id, album_id));
     auto read = client.Read(std::move(txn), "Albums", std::move(key),
                             {"MarketingBudget"});
-    for (auto row : read.Rows<spanner::TypedRow<std::int64_t>>()) {
+    for (auto row : read.Rows<std::tuple<std::int64_t>>()) {
       // Return the error (as opposed to throwing an exception) because
       // RunTransaction() only retries on StatusCode::kAborted.
       if (!row) return std::move(row).status();
@@ -976,7 +978,7 @@ void QueryDataWithStruct(google::cloud::spanner::Client client) {
       {{"name", spanner::Value(singer_info)}}));
   //! [spanner-sql-statement-params]
 
-  for (auto row : reader.Rows<spanner::TypedRow<std::int64_t>>()) {
+  for (auto row : reader.Rows<std::tuple<std::int64_t>>()) {
     if (!row) throw std::runtime_error(row.status().message());
     std::cout << "SingerId: " << std::get<0>(*row) << "\n";
   }
@@ -1010,7 +1012,7 @@ void QueryDataWithArrayOfStruct(google::cloud::spanner::Client client) {
       "    IN UNNEST(@names)",
       {{"names", spanner::Value(singer_info)}}));
 
-  for (auto row : reader.Rows<spanner::TypedRow<std::int64_t>>()) {
+  for (auto row : reader.Rows<std::tuple<std::int64_t>>()) {
     if (!row) throw std::runtime_error(row.status().message());
     std::cout << "SingerId: " << std::get<0>(*row) << "\n";
   }
@@ -1033,7 +1035,7 @@ void FieldAccessOnStructParameters(google::cloud::spanner::Client client) {
       "SELECT SingerId FROM Singers WHERE FirstName = @name.FirstName",
       {{"name", spanner::Value(name)}}));
 
-  for (auto row : reader.Rows<spanner::TypedRow<std::int64_t>>()) {
+  for (auto row : reader.Rows<std::tuple<std::int64_t>>()) {
     if (!row) throw std::runtime_error(row.status().message());
     std::cout << "SingerId: " << std::get<0>(*row) << "\n";
   }
@@ -1068,11 +1070,11 @@ void FieldAccessOnNestedStruct(google::cloud::spanner::Client client) {
       "    IN UNNEST(@songinfo.ArtistNames)",
       {{"songinfo", spanner::Value(songinfo)}}));
 
-  using RowType = spanner::TypedRow<std::int64_t, std::string>;
+  using RowType = std::tuple<std::int64_t, std::string>;
   for (auto row : reader.Rows<RowType>()) {
     if (!row) throw std::runtime_error(row.status().message());
-    std::cout << "SingerId: " << std::get<0>(*row) << " SongName: " << std::get<1>(*row)
-              << "\n";
+    std::cout << "SingerId: " << std::get<0>(*row)
+              << " SongName: " << std::get<1>(*row) << "\n";
   }
   std::cout << "Query completed for [spanner_field_access_on_nested_struct]\n";
 }
@@ -1131,8 +1133,7 @@ class RemoteConnectionFake {
   std::string serialized_partition_in_transit_;
 };
 
-void ProcessRow(const google::cloud::spanner::TypedRow<
-                std::int64_t, std::string, std::string>&) {}
+void ProcessRow(const std::tuple<std::int64_t, std::string, std::string>&) {}
 
 void PartitionRead(google::cloud::spanner::Client client) {
   namespace spanner = google::cloud::spanner;
@@ -1158,7 +1159,7 @@ void PartitionRead(google::cloud::spanner::Client client) {
       remote_connection.ReceiveReadPartitionFromRemoteMachine();
   if (!partition) throw std::runtime_error(partition.status().message());
   auto result_set = client.Read(*partition);
-  using RowType = spanner::TypedRow<std::int64_t, std::string, std::string>;
+  using RowType = std::tuple<std::int64_t, std::string, std::string>;
   for (auto const& row : result_set.Rows<RowType>()) {
     if (!row) throw std::runtime_error(row.status().message());
     ProcessRow(*row);
@@ -1187,7 +1188,7 @@ void PartitionQuery(google::cloud::spanner::Client client) {
       remote_connection.ReceiveQueryPartitionFromRemoteMachine();
   if (!partition) throw std::runtime_error(partition.status().message());
   auto result_set = client.ExecuteQuery(*partition);
-  using RowType = spanner::TypedRow<std::int64_t, std::string, std::string>;
+  using RowType = std::tuple<std::int64_t, std::string, std::string>;
   for (auto const& row : result_set.Rows<RowType>()) {
     if (!row) throw std::runtime_error(row.status().message());
     ProcessRow(*row);
