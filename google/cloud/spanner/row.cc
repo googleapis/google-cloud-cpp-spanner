@@ -17,8 +17,8 @@
 #include "google/cloud/status.h"
 #include "google/cloud/status_or.h"
 #include <algorithm>
-#include <iterator>
 #include <cassert>
+#include <iterator>
 #include <utility>
 
 namespace google {
@@ -45,7 +45,9 @@ Row::Row(std::vector<Value> values,
   }
 }
 
-bool operator==(Row const& a, Row const& b) { return a.values_ == b.values_; }
+bool operator==(Row const& a, Row const& b) {
+  return a.values_ == b.values_ && *a.columns_ == *b.columns_;
+}
 
 StatusOr<Value> Row::get(std::size_t pos) const& {
   if (pos < values_.size()) return values_[pos];
