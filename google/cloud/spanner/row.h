@@ -50,7 +50,7 @@ inline namespace SPANNER_CLIENT_NS {
  * Perhaps the most convenient way to access the `Values` in a row is through
  * the varity of "get" accessors. A user may access a column's `Value' by
  * calling `get` with a `std::size_t` 0-indexed position, or a `std::string`
- * column name. Further more, callers may directly extract the native C++ type
+ * column name. Furthermore, callers may directly extract the native C++ type
  * by specifying the C++ type along with the column's position or name.
  *
  * @par Example
@@ -67,8 +67,8 @@ inline namespace SPANNER_CLIENT_NS {
  */
 class Row {
  public:
-  // Not default constructible.
-  Row() = delete;
+  /// Default constructs an empty row with no columns nor values.
+  Row();
 
   /**
    * Constructs a `Row` with the given @p values and @p columns.
@@ -87,17 +87,17 @@ class Row {
   Row& operator=(Row&&) = default;
   ///@}
 
-  /// Retuns the number of columns in the row.
-  std::size_t size() const { return columns_->size(); }
+  /// Returns the number of columns in the row.
+  std::size_t size() const;
 
-  /// Retuns the column names for the row.
-  std::vector<std::string> const& columns() const { return *columns_; }
-
-  /// Returns the `Value` objects in the given row.
-  std::vector<Value> const& values() const& { return values_; }
+  /// Returns the column names for the row.
+  std::vector<std::string> const& columns() const;
 
   /// Returns the `Value` objects in the given row.
-  std::vector<Value>&& values() && { return std::move(values_); }
+  std::vector<Value> const& values() const&;
+
+  /// Returns the `Value` objects in the given row.
+  std::vector<Value>&& values() &&;
 
   /// Returns the `Value` at the given @p pos.
   StatusOr<Value> get(std::size_t pos) const&;
@@ -115,6 +115,7 @@ class Row {
    * Returns the native C++ value at the given position or column name.
    *
    * @tparam T the native C++ type, e.g., std::int64_t or std::string
+   * @tparam Arg a deduced parameter convertible to a std::size_t or std::string
    */
   template <typename T, typename Arg>
   StatusOr<T> get(Arg&& arg) const& {
@@ -127,6 +128,7 @@ class Row {
    * Returns the native C++ value at the given position or column name.
    *
    * @tparam T the native C++ type, e.g., std::int64_t or std::string
+   * @tparam Arg a deduced parameter convertible to a std::size_t or std::string
    */
   template <typename T, typename Arg>
   StatusOr<T> get(Arg&& arg) && {
@@ -180,7 +182,7 @@ class Row {
 /**
  * Creates a `Row` instance with the given column names and values.
  *
- * This function is mostly convenient for generating rows for testing.
+ * This function is mostly convenient for creating `Row` instances for testing.
  *
  * @par Example
  *

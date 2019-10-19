@@ -23,6 +23,11 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace {
 
+TEST(Row, DefaultConstruct) {
+  Row row;
+  EXPECT_EQ(0, row.size());
+}
+
 TEST(Row, ValueSemantics) {
   Row row = MakeRow({
       {"a", Value(1)},       //

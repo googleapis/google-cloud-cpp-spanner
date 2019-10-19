@@ -36,18 +36,21 @@ Row MakeRow(std::vector<std::pair<std::string, Value>> pairs) {
   return Row(std::move(values), std::move(columns));
 }
 
+Row::Row() : Row({}, std::make_shared<std::vector<std::string>>()) {}
+
 Row::Row(std::vector<Value> values,
          std::shared_ptr<std::vector<std::string>> columns)
     : values_(std::move(values)), columns_(std::move(columns)) {
   if (values_.size() != columns_->size()) {
-    GCP_LOG(ERROR) << "values and columns sizes do not match: "
+    GCP_LOG(ERROR) << "Row's value and column sizes do not match: "
                    << values_.size() << " vs " << columns_->size();
   }
 }
+std::size_t Row::size() const { return columns_->size(); }
+std::vector<std::string> const& Row::columns() const { return *columns_; }
 
-bool operator==(Row const& a, Row const& b) {
-  return a.values_ == b.values_ && *a.columns_ == *b.columns_;
-}
+std::vector<Value> const& Row::values() const& { return values_; }
+std::vector<Value>&& Row::values() && { return std::move(values_); }
 
 // NOLINTNEXTLINE(readability-identifier-naming)
 StatusOr<Value> Row::get(std::size_t pos) const& {
@@ -73,6 +76,10 @@ StatusOr<Value> Row::get(std::string const& name) && {
   auto it = std::find(columns_->begin(), columns_->end(), name);
   if (it != columns_->end()) return get(std::distance(columns_->begin(), it));
   return Status(StatusCode::kInvalidArgument, "column name not found");
+}
+
+bool operator==(Row const& a, Row const& b) {
+  return a.values_ == b.values_ && *a.columns_ == *b.columns_;
 }
 
 }  // namespace SPANNER_CLIENT_NS
