@@ -46,10 +46,16 @@ Row::Row(std::vector<Value> values,
                    << values_.size() << " vs " << columns_->size();
   }
 }
+// NOLINTNEXTLINE(readability-identifier-naming)
 std::size_t Row::size() const { return columns_->size(); }
+
+// NOLINTNEXTLINE(readability-identifier-naming)
 std::vector<std::string> const& Row::columns() const { return *columns_; }
 
+// NOLINTNEXTLINE(readability-identifier-naming)
 std::vector<Value> const& Row::values() const& { return values_; }
+
+// NOLINTNEXTLINE(readability-identifier-naming)
 std::vector<Value>&& Row::values() && { return std::move(values_); }
 
 // NOLINTNEXTLINE(readability-identifier-naming)
