@@ -23,6 +23,17 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace {
 
+namespace {
+RowStreamIterator::Source MakeRowStreamIteratorSource(
+    std::vector<Row> const& rows) {
+  std::size_t index = 0;
+  return [=]() mutable -> StatusOr<Row> {
+    if (index == rows.size()) return Row{};
+    return {rows[index++]};
+  };
+}
+}  // namespace
+
 TEST(Row, DefaultConstruct) {
   Row row;
   EXPECT_EQ(0, row.size());
@@ -169,6 +180,115 @@ TEST(Row, TemplatedGetAsTuple) {
   EXPECT_FALSE(std::move(copy).get<WrongType>().ok());
 
   EXPECT_EQ(std::make_tuple(1, "blah", true), *std::move(row).get<RowType>());
+}
+
+TEST(RowStreamIterator, Basics) {
+  RowStreamIterator end;
+  EXPECT_EQ(end, end);
+
+  std::vector<Row> rows;
+  rows.emplace_back(MakeRow({
+      {"a", Value(1)},      //
+      {"b", Value("foo")},  //
+      {"c", Value(true)}    //
+  }));
+  rows.emplace_back(MakeRow({
+      {"a", Value(2)},      //
+      {"b", Value("bar")},  //
+      {"c", Value(true)}    //
+  }));
+  rows.emplace_back(MakeRow({
+      {"a", Value(3)},      //
+      {"b", Value("baz")},  //
+      {"c", Value(true)}    //
+  }));
+
+  auto it = RowStreamIterator(MakeRowStreamIteratorSource(rows));
+  EXPECT_EQ(it, it);
+  EXPECT_NE(it, end);
+  EXPECT_STATUS_OK(*it);
+  EXPECT_EQ(rows[0], **it);
+
+  ++it;
+  EXPECT_EQ(it, it);
+  EXPECT_NE(it, end);
+  EXPECT_STATUS_OK(*it);
+  EXPECT_EQ(rows[1], **it);
+
+  ++it;
+  EXPECT_EQ(it, it);
+  EXPECT_NE(it, end);
+  EXPECT_STATUS_OK(*it);
+  EXPECT_EQ(rows[2], **it);
+
+  ++it;
+  EXPECT_EQ(it, it);
+  EXPECT_EQ(it, end);
+}
+
+TEST(RowStreamIterator, Empty) {
+  RowStreamIterator end;
+  auto it = RowStreamIterator(MakeRowStreamIteratorSource({}));
+  EXPECT_EQ(it, end);
+}
+
+TEST(RowStreamIterator, OneRow) {
+  RowStreamIterator end;
+  std::vector<Row> rows;
+  rows.emplace_back(MakeRow({
+      {"a", Value(1)},      //
+      {"b", Value("foo")},  //
+      {"c", Value(true)}    //
+  }));
+  auto it = RowStreamIterator(MakeRowStreamIteratorSource(rows));
+  EXPECT_NE(it, end);
+  EXPECT_STATUS_OK(*it);
+  EXPECT_EQ(rows[0], **it);
+
+  ++it;
+  EXPECT_EQ(it, it);
+  EXPECT_EQ(it, end);
+}
+
+TEST(RowStreamIterator, ForLoop) {
+  std::vector<Row> rows;
+  rows.emplace_back(MakeRow({{"num", Value(2)}}));
+  rows.emplace_back(MakeRow({{"num", Value(3)}}));
+  rows.emplace_back(MakeRow({{"num", Value(5)}}));
+
+  auto source = MakeRowStreamIteratorSource(rows);
+  std::int64_t product = 1;
+  for (RowStreamIterator it(source), end; it != end; ++it) {
+    EXPECT_STATUS_OK(*it);
+    auto num = (*it)->get<std::int64_t>("num");
+    EXPECT_STATUS_OK(num);
+    product *= *num;
+  }
+  EXPECT_EQ(product, 30);
+}
+
+TEST(RowStreamIterator, RangeForLoop) {
+  std::vector<Row> rows;
+  rows.emplace_back(MakeRow({{"num", Value(2)}}));
+  rows.emplace_back(MakeRow({{"num", Value(3)}}));
+  rows.emplace_back(MakeRow({{"num", Value(5)}}));
+
+  struct RowRange {
+    RowStreamIterator::Source source;
+    // NOLINTNEXTLINE(readability-identifier-naming)
+    RowStreamIterator begin() { return RowStreamIterator(source); }
+    // NOLINTNEXTLINE(readability-identifier-naming)
+    RowStreamIterator end() { return {}; }
+  };
+  RowRange range{MakeRowStreamIteratorSource(rows)};
+  std::int64_t product = 1;
+  for (auto row : range) {
+    EXPECT_STATUS_OK(row);
+    auto num = row->get<std::int64_t>("num");
+    EXPECT_STATUS_OK(num);
+    product *= *num;
+  }
+  EXPECT_EQ(product, 30);
 }
 
 }  // namespace

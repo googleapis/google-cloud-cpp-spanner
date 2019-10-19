@@ -20,6 +20,7 @@
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/status.h"
 #include "google/cloud/status_or.h"
+#include <functional>
 #include <memory>
 #include <string>
 #include <utility>
@@ -204,6 +205,56 @@ class Row {
  * @endcode
  */
 Row MakeRow(std::vector<std::pair<std::string, Value>> pairs);
+
+/**
+ * A `RowStreamIterator` is an "Input Iterator" that iterates a sequence of
+ * `StatusOr<Row>` objects.
+ *
+ * As an Input Iterator, the sequence may only be consumed once. See
+ * https://en.cppreference.com/w/cpp/named_req/InputIterator for more details.
+ *
+ * Default constructing a `RowStreamIterator` creates an instance that
+ * represents "end".
+ */
+class RowStreamIterator {
+ public:
+  /**
+   * A function that returns a sequence of `StatusOr<Row>` objects, a new one
+   * each time its called.
+   */
+  using Source = std::function<StatusOr<Row>()>;
+
+  /// @name Iterator type aliases
+  ///@{
+  using iterator_category = std::input_iterator_tag;
+  using value_type = StatusOr<Row>;
+  using difference_type = std::ptrdiff_t;
+  using pointer = value_type*;
+  using reference = value_type&;
+  ///@}
+
+  /// Default constructs an "end" iterator.
+  RowStreamIterator();
+
+  /**
+   * Constructs a `RowStreamIterator` that will consume rows from the given
+   * @p source, which must not be `nullptr`.
+   */
+  explicit RowStreamIterator(Source source);
+
+  reference operator*() { return row_; }
+  pointer operator->() { return &row_; }
+
+  RowStreamIterator& operator++();
+  RowStreamIterator operator++(int);
+
+  friend bool operator==(RowStreamIterator const&, RowStreamIterator const&);
+  friend bool operator!=(RowStreamIterator const&, RowStreamIterator const&);
+
+ private:
+  value_type row_;
+  Source source_;  // nullptr means "end"
+};
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
