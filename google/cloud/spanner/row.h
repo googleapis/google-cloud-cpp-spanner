@@ -31,10 +31,10 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
 /**
- * A `Row` is a sequence of columns each with a name and an associated `Value.
+ * A `Row` is a sequence of columns each with a name and an associated `Value`.
  *
  * The `Row` class is a regular value type that may be copied, moved, assigned,
- * compared for equality, etc. Instance may be large if they hold lots of
+ * compared for equality, etc. Instances may be large if they hold lots of
  * `Value` data, so copy only when necessary.
  *
  * `Row` instances are typically returned as the result of queries or reads of
@@ -136,10 +136,10 @@ class Row {
   }
 
   /**
-   * Returns all the native C++ values for the whole row in std::tuple with the
-   * specified type.
+   * Returns all the native C++ values for the whole row in a `std::tuple` with
+   * the specified type.
    *
-   * @tparam Tuple the `std::tuple` type that the whole row should unpack into.
+   * @tparam Tuple the `std::tuple` type that the whole row must unpack into.
    */
   template <typename Tuple>
   StatusOr<Tuple> get() const {
