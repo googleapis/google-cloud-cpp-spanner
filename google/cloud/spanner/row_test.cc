@@ -55,8 +55,8 @@ TEST(Row, BasicAccessors) {
 
   EXPECT_EQ(3, row.size());
   EXPECT_EQ(values, row.values());
-  EXPECT_EQ(values, std::move(row).values());
   EXPECT_EQ(columns, row.columns());
+  EXPECT_EQ(values, std::move(row).values());
 }
 
 TEST(Row, GetByPosition) {
@@ -76,8 +76,6 @@ TEST(Row, GetByPosition) {
   EXPECT_EQ(Value(true), *row.get(2));
 
   EXPECT_EQ(Value(1), *std::move(row).get(0));
-  EXPECT_EQ(Value("blah"), *std::move(row).get(1));
-  EXPECT_EQ(Value(true), *std::move(row).get(2));
 }
 
 TEST(Row, GetByColumnName) {
@@ -97,8 +95,6 @@ TEST(Row, GetByColumnName) {
   EXPECT_EQ(Value(true), *row.get("c"));
 
   EXPECT_EQ(Value(1), *std::move(row).get("a"));
-  EXPECT_EQ(Value("blah"), *std::move(row).get("b"));
-  EXPECT_EQ(Value(true), *std::move(row).get("c"));
 }
 
 TEST(Row, TemplatedGetByPosition) {
@@ -122,8 +118,6 @@ TEST(Row, TemplatedGetByPosition) {
   EXPECT_EQ(true, *row.get<bool>(2));
 
   EXPECT_EQ(1, *std::move(row).get<std::int64_t>(0));
-  EXPECT_EQ("blah", *std::move(row).get<std::string>(1));
-  EXPECT_EQ(true, *std::move(row).get<bool>(2));
 }
 
 TEST(Row, TemplatedGetByColumnName) {
@@ -147,8 +141,6 @@ TEST(Row, TemplatedGetByColumnName) {
   EXPECT_EQ(true, *row.get<bool>("c"));
 
   EXPECT_EQ(1, *std::move(row).get<std::int64_t>("a"));
-  EXPECT_EQ("blah", *std::move(row).get<std::string>("b"));
-  EXPECT_EQ(true, *std::move(row).get<bool>("c"));
 }
 
 TEST(Row, TemplatedGetAsTuple) {
