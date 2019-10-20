@@ -23,6 +23,7 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -207,7 +208,7 @@ class Row {
 Row MakeRow(std::vector<std::pair<std::string, Value>> pairs);
 
 /**
- * A `RowStreamIterator` is an "Input Iterator" that iterates a sequence of
+ * A `RowStreamIterator` is an "Input Iterator" that returns a sequence of
  * `StatusOr<Row>` objects.
  *
  * As an Input Iterator, the sequence may only be consumed once. See
@@ -254,6 +255,81 @@ class RowStreamIterator {
  private:
   value_type row_;
   Source source_;  // nullptr means "end"
+};
+
+/**
+ * A `TupleStreamIterator<Tuple>` is an "Input Iterator" that wraps a
+ * `RowStreamIterator`, parsing its elements into a sequence of
+ * `StatusOr<Tuple>` objects.
+ *
+ * As an Input Iterator, the sequence may only be consumed once. See
+ * https://en.cppreference.com/w/cpp/named_req/InputIterator for more details.
+ *
+ * Default constructing this object creates an instance that represents "end".
+ *
+ * Each `Row` returned by the wrapped `RowStreamIterator` must be convertible
+ * to the specified `Tuple` template parameter.
+ *
+ * @tparam Tuple the std::tuple<...> to parse each `Row` into.
+ */
+template <typename Tuple>
+class TupleStreamIterator {
+ public:
+  /// @name Iterator type aliases
+  ///@{
+  using iterator_category = std::input_iterator_tag;
+  using value_type = StatusOr<Tuple>;
+  using difference_type = std::ptrdiff_t;
+  using pointer = value_type*;
+  using reference = value_type&;
+  ///@}
+
+  /// Default constructs an "end" iterator.
+  TupleStreamIterator() = default;
+
+  /// Creates an iterator that wraps the given `RowStreamIterator` range.
+  TupleStreamIterator(RowStreamIterator begin, RowStreamIterator end)
+      : it_(std::move(begin)), end_(std::move(end)) {
+    ParseTuple();
+  }
+
+  reference operator*() { return tup_; }
+  pointer operator->() { return &tup_; }
+
+  TupleStreamIterator& operator++() {
+    if (!tup_) {
+      it_ = end_;
+      return *this;
+    }
+    ++it_;
+    ParseTuple();
+    return *this;
+  }
+
+  TupleStreamIterator operator++(int) {
+    auto const old = *this;
+    ++*this;
+    return old;
+  }
+
+  friend bool operator==(TupleStreamIterator const& a,
+                         TupleStreamIterator const& b) {
+    return a.it_ == b.it_;
+  }
+
+  friend bool operator!=(TupleStreamIterator const& a,
+                         TupleStreamIterator const& b) {
+    return !(a == b);
+  }
+
+ private:
+  void ParseTuple() {
+    if (it_ != end_) tup_ = (*it_)->template get<Tuple>();
+  }
+
+  value_type tup_;
+  RowStreamIterator it_;
+  RowStreamIterator end_;
 };
 
 }  // namespace SPANNER_CLIENT_NS
