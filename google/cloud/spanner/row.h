@@ -21,9 +21,11 @@
 #include "google/cloud/status.h"
 #include "google/cloud/status_or.h"
 #include <functional>
+#include <iterator>
 #include <memory>
 #include <string>
 #include <tuple>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -330,6 +332,37 @@ class TupleStreamIterator {
   value_type tup_;
   RowStreamIterator it_;
   RowStreamIterator end_;
+};
+
+/**
+ * A `TupleRange<Tuple>` defines a range that parses `Tuple` objects from the
+ * given range of `RowStreamIterator`s.
+ *
+ * @tparam Tuple the std::tuple<...> to parse each `Row` into.
+ */
+template <typename Tuple>
+class TupleRange {
+ public:
+  using iterator = TupleStreamIterator<Tuple>;
+
+  /**
+   * Creates a `TupleRange<Tuple>` by wrapping the given @p range. The `Range`
+   * must be a range defined by `RowStreamIterator` objects.
+   */
+  template <typename Range>
+  explicit TupleRange(Range const& range)
+      : begin_(std::begin(range), std::end(range)) {
+    using T = decltype(std::begin(range));
+    static_assert(std::is_same<RowStreamIterator, T>::value,
+                  "TupleRange must be given a RowStreamIterator range.");
+  }
+
+  iterator begin() const { return begin_; }
+  iterator end() const { return end_; }
+
+ private:
+  iterator begin_;
+  iterator end_;
 };
 
 }  // namespace SPANNER_CLIENT_NS

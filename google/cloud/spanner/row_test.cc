@@ -25,6 +25,7 @@ inline namespace SPANNER_CLIENT_NS {
 namespace {
 
 namespace {
+
 RowStreamIterator::Source MakeRowStreamIteratorSource(
     std::vector<Row> const& rows) {
   std::size_t index = 0;
@@ -33,6 +34,15 @@ RowStreamIterator::Source MakeRowStreamIteratorSource(
     return {rows[index++]};
   };
 }
+
+struct RowRange {
+  RowStreamIterator::Source source;
+  // NOLINTNEXTLINE(readability-identifier-naming)
+  RowStreamIterator begin() const { return RowStreamIterator(source); }
+  // NOLINTNEXTLINE(readability-identifier-naming)
+  RowStreamIterator end() const { return {}; }
+};
+
 }  // namespace
 
 TEST(Row, DefaultConstruct) {
@@ -274,13 +284,6 @@ TEST(RowStreamIterator, RangeForLoop) {
   rows.emplace_back(MakeRow({{"num", Value(3)}}));
   rows.emplace_back(MakeRow({{"num", Value(5)}}));
 
-  struct RowRange {
-    RowStreamIterator::Source source;
-    // NOLINTNEXTLINE(readability-identifier-naming)
-    RowStreamIterator begin() { return RowStreamIterator(source); }
-    // NOLINTNEXTLINE(readability-identifier-naming)
-    RowStreamIterator end() { return {}; }
-  };
   RowRange range{MakeRowStreamIteratorSource(rows)};
   std::int64_t product = 1;
   for (auto row : range) {
@@ -393,6 +396,69 @@ TEST(TupleStreamIterator, Error) {
   ++it;  // Due to the previous error, jumps straight to "end"
   EXPECT_EQ(it, it);
   EXPECT_EQ(it, end);
+}
+
+TEST(TupleRange, Basics) {
+  std::vector<Row> rows;
+  rows.emplace_back(MakeRow({
+      {"a", Value(1)},      //
+      {"b", Value("foo")},  //
+      {"c", Value(true)}    //
+  }));
+  rows.emplace_back(MakeRow({
+      {"a", Value(2)},      //
+      {"b", Value("bar")},  //
+      {"c", Value(true)}    //
+  }));
+  rows.emplace_back(MakeRow({
+      {"a", Value(3)},      //
+      {"b", Value("baz")},  //
+      {"c", Value(true)}    //
+  }));
+
+  using RowType = std::tuple<std::int64_t, std::string, bool>;
+  RowRange range{MakeRowStreamIteratorSource(rows)};
+  auto parser = TupleRange<RowType>(range);
+  auto it = parser.begin();
+  auto end = parser.end();
+  EXPECT_EQ(end, end);
+
+  EXPECT_EQ(it, it);
+  EXPECT_NE(it, end);
+  EXPECT_STATUS_OK(*it);
+  EXPECT_EQ(std::make_tuple(1, "foo", true), **it);
+
+  ++it;
+  EXPECT_EQ(it, it);
+  EXPECT_NE(it, end);
+  EXPECT_STATUS_OK(*it);
+  EXPECT_EQ(std::make_tuple(2, "bar", true), **it);
+
+  ++it;
+  EXPECT_EQ(it, it);
+  EXPECT_NE(it, end);
+  EXPECT_STATUS_OK(*it);
+  EXPECT_EQ(std::make_tuple(3, "baz", true), **it);
+
+  ++it;
+  EXPECT_EQ(it, it);
+  EXPECT_EQ(it, end);
+}
+
+TEST(TupleRange, RangeForLoop) {
+  std::vector<Row> rows;
+  rows.emplace_back(MakeRow({{"num", Value(2)}}));
+  rows.emplace_back(MakeRow({{"num", Value(3)}}));
+  rows.emplace_back(MakeRow({{"num", Value(5)}}));
+  using RowType = std::tuple<std::int64_t>;
+
+  RowRange range{MakeRowStreamIteratorSource(rows)};
+  std::int64_t product = 1;
+  for (auto row : TupleRange<RowType>(range)) {
+    EXPECT_STATUS_OK(row);
+    product *= std::get<0>(*row);
+  }
+  EXPECT_EQ(product, 30);
 }
 
 }  // namespace
