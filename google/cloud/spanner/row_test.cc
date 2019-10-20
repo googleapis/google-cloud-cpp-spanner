@@ -15,6 +15,7 @@
 #include "google/cloud/spanner/row.h"
 #include "google/cloud/testing_util/assert_ok.h"
 #include <gmock/gmock.h>
+#include <tuple>
 #include <utility>
 
 namespace google {
@@ -289,6 +290,109 @@ TEST(RowStreamIterator, RangeForLoop) {
     product *= *num;
   }
   EXPECT_EQ(product, 30);
+}
+
+TEST(TupleStreamIterator, Basics) {
+  std::vector<Row> rows;
+  rows.emplace_back(MakeRow({
+      {"a", Value(1)},      //
+      {"b", Value("foo")},  //
+      {"c", Value(true)}    //
+  }));
+  rows.emplace_back(MakeRow({
+      {"a", Value(2)},      //
+      {"b", Value("bar")},  //
+      {"c", Value(true)}    //
+  }));
+  rows.emplace_back(MakeRow({
+      {"a", Value(3)},      //
+      {"b", Value("baz")},  //
+      {"c", Value(true)}    //
+  }));
+
+  using RowType = std::tuple<std::int64_t, std::string, bool>;
+  using TupleIterator = TupleStreamIterator<RowType>;
+
+  auto end = TupleIterator();
+  EXPECT_EQ(end, end);
+
+  auto it = TupleIterator(RowStreamIterator(MakeRowStreamIteratorSource(rows)),
+                          RowStreamIterator());
+
+  EXPECT_EQ(it, it);
+  EXPECT_NE(it, end);
+  EXPECT_STATUS_OK(*it);
+  EXPECT_EQ(std::make_tuple(1, "foo", true), **it);
+
+  ++it;
+  EXPECT_EQ(it, it);
+  EXPECT_NE(it, end);
+  EXPECT_STATUS_OK(*it);
+  EXPECT_EQ(std::make_tuple(2, "bar", true), **it);
+
+  ++it;
+  EXPECT_EQ(it, it);
+  EXPECT_NE(it, end);
+  EXPECT_STATUS_OK(*it);
+  EXPECT_EQ(std::make_tuple(3, "baz", true), **it);
+
+  ++it;
+  EXPECT_EQ(it, it);
+  EXPECT_EQ(it, end);
+}
+
+TEST(TupleStreamIterator, Empty) {
+  using RowType = std::tuple<std::int64_t, std::string, bool>;
+  using TupleIterator = TupleStreamIterator<RowType>;
+
+  auto end = TupleIterator();
+  EXPECT_EQ(end, end);
+
+  auto it = TupleIterator(RowStreamIterator(MakeRowStreamIteratorSource({})),
+                          RowStreamIterator());
+  EXPECT_EQ(it, end);
+}
+
+TEST(TupleStreamIterator, Error) {
+  std::vector<Row> rows;
+  rows.emplace_back(MakeRow({
+      {"a", Value(1)},      //
+      {"b", Value("foo")},  //
+      {"c", Value(true)}    //
+  }));
+  rows.emplace_back(MakeRow({
+      {"a", Value(2)},                  //
+      {"b", Value("bar")},              //
+      {"c", Value("should be a bool")}  // <-- Wrong type
+  }));
+  rows.emplace_back(MakeRow({
+      {"a", Value(3)},      //
+      {"b", Value("baz")},  //
+      {"c", Value(true)}    //
+  }));
+
+  using RowType = std::tuple<std::int64_t, std::string, bool>;
+  using TupleIterator = TupleStreamIterator<RowType>;
+
+  auto end = TupleIterator();
+  EXPECT_EQ(end, end);
+
+  auto it = TupleIterator(RowStreamIterator(MakeRowStreamIteratorSource(rows)),
+                          RowStreamIterator());
+
+  EXPECT_EQ(it, it);
+  EXPECT_NE(it, end);
+  EXPECT_STATUS_OK(*it);
+  EXPECT_EQ(std::make_tuple(1, "foo", true), **it);
+
+  ++it;
+  EXPECT_EQ(it, it);
+  EXPECT_NE(it, end);
+  EXPECT_FALSE(it->ok());  // Error parsing the 2nd element
+
+  ++it;  // Due to the previous error, jumps straight to "end"
+  EXPECT_EQ(it, it);
+  EXPECT_EQ(it, end);
 }
 
 }  // namespace
