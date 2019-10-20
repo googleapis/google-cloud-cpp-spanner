@@ -96,7 +96,7 @@ backwards-incompatible API changes in the
 <!-- End of automatically generated content -->
 
 **Build with the latest bazel release**
-[![Build status][bazelci-shield]](bazelcl-link)
+[![Build status][bazelci-shield]][bazelci-link]
 
 [bazelci-shield]: https://badge.buildkite.com/414b5f8e146fdf26017f069e3b464d7df1caa6bfa5ec627ef9.svg
 [bazelci-link]: https://buildkite.com/bazel/github-dot-com-googleapis-google-cloud-cpp-spanner
