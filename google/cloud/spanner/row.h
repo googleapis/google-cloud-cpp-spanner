@@ -38,9 +38,9 @@ inline namespace SPANNER_CLIENT_NS {
  * `Value` data, so copy only when necessary.
  *
  * `Row` instances are typically returned as the result of queries or reads of
- * a Spanner table (see `Client::Read` and `Client::ExecuteQuery`). Users will
- * mostly just use the accessor methods on `Row, and will rarely (if ever) need
- * to construct a `Row` of their own.
+ * a Cloud Spanner table (see `Client::Read` and `Client::ExecuteQuery`). Users
+ * will mostly just use the accessor methods on `Row, and will rarely (if ever)
+ * need to construct a `Row` of their own.
  *
  * The number of columns in a `Row` can be obtained from the `size()` member
  * function. The `Value`s can be obtained using the `values()` accessor. The
@@ -48,7 +48,7 @@ inline namespace SPANNER_CLIENT_NS {
  * accessor.
  *
  * Perhaps the most convenient way to access the `Values` in a row is through
- * the varity of "get" accessors. A user may access a column's `Value' by
+ * the variety of "get" accessors. A user may access a column's `Value' by
  * calling `get` with a `std::size_t` 0-indexed position, or a `std::string`
  * column name. Furthermore, callers may directly extract the native C++ type
  * by specifying the C++ type along with the column's position or name.
@@ -144,15 +144,37 @@ class Row {
    * @tparam Tuple the `std::tuple` type that the whole row must unpack into.
    */
   template <typename Tuple>
-  StatusOr<Tuple> get() const {
+  StatusOr<Tuple> get() const& {
+    if (size() != std::tuple_size<Tuple>::value) {
+      auto const msg = "Tuple has the wrong number of elements";
+      return Status(StatusCode::kInvalidArgument, msg);
+    }
     Tuple tup;
     auto it = values_.begin();
     Status status;
     internal::ForEach(tup, ExtractValue{status}, it);
     if (!status.ok()) return status;
-    if (it == values_.end()) return tup;
-    return Status(StatusCode::kInvalidArgument,
-                  "Tuple has the wrong number of elements");
+    return tup;
+  }
+
+  /**
+   * Returns all the native C++ values for the whole row in a `std::tuple` with
+   * the specified type.
+   *
+   * @tparam Tuple the `std::tuple` type that the whole row must unpack into.
+   */
+  template <typename Tuple>
+  StatusOr<Tuple> get() && {
+    if (size() != std::tuple_size<Tuple>::value) {
+      auto const msg = "Tuple has the wrong number of elements";
+      return Status(StatusCode::kInvalidArgument, msg);
+    }
+    Tuple tup;
+    auto it = std::make_move_iterator(values_.begin());
+    Status status;
+    internal::ForEach(tup, ExtractValue{status}, it);
+    if (!status.ok()) return status;
+    return tup;
   }
 
   /// @name Equality

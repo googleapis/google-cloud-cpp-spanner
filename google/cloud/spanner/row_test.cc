@@ -117,6 +117,7 @@ TEST(Row, TemplatedGetByPosition) {
   EXPECT_FALSE(row.get<bool>(0).ok());
   EXPECT_FALSE(row.get<std::int64_t>(1).ok());
   EXPECT_FALSE(row.get<std::string>(2).ok());
+  EXPECT_FALSE(row.get<std::int64_t>(3).ok());
 
   EXPECT_EQ(1, *row.get<std::int64_t>(0));
   EXPECT_EQ("blah", *row.get<std::string>(1));
@@ -140,6 +141,7 @@ TEST(Row, TemplatedGetByColumnName) {
   EXPECT_FALSE(row.get<bool>("a").ok());
   EXPECT_FALSE(row.get<std::int64_t>("b").ok());
   EXPECT_FALSE(row.get<std::string>("c").ok());
+  EXPECT_FALSE(row.get<std::string>("column does not exist").ok());
 
   EXPECT_EQ(1, *row.get<std::int64_t>("a"));
   EXPECT_EQ("blah", *row.get<std::string>("b"));
@@ -159,11 +161,14 @@ TEST(Row, TemplatedGetAsTuple) {
   EXPECT_STATUS_OK(row.get<RowType>());
   EXPECT_EQ(std::make_tuple(1, "blah", true), *row.get<RowType>());
 
-  using WrongType1 = std::tuple<std::int64_t, std::string>;  // 2 types; no bool
-  EXPECT_FALSE(row.get<WrongType1>().ok());
+  using TooFewTypes = std::tuple<std::int64_t, std::string>;
+  EXPECT_FALSE(row.get<TooFewTypes>().ok());
 
-  using WrongType2 = std::tuple<std::int64_t, std::string, std::int64_t>;
-  EXPECT_FALSE(row.get<WrongType2>().ok());
+  using TooManyTypes = std::tuple<std::int64_t, std::string, bool, bool>;
+  EXPECT_FALSE(row.get<TooManyTypes>().ok());
+
+  using WrongType = std::tuple<std::int64_t, std::string, std::int64_t>;
+  EXPECT_FALSE(row.get<WrongType>().ok());
 
   EXPECT_EQ(std::make_tuple(1, "blah", true), *std::move(row).get<RowType>());
 }
