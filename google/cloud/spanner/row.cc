@@ -46,6 +46,7 @@ Row::Row(std::vector<Value> values,
                    << values_.size() << " vs " << columns_->size();
   }
 }
+
 // NOLINTNEXTLINE(readability-identifier-naming)
 std::size_t Row::size() const { return columns_->size(); }
 
