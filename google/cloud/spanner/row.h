@@ -77,7 +77,7 @@ class Row {
    * @note columns.size() must equal values.size()
    */
   explicit Row(std::vector<Value> values,
-               std::shared_ptr<std::vector<std::string>> columns);
+               std::shared_ptr<const std::vector<std::string>> columns);
 
   /// @name Copy and move.
   ///@{
@@ -176,7 +176,7 @@ class Row {
   };
 
   std::vector<Value> values_;
-  std::shared_ptr<std::vector<std::string>> columns_;
+  std::shared_ptr<const std::vector<std::string>> columns_;
 };
 
 /**
