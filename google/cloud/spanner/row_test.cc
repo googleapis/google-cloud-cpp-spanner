@@ -26,15 +26,22 @@ namespace {
 
 namespace {
 
-// Given a `vector<Row>` creates a 'Row::Source' object. This is helpeful for
-// unit testing.
+// Given a `vector<StatusOr<Row>>` creates a 'Row::Source' object. This is
+// helpeful for unit testing and letting the test inject a non-OK Status.
 RowStreamIterator::Source MakeRowStreamIteratorSource(
-    std::vector<Row> const& rows) {
+    std::vector<StatusOr<Row>> const& rows) {
   std::size_t index = 0;
   return [=]() mutable -> StatusOr<Row> {
     if (index == rows.size()) return Row{};
-    return {rows[index++]};
+    return rows[index++];
   };
+}
+
+// Given a `vector<Row>` creates a 'Row::Source' object.
+RowStreamIterator::Source MakeRowStreamIteratorSource(
+    std::vector<Row> const& rows = {}) {
+  return MakeRowStreamIteratorSource(
+      std::vector<StatusOr<Row>>(rows.begin(), rows.end()));
 }
 
 class RowRange {
@@ -233,7 +240,7 @@ TEST(RowStreamIterator, Basics) {
   EXPECT_STATUS_OK(*it);
   EXPECT_EQ(rows[1], **it);
 
-  ++it;
+  it++;
   EXPECT_EQ(it, it);
   EXPECT_NE(it, end);
   EXPECT_STATUS_OK(*it);
@@ -246,7 +253,7 @@ TEST(RowStreamIterator, Basics) {
 
 TEST(RowStreamIterator, Empty) {
   RowStreamIterator end;
-  auto it = RowStreamIterator(MakeRowStreamIteratorSource({}));
+  auto it = RowStreamIterator(MakeRowStreamIteratorSource());
   EXPECT_EQ(it, end);
 }
 
@@ -262,6 +269,38 @@ TEST(RowStreamIterator, OneRow) {
   EXPECT_NE(it, end);
   EXPECT_STATUS_OK(*it);
   EXPECT_EQ(rows[0], **it);
+
+  ++it;
+  EXPECT_EQ(it, it);
+  EXPECT_EQ(it, end);
+}
+
+TEST(RowStreamIterator, IterationError) {
+  RowStreamIterator end;
+  std::vector<StatusOr<Row>> rows;
+  rows.emplace_back(MakeRow({
+      {"a", Value(1)},      //
+      {"b", Value("foo")},  //
+      {"c", Value(true)}    //
+  }));
+  rows.emplace_back(Status(StatusCode::kUnknown, "some error"));
+  rows.emplace_back(MakeRow({
+      {"a", Value(2)},      //
+      {"b", Value("bar")},  //
+      {"c", Value(true)}    //
+  }));
+
+  auto it = RowStreamIterator(MakeRowStreamIteratorSource(rows));
+  EXPECT_NE(it, end);
+  EXPECT_STATUS_OK(*it);
+  EXPECT_EQ(rows[0], *it);
+
+  ++it;
+  EXPECT_EQ(it, it);
+  EXPECT_NE(it, end);
+  EXPECT_FALSE(*it);
+  EXPECT_EQ(StatusCode::kUnknown, it->status().code());
+  EXPECT_EQ("some error", it->status().message());
 
   ++it;
   EXPECT_EQ(it, it);
@@ -358,7 +397,7 @@ TEST(TupleStreamIterator, Empty) {
   auto end = TupleIterator();
   EXPECT_EQ(end, end);
 
-  auto it = TupleIterator(RowStreamIterator(MakeRowStreamIteratorSource({})),
+  auto it = TupleIterator(RowStreamIterator(MakeRowStreamIteratorSource()),
                           RowStreamIterator());
   EXPECT_EQ(it, end);
 }
