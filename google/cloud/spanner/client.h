@@ -383,6 +383,7 @@ class Client {
    */
   StatusOr<ExecutionPlan> AnalyzeSql(Transaction transaction,
                                      SqlStatement statement);
+
   /**
    * Executes a batch of SQL DML statements. This method allows many statements
    * to be run with lower latency than submitting them sequentially with

@@ -133,49 +133,54 @@ StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionRead(
       });
 }
 
-QueryResult ConnectionImpl::ExecuteQuery(ExecuteSqlParams esp) {
-  return internal::Visit(
-      std::move(esp.transaction),
-      [this, &esp](SessionHolder& session,
-                   spanner_proto::TransactionSelector& s, std::int64_t seqno) {
-        return ExecuteQueryImpl(session, s, seqno, std::move(esp));
-      });
+QueryResult ConnectionImpl::ExecuteQuery(ExecuteSqlParams params) {
+  return internal::Visit(std::move(params.transaction),
+                         [this, &params](SessionHolder& session,
+                                         spanner_proto::TransactionSelector& s,
+                                         std::int64_t seqno) {
+                           return ExecuteQueryImpl(session, s, seqno,
+                                                   std::move(params));
+                         });
 }
 
-StatusOr<DmlResult> ConnectionImpl::ExecuteDml(ExecuteSqlParams esp) {
-  return internal::Visit(
-      std::move(esp.transaction),
-      [this, &esp](SessionHolder& session,
-                   spanner_proto::TransactionSelector& s, std::int64_t seqno) {
-        return ExecuteDmlImpl(session, s, seqno, std::move(esp));
-      });
+StatusOr<DmlResult> ConnectionImpl::ExecuteDml(ExecuteSqlParams params) {
+  return internal::Visit(std::move(params.transaction),
+                         [this, &params](SessionHolder& session,
+                                         spanner_proto::TransactionSelector& s,
+                                         std::int64_t seqno) {
+                           return ExecuteDmlImpl(session, s, seqno,
+                                                 std::move(params));
+                         });
 }
 
-ProfileQueryResult ConnectionImpl::ProfileQuery(ExecuteSqlParams esp) {
-  return internal::Visit(
-      std::move(esp.transaction),
-      [this, &esp](SessionHolder& session,
-                   spanner_proto::TransactionSelector& s, std::int64_t seqno) {
-        return ProfileQueryImpl(session, s, seqno, std::move(esp));
-      });
+ProfileQueryResult ConnectionImpl::ProfileQuery(ExecuteSqlParams params) {
+  return internal::Visit(std::move(params.transaction),
+                         [this, &params](SessionHolder& session,
+                                         spanner_proto::TransactionSelector& s,
+                                         std::int64_t seqno) {
+                           return ProfileQueryImpl(session, s, seqno,
+                                                   std::move(params));
+                         });
 }
 
-StatusOr<ProfileDmlResult> ConnectionImpl::ProfileDml(ExecuteSqlParams esp) {
-  return internal::Visit(
-      std::move(esp.transaction),
-      [this, &esp](SessionHolder& session,
-                   spanner_proto::TransactionSelector& s, std::int64_t seqno) {
-        return ProfileDmlImpl(session, s, seqno, std::move(esp));
-      });
+StatusOr<ProfileDmlResult> ConnectionImpl::ProfileDml(ExecuteSqlParams params) {
+  return internal::Visit(std::move(params.transaction),
+                         [this, &params](SessionHolder& session,
+                                         spanner_proto::TransactionSelector& s,
+                                         std::int64_t seqno) {
+                           return ProfileDmlImpl(session, s, seqno,
+                                                 std::move(params));
+                         });
 }
 
-StatusOr<ExecutionPlan> ConnectionImpl::AnalyzeSql(ExecuteSqlParams esp) {
-  return internal::Visit(
-      std::move(esp.transaction),
-      [this, &esp](SessionHolder& session,
-                   spanner_proto::TransactionSelector& s, std::int64_t seqno) {
-        return AnalyzeSqlImpl(session, s, seqno, std::move(esp));
-      });
+StatusOr<ExecutionPlan> ConnectionImpl::AnalyzeSql(ExecuteSqlParams params) {
+  return internal::Visit(std::move(params.transaction),
+                         [this, &params](SessionHolder& session,
+                                         spanner_proto::TransactionSelector& s,
+                                         std::int64_t seqno) {
+                           return AnalyzeSqlImpl(session, s, seqno,
+                                                 std::move(params));
+                         });
 }
 
 StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDml(
@@ -387,15 +392,14 @@ StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionReadImpl(
   return read_partitions;
 }
 
-template <typename T>
-StatusOr<T> ConnectionImpl::ExecuteSqlImpl(
+template <typename ResultType>
+StatusOr<ResultType> ConnectionImpl::ExecuteSqlImpl(
     SessionHolder& session, google::spanner::v1::TransactionSelector& s,
-    std::int64_t seqno, ExecuteSqlParams esp,
+    std::int64_t seqno, ExecuteSqlParams params,
     google::spanner::v1::ExecuteSqlRequest::QueryMode query_mode,
     std::function<StatusOr<std::unique_ptr<ResultSourceInterface>>(
         google::spanner::v1 ::ExecuteSqlRequest& request)> const&
-        retry_resume_fn,
-    std::string const& begin_transaction_error_message) {
+        retry_resume_fn) {
   if (!session) {
     auto session_or = AllocateSession();
     if (!session_or) {
@@ -407,14 +411,14 @@ StatusOr<T> ConnectionImpl::ExecuteSqlImpl(
   spanner_proto::ExecuteSqlRequest request;
   request.set_session(session->session_name());
   *request.mutable_transaction() = s;
-  auto sql_statement = internal::ToProto(std::move(esp.statement));
+  auto sql_statement = internal::ToProto(std::move(params.statement));
   request.set_sql(std::move(*sql_statement.mutable_sql()));
   *request.mutable_params() = std::move(*sql_statement.mutable_params());
   *request.mutable_param_types() =
       std::move(*sql_statement.mutable_param_types());
   request.set_seqno(seqno);
-  if (esp.partition_token) {
-    request.set_partition_token(*std::move(esp.partition_token));
+  if (params.partition_token) {
+    request.set_partition_token(*std::move(params.partition_token));
   }
   request.set_query_mode(query_mode);
 
@@ -425,27 +429,32 @@ StatusOr<T> ConnectionImpl::ExecuteSqlImpl(
   if (s.has_begin()) {
     auto metadata = (*reader)->Metadata();
     if (!metadata || metadata->transaction().id().empty()) {
-      return Status(StatusCode::kInternal, begin_transaction_error_message);
+      return Status(StatusCode::kInternal,
+                    "Begin transaction requested but no transaction returned.");
     }
     s.set_id(metadata->transaction().id());
   }
-  return T(std::move(*reader));
+  return ResultType(std::move(*reader));
 }
 
-template <typename T>
-T ConnectionImpl::CommonQueryImpl(
+template <typename ResultType>
+ResultType ConnectionImpl::CommonQueryImpl(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
-    std::int64_t seqno, ExecuteSqlParams esp,
-    google::spanner::v1::ExecuteSqlRequest::QueryMode query_mode,
-    std::string const& begin_transaction_error_message) {
+    std::int64_t seqno, ExecuteSqlParams params,
+    google::spanner::v1::ExecuteSqlRequest::QueryMode query_mode) {
+  // Capture a copy of `stub` to ensure the `shared_ptr<>` remains valid
+  // through the lifetime of the lambda. Note that the local variable `stub`
+  // is a reference to avoid increasing refcounts twice, but the capture is by
+  // value.
   auto const& stub = stub_;
-  auto retry_resume_fn =
-      [stub, this](spanner_proto::ExecuteSqlRequest& request) mutable
+  // Both retry_policy and backoff_policy are owning pointers that are necessary
+  // to plumb through the C++11 lambda capture constraints. Both are put back
+  // into a std::unique_ptr inside the lambda body.
+  RetryPolicy* retry_policy = retry_policy_->clone().release();
+  BackoffPolicy* backoff_policy = backoff_policy_->clone().release();
+  auto retry_resume_fn = [stub, retry_policy, backoff_policy](
+                             spanner_proto::ExecuteSqlRequest& request) mutable
       -> StatusOr<std::unique_ptr<ResultSourceInterface>> {
-    // Capture a copy of `stub` to ensure the `shared_ptr<>` remains valid
-    // through the lifetime of the lambda. Note that the local variable `stub`
-    // is a reference to avoid increasing refcounts twice, but the capture is by
-    // value.
     auto factory = [stub, request](std::string const& resume_token) mutable {
       request.set_resume_token(resume_token);
       auto context =
@@ -456,55 +465,63 @@ T ConnectionImpl::CommonQueryImpl(
     };
     auto rpc = google::cloud::internal::make_unique<PartialResultSetResume>(
         std::move(factory), Idempotency::kIdempotent,
-        this->retry_policy_->clone(), this->backoff_policy_->clone());
+        std::unique_ptr<RetryPolicy>(retry_policy),
+        std::unique_ptr<BackoffPolicy>(backoff_policy));
 
     return PartialResultSetSource::Create(std::move(rpc));
   };
-  auto ret_val = ExecuteSqlImpl<T>(session, s, seqno, std::move(esp),
-                                   query_mode, std::move(retry_resume_fn),
-                                   begin_transaction_error_message);
+
+  StatusOr<ResultType> ret_val =
+      ExecuteSqlImpl<ResultType>(session, s, seqno, std::move(params),
+                                 query_mode, std::move(retry_resume_fn));
   if (!ret_val) {
-    return T(google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
-        std::move(ret_val).status()));
+    return ResultType(
+        google::cloud::internal::make_unique<StatusOnlyResultSetSource>(
+            std::move(ret_val).status()));
   }
   return std::move(*ret_val);
 }
 
 QueryResult ConnectionImpl::ExecuteQueryImpl(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
-    std::int64_t seqno, ExecuteSqlParams esp) {
-  return CommonQueryImpl<QueryResult>(
-      session, s, seqno, std::move(esp),
-      spanner_proto::ExecuteSqlRequest::NORMAL,
-      "Begin transaction requested but no transaction returned "
-      "(in ExecuteQuery).");
+    std::int64_t seqno, ExecuteSqlParams params) {
+  return CommonQueryImpl<QueryResult>(session, s, seqno, std::move(params),
+                                      spanner_proto::ExecuteSqlRequest::NORMAL);
 }
 
 ProfileQueryResult ConnectionImpl::ProfileQueryImpl(
     SessionHolder& session, google::spanner::v1::TransactionSelector& s,
-    std::int64_t seqno, ExecuteSqlParams esp) {
+    std::int64_t seqno, ExecuteSqlParams params) {
   return CommonQueryImpl<ProfileQueryResult>(
-      session, s, seqno, std::move(esp),
-      spanner_proto::ExecuteSqlRequest::PROFILE,
-      "Begin transaction requested but no transaction returned "
-      "(in ProfileQuery).");
+      session, s, seqno, std::move(params),
+      spanner_proto::ExecuteSqlRequest::PROFILE);
 }
 
-template <typename T>
-StatusOr<T> ConnectionImpl::CommonDmlImpl(
+template <typename ResultType>
+StatusOr<ResultType> ConnectionImpl::CommonDmlImpl(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
-    std::int64_t seqno, ExecuteSqlParams esp,
-    google::spanner::v1::ExecuteSqlRequest::QueryMode query_mode,
-    std::string const& begin_transaction_error_message) {
+    std::int64_t seqno, ExecuteSqlParams params,
+    google::spanner::v1::ExecuteSqlRequest::QueryMode query_mode) {
   auto function_name = __func__;
-  auto retry_resume_fn =
-      [this, function_name](spanner_proto::ExecuteSqlRequest& request) mutable
+  // Capture a copy of `stub` to ensure the `shared_ptr<>` remains valid
+  // through the lifetime of the lambda. Note that the local variable `stub`
+  // is a reference to avoid increasing refcounts twice, but the capture is by
+  // value.
+  auto const& stub = stub_;
+  // Both retry_policy and backoff_policy are owning pointers that are necessary
+  // to plumb through the C++11 lambda capture constraints. Both are put back
+  // into a std::unique_ptr inside the lambda body.
+  RetryPolicy* retry_policy = retry_policy_->clone().release();
+  BackoffPolicy* backoff_policy = backoff_policy_->clone().release();
+  auto retry_resume_fn = [function_name, stub, retry_policy, backoff_policy](
+                             spanner_proto::ExecuteSqlRequest& request) mutable
       -> StatusOr<std::unique_ptr<ResultSourceInterface>> {
     StatusOr<spanner_proto::ResultSet> response = internal::RetryLoop(
-        this->retry_policy_->clone(), this->backoff_policy_->clone(), true,
-        [this](grpc::ClientContext& context,
+        std::unique_ptr<RetryPolicy>(retry_policy),
+        std::unique_ptr<BackoffPolicy>(backoff_policy), true,
+        [stub](grpc::ClientContext& context,
                spanner_proto::ExecuteSqlRequest const& request) {
-          return stub_->ExecuteSql(context, request);
+          return stub->ExecuteSql(context, request);
         },
         request, function_name);
     if (!response) {
@@ -512,38 +529,31 @@ StatusOr<T> ConnectionImpl::CommonDmlImpl(
     }
     return DmlResultSetSource::Create(std::move(*response));
   };
-  return ExecuteSqlImpl<T>(session, s, seqno, std::move(esp), query_mode,
-                           std::move(retry_resume_fn),
-                           begin_transaction_error_message);
+  return ExecuteSqlImpl<ResultType>(session, s, seqno, std::move(params),
+                                    query_mode, std::move(retry_resume_fn));
 }
 
 StatusOr<DmlResult> ConnectionImpl::ExecuteDmlImpl(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
-    std::int64_t seqno, ExecuteSqlParams esp) {
-  return CommonDmlImpl<DmlResult>(
-      session, s, seqno, std::move(esp),
-      spanner_proto::ExecuteSqlRequest::NORMAL,
-      "Begin transaction requested but no transaction returned "
-      "(in ExecuteDml).");
+    std::int64_t seqno, ExecuteSqlParams params) {
+  return CommonDmlImpl<DmlResult>(session, s, seqno, std::move(params),
+                                  spanner_proto::ExecuteSqlRequest::NORMAL);
 }
 
 StatusOr<ProfileDmlResult> ConnectionImpl::ProfileDmlImpl(
     SessionHolder& session, google::spanner::v1::TransactionSelector& s,
-    std::int64_t seqno, ExecuteSqlParams esp) {
+    std::int64_t seqno, ExecuteSqlParams params) {
   return CommonDmlImpl<ProfileDmlResult>(
-      session, s, seqno, std::move(esp),
-      spanner_proto::ExecuteSqlRequest::PROFILE,
-      "Begin transaction requested but no transaction returned "
-      "(in ProfileDml).");
+      session, s, seqno, std::move(params),
+      spanner_proto::ExecuteSqlRequest::PROFILE);
 }
 
 StatusOr<ExecutionPlan> ConnectionImpl::AnalyzeSqlImpl(
     SessionHolder& session, google::spanner::v1::TransactionSelector& s,
-    std::int64_t seqno, ExecuteSqlParams esp) {
-  auto result = CommonDmlImpl<ProfileDmlResult>(
-      session, s, seqno, std::move(esp), spanner_proto::ExecuteSqlRequest::PLAN,
-      "Begin transaction requested but no transaction returned "
-      "(in AnalyzeSql).");
+    std::int64_t seqno, ExecuteSqlParams params) {
+  auto result =
+      CommonDmlImpl<ProfileDmlResult>(session, s, seqno, std::move(params),
+                                      spanner_proto::ExecuteSqlRequest::PLAN);
   if (result.status().ok()) {
     return *result->ExecutionPlan();
   }
@@ -552,7 +562,7 @@ StatusOr<ExecutionPlan> ConnectionImpl::AnalyzeSqlImpl(
 
 StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQueryImpl(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
-    ExecuteSqlParams const& esp, PartitionOptions partition_options) {
+    ExecuteSqlParams const& params, PartitionOptions partition_options) {
   if (!session) {
     // Since the session may be sent to other machines, it should not be
     // returned to the pool when the Transaction is destroyed.
@@ -566,7 +576,7 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQueryImpl(
   spanner_proto::PartitionQueryRequest request;
   request.set_session(session->session_name());
   *request.mutable_transaction() = s;
-  auto sql_statement = internal::ToProto(esp.statement);
+  auto sql_statement = internal::ToProto(params.statement);
   request.set_sql(std::move(*sql_statement.mutable_sql()));
   *request.mutable_params() = std::move(*sql_statement.mutable_params());
   *request.mutable_param_types() =
@@ -592,7 +602,7 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQueryImpl(
   for (auto& partition : response->partitions()) {
     query_partitions.push_back(internal::MakeQueryPartition(
         response->transaction().id(), session->session_name(),
-        partition.partition_token(), esp.statement));
+        partition.partition_token(), params.statement));
   }
 
   return query_partitions;

@@ -129,7 +129,7 @@ class Transaction {
    * @note This is a lazy evaluated operation. No RPCs are made as part of
    *     creating a `Transaction` object, instead, the first request to the
    *     server (for example as part of a `ExecuteQuery()` call) will also
-   * create the transaction.
+   *     create the transaction.
    */
   explicit Transaction(ReadOnlyOptions opts);
   /// @copydoc Transaction(ReadOnlyOptions)

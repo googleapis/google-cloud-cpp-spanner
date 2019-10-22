@@ -881,7 +881,7 @@ TEST(ConnectionImplTest, AnalyzeSqlSuccess) {
       )pb",
       &expected_plan));
 
-  EXPECT_STATUS_OK(result);
+  ASSERT_STATUS_OK(result);
   EXPECT_THAT(*result, spanner_testing::IsProtoEqual(expected_plan));
 }
 
