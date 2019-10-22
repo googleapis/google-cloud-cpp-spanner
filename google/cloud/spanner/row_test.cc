@@ -246,6 +246,14 @@ TEST(RowStreamIterator, Basics) {
   EXPECT_STATUS_OK(*it);
   EXPECT_EQ(rows[2], **it);
 
+  // Tests const op*() and op->()
+  auto const copy = it;
+  EXPECT_EQ(copy, it);
+  EXPECT_NE(copy, end);
+  EXPECT_STATUS_OK(*copy);
+  EXPECT_EQ(rows[2], **copy);
+  EXPECT_EQ(3, (*copy)->size());
+
   ++it;
   EXPECT_EQ(it, it);
   EXPECT_EQ(it, end);
@@ -384,6 +392,12 @@ TEST(TupleStreamIterator, Basics) {
   EXPECT_NE(it, end);
   EXPECT_STATUS_OK(*it);
   EXPECT_EQ(std::make_tuple(3, "baz", true), **it);
+
+  // Tests const op*(). tuple has no members that we can call to test op->().
+  auto const copy = it;
+  EXPECT_EQ(copy, it);
+  EXPECT_NE(copy, end);
+  EXPECT_STATUS_OK(*copy);
 
   ++it;
   EXPECT_EQ(it, it);
