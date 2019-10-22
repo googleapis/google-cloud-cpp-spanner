@@ -88,16 +88,16 @@ class Row {
   ///@}
 
   /// Returns the number of columns in the row.
-  std::size_t size() const;
+  std::size_t size() const { return columns_->size(); }
 
   /// Returns the column names for the row.
-  std::vector<std::string> const& columns() const;
+  std::vector<std::string> const& columns() const { return *columns_; }
 
   /// Returns the `Value` objects in the given row.
-  std::vector<Value> const& values() const&;
+  std::vector<Value> const& values() const& { return values_; }
 
   /// Returns the `Value` objects in the given row.
-  std::vector<Value>&& values() &&;
+  std::vector<Value>&& values() && { return std::move(values_); }
 
   /// Returns the `Value` at the given @p pos.
   StatusOr<Value> get(std::size_t pos) const&;
