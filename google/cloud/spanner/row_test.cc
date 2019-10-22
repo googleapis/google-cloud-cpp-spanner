@@ -37,10 +37,17 @@ RowStreamIterator::Source MakeRowStreamIteratorSource(
   };
 }
 
-struct RowRange {
-  RowStreamIterator::Source source;
-  RowStreamIterator begin() const { return RowStreamIterator(source); }
-  RowStreamIterator end() const { return {}; }
+class RowRange {
+ public:
+  explicit RowRange(RowStreamIterator::Source s) : begin_(std::move(s)) {}
+  // NOLINTNEXTLINE(readability-identifier-naming)
+  RowStreamIterator begin() const { return begin_; }
+  // NOLINTNEXTLINE(readability-identifier-naming)
+  RowStreamIterator end() const { return end_; }
+
+ private:
+  RowStreamIterator begin_;
+  RowStreamIterator end_;
 };
 
 }  // namespace
@@ -284,7 +291,7 @@ TEST(RowStreamIterator, RangeForLoop) {
   rows.emplace_back(MakeRow({{"num", Value(3)}}));
   rows.emplace_back(MakeRow({{"num", Value(5)}}));
 
-  RowRange range{MakeRowStreamIteratorSource(rows)};
+  RowRange range(MakeRowStreamIteratorSource(rows));
   std::int64_t product = 1;
   for (auto row : range) {
     EXPECT_STATUS_OK(row);
@@ -417,7 +424,7 @@ TEST(StreamOf, Basics) {
   }));
 
   using RowType = std::tuple<std::int64_t, std::string, bool>;
-  RowRange range{MakeRowStreamIteratorSource(rows)};
+  RowRange range(MakeRowStreamIteratorSource(rows));
   auto parser = StreamOf<RowType>(range);
   auto it = parser.begin();
   auto end = parser.end();
@@ -452,7 +459,7 @@ TEST(StreamOf, RangeForLoop) {
   rows.emplace_back(MakeRow({{"num", Value(5)}}));
   using RowType = std::tuple<std::int64_t>;
 
-  RowRange range{MakeRowStreamIteratorSource(rows)};
+  RowRange range(MakeRowStreamIteratorSource(rows));
   std::int64_t product = 1;
   for (auto row : StreamOf<RowType>(range)) {
     EXPECT_STATUS_OK(row);
