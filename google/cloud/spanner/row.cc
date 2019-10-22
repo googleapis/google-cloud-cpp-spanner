@@ -48,26 +48,13 @@ Row::Row(std::vector<Value> values,
 }
 
 // NOLINTNEXTLINE(readability-identifier-naming)
-StatusOr<Value> Row::get(std::size_t pos) const& {
+StatusOr<Value> Row::get(std::size_t pos) const {
   if (pos < values_.size()) return values_[pos];
   return Status(StatusCode::kInvalidArgument, "position out of range");
 }
 
 // NOLINTNEXTLINE(readability-identifier-naming)
-StatusOr<Value> Row::get(std::size_t pos) && {
-  if (pos < values_.size()) return std::move(values_[pos]);
-  return Status(StatusCode::kInvalidArgument, "position out of range");
-}
-
-// NOLINTNEXTLINE(readability-identifier-naming)
-StatusOr<Value> Row::get(std::string const& name) const& {
-  auto it = std::find(columns_->begin(), columns_->end(), name);
-  if (it != columns_->end()) return get(std::distance(columns_->begin(), it));
-  return Status(StatusCode::kInvalidArgument, "column name not found");
-}
-
-// NOLINTNEXTLINE(readability-identifier-naming)
-StatusOr<Value> Row::get(std::string const& name) && {
+StatusOr<Value> Row::get(std::string const& name) const {
   auto it = std::find(columns_->begin(), columns_->end(), name);
   if (it != columns_->end()) return get(std::distance(columns_->begin(), it));
   return Status(StatusCode::kInvalidArgument, "column name not found");
