@@ -100,16 +100,10 @@ class Row {
   std::vector<Value>&& values() && { return std::move(values_); }
 
   /// Returns the `Value` at the given @p pos.
-  StatusOr<Value> get(std::size_t pos) const&;
-
-  /// Returns the `Value` at the given @p pos.
-  StatusOr<Value> get(std::size_t pos) &&;
+  StatusOr<Value> get(std::size_t pos);
 
   /// Returns the `Value` in the column with @p name
-  StatusOr<Value> get(std::string const& name) const&;
-
-  /// Returns the `Value` in the column with @p name
-  StatusOr<Value> get(std::string const& name) &&;
+  StatusOr<Value> get(std::string const& name);
 
   /**
    * Returns the native C++ value at the given position or column name.
@@ -118,22 +112,9 @@ class Row {
    * @tparam Arg a deduced parameter convertible to a std::size_t or std::string
    */
   template <typename T, typename Arg>
-  StatusOr<T> get(Arg&& arg) const& {
+  StatusOr<T> get(Arg&& arg) {
     auto v = get(std::forward<Arg>(arg));
     if (v) return v->template get<T>();
-    return v.status();
-  }
-
-  /**
-   * Returns the native C++ value at the given position or column name.
-   *
-   * @tparam T the native C++ type, e.g., std::int64_t or std::string
-   * @tparam Arg a deduced parameter convertible to a std::size_t or std::string
-   */
-  template <typename T, typename Arg>
-  StatusOr<T> get(Arg&& arg) && {
-    auto v = get(std::forward<Arg>(arg));
-    if (v) return (*std::move(v)).template get<T>();
     return v.status();
   }
 

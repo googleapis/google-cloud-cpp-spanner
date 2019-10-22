@@ -79,8 +79,6 @@ TEST(Row, GetByPosition) {
   EXPECT_EQ(Value(1), *row.get(0));
   EXPECT_EQ(Value("blah"), *row.get(1));
   EXPECT_EQ(Value(true), *row.get(2));
-
-  EXPECT_EQ(Value(1), *std::move(row).get(0));
 }
 
 TEST(Row, GetByColumnName) {
@@ -98,8 +96,6 @@ TEST(Row, GetByColumnName) {
   EXPECT_EQ(Value(1), *row.get("a"));
   EXPECT_EQ(Value("blah"), *row.get("b"));
   EXPECT_EQ(Value(true), *row.get("c"));
-
-  EXPECT_EQ(Value(1), *std::move(row).get("a"));
 }
 
 TEST(Row, TemplatedGetByPosition) {
@@ -122,8 +118,6 @@ TEST(Row, TemplatedGetByPosition) {
   EXPECT_EQ(1, *row.get<std::int64_t>(0));
   EXPECT_EQ("blah", *row.get<std::string>(1));
   EXPECT_EQ(true, *row.get<bool>(2));
-
-  EXPECT_EQ(1, *std::move(row).get<std::int64_t>(0));
 }
 
 TEST(Row, TemplatedGetByColumnName) {
@@ -146,8 +140,6 @@ TEST(Row, TemplatedGetByColumnName) {
   EXPECT_EQ(1, *row.get<std::int64_t>("a"));
   EXPECT_EQ("blah", *row.get<std::string>("b"));
   EXPECT_EQ(true, *row.get<bool>("c"));
-
-  EXPECT_EQ(1, *std::move(row).get<std::int64_t>("a"));
 }
 
 TEST(Row, TemplatedGetAsTuple) {
@@ -163,12 +155,18 @@ TEST(Row, TemplatedGetAsTuple) {
 
   using TooFewTypes = std::tuple<std::int64_t, std::string>;
   EXPECT_FALSE(row.get<TooFewTypes>().ok());
+  Row copy = row;
+  EXPECT_FALSE(std::move(copy).get<TooFewTypes>().ok());
 
   using TooManyTypes = std::tuple<std::int64_t, std::string, bool, bool>;
   EXPECT_FALSE(row.get<TooManyTypes>().ok());
+  copy = row;
+  EXPECT_FALSE(std::move(copy).get<TooManyTypes>().ok());
 
   using WrongType = std::tuple<std::int64_t, std::string, std::int64_t>;
   EXPECT_FALSE(row.get<WrongType>().ok());
+  copy = row;
+  EXPECT_FALSE(std::move(copy).get<WrongType>().ok());
 
   EXPECT_EQ(std::make_tuple(1, "blah", true), *std::move(row).get<RowType>());
 }
