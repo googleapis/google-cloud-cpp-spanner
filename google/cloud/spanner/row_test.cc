@@ -398,7 +398,7 @@ TEST(TupleStreamIterator, Error) {
   EXPECT_EQ(it, end);
 }
 
-TEST(TupleRange, Basics) {
+TEST(StreamOf, Basics) {
   std::vector<Row> rows;
   rows.emplace_back(MakeRow({
       {"a", Value(1)},      //
@@ -418,7 +418,7 @@ TEST(TupleRange, Basics) {
 
   using RowType = std::tuple<std::int64_t, std::string, bool>;
   RowRange range{MakeRowStreamIteratorSource(rows)};
-  auto parser = TupleRange<RowType>(range);
+  auto parser = StreamOf<RowType>(range);
   auto it = parser.begin();
   auto end = parser.end();
   EXPECT_EQ(end, end);
@@ -445,7 +445,7 @@ TEST(TupleRange, Basics) {
   EXPECT_EQ(it, end);
 }
 
-TEST(TupleRange, RangeForLoop) {
+TEST(StreamOf, RangeForLoop) {
   std::vector<Row> rows;
   rows.emplace_back(MakeRow({{"num", Value(2)}}));
   rows.emplace_back(MakeRow({{"num", Value(3)}}));
@@ -454,7 +454,7 @@ TEST(TupleRange, RangeForLoop) {
 
   RowRange range{MakeRowStreamIteratorSource(rows)};
   std::int64_t product = 1;
-  for (auto row : TupleRange<RowType>(range)) {
+  for (auto row : StreamOf<RowType>(range)) {
     EXPECT_STATUS_OK(row);
     product *= std::get<0>(*row);
   }
