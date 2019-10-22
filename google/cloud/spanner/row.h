@@ -218,12 +218,16 @@ Row MakeRow(std::vector<std::pair<std::string, Value>> pairs);
  *
  * Default constructing a `RowStreamIterator` creates an instance that
  * represents "end".
+ *
+ * @note The term "stream" in this name refers to the general nature
+ *     of the the data source, and is not intended to suggest any similarity to
+ *     C++'s I/O streams library. Syntactically, this class is an "iterator".
  */
 class RowStreamIterator {
  public:
   /**
-   * A function that returns a sequence of `StatusOr<Row>` objects, a new one
-   * each time its called.
+   * A function that returns a sequence of `StatusOr<Row>` objects. Returning
+   * an empty `Row` indicates that there are no more rows to be returned.
    */
   using Source = std::function<StatusOr<Row>()>;
 
@@ -271,6 +275,10 @@ class RowStreamIterator {
  *
  * Each `Row` returned by the wrapped `RowStreamIterator` must be convertible
  * to the specified `Tuple` template parameter.
+ *
+ * @note The term "stream" in this name refers to the general nature
+ *     of the the data source, and is not intended to suggest any similarity to
+ *     C++'s I/O streams library. Syntactically, this class is an "iterator".
  *
  * @tparam Tuple the std::tuple<...> to parse each `Row` into.
  */
@@ -335,26 +343,49 @@ class TupleStreamIterator {
 };
 
 /**
- * A `TupleRange<Tuple>` defines a range that parses `Tuple` objects from the
+ * A `StreamOf<Tuple>` defines a range that parses `Tuple` objects from the
  * given range of `RowStreamIterator`s.
+ *
+ * Users will typically use this class in a range-for loop as follows:
+ *
+ * @code
+ * auto row_range = ...
+ * using RowType = std::tuple<std::int64_t, std::string, bool>;
+ * for (auto row : StreamOf<RowType>(row_range)) {
+ *   if (!row) {
+ *     // Handle error;
+ *   }
+ *   std::int64_t x = std::get<0>(*row);
+ *   ...
+ * }
+ * @endcode
+ *
+ * @note The term "stream" in this name refers to the general nature
+ *     of the the data source, and is not intended to suggest any similarity to
+ *     C++'s I/O streams library. Syntactically, this class is a "range"
+ *     defined by two "iterator" objects of type `TupleStreamIterator<Tuple>`.
  *
  * @tparam Tuple the std::tuple<...> to parse each `Row` into.
  */
 template <typename Tuple>
-class TupleRange {
+class StreamOf {
  public:
   using iterator = TupleStreamIterator<Tuple>;
+  static_assert(internal::IsTuple<Tuple>::value,
+                "StreamOf<T> requires a std::tuple parameter");
 
   /**
-   * Creates a `TupleRange<Tuple>` by wrapping the given @p range. The `Range`
+   * Creates a `StreamOf<Tuple>` by wrapping the given @p range. The `RowRange`
    * must be a range defined by `RowStreamIterator` objects.
+   *
+   * @tparam RowRange must be a range defined by `RowStreamIterator`s.
    */
-  template <typename Range>
-  explicit TupleRange(Range const& range)
+  template <typename RowRange>
+  explicit StreamOf(RowRange const& range)
       : begin_(std::begin(range), std::end(range)) {
     using T = decltype(std::begin(range));
     static_assert(std::is_same<RowStreamIterator, T>::value,
-                  "TupleRange must be given a RowStreamIterator range.");
+                  "StreamOf must be given a RowStreamIterator range.");
   }
 
   iterator begin() const { return begin_; }
