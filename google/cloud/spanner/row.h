@@ -30,6 +30,12 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
+class Row;
+namespace internal {
+Row MakeRow(std::vector<Value>,
+            std::shared_ptr<const std::vector<std::string>>);
+}  // namespace internal
+
 /**
  * A `Row` is a sequence of columns each with a name and an associated `Value`.
  *
@@ -69,15 +75,6 @@ class Row {
  public:
   /// Default constructs an empty row with no columns nor values.
   Row();
-
-  /**
-   * Constructs a `Row` with the given @p values and @p columns.
-   *
-   * @note columns must not be nullptr
-   * @note columns.size() must equal values.size()
-   */
-  explicit Row(std::vector<Value> values,
-               std::shared_ptr<const std::vector<std::string>> columns);
 
   /// @name Copy and move.
   ///@{
@@ -165,6 +162,8 @@ class Row {
   ///@}
 
  private:
+  friend Row internal::MakeRow(std::vector<Value>,
+                               std::shared_ptr<const std::vector<std::string>>);
   struct ExtractValue {
     Status& status;
     template <typename T, typename It>
@@ -177,6 +176,15 @@ class Row {
       }
     }
   };
+
+  /**
+   * Constructs a `Row` with the given @p values and @p columns.
+   *
+   * @note columns must not be nullptr
+   * @note columns.size() must equal values.size()
+   */
+  explicit Row(std::vector<Value> values,
+               std::shared_ptr<const std::vector<std::string>> columns);
 
   std::vector<Value> values_;
   std::shared_ptr<const std::vector<std::string>> columns_;
