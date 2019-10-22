@@ -447,11 +447,9 @@ ResultType ConnectionImpl::CommonQueryImpl(
   // is a reference to avoid increasing refcounts twice, but the capture is by
   // value.
   auto const& stub = stub_;
-  // Both retry_policy and backoff_policy are owning pointers that are necessary
-  // to plumb through the C++11 lambda capture constraints. Both are put back
-  // into a std::unique_ptr inside the lambda body.
-  RetryPolicy* retry_policy = retry_policy_->clone().release();
-  BackoffPolicy* backoff_policy = backoff_policy_->clone().release();
+  std::shared_ptr<RetryPolicy> retry_policy = retry_policy_->clone();
+  std::shared_ptr<BackoffPolicy> backoff_policy = backoff_policy_->clone();
+
   auto retry_resume_fn = [stub, retry_policy, backoff_policy](
                              spanner_proto::ExecuteSqlRequest& request) mutable
       -> StatusOr<std::unique_ptr<ResultSourceInterface>> {
@@ -464,9 +462,8 @@ ResultType ConnectionImpl::CommonQueryImpl(
           std::move(context), stub->ExecuteStreamingSql(*context, request));
     };
     auto rpc = google::cloud::internal::make_unique<PartialResultSetResume>(
-        std::move(factory), Idempotency::kIdempotent,
-        std::unique_ptr<RetryPolicy>(retry_policy),
-        std::unique_ptr<BackoffPolicy>(backoff_policy));
+        std::move(factory), Idempotency::kIdempotent, retry_policy->clone(),
+        backoff_policy->clone());
 
     return PartialResultSetSource::Create(std::move(rpc));
   };
@@ -508,17 +505,14 @@ StatusOr<ResultType> ConnectionImpl::CommonDmlImpl(
   // is a reference to avoid increasing refcounts twice, but the capture is by
   // value.
   auto const& stub = stub_;
-  // Both retry_policy and backoff_policy are owning pointers that are necessary
-  // to plumb through the C++11 lambda capture constraints. Both are put back
-  // into a std::unique_ptr inside the lambda body.
-  RetryPolicy* retry_policy = retry_policy_->clone().release();
-  BackoffPolicy* backoff_policy = backoff_policy_->clone().release();
+  std::shared_ptr<RetryPolicy> retry_policy = retry_policy_->clone();
+  std::shared_ptr<BackoffPolicy> backoff_policy = backoff_policy_->clone();
+
   auto retry_resume_fn = [function_name, stub, retry_policy, backoff_policy](
                              spanner_proto::ExecuteSqlRequest& request) mutable
       -> StatusOr<std::unique_ptr<ResultSourceInterface>> {
     StatusOr<spanner_proto::ResultSet> response = internal::RetryLoop(
-        std::unique_ptr<RetryPolicy>(retry_policy),
-        std::unique_ptr<BackoffPolicy>(backoff_policy), true,
+        retry_policy->clone(), backoff_policy->clone(), true,
         [stub](grpc::ClientContext& context,
                spanner_proto::ExecuteSqlRequest const& request) {
           return stub->ExecuteSql(context, request);
