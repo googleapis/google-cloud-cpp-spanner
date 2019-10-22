@@ -35,25 +35,22 @@ include(ExternalProject)
 ExternalProject_Add(
     google-cloud-cpp-spanner-as-external
     DEPENDS google-cloud-cpp-common-project googletest-project
-    EXCLUDE_FROM_ALL OFF
-    BUILD_ALWAYS 1
+    EXCLUDE_FROM_ALL
+        OFF
+        BUILD_ALWAYS
+        1
     PREFIX "${CMAKE_BINARY_DIR}/build/google-cloud-cpp-spanner"
-    INSTALL_DIR "${GOOGLE_CLOUD_CPP_EXTERNAL_PREFIX}"
-    SOURCE_DIR
-    "${GOOGLE_CLOUD_CPP_SPANNER_ROOT}"
-    LIST_SEPARATOR
-    |
+    INSTALL_DIR
+        "${GOOGLE_CLOUD_CPP_EXTERNAL_PREFIX}"
+        SOURCE_DIR
+        "${GOOGLE_CLOUD_CPP_SPANNER_ROOT}"
+    LIST_SEPARATOR |
     CMAKE_ARGS -G${CMAKE_GENERATOR}
                -DCMAKE_PREFIX_PATH=${GOOGLE_CLOUD_CPP_PREFIX_PATH}
                -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
                -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-    BUILD_COMMAND ${CMAKE_COMMAND}
-                  --build
-                  <BINARY_DIR>
-                  ${PARALLEL}
-    TEST_COMMAND ${CMAKE_CTEST_COMMAND}
-                 --output-on-failure
-                 -LE
+    BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> ${PARALLEL}
+    TEST_COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -LE
                  integration-tests
     LOG_DOWNLOAD OFF
     LOG_CONFIGURE OFF
