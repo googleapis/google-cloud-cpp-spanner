@@ -15,6 +15,7 @@
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_RESULTS_H_
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_RESULTS_H_
 
+#include "google/cloud/spanner/row.h"
 #include "google/cloud/spanner/row_parser.h"
 #include "google/cloud/spanner/timestamp.h"
 #include "google/cloud/optional.h"
@@ -42,6 +43,7 @@ class ResultSourceInterface {
   virtual ~ResultSourceInterface() = default;
   // Returns OK Status with no Value to indicate end-of-stream.
   virtual StatusOr<optional<Value>> NextValue() = 0;
+  virtual StatusOr<Row> NextRow() = 0;
   virtual optional<google::spanner::v1::ResultSetMetadata> Metadata() = 0;
   virtual optional<google::spanner::v1::ResultSetStats> Stats() const = 0;
 };

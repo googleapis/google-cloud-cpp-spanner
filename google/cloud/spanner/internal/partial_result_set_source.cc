@@ -73,6 +73,11 @@ StatusOr<optional<Value>> PartialResultSetSource::NextValue() {
   return {FromProto(std::move(t), std::move(v))};
 }
 
+StatusOr<Row> PartialResultSetSource::NextRow() {
+  //
+  return {};
+}
+
 PartialResultSetSource::~PartialResultSetSource() {
   if (!finished_) {
     // If there is actual data in the streaming RPC Finish() can deadlock, so
