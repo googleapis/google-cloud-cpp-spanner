@@ -210,18 +210,18 @@ class Row {
 Row MakeRow(std::vector<std::pair<std::string, Value>> pairs);
 
 /**
- * A `RowStreamIterator` is an "Input Iterator" that returns a sequence of
- * `StatusOr<Row>` objects.
+ * A `RowStreamIterator` is an [Input Iterator][input-iterator] that returns a
+ * sequence of `StatusOr<Row>` objects.
  *
- * As an Input Iterator, the sequence may only be consumed once. See
- * https://en.cppreference.com/w/cpp/named_req/InputIterator for more details.
- *
- * Default constructing a `RowStreamIterator` creates an instance that
- * represents "end".
+ * As an Input Iterator, the sequence may only be consumed once. Default
+ * constructing a `RowStreamIterator` creates an instance that represents
+ * "end".
  *
  * @note The term "stream" in this name refers to the general nature
  *     of the the data source, and is not intended to suggest any similarity to
  *     C++'s I/O streams library. Syntactically, this class is an "iterator".
+ *
+ * [input-iterator]: https://en.cppreference.com/w/cpp/named_req/InputIterator
  */
 class RowStreamIterator {
  public:
