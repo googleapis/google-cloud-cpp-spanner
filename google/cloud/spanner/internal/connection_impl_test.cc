@@ -636,7 +636,7 @@ TEST(ConnectionImplTest, ProfileQuerySuccess) {
   auto result = conn->ProfileQuery(
       {MakeSingleUseTransaction(Transaction::ReadOnlyOptions()),
        SqlStatement("select * from table")});
-  using RowType = Row<std::int64_t, std::string>;
+  using RowType = std::tuple<std::int64_t, std::string>;
   auto expected = std::vector<RowType>{
       RowType(12, "Steve"),
       RowType(42, "Ann"),
@@ -682,7 +682,7 @@ TEST(ConnectionImplTest, ProfileQueryGetSessionFailure) {
   auto result = conn->ProfileQuery(
       {MakeSingleUseTransaction(Transaction::ReadOnlyOptions()),
        SqlStatement("select * from table")});
-  for (auto& row : result.Rows<Row<std::int64_t>>()) {
+  for (auto& row : result.Rows<std::tuple<std::int64_t>>()) {
     EXPECT_EQ(StatusCode::kPermissionDenied, row.status().code());
     EXPECT_THAT(row.status().message(), HasSubstr("uh-oh in GetSession"));
   }
@@ -712,7 +712,7 @@ TEST(ConnectionImplTest, ProfileQueryStreamingReadFailure) {
   auto result = conn->ProfileQuery(
       {MakeSingleUseTransaction(Transaction::ReadOnlyOptions()),
        SqlStatement("select * from table")});
-  for (auto& row : result.Rows<Row<std::int64_t>>()) {
+  for (auto& row : result.Rows<std::tuple<std::int64_t>>()) {
     EXPECT_EQ(StatusCode::kPermissionDenied, row.status().code());
     EXPECT_THAT(row.status().message(),
                 HasSubstr("uh-oh in GrpcReader::Finish"));
