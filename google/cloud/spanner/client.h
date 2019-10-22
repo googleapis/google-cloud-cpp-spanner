@@ -274,7 +274,7 @@ class Client {
    * Profiling executes the query, provides the resulting rows, `ExecutionPlan`,
    * and execution statistics.
    *
-   * Operations inside read-write transactions might return `ABORTED`. If this
+   * Operations inside read-write transactions might return `kAborted`. If this
    * occurs, the application should restart the transaction from the beginning.
    *
    * Callers can optionally supply a `Transaction` or
@@ -283,12 +283,12 @@ class Client {
    * is used.
    *
    * @note Callers must consume all rows from the result before execution
-   * statistics and `ExecutionPlan` are available.
+   *     statistics and `ExecutionPlan` are available.
    *
    * @param statement The SQL statement to execute.
    *
    * @note No individual row in the `ProfileQueryResult` can exceed 100 MiB, and
-   * no column value can exceed 10 MiB.
+   *     no column value can exceed 10 MiB.
    */
   ProfileQueryResult ProfileQuery(SqlStatement statement);
 
@@ -353,7 +353,7 @@ class Client {
   /**
    * Profiles a SQL DML statement.
    *
-   * Profiling executes the DMl statement, provides the modified row count,
+   * Profiling executes the DML statement, provides the modified row count,
    * `ExecutionPlan`, and execution statistics.
    *
    * Operations inside read-write transactions might return `ABORTED`. If this

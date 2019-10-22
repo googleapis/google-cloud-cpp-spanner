@@ -162,8 +162,8 @@ class ConnectionImpl : public Connection,
   StatusOr<std::vector<std::unique_ptr<Session>>> CreateSessions(
       int num_sessions) override;
 
-  template <typename T>
-  StatusOr<T> ExecuteSqlImpl(
+  template <typename ResultType>
+  StatusOr<ResultType> ExecuteSqlImpl(
       SessionHolder& session, google::spanner::v1::TransactionSelector& s,
       std::int64_t seqno, ExecuteSqlParams params,
       google::spanner::v1::ExecuteSqlRequest::QueryMode query_mode,
@@ -171,24 +171,22 @@ class ConnectionImpl : public Connection,
           google::spanner::v1 ::ExecuteSqlRequest& request)> const&
           retry_resume_fn);
 
-  template <typename T>
-  T CommonQueryImpl(
+  template <typename ResultType>
+  ResultType CommonQueryImpl(
       SessionHolder& session, google::spanner::v1::TransactionSelector& s,
       std::int64_t seqno, ExecuteSqlParams params,
       google::spanner::v1::ExecuteSqlRequest::QueryMode query_mode);
 
-  template <typename T>
-  StatusOr<T> CommonDmlImpl(
+  template <typename ResultType>
+  StatusOr<ResultType> CommonDmlImpl(
       SessionHolder& session, google::spanner::v1::TransactionSelector& s,
       std::int64_t seqno, ExecuteSqlParams params,
       google::spanner::v1::ExecuteSqlRequest::QueryMode query_mode);
 
   Database db_;
   std::shared_ptr<SpannerStub> stub_;
-
-  std::unique_ptr<RetryPolicy> retry_policy_;
-  std::unique_ptr<BackoffPolicy> backoff_policy_;
-
+  std::shared_ptr<RetryPolicy> retry_policy_;
+  std::shared_ptr<BackoffPolicy> backoff_policy_;
   SessionPool session_pool_;
 };
 

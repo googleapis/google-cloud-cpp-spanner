@@ -442,13 +442,13 @@ ResultType ConnectionImpl::CommonQueryImpl(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
     std::int64_t seqno, ExecuteSqlParams params,
     google::spanner::v1::ExecuteSqlRequest::QueryMode query_mode) {
-  // Capture a copy of `stub` to ensure the `shared_ptr<>` remains valid
-  // through the lifetime of the lambda. Note that the local variable `stub`
-  // is a reference to avoid increasing refcounts twice, but the capture is by
-  // value.
+  // Capture a copy of of these member variables to ensure the `shared_ptr<>`
+  // remains valid through the lifetime of the lambda. Note that the local
+  // variables are a reference to avoid increasing refcounts twice, but the
+  // capture is by value.
   auto const& stub = stub_;
-  std::shared_ptr<RetryPolicy> retry_policy = retry_policy_->clone();
-  std::shared_ptr<BackoffPolicy> backoff_policy = backoff_policy_->clone();
+  auto const& retry_policy = retry_policy_;
+  auto const& backoff_policy = backoff_policy_;
 
   auto retry_resume_fn = [stub, retry_policy, backoff_policy](
                              spanner_proto::ExecuteSqlRequest& request) mutable
@@ -500,13 +500,13 @@ StatusOr<ResultType> ConnectionImpl::CommonDmlImpl(
     std::int64_t seqno, ExecuteSqlParams params,
     google::spanner::v1::ExecuteSqlRequest::QueryMode query_mode) {
   auto function_name = __func__;
-  // Capture a copy of `stub` to ensure the `shared_ptr<>` remains valid
-  // through the lifetime of the lambda. Note that the local variable `stub`
-  // is a reference to avoid increasing refcounts twice, but the capture is by
-  // value.
+  // Capture a copy of of these member variables to ensure the `shared_ptr<>`
+  // remains valid through the lifetime of the lambda. Note that the local
+  // variables are a reference to avoid increasing refcounts twice, but the
+  // capture is by value.
   auto const& stub = stub_;
-  std::shared_ptr<RetryPolicy> retry_policy = retry_policy_->clone();
-  std::shared_ptr<BackoffPolicy> backoff_policy = backoff_policy_->clone();
+  auto const& retry_policy = retry_policy_;
+  auto const& backoff_policy = backoff_policy_;
 
   auto retry_resume_fn = [function_name, stub, retry_policy, backoff_policy](
                              spanner_proto::ExecuteSqlRequest& request) mutable
