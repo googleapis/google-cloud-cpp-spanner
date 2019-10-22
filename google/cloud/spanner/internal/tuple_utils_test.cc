@@ -22,6 +22,27 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
+TEST(TupleUtils, IsTuple) {
+  using T0 = std::tuple<>;
+  static_assert(internal::IsTuple<T0>::value, "");
+  static_assert(internal::IsTuple<T0 const>::value, "");
+  static_assert(internal::IsTuple<T0 const&>::value, "");
+
+  using T1 = std::tuple<int>;
+  static_assert(internal::IsTuple<T1>::value, "");
+  static_assert(internal::IsTuple<T1 const>::value, "");
+  static_assert(internal::IsTuple<T1 const&>::value, "");
+
+  using TN = std::tuple<int, bool, char>;
+  static_assert(internal::IsTuple<TN>::value, "");
+  static_assert(internal::IsTuple<TN const>::value, "");
+  static_assert(internal::IsTuple<TN const&>::value, "");
+
+  static_assert(!internal::IsTuple<int>::value, "");
+  static_assert(!internal::IsTuple<char>::value, "");
+  static_assert(!internal::IsTuple<std::vector<int>>::value, "");
+}
+
 // Helper functor used to test the `ForEach` function. Uses a templated
 // `operator()`.
 struct Stringify {

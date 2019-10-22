@@ -25,6 +25,22 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
+// The implementation for `IsTuple<T>` (below).
+template <typename T>
+struct IsTupleImpl : std::false_type {};
+template <typename... Ts>
+struct IsTupleImpl<std::tuple<Ts...>> : std::true_type {};
+
+// Decays the given type `T` and determines whether it is a `std::tuple<...>`.
+//
+// Example:
+//
+//     using Type = std::tuple<...>;
+//     static_assert(IsTuple<Type>::value, "");
+//
+template <typename T>
+using IsTuple = IsTupleImpl<typename std::decay<T>::type>;
+
 // Decays the tuple `T` and returns its size as in the ::value member.
 template <typename T>
 using TupleSize = std::tuple_size<typename std::decay<T>::type>;
