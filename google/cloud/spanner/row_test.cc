@@ -26,6 +26,8 @@ namespace {
 
 namespace {
 
+// Given a `vector<Row>` creates a 'Row::Source' object. This is helpeful for
+// unit testing.
 RowStreamIterator::Source MakeRowStreamIteratorSource(
     std::vector<Row> const& rows) {
   std::size_t index = 0;
@@ -37,9 +39,7 @@ RowStreamIterator::Source MakeRowStreamIteratorSource(
 
 struct RowRange {
   RowStreamIterator::Source source;
-  // NOLINTNEXTLINE(readability-identifier-naming)
   RowStreamIterator begin() const { return RowStreamIterator(source); }
-  // NOLINTNEXTLINE(readability-identifier-naming)
   RowStreamIterator end() const { return {}; }
 };
 
