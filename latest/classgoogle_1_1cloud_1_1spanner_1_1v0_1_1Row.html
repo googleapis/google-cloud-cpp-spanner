@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Google Cloud Spanner C++ Client: google::cloud::spanner::v0::Row&lt; Types &gt; Class Template Reference</title>
+<title>Google Cloud Spanner C++ Client: google::cloud::spanner::v0::Row Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -70,155 +70,115 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#friends">Friends</a> &#124;
 <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">google::cloud::spanner::v0::Row&lt; Types &gt; Class Template Reference</div>  </div>
+<div class="title">google::cloud::spanner::v0::Row Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> class template represents a heterogeneous set of C++ values.  
+<p>A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> is a sequence of columns each with a name and an associated <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>.  
  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="row_8h_source.html">google/cloud/spanner/row.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a90e49e0d45aa1b281e963792880b3b56"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a90e49e0d45aa1b281e963792880b3b56">Row</a> ()</td></tr>
-<tr class="separator:a90e49e0d45aa1b281e963792880b3b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f1204d304a20110f8c017373efa7df9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a8f1204d304a20110f8c017373efa7df9">Row</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;)=default</td></tr>
-<tr class="separator:a8f1204d304a20110f8c017373efa7df9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a483b764491e91c1a7379bdacce4aa05e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a483b764491e91c1a7379bdacce4aa05e">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;)=default</td></tr>
-<tr class="separator:a483b764491e91c1a7379bdacce4aa05e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a112bb8149a46da411725a2ae31b87600"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a112bb8149a46da411725a2ae31b87600">Row</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> &amp;&amp;)=default</td></tr>
-<tr class="separator:a112bb8149a46da411725a2ae31b87600"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c3fe360e71b4be58f97832daa869177"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a0c3fe360e71b4be58f97832daa869177">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> &amp;&amp;)=default</td></tr>
-<tr class="separator:a0c3fe360e71b4be58f97832daa869177"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adeae5599ea17e3e883816d8587226645"><td class="memTemplParams" colspan="2">template&lt;typename... Ts, typename std::enable_if&lt; !google::cloud::internal::disjunction&lt; std::is_same&lt; typename std::decay&lt; Ts &gt;::type, Row &gt;... &gt;::value, int &gt;::type  = 0&gt; </td></tr>
-<tr class="memitem:adeae5599ea17e3e883816d8587226645"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#adeae5599ea17e3e883816d8587226645">Row</a> (Ts &amp;&amp;... ts)</td></tr>
-<tr class="memdesc:adeae5599ea17e3e883816d8587226645"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a> from the specified values.  <a href="#adeae5599ea17e3e883816d8587226645">More...</a><br /></td></tr>
-<tr class="separator:adeae5599ea17e3e883816d8587226645"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c1093e440467bded2014cd0937eb9ad"><td class="memTemplParams" colspan="2">template&lt;std::size_t I&gt; </td></tr>
-<tr class="memitem:a0c1093e440467bded2014cd0937eb9ad"><td class="memTemplItemLeft" align="right" valign="top">ColumnType&lt; I &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a0c1093e440467bded2014cd0937eb9ad">get</a> () &amp;</td></tr>
-<tr class="memdesc:a0c1093e440467bded2014cd0937eb9ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a reference to the value at position <code>I</code>.  <a href="#a0c1093e440467bded2014cd0937eb9ad">More...</a><br /></td></tr>
-<tr class="separator:a0c1093e440467bded2014cd0937eb9ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace7cb73ec7d3a6cae3108721818030c5"><td class="memTemplParams" colspan="2">template&lt;std::size_t I&gt; </td></tr>
-<tr class="memitem:ace7cb73ec7d3a6cae3108721818030c5"><td class="memTemplItemLeft" align="right" valign="top">ColumnType&lt; I &gt; const  &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ace7cb73ec7d3a6cae3108721818030c5">get</a> () const &amp;</td></tr>
-<tr class="separator:ace7cb73ec7d3a6cae3108721818030c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae66a5fe28d14577eeb7723cc7efd4f5f"><td class="memTemplParams" colspan="2">template&lt;std::size_t I&gt; </td></tr>
-<tr class="memitem:ae66a5fe28d14577eeb7723cc7efd4f5f"><td class="memTemplItemLeft" align="right" valign="top">ColumnType&lt; I &gt; &amp;&amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ae66a5fe28d14577eeb7723cc7efd4f5f">get</a> () &amp;&amp;</td></tr>
-<tr class="separator:ae66a5fe28d14577eeb7723cc7efd4f5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f7dda4d233ff53a14af3b94e7527acb"><td class="memTemplParams" colspan="2">template&lt;std::size_t I&gt; </td></tr>
-<tr class="memitem:a1f7dda4d233ff53a14af3b94e7527acb"><td class="memTemplItemLeft" align="right" valign="top">ColumnType&lt; I &gt; const  &amp;&amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a1f7dda4d233ff53a14af3b94e7527acb">get</a> () const &amp;&amp;</td></tr>
-<tr class="separator:a1f7dda4d233ff53a14af3b94e7527acb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58af82bcd5787656f56ba291a2f89f3f"><td class="memTemplParams" colspan="2">template&lt;std::size_t... Is, typename std::enable_if&lt;(sizeof...(Is) &gt; 1&gt; </td></tr>
-<tr class="memitem:a58af82bcd5787656f56ba291a2f89f3f"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; ColumnType&lt; Is &gt;... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a58af82bcd5787656f56ba291a2f89f3f">get</a> () const &amp;</td></tr>
-<tr class="memdesc:a58af82bcd5787656f56ba291a2f89f3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a std::tuple of the values at the specified positions (specified in any order).  <a href="#a58af82bcd5787656f56ba291a2f89f3f">More...</a><br /></td></tr>
-<tr class="separator:a58af82bcd5787656f56ba291a2f89f3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e0bfec48ebfe17d13b9c57a37bcbb3e"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; Types... &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a8e0bfec48ebfe17d13b9c57a37bcbb3e">get</a> () &amp;</td></tr>
-<tr class="memdesc:a8e0bfec48ebfe17d13b9c57a37bcbb3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a reference to the const std::tuple containing all the values in the row.  <a href="#a8e0bfec48ebfe17d13b9c57a37bcbb3e">More...</a><br /></td></tr>
-<tr class="separator:a8e0bfec48ebfe17d13b9c57a37bcbb3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1bb579179ed9111a31b3e48c02c8ac8"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; Types... &gt; const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#af1bb579179ed9111a31b3e48c02c8ac8">get</a> () const &amp;</td></tr>
-<tr class="separator:af1bb579179ed9111a31b3e48c02c8ac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a098f97c428cb57e76057b12640c049c2"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; Types... &gt; &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a098f97c428cb57e76057b12640c049c2">get</a> () &amp;&amp;</td></tr>
-<tr class="separator:a098f97c428cb57e76057b12640c049c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b12644424391ebad1db1f8a558b08bb"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; Types... &gt; const  &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a0b12644424391ebad1db1f8a558b08bb">get</a> () const &amp;&amp;</td></tr>
-<tr class="separator:a0b12644424391ebad1db1f8a558b08bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e9617543ccc136ae1ce5347e448ea22"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ab683b2a27b1d53af35a0e1311f448cbe">size</a>()&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a0e9617543ccc136ae1ce5347e448ea22">values</a> () const &amp;</td></tr>
-<tr class="memdesc:a0e9617543ccc136ae1ce5347e448ea22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a std::array of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects holding all the items in this row.  <a href="#a0e9617543ccc136ae1ce5347e448ea22">More...</a><br /></td></tr>
-<tr class="separator:a0e9617543ccc136ae1ce5347e448ea22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae193fc8c5092e97ac396e6bd7749d45c"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ab683b2a27b1d53af35a0e1311f448cbe">size</a>()&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ae193fc8c5092e97ac396e6bd7749d45c">values</a> () &amp;&amp;</td></tr>
-<tr class="memdesc:ae193fc8c5092e97ac396e6bd7749d45c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a std::array of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects holding all the items in this row.  <a href="#ae193fc8c5092e97ac396e6bd7749d45c">More...</a><br /></td></tr>
-<tr class="separator:ae193fc8c5092e97ac396e6bd7749d45c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ab683b2a27b1d53af35a0e1311f448cbe"><td class="memItemLeft" align="right" valign="top">static constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ab683b2a27b1d53af35a0e1311f448cbe">size</a> ()</td></tr>
-<tr class="memdesc:ab683b2a27b1d53af35a0e1311f448cbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of columns in this row.  <a href="#ab683b2a27b1d53af35a0e1311f448cbe">More...</a><br /></td></tr>
-<tr class="separator:ab683b2a27b1d53af35a0e1311f448cbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1167b2cbb8ee599cc7b15bc6d83f0150"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a1167b2cbb8ee599cc7b15bc6d83f0150">Row</a> ()</td></tr>
+<tr class="memdesc:a1167b2cbb8ee599cc7b15bc6d83f0150"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructs an empty row with no columns nor values.  <a href="#a1167b2cbb8ee599cc7b15bc6d83f0150">More...</a><br /></td></tr>
+<tr class="separator:a1167b2cbb8ee599cc7b15bc6d83f0150"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a221ddbffc9966f21a99d65b0392ddaf4"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a221ddbffc9966f21a99d65b0392ddaf4">size</a> () const</td></tr>
+<tr class="memdesc:a221ddbffc9966f21a99d65b0392ddaf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of columns in the row.  <a href="#a221ddbffc9966f21a99d65b0392ddaf4">More...</a><br /></td></tr>
+<tr class="separator:a221ddbffc9966f21a99d65b0392ddaf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e39d3007b283e6a62844f020e8fc9c9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt; const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a6e39d3007b283e6a62844f020e8fc9c9">columns</a> () const</td></tr>
+<tr class="memdesc:a6e39d3007b283e6a62844f020e8fc9c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the column names for the row.  <a href="#a6e39d3007b283e6a62844f020e8fc9c9">More...</a><br /></td></tr>
+<tr class="separator:a6e39d3007b283e6a62844f020e8fc9c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a918446d9ee795a7432daba3ea3a126d1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> &gt; const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a918446d9ee795a7432daba3ea3a126d1">values</a> () const &amp;</td></tr>
+<tr class="memdesc:a918446d9ee795a7432daba3ea3a126d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects in the given row.  <a href="#a918446d9ee795a7432daba3ea3a126d1">More...</a><br /></td></tr>
+<tr class="separator:a918446d9ee795a7432daba3ea3a126d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af96d5963c5983ef31316512fb399bf8f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> &gt; &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#af96d5963c5983ef31316512fb399bf8f">values</a> () &amp;&amp;</td></tr>
+<tr class="memdesc:af96d5963c5983ef31316512fb399bf8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects in the given row.  <a href="#af96d5963c5983ef31316512fb399bf8f">More...</a><br /></td></tr>
+<tr class="separator:af96d5963c5983ef31316512fb399bf8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4fbdfd9e360505389eb421f7c7210f1"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ac4fbdfd9e360505389eb421f7c7210f1">get</a> (std::size_t pos) const</td></tr>
+<tr class="memdesc:ac4fbdfd9e360505389eb421f7c7210f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> at the given <code>pos</code>.  <a href="#ac4fbdfd9e360505389eb421f7c7210f1">More...</a><br /></td></tr>
+<tr class="separator:ac4fbdfd9e360505389eb421f7c7210f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab1ddb77450a3472b97ce2c353c2ef30"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#aab1ddb77450a3472b97ce2c353c2ef30">get</a> (std::string const &amp;name) const</td></tr>
+<tr class="memdesc:aab1ddb77450a3472b97ce2c353c2ef30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> in the column with <code>name</code>.  <a href="#aab1ddb77450a3472b97ce2c353c2ef30">More...</a><br /></td></tr>
+<tr class="separator:aab1ddb77450a3472b97ce2c353c2ef30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1ee99fdc3f08de5998fa60afee09ec4"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Arg &gt; </td></tr>
+<tr class="memitem:af1ee99fdc3f08de5998fa60afee09ec4"><td class="memTemplItemLeft" align="right" valign="top">StatusOr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#af1ee99fdc3f08de5998fa60afee09ec4">get</a> (Arg &amp;&amp;arg) const</td></tr>
+<tr class="memdesc:af1ee99fdc3f08de5998fa60afee09ec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the native C++ value at the given position or column name.  <a href="#af1ee99fdc3f08de5998fa60afee09ec4">More...</a><br /></td></tr>
+<tr class="separator:af1ee99fdc3f08de5998fa60afee09ec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac51a9cf324bfb69dc8c0a2e72c1f0174"><td class="memTemplParams" colspan="2">template&lt;typename Tuple &gt; </td></tr>
+<tr class="memitem:ac51a9cf324bfb69dc8c0a2e72c1f0174"><td class="memTemplItemLeft" align="right" valign="top">StatusOr&lt; Tuple &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ac51a9cf324bfb69dc8c0a2e72c1f0174">get</a> () const &amp;</td></tr>
+<tr class="memdesc:ac51a9cf324bfb69dc8c0a2e72c1f0174"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all the native C++ values for the whole row in a <code>std::tuple</code> with the specified type.  <a href="#ac51a9cf324bfb69dc8c0a2e72c1f0174">More...</a><br /></td></tr>
+<tr class="separator:ac51a9cf324bfb69dc8c0a2e72c1f0174"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83a033e9b966ced3e9391264649db006"><td class="memTemplParams" colspan="2">template&lt;typename Tuple &gt; </td></tr>
+<tr class="memitem:a83a033e9b966ced3e9391264649db006"><td class="memTemplItemLeft" align="right" valign="top">StatusOr&lt; Tuple &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a83a033e9b966ced3e9391264649db006">get</a> () &amp;&amp;</td></tr>
+<tr class="memdesc:a83a033e9b966ced3e9391264649db006"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all the native C++ values for the whole row in a <code>std::tuple</code> with the specified type.  <a href="#a83a033e9b966ced3e9391264649db006">More...</a><br /></td></tr>
+<tr class="separator:a83a033e9b966ced3e9391264649db006"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Copy and move.</div></td></tr>
+<tr class="memitem:a68f25b8b670e80241916d97d7d1e2d68"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a68f25b8b670e80241916d97d7d1e2d68">Row</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;)=default</td></tr>
+<tr class="separator:a68f25b8b670e80241916d97d7d1e2d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ae4ce13167957ad46b4236d40985599"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a8ae4ce13167957ad46b4236d40985599">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;)=default</td></tr>
+<tr class="separator:a8ae4ce13167957ad46b4236d40985599"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a268b36e5dbad1ddb8a14b33e6cee0256"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a268b36e5dbad1ddb8a14b33e6cee0256">Row</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> &amp;&amp;)=default</td></tr>
+<tr class="separator:a268b36e5dbad1ddb8a14b33e6cee0256"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92eb1662a57ac2482666c561848ef26f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a92eb1662a57ac2482666c561848ef26f">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> &amp;&amp;)=default</td></tr>
+<tr class="separator:a92eb1662a57ac2482666c561848ef26f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:a4e4e2c944d8801bda60b4814b9c6f7b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a4e4e2c944d8801bda60b4814b9c6f7b4">PrintTo</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;r, std::ostream *os)</td></tr>
-<tr class="memdesc:a4e4e2c944d8801bda60b4814b9c6f7b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows Google Test to print internal debugging information when test assertions fail.  <a href="#a4e4e2c944d8801bda60b4814b9c6f7b4">More...</a><br /></td></tr>
-<tr class="separator:a4e4e2c944d8801bda60b4814b9c6f7b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Equality operators</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Equality</div></td></tr>
 <tr class="memitem:a08fc11ec186277154f8791dc0e4ddb55"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a08fc11ec186277154f8791dc0e4ddb55">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;b)</td></tr>
 <tr class="separator:a08fc11ec186277154f8791dc0e4ddb55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbbd3a1a1a5c20188bc5bb5a45be280f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#abbbd3a1a1a5c20188bc5bb5a45be280f">operator!=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;b)</td></tr>
 <tr class="separator:abbbd3a1a1a5c20188bc5bb5a45be280f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Relational operators</div></td></tr>
-<tr class="memitem:a3e8eb16d9a89b0e7fe6e495eb59ef110"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a3e8eb16d9a89b0e7fe6e495eb59ef110">operator&lt;</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;b)</td></tr>
-<tr class="separator:a3e8eb16d9a89b0e7fe6e495eb59ef110"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af044b2a1ac10e2deb46023444ee3efb8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#af044b2a1ac10e2deb46023444ee3efb8">operator&lt;=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;b)</td></tr>
-<tr class="separator:af044b2a1ac10e2deb46023444ee3efb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a771655dd234982b8ce9857880ddebecd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a771655dd234982b8ce9857880ddebecd">operator&gt;</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;b)</td></tr>
-<tr class="separator:a771655dd234982b8ce9857880ddebecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbf1ebede9374314f846b1669f375d32"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#adbf1ebede9374314f846b1669f375d32">operator&gt;=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;b)</td></tr>
-<tr class="separator:adbf1ebede9374314f846b1669f375d32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename... Types&gt;<br />
-class google::cloud::spanner::v0::Row&lt; Types &gt;</h3>
-
-<p>The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> class template represents a heterogeneous set of C++ values. </p>
-<p>The values stored in a row may have any of the valid Spanner types that can be stored in <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>. Each value in a row is identified by its column index, with the first value corresponding to column 0. The number of columns in the row is given by the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ab683b2a27b1d53af35a0e1311f448cbe" title="Returns the number of columns in this row.">Row::size()</a></code> member function (This exactly matches the number of types the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a></code> was created with).</p>
-<p>A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>&lt;Ts...&gt;</code> is a regular C++ type, supporting default construction, copy, assignment, move, and equality as expected. It should typically be constructed with values using the non-member <code>spanner::MakeRow(Ts...)</code> function template (see below). Once an instance is created, you can access the values in the row using the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a0c1093e440467bded2014cd0937eb9ad" title="Returns a reference to the value at position I.">Row::get()</a></code> overloaded functions.</p>
+<div class="textblock"><p>A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> is a sequence of columns each with a name and an associated <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>. </p>
+<p>The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> class is a regular value type that may be copied, moved, assigned, compared for equality, etc. Instances may be large if they hold lots of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> data, so copy only when necessary.</p>
+<p><code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> instances are typically returned as the result of queries or reads of a Cloud Spanner table (see <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ac875292517107d7dd32372f3ab4af40b" title="Reads rows from the database using key lookups and scans, as a simple key/value style alternative to ...">Client::Read</a></code> and <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae9e584f159a8231e3c146d8dfbc5d9fa" title="Executes a SQL query.">Client::ExecuteQuery</a></code>). Users will mostly just use the accessor methods on <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a>, and will rarely (if ever) need to construct a</code>Row` of their own.</p>
+<p>The number of columns in a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> can be obtained from the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a221ddbffc9966f21a99d65b0392ddaf4" title="Returns the number of columns in the row.">size()</a></code> member function. The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>s can be obtained using the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a918446d9ee795a7432daba3ea3a126d1" title="Returns the Value objects in the given row.">values()</a></code> accessor. The names of each column in the row can be obtained using the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a6e39d3007b283e6a62844f020e8fc9c9" title="Returns the column names for the row.">columns()</a></code> accessor.</p>
+<p>Perhaps the most convenient way to access the <code>Values</code> in a row is through the variety of "get" accessors. A user may access a column's &lsquo;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a>&rsquo; by calling <code>get</code> with a <code>std::size_t</code> 0-indexed position, or a <code>std::string</code> column name. Furthermore, callers may directly extract the native C++ type by specifying the C++ type along with the column's position or name.</p>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
-<div class="fragment"><div class="line">spanner::Row&lt;bool, std::int64_t, std::string&gt; row;</div><div class="line">row = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">spanner::MakeRow</a>(<span class="keyword">true</span>, 42, <span class="stringliteral">&quot;hello&quot;</span>);</div><div class="line">static_assert(row.size() == 3, <span class="stringliteral">&quot;Created with three types&quot;</span>);</div><div class="line"></div><div class="line"><span class="comment">// Gets all values as a std::tuple</span></div><div class="line">std::tuple&lt;bool, std::int64_t, std::string&gt; tup = row.get();</div><div class="line"></div><div class="line"><span class="comment">// Gets one value at the specified column index</span></div><div class="line">std::int64_t i = row.get&lt;1&gt;();</div><div class="line"></div><div class="line"><span class="comment">// Gets the values from the specified columns (any order), and returns a</span></div><div class="line"><span class="comment">// tuple. Since C++17, this tuple will work with structured bindings to</span></div><div class="line"><span class="comment">// allow assigning to individually  named variables.</span></div><div class="line"><span class="keyword">auto</span> [name, age] = row.get&lt;2, 1&gt;();</div></div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Types...</td><td>The C++ types for each column in the row. </td></tr>
-  </table>
-  </dd>
-</dl>
+<div class="fragment"><div class="line"><a class="code" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a1167b2cbb8ee599cc7b15bc6d83f0150">Row</a> row = ...;</div><div class="line"><span class="keywordflow">if</span> (StatusOr&lt;std::string&gt; x = row.get&lt;std::string&gt;(<span class="stringliteral">&quot;LastName&quot;</span>)) {</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;LastName=&quot;</span> &lt;&lt; *x &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div><div class="line">}</div></div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>There is a helper function defined below named <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a19d6f9f38667e81ddeb16081d138c356" title="Creates a Row instance with the given column names and values.">MakeRow()</a></code> to make creating <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> instances for testing easier. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00071">71</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00074">74</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a90e49e0d45aa1b281e963792880b3b56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90e49e0d45aa1b281e963792880b3b56">&#9670;&nbsp;</a></span>Row() <span class="overload">[1/4]</span></h2>
+<a id="a1167b2cbb8ee599cc7b15bc6d83f0150"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1167b2cbb8ee599cc7b15bc6d83f0150">&#9670;&nbsp;</a></span>Row() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> </td>
+          <td class="memname">google::cloud::spanner::v0::Row::Row </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00080">80</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p>Default constructs an empty row with no columns nor values. </p>
+
+<p class="definition">Definition at line <a class="el" href="row_8cc_source.html#l00046">46</a> of file <a class="el" href="row_8cc_source.html">row.cc</a>.</p>
 
 </div>
 </div>
-<a id="a8f1204d304a20110f8c017373efa7df9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f1204d304a20110f8c017373efa7df9">&#9670;&nbsp;</a></span>Row() <span class="overload">[2/4]</span></h2>
+<a id="a68f25b8b670e80241916d97d7d1e2d68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68f25b8b670e80241916d97d7d1e2d68">&#9670;&nbsp;</a></span>Row() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> </td>
+          <td class="memname">google::cloud::spanner::v0::Row::Row </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Types &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -232,21 +192,19 @@ template&lt;typename... Types&gt; </div>
 
 </div>
 </div>
-<a id="a112bb8149a46da411725a2ae31b87600"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a112bb8149a46da411725a2ae31b87600">&#9670;&nbsp;</a></span>Row() <span class="overload">[3/4]</span></h2>
+<a id="a268b36e5dbad1ddb8a14b33e6cee0256"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a268b36e5dbad1ddb8a14b33e6cee0256">&#9670;&nbsp;</a></span>Row() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> </td>
+          <td class="memname">google::cloud::spanner::v0::Row::Row </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Types &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> &amp;&amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -257,64 +215,24 @@ template&lt;typename... Types&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a id="adeae5599ea17e3e883816d8587226645"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adeae5599ea17e3e883816d8587226645">&#9670;&nbsp;</a></span>Row() <span class="overload">[4/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
-<div class="memtemplate">
-template&lt;typename... Ts, typename std::enable_if&lt; !google::cloud::internal::disjunction&lt; std::is_same&lt; typename std::decay&lt; Ts &gt;::type, Row &gt;... &gt;::value, int &gt;::type  = 0&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> </td>
-          <td>(</td>
-          <td class="paramtype">Ts &amp;&amp;...&#160;</td>
-          <td class="paramname"><em>ts</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Constructs a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a> from the specified values. </p>
-<p>See also the <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af" title="Helper factory function to construct Row&lt;Ts...&gt; objects holding the specified values.">MakeRow()</a></code> helper function template for a convenient way to make rows without having to also specify the value's types.</p>
-<p>This constructor is disabled if any of the specified types is <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a></code>, which prevents this constructor from taking over copy construction. </p>
-
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00100">100</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0c1093e440467bded2014cd0937eb9ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c1093e440467bded2014cd0937eb9ad">&#9670;&nbsp;</a></span>get() <span class="overload">[1/9]</span></h2>
+<a id="a6e39d3007b283e6a62844f020e8fc9c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e39d3007b283e6a62844f020e8fc9c9">&#9670;&nbsp;</a></span>columns()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
-<div class="memtemplate">
-template&lt;std::size_t I&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">ColumnType&lt;I&gt;&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::get </td>
+          <td class="memname">std::vector&lt;std::string&gt; const&amp; google::cloud::spanner::v0::Row::columns </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> &amp;</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -324,29 +242,108 @@ template&lt;std::size_t I&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns a reference to the value at position <code>I</code>. </p>
-<p>The value category of the returned reference matches the value category of <code>this</code>. That is, calling <code>get&lt;I&gt;()</code> on a non-const lvalue returns a non-const lvalue. Calling <code>get&lt;I&gt;()</code> on an rvalue returns an rvalue, etc.</p>
-<dl class="section user"><dt>Example</dt><dd></dd></dl>
-<div class="fragment"><div class="line"><span class="keyword">auto</span> row = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(<span class="keyword">true</span>, <span class="stringliteral">&quot;foo&quot;</span>);</div><div class="line">assert(row.get&lt;0&gt;() == <span class="keyword">true</span>);</div><div class="line">assert(row.get&lt;1&gt;() == <span class="stringliteral">&quot;foo&quot;</span>);</div><div class="line"></div><div class="line">Row&lt;bool, std::string&gt; F();</div><div class="line">std::string x = F().get&lt;1&gt;();</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00121">121</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p>Returns the column names for the row. </p>
+
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00091">91</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
-<a id="ace7cb73ec7d3a6cae3108721818030c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace7cb73ec7d3a6cae3108721818030c5">&#9670;&nbsp;</a></span>get() <span class="overload">[2/9]</span></h2>
+<a id="ac4fbdfd9e360505389eb421f7c7210f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4fbdfd9e360505389eb421f7c7210f1">&#9670;&nbsp;</a></span>get() <span class="overload">[1/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> &gt; google::cloud::spanner::v0::Row::get </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>pos</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> at the given <code>pos</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="row_8cc_source.html#l00058">58</a> of file <a class="el" href="row_8cc_source.html">row.cc</a>.</p>
+
+</div>
+</div>
+<a id="aab1ddb77450a3472b97ce2c353c2ef30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab1ddb77450a3472b97ce2c353c2ef30">&#9670;&nbsp;</a></span>get() <span class="overload">[2/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> &gt; google::cloud::spanner::v0::Row::get </td>
+          <td>(</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> in the column with <code>name</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="row_8cc_source.html#l00064">64</a> of file <a class="el" href="row_8cc_source.html">row.cc</a>.</p>
+
+</div>
+</div>
+<a id="af1ee99fdc3f08de5998fa60afee09ec4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1ee99fdc3f08de5998fa60afee09ec4">&#9670;&nbsp;</a></span>get() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename... Types&gt; </div>
-<div class="memtemplate">
-template&lt;std::size_t I&gt; </div>
+template&lt;typename T , typename Arg &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">ColumnType&lt;I&gt; const&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::get </td>
+          <td class="memname">StatusOr&lt;T&gt; google::cloud::spanner::v0::Row::get </td>
+          <td>(</td>
+          <td class="paramtype">Arg &amp;&amp;&#160;</td>
+          <td class="paramname"><em>arg</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the native C++ value at the given position or column name. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>the native C++ type, e.g., std::int64_t or std::string </td></tr>
+    <tr><td class="paramname">Arg</td><td>a deduced parameter convertible to a std::size_t or std::string </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00112">112</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+
+</div>
+</div>
+<a id="ac51a9cf324bfb69dc8c0a2e72c1f0174"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac51a9cf324bfb69dc8c0a2e72c1f0174">&#9670;&nbsp;</a></span>get() <span class="overload">[4/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Tuple &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">StatusOr&lt;Tuple&gt; google::cloud::spanner::v0::Row::get </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const &amp;</td>
@@ -358,26 +355,32 @@ template&lt;std::size_t I&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns all the native C++ values for the whole row in a <code>std::tuple</code> with the specified type. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Tuple</td><td>the <code>std::tuple</code> type that the whole row must unpack into. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00125">125</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
-<a id="ae66a5fe28d14577eeb7723cc7efd4f5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae66a5fe28d14577eeb7723cc7efd4f5f">&#9670;&nbsp;</a></span>get() <span class="overload">[3/9]</span></h2>
+<a id="a83a033e9b966ced3e9391264649db006"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83a033e9b966ced3e9391264649db006">&#9670;&nbsp;</a></span>get() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename... Types&gt; </div>
-<div class="memtemplate">
-template&lt;std::size_t I&gt; </div>
+template&lt;typename Tuple &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">ColumnType&lt;I&gt;&amp;&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::get </td>
+          <td class="memname">StatusOr&lt;Tuple&gt; google::cloud::spanner::v0::Row::get </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> &amp;&amp;</td>
@@ -390,217 +393,31 @@ template&lt;std::size_t I&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00129">129</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
-
-</div>
-</div>
-<a id="a1f7dda4d233ff53a14af3b94e7527acb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f7dda4d233ff53a14af3b94e7527acb">&#9670;&nbsp;</a></span>get() <span class="overload">[4/9]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
-<div class="memtemplate">
-template&lt;std::size_t I&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">ColumnType&lt;I&gt; const&amp;&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::get </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const &amp;&amp;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00133">133</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
-
-</div>
-</div>
-<a id="a58af82bcd5787656f56ba291a2f89f3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58af82bcd5787656f56ba291a2f89f3f">&#9670;&nbsp;</a></span>get() <span class="overload">[5/9]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
-<div class="memtemplate">
-template&lt;std::size_t... Is, typename std::enable_if&lt;(sizeof...(Is) &gt; 1&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::tuple&lt;ColumnType&lt;Is&gt;...&gt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::get </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const &amp;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns a std::tuple of the values at the specified positions (specified in any order). </p>
-<p>This overload is only available if 2 or more index template arguments are specified, thus the result is returned as a std::tuple.</p>
-<dl class="section user"><dt>Example</dt><dd></dd></dl>
-<div class="fragment"><div class="line"><span class="keyword">auto</span> row = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(<span class="keyword">true</span>, <span class="stringliteral">&quot;foo&quot;</span>, 42);</div><div class="line">std::tuple&lt;std::int64_t, bool&gt; tup = row.get&lt;2, 0&gt;();</div><div class="line">assert(std::get&lt;0&gt;(tup) == 42);</div><div class="line">assert(std::get&lt;1&gt;(tup) == <span class="keyword">true</span>);</div></div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
+<p>Returns all the native C++ values for the whole row in a <code>std::tuple</code> with the specified type. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Is...</td><td>a list of indexes to be returned in a <code>std::tuple</code> </td></tr>
+    <tr><td class="paramname">Tuple</td><td>the <code>std::tuple</code> type that the whole row must unpack into. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00157">157</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00145">145</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
-<a id="a8e0bfec48ebfe17d13b9c57a37bcbb3e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e0bfec48ebfe17d13b9c57a37bcbb3e">&#9670;&nbsp;</a></span>get() <span class="overload">[6/9]</span></h2>
+<a id="a8ae4ce13167957ad46b4236d40985599"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ae4ce13167957ad46b4236d40985599">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::tuple&lt;Types...&gt;&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::get </td>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&amp; google::cloud::spanner::v0::Row::operator= </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> &amp;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns a reference to the const std::tuple containing all the values in the row. </p>
-<p>This function is const/non-const x lvalue/rvalue overloaded. This enables a caller to move the returned tuple out of the <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>.</p>
-<dl class="section user"><dt>Example</dt><dd></dd></dl>
-<div class="fragment"><div class="line"><span class="keyword">auto</span> row = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(<span class="keyword">true</span>, <span class="stringliteral">&quot;foo&quot;</span>, 42);</div><div class="line">std::tuple&lt;bool, std::string, std::int64_t&gt; tup</div><div class="line">    = row.get();</div><div class="line">assert(std::get&lt;0&gt;(tup) == <span class="keyword">true</span>);</div><div class="line">assert(std::get&lt;1&gt;(tup) == <span class="stringliteral">&quot;foo&quot;</span>);</div><div class="line">assert(std::get&lt;2&gt;(tup) == 42);</div><div class="line"></div><div class="line"><span class="keyword">auto</span> moved_tup = std::move(row).get();</div><div class="line">assert(moved_tup == tup);</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00182">182</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
-
-</div>
-</div>
-<a id="af1bb579179ed9111a31b3e48c02c8ac8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1bb579179ed9111a31b3e48c02c8ac8">&#9670;&nbsp;</a></span>get() <span class="overload">[7/9]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::tuple&lt;Types...&gt; const&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::get </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const &amp;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00183">183</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
-
-</div>
-</div>
-<a id="a098f97c428cb57e76057b12640c049c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a098f97c428cb57e76057b12640c049c2">&#9670;&nbsp;</a></span>get() <span class="overload">[8/9]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::tuple&lt;Types...&gt;&amp;&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::get </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> &amp;&amp;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00184">184</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
-
-</div>
-</div>
-<a id="a0b12644424391ebad1db1f8a558b08bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b12644424391ebad1db1f8a558b08bb">&#9670;&nbsp;</a></span>get() <span class="overload">[9/9]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::tuple&lt;Types...&gt; const&amp;&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::get </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const &amp;&amp;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00185">185</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
-
-</div>
-</div>
-<a id="a483b764491e91c1a7379bdacce4aa05e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a483b764491e91c1a7379bdacce4aa05e">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::operator= </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Types &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -614,21 +431,19 @@ template&lt;typename... Types&gt; </div>
 
 </div>
 </div>
-<a id="a0c3fe360e71b4be58f97832daa869177"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c3fe360e71b4be58f97832daa869177">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+<a id="a92eb1662a57ac2482666c561848ef26f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92eb1662a57ac2482666c561848ef26f">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&amp; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::operator= </td>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&amp; google::cloud::spanner::v0::Row::operator= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Types &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> &amp;&amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -642,50 +457,46 @@ template&lt;typename... Types&gt; </div>
 
 </div>
 </div>
-<a id="ab683b2a27b1d53af35a0e1311f448cbe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab683b2a27b1d53af35a0e1311f448cbe">&#9670;&nbsp;</a></span>size()</h2>
+<a id="a221ddbffc9966f21a99d65b0392ddaf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a221ddbffc9966f21a99d65b0392ddaf4">&#9670;&nbsp;</a></span>size()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static constexpr std::size_t <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::size </td>
+          <td class="memname">std::size_t google::cloud::spanner::v0::Row::size </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns the number of columns in this row. </p>
+<p>Returns the number of columns in the row. </p>
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00077">77</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00088">88</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
-<a id="a0e9617543ccc136ae1ce5347e448ea22"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e9617543ccc136ae1ce5347e448ea22">&#9670;&nbsp;</a></span>values() <span class="overload">[1/2]</span></h2>
+<a id="a918446d9ee795a7432daba3ea3a126d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a918446d9ee795a7432daba3ea3a126d1">&#9670;&nbsp;</a></span>values() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::array&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ab683b2a27b1d53af35a0e1311f448cbe">size</a>()&gt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::values </td>
+          <td class="memname">std::vector&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>&gt; const&amp; google::cloud::spanner::v0::Row::values </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const &amp;</td>
@@ -698,27 +509,23 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns a std::array of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects holding all the items in this row. </p>
-<dl class="section note"><dt>Note</dt><dd>If the <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>'s values are large, it may be more efficient to "move" them into the returned array.</dd></dl>
-<dl class="section user"><dt>Example</dt><dd></dd></dl>
-<div class="fragment"><div class="line"><span class="keyword">auto</span> row = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(<span class="keyword">true</span>, <span class="stringliteral">&quot;foo&quot;</span>, 42);</div><div class="line">std::array&lt;Value, 3&gt; a = row.values();</div><div class="line">assert(a[0].get&lt;bool&gt;() == <span class="keyword">true</span>);</div><div class="line">assert(a[1].get&lt;std::string&gt;() == <span class="stringliteral">&quot;foo&quot;</span>);</div><div class="line">assert(a[2].get&lt;std::int64_t&gt;() == 42);</div><div class="line"></div><div class="line"><span class="comment">// Potentially more efficient if `row` is no longer needed.</span></div><div class="line">std::array&lt;Value, 3&gt; b = std::move(row).values();</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00206">206</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p>Returns the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects in the given row. </p>
+
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00094">94</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
-<a id="ae193fc8c5092e97ac396e6bd7749d45c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae193fc8c5092e97ac396e6bd7749d45c">&#9670;&nbsp;</a></span>values() <span class="overload">[2/2]</span></h2>
+<a id="af96d5963c5983ef31316512fb399bf8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af96d5963c5983ef31316512fb399bf8f">&#9670;&nbsp;</a></span>values() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::array&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#ab683b2a27b1d53af35a0e1311f448cbe">size</a>()&gt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">google::cloud::spanner::v0::Row</a>&lt; Types &gt;::values </td>
+          <td class="memname">std::vector&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>&gt;&amp;&amp; google::cloud::spanner::v0::Row::values </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> &amp;&amp;</td>
@@ -731,11 +538,9 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns a std::array of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects holding all the items in this row. </p>
-<dl class="section note"><dt>Note</dt><dd>If the <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="The Row&lt;Ts...&gt; class template represents a heterogeneous set of C++ values.">Row</a>'s values are large, it may be more efficient to "move" them into the returned array.</dd></dl>
-<dl class="section user"><dt>Example</dt><dd></dd></dl>
-<div class="fragment"><div class="line"><span class="keyword">auto</span> row = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af19702e3242db4899b9e2d8f974565af">MakeRow</a>(<span class="keyword">true</span>, <span class="stringliteral">&quot;foo&quot;</span>, 42);</div><div class="line">std::array&lt;Value, 3&gt; a = row.values();</div><div class="line">assert(a[0].get&lt;bool&gt;() == <span class="keyword">true</span>);</div><div class="line">assert(a[1].get&lt;std::string&gt;() == <span class="stringliteral">&quot;foo&quot;</span>);</div><div class="line">assert(a[2].get&lt;std::int64_t&gt;() == 42);</div><div class="line"></div><div class="line"><span class="comment">// Potentially more efficient if `row` is no longer needed.</span></div><div class="line">std::array&lt;Value, 3&gt; b = std::move(row).values();</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00212">212</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p>Returns the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects in the given row. </p>
+
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00097">97</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -745,8 +550,6 @@ template&lt;typename... Types&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -754,13 +557,13 @@ template&lt;typename... Types&gt; </div>
         <tr>
           <td class="memname">bool operator!= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Types &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Types &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;&#160;</td>
           <td class="paramname"><em>b</em>&#160;</td>
         </tr>
         <tr>
@@ -776,87 +579,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00223">223</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
-
-</div>
-</div>
-<a id="a3e8eb16d9a89b0e7fe6e495eb59ef110"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e8eb16d9a89b0e7fe6e495eb59ef110">&#9670;&nbsp;</a></span>operator&lt;</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool operator&lt; </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Types &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Types &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00230">230</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
-
-</div>
-</div>
-<a id="af044b2a1ac10e2deb46023444ee3efb8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af044b2a1ac10e2deb46023444ee3efb8">&#9670;&nbsp;</a></span>operator&lt;=</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool operator&lt;= </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Types &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Types &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00233">233</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00161">161</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -865,8 +588,6 @@ template&lt;typename... Types&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -874,13 +595,13 @@ template&lt;typename... Types&gt; </div>
         <tr>
           <td class="memname">bool operator== </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Types &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Types &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;&#160;</td>
           <td class="paramname"><em>b</em>&#160;</td>
         </tr>
         <tr>
@@ -896,130 +617,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00220">220</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
-
-</div>
-</div>
-<a id="a771655dd234982b8ce9857880ddebecd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a771655dd234982b8ce9857880ddebecd">&#9670;&nbsp;</a></span>operator&gt;</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool operator&gt; </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Types &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Types &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00236">236</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
-
-</div>
-</div>
-<a id="adbf1ebede9374314f846b1669f375d32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adbf1ebede9374314f846b1669f375d32">&#9670;&nbsp;</a></span>operator&gt;=</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool operator&gt;= </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Types &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Types &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00239">239</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
-
-</div>
-</div>
-<a id="a4e4e2c944d8801bda60b4814b9c6f7b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e4e2c944d8801bda60b4814b9c6f7b4">&#9670;&nbsp;</a></span>PrintTo</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Types&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void PrintTo </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&lt; Types &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::ostream *&#160;</td>
-          <td class="paramname"><em>os</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows Google Test to print internal debugging information when test assertions fail. </p>
-<dl class="section warning"><dt>Warning</dt><dd>This is intended for debugging and human consumption only, not machine consumption as the output format may change without notice. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00251">251</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8cc_source.html#l00070">70</a> of file <a class="el" href="row_8cc_source.html">row.cc</a>.</p>
 
 </div>
 </div>

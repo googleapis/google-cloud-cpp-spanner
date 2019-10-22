@@ -22,6 +22,8 @@ var searchData=
   ['retrypolicy',['RetryPolicy',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7ac0157ff53ff117cda2ebfe18650481',1,'google::cloud::spanner::v0']]],
   ['rollback',['Rollback',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#aa650df8b6fae3998b3f2fd63ca40a720',1,'google::cloud::spanner::v0::Client::Rollback()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html#a4d1882c92cee0b6380b3cbd59a7dfba4',1,'google::cloud::spanner::v0::Connection::Rollback()']]],
   ['rollbackparams',['RollbackParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1RollbackParams.html',1,'google::cloud::spanner::v0::Connection']]],
+  ['row',['Row',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html',1,'google::cloud::spanner::v0::Row'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a1167b2cbb8ee599cc7b15bc6d83f0150',1,'google::cloud::spanner::v0::Row::Row()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a68f25b8b670e80241916d97d7d1e2d68',1,'google::cloud::spanner::v0::Row::Row(Row const &amp;)=default'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a268b36e5dbad1ddb8a14b33e6cee0256',1,'google::cloud::spanner::v0::Row::Row(Row &amp;&amp;)=default']]],
+  ['row_2ecc',['row.cc',['../row_8cc.html',1,'']]],
   ['row_2eh',['row.h',['../row_8h.html',1,'']]],
   ['row_5fcount',['row_count',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1BatchDmlResult_1_1Stats.html#a8587ad4c5fcdfc4fb3a640c4dfb2d7a4',1,'google::cloud::spanner::v0::BatchDmlResult::Stats']]],
   ['row_5fcount_5flower_5fbound',['row_count_lower_bound',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionedDmlResult.html#ad5e64214214d6a9834c80f66e02a2dfa',1,'google::cloud::spanner::v0::PartitionedDmlResult']]],

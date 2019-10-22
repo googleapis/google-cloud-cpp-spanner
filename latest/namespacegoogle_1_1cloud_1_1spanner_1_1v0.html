@@ -163,6 +163,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html">ReadPartition</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html" title="The ReadPartition class is a regular type that represents a single slice of a parallel Read operation...">ReadPartition</a></code> class is a regular type that represents a single slice of a parallel Read operation.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> is a sequence of columns each with a name and an associated <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of std::tuple&lt;Ts....">RowParser</a></code> converts the given <code>ValueSource</code> into a single-pass iterable range of <code>std::tuple&lt;Ts...&gt;</code> objects.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -347,6 +350,11 @@ Functions</h2></td></tr>
 <tr class="memitem:aca3e9bd1afccb8b09a0a01f34c931bd6"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html">ReadPartition</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aca3e9bd1afccb8b09a0a01f34c931bd6">DeserializeReadPartition</a> (std::string const  &amp;serialized_read_partition)</td></tr>
 <tr class="memdesc:aca3e9bd1afccb8b09a0a01f34c931bd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserializes the provided string into a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html" title="The ReadPartition class is a regular type that represents a single slice of a parallel Read operation...">ReadPartition</a></code>, if able.  <a href="#aca3e9bd1afccb8b09a0a01f34c931bd6">More...</a><br /></td></tr>
 <tr class="separator:aca3e9bd1afccb8b09a0a01f34c931bd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19d6f9f38667e81ddeb16081d138c356"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a19d6f9f38667e81ddeb16081d138c356">MakeRow</a> (std::vector&lt; std::pair&lt; std::string, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> &gt;&gt; pairs)</td></tr>
+<tr class="memdesc:a19d6f9f38667e81ddeb16081d138c356"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> instance with the given column names and values.  <a href="#a19d6f9f38667e81ddeb16081d138c356">More...</a><br /></td></tr>
+<tr class="separator:a19d6f9f38667e81ddeb16081d138c356"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87e2256052e4c7aca49fdfbbafef2f47"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a87e2256052e4c7aca49fdfbbafef2f47">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;b)</td></tr>
+<tr class="separator:a87e2256052e4c7aca49fdfbbafef2f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a782a4a4617b9017586334db8e1eb6ff6"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a782a4a4617b9017586334db8e1eb6ff6">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;stmt)</td></tr>
 <tr class="separator:a782a4a4617b9017586334db8e1eb6ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7aedae28062a59c9b7e809205ebe09be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7aedae28062a59c9b7e809205ebe09be">MakeReadOnlyTransaction</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1ReadOnlyOptions.html">Transaction::ReadOnlyOptions</a> opts={})</td></tr>
@@ -418,7 +426,7 @@ Functions</h2></td></tr>
 <dd>
 <a href="https://cloud.google.com/spanner/docs/modify-mutation-api">https://cloud.google.com/spanner/docs/modify-mutation-api</a> for more information about the Cloud Spanner mutation API. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00273">273</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00272">272</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -476,7 +484,7 @@ Functions</h2></td></tr>
 <dd>
 <a href="https://cloud.google.com/spanner/docs/modify-mutation-api">https://cloud.google.com/spanner/docs/modify-mutation-api</a> for more information about the Cloud Spanner mutation API. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00188">188</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00187">187</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -497,7 +505,7 @@ Functions</h2></td></tr>
 <dd>
 <a href="https://cloud.google.com/spanner/docs/modify-mutation-api">https://cloud.google.com/spanner/docs/modify-mutation-api</a> for more information about the Cloud Spanner mutation API. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00230">230</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00229">229</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -663,7 +671,7 @@ Functions</h2></td></tr>
 
 <p>An ordered sequence of mutations to pass to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a9349cc0b3fb4d9d83721e642bfcc1102" title="Commits a read-write transaction.">Client::Commit()</a></code> or return from the <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#acb2c5cba976c895ac6de8054d8970eb7" title="Execute a function in the context of a read-write transaction, with automatic retries if the transact...">Client::RunTransaction()</a></code> functor. </p>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00094">94</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00093">93</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -702,7 +710,7 @@ Functions</h2></td></tr>
 <dd>
 <a href="https://cloud.google.com/spanner/docs/modify-mutation-api">https://cloud.google.com/spanner/docs/modify-mutation-api</a> for more information about the Cloud Spanner mutation API. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00253">253</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00252">252</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -780,7 +788,7 @@ Functions</h2></td></tr>
 <dd>
 <a href="https://cloud.google.com/spanner/docs/modify-mutation-api">https://cloud.google.com/spanner/docs/modify-mutation-api</a> for more information about the Cloud Spanner mutation API. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00209">209</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00208">208</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -801,7 +809,7 @@ Functions</h2></td></tr>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <p>The following example shows how to create a <code>ValueSource</code> from a vector:</p>
 <div class="fragment"><div class="line"><a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a24c2736cb64e83e464aa7fff4bde52fb">ValueSource</a> MakeValueSource(std::vector&lt;Value&gt; <span class="keyword">const</span>&amp; v) {</div><div class="line">  std::size_t i = 0;</div><div class="line">  <span class="keywordflow">return</span> [=]() <span class="keyword">mutable</span> -&gt; StatusOr&lt;optional&lt;Value&gt;&gt; {</div><div class="line">      <span class="keywordflow">if</span> (i == v.size()) <span class="keywordflow">return</span> optional&lt;Value&gt;{};</div><div class="line">      <span class="keywordflow">return</span> {v[i++]};</div><div class="line">  };</div><div class="line">}</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="row__parser_8h_source.html#l00057">57</a> of file <a class="el" href="row__parser_8h_source.html">row_parser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row__parser_8h_source.html#l00056">56</a> of file <a class="el" href="row__parser_8h_source.html">row_parser.h</a>.</p>
 
 </div>
 </div>
@@ -973,7 +981,7 @@ Functions</h2></td></tr>
 
 <p>Creates a simple "delete" mutation for the values in <code>keys</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00276">276</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00275">275</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -1013,7 +1021,7 @@ template&lt;typename... Ts&gt; </div>
 
 <p>Creates a simple insert mutation for the values in <code>values</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00192">192</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00191">191</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -1053,7 +1061,7 @@ template&lt;typename... Ts&gt; </div>
 
 <p>Creates a simple "insert or update" mutation for the values in <code>values</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00234">234</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00233">233</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -1282,7 +1290,31 @@ template&lt;typename... Ts&gt; </div>
 
 <p>Creates a simple "replace" mutation for the values in <code>values</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00257">257</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00256">256</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+
+</div>
+</div>
+<a id="a19d6f9f38667e81ddeb16081d138c356"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19d6f9f38667e81ddeb16081d138c356">&#9670;&nbsp;</a></span>MakeRow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> google::cloud::spanner::v0::MakeRow </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; std::pair&lt; std::string, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> &gt;&gt;&#160;</td>
+          <td class="paramname"><em>pairs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> instance with the given column names and values. </p>
+<p>This function is mostly convenient for creating <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> instances for testing.</p>
+<dl class="section user"><dt>Example</dt><dd></dd></dl>
+<div class="fragment"><div class="line">Row row = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a19d6f9f38667e81ddeb16081d138c356">MakeRow</a>({{<span class="stringliteral">&quot;a&quot;</span>, Value(1)}, {<span class="stringliteral">&quot;b&quot;</span>, Value(<span class="stringliteral">&quot;hi&quot;</span>)}});</div><div class="line">assert(row.size() == 2);</div><div class="line">assert(<span class="stringliteral">&quot;hi&quot;</span> == *row.get&lt;std::string&gt;(<span class="stringliteral">&quot;b&quot;</span>));</div></div><!-- fragment --> 
+<p class="definition">Definition at line <a class="el" href="row_8cc_source.html#l00036">36</a> of file <a class="el" href="row_8cc_source.html">row.cc</a>.</p>
 
 </div>
 </div>
@@ -1322,7 +1354,7 @@ template&lt;typename... Ts&gt; </div>
 
 <p>Creates a simple update mutation for the values in <code>values</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00213">213</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00212">212</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
 </div>
 </div>
@@ -1659,7 +1691,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="ab5c8b49c00862cef780069b5a70cec74"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5c8b49c00862cef780069b5a70cec74">&#9670;&nbsp;</a></span>operator==() <span class="overload">[1/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5c8b49c00862cef780069b5a70cec74">&#9670;&nbsp;</a></span>operator==() <span class="overload">[1/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1689,7 +1721,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a4e4f974093ab586d2948979a60faf3da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e4f974093ab586d2948979a60faf3da">&#9670;&nbsp;</a></span>operator==() <span class="overload">[2/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e4f974093ab586d2948979a60faf3da">&#9670;&nbsp;</a></span>operator==() <span class="overload">[2/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1719,7 +1751,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a050d3d35950c36e972af764892b45a7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a050d3d35950c36e972af764892b45a7c">&#9670;&nbsp;</a></span>operator==() <span class="overload">[3/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a050d3d35950c36e972af764892b45a7c">&#9670;&nbsp;</a></span>operator==() <span class="overload">[3/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1749,7 +1781,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a0068a1796e0899fcfa4c2d33996c6208"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0068a1796e0899fcfa4c2d33996c6208">&#9670;&nbsp;</a></span>operator==() <span class="overload">[4/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0068a1796e0899fcfa4c2d33996c6208">&#9670;&nbsp;</a></span>operator==() <span class="overload">[4/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1779,7 +1811,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a443c7affaba4fd9a2443e02d5dbb2102"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a443c7affaba4fd9a2443e02d5dbb2102">&#9670;&nbsp;</a></span>operator==() <span class="overload">[5/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a443c7affaba4fd9a2443e02d5dbb2102">&#9670;&nbsp;</a></span>operator==() <span class="overload">[5/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1809,7 +1841,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a5fdf3555f02b3585a5754d36d6bc1b53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5fdf3555f02b3585a5754d36d6bc1b53">&#9670;&nbsp;</a></span>operator==() <span class="overload">[6/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fdf3555f02b3585a5754d36d6bc1b53">&#9670;&nbsp;</a></span>operator==() <span class="overload">[6/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1847,7 +1879,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a023769aea62009a74b39af5549fb460c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a023769aea62009a74b39af5549fb460c">&#9670;&nbsp;</a></span>operator==() <span class="overload">[7/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a023769aea62009a74b39af5549fb460c">&#9670;&nbsp;</a></span>operator==() <span class="overload">[7/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1877,7 +1909,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="ab2a19481df4a3e725aa2cc13f112abd2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2a19481df4a3e725aa2cc13f112abd2">&#9670;&nbsp;</a></span>operator==() <span class="overload">[8/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2a19481df4a3e725aa2cc13f112abd2">&#9670;&nbsp;</a></span>operator==() <span class="overload">[8/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1915,7 +1947,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="af24c668f38aa09af9027a3db544cf30a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af24c668f38aa09af9027a3db544cf30a">&#9670;&nbsp;</a></span>operator==() <span class="overload">[9/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af24c668f38aa09af9027a3db544cf30a">&#9670;&nbsp;</a></span>operator==() <span class="overload">[9/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1944,8 +1976,38 @@ template&lt;typename... Ts&gt; </div>
 
 </div>
 </div>
+<a id="a87e2256052e4c7aca49fdfbbafef2f47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87e2256052e4c7aca49fdfbbafef2f47">&#9670;&nbsp;</a></span>operator==() <span class="overload">[10/11]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool google::cloud::spanner::v0::operator== </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="row_8cc_source.html#l00070">70</a> of file <a class="el" href="row_8cc_source.html">row.cc</a>.</p>
+
+</div>
+</div>
 <a id="a8859ae3327162cdab57cbafd2bd92727"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8859ae3327162cdab57cbafd2bd92727">&#9670;&nbsp;</a></span>operator==() <span class="overload">[10/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8859ae3327162cdab57cbafd2bd92727">&#9670;&nbsp;</a></span>operator==() <span class="overload">[11/11]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
