@@ -54,7 +54,7 @@ RUN chmod 755 /usr/bin/buildifier
 # "latest" version is updated, and we do not want the builds to break just
 # because some third party changed something.
 RUN pip install --upgrade pip
-RUN pip install numpy cmake_format==0.5.1
+RUN pip install cmake_format==0.6.0
 
 WORKDIR /var/tmp/ci
 COPY install-bazel.sh /var/tmp/ci

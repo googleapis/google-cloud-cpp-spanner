@@ -16,7 +16,9 @@
 
 function (write_bazel_copyright FILENAME YEAR)
     file(WRITE "${FILENAME}" "# Copyright ${YEAR} Google LLC")
-    file(APPEND "${FILENAME}" [=[
+    file(
+        APPEND "${FILENAME}"
+        [=[
 
 #
 # Licensed under the Apache License, Version 2.0 (the "License");

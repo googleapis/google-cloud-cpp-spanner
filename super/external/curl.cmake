@@ -40,13 +40,15 @@ if (NOT TARGET curl-project)
         INSTALL_DIR "${GOOGLE_CLOUD_CPP_EXTERNAL_PREFIX}"
         URL ${GOOGLE_CLOUD_CPP_CURL_URL}
         URL_HASH SHA256=${GOOGLE_CLOUD_CPP_CURL_SHA256}
-        LIST_SEPARATOR |
-        # libcurl automatically enables a number of protocols. With static
-        # libraries this is a problem. The indirect dependencies, such as
-        # libldap, become hard to predict and manage. Setting HTTP_ONLY=ON and
-        # CMAKE_ENABLE_OPENSSL=ON disables most optional protocols and meets
-        # our needs. If the application needs a version of libcurl with other
-        # protocols enabled they can provide their own curl-project target.
+        LIST_SEPARATOR
+            |
+            # libcurl automatically enables a number of protocols. With
+            # static libraries this is a problem. The indirect
+            # dependencies, such as libldap, become hard to predict and
+            # manage. Setting HTTP_ONLY=ON and CMAKE_ENABLE_OPENSSL=ON
+            # disables most optional protocols and meets our needs. If the
+            # application needs a version of libcurl with other protocols
+            # enabled they can provide their own curl-project target.
         CMAKE_ARGS -G${CMAKE_GENERATOR}
                    -DHTTP_ONLY=ON
                    -DCMAKE_ENABLE_OPENSSL=ON
@@ -55,10 +57,7 @@ if (NOT TARGET curl-project)
                    -DCMAKE_INSTALL_PATH=${GOOGLE_CLOUD_CPP_INSTALL_PATH}
                    -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
                    -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-        BUILD_COMMAND ${CMAKE_COMMAND}
-                      --build
-                      <BINARY_DIR>
-                      ${PARALLEL}
+        BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> ${PARALLEL}
         LOG_DOWNLOAD ON
         LOG_CONFIGURE ON
         LOG_BUILD ON

@@ -25,11 +25,7 @@ else ()
     find_package(Doxygen)
     if (Doxygen_FOUND)
         set(DOXYGEN_RECURSIVE YES)
-        set(DOXYGEN_FILE_PATTERNS
-            *.h
-            *.cc
-            *.proto
-            *.dox)
+        set(DOXYGEN_FILE_PATTERNS *.h *.cc *.proto *.dox)
         set(DOXYGEN_EXAMPLE_RECURSIVE YES)
         set(DOXYGEN_EXCLUDE "third_party" "cmake-build-debug" "cmake-out")
         set(DOXYGEN_EXCLUDE_SYMLINKS YES)
@@ -74,11 +70,8 @@ else ()
             "*/google/cloud/spanner/testing/*"
             "*/google/cloud/spanner/*_test.cc")
 
-        doxygen_add_docs(doxygen-docs
-                         ${CMAKE_CURRENT_SOURCE_DIR}
-                         WORKING_DIRECTORY
-                         ${CMAKE_CURRENT_SOURCE_DIR}
-                         COMMENT
-                         "Generate HTML documentation")
+        doxygen_add_docs(
+            doxygen-docs ${CMAKE_CURRENT_SOURCE_DIR} WORKING_DIRECTORY
+            ${CMAKE_CURRENT_SOURCE_DIR} COMMENT "Generate HTML documentation")
     endif ()
 endif ()

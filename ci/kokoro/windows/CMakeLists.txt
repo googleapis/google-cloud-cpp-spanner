@@ -28,10 +28,9 @@ include(external/external-project-helpers)
 google_cloud_cpp_set_prefix_vars()
 
 include(ExternalProject)
-set(
-    GOOGLE_CLOUD_CPP_URL
+set(GOOGLE_CLOUD_CPP_URL
     "https://github.com/googleapis/google-cloud-cpp-common/archive/v0.13.0.tar.gz"
-    )
+)
 set(GOOGLE_CLOUD_CPP_SHA256
     "ea7f8f64ee8a6964f8755d1024b908bf13170e505f54b57ffc72c0002d478b8c")
 google_cloud_cpp_set_prefix_vars()
@@ -67,14 +66,16 @@ ExternalProject_Add(
     # See above to understand why we use very short names here.
     g-c-spanner
     DEPENDS g-c-cpp
-    EXCLUDE_FROM_ALL OFF
-    BUILD_ALWAYS 1
+    EXCLUDE_FROM_ALL
+        OFF
+        BUILD_ALWAYS
+        1
     PREFIX "${CMAKE_BINARY_DIR}/build/g-c-spanner"
-    INSTALL_DIR "${GOOGLE_CLOUD_CPP_EXTERNAL_PREFIX}"
-    SOURCE_DIR
-    "${GOOGLE_CLOUD_CPP_SPANNER_ROOT}"
-    LIST_SEPARATOR
-    |
+    INSTALL_DIR
+        "${GOOGLE_CLOUD_CPP_EXTERNAL_PREFIX}"
+        SOURCE_DIR
+        "${GOOGLE_CLOUD_CPP_SPANNER_ROOT}"
+    LIST_SEPARATOR |
     CMAKE_ARGS -G${CMAKE_GENERATOR}
                -DCMAKE_PREFIX_PATH=${GOOGLE_CLOUD_CPP_PREFIX_PATH}
                -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
@@ -85,11 +86,12 @@ ExternalProject_Add(
                "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} \
                   -I${GOOGLE_CLOUD_CPP_EXTERNAL_PREFIX}/include"
     BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR>
-    TEST_COMMAND ${CMAKE_CTEST_COMMAND}
-                 --output-on-failure
-                 -LE
-                 integration-tests
-                 # TODO(#23) - Use this when install is implemented.
+    TEST_COMMAND
+        ${CMAKE_CTEST_COMMAND}
+        --output-on-failure
+        -LE
+        integration-tests
+        # TODO(#23) - Use this when install is implemented.
     INSTALL_COMMAND ""
     LOG_DOWNLOAD OFF
     LOG_CONFIGURE OFF
