@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG DISTRO_VERSION=30
-FROM fedora:${DISTRO_VERSION} AS devtools
+ARG DISTRO_VERSION=latest
+FROM opensuse/leap:${DISTRO_VERSION} AS devtools
 ARG NCPU=4
 
 # This is an automatically generated file, do not modify it directly, see
@@ -21,23 +21,71 @@ ARG NCPU=4
 
 ## [START INSTALL.md]
 
-# Install the minimal development tools:
+# Install the minimal development tools, libcurl and OpenSSL. The gRPC Makefile
+# uses `which` to determine whether the compiler is available. Install this
+# command for the extremely rare case where it may be missing from your
+# workstation or build server.
 
 # ```bash
-RUN dnf makecache && \
-    dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
-        zlib-devel
+RUN zypper refresh && \
+    zypper install --allow-downgrade -y automake cmake gcc gcc-c++ git gzip \
+        libcurl-devel libopenssl-devel libtool make tar wget which
 # ```
-# Fedora includes packages for gRPC, libcurl, and OpenSSL that are recent enough
-# for the project. Install these packages and additional development tools to
-# compile the dependencies:
+
+# #### Protobuf
+
+# Likewise, manually install protobuf:
 
 # ```bash
-RUN dnf makecache && \
-    dnf install -y grpc-devel grpc-plugins \
-        libcurl-devel protobuf-compiler tar wget zlib-devel
+WORKDIR /var/tmp/build
+RUN wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz
+RUN tar -xf v3.9.1.tar.gz
+WORKDIR /var/tmp/build/protobuf-3.9.1/cmake
+RUN cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -Dprotobuf_BUILD_TESTS=OFF \
+        -H. -Bcmake-out
+RUN cmake --build cmake-out --target install -- -j ${NCPU:-4}
+RUN ldconfig
 # ```
 
+# #### c-ares
+
+# Recent versions of gRPC require c-ares >= 1.11, while openSUSE/Leap
+# distributes c-ares-1.9. Manually install a newer version:
+
+# ```bash
+WORKDIR /var/tmp/build
+RUN wget -q https://github.com/c-ares/c-ares/archive/cares-1_14_0.tar.gz
+RUN tar -xf cares-1_14_0.tar.gz
+WORKDIR /var/tmp/build/c-ares-cares-1_14_0
+RUN ./buildconf && ./configure && make -j ${NCPU:-4}
+RUN make install
+RUN ldconfig
+# ```
+
+# #### gRPC
+
+# To install gRPC we first need to configure pkg-config to find the version of
+# Protobuf we just installed in `/usr/local`:
+
+# ```bash
+ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig
+ENV LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
+# ```
+
+# The we install it using using:
+
+# ```bash
+WORKDIR /var/tmp/build
+RUN wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz
+RUN tar -xf v1.23.1.tar.gz
+WORKDIR /var/tmp/build/grpc-1.23.1
+RUN make -j ${NCPU:-4}
+RUN make install
+RUN ldconfig
+# ```
 
 # #### googleapis
 
@@ -109,7 +157,7 @@ RUN cmake --build /o --target install
 
 ## [END INSTALL.md]
 
-ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
+
 # Verify that the installed files are actually usable
 WORKDIR /home/build/test-install-cmake
 COPY ci/test-install /home/build/test-install-cmake

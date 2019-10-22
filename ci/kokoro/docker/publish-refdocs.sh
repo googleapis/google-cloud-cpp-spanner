@@ -35,7 +35,7 @@ fi
 if [[ -z "${PROJECT_ROOT+x}" ]]; then
   readonly PROJECT_ROOT="$(cd "$(dirname "$0")/../../.."; pwd)"
 fi
-source "${PROJECT_ROOT}/ci/kokoro/define-docker-variables.sh"
+source "${PROJECT_ROOT}/ci/kokoro/docker/define-docker-variables.sh"
 
 # Exit successfully (and silently) if there are no documents to upload.
 if [[ "${GENERATE_DOCS:-}" != "yes" ]]; then

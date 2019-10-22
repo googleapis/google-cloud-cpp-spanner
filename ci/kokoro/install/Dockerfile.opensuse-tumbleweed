@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG DISTRO_VERSION=30
-FROM fedora:${DISTRO_VERSION} AS devtools
+ARG DISTRO_VERSION=latest
+FROM opensuse/tumbleweed:${DISTRO_VERSION} AS devtools
 ARG NCPU=4
 
 # This is an automatically generated file, do not modify it directly, see
@@ -21,21 +21,19 @@ ARG NCPU=4
 
 ## [START INSTALL.md]
 
-# Install the minimal development tools:
+# Install the minimal development tools, libcurl and OpenSSL:
 
 # ```bash
-RUN dnf makecache && \
-    dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
-        zlib-devel
+RUN zypper refresh && \
+    zypper install --allow-downgrade -y cmake gcc gcc-c++ git gzip \
+        libcurl-devel libopenssl-devel make tar wget zlib-devel
 # ```
-# Fedora includes packages for gRPC, libcurl, and OpenSSL that are recent enough
-# for the project. Install these packages and additional development tools to
-# compile the dependencies:
+# The versions of gRPC and Protobuf packaged with openSUSE/Tumbleweed are recent
+# enough to support the Google Cloud Platform proto files.
 
 # ```bash
-RUN dnf makecache && \
-    dnf install -y grpc-devel grpc-plugins \
-        libcurl-devel protobuf-compiler tar wget zlib-devel
+RUN zypper refresh && \
+    zypper install -y grpc-devel
 # ```
 
 

@@ -1,4 +1,4 @@
-# Format: //devtools/kokoro/config/proto/build.proto
+#!/usr/bin/env bash
 # Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-build_file: "google-cloud-cpp-spanner/ci/kokoro/install/build.sh"
-timeout_mins: 120
+set -eu
 
-gfile_resources: "/bigstore/cloud-cpp-integration-secrets/gcr-service-account.json"
-gfile_resources: "/bigstore/cloud-cpp-integration-secrets/gcr-configuration.sh"
+# This script is meant to source from ci/kokoro/docker/publish_refdocs.sh.
+
+upload_docs "google-cloud-spanner" "${BUILD_OUTPUT}/google/cloud/spanner/html" \
+  "cloud.tag" "${BRANCH}" "${CREDENTIALS_FILE}" "${STAGING_BUCKET}"

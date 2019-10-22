@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG DISTRO_VERSION=30
-FROM fedora:${DISTRO_VERSION} AS devtools
+ARG DISTRO_VERSION=stretch
+FROM debian:${DISTRO_VERSION} AS devtools
 ARG NCPU=4
 
 # This is an automatically generated file, do not modify it directly, see
@@ -21,23 +21,53 @@ ARG NCPU=4
 
 ## [START INSTALL.md]
 
-# Install the minimal development tools:
+# First install the development tools and libcurl.
+# On Debian 9, libcurl links against openssl-1.0.2, and one must link
+# against the same version or risk an inconsistent configuration of the library.
+# This is especially important for multi-threaded applications, as openssl-1.0.2
+# requires explicitly setting locking callbacks. Therefore, to use libcurl one
+# must link against openssl-1.0.2. To do so, we need to install libssl1.0-dev.
+# Note that this removes libssl-dev if you have it installed already, and would
+# prevent you from compiling against openssl-1.1.0.
 
 # ```bash
-RUN dnf makecache && \
-    dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
-        zlib-devel
+RUN apt update && \
+    apt install -y build-essential cmake git gcc g++ cmake \
+        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl1.0-dev make \
+        pkg-config tar wget zlib1g-dev
 # ```
-# Fedora includes packages for gRPC, libcurl, and OpenSSL that are recent enough
-# for the project. Install these packages and additional development tools to
-# compile the dependencies:
+
+# #### Protobuf
+
+# Likewise, manually install protobuf:
 
 # ```bash
-RUN dnf makecache && \
-    dnf install -y grpc-devel grpc-plugins \
-        libcurl-devel protobuf-compiler tar wget zlib-devel
+WORKDIR /var/tmp/build
+RUN wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz
+RUN tar -xf v3.9.1.tar.gz
+WORKDIR /var/tmp/build/protobuf-3.9.1/cmake
+RUN cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -Dprotobuf_BUILD_TESTS=OFF \
+        -H. -Bcmake-out
+RUN cmake --build cmake-out --target install -- -j ${NCPU:-4}
+RUN ldconfig
 # ```
 
+# #### gRPC
+
+# Can be manually installed using:
+
+# ```bash
+WORKDIR /var/tmp/build
+RUN wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz
+RUN tar -xf v1.23.1.tar.gz
+WORKDIR /var/tmp/build/grpc-1.23.1
+RUN make -j ${NCPU:-4}
+RUN make install
+RUN ldconfig
+# ```
 
 # #### googleapis
 

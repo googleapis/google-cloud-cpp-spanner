@@ -15,10 +15,12 @@
 
 set -eu
 
-if [[ -n "${IMAGE+x}" ]]; then
-  echo "IMAGE is already defined."
-else
-  readonly IMAGE="spanci-${DISTRO}-${DISTRO_VERSION}"
-  readonly BUILD_OUTPUT="cmake-out/${IMAGE}-${BUILD_NAME}"
-  readonly BUILD_HOME="cmake-out/home/${IMAGE}-${BUILD_NAME}"
-fi
+# This script is sourced from several other scripts in `ci/` to configure the
+# repository name (and short name). It makes those scripts portable across
+# `google-cloud-cpp*` repositories.
+
+GOOGLE_CLOUD_CPP_REPOSITORY="google-cloud-cpp-spanner"
+readonly GOOGLE_CLOUD_CPP_REPOSITORY
+
+GOOGLE_CLOUD_CPP_REPOSITORY_SHORT="spanner"
+readonly GOOGLE_CLOUD_CPP_REPOSITORY_SHORT

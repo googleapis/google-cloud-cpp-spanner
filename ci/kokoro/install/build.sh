@@ -16,90 +16,115 @@
 
 set -eu
 
-# Set it to "no" for any value other than "yes".
-if [[ "${RUN_SLOW_INTEGRATION_TESTS:-}" != "yes" ]]; then
-  RUN_SLOW_INTEGRATION_TESTS="no"
-fi
-export RUN_SLOW_INTEGRATION_TESTS
-
 if [[ $# -eq 1 ]]; then
   export DISTRO="${1}"
 elif [[ -n "${KOKORO_JOB_NAME:-}" ]]; then
   # Kokoro injects the KOKORO_JOB_NAME environment variable, the value of this
-  # variable is cloud-cpp/spanner/<config-file-name-without-cfg> (or more
+  # variable is cloud-cpp/<repo>/<config-file-name-without-cfg> (or more
   # generally <path/to/config-file-without-cfg>). By convention we name these
   # files `$foo.cfg` for continuous builds and `$foo-presubmit.cfg` for
   # presubmit builds. Here we extract the value of "foo" and use it as the build
   # name.
   DISTRO="$(basename "${KOKORO_JOB_NAME}" "-presubmit")"
   export DISTRO
+
+  # This is passed into the environment of the docker build and its scripts to
+  # tell them if they are running as part of a CI build rather than just a
+  # human invocation of "build.sh <build-name>". This allows scripts to be
+  # strict when run in a CI, but a little more friendly when run by a human.
+  RUNNING_CI="yes"
+  export RUNNING_CI
 else
- echo "Aborting build as the distribution name is not defined."
- echo "If you are invoking this script via the command line use:"
- echo "    $0 <distro-name>"
- echo
- echo "If this script is invoked by Kokoro, the CI system is expected to set"
- echo "the KOKORO_JOB_NAME environment variable."
- exit 1
+  echo "Aborting build as the distribution name is not defined."
+  echo "If you are invoking this script via the command line use:"
+  echo "    $0 <distro-name>"
+  echo
+  echo "If this script is invoked by Kokoro, the CI system is expected to set"
+  echo "the KOKORO_JOB_NAME environment variable."
+  exit 1
 fi
+
+if [[ -z "${PROJECT_ROOT+x}" ]]; then
+  readonly PROJECT_ROOT="$(cd "$(dirname "$0")/../../.."; pwd)"
+fi
+source "${PROJECT_ROOT}/ci/kokoro/docker/define-docker-variables.sh"
 
 echo "================================================================"
 echo "Change working directory to project root $(date)."
-cd "$(dirname "$0")/../../.."
+cd "${PROJECT_ROOT}"
 
-# TODO: this is a watered down version of
-# google-cloud-cpp/ci/kokoro/install/build.sh with the functionality related to
-# caching the image and uploading to gcr removed. We want to add that
-# eventually.
+echo "================================================================"
+echo "Building with ${NCPU} cores $(date) on ${PWD}."
+
+echo "================================================================"
+echo "Load Google Container Registry configuration parameters $(date)."
+
+if [[ -f "${KOKORO_GFILE_DIR:-}/gcr-configuration.sh" ]]; then
+  source "${KOKORO_GFILE_DIR:-}/gcr-configuration.sh"
+fi
+
+echo "================================================================"
+echo "Setup Google Container Registry access $(date)."
+if [[ -f "${KOKORO_GFILE_DIR:-}/gcr-service-account.json" ]]; then
+  gcloud auth activate-service-account --key-file \
+    "${KOKORO_GFILE_DIR}/gcr-service-account.json"
+fi
+gcloud auth configure-docker
+
+readonly INSTALL_IMAGE="${DOCKER_IMAGE_PREFIX}/test-install-${DISTRO}"
+echo "================================================================"
+echo "Download existing image (if available) for ${DISTRO} $(date)."
+has_cache="false"
+if docker pull "${INSTALL_IMAGE}:latest"; then
+  echo "Existing image successfully downloaded."
+  has_cache="true"
+fi
+
 echo "================================================================"
 echo "Build base image with minimal development tools for ${DISTRO} $(date)."
-
-
-readonly DEV_IMAGE="test-install-${DISTRO}"
+update_cache="false"
 
 devtools_flags=(
   # Only build up to the stage that installs the minimal development tools, but
   # does not compile any of our code.
   "--target" "devtools"
-  # Create the image with the same tag as the cache we are using.
-  "-t" "${DEV_IMAGE}:latest"
+  # Create the image with the same tag as the cache we are using, so we can
+  # upload it.
+  "-t" "${INSTALL_IMAGE}:latest"
+  "--build-arg" "NCPU=${NCPU}"
   "-f" "ci/kokoro/install/Dockerfile.${DISTRO}"
 )
 
+if "${has_cache}"; then
+  devtools_flags+=("--cache-from=${INSTALL_IMAGE}:latest")
+fi
+
+if [[ "${RUNNING_CI:-}" == "yes" ]] && \
+   [[ -z "${KOKORO_GITHUB_PULL_REQUEST_NUMBER:-}" ]]; then
+  devtools_flags+=("--no-cache")
+fi
+
 echo "Running docker build with " "${devtools_flags[@]}"
-docker build "${devtools_flags[@]}" ci
+if docker build "${devtools_flags[@]}" ci; then
+   update_cache="true"
+fi
+
+if "${update_cache}" && [[ "${RUNNING_CI:-}" == "yes" ]] &&
+   [[ -z "${KOKORO_GITHUB_PULL_REQUEST_NUMBER:-}" ]]; then
+  echo "================================================================"
+  echo "Uploading updated base image for ${DISTRO} $(date)."
+  # Do not stop the build on a failure to update the cache.
+  docker push "${INSTALL_IMAGE}:latest" || true
+fi
 
 echo "================================================================"
 echo "Run validation script for INSTALL instructions on ${DISTRO}."
-RUN_IMAGE="spanci-test-install-full-${DISTRO}:latest"
-readonly RUN_IMAGE
-docker build -t "${RUN_IMAGE}" \
-  "--cache-from=${DEV_IMAGE}:latest" \
+readonly INSTALL_RUN_IMAGE="${DOCKER_IMAGE_PREFIX}/install-runtime-${DISTRO}"
+docker build -t "${INSTALL_RUN_IMAGE}" \
+  "--cache-from=${INSTALL_IMAGE}:latest" \
   "--target=install" \
+  "--build-arg" "NCPU=${NCPU}" \
   -f "ci/kokoro/install/Dockerfile.${DISTRO}" .
 echo "================================================================"
 
-CONFIG_DIRECTORY="${KOKORO_GFILE_DIR:-/dev/shm}"
-readonly CONFIG_DIRECTORY
-if [[ -f "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh" ]]; then
-  source "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh"
-
-  run_args=(
-    # Remove the container after running
-    "--rm"
-
-    # Set the environment variables for the test program.
-    "--env" "GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json"
-    "--env" "GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}"
-    "--env" "RUN_SLOW_INTEGRATION_TESTS=${RUN_SLOW_INTEGRATION_TESTS}"
-    "--env" "GOOGLE_CLOUD_CPP_SPANNER_INSTANCE=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}"
-    "--env" "GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA=${GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA}"
-
-    # Mount the config directory as a volumne in `/c`
-    "--volume" "${CONFIG_DIRECTORY}:/c"
-  )
-  echo "================================================================"
-  echo "Run test program against installed libraries ${DISTRO}."
-  docker run "${run_args[@]}" "${RUN_IMAGE}" "/o/spanner_install_test"
-  echo "================================================================"
-fi
+source "${PROJECT_ROOT}/ci/etc/kokoro/install/run-installed-programs.sh"

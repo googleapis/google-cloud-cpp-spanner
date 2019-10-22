@@ -1,4 +1,4 @@
-# Format: //devtools/kokoro/config/proto/build.proto
+#!/usr/bin/env bash
 # Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-build_file: "google-cloud-cpp-spanner/ci/kokoro/install/build.sh"
-timeout_mins: 120
+set -eu
 
-gfile_resources: "/bigstore/cloud-cpp-integration-secrets/gcr-service-account.json"
-gfile_resources: "/bigstore/cloud-cpp-integration-secrets/gcr-configuration.sh"
+GOOGLE_CLOUD_CPP_BAZEL_VERSION="1.0.0"
+readonly GOOGLE_CLOUD_CPP_BAZEL_VERSION
+
+GOOGLE_CLOUD_CPP_CLOUD_SDK_VERSION="266.0.0"
+readonly GOOGLE_CLOUD_CPP_CLOUD_SDK_VERSION
+
+GOOGLE_CLOUD_CPP_SDK_SHA256="e2b2cd5e49e1dc73ffe1d57ba2bcc1b76620ae9549d2aa27ece05d819a8f4bbc"
+readonly GOOGLE_CLOUD_CPP_SDK_SHA256
