@@ -43,7 +43,7 @@ StatusOr<std::unique_ptr<ResultSourceInterface>> PartialResultSetSource::Create(
 
 StatusOr<Row> PartialResultSetSource::NextRow() {
   if (finished_) return Row();
-  // XXX: Why check empty here?
+
   while (values_.empty() || values_.size() < columns_->size()) {
     auto status = ReadFromStream();
     if (!status.ok()) return status;
@@ -58,7 +58,6 @@ StatusOr<Row> PartialResultSetSource::NextRow() {
 
   auto const& fields = metadata_->row_type().fields();
   if (fields.empty()) {
-    std::cerr << "### no field data\n";
     return Status(StatusCode::kInternal,
                   "response metadata is missing row type information");
   }
@@ -103,6 +102,8 @@ Status PartialResultSetSource::ReadFromStream() {
       GCP_LOG(WARNING) << "Unexpectedly received two sets of metadata";
     } else {
       metadata_ = std::move(*result_set->mutable_metadata());
+      // Copies the column names into a shared_ptr that will be shared with
+      // every Row object returned from NextRow().
       columns_ = std::make_shared<std::vector<std::string>>();
       for (auto const& field : metadata_->row_type().fields()) {
         columns_->push_back(field.name());
