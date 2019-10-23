@@ -402,6 +402,9 @@ class StreamOf {
    * Creates a `StreamOf<Tuple>` by wrapping the given @p range. The `RowRange`
    * must be a range defined by `RowStreamIterator` objects.
    *
+   * Ownership of the @p range is not transferred, so it must outlive the
+   * `StreamOf`.
+   *
    * @tparam RowRange must be a range defined by `RowStreamIterator`s.
    */
   template <typename RowRange>
@@ -411,6 +414,8 @@ class StreamOf {
     using T = decltype(std::begin(range));
     static_assert(std::is_same<RowStreamIterator, T>::value,
                   "StreamOf must be given a RowStreamIterator range.");
+    static_assert(std::is_lvalue_reference<decltype(range)>::value,
+                  "range must be an lvalue since it must outlive StreamOf");
   }
 
   iterator begin() const { return begin_; }
