@@ -46,7 +46,6 @@ class PartialResultSetSource : public internal::ResultSourceInterface {
 
   ~PartialResultSetSource() override;
 
-  StatusOr<optional<Value>> NextValue() override;
   StatusOr<Row> NextRow() override;
 
   optional<google::spanner::v1::ResultSetMetadata> Metadata() override {

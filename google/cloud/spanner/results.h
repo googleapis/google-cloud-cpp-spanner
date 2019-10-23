@@ -41,8 +41,7 @@ namespace internal {
 class ResultSourceInterface {
  public:
   virtual ~ResultSourceInterface() = default;
-  // Returns OK Status with no Value to indicate end-of-stream.
-  virtual StatusOr<optional<Value>> NextValue() = 0;
+  // Returns OK Status with an empty Row to indicate end-of-stream.
   virtual StatusOr<Row> NextRow() = 0;
   virtual optional<google::spanner::v1::ResultSetMetadata> Metadata() = 0;
   virtual optional<google::spanner::v1::ResultSetStats> Stats() const = 0;
@@ -75,10 +74,14 @@ class QueryResult {
    * data corruption.
    */
   template <typename RowType>
-  RowParser<RowType> Rows() {
-    return RowParser<RowType>(
-        [this]() mutable { return source_->NextValue(); });
+  StreamOf<RowType> Rows() {
+    return StreamOf<RowType>(*this);
   }
+
+  RowStreamIterator begin() const {
+    return RowStreamIterator([this]() mutable { return source_->NextRow(); });
+  }
+  RowStreamIterator end() const { return RowStreamIterator(); }
 
   /**
    * Retrieve the timestamp at which the read occurred.
@@ -145,10 +148,14 @@ class ProfileQueryResult {
    * result in errors or data corruption.
    */
   template <typename RowType>
-  RowParser<RowType> Rows() {
-    return RowParser<RowType>(
-        [this]() mutable { return source_->NextValue(); });
+  StreamOf<RowType> Rows() {
+    return StreamOf<RowType>(*this);
   }
+
+  RowStreamIterator begin() const {
+    return RowStreamIterator([this]() mutable { return source_->NextRow(); });
+  }
+  RowStreamIterator end() const { return RowStreamIterator(); }
 
   /**
    * Retrieve the timestamp at which the read occurred.

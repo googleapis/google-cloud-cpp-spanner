@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/internal/partial_result_set_source.h"
+#include "google/cloud/spanner/row.h"
 #include "google/cloud/spanner/testing/matchers.h"
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/internal/make_unique.h"
@@ -35,48 +36,21 @@ namespace spanner_proto = ::google::spanner::v1;
 using ::google::cloud::internal::make_unique;
 using ::google::cloud::spanner_testing::IsProtoEqual;
 using ::google::protobuf::TextFormat;
+using ::testing::Eq;
 using ::testing::HasSubstr;
 using ::testing::Return;
 
-/**
- * A gmock Matcher that verifies a value returned from PartialResultSetReader
- * is valid and equals an expected value.
- */
-class ReaderValueMatcher
-    : public testing::MatcherInterface<StatusOr<optional<Value>> const&> {
- public:
-  explicit ReaderValueMatcher(Value expected)
-      : expected_(std::move(expected)) {}
+// A helper function for easily creating Rows without column names for testing.
+template <typename... Ts>
+Row MakeTestRow(Ts&&... ts) {
+  auto num = sizeof...(ts);
+  auto columns = std::make_shared<std::vector<std::string>>(num, "");
+  std::vector<Value> v{Value(std::forward<Ts>(ts))...};
+  return internal::MakeRow(std::move(v), std::move(columns));
+}
 
-  bool MatchAndExplain(StatusOr<optional<Value>> const& actual,
-                       testing::MatchResultListener* listener) const override {
-    if (!actual.ok()) {
-      *listener << "reader value is not ok: " << actual.status();
-      return false;
-    }
-    if (!actual->has_value()) {
-      *listener << "reader value is empty";
-      return false;
-    }
-    if (**actual != expected_) {
-      *listener << testing::PrintToString(**actual) << " does not equal "
-                << testing::PrintToString(expected_);
-      return false;
-    }
-    return true;
-  }
-
-  void DescribeTo(std::ostream* os) const override {
-    *os << "is valid and equals " << testing::PrintToString(expected_);
-  }
-
- private:
-  Value expected_;
-};
-
-testing::Matcher<StatusOr<optional<Value>> const&> IsValidAndEquals(
-    Value expected) {
-  return testing::MakeMatcher(new ReaderValueMatcher(std::move(expected)));
+MATCHER_P(IsValidAndEquals, expected, "") {
+  return arg && *arg == expected;
 }
 
 class MockGrpcReader : public PartialResultSetReader {
@@ -124,13 +98,14 @@ TEST(PartialResultSetSourceTest, ReadSuccessThenFailure) {
       .WillOnce(Return(optional<spanner_proto::PartialResultSet>{}));
   Status finish_status(StatusCode::kCancelled, "cancelled");
   EXPECT_CALL(*grpc_reader, Finish()).WillOnce(Return(finish_status));
-  // The first call to NextValue() yields a value but the second gives an error.
+  // The first call to NextRow() yields a row but the second gives an error.
   auto context = make_unique<grpc::ClientContext>();
   auto reader = PartialResultSetSource::Create(std::move(grpc_reader));
   EXPECT_STATUS_OK(reader.status());
-  EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(Value(80)));
-  auto value = (*reader)->NextValue();
-  EXPECT_EQ(value.status().code(), StatusCode::kCancelled);
+  EXPECT_THAT((*reader)->NextRow(),
+              IsValidAndEquals(spanner::MakeRow({{"AnInt", Value(80)}})));
+  auto row = (*reader)->NextRow();
+  EXPECT_EQ(row.status().code(), StatusCode::kCancelled);
 }
 
 /// @test Verify the behavior when the first response does not contain metadata.
@@ -165,9 +140,9 @@ TEST(PartialResultSetSourceTest, MissingRowTypeNoData) {
   auto context = make_unique<grpc::ClientContext>();
   auto reader = PartialResultSetSource::Create(std::move(grpc_reader));
   ASSERT_STATUS_OK(reader);
-  StatusOr<optional<Value>> value = reader.value()->NextValue();
-  EXPECT_STATUS_OK(value);
-  EXPECT_FALSE(value->has_value());
+  StatusOr<Row> row = (*reader)->NextRow();
+  EXPECT_STATUS_OK(row);
+  EXPECT_EQ(0, row->size());
 }
 
 /**
@@ -189,9 +164,9 @@ TEST(PartialResultSetSourceTest, MissingRowTypeWithData) {
   auto context = make_unique<grpc::ClientContext>();
   auto reader = PartialResultSetSource::Create(std::move(grpc_reader));
   ASSERT_STATUS_OK(reader);
-  StatusOr<optional<Value>> value = reader.value()->NextValue();
-  EXPECT_EQ(value.status().code(), StatusCode::kInternal);
-  EXPECT_THAT(value.status().message(),
+  StatusOr<Row> row = (*reader)->NextRow();
+  EXPECT_EQ(row.status().code(), StatusCode::kInternal);
+  EXPECT_THAT(row.status().message(),
               HasSubstr("missing row type information"));
 }
 
@@ -266,14 +241,16 @@ TEST(PartialResultSetSourceTest, SingleResponse) {
   EXPECT_TRUE(actual_metadata.has_value());
   EXPECT_THAT(*actual_metadata, IsProtoEqual(expected_metadata));
 
-  // Verify the returned values are correct.
-  EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(Value(10)));
-  EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(Value("user10")));
+  // Verify the returned rows are correct.
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(spanner::MakeRow({
+                                        {"UserId", Value(10)},
+                                        {"UserName", Value("user10")},
+                                    })));
 
-  // At end of stream, we get an 'ok' response with no value.
-  auto eos = (*reader)->NextValue();
-  EXPECT_STATUS_OK(eos);
-  EXPECT_FALSE(eos->has_value());
+  // At end of stream, we get an 'ok' response with an empty row.
+  auto row = (*reader)->NextRow();
+  EXPECT_STATUS_OK(row);
+  EXPECT_EQ(Row{}, *row);
 
   // Verify the returned stats are correct.
   spanner_proto::ResultSetStats expected_stats;
@@ -374,18 +351,24 @@ TEST(PartialResultSetSourceTest, MultipleResponses) {
   auto reader = PartialResultSetSource::Create(std::move(grpc_reader));
   EXPECT_STATUS_OK(reader.status());
 
-  // Verify the returned values are correct.
-  EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(Value(10)));
-  EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(Value("user10")));
-  EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(Value(22)));
-  EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(Value("user22")));
-  EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(Value(99)));
-  EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(Value("99user99")));
+  // Verify the returned rows are correct.
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(spanner::MakeRow({
+                                        {"UserId", Value(10)},
+                                        {"UserName", Value("user10")},
+                                    })));
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(spanner::MakeRow({
+                                        {"UserId", Value(22)},
+                                        {"UserName", Value("user22")},
+                                    })));
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(spanner::MakeRow({
+                                        {"UserId", Value(99)},
+                                        {"UserName", Value("99user99")},
+                                    })));
 
-  // At end of stream, we get an 'ok' response with no value.
-  auto eos = (*reader)->NextValue();
-  EXPECT_STATUS_OK(eos);
-  EXPECT_FALSE(eos->has_value());
+  // At end of stream, we get an 'ok' response with an empty row.
+  auto row = (*reader)->NextRow();
+  EXPECT_STATUS_OK(row);
+  EXPECT_EQ(Row{}, *row);
 }
 
 /**
@@ -423,13 +406,14 @@ TEST(PartialResultSetSourceTest, ResponseWithNoValues) {
   auto reader = PartialResultSetSource::Create(std::move(grpc_reader));
   EXPECT_STATUS_OK(reader.status());
 
-  // Verify the returned value is correct.
-  EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(Value(22)));
+  // Verify the returned row is correct.
+  EXPECT_THAT((*reader)->NextRow(),
+              IsValidAndEquals(spanner::MakeRow({{"UserId", Value(22)}})));
 
-  // At end of stream, we get an 'ok' response with no value.
-  auto eos = (*reader)->NextValue();
-  EXPECT_STATUS_OK(eos);
-  EXPECT_FALSE(eos->has_value());
+  // At end of stream, we get an 'ok' response with an empty row.
+  auto row = (*reader)->NextRow();
+  EXPECT_STATUS_OK(row);
+  EXPECT_EQ(Row{}, *row);
 }
 
 /**
@@ -497,13 +481,14 @@ TEST(PartialResultSetSourceTest, ChunkedStringValueWellFormed) {
        {"not_chunked", "first_chunksecond_chunkthird_chunk",
         "second group first_chunk second group second_chunk",
         "also not_chunked", "still not_chunked"}) {
-    EXPECT_THAT((*reader)->NextValue(), IsValidAndEquals(Value(value)));
+    EXPECT_THAT((*reader)->NextRow(),
+                IsValidAndEquals(spanner::MakeRow({{"Prose", Value(value)}})));
   }
 
-  // At end of stream, we get an 'ok' response with no value.
-  auto eos = (*reader)->NextValue();
-  EXPECT_STATUS_OK(eos);
-  EXPECT_FALSE(eos->has_value());
+  // At end of stream, we get an 'ok' response with an empty row.
+  auto row = (*reader)->NextRow();
+  EXPECT_STATUS_OK(row);
+  EXPECT_EQ(Row{}, *row);
 }
 
 /**
@@ -538,11 +523,11 @@ TEST(PartialResultSetSourceTest, ChunkedValueSetNoValue) {
   auto reader = PartialResultSetSource::Create(std::move(grpc_reader));
   EXPECT_STATUS_OK(reader.status());
 
-  // Trying to read the next value should fail.
-  auto value = (*reader)->NextValue();
-  EXPECT_EQ(value.status().code(), StatusCode::kInternal);
+  // Trying to read the next row should fail.
+  auto row = (*reader)->NextRow();
+  EXPECT_EQ(row.status().code(), StatusCode::kInternal);
   EXPECT_EQ(
-      value.status().message(),
+      row.status().message(),
       "PartialResultSet had chunked_value set true but contained no values");
 }
 
@@ -579,10 +564,10 @@ TEST(PartialResultSetSourceTest, ChunkedValueSetNoFollowingValue) {
   auto reader = PartialResultSetSource::Create(std::move(grpc_reader));
   EXPECT_STATUS_OK(reader.status());
 
-  // Trying to read the next value should fail.
-  auto value = (*reader)->NextValue();
-  EXPECT_EQ(value.status().code(), StatusCode::kInternal);
-  EXPECT_EQ(value.status().message(),
+  // Trying to read the next row should fail.
+  auto row = (*reader)->NextRow();
+  EXPECT_EQ(row.status().code(), StatusCode::kInternal);
+  EXPECT_EQ(row.status().message(),
             "PartialResultSet contained no values to merge with prior "
             "chunked_value");
 }
@@ -621,10 +606,10 @@ TEST(PartialResultSetSourceTest, ChunkedValueSetAtEndOfStream) {
   auto reader = PartialResultSetSource::Create(std::move(grpc_reader));
   EXPECT_STATUS_OK(reader.status());
 
-  // Trying to read the next value should fail.
-  auto value = (*reader)->NextValue();
-  EXPECT_EQ(value.status().code(), StatusCode::kInternal);
-  EXPECT_EQ(value.status().message(),
+  // Trying to read the next row should fail.
+  auto row = (*reader)->NextRow();
+  EXPECT_EQ(row.status().code(), StatusCode::kInternal);
+  EXPECT_EQ(row.status().message(),
             "incomplete chunked_value at end of stream");
 }
 
@@ -670,10 +655,10 @@ TEST(PartialResultSetSourceTest, ChunkedValueMergeFailure) {
   auto reader = PartialResultSetSource::Create(std::move(grpc_reader));
   EXPECT_STATUS_OK(reader.status());
 
-  // Trying to read the next value should fail.
-  auto value = (*reader)->NextValue();
-  EXPECT_EQ(value.status().code(), StatusCode::kInvalidArgument);
-  EXPECT_EQ(value.status().message(), "invalid type");
+  // Trying to read the next row should fail.
+  auto row = (*reader)->NextRow();
+  EXPECT_EQ(row.status().code(), StatusCode::kInvalidArgument);
+  EXPECT_EQ(row.status().message(), "invalid type");
 }
 
 }  // namespace

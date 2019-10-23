@@ -238,7 +238,6 @@ class StatusOnlyResultSetSource : public internal::ResultSourceInterface {
       : status_(std::move(status)) {}
   ~StatusOnlyResultSetSource() override = default;
 
-  StatusOr<optional<Value>> NextValue() override { return status_; }
   StatusOr<Row> NextRow() override { return status_; }
   optional<google::spanner::v1::ResultSetMetadata> Metadata() override {
     return {};
@@ -263,7 +262,6 @@ class DmlResultSetSource : public internal::ResultSourceInterface {
       : result_set_(std::move(result_set)) {}
   ~DmlResultSetSource() override = default;
 
-  StatusOr<optional<Value>> NextValue() override { return {}; }
   StatusOr<Row> NextRow() override { return {}; }
 
   optional<google::spanner::v1::ResultSetMetadata> Metadata() override {

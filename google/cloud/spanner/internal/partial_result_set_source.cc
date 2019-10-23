@@ -41,41 +41,10 @@ StatusOr<std::unique_ptr<ResultSourceInterface>> PartialResultSetSource::Create(
   return {std::move(source)};
 }
 
-StatusOr<optional<Value>> PartialResultSetSource::NextValue() {
-  if (finished_) {
-    return optional<Value>();
-  }
-
-  while (values_.empty()) {
-    auto status = ReadFromStream();
-    if (!status.ok()) {
-      return status;
-    }
-    if (finished_) {
-      if (chunk_) {
-        return Status(StatusCode::kInternal,
-                      "incomplete chunked_value at end of stream");
-      }
-      return optional<Value>();
-    }
-  }
-
-  auto const& fields = metadata_->row_type().fields();
-  if (fields.empty()) {
-    return Status(StatusCode::kInternal,
-                  "response metadata is missing row type information");
-  }
-
-  auto t = fields.Get(field_index_).type();
-  field_index_ = (field_index_ + 1) % fields.size();
-  auto v = std::move(values_.front());
-  values_.pop_front();
-  return {FromProto(std::move(t), std::move(v))};
-}
-
 StatusOr<Row> PartialResultSetSource::NextRow() {
   if (finished_) return Row();
-  while (values_.size() < columns_->size()) {
+  // XXX: Why check empty here?
+  while (values_.empty() || values_.size() < columns_->size()) {
     auto status = ReadFromStream();
     if (!status.ok()) return status;
     if (finished_) {
@@ -89,6 +58,7 @@ StatusOr<Row> PartialResultSetSource::NextRow() {
 
   auto const& fields = metadata_->row_type().fields();
   if (fields.empty()) {
+    std::cerr << "### no field data\n";
     return Status(StatusCode::kInternal,
                   "response metadata is missing row type information");
   }
