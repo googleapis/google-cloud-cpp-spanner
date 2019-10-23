@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['updatemutationbuilder',['UpdateMutationBuilder',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ace667ae54433716b82aac3e99ea9a285',1,'google::cloud::spanner::v0']]]
+  ['source',['Source',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html#ac8c12d37e80c5ebb091ceaafba4a50fd',1,'google::cloud::spanner::v0::RowStreamIterator']]]
 ];

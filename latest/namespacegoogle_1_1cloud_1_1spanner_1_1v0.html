@@ -169,11 +169,20 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of std::tuple&lt;Ts....">RowParser</a></code> converts the given <code>ValueSource</code> into a single-pass iterable range of <code>std::tuple&lt;Ts...&gt;</code> objects.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code> is an <a href="https://en.cppreference.com/w/cpp/named_req/InputIterator">Input Iterator</a> that returns a sequence of <code>StatusOr&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a>&gt;</code> objects.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a potentially parameterized SQL statement.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1StreamOf.html">StreamOf</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1StreamOf.html" title="A StreamOf&lt;Tuple&gt; defines a range that parses Tuple objects from the given range of RowStreamIterator...">StreamOf</a>&lt;Tuple&gt;</code> defines a range that parses <code>Tuple</code> objects from the given range of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code>s.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1StreamOf.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The representation of a Cloud Spanner transaction.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStreamIterator.html">TupleStreamIterator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStreamIterator.html" title="A TupleStreamIterator&lt;Tuple&gt; is an &quot;Input Iterator&quot; that wraps a RowStreamIterator,...">TupleStreamIterator</a>&lt;Tuple&gt;</code> is an "Input Iterator" that wraps a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code>, parsing its elements into a sequence of <code>StatusOr&lt;Tuple&gt;</code> objects.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStreamIterator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1UpdateInstanceRequestBuilder.html">UpdateInstanceRequestBuilder</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1UpdateInstanceRequestBuilder.html" title="UpdateInstanceRequestBuilder is a builder class for google::spanner::admin::instance::v1::UpdateInsta...">UpdateInstanceRequestBuilder</a> is a builder class for <code>google::spanner::admin::instance::v1::UpdateInstanceRequest</code>  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1UpdateInstanceRequestBuilder.html#details">More...</a><br /></td></tr>
@@ -355,6 +364,10 @@ Functions</h2></td></tr>
 <tr class="separator:a19d6f9f38667e81ddeb16081d138c356"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87e2256052e4c7aca49fdfbbafef2f47"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a87e2256052e4c7aca49fdfbbafef2f47">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;b)</td></tr>
 <tr class="separator:a87e2256052e4c7aca49fdfbbafef2f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a487eac4512a1fd3972e907713bbb0c7e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a487eac4512a1fd3972e907713bbb0c7e">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a> const &amp;b)</td></tr>
+<tr class="separator:a487eac4512a1fd3972e907713bbb0c7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96610ad51ca936c94c4d114a56c4cbd1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a96610ad51ca936c94c4d114a56c4cbd1">operator!=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a> const &amp;b)</td></tr>
+<tr class="separator:a96610ad51ca936c94c4d114a56c4cbd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a782a4a4617b9017586334db8e1eb6ff6"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a782a4a4617b9017586334db8e1eb6ff6">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;stmt)</td></tr>
 <tr class="separator:a782a4a4617b9017586334db8e1eb6ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7aedae28062a59c9b7e809205ebe09be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7aedae28062a59c9b7e809205ebe09be">MakeReadOnlyTransaction</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1ReadOnlyOptions.html">Transaction::ReadOnlyOptions</a> opts={})</td></tr>
@@ -1359,7 +1372,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="aba329e79e1697a75fdb37d27fc18f9b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba329e79e1697a75fdb37d27fc18f9b7">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[1/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aba329e79e1697a75fdb37d27fc18f9b7">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1389,7 +1402,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a3940fbbb384d1d50fc260556cf3de2f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3940fbbb384d1d50fc260556cf3de2f2">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[2/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3940fbbb384d1d50fc260556cf3de2f2">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[2/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1419,7 +1432,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="aad2ff016c0a2dc6b4bdbca27e7009d38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aad2ff016c0a2dc6b4bdbca27e7009d38">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[3/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aad2ff016c0a2dc6b4bdbca27e7009d38">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[3/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1449,7 +1462,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="accc45a0781ce20f70cbb81f22cc6765e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#accc45a0781ce20f70cbb81f22cc6765e">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[4/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#accc45a0781ce20f70cbb81f22cc6765e">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[4/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1487,7 +1500,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a303b93745482b9d4430e07a05502da07"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a303b93745482b9d4430e07a05502da07">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[5/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a303b93745482b9d4430e07a05502da07">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[5/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1521,6 +1534,36 @@ template&lt;typename... Ts&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="date_8h_source.html#l00054">54</a> of file <a class="el" href="date_8h_source.html">date.h</a>.</p>
+
+</div>
+</div>
+<a id="a96610ad51ca936c94c4d114a56c4cbd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96610ad51ca936c94c4d114a56c4cbd1">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[6/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool google::cloud::spanner::v0::operator!= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="row_8cc_source.html#l00112">112</a> of file <a class="el" href="row_8cc_source.html">row.cc</a>.</p>
 
 </div>
 </div>
@@ -1691,7 +1734,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="ab5c8b49c00862cef780069b5a70cec74"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5c8b49c00862cef780069b5a70cec74">&#9670;&nbsp;</a></span>operator==() <span class="overload">[1/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5c8b49c00862cef780069b5a70cec74">&#9670;&nbsp;</a></span>operator==() <span class="overload">[1/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1721,7 +1764,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a4e4f974093ab586d2948979a60faf3da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e4f974093ab586d2948979a60faf3da">&#9670;&nbsp;</a></span>operator==() <span class="overload">[2/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e4f974093ab586d2948979a60faf3da">&#9670;&nbsp;</a></span>operator==() <span class="overload">[2/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1751,7 +1794,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a050d3d35950c36e972af764892b45a7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a050d3d35950c36e972af764892b45a7c">&#9670;&nbsp;</a></span>operator==() <span class="overload">[3/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a050d3d35950c36e972af764892b45a7c">&#9670;&nbsp;</a></span>operator==() <span class="overload">[3/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1781,7 +1824,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a0068a1796e0899fcfa4c2d33996c6208"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0068a1796e0899fcfa4c2d33996c6208">&#9670;&nbsp;</a></span>operator==() <span class="overload">[4/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0068a1796e0899fcfa4c2d33996c6208">&#9670;&nbsp;</a></span>operator==() <span class="overload">[4/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1811,7 +1854,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a443c7affaba4fd9a2443e02d5dbb2102"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a443c7affaba4fd9a2443e02d5dbb2102">&#9670;&nbsp;</a></span>operator==() <span class="overload">[5/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a443c7affaba4fd9a2443e02d5dbb2102">&#9670;&nbsp;</a></span>operator==() <span class="overload">[5/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1841,7 +1884,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a5fdf3555f02b3585a5754d36d6bc1b53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5fdf3555f02b3585a5754d36d6bc1b53">&#9670;&nbsp;</a></span>operator==() <span class="overload">[6/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fdf3555f02b3585a5754d36d6bc1b53">&#9670;&nbsp;</a></span>operator==() <span class="overload">[6/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1879,7 +1922,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a023769aea62009a74b39af5549fb460c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a023769aea62009a74b39af5549fb460c">&#9670;&nbsp;</a></span>operator==() <span class="overload">[7/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a023769aea62009a74b39af5549fb460c">&#9670;&nbsp;</a></span>operator==() <span class="overload">[7/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1909,7 +1952,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="ab2a19481df4a3e725aa2cc13f112abd2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2a19481df4a3e725aa2cc13f112abd2">&#9670;&nbsp;</a></span>operator==() <span class="overload">[8/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2a19481df4a3e725aa2cc13f112abd2">&#9670;&nbsp;</a></span>operator==() <span class="overload">[8/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1947,7 +1990,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="af24c668f38aa09af9027a3db544cf30a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af24c668f38aa09af9027a3db544cf30a">&#9670;&nbsp;</a></span>operator==() <span class="overload">[9/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af24c668f38aa09af9027a3db544cf30a">&#9670;&nbsp;</a></span>operator==() <span class="overload">[9/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1977,7 +2020,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a87e2256052e4c7aca49fdfbbafef2f47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87e2256052e4c7aca49fdfbbafef2f47">&#9670;&nbsp;</a></span>operator==() <span class="overload">[10/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a87e2256052e4c7aca49fdfbbafef2f47">&#9670;&nbsp;</a></span>operator==() <span class="overload">[10/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2006,8 +2049,38 @@ template&lt;typename... Ts&gt; </div>
 
 </div>
 </div>
+<a id="a487eac4512a1fd3972e907713bbb0c7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a487eac4512a1fd3972e907713bbb0c7e">&#9670;&nbsp;</a></span>operator==() <span class="overload">[11/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool google::cloud::spanner::v0::operator== </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="row_8cc_source.html#l00104">104</a> of file <a class="el" href="row_8cc_source.html">row.cc</a>.</p>
+
+</div>
+</div>
 <a id="a8859ae3327162cdab57cbafd2bd92727"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8859ae3327162cdab57cbafd2bd92727">&#9670;&nbsp;</a></span>operator==() <span class="overload">[11/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8859ae3327162cdab57cbafd2bd92727">&#9670;&nbsp;</a></span>operator==() <span class="overload">[12/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
