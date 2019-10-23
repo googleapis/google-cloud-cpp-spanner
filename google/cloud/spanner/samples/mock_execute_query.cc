@@ -61,11 +61,11 @@ TEST(MockSpannerClient, SuccessfulExecuteQuery) {
   //! [simulate-streaming-results]
   EXPECT_CALL(*source, NextRow())
       .WillOnce(Return(
-          spanner::MakeRow({{"Id", spanner::Value(1)},
-                            {"Greeting", spanner::Value("Hello World")}})))
+          spanner::MakeTestRow({{"Id", spanner::Value(1)},
+                               {"Greeting", spanner::Value("Hello World")}})))
       .WillOnce(Return(
-          spanner::MakeRow({{"Id", spanner::Value(2)},
-                            {"Greeting", spanner::Value("Hello World")}})))
+          spanner::MakeTestRow({{"Id", spanner::Value(2)},
+                               {"Greeting", spanner::Value("Hello World")}})))
       //! [simulate-streaming-results]
       //! [simulate-streaming-end]
       .WillOnce(Return(spanner::Row()));

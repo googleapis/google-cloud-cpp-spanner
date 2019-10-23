@@ -50,15 +50,6 @@ using ::testing::Invoke;
 using ::testing::Return;
 using ::testing::SaveArg;
 
-// A helper function for easily creating Rows without column names for testing.
-template <typename... Ts>
-Row MakeTestRow(Ts&&... ts) {
-  auto num = sizeof...(ts);
-  auto columns = std::make_shared<std::vector<std::string>>(num, "");
-  std::vector<Value> v{Value(std::forward<Ts>(ts))...};
-  return internal::MakeRow(std::move(v), std::move(columns));
-}
-
 TEST(ClientTest, CopyAndMove) {
   auto conn1 = std::make_shared<MockConnection>();
   auto conn2 = std::make_shared<MockConnection>();

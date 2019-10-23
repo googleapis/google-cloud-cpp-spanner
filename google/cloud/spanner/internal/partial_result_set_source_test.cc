@@ -40,15 +40,6 @@ using ::testing::Eq;
 using ::testing::HasSubstr;
 using ::testing::Return;
 
-// A helper function for easily creating Rows without column names for testing.
-template <typename... Ts>
-Row MakeTestRow(Ts&&... ts) {
-  auto num = sizeof...(ts);
-  auto columns = std::make_shared<std::vector<std::string>>(num, "");
-  std::vector<Value> v{Value(std::forward<Ts>(ts))...};
-  return internal::MakeRow(std::move(v), std::move(columns));
-}
-
 MATCHER_P(IsValidAndEquals, expected, "") {
   return arg && *arg == expected;
 }
@@ -103,7 +94,7 @@ TEST(PartialResultSetSourceTest, ReadSuccessThenFailure) {
   auto reader = PartialResultSetSource::Create(std::move(grpc_reader));
   EXPECT_STATUS_OK(reader.status());
   EXPECT_THAT((*reader)->NextRow(),
-              IsValidAndEquals(spanner::MakeRow({{"AnInt", Value(80)}})));
+              IsValidAndEquals(spanner::MakeTestRow({{"AnInt", Value(80)}})));
   auto row = (*reader)->NextRow();
   EXPECT_EQ(row.status().code(), StatusCode::kCancelled);
 }
@@ -240,7 +231,7 @@ TEST(PartialResultSetSourceTest, SingleResponse) {
   EXPECT_THAT(*actual_metadata, IsProtoEqual(expected_metadata));
 
   // Verify the returned rows are correct.
-  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(spanner::MakeRow({
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(spanner::MakeTestRow({
                                         {"UserId", Value(10)},
                                         {"UserName", Value("user10")},
                                     })));
@@ -348,15 +339,15 @@ TEST(PartialResultSetSourceTest, MultipleResponses) {
   EXPECT_STATUS_OK(reader.status());
 
   // Verify the returned rows are correct.
-  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(spanner::MakeRow({
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(spanner::MakeTestRow({
                                         {"UserId", Value(10)},
                                         {"UserName", Value("user10")},
                                     })));
-  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(spanner::MakeRow({
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(spanner::MakeTestRow({
                                         {"UserId", Value(22)},
                                         {"UserName", Value("user22")},
                                     })));
-  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(spanner::MakeRow({
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(spanner::MakeTestRow({
                                         {"UserId", Value(99)},
                                         {"UserName", Value("99user99")},
                                     })));
@@ -402,7 +393,7 @@ TEST(PartialResultSetSourceTest, ResponseWithNoValues) {
 
   // Verify the returned row is correct.
   EXPECT_THAT((*reader)->NextRow(),
-              IsValidAndEquals(spanner::MakeRow({{"UserId", Value(22)}})));
+              IsValidAndEquals(spanner::MakeTestRow({{"UserId", Value(22)}})));
 
   // At end of stream, we get an 'ok' response with an empty row.
   EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(Row{}));
@@ -473,8 +464,9 @@ TEST(PartialResultSetSourceTest, ChunkedStringValueWellFormed) {
        {"not_chunked", "first_chunksecond_chunkthird_chunk",
         "second group first_chunk second group second_chunk",
         "also not_chunked", "still not_chunked"}) {
-    EXPECT_THAT((*reader)->NextRow(),
-                IsValidAndEquals(spanner::MakeRow({{"Prose", Value(value)}})));
+    EXPECT_THAT(
+        (*reader)->NextRow(),
+        IsValidAndEquals(spanner::MakeTestRow({{"Prose", Value(value)}})));
   }
 
   // At end of stream, we get an 'ok' response with an empty row.

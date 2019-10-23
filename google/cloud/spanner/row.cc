@@ -33,7 +33,7 @@ Row MakeRow(std::vector<Value> values,
 }
 }  // namespace internal
 
-Row MakeRow(std::vector<std::pair<std::string, Value>> pairs) {
+Row MakeTestRow(std::vector<std::pair<std::string, Value>> pairs) {
   auto values = std::vector<Value>{};
   auto columns = std::make_shared<std::vector<std::string>>();
   for (auto& p : pairs) {

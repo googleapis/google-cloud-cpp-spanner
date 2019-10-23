@@ -40,15 +40,6 @@ using ::testing::Eq;
 using ::testing::Return;
 using ::testing::UnorderedPointwise;
 
-// A helper function for easily creating Rows without column names for testing.
-template <typename... Ts>
-Row MakeTestRow(Ts&&... ts) {
-  auto num = sizeof...(ts);
-  auto columns = std::make_shared<std::vector<std::string>>(num, "");
-  std::vector<Value> v{Value(std::forward<Ts>(ts))...};
-  return internal::MakeRow(std::move(v), std::move(columns));
-}
-
 TEST(QueryResult, IterateNoRows) {
   auto mock_source = make_unique<MockResultSetSource>();
   EXPECT_CALL(*mock_source, NextRow()).WillOnce(Return(Row()));
