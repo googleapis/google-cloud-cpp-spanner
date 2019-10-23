@@ -74,8 +74,33 @@ StatusOr<optional<Value>> PartialResultSetSource::NextValue() {
 }
 
 StatusOr<Row> PartialResultSetSource::NextRow() {
-  //
-  return {};
+  if (finished_) return Row();
+  while (values_.size() < columns_->size()) {
+    auto status = ReadFromStream();
+    if (!status.ok()) return status;
+    if (finished_) {
+      if (chunk_) {
+        return Status(StatusCode::kInternal,
+                      "incomplete chunked_value at end of stream");
+      }
+      return Row();
+    }
+  }
+
+  auto const& fields = metadata_->row_type().fields();
+  if (fields.empty()) {
+    return Status(StatusCode::kInternal,
+                  "response metadata is missing row type information");
+  }
+
+  std::vector<Value> values;
+  for (std::size_t i = 0; i < columns_->size(); ++i) {
+    auto t = fields.Get(i).type();
+    auto v = std::move(values_.front());
+    values_.pop_front();
+    values.push_back(FromProto(std::move(t), std::move(v)));
+  }
+  return internal::MakeRow(std::move(values), columns_);
 }
 
 PartialResultSetSource::~PartialResultSetSource() {
@@ -108,6 +133,10 @@ Status PartialResultSetSource::ReadFromStream() {
       GCP_LOG(WARNING) << "Unexpectedly received two sets of metadata";
     } else {
       metadata_ = std::move(*result_set->mutable_metadata());
+      columns_ = std::make_shared<std::vector<std::string>>();
+      for (auto const& field : metadata_->row_type().fields()) {
+        columns_->push_back(field.name());
+      }
     }
   }
 
