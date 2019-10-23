@@ -16,7 +16,6 @@
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_RESULTS_H_
 
 #include "google/cloud/spanner/row.h"
-#include "google/cloud/spanner/row_parser.h"
 #include "google/cloud/spanner/timestamp.h"
 #include "google/cloud/optional.h"
 #include <google/spanner/v1/spanner.pb.h>
@@ -64,15 +63,6 @@ class QueryResult {
   QueryResult(QueryResult&&) = default;
   QueryResult& operator=(QueryResult&&) = default;
 
-  /**
-   * Returns a `RowParser` which can be used to iterate the returned
-   * `std::tuple`s.
-   *
-   * Since there is a single result stream for each `QueryResult` instance,
-   * users should not use multiple `RowParser`s from the same `QueryResult` at
-   * the same time. Doing so is not thread safe, and may result in errors or
-   * data corruption.
-   */
   template <typename RowType>
   StreamOf<RowType> Rows() {
     return StreamOf<RowType>(*this);
@@ -138,15 +128,6 @@ class ProfileQueryResult {
   ProfileQueryResult(ProfileQueryResult&&) = default;
   ProfileQueryResult& operator=(ProfileQueryResult&&) = default;
 
-  /**
-   * Returns a `RowParser` which can be used to iterate the returned
-   * `std::tuple`s.
-   *
-   * Since there is a single result stream for each `ProfileQueryResult`
-   * instance, users should not use multiple `RowParser`s from the same
-   * `ProfileQueryResult` at the same time. Doing so is not thread safe, and may
-   * result in errors or data corruption.
-   */
   template <typename RowType>
   StreamOf<RowType> Rows() {
     return StreamOf<RowType>(*this);
