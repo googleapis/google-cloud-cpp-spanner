@@ -69,7 +69,6 @@ class PartialResultSetSource : public internal::ResultSourceInterface {
   std::deque<google::protobuf::Value> buffer_;
   optional<google::protobuf::Value> chunk_;
   std::shared_ptr<std::vector<std::string>> columns_;
-  int field_index_ = 0;
   bool finished_ = false;
 };
 

@@ -613,7 +613,8 @@ TEST_F(ClientIntegrationTest, PartitionQuery) {
     ASSERT_STATUS_OK(deserialized_partition);
     auto result_set = client_->ExecuteQuery(*deserialized_partition);
     for (auto& row :
-         StreamOf<std::tuple<std::int64_t, std::string, std::string>>(result_set)) {
+         StreamOf<std::tuple<std::int64_t, std::string, std::string>>(
+             result_set)) {
       SCOPED_TRACE("Reading partition[" + std::to_string(partition_number++) +
                    "] row[" + std::to_string(row_number++) + "]");
       EXPECT_STATUS_OK(row);

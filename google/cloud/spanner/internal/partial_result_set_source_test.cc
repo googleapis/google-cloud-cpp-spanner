@@ -36,11 +36,11 @@ namespace spanner_proto = ::google::spanner::v1;
 using ::google::cloud::internal::make_unique;
 using ::google::cloud::spanner_testing::IsProtoEqual;
 using ::google::protobuf::TextFormat;
-using ::testing::Eq;
 using ::testing::HasSubstr;
 using ::testing::Return;
 
-MATCHER_P(IsValidAndEquals, expected, "") {
+MATCHER_P(IsValidAndEquals, expected,
+          "Verifies that a StatusOr<Row> contains the given Row") {
   return arg && *arg == expected;
 }
 
@@ -94,7 +94,7 @@ TEST(PartialResultSetSourceTest, ReadSuccessThenFailure) {
   auto reader = PartialResultSetSource::Create(std::move(grpc_reader));
   EXPECT_STATUS_OK(reader.status());
   EXPECT_THAT((*reader)->NextRow(),
-              IsValidAndEquals(spanner::MakeTestRow({{"AnInt", Value(80)}})));
+              IsValidAndEquals(MakeTestRow({{"AnInt", Value(80)}})));
   auto row = (*reader)->NextRow();
   EXPECT_EQ(row.status().code(), StatusCode::kCancelled);
 }
@@ -231,7 +231,7 @@ TEST(PartialResultSetSourceTest, SingleResponse) {
   EXPECT_THAT(*actual_metadata, IsProtoEqual(expected_metadata));
 
   // Verify the returned rows are correct.
-  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(spanner::MakeTestRow({
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(MakeTestRow({
                                         {"UserId", Value(10)},
                                         {"UserName", Value("user10")},
                                     })));
@@ -339,15 +339,15 @@ TEST(PartialResultSetSourceTest, MultipleResponses) {
   EXPECT_STATUS_OK(reader.status());
 
   // Verify the returned rows are correct.
-  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(spanner::MakeTestRow({
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(MakeTestRow({
                                         {"UserId", Value(10)},
                                         {"UserName", Value("user10")},
                                     })));
-  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(spanner::MakeTestRow({
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(MakeTestRow({
                                         {"UserId", Value(22)},
                                         {"UserName", Value("user22")},
                                     })));
-  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(spanner::MakeTestRow({
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(MakeTestRow({
                                         {"UserId", Value(99)},
                                         {"UserName", Value("99user99")},
                                     })));
@@ -393,7 +393,7 @@ TEST(PartialResultSetSourceTest, ResponseWithNoValues) {
 
   // Verify the returned row is correct.
   EXPECT_THAT((*reader)->NextRow(),
-              IsValidAndEquals(spanner::MakeTestRow({{"UserId", Value(22)}})));
+              IsValidAndEquals(MakeTestRow({{"UserId", Value(22)}})));
 
   // At end of stream, we get an 'ok' response with an empty row.
   EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(Row{}));
@@ -464,9 +464,8 @@ TEST(PartialResultSetSourceTest, ChunkedStringValueWellFormed) {
        {"not_chunked", "first_chunksecond_chunkthird_chunk",
         "second group first_chunk second group second_chunk",
         "also not_chunked", "still not_chunked"}) {
-    EXPECT_THAT(
-        (*reader)->NextRow(),
-        IsValidAndEquals(spanner::MakeTestRow({{"Prose", Value(value)}})));
+    EXPECT_THAT((*reader)->NextRow(),
+                IsValidAndEquals(MakeTestRow({{"Prose", Value(value)}})));
   }
 
   // At end of stream, we get an 'ok' response with an empty row.
