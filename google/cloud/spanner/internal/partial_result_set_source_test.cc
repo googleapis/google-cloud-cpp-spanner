@@ -642,6 +642,94 @@ TEST(PartialResultSetSourceTest, ChunkedValueMergeFailure) {
   EXPECT_EQ(row.status().message(), "invalid type");
 }
 
+/**
+ * @test Verify the behavior when we get an incomplete Row.
+ */
+TEST(PartialResultSetSourceTest, ErrorOnIncompleteRow) {
+  auto grpc_reader = make_unique<MockGrpcReader>();
+  std::array<spanner_proto::PartialResultSet, 5> response;
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        metadata: {
+          row_type: {
+            fields: {
+              name: "UserId",
+              type: { code: INT64 }
+            }
+            fields: {
+              name: "UserName",
+              type: { code: STRING }
+            }
+          }
+        }
+      )pb",
+      &response[0]));
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        values: { string_value: "10" }
+        values: { string_value: "user10" }
+      )pb",
+      &response[1]));
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        values: { string_value: "22" }
+        values: { string_value: "user22" }
+      )pb",
+      &response[2]));
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        values: { string_value: "99" }
+      )pb",
+      &response[3]));
+  ASSERT_TRUE(TextFormat::ParseFromString(
+      R"pb(
+        stats: {
+          query_stats: {
+            fields: {
+              key: "rows_returned",
+              value: { string_value: "3" }
+            }
+            fields: {
+              key: "elapsed_time",
+              value: { string_value: "4.22 secs" }
+            }
+            fields: {
+              key: "cpu_time",
+              value: { string_value: "3.19 secs" }
+            }
+          }
+        }
+      )pb",
+      &response[4]));
+  EXPECT_CALL(*grpc_reader, Read())
+      .WillOnce(Return(response[0]))
+      .WillOnce(Return(response[1]))
+      .WillOnce(Return(response[2]))
+      .WillOnce(Return(response[3]))
+      .WillOnce(Return(response[4]))
+      .WillOnce(Return(optional<spanner_proto::PartialResultSet>{}));
+  EXPECT_CALL(*grpc_reader, Finish()).WillOnce(Return(Status()));
+
+  auto context = make_unique<grpc::ClientContext>();
+  auto reader = PartialResultSetSource::Create(std::move(grpc_reader));
+  EXPECT_STATUS_OK(reader.status());
+
+  // Verify the first two rows are correct.
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(MakeTestRow({
+                                        {"UserId", Value(10)},
+                                        {"UserName", Value("user10")},
+                                    })));
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(MakeTestRow({
+                                        {"UserId", Value(22)},
+                                        {"UserName", Value("user22")},
+                                    })));
+
+  auto row = (*reader)->NextRow();
+  EXPECT_FALSE(row.ok());
+  EXPECT_EQ(row.status().code(), StatusCode::kInternal);
+  EXPECT_THAT(row.status().message(), HasSubstr("incomplete row"));
+}
+
 }  // namespace
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS

@@ -56,6 +56,9 @@ StatusOr<Row> PartialResultSetSource::NextRow() {
         return Status(StatusCode::kInternal,
                       "incomplete chunked_value at end of stream");
       }
+      if (!buffer_.empty()) {
+        return Status(StatusCode::kInternal, "incomplete row at end of stream");
+      }
       return Row();
     }
   }
