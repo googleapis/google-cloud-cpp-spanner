@@ -405,8 +405,9 @@ class StreamOf {
    * @tparam RowRange must be a range defined by `RowStreamIterator`s.
    */
   template <typename RowRange>
-  explicit StreamOf(RowRange const& range)
-      : begin_(std::begin(range), std::end(range)) {
+  explicit StreamOf(RowRange&& range)
+      : begin_(std::begin(std::forward<RowRange>(range)),
+               std::end(std::forward<RowRange>(range))) {
     using T = decltype(std::begin(range));
     static_assert(std::is_same<RowStreamIterator, T>::value,
                   "StreamOf must be given a RowStreamIterator range.");

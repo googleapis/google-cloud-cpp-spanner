@@ -73,12 +73,12 @@ class QueryResult {
   QueryResult& operator=(QueryResult&&) = default;
 
   /// Returns a `RowStreamIterator` defining the beginning of this result set.
-  RowStreamIterator begin() const {
+  RowStreamIterator begin() {
     return RowStreamIterator([this]() mutable { return source_->NextRow(); });
   }
 
   /// Returns a `RowStreamIterator` defining the end of this result set.
-  RowStreamIterator end() const { return {}; }
+  RowStreamIterator end() { return {}; }
 
   /**
    * Retrieves the timestamp at which the read occurred.
@@ -135,12 +135,12 @@ class ProfileQueryResult {
   ProfileQueryResult& operator=(ProfileQueryResult&&) = default;
 
   /// Returns a `RowStreamIterator` defining the beginning of this result set.
-  RowStreamIterator begin() const {
+  RowStreamIterator begin() {
     return RowStreamIterator([this]() mutable { return source_->NextRow(); });
   }
 
   /// Returns a `RowStreamIterator` defining the end of this result set.
-  RowStreamIterator end() const { return {}; }
+  RowStreamIterator end() { return {}; }
 
   /**
    * Retrieves the timestamp at which the read occurred.
