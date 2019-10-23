@@ -28,6 +28,7 @@ RUN apt update && \
     apt install -y build-essential cmake git gcc g++ cmake \
         libcurl4-openssl-dev libssl-dev make pkg-config tar wget zlib1g-dev
 # ```
+
 # Debian 10 includes versions of gRPC and Protobuf that support the
 # Google Cloud Platform proto files. We simply install these pre-built versions:
 
@@ -36,7 +37,6 @@ RUN apt update && \
     apt install -y libgrpc++-dev libprotobuf-dev \
         protobuf-compiler protobuf-compiler-grpc
 # ```
-
 
 # #### googleapis
 
@@ -109,6 +109,7 @@ RUN cmake --build /o --target install
 ## [END INSTALL.md]
 
 ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
+
 # Verify that the installed files are actually usable
 WORKDIR /home/build/test-install-cmake
 COPY ci/test-install /home/build/test-install-cmake

@@ -15,7 +15,8 @@
 
 BUILD_AND_TEST_PROJECT_FRAGMENT=$(replace_fragments \
       "INSTALL_CPP_CMAKEFILES_FROM_SOURCE" \
-      "INSTALL_GOOGLETEST_FROM_SOURCE" <<'_EOF_'
+      "INSTALL_GOOGLETEST_FROM_SOURCE" \
+      "INSTALL_GOOGLE_CLOUD_CPP_COMMON_FROM_SOURCE" <<'_EOF_'
 # #### googleapis
 
 # We need a recent version of the Google Cloud Platform proto C++ libraries:
@@ -35,8 +36,8 @@ BUILD_AND_TEST_PROJECT_FRAGMENT=$(replace_fragments \
 
 # #### google-cloud-cpp-common
 
-# We need to install the common utilities used by all Google Cloud C++
-# libraries:
+# The project also depends on google-cloud-cpp-common, the libraries shared by
+# all the Google Cloud C++ client libraries:
 
 # ```bash
 @INSTALL_GOOGLE_CLOUD_CPP_COMMON_FROM_SOURCE@

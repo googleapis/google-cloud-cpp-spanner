@@ -28,16 +28,16 @@ RUN dnf makecache && \
     dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
         zlib-devel
 # ```
-# Fedora includes packages for gRPC, libcurl, and OpenSSL that are recent enough
-# for the project. Install these packages and additional development tools to
-# compile the dependencies:
+
+# Fedora 30 includes packages for gRPC, libcurl, and OpenSSL that are recent
+# enough for the project. Install these packages and additional development
+# tools to compile the dependencies:
 
 # ```bash
 RUN dnf makecache && \
     dnf install -y grpc-devel grpc-plugins \
         libcurl-devel protobuf-compiler tar wget zlib-devel
 # ```
-
 
 # #### googleapis
 
@@ -110,6 +110,7 @@ RUN cmake --build /o --target install
 ## [END INSTALL.md]
 
 ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
+
 # Verify that the installed files are actually usable
 WORKDIR /home/build/test-install-cmake
 COPY ci/test-install /home/build/test-install-cmake

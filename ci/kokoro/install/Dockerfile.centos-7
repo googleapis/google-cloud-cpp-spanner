@@ -38,7 +38,8 @@ RUN ln -sf /usr/bin/cmake3 /usr/bin/cmake && ln -sf /usr/bin/ctest3 /usr/bin/cte
 
 # #### Protobuf
 
-# Likewise, manually install protobuf:
+# We need to install a version of Protobuf, recent enough that it supports the
+# Google Cloud Platform proto files:
 
 # ```bash
 WORKDIR /var/tmp/build
@@ -79,7 +80,7 @@ ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig
 ENV LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
 # ```
 
-# The we install it using using:
+# Then we install it using using:
 
 # ```bash
 WORKDIR /var/tmp/build
@@ -162,6 +163,7 @@ RUN cmake --build /o --target install
 ## [END INSTALL.md]
 
 ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
+
 # Verify that the installed files are actually usable
 WORKDIR /home/build/test-install-cmake
 COPY ci/test-install /home/build/test-install-cmake

@@ -34,7 +34,8 @@ RUN zypper refresh && \
 
 # #### Protobuf
 
-# Likewise, manually install protobuf:
+# We need to install a version of Protobuf, recent enough that it supports the
+# Google Cloud Platform proto files:
 
 # ```bash
 WORKDIR /var/tmp/build
@@ -67,7 +68,8 @@ RUN ldconfig
 
 # #### gRPC
 
-# To install gRPC we first need to configure pkg-config to find the version of
+# We also need a version of gRPC that is recent enough to support the Google
+# Cloud Platform proto files, first configure pkg-config to find the version of
 # Protobuf we just installed in `/usr/local`:
 
 # ```bash
@@ -157,6 +159,7 @@ RUN cmake --build /o --target install
 
 ## [END INSTALL.md]
 
+ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
 
 # Verify that the installed files are actually usable
 WORKDIR /home/build/test-install-cmake

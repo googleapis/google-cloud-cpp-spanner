@@ -65,7 +65,8 @@ RUN ldconfig
 
 # #### gRPC
 
-# Can be manually installed using:
+# We also need a version of gRPC that is recent enough to support the Google
+# Cloud Platform proto files. We can install gRPC from source using:
 
 # ```bash
 WORKDIR /var/tmp/build
@@ -147,6 +148,7 @@ RUN cmake --build /o --target install
 
 ## [END INSTALL.md]
 
+ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
 
 # Verify that the installed files are actually usable
 WORKDIR /home/build/test-install-cmake
