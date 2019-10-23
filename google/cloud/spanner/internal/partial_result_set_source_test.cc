@@ -140,9 +140,7 @@ TEST(PartialResultSetSourceTest, MissingRowTypeNoData) {
   auto context = make_unique<grpc::ClientContext>();
   auto reader = PartialResultSetSource::Create(std::move(grpc_reader));
   ASSERT_STATUS_OK(reader);
-  StatusOr<Row> row = (*reader)->NextRow();
-  EXPECT_STATUS_OK(row);
-  EXPECT_EQ(0, row->size());
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(Row{}));
 }
 
 /**
@@ -248,9 +246,7 @@ TEST(PartialResultSetSourceTest, SingleResponse) {
                                     })));
 
   // At end of stream, we get an 'ok' response with an empty row.
-  auto row = (*reader)->NextRow();
-  EXPECT_STATUS_OK(row);
-  EXPECT_EQ(Row{}, *row);
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(Row{}));
 
   // Verify the returned stats are correct.
   spanner_proto::ResultSetStats expected_stats;
@@ -366,9 +362,7 @@ TEST(PartialResultSetSourceTest, MultipleResponses) {
                                     })));
 
   // At end of stream, we get an 'ok' response with an empty row.
-  auto row = (*reader)->NextRow();
-  EXPECT_STATUS_OK(row);
-  EXPECT_EQ(Row{}, *row);
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(Row{}));
 }
 
 /**
@@ -411,9 +405,7 @@ TEST(PartialResultSetSourceTest, ResponseWithNoValues) {
               IsValidAndEquals(spanner::MakeRow({{"UserId", Value(22)}})));
 
   // At end of stream, we get an 'ok' response with an empty row.
-  auto row = (*reader)->NextRow();
-  EXPECT_STATUS_OK(row);
-  EXPECT_EQ(Row{}, *row);
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(Row{}));
 }
 
 /**
@@ -486,9 +478,7 @@ TEST(PartialResultSetSourceTest, ChunkedStringValueWellFormed) {
   }
 
   // At end of stream, we get an 'ok' response with an empty row.
-  auto row = (*reader)->NextRow();
-  EXPECT_STATUS_OK(row);
-  EXPECT_EQ(Row{}, *row);
+  EXPECT_THAT((*reader)->NextRow(), IsValidAndEquals(Row{}));
 }
 
 /**

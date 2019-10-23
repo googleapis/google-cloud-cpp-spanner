@@ -42,11 +42,15 @@ StatusOr<std::unique_ptr<ResultSourceInterface>> PartialResultSetSource::Create(
 }
 
 StatusOr<Row> PartialResultSetSource::NextRow() {
-  if (finished_) return Row();
+  if (finished_) {
+    return Row();
+  }
 
-  while (values_.empty() || values_.size() < columns_->size()) {
+  while (buffer_.empty() || buffer_.size() < columns_->size()) {
     auto status = ReadFromStream();
-    if (!status.ok()) return status;
+    if (!status.ok()) {
+      return status;
+    }
     if (finished_) {
       if (chunk_) {
         return Status(StatusCode::kInternal,
@@ -63,11 +67,9 @@ StatusOr<Row> PartialResultSetSource::NextRow() {
   }
 
   std::vector<Value> values;
-  for (std::size_t i = 0; i < columns_->size(); ++i) {
-    auto t = fields.Get(i).type();
-    auto v = std::move(values_.front());
-    values_.pop_front();
-    values.push_back(FromProto(std::move(t), std::move(v)));
+  for (auto const& field : fields) {
+    values.push_back(FromProto(field.type(), std::move(buffer_.front())));
+    buffer_.pop_front();
   }
   return internal::MakeRow(std::move(values), columns_);
 }
@@ -164,9 +166,9 @@ Status PartialResultSetSource::ReadFromStream() {
     new_values.RemoveLast();
   }
 
-  // Moves all the remaining in new_values to values_
+  // Moves all the remaining in new_values to buffer_
   for (auto& value_proto : new_values) {
-    values_.push_back(std::move(value_proto));
+    buffer_.push_back(std::move(value_proto));
   }
 
   return {};  // OK

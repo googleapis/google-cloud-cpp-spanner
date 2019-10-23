@@ -48,10 +48,19 @@ class ResultSourceInterface {
 }  // namespace internal
 
 /**
- * Represents the result of a read operation using `spanner::Client::Read()`.
+ * Represents the result of a read operation using `spanner::Client::Read()` or
+ * `spanner::Client::ExecuteQuery`.
  *
- * Note that a `QueryResult` returns the data for the operation, as a
- * single-pass, input range returned by `Rows()`.
+ * A `QueryResult` object is itself a range defined by the [Input
+ * Iterators][input-iterator] returned from `begin()` and `end(). Callers may
+ * directly iterator a `QueryResult` instance, which will return a sequence of
+ * `StatusOr<Row>` objects.
+ *
+ * For convenience, callers may wrap the `QueryResult` instance in a
+ * `StreamOf<std::tuple<...>>()` object, which will automatically parse each
+ * `Row` into a `std::tuple` with the specified types.
+ *
+ * [input-iterator]: https://en.cppreference.com/w/cpp/named_req/InputIterator
  */
 class QueryResult {
  public:
@@ -63,21 +72,18 @@ class QueryResult {
   QueryResult(QueryResult&&) = default;
   QueryResult& operator=(QueryResult&&) = default;
 
-  template <typename RowType>
-  StreamOf<RowType> Rows() {
-    return StreamOf<RowType>(*this);
-  }
-
+  /// Returns a `RowStreamIterator` defining the beginning of this result set.
   RowStreamIterator begin() const {
     return RowStreamIterator([this]() mutable { return source_->NextRow(); });
   }
-  RowStreamIterator end() const { return RowStreamIterator(); }
+
+  /// Returns a `RowStreamIterator` defining the end of this result set.
+  RowStreamIterator end() const { return {}; }
 
   /**
-   * Retrieve the timestamp at which the read occurred.
+   * Retrieves the timestamp at which the read occurred.
    *
-   * Only available if a read-only transaction was used, and the timestamp
-   * was requested by setting `return_read_timestamp` true.
+   * @note Only available if a read-only transaction was used.
    */
   optional<Timestamp> ReadTimestamp() const;
 
@@ -93,7 +99,7 @@ class QueryResult {
  * `INSERT`, `UPDATE`, or `DELETE`.
  *
  * @note `ExecuteDmlResult` returns the number of rows modified, query plan
- * (if requested), and execution statistics (if requested).
+ *     (if requested), and execution statistics (if requested).
  */
 class DmlResult {
  public:
@@ -109,7 +115,7 @@ class DmlResult {
    * Returns the number of rows modified by the DML statement.
    *
    * @note Partitioned DML only provides a lower bound of the rows modified, all
-   * other DML statements provide an exact count.
+   *     other DML statements provide an exact count.
    */
   std::int64_t RowsModified() const;
 
@@ -128,21 +134,18 @@ class ProfileQueryResult {
   ProfileQueryResult(ProfileQueryResult&&) = default;
   ProfileQueryResult& operator=(ProfileQueryResult&&) = default;
 
-  template <typename RowType>
-  StreamOf<RowType> Rows() {
-    return StreamOf<RowType>(*this);
-  }
-
+  /// Returns a `RowStreamIterator` defining the beginning of this result set.
   RowStreamIterator begin() const {
     return RowStreamIterator([this]() mutable { return source_->NextRow(); });
   }
-  RowStreamIterator end() const { return RowStreamIterator(); }
+
+  /// Returns a `RowStreamIterator` defining the end of this result set.
+  RowStreamIterator end() const { return {}; }
 
   /**
-   * Retrieve the timestamp at which the read occurred.
+   * Retrieves the timestamp at which the read occurred.
    *
-   * Only available if a read-only transaction was used, and the timestamp
-   * was requested by setting `return_read_timestamp` true.
+   * @note Only available if a read-only transaction was used.
    */
   optional<Timestamp> ReadTimestamp() const;
 
@@ -151,7 +154,7 @@ class ProfileQueryResult {
    * execution.
    *
    * @note Only available when the statement is executed and all results have
-   * been read.
+   *     been read.
    */
   optional<std::unordered_map<std::string, std::string>> ExecutionStats() const;
 
