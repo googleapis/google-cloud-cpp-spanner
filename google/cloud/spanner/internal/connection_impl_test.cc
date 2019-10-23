@@ -642,7 +642,7 @@ TEST(ConnectionImplTest, ProfileQuerySuccess) {
       RowType(42, "Ann"),
   };
   int row_number = 0;
-  for (auto& row : result.Rows<RowType>()) {
+  for (auto& row : StreamOf<RowType>(result)) {
     EXPECT_STATUS_OK(row);
     EXPECT_EQ(*row, expected[row_number]);
     ++row_number;
@@ -682,7 +682,7 @@ TEST(ConnectionImplTest, ProfileQueryGetSessionFailure) {
   auto result = conn->ProfileQuery(
       {MakeSingleUseTransaction(Transaction::ReadOnlyOptions()),
        SqlStatement("select * from table")});
-  for (auto& row : result.Rows<std::tuple<std::int64_t>>()) {
+  for (auto& row : result) {
     EXPECT_EQ(StatusCode::kPermissionDenied, row.status().code());
     EXPECT_THAT(row.status().message(), HasSubstr("uh-oh in GetSession"));
   }
@@ -712,7 +712,7 @@ TEST(ConnectionImplTest, ProfileQueryStreamingReadFailure) {
   auto result = conn->ProfileQuery(
       {MakeSingleUseTransaction(Transaction::ReadOnlyOptions()),
        SqlStatement("select * from table")});
-  for (auto& row : result.Rows<std::tuple<std::int64_t>>()) {
+  for (auto& row : result) {
     EXPECT_EQ(StatusCode::kPermissionDenied, row.status().code());
     EXPECT_THAT(row.status().message(),
                 HasSubstr("uh-oh in GrpcReader::Finish"));
