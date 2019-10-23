@@ -100,6 +100,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a089a6161276a333da22e6fc8e8115368"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DmlResult.html">DmlResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a089a6161276a333da22e6fc8e8115368">ExecuteDml</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> transaction, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> statement)</td></tr>
 <tr class="memdesc:a089a6161276a333da22e6fc8e8115368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a SQL DML statement.  <a href="#a089a6161276a333da22e6fc8e8115368">More...</a><br /></td></tr>
 <tr class="separator:a089a6161276a333da22e6fc8e8115368"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2377431b90330974c5104178a16650e1"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileDmlResult.html">ProfileDmlResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a2377431b90330974c5104178a16650e1">ProfileDml</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> transaction, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> statement)</td></tr>
+<tr class="memdesc:a2377431b90330974c5104178a16650e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Profiles a SQL DML statement.  <a href="#a2377431b90330974c5104178a16650e1">More...</a><br /></td></tr>
+<tr class="separator:a2377431b90330974c5104178a16650e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac20b45766b48580df54fed6718cda116"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a616196280b82063938ca43e074e23f2d">ExecutionPlan</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ac20b45766b48580df54fed6718cda116">AnalyzeSql</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> transaction, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> statement)</td></tr>
+<tr class="memdesc:ac20b45766b48580df54fed6718cda116"><td class="mdescLeft">&#160;</td><td class="mdescRight">Analyzes the execution plan of a SQL statement.  <a href="#ac20b45766b48580df54fed6718cda116">More...</a><br /></td></tr>
+<tr class="separator:ac20b45766b48580df54fed6718cda116"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c44430c6a1f6c050da8e9a28f0da66d"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1BatchDmlResult.html">BatchDmlResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a7c44430c6a1f6c050da8e9a28f0da66d">ExecuteBatchDml</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> transaction, std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> &gt; statements)</td></tr>
 <tr class="memdesc:a7c44430c6a1f6c050da8e9a28f0da66d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a batch of SQL DML statements.  <a href="#a7c44430c6a1f6c050da8e9a28f0da66d">More...</a><br /></td></tr>
 <tr class="separator:a7c44430c6a1f6c050da8e9a28f0da66d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,13 +129,13 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac6de62144b5744b8d334894a04f5d14c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:ac875292517107d7dd32372f3ab4af40b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html">QueryResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ac875292517107d7dd32372f3ab4af40b">Read</a> (std::string table, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> keys, std::vector&lt; std::string &gt; columns, <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadOptions.html">ReadOptions</a> read_options={})</td></tr>
-<tr class="memdesc:ac875292517107d7dd32372f3ab4af40b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads rows from the database using key lookups and scans, as a simple key/value style alternative to <code>ExecuteSql()</code>.  <a href="#ac875292517107d7dd32372f3ab4af40b">More...</a><br /></td></tr>
+<tr class="memdesc:ac875292517107d7dd32372f3ab4af40b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads rows from the database using key lookups and scans, as a simple key/value style alternative to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae9e584f159a8231e3c146d8dfbc5d9fa" title="Executes a SQL query.">ExecuteQuery()</a></code>.  <a href="#ac875292517107d7dd32372f3ab4af40b">More...</a><br /></td></tr>
 <tr class="separator:ac875292517107d7dd32372f3ab4af40b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f182be6c30649a440451c2fb79e9105"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html">QueryResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a2f182be6c30649a440451c2fb79e9105">Read</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1SingleUseOptions.html">Transaction::SingleUseOptions</a> transaction_options, std::string table, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> keys, std::vector&lt; std::string &gt; columns, <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadOptions.html">ReadOptions</a> read_options={})</td></tr>
-<tr class="memdesc:a2f182be6c30649a440451c2fb79e9105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads rows from the database using key lookups and scans, as a simple key/value style alternative to <code>ExecuteSql()</code>.  <a href="#a2f182be6c30649a440451c2fb79e9105">More...</a><br /></td></tr>
+<tr class="memdesc:a2f182be6c30649a440451c2fb79e9105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads rows from the database using key lookups and scans, as a simple key/value style alternative to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae9e584f159a8231e3c146d8dfbc5d9fa" title="Executes a SQL query.">ExecuteQuery()</a></code>.  <a href="#a2f182be6c30649a440451c2fb79e9105">More...</a><br /></td></tr>
 <tr class="separator:a2f182be6c30649a440451c2fb79e9105"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43e7f646564b1e3656ffd4f9bce0c80b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html">QueryResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a43e7f646564b1e3656ffd4f9bce0c80b">Read</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> transaction, std::string table, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> keys, std::vector&lt; std::string &gt; columns, <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadOptions.html">ReadOptions</a> read_options={})</td></tr>
-<tr class="memdesc:a43e7f646564b1e3656ffd4f9bce0c80b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads rows from the database using key lookups and scans, as a simple key/value style alternative to <code>ExecuteSql()</code>.  <a href="#a43e7f646564b1e3656ffd4f9bce0c80b">More...</a><br /></td></tr>
+<tr class="memdesc:a43e7f646564b1e3656ffd4f9bce0c80b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads rows from the database using key lookups and scans, as a simple key/value style alternative to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae9e584f159a8231e3c146d8dfbc5d9fa" title="Executes a SQL query.">ExecuteQuery()</a></code>.  <a href="#a43e7f646564b1e3656ffd4f9bce0c80b">More...</a><br /></td></tr>
 <tr class="separator:a43e7f646564b1e3656ffd4f9bce0c80b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:ae9e584f159a8231e3c146d8dfbc5d9fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html">QueryResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae9e584f159a8231e3c146d8dfbc5d9fa">ExecuteQuery</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> statement)</td></tr>
@@ -144,6 +150,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1884bdaced9f8bc1353ecd2d7f85d0bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html">QueryResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a1884bdaced9f8bc1353ecd2d7f85d0bc">ExecuteQuery</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html">QueryPartition</a> const &amp;partition)</td></tr>
 <tr class="memdesc:a1884bdaced9f8bc1353ecd2d7f85d0bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a SQL query on a subset of rows in a database.  <a href="#a1884bdaced9f8bc1353ecd2d7f85d0bc">More...</a><br /></td></tr>
 <tr class="separator:a1884bdaced9f8bc1353ecd2d7f85d0bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:af756ca5fc9aec620c75f40f0ed5ac8a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html">ProfileQueryResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#af756ca5fc9aec620c75f40f0ed5ac8a3">ProfileQuery</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> statement)</td></tr>
+<tr class="memdesc:af756ca5fc9aec620c75f40f0ed5ac8a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Profiles a SQL query.  <a href="#af756ca5fc9aec620c75f40f0ed5ac8a3">More...</a><br /></td></tr>
+<tr class="separator:af756ca5fc9aec620c75f40f0ed5ac8a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae56557d50ac56d7af37af303760d200d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html">ProfileQueryResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae56557d50ac56d7af37af303760d200d">ProfileQuery</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1SingleUseOptions.html">Transaction::SingleUseOptions</a> transaction_options, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> statement)</td></tr>
+<tr class="memdesc:ae56557d50ac56d7af37af303760d200d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Profiles a SQL query.  <a href="#ae56557d50ac56d7af37af303760d200d">More...</a><br /></td></tr>
+<tr class="separator:ae56557d50ac56d7af37af303760d200d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a921ad5c4c64aa7f161a5ae2d6ff4dc2c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html">ProfileQueryResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a921ad5c4c64aa7f161a5ae2d6ff4dc2c">ProfileQuery</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> transaction, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> statement)</td></tr>
+<tr class="memdesc:a921ad5c4c64aa7f161a5ae2d6ff4dc2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Profiles a SQL query.  <a href="#a921ad5c4c64aa7f161a5ae2d6ff4dc2c">More...</a><br /></td></tr>
+<tr class="separator:a921ad5c4c64aa7f161a5ae2d6ff4dc2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -276,6 +292,48 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac20b45766b48580df54fed6718cda116"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac20b45766b48580df54fed6718cda116">&#9670;&nbsp;</a></span>AnalyzeSql()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">StatusOr&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a616196280b82063938ca43e074e23f2d">ExecutionPlan</a> &gt; google::cloud::spanner::v0::Client::AnalyzeSql </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>&#160;</td>
+          <td class="paramname"><em>transaction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a>&#160;</td>
+          <td class="paramname"><em>statement</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Analyzes the execution plan of a SQL statement. </p>
+<p>Analyzing provides the <code>ExecutionPlan</code>, but does not execute the SQL statement.</p>
+<p>Operations inside read-write transactions might return <code>ABORTED</code>. If this occurs, the application should restart the transaction from the beginning.</p>
+<dl class="section note"><dt>Note</dt><dd>Single-use transactions are not supported with DML statements.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">transaction</td><td>Execute this query as part of an existing transaction. </td></tr>
+    <tr><td class="paramname">statement</td><td>The SQL statement to execute. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00127">127</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+
+</div>
+</div>
 <a id="a9349cc0b3fb4d9d83721e642bfcc1102"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9349cc0b3fb4d9d83721e642bfcc1102">&#9670;&nbsp;</a></span>Commit()</h2>
 
@@ -314,7 +372,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <code>StatusOr</code> containing the result of the commit or error status on failure. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00109">109</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00138">138</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -345,7 +403,7 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Executes a batch of SQL DML statements. </p>
-<p>This method allows many statements to be run with lower latency than submitting them sequentially with <code>ExecuteSql</code>.</p>
+<p>This method allows many statements to be run with lower latency than submitting them sequentially with <code>ExecuteDml</code>.</p>
 <p>Statements are executed in order, sequentially. Execution will stop at the first failed statement; the remaining statements will not run.</p>
 <p>As with all read-write transactions, the results will not be visible outside of the transaction until it is committed. For that reason, it is advisable to run this method with <code>RunTransaction</code>.</p>
 <dl class="section warning"><dt>Warning</dt><dd>A returned status of OK from this function does not imply that all the statements were executed successfully. For that, you need to inspect the <code><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1BatchDmlResult.html#a2e1a32b8b3188dd6432715de521c1e7f" title="Either OK or the error Status of the SqlStatement that failed.">BatchDmlResult::status</a></code> field.</dd></dl>
@@ -357,7 +415,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00103">103</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00132">132</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -398,7 +456,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00099">99</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00117">117</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -430,7 +488,7 @@ Friends</h2></td></tr>
 <dd>
 <a href="https://cloud.google.com/spanner/docs/dml-partitioned">Partitioned DML</a> for a description of which SQL statements are supported in Partitioned DML transactions. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00118">118</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00147">147</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -675,7 +733,7 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Creates a set of partitions that can be used to execute a query operation in parallel. </p>
-<p>Each of the returned partitions can be passed to <code>ExecuteSql</code> to specify a subset of the query result to read.</p>
+<p>Each of the returned partitions can be passed to <code>ExecuteQuery</code> to specify a subset of the query result to read.</p>
 <p>Partitions become invalid when the session used to create them is deleted, is idle for too long, begins a new transaction, or becomes too old. When any of these happen, it is not possible to resume the query, and the whole operation must be restarted from the beginning.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -688,7 +746,7 @@ Friends</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>A <code>StatusOr</code> containing a vector of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html" title="The QueryPartition class is a regular type that represents a single slice of a parallel SQL read.">QueryPartition</a></code>s or error status on failure.</dd></dl>
 <dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line">  spanner::Transaction ro_transaction = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7aedae28062a59c9b7e809205ebe09be">spanner::MakeReadOnlyTransaction</a>();</div><div class="line">  google::cloud::StatusOr&lt;std::vector&lt;spanner::QueryPartition&gt;&gt; partitions =</div><div class="line">      client.PartitionQuery(</div><div class="line">          ro_transaction,</div><div class="line">          spanner::SqlStatement(</div><div class="line">              <span class="stringliteral">&quot;SELECT SingerId, FirstName, LastName FROM Singers&quot;</span>));</div><div class="line">  <span class="keywordflow">if</span> (!partitions) <span class="keywordflow">throw</span> std::runtime_error(partitions.status().message());</div><div class="line">  <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; partition : *partitions) {</div><div class="line">    remote_connection.SendPartitionToRemoteMachine(partition);</div><div class="line">  }</div></div><!-- fragment --></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00092">92</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00110">110</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -764,6 +822,179 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="a2377431b90330974c5104178a16650e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2377431b90330974c5104178a16650e1">&#9670;&nbsp;</a></span>ProfileDml()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileDmlResult.html">ProfileDmlResult</a> &gt; google::cloud::spanner::v0::Client::ProfileDml </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>&#160;</td>
+          <td class="paramname"><em>transaction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a>&#160;</td>
+          <td class="paramname"><em>statement</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Profiles a SQL DML statement. </p>
+<p>Profiling executes the DML statement, provides the modified row count, <code>ExecutionPlan</code>, and execution statistics.</p>
+<p>Operations inside read-write transactions might return <code>ABORTED</code>. If this occurs, the application should restart the transaction from the beginning.</p>
+<dl class="section note"><dt>Note</dt><dd>Single-use transactions are not supported with DML statements.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">transaction</td><td>Execute this query as part of an existing transaction. </td></tr>
+    <tr><td class="paramname">statement</td><td>The SQL statement to execute. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00122">122</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+
+</div>
+</div>
+<a id="af756ca5fc9aec620c75f40f0ed5ac8a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af756ca5fc9aec620c75f40f0ed5ac8a3">&#9670;&nbsp;</a></span>ProfileQuery() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html">ProfileQueryResult</a> google::cloud::spanner::v0::Client::ProfileQuery </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a>&#160;</td>
+          <td class="paramname"><em>statement</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Profiles a SQL query. </p>
+<p>Profiling executes the query, provides the resulting rows, <code>ExecutionPlan</code>, and execution statistics.</p>
+<p>Operations inside read-write transactions might return <code>kAborted</code>. If this occurs, the application should restart the transaction from the beginning.</p>
+<p>Callers can optionally supply a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code> or <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1SingleUseOptions.html" title="Options for &quot;single-use&quot;, ReadOnly transactions, where Spanner chooses the read timestamp,...">Transaction::SingleUseOptions</a></code> used to create a single-use transaction - or neither, in which case a single-use transaction with default options is used.</p>
+<dl class="section note"><dt>Note</dt><dd>Callers must consume all rows from the result before execution statistics and <code>ExecutionPlan</code> are available.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">statement</td><td>The SQL statement to execute.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>No individual row in the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html">ProfileQueryResult</a></code> can exceed 100 MiB, and no column value can exceed 10 MiB. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00092">92</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+
+</div>
+</div>
+<a id="ae56557d50ac56d7af37af303760d200d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae56557d50ac56d7af37af303760d200d">&#9670;&nbsp;</a></span>ProfileQuery() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html">ProfileQueryResult</a> google::cloud::spanner::v0::Client::ProfileQuery </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1SingleUseOptions.html">Transaction::SingleUseOptions</a>&#160;</td>
+          <td class="paramname"><em>transaction_options</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a>&#160;</td>
+          <td class="paramname"><em>statement</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Profiles a SQL query. </p>
+<p>Profiling executes the query, provides the resulting rows, <code>ExecutionPlan</code>, and execution statistics.</p>
+<p>Operations inside read-write transactions might return <code>kAborted</code>. If this occurs, the application should restart the transaction from the beginning.</p>
+<p>Callers can optionally supply a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code> or <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1SingleUseOptions.html" title="Options for &quot;single-use&quot;, ReadOnly transactions, where Spanner chooses the read timestamp,...">Transaction::SingleUseOptions</a></code> used to create a single-use transaction - or neither, in which case a single-use transaction with default options is used.</p>
+<dl class="section note"><dt>Note</dt><dd>Callers must consume all rows from the result before execution statistics and <code>ExecutionPlan</code> are available.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">statement</td><td>The SQL statement to execute.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>No individual row in the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html">ProfileQueryResult</a></code> can exceed 100 MiB, and no column value can exceed 10 MiB.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">transaction_options</td><td>Execute this query in a single-use transaction with these options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00098">98</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+
+</div>
+</div>
+<a id="a921ad5c4c64aa7f161a5ae2d6ff4dc2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a921ad5c4c64aa7f161a5ae2d6ff4dc2c">&#9670;&nbsp;</a></span>ProfileQuery() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html">ProfileQueryResult</a> google::cloud::spanner::v0::Client::ProfileQuery </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>&#160;</td>
+          <td class="paramname"><em>transaction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a>&#160;</td>
+          <td class="paramname"><em>statement</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Profiles a SQL query. </p>
+<p>Profiling executes the query, provides the resulting rows, <code>ExecutionPlan</code>, and execution statistics.</p>
+<p>Operations inside read-write transactions might return <code>kAborted</code>. If this occurs, the application should restart the transaction from the beginning.</p>
+<p>Callers can optionally supply a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code> or <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1SingleUseOptions.html" title="Options for &quot;single-use&quot;, ReadOnly transactions, where Spanner chooses the read timestamp,...">Transaction::SingleUseOptions</a></code> used to create a single-use transaction - or neither, in which case a single-use transaction with default options is used.</p>
+<dl class="section note"><dt>Note</dt><dd>Callers must consume all rows from the result before execution statistics and <code>ExecutionPlan</code> are available.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">statement</td><td>The SQL statement to execute.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>No individual row in the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html">ProfileQueryResult</a></code> can exceed 100 MiB, and no column value can exceed 10 MiB.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">transaction</td><td>Execute this query as part of an existing transaction. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00105">105</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+
+</div>
+</div>
 <a id="ac875292517107d7dd32372f3ab4af40b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac875292517107d7dd32372f3ab4af40b">&#9670;&nbsp;</a></span>Read() <span class="overload">[1/4]</span></h2>
 
@@ -802,7 +1033,7 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Reads rows from the database using key lookups and scans, as a simple key/value style alternative to <code>ExecuteSql()</code>. </p>
+<p>Reads rows from the database using key lookups and scans, as a simple key/value style alternative to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae9e584f159a8231e3c146d8dfbc5d9fa" title="Executes a SQL query.">ExecuteQuery()</a></code>. </p>
 <p>Callers can optionally supply a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code> or <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1SingleUseOptions.html" title="Options for &quot;single-use&quot;, ReadOnly transactions, where Spanner chooses the read timestamp,...">Transaction::SingleUseOptions</a></code> used to create a single-use transaction - or neither, in which case a single-use transaction with default options is used.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -863,7 +1094,7 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Reads rows from the database using key lookups and scans, as a simple key/value style alternative to <code>ExecuteSql()</code>. </p>
+<p>Reads rows from the database using key lookups and scans, as a simple key/value style alternative to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae9e584f159a8231e3c146d8dfbc5d9fa" title="Executes a SQL query.">ExecuteQuery()</a></code>. </p>
 <p>Callers can optionally supply a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code> or <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1SingleUseOptions.html" title="Options for &quot;single-use&quot;, ReadOnly transactions, where Spanner chooses the read timestamp,...">Transaction::SingleUseOptions</a></code> used to create a single-use transaction - or neither, in which case a single-use transaction with default options is used.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -930,7 +1161,7 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Reads rows from the database using key lookups and scans, as a simple key/value style alternative to <code>ExecuteSql()</code>. </p>
+<p>Reads rows from the database using key lookups and scans, as a simple key/value style alternative to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae9e584f159a8231e3c146d8dfbc5d9fa" title="Executes a SQL query.">ExecuteQuery()</a></code>. </p>
 <p>Callers can optionally supply a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code> or <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1SingleUseOptions.html" title="Options for &quot;single-use&quot;, ReadOnly transactions, where Spanner chooses the read timestamp,...">Transaction::SingleUseOptions</a></code> used to create a single-use transaction - or neither, in which case a single-use transaction with default options is used.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1001,7 +1232,7 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Rolls back a read-write transaction, releasing any locks it holds. </p>
-<p>At any time before <code>Commit</code>, the client can call <code>Rollback</code> to abort the transaction. It is a good idea to call this for any read-write transaction that includes one or more <code>Read</code> or <code>ExecuteSql</code> requests and ultimately decides not to commit.</p>
+<p>At any time before <code>Commit</code>, the client can call <code>Rollback</code> to abort the transaction. It is a good idea to call this for any read-write transaction that includes one or more <code>Read</code>, <code>ExecuteQuery</code>, or <code>ExecuteDml</code> requests and ultimately decides not to commit.</p>
 <dl class="section warning"><dt>Warning</dt><dd>It is an error to call <code>Rollback</code> with a read-only <code>transaction</code>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1011,7 +1242,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The error status of the rollback. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00114">114</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00143">143</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>

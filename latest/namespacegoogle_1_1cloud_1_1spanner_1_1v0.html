@@ -924,7 +924,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00123">123</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00152">152</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -1230,7 +1230,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Create a read-only transaction configured with <code>opts</code>. </p>
-<dl class="section note"><dt>Note</dt><dd>This is a lazy evaluated operation. No RPCs are made as part of creating a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code> object, instead, the first request to the server (for example as part of a <code>ExecuteSql()</code> call) will also create the transaction. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This is a lazy evaluated operation. No RPCs are made as part of creating a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code> object, instead, the first request to the server (for example as part of a <code>ExecuteQuery()</code> call) will also create the transaction. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="transaction_8h_source.html#l00182">182</a> of file <a class="el" href="transaction_8h_source.html">transaction.h</a>.</p>
 
@@ -1261,7 +1261,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Create a read-write transaction configured with <code>opts</code>. </p>
-<dl class="section note"><dt>Note</dt><dd>This is a lazy evaluated operation. No RPCs are made as part of creating a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code> object, instead, the first request to the server (for example as part of a <code>ExecuteSql()</code> call) will also create the transaction. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This is a lazy evaluated operation. No RPCs are made as part of creating a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code> object, instead, the first request to the server (for example as part of a <code>ExecuteQuery()</code> call) will also create the transaction. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="transaction_8h_source.html#l00192">192</a> of file <a class="el" href="transaction_8h_source.html">transaction.h</a>.</p>
 
@@ -2288,10 +2288,10 @@ template&lt;typename... Ts&gt; </div>
 </div><div class="memdoc">
 
 <p>Execute a function in the context of a read-write transaction, with automatic retries if the transaction commit results in an abort. </p>
-<p>The caller-provided function will be passed the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> argument and a newly created read-write <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code>. It should use these objects to issue any <code>Read()</code>s, <code>ExecuteSql()</code>s, etc., and return the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html" title="A wrapper for Cloud Spanner mutations.">Mutation</a></code>s to commit, or an error (which causes the transaction to be rolled back).</p>
+<p>The caller-provided function will be passed the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> argument and a newly created read-write <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code>. It should use these objects to issue any <code>Read()</code>s, <code>ExecuteQuery()</code>s, <code>ExecuteDml()</code>s, etc., and return the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html" title="A wrapper for Cloud Spanner mutations.">Mutation</a></code>s to commit, or an error (which causes the transaction to be rolled back).</p>
 <p>The lock priority of the transaction increases after each prior aborted transaction, meaning that the next attempt has a slightly better chance of success than before. </p>
 
-<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00460">460</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00540">540</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
 
 </div>
 </div>
