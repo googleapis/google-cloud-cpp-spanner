@@ -49,7 +49,7 @@ class ResultSourceInterface {
 
 /**
  * Represents the result of a read operation using `spanner::Client::Read()` or
- * `spanner::Client::ExecuteQuery`.
+ * `spanner::Client::ExecuteQuery()`.
  *
  * A `QueryResult` object is itself a range defined by the [Input
  * Iterators][input-iterator] returned from `begin()` and `end(). Callers may
@@ -57,7 +57,7 @@ class ResultSourceInterface {
  * `StatusOr<Row>` objects.
  *
  * For convenience, callers may wrap the `QueryResult` instance in a
- * `StreamOf<std::tuple<...>>()` object, which will automatically parse each
+ * `StreamOf<std::tuple<...>>` object, which will automatically parse each
  * `Row` into a `std::tuple` with the specified types.
  *
  * [input-iterator]: https://en.cppreference.com/w/cpp/named_req/InputIterator
