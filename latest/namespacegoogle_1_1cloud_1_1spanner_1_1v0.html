@@ -155,7 +155,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html" title="The QueryPartition class is a regular type that represents a single slice of a parallel SQL read.">QueryPartition</a></code> class is a regular type that represents a single slice of a parallel SQL read.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html">QueryResult</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the result of a read operation using <code>spanner::Client::Read()</code>.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the result of a read operation using <code>spanner::Client::Read()</code> or <code>spanner::Client::ExecuteQuery()</code>.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadOptions.html">ReadOptions</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options passed to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ac875292517107d7dd32372f3ab4af40b" title="Reads rows from the database using key lookups and scans, as a simple key/value style alternative to ...">Client::Read</a></code> or <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae79520d087ff55c903e2351c5d36a446" title="Creates a set of partitions that can be used to execute a read operation in parallel.">Client::PartitionRead</a></code>.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadOptions.html#details">More...</a><br /></td></tr>
@@ -165,9 +165,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> is a sequence of columns each with a name and an associated <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of std::tuple&lt;Ts....">RowParser</a></code> converts the given <code>ValueSource</code> into a single-pass iterable range of <code>std::tuple&lt;Ts...&gt;</code> objects.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code> is an <a href="https://en.cppreference.com/w/cpp/named_req/InputIterator">Input Iterator</a> that returns a sequence of <code>StatusOr&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a>&gt;</code> objects.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html#details">More...</a><br /></td></tr>
@@ -253,9 +250,6 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a6094ab0a6ec6c6fb30b4e3a6a9431a5c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a6094ab0a6ec6c6fb30b4e3a6a9431a5c">LimitedErrorCountTransactionRerunPolicy</a> = google::cloud::internal::LimitedErrorCountRetryPolicy&lt; google::cloud::Status, internal::SafeTransactionRerun &gt;</td></tr>
 <tr class="memdesc:a6094ab0a6ec6c6fb30b4e3a6a9431a5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A transaction rerun policy that limits the number of failures.  <a href="#a6094ab0a6ec6c6fb30b4e3a6a9431a5c">More...</a><br /></td></tr>
 <tr class="separator:a6094ab0a6ec6c6fb30b4e3a6a9431a5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24c2736cb64e83e464aa7fff4bde52fb"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a24c2736cb64e83e464aa7fff4bde52fb">ValueSource</a> = std::function&lt; StatusOr&lt; optional&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> &gt; &gt;()&gt;</td></tr>
-<tr class="memdesc:a24c2736cb64e83e464aa7fff4bde52fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">A functor that consumes and yields a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> object from some source.  <a href="#a24c2736cb64e83e464aa7fff4bde52fb">More...</a><br /></td></tr>
-<tr class="separator:a24c2736cb64e83e464aa7fff4bde52fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9711d66cf02a8305d987474ac7c5efca"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9711d66cf02a8305d987474ac7c5efca">Timestamp</a> = std::chrono::time_point&lt; std::chrono::system_clock, std::chrono::nanoseconds &gt;</td></tr>
 <tr class="memdesc:a9711d66cf02a8305d987474ac7c5efca"><td class="mdescLeft">&#160;</td><td class="mdescRight">An instant in time.  <a href="#a9711d66cf02a8305d987474ac7c5efca">More...</a><br /></td></tr>
 <tr class="separator:a9711d66cf02a8305d987474ac7c5efca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -359,15 +353,19 @@ Functions</h2></td></tr>
 <tr class="memitem:aca3e9bd1afccb8b09a0a01f34c931bd6"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html">ReadPartition</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aca3e9bd1afccb8b09a0a01f34c931bd6">DeserializeReadPartition</a> (std::string const  &amp;serialized_read_partition)</td></tr>
 <tr class="memdesc:aca3e9bd1afccb8b09a0a01f34c931bd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserializes the provided string into a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html" title="The ReadPartition class is a regular type that represents a single slice of a parallel Read operation...">ReadPartition</a></code>, if able.  <a href="#aca3e9bd1afccb8b09a0a01f34c931bd6">More...</a><br /></td></tr>
 <tr class="separator:aca3e9bd1afccb8b09a0a01f34c931bd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19d6f9f38667e81ddeb16081d138c356"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a19d6f9f38667e81ddeb16081d138c356">MakeRow</a> (std::vector&lt; std::pair&lt; std::string, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> &gt;&gt; pairs)</td></tr>
-<tr class="memdesc:a19d6f9f38667e81ddeb16081d138c356"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> instance with the given column names and values.  <a href="#a19d6f9f38667e81ddeb16081d138c356">More...</a><br /></td></tr>
-<tr class="separator:a19d6f9f38667e81ddeb16081d138c356"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a251111ec62d99bfd646a09f3b3245852"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a251111ec62d99bfd646a09f3b3245852">MakeTestRow</a> (std::vector&lt; std::pair&lt; std::string, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> &gt;&gt; pairs)</td></tr>
+<tr class="memdesc:a251111ec62d99bfd646a09f3b3245852"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> with the specified column names and values.  <a href="#a251111ec62d99bfd646a09f3b3245852">More...</a><br /></td></tr>
+<tr class="separator:a251111ec62d99bfd646a09f3b3245852"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87e2256052e4c7aca49fdfbbafef2f47"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a87e2256052e4c7aca49fdfbbafef2f47">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> const &amp;b)</td></tr>
 <tr class="separator:a87e2256052e4c7aca49fdfbbafef2f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a487eac4512a1fd3972e907713bbb0c7e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a487eac4512a1fd3972e907713bbb0c7e">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a> const &amp;b)</td></tr>
 <tr class="separator:a487eac4512a1fd3972e907713bbb0c7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96610ad51ca936c94c4d114a56c4cbd1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a96610ad51ca936c94c4d114a56c4cbd1">operator!=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a> const &amp;b)</td></tr>
 <tr class="separator:a96610ad51ca936c94c4d114a56c4cbd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad64a57ca097a9fe1edb54fac2e3142a0"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
+<tr class="memitem:ad64a57ca097a9fe1edb54fac2e3142a0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ad64a57ca097a9fe1edb54fac2e3142a0">MakeTestRow</a> (Ts &amp;&amp;... ts)</td></tr>
+<tr class="memdesc:ad64a57ca097a9fe1edb54fac2e3142a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> with <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>s created from the given arguments and with auto-generated column names.  <a href="#ad64a57ca097a9fe1edb54fac2e3142a0">More...</a><br /></td></tr>
+<tr class="separator:ad64a57ca097a9fe1edb54fac2e3142a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a782a4a4617b9017586334db8e1eb6ff6"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a782a4a4617b9017586334db8e1eb6ff6">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;stmt)</td></tr>
 <tr class="separator:a782a4a4617b9017586334db8e1eb6ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7aedae28062a59c9b7e809205ebe09be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7aedae28062a59c9b7e809205ebe09be">MakeReadOnlyTransaction</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1ReadOnlyOptions.html">Transaction::ReadOnlyOptions</a> opts={})</td></tr>
@@ -802,27 +800,6 @@ Functions</h2></td></tr>
 <a href="https://cloud.google.com/spanner/docs/modify-mutation-api">https://cloud.google.com/spanner/docs/modify-mutation-api</a> for more information about the Cloud Spanner mutation API. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00208">208</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
-
-</div>
-</div>
-<a id="a24c2736cb64e83e464aa7fff4bde52fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24c2736cb64e83e464aa7fff4bde52fb">&#9670;&nbsp;</a></span>ValueSource</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a24c2736cb64e83e464aa7fff4bde52fb">google::cloud::spanner::v0::ValueSource</a> = typedef std::function&lt;StatusOr&lt;optional&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a>&gt; &gt;()&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A functor that consumes and yields a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> object from some source. </p>
-<p>The returned <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> is wrapped in an <code>optional</code> and a <code>StatusOr</code>. If there was an error getting the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> to return, a non-OK <code>Status</code> should be returned. If there was no error, but the source is empty, an OK <code>Status</code> with an empty <code>optional&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a>&gt;</code> should be returned.</p>
-<dl class="section user"><dt>Example</dt><dd></dd></dl>
-<p>The following example shows how to create a <code>ValueSource</code> from a vector:</p>
-<div class="fragment"><div class="line"><a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a24c2736cb64e83e464aa7fff4bde52fb">ValueSource</a> MakeValueSource(std::vector&lt;Value&gt; <span class="keyword">const</span>&amp; v) {</div><div class="line">  std::size_t i = 0;</div><div class="line">  <span class="keywordflow">return</span> [=]() <span class="keyword">mutable</span> -&gt; StatusOr&lt;optional&lt;Value&gt;&gt; {</div><div class="line">      <span class="keywordflow">if</span> (i == v.size()) <span class="keywordflow">return</span> optional&lt;Value&gt;{};</div><div class="line">      <span class="keywordflow">return</span> {v[i++]};</div><div class="line">  };</div><div class="line">}</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="row__parser_8h_source.html#l00056">56</a> of file <a class="el" href="row__parser_8h_source.html">row_parser.h</a>.</p>
 
 </div>
 </div>
@@ -1307,14 +1284,14 @@ template&lt;typename... Ts&gt; </div>
 
 </div>
 </div>
-<a id="a19d6f9f38667e81ddeb16081d138c356"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19d6f9f38667e81ddeb16081d138c356">&#9670;&nbsp;</a></span>MakeRow()</h2>
+<a id="a251111ec62d99bfd646a09f3b3245852"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a251111ec62d99bfd646a09f3b3245852">&#9670;&nbsp;</a></span>MakeTestRow() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> google::cloud::spanner::v0::MakeRow </td>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> google::cloud::spanner::v0::MakeTestRow </td>
           <td>(</td>
           <td class="paramtype">std::vector&lt; std::pair&lt; std::string, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> &gt;&gt;&#160;</td>
           <td class="paramname"><em>pairs</em></td><td>)</td>
@@ -1323,11 +1300,37 @@ template&lt;typename... Ts&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Creates a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> instance with the given column names and values. </p>
-<p>This function is mostly convenient for creating <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> instances for testing.</p>
-<dl class="section user"><dt>Example</dt><dd></dd></dl>
-<div class="fragment"><div class="line">Row row = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a19d6f9f38667e81ddeb16081d138c356">MakeRow</a>({{<span class="stringliteral">&quot;a&quot;</span>, Value(1)}, {<span class="stringliteral">&quot;b&quot;</span>, Value(<span class="stringliteral">&quot;hi&quot;</span>)}});</div><div class="line">assert(row.size() == 2);</div><div class="line">assert(<span class="stringliteral">&quot;hi&quot;</span> == *row.get&lt;std::string&gt;(<span class="stringliteral">&quot;b&quot;</span>));</div></div><!-- fragment --> 
+<p>Creates a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> with the specified column names and values. </p>
+<p>This overload accepts a vector of pairs, allowing the caller to specify both the column names and the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> that goes in each column.</p>
+<p>This function is intended for application developers who are mocking the results of a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae9e584f159a8231e3c146d8dfbc5d9fa" title="Executes a SQL query.">Client::ExecuteQuery</a></code> call. </p>
+
 <p class="definition">Definition at line <a class="el" href="row_8cc_source.html#l00036">36</a> of file <a class="el" href="row_8cc_source.html">row.cc</a>.</p>
+
+</div>
+</div>
+<a id="ad64a57ca097a9fe1edb54fac2e3142a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad64a57ca097a9fe1edb54fac2e3142a0">&#9670;&nbsp;</a></span>MakeTestRow() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Ts&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a> google::cloud::spanner::v0::MakeTestRow </td>
+          <td>(</td>
+          <td class="paramtype">Ts &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>ts</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> with <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>s created from the given arguments and with auto-generated column names. </p>
+<p>This overload accepts a variadic list of arguments that will be used to create the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>s in the row. The column names will be implicitly generated, the first column being "0", the second "1", and so on, corresponding to the argument's position.</p>
+<p>This function is intended for application developers who are mocking the results of a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae9e584f159a8231e3c146d8dfbc5d9fa" title="Executes a SQL query.">Client::ExecuteQuery</a></code> call. </p>
+
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00221">221</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>

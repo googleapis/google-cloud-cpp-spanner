@@ -87,12 +87,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab882ff801763f5e7ca8416c99ead0e6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5af8c20a95cfd468fcb180fdd2c7fc86"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html">ProfileQueryResult</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html#a5af8c20a95cfd468fcb180fdd2c7fc86">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html">ProfileQueryResult</a> &amp;&amp;)=default</td></tr>
 <tr class="separator:a5af8c20a95cfd468fcb180fdd2c7fc86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afee7def90b09fa28876275d31b0bb522"><td class="memTemplParams" colspan="2">template&lt;typename RowType &gt; </td></tr>
-<tr class="memitem:afee7def90b09fa28876275d31b0bb522"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt; RowType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html#afee7def90b09fa28876275d31b0bb522">Rows</a> ()</td></tr>
-<tr class="memdesc:afee7def90b09fa28876275d31b0bb522"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of std::tuple&lt;Ts....">RowParser</a></code> which can be used to iterate the returned <code>std::tuple</code>s.  <a href="#afee7def90b09fa28876275d31b0bb522">More...</a><br /></td></tr>
-<tr class="separator:afee7def90b09fa28876275d31b0bb522"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7944e6389116bf41c1f9abb6a088cb45"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html#a7944e6389116bf41c1f9abb6a088cb45">begin</a> ()</td></tr>
+<tr class="memdesc:a7944e6389116bf41c1f9abb6a088cb45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code> defining the beginning of this result set.  <a href="#a7944e6389116bf41c1f9abb6a088cb45">More...</a><br /></td></tr>
+<tr class="separator:a7944e6389116bf41c1f9abb6a088cb45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb324473d6914d6d98b2fb1edf9b1bff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html#afb324473d6914d6d98b2fb1edf9b1bff">end</a> ()</td></tr>
+<tr class="memdesc:afb324473d6914d6d98b2fb1edf9b1bff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code> defining the end of this result set.  <a href="#afb324473d6914d6d98b2fb1edf9b1bff">More...</a><br /></td></tr>
+<tr class="separator:afb324473d6914d6d98b2fb1edf9b1bff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07ff513410d14b0ad63d72faf237c57e"><td class="memItemLeft" align="right" valign="top">optional&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9711d66cf02a8305d987474ac7c5efca">Timestamp</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html#a07ff513410d14b0ad63d72faf237c57e">ReadTimestamp</a> () const</td></tr>
-<tr class="memdesc:a07ff513410d14b0ad63d72faf237c57e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the timestamp at which the read occurred.  <a href="#a07ff513410d14b0ad63d72faf237c57e">More...</a><br /></td></tr>
+<tr class="memdesc:a07ff513410d14b0ad63d72faf237c57e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the timestamp at which the read occurred.  <a href="#a07ff513410d14b0ad63d72faf237c57e">More...</a><br /></td></tr>
 <tr class="separator:a07ff513410d14b0ad63d72faf237c57e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0af3e0eefc99aaca3503861f7398763a"><td class="memItemLeft" align="right" valign="top">optional&lt; std::unordered_map&lt; std::string, std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html#a0af3e0eefc99aaca3503861f7398763a">ExecutionStats</a> () const</td></tr>
 <tr class="memdesc:a0af3e0eefc99aaca3503861f7398763a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a collection of key value pair statistics for the SQL statement execution.  <a href="#a0af3e0eefc99aaca3503861f7398763a">More...</a><br /></td></tr>
@@ -103,7 +105,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00125">125</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00126">126</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2db69d75ae22575f7e7f6b7285ce2f5f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2db69d75ae22575f7e7f6b7285ce2f5f">&#9670;&nbsp;</a></span>ProfileQueryResult() <span class="overload">[1/3]</span></h2>
@@ -154,7 +156,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00128">128</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00129">129</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
 
 </div>
 </div>
@@ -185,6 +187,64 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7944e6389116bf41c1f9abb6a088cb45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7944e6389116bf41c1f9abb6a088cb45">&#9670;&nbsp;</a></span>begin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a> google::cloud::spanner::v0::ProfileQueryResult::begin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code> defining the beginning of this result set. </p>
+
+<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00138">138</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
+
+</div>
+</div>
+<a id="afb324473d6914d6d98b2fb1edf9b1bff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb324473d6914d6d98b2fb1edf9b1bff">&#9670;&nbsp;</a></span>end()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a> google::cloud::spanner::v0::ProfileQueryResult::end </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code> defining the end of this result set. </p>
+
+<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00143">143</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
+
+</div>
+</div>
 <a id="add6d91d2252a04c63f5f347b5cd7b33f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#add6d91d2252a04c63f5f347b5cd7b33f">&#9670;&nbsp;</a></span>ExecutionPlan()</h2>
 
@@ -269,42 +329,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Retrieve the timestamp at which the read occurred. </p>
-<p>Only available if a read-only transaction was used, and the timestamp was requested by setting <code>return_read_timestamp</code> true. </p>
+<p>Retrieves the timestamp at which the read occurred. </p>
+<dl class="section note"><dt>Note</dt><dd>Only available if a read-only transaction was used. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="results_8cc_source.html#l00072">72</a> of file <a class="el" href="results_8cc_source.html">results.cc</a>.</p>
-
-</div>
-</div>
-<a id="afee7def90b09fa28876275d31b0bb522"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afee7def90b09fa28876275d31b0bb522">&#9670;&nbsp;</a></span>Rows()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename RowType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt;RowType&gt; google::cloud::spanner::v0::ProfileQueryResult::Rows </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of std::tuple&lt;Ts....">RowParser</a></code> which can be used to iterate the returned <code>std::tuple</code>s. </p>
-<p>Since there is a single result stream for each <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html">ProfileQueryResult</a></code> instance, users should not use multiple <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of std::tuple&lt;Ts....">RowParser</a></code>s from the same <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html">ProfileQueryResult</a></code> at the same time. Doing so is not thread safe, and may result in errors or data corruption. </p>
-
-<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00146">146</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
 
 </div>
 </div>

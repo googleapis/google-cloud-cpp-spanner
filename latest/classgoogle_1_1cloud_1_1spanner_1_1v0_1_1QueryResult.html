@@ -75,7 +75,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Represents the result of a read operation using <code>spanner::Client::Read()</code>.  
+<p>Represents the result of a read operation using <code>spanner::Client::Read()</code> or <code>spanner::Client::ExecuteQuery()</code>.  
  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="results_8h_source.html">google/cloud/spanner/results.h</a>&gt;</code></p>
@@ -90,19 +90,22 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8677596fae84629817b23dc622a626a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10ac6203ce7a148517b0bf8fd799a431"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html">QueryResult</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html#a10ac6203ce7a148517b0bf8fd799a431">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html">QueryResult</a> &amp;&amp;)=default</td></tr>
 <tr class="separator:a10ac6203ce7a148517b0bf8fd799a431"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af965cfb58c1050b6859f25808cda3284"><td class="memTemplParams" colspan="2">template&lt;typename RowType &gt; </td></tr>
-<tr class="memitem:af965cfb58c1050b6859f25808cda3284"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt; RowType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html#af965cfb58c1050b6859f25808cda3284">Rows</a> ()</td></tr>
-<tr class="memdesc:af965cfb58c1050b6859f25808cda3284"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of std::tuple&lt;Ts....">RowParser</a></code> which can be used to iterate the returned <code>std::tuple</code>s.  <a href="#af965cfb58c1050b6859f25808cda3284">More...</a><br /></td></tr>
-<tr class="separator:af965cfb58c1050b6859f25808cda3284"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0240b85b0a4c87c3f756402cb2a027af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html#a0240b85b0a4c87c3f756402cb2a027af">begin</a> ()</td></tr>
+<tr class="memdesc:a0240b85b0a4c87c3f756402cb2a027af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code> defining the beginning of this result set.  <a href="#a0240b85b0a4c87c3f756402cb2a027af">More...</a><br /></td></tr>
+<tr class="separator:a0240b85b0a4c87c3f756402cb2a027af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdbceaf716696636b03382b425b2cfb3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html#afdbceaf716696636b03382b425b2cfb3">end</a> ()</td></tr>
+<tr class="memdesc:afdbceaf716696636b03382b425b2cfb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code> defining the end of this result set.  <a href="#afdbceaf716696636b03382b425b2cfb3">More...</a><br /></td></tr>
+<tr class="separator:afdbceaf716696636b03382b425b2cfb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b209be8c78587da8d01a417084b7afd"><td class="memItemLeft" align="right" valign="top">optional&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9711d66cf02a8305d987474ac7c5efca">Timestamp</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html#a3b209be8c78587da8d01a417084b7afd">ReadTimestamp</a> () const</td></tr>
-<tr class="memdesc:a3b209be8c78587da8d01a417084b7afd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the timestamp at which the read occurred.  <a href="#a3b209be8c78587da8d01a417084b7afd">More...</a><br /></td></tr>
+<tr class="memdesc:a3b209be8c78587da8d01a417084b7afd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the timestamp at which the read occurred.  <a href="#a3b209be8c78587da8d01a417084b7afd">More...</a><br /></td></tr>
 <tr class="separator:a3b209be8c78587da8d01a417084b7afd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Represents the result of a read operation using <code>spanner::Client::Read()</code>. </p>
-<p>Note that a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html" title="Represents the result of a read operation using spanner::Client::Read().">QueryResult</a></code> returns the data for the operation, as a single-pass, input range returned by <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html#af965cfb58c1050b6859f25808cda3284" title="Returns a RowParser which can be used to iterate the returned std::tuples.">Rows()</a></code>. </p>
+<div class="textblock"><p>Represents the result of a read operation using <code>spanner::Client::Read()</code> or <code>spanner::Client::ExecuteQuery()</code>. </p>
+<p>A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html" title="Represents the result of a read operation using spanner::Client::Read() or spanner::Client::ExecuteQu...">QueryResult</a></code> object is itself a range defined by the <a href="https://en.cppreference.com/w/cpp/named_req/InputIterator">Input Iterators</a> returned from <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html#a0240b85b0a4c87c3f756402cb2a027af" title="Returns a RowStreamIterator defining the beginning of this result set.">begin()</a></code> and <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html#afdbceaf716696636b03382b425b2cfb3" title="Returns a RowStreamIterator defining the end of this result set.">end()</a>. Callers may directly iterate a</code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html" title="Represents the result of a read operation using spanner::Client::Read() or spanner::Client::ExecuteQu...">QueryResult</a><code>instance, which will return a sequence of </code>StatusOr&lt;Row&gt;` objects.</p>
+<p>For convenience, callers may wrap the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html" title="Represents the result of a read operation using spanner::Client::Read() or spanner::Client::ExecuteQu...">QueryResult</a></code> instance in a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1StreamOf.html" title="A StreamOf&lt;Tuple&gt; defines a range that parses Tuple objects from the given range of RowStreamIterator...">StreamOf</a>&lt;std::tuple&lt;...&gt;&gt;</code> object, which will automatically parse each <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> into a <code>std::tuple</code> with the specified types. </p>
 
-<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00056">56</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00065">65</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a213ace46730a7cf2db84bc431148a93a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a213ace46730a7cf2db84bc431148a93a">&#9670;&nbsp;</a></span>QueryResult() <span class="overload">[1/3]</span></h2>
@@ -153,7 +156,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00059">59</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00068">68</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
 
 </div>
 </div>
@@ -184,6 +187,64 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a0240b85b0a4c87c3f756402cb2a027af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0240b85b0a4c87c3f756402cb2a027af">&#9670;&nbsp;</a></span>begin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a> google::cloud::spanner::v0::QueryResult::begin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code> defining the beginning of this result set. </p>
+
+<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00076">76</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
+
+</div>
+</div>
+<a id="afdbceaf716696636b03382b425b2cfb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdbceaf716696636b03382b425b2cfb3">&#9670;&nbsp;</a></span>end()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a> google::cloud::spanner::v0::QueryResult::end </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code> defining the end of this result set. </p>
+
+<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00081">81</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
+
+</div>
+</div>
 <a id="a10ac6203ce7a148517b0bf8fd799a431"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a10ac6203ce7a148517b0bf8fd799a431">&#9670;&nbsp;</a></span>operator=()</h2>
 
@@ -225,42 +286,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Retrieve the timestamp at which the read occurred. </p>
-<p>Only available if a read-only transaction was used, and the timestamp was requested by setting <code>return_read_timestamp</code> true. </p>
+<p>Retrieves the timestamp at which the read occurred. </p>
+<dl class="section note"><dt>Note</dt><dd>Only available if a read-only transaction was used. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="results_8cc_source.html#l00068">68</a> of file <a class="el" href="results_8cc_source.html">results.cc</a>.</p>
-
-</div>
-</div>
-<a id="af965cfb58c1050b6859f25808cda3284"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af965cfb58c1050b6859f25808cda3284">&#9670;&nbsp;</a></span>Rows()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename RowType &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html">RowParser</a>&lt;RowType&gt; google::cloud::spanner::v0::QueryResult::Rows </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of std::tuple&lt;Ts....">RowParser</a></code> which can be used to iterate the returned <code>std::tuple</code>s. </p>
-<p>Since there is a single result stream for each <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html" title="Represents the result of a read operation using spanner::Client::Read().">QueryResult</a></code> instance, users should not use multiple <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowParser.html" title="A RowParser converts the given ValueSource into a single-pass iterable range of std::tuple&lt;Ts....">RowParser</a></code>s from the same <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryResult.html" title="Represents the result of a read operation using spanner::Client::Read().">QueryResult</a></code> at the same time. Doing so is not thread safe, and may result in errors or data corruption. </p>
-
-<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00076">76</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
 
 </div>
 </div>
