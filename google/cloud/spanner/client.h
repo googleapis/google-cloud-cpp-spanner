@@ -413,9 +413,9 @@ class Client {
   /**
    * Commits a read-write transaction.
    *
-   * Calls the `mutator` in the context of a new read-write transaction.  The
-   * `mutator` can execute read/write operations using the transaction, and
-   * returns any additional `Mutations` to commit.
+   * Calls the `@p mutator` in the context of a new read-write transaction.
+   * The `mutator` can execute read/write operations using the transaction,
+   * and returns any additional `Mutations` to commit.
    *
    * If the `mutator` returns `StatusCode::kAborted` or the transaction commit
    * results in an abort, then that transaction is rolled back and the process
