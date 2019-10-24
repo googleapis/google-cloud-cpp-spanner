@@ -209,7 +209,7 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:a26f3fe00592b6234496f6cc9a5503e98"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code>Key</code> is a collection of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> objects where the i'th value corresponds to the i'th component of the table or primary index key.  <a href="#a26f3fe00592b6234496f6cc9a5503e98">More...</a><br /></td></tr>
 <tr class="separator:a26f3fe00592b6234496f6cc9a5503e98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a283421d14e4073e59922c9168d880cae"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a283421d14e4073e59922c9168d880cae">Mutations</a> = std::vector&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html">Mutation</a> &gt;</td></tr>
-<tr class="memdesc:a283421d14e4073e59922c9168d880cae"><td class="mdescLeft">&#160;</td><td class="mdescRight">An ordered sequence of mutations to pass to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a9349cc0b3fb4d9d83721e642bfcc1102" title="Commits a read-write transaction.">Client::Commit()</a></code> or return from the <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#acb2c5cba976c895ac6de8054d8970eb7" title="Execute a function in the context of a read-write transaction, with automatic retries if the transact...">Client::RunTransaction()</a></code> functor.  <a href="#a283421d14e4073e59922c9168d880cae">More...</a><br /></td></tr>
+<tr class="memdesc:a283421d14e4073e59922c9168d880cae"><td class="mdescLeft">&#160;</td><td class="mdescRight">An ordered sequence of mutations to pass to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a52dc7582b51464255944d3da9583133c" title="Commits a read-write transaction.">Client::Commit()</a></code> or return from the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a52dc7582b51464255944d3da9583133c" title="Commits a read-write transaction.">Client::Commit()</a></code> mutator.  <a href="#a283421d14e4073e59922c9168d880cae">More...</a><br /></td></tr>
 <tr class="separator:a283421d14e4073e59922c9168d880cae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7447c52a5348dfc769538a160c0d455a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7447c52a5348dfc769538a160c0d455a">InsertMutationBuilder</a> = internal::WriteMutationBuilder&lt; internal::InsertOp &gt;</td></tr>
 <tr class="memdesc:a7447c52a5348dfc769538a160c0d455a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper class to construct "insert" mutations.  <a href="#a7447c52a5348dfc769538a160c0d455a">More...</a><br /></td></tr>
@@ -259,9 +259,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a34e43f27057136f44b36251a0a379c1b"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html">Connection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a34e43f27057136f44b36251a0a379c1b">MakeConnection</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const  &amp;db, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a> const  &amp;options=<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a>())</td></tr>
 <tr class="memdesc:a34e43f27057136f44b36251a0a379c1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner.  <a href="#a34e43f27057136f44b36251a0a379c1b">More...</a><br /></td></tr>
 <tr class="separator:a34e43f27057136f44b36251a0a379c1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb2c5cba976c895ac6de8054d8970eb7"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html">CommitResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#acb2c5cba976c895ac6de8054d8970eb7">RunTransaction</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a> client, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1ReadWriteOptions.html">Transaction::ReadWriteOptions</a> const &amp;opts, std::function&lt; StatusOr&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a283421d14e4073e59922c9168d880cae">Mutations</a> &gt;(<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>)&gt; f)</td></tr>
-<tr class="memdesc:acb2c5cba976c895ac6de8054d8970eb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute a function in the context of a read-write transaction, with automatic retries if the transaction commit results in an abort.  <a href="#acb2c5cba976c895ac6de8054d8970eb7">More...</a><br /></td></tr>
-<tr class="separator:acb2c5cba976c895ac6de8054d8970eb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0068a1796e0899fcfa4c2d33996c6208"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a0068a1796e0899fcfa4c2d33996c6208">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;b)</td></tr>
 <tr class="separator:a0068a1796e0899fcfa4c2d33996c6208"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3940fbbb384d1d50fc260556cf3de2f2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a3940fbbb384d1d50fc260556cf3de2f2">operator!=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;b)</td></tr>
@@ -680,7 +677,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>An ordered sequence of mutations to pass to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a9349cc0b3fb4d9d83721e642bfcc1102" title="Commits a read-write transaction.">Client::Commit()</a></code> or return from the <code><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#acb2c5cba976c895ac6de8054d8970eb7" title="Execute a function in the context of a read-write transaction, with automatic retries if the transact...">Client::RunTransaction()</a></code> functor. </p>
+<p>An ordered sequence of mutations to pass to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a52dc7582b51464255944d3da9583133c" title="Commits a read-write transaction.">Client::Commit()</a></code> or return from the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a52dc7582b51464255944d3da9583133c" title="Commits a read-write transaction.">Client::Commit()</a></code> mutator. </p>
 
 <p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00093">93</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
 
@@ -901,7 +898,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00152">152</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00220">220</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -2247,54 +2244,6 @@ template&lt;typename... Ts&gt; </div>
 <dl class="section warning"><dt>Warning</dt><dd>This is intended for debugging and human consumption only, not machine consumption as the output format may change without notice. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00112">112</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
-
-</div>
-</div>
-<a id="acb2c5cba976c895ac6de8054d8970eb7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb2c5cba976c895ac6de8054d8970eb7">&#9670;&nbsp;</a></span>RunTransaction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">StatusOr&lt;<a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html">CommitResult</a>&gt; google::cloud::spanner::v0::RunTransaction </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a>&#160;</td>
-          <td class="paramname"><em>client</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1ReadWriteOptions.html">Transaction::ReadWriteOptions</a> const &amp;&#160;</td>
-          <td class="paramname"><em>opts</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::function&lt; StatusOr&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a283421d14e4073e59922c9168d880cae">Mutations</a> &gt;(<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a>, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>)&gt;&#160;</td>
-          <td class="paramname"><em>f</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Execute a function in the context of a read-write transaction, with automatic retries if the transaction commit results in an abort. </p>
-<p>The caller-provided function will be passed the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> argument and a newly created read-write <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code>. It should use these objects to issue any <code>Read()</code>s, <code>ExecuteQuery()</code>s, <code>ExecuteDml()</code>s, etc., and return the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html" title="A wrapper for Cloud Spanner mutations.">Mutation</a></code>s to commit, or an error (which causes the transaction to be rolled back).</p>
-<p>The lock priority of the transaction increases after each prior aborted transaction, meaning that the next attempt has a slightly better chance of success than before. </p>
-
-<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00540">540</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
 
 </div>
 </div>
