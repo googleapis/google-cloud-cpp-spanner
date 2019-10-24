@@ -53,7 +53,7 @@ class ResultSourceInterface {
  *
  * A `QueryResult` object is itself a range defined by the [Input
  * Iterators][input-iterator] returned from `begin()` and `end(). Callers may
- * directly iterator a `QueryResult` instance, which will return a sequence of
+ * directly iterate a `QueryResult` instance, which will return a sequence of
  * `StatusOr<Row>` objects.
  *
  * For convenience, callers may wrap the `QueryResult` instance in a
