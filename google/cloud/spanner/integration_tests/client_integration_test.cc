@@ -70,7 +70,7 @@ TEST_F(ClientIntegrationTest, InsertAndCommit) {
   ASSERT_NO_FATAL_FAILURE(InsertTwoSingers());
 
   auto rows = client_->Read("Singers", KeySet::All(),
-                              {"SingerId", "FirstName", "LastName"});
+                            {"SingerId", "FirstName", "LastName"});
   using RowType = std::tuple<std::int64_t, std::string, std::string>;
   std::vector<RowType> returned_rows;
   int row_number = 0;
@@ -96,7 +96,7 @@ TEST_F(ClientIntegrationTest, DeleteAndCommit) {
   EXPECT_STATUS_OK(commit_result);
 
   auto rows = client_->Read("Singers", KeySet::All(),
-                              {"SingerId", "FirstName", "LastName"});
+                            {"SingerId", "FirstName", "LastName"});
 
   using RowType = std::tuple<std::int64_t, std::string, std::string>;
   std::vector<RowType> returned_rows;
@@ -139,7 +139,7 @@ TEST_F(ClientIntegrationTest, MultipleInserts) {
   EXPECT_STATUS_OK(commit_result);
 
   auto rows = client_->Read("Singers", KeySet::All(),
-                              {"SingerId", "FirstName", "LastName"});
+                            {"SingerId", "FirstName", "LastName"});
 
   using RowType = std::tuple<std::int64_t, std::string, std::string>;
   std::vector<RowType> returned_rows;
@@ -192,7 +192,7 @@ TEST_F(ClientIntegrationTest, TransactionRollback) {
     ASSERT_STATUS_OK(insert2);
 
     auto rows = client_->Read(txn, "Singers", KeySet::All(),
-                                {"SingerId", "FirstName", "LastName"});
+                              {"SingerId", "FirstName", "LastName"});
 
     std::vector<RowType> returned_rows;
     int row_number = 0;
@@ -214,7 +214,7 @@ TEST_F(ClientIntegrationTest, TransactionRollback) {
 
   std::vector<RowType> returned_rows;
   auto rows = client_->Read("Singers", KeySet::All(),
-                              {"SingerId", "FirstName", "LastName"});
+                            {"SingerId", "FirstName", "LastName"});
   int row_number = 0;
   for (auto& row : StreamOf<RowType>(rows)) {
     EXPECT_STATUS_OK(row);

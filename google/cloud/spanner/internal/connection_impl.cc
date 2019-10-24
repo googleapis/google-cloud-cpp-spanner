@@ -283,8 +283,8 @@ class DmlResultSetSource : public internal::ResultSourceInterface {
 };
 
 RowStream ConnectionImpl::ReadImpl(SessionHolder& session,
-                                     spanner_proto::TransactionSelector& s,
-                                     ReadParams params) {
+                                   spanner_proto::TransactionSelector& s,
+                                   ReadParams params) {
   if (!session) {
     auto session_or = AllocateSession();
     if (!session_or) {

@@ -28,8 +28,8 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
 RowStream Client::Read(std::string table, KeySet keys,
-                         std::vector<std::string> columns,
-                         ReadOptions read_options) {
+                       std::vector<std::string> columns,
+                       ReadOptions read_options) {
   return conn_->Read(
       {internal::MakeSingleUseTransaction(Transaction::ReadOnlyOptions()),
        std::move(table), std::move(keys), std::move(columns),
@@ -37,18 +37,18 @@ RowStream Client::Read(std::string table, KeySet keys,
 }
 
 RowStream Client::Read(Transaction::SingleUseOptions transaction_options,
-                         std::string table, KeySet keys,
-                         std::vector<std::string> columns,
-                         ReadOptions read_options) {
+                       std::string table, KeySet keys,
+                       std::vector<std::string> columns,
+                       ReadOptions read_options) {
   return conn_->Read(
       {internal::MakeSingleUseTransaction(std::move(transaction_options)),
        std::move(table), std::move(keys), std::move(columns),
        std::move(read_options)});
 }
 
-RowStream Client::Read(Transaction transaction, std::string table,
-                         KeySet keys, std::vector<std::string> columns,
-                         ReadOptions read_options) {
+RowStream Client::Read(Transaction transaction, std::string table, KeySet keys,
+                       std::vector<std::string> columns,
+                       ReadOptions read_options) {
   return conn_->Read({std::move(transaction), std::move(table), std::move(keys),
                       std::move(columns), std::move(read_options)});
 }
@@ -81,7 +81,7 @@ RowStream Client::ExecuteQuery(
 }
 
 RowStream Client::ExecuteQuery(Transaction transaction,
-                                 SqlStatement statement) {
+                               SqlStatement statement) {
   return conn_->ExecuteQuery({std::move(transaction), std::move(statement)});
 }
 
