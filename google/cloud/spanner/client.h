@@ -413,19 +413,19 @@ class Client {
   /**
    * Commits a read-write transaction.
    *
-   * Calls the `@p mutator` in the context of a new read-write transaction.
-   * The `mutator` can execute read/write operations using the transaction,
+   * Calls the @p mutator in the context of a new read-write transaction.
+   * The @p mutator can execute read/write operations using the transaction,
    * and returns any additional `Mutations` to commit.
    *
-   * If the `mutator` returns `StatusCode::kAborted` or the transaction commit
+   * If the @p mutator returns `StatusCode::kAborted` or the transaction commit
    * results in an abort, then that transaction is rolled back and the process
-   * repeats (subject to the given rerun/backoff policies), by building a new
-   * transaction and re-running the `mutator`.  The lock priority of the
+   * repeats (subject to @p rerun_policy and @p backoff_policy), by building a
+   * new transaction and re-running the @p mutator.  The lock priority of the
    * operation increases after each aborted transaction, meaning that the next
    * attempt has a slightly better chance of success.
    *
-   * If the `mutator` and the commit succeed, the `CommitResult` is returned.
-   * Otherwise the error returned by the `mutator` or the commit is returned.
+   * If the @p mutator and the commit succeed, the `CommitResult` is returned.
+   * Otherwise the error returned by the @p mutator or the commit is returned.
    *
    * @param mutator the function called to create mutations
    * @param rerun_policy controls for how long (or how many times) the mutator
@@ -460,7 +460,7 @@ class Client {
    * @note Prefer the previous `Commit` overloads if you want to simply reapply
    *     mutations after a `kAborted` error.
    *
-   * @warning It is an error to call `Commit` with a read-only `transaction`.
+   * @warning It is an error to call `Commit` with a read-only transaction.
    *
    * @param transaction The transaction to commit.
    * @param mutations The mutations to be executed when this transaction
@@ -480,7 +480,7 @@ class Client {
    * that includes  one or more `Read`, `ExecuteQuery`, or `ExecuteDml` requests
    * and ultimately decides not to commit.
    *
-   * @warning It is an error to call `Rollback` with a read-only `transaction`.
+   * @warning It is an error to call `Rollback` with a read-only transaction.
    *
    * @param transaction The transaction to roll back.
    *
