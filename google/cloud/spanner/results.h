@@ -48,7 +48,7 @@ class ResultSourceInterface {
 }  // namespace internal
 
 /**
- * Represents the stream of `Rows` returned `spanner::Client::Read()` or
+ * Represents the stream of `Rows` returned from `spanner::Client::Read()` or
  * `spanner::Client::ExecuteQuery()`.
  *
  * A `RowStream` object is a range defined by the [Input
