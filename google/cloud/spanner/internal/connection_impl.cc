@@ -660,7 +660,6 @@ StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDmlImpl(
   begin_request.set_session(session->session_name());
   *begin_request.mutable_options()->mutable_partitioned_dml() =
       spanner_proto::TransactionOptions_PartitionedDml();
-
   auto begin_response = internal::RetryLoop(
       retry_policy_->clone(), backoff_policy_->clone(), true,
       [this](grpc::ClientContext& context,
@@ -671,7 +670,6 @@ StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDmlImpl(
   if (!begin_response) {
     return std::move(begin_response).status();
   }
-
   s.set_id(begin_response->id());
 
   spanner_proto::ExecuteSqlRequest request;
@@ -683,7 +681,6 @@ StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDmlImpl(
   *request.mutable_param_types() =
       std::move(*sql_statement.mutable_param_types());
   request.set_seqno(seqno);
-
   auto response = internal::RetryLoop(
       retry_policy_->clone(), backoff_policy_->clone(), true,
       [this](grpc::ClientContext& context,
@@ -694,55 +691,12 @@ StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDmlImpl(
   if (!response) {
     return std::move(response).status();
   }
-
   PartitionedDmlResult result{0};
   if (response->has_stats()) {
     result.row_count_lower_bound = response->stats().row_count_lower_bound();
   }
 
   return result;
-
-#if 0
-  if (!session) {
-    auto session_or = AllocateSession();
-    if (!session_or) {
-      return std::move(session_or).status();
-    }
-    session = std::move(*session_or);
-  }
-
-  grpc::ClientContext begin_context;
-  spanner_proto::BeginTransactionRequest begin_request;
-  begin_request.set_session(session->session_name());
-  *begin_request.mutable_options()->mutable_partitioned_dml() =
-      spanner_proto::TransactionOptions_PartitionedDml();
-
-  auto begin_response = stub_->BeginTransaction(begin_context, begin_request);
-  if (!begin_response) return std::move(begin_response).status();
-
-  s.set_id(begin_response->id());
-
-  grpc::ClientContext context;
-  spanner_proto::ExecuteSqlRequest request;
-  request.set_session(session->session_name());
-  *request.mutable_transaction() = s;
-  auto sql_statement = internal::ToProto(std::move(params.statement));
-  request.set_sql(std::move(*sql_statement.mutable_sql()));
-  *request.mutable_params() = std::move(*sql_statement.mutable_params());
-  *request.mutable_param_types() =
-      std::move(*sql_statement.mutable_param_types());
-  request.set_seqno(seqno);
-
-  auto response = stub_->ExecuteSql(context, request);
-  if (!response) return std::move(response).status();
-
-  PartitionedDmlResult result{0};
-  if (response->has_stats()) {
-    result.row_count_lower_bound = response->stats().row_count_lower_bound();
-  }
-
-  return result;
-#endif
 }
 
 StatusOr<CommitResult> ConnectionImpl::CommitImpl(
