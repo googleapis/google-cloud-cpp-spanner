@@ -363,7 +363,7 @@ class TupleStreamIterator {
  private:
   void ParseTuple() {
     if (it_ == end_) return;
-    tup_ = *it_ ? (*it_)->template get<Tuple>() : it_->status();
+    tup_ = *it_ ? std::move(*it_)->template get<Tuple>() : it_->status();
   }
 
   value_type tup_;
