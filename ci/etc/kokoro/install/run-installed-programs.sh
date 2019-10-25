@@ -30,7 +30,7 @@ if [[ -f "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh" ]]; then
     "--env" "GOOGLE_CLOUD_CPP_SPANNER_INSTANCE=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}"
     "--env" "GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA=${GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA}"
 
-    # Mount the config directory as a volumne in `/c`
+    # Mount the config directory as a volume in `/c`
     "--volume" "${CONFIG_DIRECTORY}:/c"
   )
   echo "================================================================"
