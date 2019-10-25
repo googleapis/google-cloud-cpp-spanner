@@ -128,14 +128,14 @@ TEST(QueryPartitionTest, FailedDeserialize) {
   EXPECT_FALSE(partition.ok());
 }
 
-TEST(QueryPartitionTest, MakeExecuteSqlParams) {
+TEST(QueryPartitionTest, MakeSqlparams) {
   QueryPartitionTester expected_partition(internal::MakeQueryPartition(
       "foo", "session", "token",
       SqlStatement("select * from foo where name = @name",
                    {{"name", Value("Bob")}})));
 
-  Connection::ExecuteSqlParams params =
-      internal::MakeExecuteSqlParams(expected_partition.Partition());
+  Connection::Sqlparams params =
+      internal::MakeSqlparams(expected_partition.Partition());
 
   EXPECT_EQ(params.statement,
             SqlStatement("select * from foo where name = @name",

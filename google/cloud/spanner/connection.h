@@ -92,13 +92,13 @@ class Connection {
 
   /// Wrap the arguments to `ExecuteQuery()`, `ExecuteDml()`, `ProfileQuery()`,
   /// or `ProfileDml()`.
-  struct ExecuteSqlParams {
+  struct Sqlparams {
     Transaction transaction;
     SqlStatement statement;
     google::cloud::optional<std::string> partition_token;
 
-    ExecuteSqlParams(Transaction transaction, SqlStatement statement,
-                     google::cloud::optional<std::string> partition_token = {})
+    Sqlparams(Transaction transaction, SqlStatement statement,
+              google::cloud::optional<std::string> partition_token = {})
         : transaction(std::move(transaction)),
           statement(std::move(statement)),
           partition_token(std::move(partition_token)) {}
@@ -111,7 +111,7 @@ class Connection {
 
   /// Wrap the arguments to `PartitionQuery()`.
   struct PartitionQueryParams {
-    ExecuteSqlParams sql_params;
+    Sqlparams sql_params;
     PartitionOptions partition_options;
   };
 
@@ -141,19 +141,19 @@ class Connection {
       PartitionReadParams) = 0;
 
   /// Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC
-  virtual RowStream ExecuteQuery(ExecuteSqlParams) = 0;
+  virtual RowStream ExecuteQuery(Sqlparams) = 0;
 
   /// Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC
-  virtual StatusOr<DmlResult> ExecuteDml(ExecuteSqlParams) = 0;
+  virtual StatusOr<DmlResult> ExecuteDml(Sqlparams) = 0;
 
   /// Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC
-  virtual ProfileQueryResult ProfileQuery(ExecuteSqlParams) = 0;
+  virtual ProfileQueryResult ProfileQuery(Sqlparams) = 0;
 
   /// Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC
-  virtual StatusOr<ProfileDmlResult> ProfileDml(ExecuteSqlParams) = 0;
+  virtual StatusOr<ProfileDmlResult> ProfileDml(Sqlparams) = 0;
 
   /// Define the interface for a google.spanner.v1.Spanner.ExecuteSql RPC
-  virtual StatusOr<ExecutionPlan> AnalyzeSql(ExecuteSqlParams) = 0;
+  virtual StatusOr<ExecutionPlan> AnalyzeSql(Sqlparams) = 0;
 
   /// Define the interface for a google.spanner.v1.Spanner.ExecutePartitionedDml
   /// RPC
