@@ -165,7 +165,7 @@ TEST(Value, BasicSemantics) {
   }
 }
 
-// NOTE: This test relies on unspecified behavior about the moved-frong state
+// NOTE: This test relies on unspecified behavior about the moved-from state
 // of std::string. Specifically, this test relies on the fact that "large"
 // strings, when moved-from, end up empty. And we use this fact to verify that
 // spanner::Value::get<T>() correctly handles moves. If this test ever breaks
@@ -190,7 +190,7 @@ TEST(Value, RvalueGetString) {
   EXPECT_EQ("", *s);
 }
 
-// NOTE: This test relies on unspecified behavior about the moved-frong state
+// NOTE: This test relies on unspecified behavior about the moved-from state
 // of std::string. Specifically, this test relies on the fact that "large"
 // strings, when moved-from, end up empty. And we use this fact to verify that
 // spanner::Value::get<T>() correctly handles moves. If this test ever breaks
@@ -215,7 +215,7 @@ TEST(Value, RvalueGetOptoinalString) {
   EXPECT_EQ("", **s);
 }
 
-// NOTE: This test relies on unspecified behavior about the moved-frong state
+// NOTE: This test relies on unspecified behavior about the moved-from state
 // of std::string. Specifically, this test relies on the fact that "large"
 // strings, when moved-from, end up empty. And we use this fact to verify that
 // spanner::Value::get<T>() correctly handles moves. If this test ever breaks
@@ -240,7 +240,7 @@ TEST(Value, RvalueGetVectorString) {
   EXPECT_EQ(Type(data.size(), ""), *s);
 }
 
-// NOTE: This test relies on unspecified behavior about the moved-frong state
+// NOTE: This test relies on unspecified behavior about the moved-from state
 // of std::string. Specifically, this test relies on the fact that "large"
 // strings, when moved-from, end up empty. And we use this fact to verify that
 // spanner::Value::get<T>() correctly handles moves. If this test ever breaks
