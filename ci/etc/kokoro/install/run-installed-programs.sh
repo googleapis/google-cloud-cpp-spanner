@@ -35,6 +35,6 @@ if [[ -f "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh" ]]; then
   )
   echo "================================================================"
   echo "Run test program against installed libraries ${DISTRO}."
-  docker run "${run_args[@]}" "${INSTALL_RUN_IMAGE}" "/i/spanner_install_test"
+  docker run "${run_args[@]}" "${INSTALL_RUN_IMAGE}" "/o/spanner_install_test"
   echo "================================================================"
 fi
