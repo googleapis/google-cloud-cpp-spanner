@@ -963,6 +963,23 @@ void WriteDataForStructQueries(google::cloud::spanner::Client client) {
 void QueryData(google::cloud::spanner::Client client) {
   namespace spanner = google::cloud::spanner;
 
+  spanner::SqlStatement select("SELECT SingerId, LastName FROM Singers");
+  using RowType = std::tuple<std::int64_t, std::string>;
+  auto rows = client.ExecuteQuery(std::move(select));
+  for (auto const& row : spanner::StreamOf<RowType>(rows)) {
+    if (!row) throw std::runtime_error(row.status().message());
+    std::cout << "SingerId: " << std::get<0>(*row) << "\t";
+    std::cout << "LastName: " << std::get<1>(*row) << "\n";
+  }
+
+  std::cout << "Query completed for [spanner_query_data]\n";
+}
+//! [END spanner_query_data]
+
+//! [spanner-query-data-select-star]
+void QueryDataSelectStar(google::cloud::spanner::Client client) {
+  namespace spanner = google::cloud::spanner;
+
   // With a "SELECT *" query, we don't know the order in which the columns will
   // be returned (nor the number of columns). Therefore, we look up each value
   // based on the column name rather than its position.
@@ -999,9 +1016,9 @@ void QueryData(google::cloud::spanner::Client client) {
     std::cout << "LastName: " << std::get<1>(*row) << "\n";
   }
 
-  std::cout << "Query completed for [spanner_query_data]\n";
+  std::cout << "Query completed for [spanner_query_data_select_star]\n";
 }
-//! [END spanner_query_data]
+//! [spanner-query-data-select-star]
 
 //! [START spanner_query_data_with_struct]
 void QueryDataWithStruct(google::cloud::spanner::Client client) {
@@ -1285,6 +1302,7 @@ int RunOneCommand(std::vector<std::string> argv) {
       make_command_entry("write-data-for-struct-queries",
                          &WriteDataForStructQueries),
       make_command_entry("query-data", &QueryData),
+      make_command_entry("query-data-select-star", &QueryDataSelectStar),
       make_command_entry("query-data-with-struct", &QueryDataWithStruct),
       make_command_entry("query-data-with-array-of-struct",
                          &QueryDataWithArrayOfStruct),
@@ -1472,6 +1490,9 @@ void RunAll() {
 
   std::cout << "\nRunning spanner_query_data sample\n";
   QueryData(client);
+
+  std::cout << "\nRunning spanner_query_data_select_star sample\n";
+  QueryDataSelectStar(client);
 
   std::cout << "\nRunning spanner_query_data_with_struct sample\n";
   QueryDataWithStruct(client);
