@@ -53,7 +53,7 @@ FROM devtools AS install
 WORKDIR /home/build/project
 COPY . /home/build/project
 RUN cmake -H. -B/o
-RUN cmake --build /o -- -j ${NCPU:-4}
+RUN cmake --build /o -- -j "${NCPU:-4}"
 WORKDIR /o
 RUN ctest -LE integration-tests --output-on-failure
 WORKDIR /home/build/project
@@ -70,6 +70,6 @@ COPY ci/test-install /home/build/test-install-cmake
 COPY google/cloud/spanner/integration_tests/spanner_install_test.cc /home/build/test-install-cmake
 # Disable pkg-config with CMake to verify it is not used in package discovery.
 RUN env -u PKG_CONFIG_PATH cmake -H. -B/i
-RUN cmake --build /i -- -j ${NCPU:-4}
+RUN cmake --build /i -- -j "${NCPU:-4}"
 _EOF_
 )
