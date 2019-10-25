@@ -134,10 +134,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aacf0fc8c9323a3a3c266b14f258ca246"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#aacf0fc8c9323a3a3c266b14f258ca246">Value</a> (std::tuple&lt; Ts... &gt; tup)</td></tr>
 <tr class="memdesc:aacf0fc8c9323a3a3c266b14f258ca246"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an instance from a Spanner STRUCT with a type and values matching the given <code>std::tuple</code>.  <a href="#aacf0fc8c9323a3a3c266b14f258ca246">More...</a><br /></td></tr>
 <tr class="separator:aacf0fc8c9323a3a3c266b14f258ca246"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27200dcf2eae3738c0fa769b4474819f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a27200dcf2eae3738c0fa769b4474819f"><td class="memTemplItemLeft" align="right" valign="top">StatusOr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#a27200dcf2eae3738c0fa769b4474819f">get</a> () const</td></tr>
-<tr class="memdesc:a27200dcf2eae3738c0fa769b4474819f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the contained value wrapped in a <code>google::cloud::StatusOr&lt;T&gt;</code>.  <a href="#a27200dcf2eae3738c0fa769b4474819f">More...</a><br /></td></tr>
-<tr class="separator:a27200dcf2eae3738c0fa769b4474819f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c81f19fb6c2cde7b41ef79994c95a58"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a7c81f19fb6c2cde7b41ef79994c95a58"><td class="memTemplItemLeft" align="right" valign="top">StatusOr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#a7c81f19fb6c2cde7b41ef79994c95a58">get</a> () const &amp;</td></tr>
+<tr class="memdesc:a7c81f19fb6c2cde7b41ef79994c95a58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the contained value wrapped in a <code>google::cloud::StatusOr&lt;T&gt;</code>.  <a href="#a7c81f19fb6c2cde7b41ef79994c95a58">More...</a><br /></td></tr>
+<tr class="separator:a7c81f19fb6c2cde7b41ef79994c95a58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe32f2d5123f3be5233fd97590c1fee1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:afe32f2d5123f3be5233fd97590c1fee1"><td class="memTemplItemLeft" align="right" valign="top">StatusOr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#afe32f2d5123f3be5233fd97590c1fee1">get</a> () &amp;&amp;</td></tr>
+<tr class="memdesc:afe32f2d5123f3be5233fd97590c1fee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the contained value wrapped in a <code>google::cloud::StatusOr&lt;T&gt;</code>.  <a href="#afe32f2d5123f3be5233fd97590c1fee1">More...</a><br /></td></tr>
+<tr class="separator:afe32f2d5123f3be5233fd97590c1fee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -185,7 +189,7 @@ Friends</h2></td></tr>
 <li>Passing an <code>optional&lt;T&gt;()</code> with no value to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>'s constructor.</li>
 <li>Using the <code>MakeNullValue&lt;T&gt;()</code> helper function (defined below).</li>
 </ol>
-<p>Nulls can be retrieved from a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#a27200dcf2eae3738c0fa769b4474819f" title="Returns the contained value wrapped in a google::cloud::StatusOr&lt;T&gt;.">Value::get</a>&lt;T&gt;</code> by specifying the type <code>T</code> as a <code>optional&lt;U&gt;</code>. The returned optional will either be empty (indicating null) or it will contain the actual value. See the documentation for <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#a27200dcf2eae3738c0fa769b4474819f" title="Returns the contained value wrapped in a google::cloud::StatusOr&lt;T&gt;.">Value::get</a>&lt;T&gt;</code> below for more details.</p>
+<p>Nulls can be retrieved from a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#a7c81f19fb6c2cde7b41ef79994c95a58" title="Returns the contained value wrapped in a google::cloud::StatusOr&lt;T&gt;.">Value::get</a>&lt;T&gt;</code> by specifying the type <code>T</code> as a <code>optional&lt;U&gt;</code>. The returned optional will either be empty (indicating null) or it will contain the actual value. See the documentation for <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#a7c81f19fb6c2cde7b41ef79994c95a58" title="Returns the contained value wrapped in a google::cloud::StatusOr&lt;T&gt;.">Value::get</a>&lt;T&gt;</code> below for more details.</p>
 <dl class="section user"><dt>Spanner Arrays (i.e., std::vector&lt;T&gt;)</dt><dd></dd></dl>
 <p>Spanner arrays are represented in C++ as a <code>std::vector&lt;T&gt;</code>, where the type <code>T</code> may be any of the other allowed Spanner types, such as <code>bool</code>, <code>std::int64_t</code>, etc. The only exception is that arrays may not directly contain another array; to achieve a similar result you could create an array of a 1-element struct holding an array. The following examples show usage of arrays.</p>
 <div class="fragment"><div class="line">std::vector&lt;std::int64_t&gt; vec = {1, 2, 3, 4, 5};</div><div class="line">spanner::Value v(vec);</div><div class="line"><span class="keyword">auto</span> copy = *v.get&lt;std::vector&lt;std::int64_t&gt;&gt;();</div><div class="line">assert(vec == copy);</div></div><!-- fragment --><dl class="section user"><dt>Spanner Structs (i.e., std::tuple&lt;Ts...&gt;)</dt><dd></dd></dl>
@@ -647,8 +651,8 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a27200dcf2eae3738c0fa769b4474819f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27200dcf2eae3738c0fa769b4474819f">&#9670;&nbsp;</a></span>get()</h2>
+<a id="a7c81f19fb6c2cde7b41ef79994c95a58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c81f19fb6c2cde7b41ef79994c95a58">&#9670;&nbsp;</a></span>get() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -662,7 +666,7 @@ template&lt;typename T &gt; </div>
           <td class="memname">StatusOr&lt;T&gt; google::cloud::spanner::v0::Value::get </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td> const &amp;</td>
         </tr>
       </table>
   </td>
@@ -681,6 +685,43 @@ template&lt;typename T &gt; </div>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <div class="fragment"><div class="line">spanner::Value v{3.14};</div><div class="line">StatusOr&lt;double&gt; d = v.get&lt;<span class="keywordtype">double</span>&gt;();</div><div class="line"><span class="keywordflow">if</span> (d) {</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;d=&quot;</span> &lt;&lt; *d;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// Now using a &quot;null&quot; std::int64_t</span></div><div class="line">v = spanner::MakeNullValue&lt;std::int64_t&gt;();</div><div class="line">StatusOr&lt;std::int64_t&gt; i = v.get&lt;std::int64_t&gt;();</div><div class="line"><span class="keywordflow">if</span> (!i) {</div><div class="line">  std::cerr &lt;&lt; <span class="stringliteral">&quot;Could not get integer: &quot;</span> &lt;&lt; i.status();</div><div class="line">}</div><div class="line"></div><div class="line">StatusOr&lt;optional&lt;std::int64_t&gt;&gt; j = v.get&lt;optional&lt;std::int64_t&gt;();</div><div class="line">assert(j.ok());  <span class="comment">// Since we know the types match in this example</span></div><div class="line">assert(!v-&gt;has_value());  <span class="comment">// Since we know v was null in this example</span></div></div><!-- fragment --> 
 <p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00278">278</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+
+</div>
+</div>
+<a id="afe32f2d5123f3be5233fd97590c1fee1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe32f2d5123f3be5233fd97590c1fee1">&#9670;&nbsp;</a></span>get() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">StatusOr&lt;T&gt; google::cloud::spanner::v0::Value::get </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> &amp;&amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the contained value wrapped in a <code>google::cloud::StatusOr&lt;T&gt;</code>. </p>
+<p>Returns a non-OK status IFF:</p>
+<ul>
+<li>The contained value is "null", and <code>T</code> is not an <code>optional</code>.</li>
+<li>There is an error converting the contained value to <code>T</code>.</li>
+</ul>
+<dl class="section user"><dt>Example</dt><dd></dd></dl>
+<div class="fragment"><div class="line">spanner::Value v{3.14};</div><div class="line">StatusOr&lt;double&gt; d = v.get&lt;<span class="keywordtype">double</span>&gt;();</div><div class="line"><span class="keywordflow">if</span> (d) {</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;d=&quot;</span> &lt;&lt; *d;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// Now using a &quot;null&quot; std::int64_t</span></div><div class="line">v = spanner::MakeNullValue&lt;std::int64_t&gt;();</div><div class="line">StatusOr&lt;std::int64_t&gt; i = v.get&lt;std::int64_t&gt;();</div><div class="line"><span class="keywordflow">if</span> (!i) {</div><div class="line">  std::cerr &lt;&lt; <span class="stringliteral">&quot;Could not get integer: &quot;</span> &lt;&lt; i.status();</div><div class="line">}</div><div class="line"></div><div class="line">StatusOr&lt;optional&lt;std::int64_t&gt;&gt; j = v.get&lt;optional&lt;std::int64_t&gt;();</div><div class="line">assert(j.ok());  <span class="comment">// Since we know the types match in this example</span></div><div class="line">assert(!v-&gt;has_value());  <span class="comment">// Since we know v was null in this example</span></div></div><!-- fragment --> 
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00291">291</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
