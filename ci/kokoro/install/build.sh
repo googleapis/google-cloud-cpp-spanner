@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-#
 # Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,33 +13,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -eu
+#
+# WARNING: This is an automatically generated file. Consider changing the
+#     sources instead. You can find the source templates and scripts at:
+#         https://github.com/googleapis/google-cloud-cpp-common/ci/templates
+#
 
-# Set it to "no" for any value other than "yes".
-if [[ "${RUN_SLOW_INTEGRATION_TESTS:-}" != "yes" ]]; then
-  RUN_SLOW_INTEGRATION_TESTS="no"
-fi
-export RUN_SLOW_INTEGRATION_TESTS
+set -eu
 
 if [[ $# -eq 1 ]]; then
   export DISTRO="${1}"
 elif [[ -n "${KOKORO_JOB_NAME:-}" ]]; then
   # Kokoro injects the KOKORO_JOB_NAME environment variable, the value of this
-  # variable is cloud-cpp/spanner/<config-file-name-without-cfg> (or more
+  # variable is cloud-cpp/<repo>/<config-file-name-without-cfg> (or more
   # generally <path/to/config-file-without-cfg>). By convention we name these
   # files `$foo.cfg` for continuous builds and `$foo-presubmit.cfg` for
   # presubmit builds. Here we extract the value of "foo" and use it as the build
   # name.
   DISTRO="$(basename "${KOKORO_JOB_NAME}" "-presubmit")"
   export DISTRO
+
+  # This is passed into the environment of the docker build and its scripts to
+  # tell them if they are running as part of a CI build rather than just a
+  # human invocation of "build.sh <build-name>". This allows scripts to be
+  # strict when run in a CI, but a little more friendly when run by a human.
+  RUNNING_CI="yes"
+  export RUNNING_CI
 else
- echo "Aborting build as the distribution name is not defined."
- echo "If you are invoking this script via the command line use:"
- echo "    $0 <distro-name>"
- echo
- echo "If this script is invoked by Kokoro, the CI system is expected to set"
- echo "the KOKORO_JOB_NAME environment variable."
- exit 1
+  echo "Aborting build as the distribution name is not defined."
+  echo "If you are invoking this script via the command line use:"
+  echo "    $0 <distro-name>"
+  echo
+  echo "If this script is invoked by Kokoro, the CI system is expected to set"
+  echo "the KOKORO_JOB_NAME environment variable."
+  exit 1
 fi
 
 if [[ -z "${PROJECT_ROOT+x}" ]]; then
