@@ -339,9 +339,9 @@ TEST(MutationsTest, FluentInsertBuilder) {
   std::string const data(128, 'x');
   std::string blob = data;
   Mutation m = InsertMutationBuilder("table-name", {"col_a"})
-                        .EmplaceRow(std::move(blob))
-                        .AddRow({Value(data)})
-                        .Build();
+                   .EmplaceRow(std::move(blob))
+                   .AddRow({Value(data)})
+                   .Build();
   auto actual = std::move(m).as_proto();
   EXPECT_EQ(2, actual.insert().values().size());
   EXPECT_EQ(data, actual.insert().values(0).values(0).string_value());
@@ -359,9 +359,9 @@ TEST(MutationsTest, FluentUpdateBuilder) {
   std::string const data(128, 'x');
   std::string blob = data;
   Mutation m = UpdateMutationBuilder("table-name", {"col_a"})
-                        .EmplaceRow(std::move(blob))
-                        .AddRow({Value(data)})
-                        .Build();
+                   .EmplaceRow(std::move(blob))
+                   .AddRow({Value(data)})
+                   .Build();
   auto actual = std::move(m).as_proto();
   EXPECT_EQ(2, actual.update().values().size());
   EXPECT_EQ(data, actual.update().values(0).values(0).string_value());
