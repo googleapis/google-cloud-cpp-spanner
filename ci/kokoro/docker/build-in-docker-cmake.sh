@@ -133,6 +133,7 @@ if [[ "${TEST_INSTALL:-}" = "yes" ]]; then
         <(echo "$HOME/staging/include/google/cloud" ; \
           echo "$HOME/staging/include/google/cloud/spanner" ; \
           echo "$HOME/staging/include/google/cloud/spanner/internal" ; \
+          echo "$HOME/staging/include/google/cloud/spanner/mocks" ; \
           /bin/true) | grep -q "$HOME"; then
         echo "${COLOR_YELLOW}Installed directories do not match expectation.${COLOR_RESET}"
         echo "${COLOR_RED}Found:"
