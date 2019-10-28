@@ -123,6 +123,23 @@ if [[ "${TEST_INSTALL:-}" = "yes" ]]; then
     echo "Running the test install $(date)"
     echo "================================================================"
     cmake --build "${BINARY_DIR}" --target install || echo "FAILED"
+
+    # Verify only the expected directories are created in the install directory.
+    echo
+    echo "${COLOR_YELLOW}Verify installed headers created only" \
+        " expected directories.${COLOR_RESET}"
+    if comm -23 \
+        <(find "$HOME/staging/include/google/cloud" -type d | sort) \
+        <(echo "$HOME/staging/include/google/cloud" ; \
+          echo "$HOME/staging/include/google/cloud/spanner" ; \
+          echo "$HOME/staging/include/google/cloud/spanner/internal" ; \
+          /bin/true) | grep -q "$HOME"; then
+        echo "${COLOR_YELLOW}Installed directories do not match expectation.${COLOR_RESET}"
+        echo "${COLOR_RED}Found:"
+        find "$HOME/staging/include/google/cloud" -type d | sort
+        echo "${COLOR_RESET}"
+        /bin/false
+    fi
 fi
 
 echo "================================================================"

@@ -21,3 +21,27 @@ function (google_cloud_cpp_test_name_to_target var fname)
         "${target}"
         PARENT_SCOPE)
 endfunction ()
+
+#
+# google_cloud_cpp_install_headers : install all the headers in a target
+#
+# Find all the headers in @p target and install them at @p destination,
+# preserving the directory structure.
+#
+# * target the name of the target.
+# * destination the destination directory, relative to <PREFIX>. Typically this
+#   starts with `include/google/cloud`, the function requires the full
+#   destination in case some headers get installed elsewhere in the future.
+#
+function (google_cloud_cpp_install_headers target destination)
+    get_target_property(target_sources ${target} SOURCES)
+    foreach (header ${target_sources})
+        if (NOT "${header}" MATCHES "\\.h$" AND NOT "${header}" MATCHES
+                                                "\\.inc$")
+            continue()
+        endif ()
+        string(REPLACE "${CMAKE_CURRENT_BINARY_DIR}/" "" relative "${header}")
+        get_filename_component(dir "${relative}" DIRECTORY)
+        install(FILES "${header}" DESTINATION "${destination}/${dir}")
+    endforeach ()
+endfunction ()
