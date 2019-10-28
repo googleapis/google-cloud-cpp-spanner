@@ -96,8 +96,8 @@ TEST(AutomaticallyCreatedBackgroundThreads, IsNotCurrentThread) {
   // There is a small window between the call to `.is_ready()` and setting the
   // callback where the timer could expire. If that becomes common we can think
   // of a more complicated approach, or we can just disable this test.
-  future<std::thread::id> id = timer.then(
-      [](future<std::chrono::system_clock::time_point>) {
+  future<std::thread::id> id =
+      timer.then([](future<std::chrono::system_clock::time_point>) {
         return std::this_thread::get_id();
       });
   EXPECT_EQ(std::future_status::ready, id.wait_for(ms(100)));
