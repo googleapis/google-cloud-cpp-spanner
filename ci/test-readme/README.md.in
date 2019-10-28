@@ -1,0 +1,15 @@
+## Release Notes
+
+### v0.2.x - 2019-XX
+
+### v0.1.x - 2019-09
+
+* This is the initial Alpha release of the library.
+* While this version is not recommended for production workloads it is stable
+  enough to use in experimental code. We welcome feedback about the library
+  through [GitHub issues][GitHub-new-issue].
+* The API is expected to undergo incompatible changes before Beta and GA.
+* The library supports all the operations to read and write data into Cloud
+  Spanner.
+* The library supports some administrative operations such as creating,
+  updating, and dropping databases.

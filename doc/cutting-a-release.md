@@ -20,6 +20,33 @@ project, and `upstream` points to the `googleapis/google-cloud-cpp-spanner`
 remote, these commands should be useful in identifying important changes:
 
 ```bash
+git log --no-merges --format="format:* %s" \
+    $(git describe --tags --abbrev=0 upstream/master)..HEAD \
+    upstream/master
+```
+
+Write an edited version of these changes to `ci/test-readme/README.md.in`,
+consider skipping information that is not useful for consumers of the library,
+such as CI system changes and internal cleanups.
+
+### Update README.md
+
+Update the top-level README file:
+
+```bash
+./ci/test-readme/generate-readme.sh >README.md
+```
+
+### Update INSTALL.md
+
+Update the instructions to install the library:
+
+```bash
+./ci/test-readme/generate-install.sh >INSTALL.md
+```
+
+
+```bash
 # Summarize the output of this into google/cloud/spanner/README.md
 git log upstream/master
 ```
@@ -31,21 +58,20 @@ to create the release at an specific point in the revision history.
 
 ## Create the release branch
 
-To find the next release number, look at the existing branch names on the
-`upstream` repo and select the next available "v.0.N" version number.
+To find the next release number, find the last tag number:
 
 ```bash
-git remote show upstream
+git describe --tags --abbrev=0 upstream/master
 ```
 
-Throughout this document we will use this variable to represent the release
-name:
+Then increment the minor number (usually), unless this is a patch release or new
+major release.  Throughout this document we will use this variable to represent
+the release name:
 
 ```bash
 # Use the actual release prefix (e.g. v0.5) not just `N`.
 export RELEASE="v0.N"
 ```
-
 
 If you decide to cut&paste the commands below, make sure that variable has the
 actual release value, e.g. `v0.5` or `v0.7`, and not the generic `N`.
@@ -70,9 +96,6 @@ Create a new branch based on that tag and push the branch to the upstream reposi
 git checkout -b "${RELEASE}.x" "${RELEASE}.0"
 git push --set-upstream origin "${RELEASE}.x"
 ```
-
-This will start a CI build cycle. The builds *should* pass, as we normally keep
-`master` in a releasable state.
 
 **NOTE:** No code review or Pull Request is needed as part of this step.
 
