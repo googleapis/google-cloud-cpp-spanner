@@ -18,28 +18,100 @@
 #         https://github.com/googleapis/google-cloud-cpp-common/ci/templates
 #
 
-ARG DISTRO_VERSION=30
-FROM fedora:${DISTRO_VERSION} AS devtools
+ARG DISTRO_VERSION=trusty
+FROM ubuntu:${DISTRO_VERSION} AS devtools
 ARG NCPU=4
 
 ## [START INSTALL.md]
 
-# Install the minimal development tools:
+# Install the minimal development tools.
+# We use the `ubuntu-toolchain-r` PPA to get a modern version of CMake:
 
 # ```bash
-RUN dnf makecache && \
-    dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
-        zlib-devel
+RUN apt update && apt install -y software-properties-common
+RUN add-apt-repository ppa:ubuntu-toolchain-r/test -y
+RUN apt update && \
+    apt install -y automake cmake3 git gcc g++ libtool make pkg-config \
+        tar wget zlib1g-dev
 # ```
 
-# Fedora 30 includes packages for gRPC, libcurl, and OpenSSL that are recent
-# enough for the project. Install these packages and additional development
-# tools to compile the dependencies:
+# #### OpenSSL
+
+# Ubuntu:14.04 ships with a very old version of OpenSSL, this version is not
+# supported by gRPC. We need to compile and install OpenSSL-1.0.2 from source.
 
 # ```bash
-RUN dnf makecache && \
-    dnf install -y grpc-devel grpc-plugins \
-        libcurl-devel protobuf-compiler tar wget zlib-devel
+WORKDIR /var/tmp/build
+RUN wget -q https://www.openssl.org/source/openssl-1.0.2n.tar.gz
+RUN tar xf openssl-1.0.2n.tar.gz
+WORKDIR /var/tmp/build/openssl-1.0.2n
+RUN ./config --shared
+RUN make -j ${NCPU:-4}
+RUN make install
+# ```
+
+# Note that by default OpenSSL installs itself in `/usr/local/ssl`. Installing
+# on a more conventional location, such as `/usr/local` or `/usr`, can break
+# many programs in your system. OpenSSL 1.0.2 is actually incompatible with
+# with OpenSSL 1.0.0 which is the version expected by the programs already
+# installed by Ubuntu 14.04.
+
+# In any case, as the library installs itself in this non-standard location, we
+# also need to configure CMake and other build program to find this version of
+# OpenSSL:
+
+# ```bash
+ENV OPENSSL_ROOT_DIR=/usr/local/ssl
+ENV PKG_CONFIG_PATH=/usr/local/ssl/lib/pkgconfig
+# ```
+
+# #### Protobuf
+
+# We need to install a version of Protobuf, recent enough that it supports the
+# Google Cloud Platform proto files:
+
+# ```bash
+WORKDIR /var/tmp/build
+RUN wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz
+RUN tar -xf v3.9.1.tar.gz
+WORKDIR /var/tmp/build/protobuf-3.9.1/cmake
+RUN cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -Dprotobuf_BUILD_TESTS=OFF \
+        -H. -Bcmake-out
+RUN cmake --build cmake-out --target install -- -j ${NCPU:-4}
+RUN ldconfig
+# ```
+
+# #### c-ares
+
+# Recent versions of gRPC require c-ares >= 1.11, while Ubuntu 14.04
+# distributes c-ares-1.10. Manually install a newer version:
+
+# ```bash
+WORKDIR /var/tmp/build
+RUN wget -q https://github.com/c-ares/c-ares/archive/cares-1_14_0.tar.gz
+RUN tar -xf cares-1_14_0.tar.gz
+WORKDIR /var/tmp/build/c-ares-cares-1_14_0
+RUN ./buildconf && ./configure && make -j ${NCPU:-4}
+RUN make install
+RUN ldconfig
+# ```
+
+# #### gRPC
+
+# We also need a version of gRPC that is recent enough to support the Google
+# Cloud Platform proto files. We can install gRPC from source using:
+
+# ```bash
+WORKDIR /var/tmp/build
+RUN wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz
+RUN tar -xf v1.23.1.tar.gz
+WORKDIR /var/tmp/build/grpc-1.23.1
+RUN make -j ${NCPU:-4}
+RUN make install
+RUN ldconfig
 # ```
 
 # #### googleapis

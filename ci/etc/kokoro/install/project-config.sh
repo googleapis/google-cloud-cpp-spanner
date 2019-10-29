@@ -13,6 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+declare -A ORIGINAL_COPYRIGHT_YEAR=(
+  [centos-7]=2019
+  [centos-8]=2019
+  [debian-buster]=2019
+  [debian-stretch]=2019
+  [fedora]=2019
+  [opensuse-leap]=2019
+  [opensuse-tumbleweed]=2019
+  [ubuntu-trusty]=2019
+  [ubuntu-xenial]=2019
+  [ubuntu-bionic]=2019
+)
+
 BUILD_AND_TEST_PROJECT_FRAGMENT=$(replace_fragments \
       "INSTALL_CPP_CMAKEFILES_FROM_SOURCE" \
       "INSTALL_GOOGLETEST_FROM_SOURCE" \
