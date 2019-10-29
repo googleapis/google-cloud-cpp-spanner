@@ -79,31 +79,6 @@ TEST(AutomaticallyCreatedBackgroundThreads, IsActive) {
   EXPECT_EQ(std::future_status::ready, expired.wait_for(ms(100)));
 }
 
-/// @test Verify the background thread is not the thread the current thread.
-TEST(AutomaticallyCreatedBackgroundThreads, IsNotCurrentThread) {
-  AutomaticallyCreatedBackgroundThreads actual;
-
-  using ms = std::chrono::milliseconds;
-
-  auto timer = actual.cq().MakeRelativeTimer(ms(10));
-  if (timer.is_ready()) {
-    // Under heavy load the timer might fire "immediately", that is, by the time
-    // we create the timer it has already expired. In that case the current
-    // thread fires the callback, as the timer is immediately satisfied and the
-    // test fails.
-    return;
-  }
-  // There is a small window between the call to `.is_ready()` and setting the
-  // callback where the timer could expire. If that becomes common we can think
-  // of a more complicated approach, or we can just disable this test.
-  future<std::thread::id> id =
-      timer.then([](future<std::chrono::system_clock::time_point>) {
-        return std::this_thread::get_id();
-      });
-  EXPECT_EQ(std::future_status::ready, id.wait_for(ms(100)));
-  EXPECT_NE(std::this_thread::get_id(), id.get());
-}
-
 }  // namespace
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS
