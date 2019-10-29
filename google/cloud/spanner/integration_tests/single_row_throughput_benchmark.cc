@@ -135,12 +135,14 @@ namespace {
 
 using RandomKeyGenerator = std::function<std::int64_t()>;
 using SampleSink = std::function<void(std::vector<SingleRowInsertSample>)>;
+using ErrorSink = std::function<void(std::vector<google::cloud::Status>)>;
 
 int RunTask(Config const& config, cloud_spanner::Client client,
-            RandomKeyGenerator const& key_generator) {
+            RandomKeyGenerator const& key_generator,
+            ErrorSink const& error_sink) {
   int count = 0;
   std::string value(1024, 'A');
-  google::cloud::Status error;
+  std::vector<google::cloud::Status> errors;
   for (auto start = std::chrono::steady_clock::now(),
             deadline = start + config.iteration_duration;
        start < deadline; start = std::chrono::steady_clock::now()) {
@@ -151,13 +153,11 @@ int RunTask(Config const& config, cloud_spanner::Client client,
       return cloud_spanner::Mutations{m};
     });
     if (!result) {
-      error = std::move(result).status();
+      errors.push_back(std::move(result).status());
     }
     ++count;
   }
-  if (!error.ok()) {
-    std::cerr << "# Error: " << error << "\n";
-  }
+  error_sink(std::move(errors));
   return count;
 }
 
@@ -175,13 +175,22 @@ void RunIteration(Config const& config,
     return random_key(generator);
   };
 
+  std::mutex cerr_mu;
+  ErrorSink error_sink =
+      [&cerr_mu](std::vector<google::cloud::Status> const& errors) {
+        std::lock_guard<std::mutex> lk(cerr_mu);
+        for (auto const& e : errors) {
+          std::cerr << "# " << e << "\n";
+        }
+      };
+
   std::vector<std::future<int>> tasks(thread_count);
   auto start = std::chrono::steady_clock::now();
   int task_id = 0;
   for (auto& t : tasks) {
     t = std::async(std::launch::async, RunTask, config,
                    shared_client ? clients[0] : clients[task_id++],
-                   locked_random_key);
+                   locked_random_key, error_sink);
   }
   int insert_count = 0;
   for (auto& t : tasks) {
