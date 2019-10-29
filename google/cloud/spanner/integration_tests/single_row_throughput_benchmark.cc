@@ -55,7 +55,7 @@ google::cloud::StatusOr<Config> ParseArgs(std::vector<std::string> args);
 
 }  // namespace
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) try {
   Config config;
   {
     std::vector<std::string> args{argv, argv + argc};
@@ -129,6 +129,9 @@ int main(int argc, char* argv[]) {
   }
   std::cout << "# Experiment finished, database dropped\n";
   return 0;
+} catch (std::exception const& ex) {
+  std::cerr << "Stndard C++ exception caught: " << ex.what() << "\n";
+  return 1;
 }
 
 namespace {
@@ -236,7 +239,7 @@ void RunExperiment(Config const& config,
   for (int i = 0; i != config.samples; ++i) {
     auto const tc = thread_count(generator);
     // TODO(#1000) - avoid deadlocks with too many threads on a shared client
-    auto const sc = tc <= 96 ? shared_client(generator) : false;
+    auto const sc = (tc <= 96) ? (shared_client(generator) == 1) : false;
     RunIteration(config, clients, /*shared_client=*/sc, /*thread_count=*/tc,
                  cout_sink, generator);
   }
