@@ -1,7 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve help us improve the Cloud Spanner C++ client
-  library
+about: Create a report to help us improve the Cloud Spanner C++ client library
 title: ''
 labels: 'triage me, type: bug'
 assignees: ''
