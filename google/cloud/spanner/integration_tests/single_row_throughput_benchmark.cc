@@ -227,7 +227,7 @@ void RunExperiment(Config const& config,
   for (int i = 0; i != config.samples; ++i) {
     auto const tc = thread_count(generator);
     // TODO(#1000) - avoid deadlocks with too many threads on a shared client
-    auto const sc = tc <= 64 ? shared_client(generator) : false;
+    auto const sc = tc <= 96 ? shared_client(generator) : false;
     RunIteration(config, clients, /*shared_client=*/sc, /*thread_count=*/tc,
                  cout_sink, generator);
   }
