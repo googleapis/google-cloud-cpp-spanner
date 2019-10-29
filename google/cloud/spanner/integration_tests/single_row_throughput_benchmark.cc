@@ -33,11 +33,11 @@ struct Config {
   std::string project_id;
   std::string instance_id;
 
-  int samples = 200;
+  int samples = 2;
   std::chrono::seconds iteration_duration = std::chrono::seconds(5);
 
   int minimum_threads = 1;
-  int maximum_threads = 16;
+  int maximum_threads = 4;
   std::int64_t table_size = 10 * 1000 * 1000;
 };
 
