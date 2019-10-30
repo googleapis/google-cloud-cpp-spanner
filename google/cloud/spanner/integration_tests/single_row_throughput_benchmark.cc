@@ -210,7 +210,7 @@ void RunExperiment(Config const& config,
   // Create enough clients for the worst case
   std::vector<cloud_spanner::Client> clients;
   std::cout << "# Creating clients " << std::flush;
-  for (int i = 0; i != config.maximum_threads; ++i) {
+  for (int i = 0; i != config.maximum_clients; ++i) {
     clients.emplace_back(cloud_spanner::Client(cloud_spanner::MakeConnection(
         database, cloud_spanner::ConnectionOptions().set_channel_pool_domain(
                       "task:" + std::to_string(i)))));
