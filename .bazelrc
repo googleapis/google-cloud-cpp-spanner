@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# gRPC requires this flag on macOS builds, and there is (AFAIK) no way
+# to "inherit" their definitions.
+build --copt=-DGRPC_BAZEL_BUILD
+
 # Clang Sanitizers, use with (for example):
 #
 # --client_env=CXX=clang++ --client_env=CC=clang --config asan

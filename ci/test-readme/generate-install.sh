@@ -128,6 +128,16 @@ cc_binary(
 )
 ```
 
+### Building with Bazel on macOS
+
+gRPC requires a command-line flag when compiled using Bazel on macOS:
+
+```bash
+bazel build --copt=-DGRPC_BAZEL_BUILD ...
+```
+
+Consider adding this option to your project's `.bazelrc` file.
+
 ## Required Libraries
 
 `google-cloud-cpp` directly depends on the following libraries:
