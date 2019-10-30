@@ -20,6 +20,7 @@
 #include "google/cloud/spanner/testing/random_database_name.h"
 #include "google/cloud/internal/getenv.h"
 #include "google/cloud/internal/random.h"
+#include <algorithm>
 #include <future>
 #include <random>
 #include <sstream>
@@ -38,11 +39,13 @@ struct Config {
 
   int minimum_threads = 1;
   int maximum_threads = 4;
+  int minimum_clients = 1;
+  int maximum_clients = 4;
   std::int64_t table_size = 10 * 1000 * 1000;
 };
 
 struct SingleRowInsertSample {
-  bool shared_client;
+  int client_count;
   int thread_count;
   int insert_count;
   std::chrono::microseconds elapsed;
@@ -55,7 +58,7 @@ google::cloud::StatusOr<Config> ParseArgs(std::vector<std::string> args);
 
 }  // namespace
 
-int main(int argc, char* argv[]) try {
+int main(int argc, char* argv[]) {
   Config config;
   {
     std::vector<std::string> args{argv, argv + argc};
@@ -91,6 +94,8 @@ int main(int argc, char* argv[]) try {
             << "\n# Samples: " << config.samples
             << "\n# Minimum Threads: " << config.minimum_threads
             << "\n# Maximum Threads: " << config.maximum_threads
+            << "\n# Minimum Clients: " << config.minimum_clients
+            << "\n# Maximum Clients: " << config.maximum_clients
             << "\n# Iteration Duration: " << config.iteration_duration.count()
             << "s"
             << "\n# Table Size: " << config.table_size
@@ -118,7 +123,7 @@ int main(int argc, char* argv[]) try {
     std::cerr << "Error creating database: " << db.status() << "\n";
     return 1;
   }
-  std::cout << "SharedClient,ThreadCount,InsertCount,ElapsedTime\n"
+  std::cout << "ClientCount,ThreadCount,InsertCount,ElapsedTime\n"
             << std::flush;
 
   RunExperiment(config, database);
@@ -129,9 +134,6 @@ int main(int argc, char* argv[]) try {
   }
   std::cout << "# Experiment finished, database dropped\n";
   return 0;
-} catch (std::exception const& ex) {
-  std::cerr << "Stndard C++ exception caught: " << ex.what() << "\n";
-  return 1;
 }
 
 namespace {
@@ -166,11 +168,8 @@ int RunTask(Config const& config, cloud_spanner::Client client,
 
 void RunIteration(Config const& config,
                   std::vector<cloud_spanner::Client> const& clients,
-                  bool shared_client, int thread_count, SampleSink const& sink,
+                  int thread_count, SampleSink const& sink,
                   google::cloud::internal::DefaultPRNG generator) {
-  if (clients.size() < static_cast<std::size_t>(thread_count)) {
-    throw std::runtime_error("Too many threads for iteration");
-  }
   std::mutex mu;
   std::uniform_int_distribution<std::int64_t> random_key(0, config.table_size);
   RandomKeyGenerator locked_random_key = [&mu, &generator, &random_key] {
@@ -191,8 +190,8 @@ void RunIteration(Config const& config,
   auto start = std::chrono::steady_clock::now();
   int task_id = 0;
   for (auto& t : tasks) {
-    t = std::async(std::launch::async, RunTask, config,
-                   shared_client ? clients[0] : clients[task_id++],
+    auto client = clients[task_id++ % clients.size()];
+    t = std::async(std::launch::async, RunTask, config, client,
                    locked_random_key, error_sink);
   }
   int insert_count = 0;
@@ -202,7 +201,7 @@ void RunIteration(Config const& config,
   auto elapsed = std::chrono::steady_clock::now() - start;
 
   sink({SingleRowInsertSample{
-      shared_client, thread_count, insert_count,
+      static_cast<int>(clients.size()), thread_count, insert_count,
       std::chrono::duration_cast<std::chrono::microseconds>(elapsed)}});
 }
 
@@ -220,28 +219,30 @@ void RunExperiment(Config const& config,
   std::cout << " DONE\n";
 
   auto generator = google::cloud::internal::MakeDefaultPRNG();
-  std::uniform_int_distribution<int> thread_count(config.minimum_threads,
-                                                  config.maximum_threads);
-  std::uniform_int_distribution<int> shared_client(0, 1);
+  std::uniform_int_distribution<int> thread_count_gen(config.minimum_threads,
+                                                      config.maximum_threads);
 
   std::mutex cout_mu;
   auto cout_sink =
       [&cout_mu](std::vector<SingleRowInsertSample> const& samples) mutable {
         std::unique_lock<std::mutex> lk(cout_mu);
         for (auto const& s : samples) {
-          std::cout << std::boolalpha << s.shared_client << ','
-                    << s.thread_count << ',' << s.insert_count << ','
-                    << s.elapsed.count() << '\n'
+          std::cout << std::boolalpha << s.client_count << ',' << s.thread_count
+                    << ',' << s.insert_count << ',' << s.elapsed.count() << '\n'
                     << std::flush;
         }
       };
 
   for (int i = 0; i != config.samples; ++i) {
-    auto const tc = thread_count(generator);
-    // TODO(#1000) - avoid deadlocks with too many threads on a shared client
-    auto const sc = (tc <= 96) ? (shared_client(generator) == 1) : false;
-    RunIteration(config, clients, /*shared_client=*/sc, /*thread_count=*/tc,
-                 cout_sink, generator);
+    auto const thread_count = thread_count_gen(generator);
+    // TODO(#1000) - avoid deadlocks with more than 100 threads per client
+    auto min_clients =
+        (std::max)(thread_count / 100 + 1, config.minimum_clients);
+    auto const client_count = std::uniform_int_distribution<std::size_t>(
+        min_clients, clients.size() - 1)(generator);
+    std::vector<cloud_spanner::Client> iteration_clients(
+        clients.begin(), clients.begin() + client_count);
+    RunIteration(config, iteration_clients, thread_count, cout_sink, generator);
   }
 }
 
@@ -271,13 +272,21 @@ google::cloud::StatusOr<Config> ParseArgs(std::vector<std::string> args) {
        [](Config& c, std::string const& v) {
          c.iteration_duration = std::chrono::seconds(std::stoi(v));
        }},
+      {"--minimum-threads=",
+       [](Config& c, std::string const& v) {
+         c.minimum_threads = std::stoi(v);
+       }},
       {"--maximum-threads=",
        [](Config& c, std::string const& v) {
          c.maximum_threads = std::stoi(v);
        }},
-      {"--minimum-threads=",
+      {"--minimum-clients=",
        [](Config& c, std::string const& v) {
-         c.minimum_threads = std::stoi(v);
+         c.minimum_clients = std::stoi(v);
+       }},
+      {"--maximum-clients=",
+       [](Config& c, std::string const& v) {
+         c.maximum_clients = std::stoi(v);
        }},
       {"--table-size=",
        [](Config& c, std::string const& v) { c.table_size = std::stol(v); }},
@@ -323,6 +332,19 @@ google::cloud::StatusOr<Config> ParseArgs(std::vector<std::string> args) {
     return invalid_argument(os.str());
   }
 
+  if (config.minimum_clients <= 0) {
+    std::ostringstream os;
+    os << "The minimum number of clients (" << config.minimum_clients << ")"
+       << " must be greater than zero";
+    return invalid_argument(os.str());
+  }
+  if (config.maximum_clients < config.minimum_clients) {
+    std::ostringstream os;
+    os << "The maximum number of clients (" << config.maximum_clients << ")"
+       << " must be greater or equal than the minimum number of clients ("
+       << config.minimum_clients << ")";
+    return invalid_argument(os.str());
+  }
   return config;
 }
 
