@@ -63,7 +63,7 @@ backwards-incompatible API changes in the
 
 _EOF_
 
-${BINDIR}/../generate-badges.sh
+"${BINDIR}"/../generate-badges.sh
 
 cat <<'_EOF_'
 
@@ -93,7 +93,7 @@ properly format your code.
 Apache 2.0; see [`LICENSE`](LICENSE) for details.
 _EOF_
 
-cat $(dirname $0)/README.md.in
+cat "${BINDIR}"/README.md.in
 
 cat <<'_EOF_'
 
