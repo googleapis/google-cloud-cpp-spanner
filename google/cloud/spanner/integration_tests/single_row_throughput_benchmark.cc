@@ -321,7 +321,7 @@ class ReadExperiment : public Experiment {
     auto force_flush = [&maybe_flush] { maybe_flush(true); };
     auto flush_as_needed = [&maybe_flush] { maybe_flush(false); };
 
-    int const report_period =
+    auto const report_period =
         (std::max)(static_cast<std::int64_t>(2), config.table_size / 50);
     for (std::int64_t key = 0; key != config.table_size; ++key) {
       // Each thread does a fraction of the key space.
