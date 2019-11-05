@@ -32,7 +32,7 @@ fi
 source "${PROJECT_ROOT}/ci/colors.sh"
 
 echo
-echo "${COLOR_YELLOW}Starting docker build $(date) with $(nproc)"\
+echo "${COLOR_YELLOW}Starting docker build $(date) with $(nproc)" \
     "cores${COLOR_RESET}"
 echo
 
