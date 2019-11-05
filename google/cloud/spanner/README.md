@@ -28,15 +28,13 @@ production workloads.
     * feat!: replace RunTransaction() with Client::Commit(functor) (#975)
     * chore!: renamed QueryResult to RowStream (#978)
     * chore!: renamed ExecuteSqlParams to SqlParams (#986)
+    * cleanup: depend on google-cloud-cpp-common (#940)
 
-* cleanup: depend on google-cloud-cpp-common (#940)
-* chore: upgrade to bazel 1.0 (#951)
 * feat: configurable strategy for background threads (#955)
 * feat: add Profile and Analyze methods (#961)
 * feat: adds efficient move to support to Value:get<string>() (#980)
 * feat: add efficient move support to mutation builder temporaries (#989)
 * bug: only install the required headers (#993)
-* chore: update to googletest-1.10.0 (#994)
 * bug: install the headers for mocking (#997)
 
 ### v0.2.x - 2019-10
