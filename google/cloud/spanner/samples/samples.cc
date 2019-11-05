@@ -450,7 +450,8 @@ void AddIndex(std::vector<std::string> const& argv) {
     if (!result) {
       throw std::runtime_error(result.status().message());
     }
-    std::cout << "Added index\n";
+    std::cout << "`AlbumsByAlbumTitle` Index successfully added, new DDL:\n"
+              << result->DebugString() << "\n";
   }
   // [END spanner_create_index]
   (argv[0], argv[1], argv[2]);
