@@ -32,7 +32,8 @@ fi
 source "${PROJECT_ROOT}/ci/colors.sh"
 
 echo
-echo "${COLOR_YELLOW}Starting docker build $(date) with $(nproc) cores${COLOR_RESET}"
+echo "${COLOR_YELLOW}Starting docker build $(date) with $(nproc)"\
+    "cores${COLOR_RESET}"
 echo
 
 echo "================================================================"
@@ -126,8 +127,8 @@ if [[ "${TEST_INSTALL:-}" = "yes" ]]; then
 
     # Verify only the expected directories are created in the install directory.
     echo
-    echo "${COLOR_YELLOW}Verify installed headers created only" \
-        " expected directories.${COLOR_RESET}"
+    echo "${COLOR_YELLOW}Verify installed headers created only expected" \
+        "directories.${COLOR_RESET}"
     if comm -23 \
         <(find "$HOME/staging/include/google/cloud" -type d | sort) \
         <(echo "$HOME/staging/include/google/cloud" ; \
@@ -135,7 +136,8 @@ if [[ "${TEST_INSTALL:-}" = "yes" ]]; then
           echo "$HOME/staging/include/google/cloud/spanner/internal" ; \
           echo "$HOME/staging/include/google/cloud/spanner/mocks" ; \
           /bin/true) | grep -q "$HOME"; then
-        echo "${COLOR_YELLOW}Installed directories do not match expectation.${COLOR_RESET}"
+        echo "${COLOR_YELLOW}Installed directories do not match" \
+            "expectation.${COLOR_RESET}"
         echo "${COLOR_RED}Found:"
         find "$HOME/staging/include/google/cloud" -type d | sort
         echo "${COLOR_RESET}"
