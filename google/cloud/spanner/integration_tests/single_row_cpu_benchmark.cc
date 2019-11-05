@@ -295,12 +295,11 @@ class ReadExperiment : public Experiment {
     std::vector<std::future<void>> tasks(task_count);
     int task_id = 0;
     for (auto& t : tasks) {
-      t = std::async(
-          std::launch::async,
-          [this, &config, &client](int tc, int ti) {
-            SetUpTask(config, client, tc, ti);
-          },
-          task_count, task_id++);
+      t = std::async(std::launch::async,
+                     [this, &config, &client](int tc, int ti) {
+                       SetUpTask(config, client, tc, ti);
+                     },
+                     task_count, task_id++);
     }
     for (auto& t : tasks) {
       t.get();
@@ -335,10 +334,16 @@ class ReadExperiment : public Experiment {
       auto const use_stubs = use_stubs_gen(generator_) == 1;
       auto const thread_count = thread_count_gen(generator_);
       // TODO(#1000) - avoid deadlocks with more than 100 threads per client
-      auto min_clients =
-          (std::max)(thread_count / 100 + 1, config.minimum_clients);
-      auto const client_count = std::uniform_int_distribution<std::size_t>(
-          min_clients, clients.size() - 1)(generator_);
+      auto const min_clients = (std::max<std::size_t>)(thread_count / 100 + 1,
+                                                       config.minimum_clients);
+      auto const max_clients = clients.size();
+      auto const client_count = [min_clients, max_clients, this] {
+        if (min_clients <= max_clients) {
+          return min_clients;
+        }
+        return std::uniform_int_distribution<std::size_t>(
+            min_clients, max_clients - 1)(generator_);
+      }();
       if (use_stubs) {
         std::vector<std::shared_ptr<cs::internal::SpannerStub>> iteration_stubs(
             stubs.begin(), stubs.begin() + client_count);
