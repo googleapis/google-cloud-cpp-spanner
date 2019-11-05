@@ -58,9 +58,9 @@ struct Config {
   std::chrono::seconds iteration_duration = std::chrono::seconds(5);
 
   int minimum_threads = 1;
-  int maximum_threads = 4;
+  int maximum_threads = 1;
   int minimum_clients = 1;
-  int maximum_clients = 4;
+  int maximum_clients = 1;
 
   std::int64_t table_size = 1000 * 1000L;
 };
