@@ -91,6 +91,7 @@ properly format your code.
 ## Licensing
 
 Apache 2.0; see [`LICENSE`](LICENSE) for details.
+
 _EOF_
 
 cat "${BINDIR}"/README.md.in

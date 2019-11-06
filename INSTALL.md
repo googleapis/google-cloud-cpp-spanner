@@ -143,3 +143,87 @@ these dependencies.
 - [Fedora 30](#fedora-30)
 
 ### Fedora (30)
+
+Install the minimal development tools:
+
+```bash
+sudo dnf makecache && \
+sudo dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
+        zlib-devel
+```
+
+Fedora 30 includes packages for gRPC, libcurl, and OpenSSL that are recent
+enough for the project. Install these packages and additional development
+tools to compile the dependencies:
+
+```bash
+sudo dnf makecache && \
+sudo dnf install -y grpc-devel grpc-plugins \
+        libcurl-devel protobuf-compiler tar wget zlib-devel
+```
+
+#### googleapis
+
+We need a recent version of the Google Cloud Platform proto C++ libraries:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
+tar -xf v0.1.5.tar.gz
+cd $HOME/Downloads/cpp-cmakefiles-0.1.5
+cmake \
+    -DBUILD_SHARED_LIBS=YES \
+    -H. -Bcmake-out
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+sudo ldconfig
+```
+
+#### googletest
+
+We need a recent version of GoogleTest to compile the unit and integration
+tests.
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+tar -xf release-1.10.0.tar.gz
+cd $HOME/Downloads/googletest-release-1.10.0
+cmake \
+      -DCMAKE_BUILD_TYPE="Release" \
+      -DBUILD_SHARED_LIBS=yes \
+      -H. -Bcmake-out
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+sudo ldconfig
+```
+
+#### google-cloud-cpp-common
+
+The project also depends on google-cloud-cpp-common, the libraries shared by
+all the Google Cloud C++ client libraries:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.13.0.tar.gz
+tar -xf v0.13.0.tar.gz
+cd $HOME/Downloads/google-cloud-cpp-common-0.13.0
+cmake -H. -Bcmake-out \
+    -DBUILD_TESTING=OFF \
+    -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+sudo ldconfig
+```
+
+#### Compile and install the main project
+
+We can now compile, test, and install `google-cloud-cpp-spanner`.
+
+```bash
+cd $HOME/project
+cmake -H. -B/o
+cmake --build /o -- -j "${NCPU:-4}"
+cd /o
+ctest -LE integration-tests --output-on-failure
+cd $HOME/project
+sudo cmake --build /o --target install
+```
+
