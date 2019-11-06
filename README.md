@@ -121,6 +121,8 @@ properly format your code.
 
 Apache 2.0; see [`LICENSE`](LICENSE) for details.
 
+## Release Notes
+
 ### v0.4.x - TBD
 
 ### v0.3.x - 2019-11
