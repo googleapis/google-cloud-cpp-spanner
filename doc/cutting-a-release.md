@@ -45,12 +45,6 @@ Update the instructions to install the library:
 ./ci/test-readme/generate-install.sh >INSTALL.md
 ```
 
-
-```bash
-# Summarize the output of this into google/cloud/spanner/README.md
-git log upstream/master
-```
-
 It is not recommended that you create the release branch before this PR is
 ready, but in some circumstances it might be needed, for example, if a large
 change that could destabilize the release is about to be merged, or if we want
