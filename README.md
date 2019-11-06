@@ -49,16 +49,7 @@ backwards-incompatible API changes in the
 [![Link to Reference Documentation][doxygen-shield]][doxygen-link]
 
 **Install Instructions**
-[![CI status install/centos-7][install/centos-7-shield]][install/centos-7-link]
-[![CI status install/centos-8][install/centos-8-shield]][install/centos-8-link]
-[![CI status install/debian-buster][install/debian-buster-shield]][install/debian-buster-link]
-[![CI status install/debian-stretch][install/debian-stretch-shield]][install/debian-stretch-link]
 [![CI status install/fedora][install/fedora-shield]][install/fedora-link]
-[![CI status install/opensuse-leap][install/opensuse-leap-shield]][install/opensuse-leap-link]
-[![CI status install/opensuse-tumbleweed][install/opensuse-tumbleweed-shield]][install/opensuse-tumbleweed-link]
-[![CI status install/ubuntu-bionic][install/ubuntu-bionic-shield]][install/ubuntu-bionic-link]
-[![CI status install/ubuntu-trusty][install/ubuntu-trusty-shield]][install/ubuntu-trusty-link]
-[![CI status install/ubuntu-xenial][install/ubuntu-xenial-shield]][install/ubuntu-xenial-link]
 
 [docker/asan-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/asan-link.html
 [docker/asan-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/asan.svg
@@ -90,26 +81,8 @@ backwards-incompatible API changes in the
 [docker/tsan-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/tsan.svg
 [docker/ubsan-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/ubsan-link.html
 [docker/ubsan-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/ubsan.svg
-[install/centos-7-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/centos-7-link.html
-[install/centos-7-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/centos-7.svg
-[install/centos-8-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/centos-8-link.html
-[install/centos-8-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/centos-8.svg
-[install/debian-buster-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/debian-buster-link.html
-[install/debian-buster-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/debian-buster.svg
-[install/debian-stretch-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/debian-stretch-link.html
-[install/debian-stretch-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/debian-stretch.svg
 [install/fedora-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/fedora-link.html
 [install/fedora-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/fedora.svg
-[install/opensuse-leap-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/opensuse-leap-link.html
-[install/opensuse-leap-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/opensuse-leap.svg
-[install/opensuse-tumbleweed-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/opensuse-tumbleweed-link.html
-[install/opensuse-tumbleweed-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/opensuse-tumbleweed.svg
-[install/ubuntu-bionic-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/ubuntu-bionic-link.html
-[install/ubuntu-bionic-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/ubuntu-bionic.svg
-[install/ubuntu-trusty-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/ubuntu-trusty-link.html
-[install/ubuntu-trusty-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/ubuntu-trusty.svg
-[install/ubuntu-xenial-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/ubuntu-xenial-link.html
-[install/ubuntu-xenial-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/install/ubuntu-xenial.svg
 [macos/bazel-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/macos/bazel-link.html
 [macos/bazel-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/macos/bazel.svg
 [macos/cmake-super-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/macos/cmake-super-link.html
@@ -147,6 +120,7 @@ properly format your code.
 ## Licensing
 
 Apache 2.0; see [`LICENSE`](LICENSE) for details.
+
 ## Release Notes
 
 ### v0.4.x - TBD
