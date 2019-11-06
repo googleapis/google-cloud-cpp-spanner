@@ -295,11 +295,12 @@ class ReadExperiment : public Experiment {
     std::vector<std::future<void>> tasks(task_count);
     int task_id = 0;
     for (auto& t : tasks) {
-      t = std::async(std::launch::async,
-                     [this, &config, &client](int tc, int ti) {
-                       SetUpTask(config, client, tc, ti);
-                     },
-                     task_count, task_id++);
+      t = std::async(
+          std::launch::async,
+          [this, &config, &client](int tc, int ti) {
+            SetUpTask(config, client, tc, ti);
+          },
+          task_count, task_id++);
     }
     for (auto& t : tasks) {
       t.get();
