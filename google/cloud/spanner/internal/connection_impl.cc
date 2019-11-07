@@ -128,7 +128,7 @@ StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionRead(
       [this, &params](SessionHolder& session,
                       spanner_proto::TransactionSelector& s, std::int64_t) {
         return PartitionReadImpl(session, s, params.read_params,
-                                 std::move(params.partition_options));
+                                 params.partition_options);
       });
 }
 
@@ -200,7 +200,7 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
       [this, &params](SessionHolder& session,
                       spanner_proto::TransactionSelector& s, std::int64_t) {
         return PartitionQueryImpl(session, s, params.sql_params,
-                                  std::move(params.partition_options));
+                                  params.partition_options);
       });
 }
 
