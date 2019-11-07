@@ -28,7 +28,8 @@ inline namespace SPANNER_CLIENT_NS {
  *
  * See documentation in [spanner.proto][spanner-proto].
  *
- * [spanner-proto]: https://github.com/googleapis/googleapis/blob/0ed34e9fdf601dfc37eb24c40e17495b86771ff4/google/spanner/v1/spanner.proto#L651
+ * [spanner-proto]:
+ * https://github.com/googleapis/googleapis/blob/0ed34e9fdf601dfc37eb24c40e17495b86771ff4/google/spanner/v1/spanner.proto#L651
  */
 struct PartitionOptions {
   /**
@@ -61,7 +62,7 @@ inline bool operator!=(PartitionOptions const& a, PartitionOptions const& b) {
 }
 
 namespace internal {
-google::spanner::v1::PartitionOptions ToProto(PartitionOptions);
+google::spanner::v1::PartitionOptions ToProto(PartitionOptions const&);
 }  // namespace internal
 
 }  // namespace SPANNER_CLIENT_NS
