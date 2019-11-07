@@ -21,7 +21,7 @@ inline namespace SPANNER_CLIENT_NS {
 
 namespace internal {
 
-google::spanner::v1::PartitionOptions ToProto(PartitionOptions po) {
+google::spanner::v1::PartitionOptions ToProto(PartitionOptions const& po) {
   google::spanner::v1::PartitionOptions proto;
   proto.set_partition_size_bytes(po.partition_size_bytes);
   proto.set_max_partitions(po.max_partitions);
