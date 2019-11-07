@@ -364,7 +364,7 @@ StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionReadImpl(
     *request.add_columns() = column;
   }
   *request.mutable_key_set() = internal::ToProto(params.keys);
-  *request.mutable_partition_options() = std::move(partition_options);
+  *request.mutable_partition_options() = internal::ToProto(partition_options);
 
   auto response = internal::RetryLoop(
       retry_policy_prototype_->clone(), backoff_policy_prototype_->clone(),
@@ -576,7 +576,7 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQueryImpl(
   *request.mutable_params() = std::move(*sql_statement.mutable_params());
   *request.mutable_param_types() =
       std::move(*sql_statement.mutable_param_types());
-  *request.mutable_partition_options() = std::move(partition_options);
+  *request.mutable_partition_options() = internal::ToProto(partition_options);
 
   auto response = internal::RetryLoop(
       retry_policy_prototype_->clone(), backoff_policy_prototype_->clone(),
