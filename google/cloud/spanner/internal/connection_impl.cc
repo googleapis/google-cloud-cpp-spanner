@@ -344,7 +344,7 @@ RowStream ConnectionImpl::ReadImpl(SessionHolder& session,
 
 StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionReadImpl(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
-    ReadParams const& params, PartitionOptions partition_options) {
+    ReadParams const& params, PartitionOptions const& partition_options) {
   if (!session) {
     // Since the session may be sent to other machines, it should not be
     // returned to the pool when the Transaction is destroyed.
@@ -557,7 +557,7 @@ StatusOr<ExecutionPlan> ConnectionImpl::AnalyzeSqlImpl(
 
 StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQueryImpl(
     SessionHolder& session, spanner_proto::TransactionSelector& s,
-    SqlParams const& params, PartitionOptions partition_options) {
+    SqlParams const& params, PartitionOptions const& partition_options) {
   if (!session) {
     // Since the session may be sent to other machines, it should not be
     // returned to the pool when the Transaction is destroyed.
