@@ -325,8 +325,8 @@ function (spanner_client_define_tests)
         internal/time_format_test.cc
         internal/time_test.cc
         internal/transaction_impl_test.cc
-        bytes_test.cc
         internal/tuple_utils_test.cc
+        bytes_test.cc
         keys_test.cc
         mutations_test.cc
         partition_options_test.cc
