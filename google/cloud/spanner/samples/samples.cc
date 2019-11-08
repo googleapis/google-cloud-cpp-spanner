@@ -446,12 +446,12 @@ void AddIndex(std::vector<std::string> const& argv) {
             database,
             {"CREATE INDEX AlbumsByAlbumTitle ON Albums(AlbumTitle)"});
     StatusOr<google::spanner::admin::database::v1::UpdateDatabaseDdlMetadata>
-        result = future.get();
-    if (!result) {
-      throw std::runtime_error(result.status().message());
+        metadata = future.get();
+    if (!metadata) {
+      throw std::runtime_error(metadata.status().message());
     }
     std::cout << "`AlbumsByAlbumTitle` Index successfully added, new DDL:\n"
-              << result->DebugString() << "\n";
+              << metadata->DebugString() << "\n";
   }
   // [END spanner_create_index]
   (argv[0], argv[1], argv[2]);
@@ -548,12 +548,12 @@ void AddStoringIndex(std::vector<std::string> const& argv) {
             CREATE INDEX AlbumsByAlbumTitle2 ON Albums(AlbumTitle)
                 STORING (MarketingBudget))"""});
     StatusOr<google::spanner::admin::database::v1::UpdateDatabaseDdlMetadata>
-        result = future.get();
-    if (!result) {
-      throw std::runtime_error(result.status().message());
+        metadata = future.get();
+    if (!metadata) {
+      throw std::runtime_error(metadata.status().message());
     }
     std::cout << "`AlbumsByAlbumTitle2` Index successfully added, new DDL:\n"
-              << result->DebugString() << "\n";
+              << metadata->DebugString() << "\n";
   }
   // [END spanner_create_storing_index]
   (argv[0], argv[1], argv[2]);
