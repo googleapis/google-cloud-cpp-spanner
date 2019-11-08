@@ -22,8 +22,8 @@ inline namespace SPANNER_CLIENT_NS {
 namespace {
 
 TEST(PartitionOptionsTest, Regular) {
-  PartitionOptions a{};
-  PartitionOptions b{};
+  PartitionOptions a;
+  PartitionOptions b;
   EXPECT_EQ(a, b);
 
   a.partition_size_bytes = 1;
@@ -43,8 +43,8 @@ TEST(PartitionOptionsTest, Regular) {
 TEST(PartitionOptionsTest, Proto) {
   PartitionOptions po{1, 2};
   auto proto = internal::ToProto(po);
-  EXPECT_EQ(po.partition_size_bytes, proto.partition_size_bytes());
-  EXPECT_EQ(po.max_partitions, proto.max_partitions());
+  EXPECT_EQ(*po.partition_size_bytes, proto.partition_size_bytes());
+  EXPECT_EQ(*po.max_partitions, proto.max_partitions());
 }
 
 }  // namespace

@@ -16,6 +16,7 @@
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_PARTITION_OPTIONS_H_
 
 #include "google/cloud/spanner/version.h"
+#include "google/cloud/optional.h"
 #include <google/spanner/v1/spanner.pb.h>
 
 namespace google {
@@ -39,7 +40,7 @@ struct PartitionOptions {
    * actual size of each partition may be smaller or larger than this size
    * request.
    */
-  std::int64_t partition_size_bytes;
+  optional<std::int64_t> partition_size_bytes;
 
   /**
    * The desired maximum number of partitions to return.
@@ -49,7 +50,7 @@ struct PartitionOptions {
    * currently 200,000. This is only a hint.  The actual number of partitions
    * returned may be smaller or larger than this maximum count request.
    */
-  std::int64_t max_partitions;
+  optional<std::int64_t> max_partitions;
 };
 
 inline bool operator==(PartitionOptions const& a, PartitionOptions const& b) {
