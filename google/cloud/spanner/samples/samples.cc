@@ -25,6 +25,7 @@
 #include "google/cloud/spanner/update_instance_request_builder.h"
 #include "google/cloud/internal/getenv.h"
 #include "google/cloud/internal/random.h"
+#include <chrono>
 #include <sstream>
 #include <tuple>
 #include <utility>
