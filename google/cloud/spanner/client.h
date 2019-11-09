@@ -217,7 +217,7 @@ class Client {
   StatusOr<std::vector<ReadPartition>> PartitionRead(
       Transaction transaction, std::string table, KeySet keys,
       std::vector<std::string> columns, ReadOptions read_options = {},
-      PartitionOptions const& partition_options = {});
+      PartitionOptions const& partition_options = PartitionOptions{});
 
   //@{
   /**
@@ -347,7 +347,7 @@ class Client {
    */
   StatusOr<std::vector<QueryPartition>> PartitionQuery(
       Transaction transaction, SqlStatement statement,
-      PartitionOptions const& partition_options = {});
+      PartitionOptions const& partition_options = PartitionOptions{});
 
   /**
    * Executes a SQL DML statement.
