@@ -24,8 +24,9 @@ namespace internal {
 google::spanner::v1::PartitionOptions ToProto(PartitionOptions const& po) {
   google::spanner::v1::PartitionOptions proto;
   if (po.max_partitions) proto.set_max_partitions(*po.max_partitions);
-  if (po.partition_size_bytes)
+  if (po.partition_size_bytes) {
     proto.set_partition_size_bytes(*po.partition_size_bytes);
+  }
   return proto;
 }
 
