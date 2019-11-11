@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['main',['main',['../single__row__throughput__benchmark_8cc.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;single_row_throughput_benchmark.cc'],['../throughput__benchmark_8cc.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;throughput_benchmark.cc'],['../samples_8cc.html#adacbe0175a79dff748855d8c9839f82b',1,'main(int ac, char *av[]):&#160;samples.cc']]],
+  ['main',['main',['../single__row__cpu__benchmark_8cc.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;single_row_cpu_benchmark.cc'],['../single__row__throughput__benchmark_8cc.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;single_row_throughput_benchmark.cc'],['../throughput__benchmark_8cc.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;throughput_benchmark.cc'],['../samples_8cc.html#adacbe0175a79dff748855d8c9839f82b',1,'main(int ac, char *av[]):&#160;samples.cc']]],
   ['makeconnection',['MakeConnection',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a34e43f27057136f44b36251a0a379c1b',1,'google::cloud::spanner::v0']]],
   ['makedatabaseadminconnection',['MakeDatabaseAdminConnection',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a6f04fd3d19b7e1f291bdc7f5a9ed6a77',1,'google::cloud::spanner::v0']]],
   ['makedeletemutation',['MakeDeleteMutation',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a5dbbd67a8f47b3417280deb7ae048609',1,'google::cloud::spanner::v0']]],
