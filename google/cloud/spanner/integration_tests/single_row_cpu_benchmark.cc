@@ -234,6 +234,20 @@ class SimpleTimer {
 #endif  // GOOGLE_CLOUD_CPP_HAVE_GETRUSAGE
 };
 
+/**
+ * Run an experiment to measure the CPU overhead of the client over raw gRPC.
+ *
+ * This experiments creates and populates a table with K rows, each row
+ * containing an (integer) key and a value with a 1KiB string. Then the
+ * experiment performs M iterations of:
+ *   - Randomly select if it will read using the client library or raw gRPC.
+ *   - Then for N seconds read a random row
+ *   - Measure the CPU time required to read the row
+ *
+ * The values of K, M, N are configurable. The results are reported to a
+ * `SampleSink` object, typically a this is a (thread-safe) function that prints
+ * to `std::cout`. We use separate scripts to analyze the results.
+ */
 class ReadExperiment : public Experiment {
  public:
   ReadExperiment() : generator_(google::cloud::internal::MakeDefaultPRNG()) {}
