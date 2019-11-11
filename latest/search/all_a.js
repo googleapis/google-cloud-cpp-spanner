@@ -16,6 +16,7 @@ var searchData=
   ['makereplacemutation',['MakeReplaceMutation',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a23d60b161bb989e8d1f299d45ed0f741',1,'google::cloud::spanner::v0']]],
   ['maketestrow',['MakeTestRow',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a251111ec62d99bfd646a09f3b3245852',1,'google::cloud::spanner::v0::MakeTestRow(std::vector&lt; std::pair&lt; std::string, Value &gt;&gt; pairs)'],['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ad64a57ca097a9fe1edb54fac2e3142a0',1,'google::cloud::spanner::v0::MakeTestRow(Ts &amp;&amp;... ts)']]],
   ['makeupdatemutation',['MakeUpdateMutation',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a0c3def39cf255dbb69ebf246930199f5',1,'google::cloud::spanner::v0']]],
+  ['max_5fpartitions',['max_partitions',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionOptions.html#a2d4ee1d9d731bb2b2dd3dc887c0630c4',1,'google::cloud::spanner::v0::PartitionOptions']]],
   ['mock_5fconst_5fmethod0',['MOCK_CONST_METHOD0',['../classgoogle_1_1cloud_1_1spanner__mocks_1_1v0_1_1MockResultSetSource.html#a6d238ec602a69af5ac196880267b4059',1,'google::cloud::spanner_mocks::v0::MockResultSetSource']]],
   ['mock_5fdatabase_5fadmin_5fconnection_2eh',['mock_database_admin_connection.h',['../mock__database__admin__connection_8h.html',1,'']]],
   ['mock_5fexecute_5fquery_2ecc',['mock_execute_query.cc',['../mock__execute__query_8cc.html',1,'']]],

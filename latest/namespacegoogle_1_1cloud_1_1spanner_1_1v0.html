@@ -144,6 +144,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionedDmlResult.html">PartitionedDmlResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The result of executing a Partitioned DML query.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionedDmlResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionOptions.html">PartitionOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options passed to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ac0be6525a00cd054775b2565f350eab9" title="Creates a set of partitions that can be used to execute a read operation in parallel.">Client::PartitionRead</a></code> or <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#af27ca0614e2f7df8f45cce2b73bb23f3" title="Creates a set of partitions that can be used to execute a query operation in parallel.">Client::PartitionQuery</a></code>.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1PollingPolicy.html">PollingPolicy</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Control the Cloud Spanner C++ client library behavior with respect to polling on long running operations.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1PollingPolicy.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,7 +158,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html" title="The QueryPartition class is a regular type that represents a single slice of a parallel SQL read.">QueryPartition</a></code> class is a regular type that represents a single slice of a parallel SQL read.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadOptions.html">ReadOptions</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options passed to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ac13ba1173bd9467dc085ee6d268e6a4e" title="Reads rows from the database using key lookups and scans, as a simple key/value style alternative to ...">Client::Read</a></code> or <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae79520d087ff55c903e2351c5d36a446" title="Creates a set of partitions that can be used to execute a read operation in parallel.">Client::PartitionRead</a></code>.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadOptions.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options passed to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ac13ba1173bd9467dc085ee6d268e6a4e" title="Reads rows from the database using key lookups and scans, as a simple key/value style alternative to ...">Client::Read</a></code> or <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ac0be6525a00cd054775b2565f350eab9" title="Creates a set of partitions that can be used to execute a read operation in parallel.">Client::PartitionRead</a></code>.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html">ReadPartition</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html" title="The ReadPartition class is a regular type that represents a single slice of a parallel Read operation...">ReadPartition</a></code> class is a regular type that represents a single slice of a parallel Read operation.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ReadPartition.html#details">More...</a><br /></td></tr>
@@ -226,9 +229,6 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a77c9d12eab5fd290cae78937806c995e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a77c9d12eab5fd290cae78937806c995e">DeleteMutationBuilder</a> = internal::DeleteMutationBuilder</td></tr>
 <tr class="memdesc:a77c9d12eab5fd290cae78937806c995e"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper class to construct "delete" mutations.  <a href="#a77c9d12eab5fd290cae78937806c995e">More...</a><br /></td></tr>
 <tr class="separator:a77c9d12eab5fd290cae78937806c995e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a715266c430725251bb817767f12bbd4a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a715266c430725251bb817767f12bbd4a">PartitionOptions</a> = google::spanner::v1::PartitionOptions</td></tr>
-<tr class="memdesc:a715266c430725251bb817767f12bbd4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options passed to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae79520d087ff55c903e2351c5d36a446" title="Creates a set of partitions that can be used to execute a read operation in parallel.">Client::PartitionRead</a></code> or <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a501a9d95abac856b077d1e82c11c4135" title="Creates a set of partitions that can be used to execute a query operation in parallel.">Client::PartitionQuery</a></code>  <a href="#a715266c430725251bb817767f12bbd4a">More...</a><br /></td></tr>
-<tr class="separator:a715266c430725251bb817767f12bbd4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a616196280b82063938ca43e074e23f2d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a616196280b82063938ca43e074e23f2d">ExecutionPlan</a> = google::spanner::v1::QueryPlan</td></tr>
 <tr class="memdesc:a616196280b82063938ca43e074e23f2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains a hierarchical representation of the operations the database server performs in order to execute a particular SQL statement.  <a href="#a616196280b82063938ca43e074e23f2d">More...</a><br /></td></tr>
 <tr class="separator:a616196280b82063938ca43e074e23f2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -328,6 +328,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a5dbbd67a8f47b3417280deb7ae048609"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html">Mutation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a5dbbd67a8f47b3417280deb7ae048609">MakeDeleteMutation</a> (std::string table_name, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html">KeySet</a> keys)</td></tr>
 <tr class="memdesc:a5dbbd67a8f47b3417280deb7ae048609"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a simple "delete" mutation for the values in <code>keys</code>.  <a href="#a5dbbd67a8f47b3417280deb7ae048609">More...</a><br /></td></tr>
 <tr class="separator:a5dbbd67a8f47b3417280deb7ae048609"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4717f2a6c1baf174dd8d2817cd46111"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ab4717f2a6c1baf174dd8d2817cd46111">operator==</a> (<a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionOptions.html">PartitionOptions</a> const &amp;a, <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionOptions.html">PartitionOptions</a> const &amp;b)</td></tr>
+<tr class="separator:ab4717f2a6c1baf174dd8d2817cd46111"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8575fc0ee7d014f7f71892575035bcee"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a8575fc0ee7d014f7f71892575035bcee">operator!=</a> (<a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionOptions.html">PartitionOptions</a> const &amp;a, <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionOptions.html">PartitionOptions</a> const &amp;b)</td></tr>
+<tr class="separator:a8575fc0ee7d014f7f71892575035bcee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a050d3d35950c36e972af764892b45a7c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a050d3d35950c36e972af764892b45a7c">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html">QueryPartition</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html">QueryPartition</a> const &amp;b)</td></tr>
 <tr class="separator:a050d3d35950c36e972af764892b45a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa63f906ae239bf9c288c9201ad5e2922"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aa63f906ae239bf9c288c9201ad5e2922">SerializeQueryPartition</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html">QueryPartition</a> const  &amp;query_partition)</td></tr>
@@ -680,24 +684,6 @@ Functions</h2></td></tr>
 <p>An ordered sequence of mutations to pass to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a52dc7582b51464255944d3da9583133c" title="Commits a read-write transaction.">Client::Commit()</a></code> or return from the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a52dc7582b51464255944d3da9583133c" title="Commits a read-write transaction.">Client::Commit()</a></code> mutator. </p>
 
 <p class="definition">Definition at line <a class="el" href="mutations_8h_source.html#l00095">95</a> of file <a class="el" href="mutations_8h_source.html">mutations.h</a>.</p>
-
-</div>
-</div>
-<a id="a715266c430725251bb817767f12bbd4a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a715266c430725251bb817767f12bbd4a">&#9670;&nbsp;</a></span>PartitionOptions</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a715266c430725251bb817767f12bbd4a">google::cloud::spanner::v0::PartitionOptions</a> = typedef google::spanner::v1::PartitionOptions</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Options passed to <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#ae79520d087ff55c903e2351c5d36a446" title="Creates a set of partitions that can be used to execute a read operation in parallel.">Client::PartitionRead</a></code> or <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a501a9d95abac856b077d1e82c11c4135" title="Creates a set of partitions that can be used to execute a query operation in parallel.">Client::PartitionQuery</a></code> </p>
-
-<p class="definition">Definition at line <a class="el" href="read__options_8h_source.html#l00052">52</a> of file <a class="el" href="read__options_8h_source.html">read_options.h</a>.</p>
 
 </div>
 </div>
@@ -1372,7 +1358,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="aba329e79e1697a75fdb37d27fc18f9b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba329e79e1697a75fdb37d27fc18f9b7">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aba329e79e1697a75fdb37d27fc18f9b7">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[1/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1402,7 +1388,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a3940fbbb384d1d50fc260556cf3de2f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3940fbbb384d1d50fc260556cf3de2f2">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3940fbbb384d1d50fc260556cf3de2f2">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[2/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1432,7 +1418,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="aad2ff016c0a2dc6b4bdbca27e7009d38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aad2ff016c0a2dc6b4bdbca27e7009d38">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aad2ff016c0a2dc6b4bdbca27e7009d38">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[3/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1462,7 +1448,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="accc45a0781ce20f70cbb81f22cc6765e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#accc45a0781ce20f70cbb81f22cc6765e">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#accc45a0781ce20f70cbb81f22cc6765e">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[4/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1500,7 +1486,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a303b93745482b9d4430e07a05502da07"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a303b93745482b9d4430e07a05502da07">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a303b93745482b9d4430e07a05502da07">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[5/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1537,8 +1523,46 @@ template&lt;typename... Ts&gt; </div>
 
 </div>
 </div>
+<a id="a8575fc0ee7d014f7f71892575035bcee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8575fc0ee7d014f7f71892575035bcee">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[6/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool google::cloud::spanner::v0::operator!= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionOptions.html">PartitionOptions</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionOptions.html">PartitionOptions</a> const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="partition__options_8h_source.html#l00061">61</a> of file <a class="el" href="partition__options_8h_source.html">partition_options.h</a>.</p>
+
+</div>
+</div>
 <a id="a96610ad51ca936c94c4d114a56c4cbd1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96610ad51ca936c94c4d114a56c4cbd1">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[6/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a96610ad51ca936c94c4d114a56c4cbd1">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[7/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1734,7 +1758,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="ab5c8b49c00862cef780069b5a70cec74"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5c8b49c00862cef780069b5a70cec74">&#9670;&nbsp;</a></span>operator==() <span class="overload">[1/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5c8b49c00862cef780069b5a70cec74">&#9670;&nbsp;</a></span>operator==() <span class="overload">[1/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1764,7 +1788,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a4e4f974093ab586d2948979a60faf3da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e4f974093ab586d2948979a60faf3da">&#9670;&nbsp;</a></span>operator==() <span class="overload">[2/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e4f974093ab586d2948979a60faf3da">&#9670;&nbsp;</a></span>operator==() <span class="overload">[2/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1794,7 +1818,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a050d3d35950c36e972af764892b45a7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a050d3d35950c36e972af764892b45a7c">&#9670;&nbsp;</a></span>operator==() <span class="overload">[3/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a050d3d35950c36e972af764892b45a7c">&#9670;&nbsp;</a></span>operator==() <span class="overload">[3/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1824,7 +1848,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a0068a1796e0899fcfa4c2d33996c6208"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0068a1796e0899fcfa4c2d33996c6208">&#9670;&nbsp;</a></span>operator==() <span class="overload">[4/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0068a1796e0899fcfa4c2d33996c6208">&#9670;&nbsp;</a></span>operator==() <span class="overload">[4/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1854,7 +1878,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a443c7affaba4fd9a2443e02d5dbb2102"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a443c7affaba4fd9a2443e02d5dbb2102">&#9670;&nbsp;</a></span>operator==() <span class="overload">[5/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a443c7affaba4fd9a2443e02d5dbb2102">&#9670;&nbsp;</a></span>operator==() <span class="overload">[5/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1884,7 +1908,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a5fdf3555f02b3585a5754d36d6bc1b53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5fdf3555f02b3585a5754d36d6bc1b53">&#9670;&nbsp;</a></span>operator==() <span class="overload">[6/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fdf3555f02b3585a5754d36d6bc1b53">&#9670;&nbsp;</a></span>operator==() <span class="overload">[6/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1922,7 +1946,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a023769aea62009a74b39af5549fb460c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a023769aea62009a74b39af5549fb460c">&#9670;&nbsp;</a></span>operator==() <span class="overload">[7/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a023769aea62009a74b39af5549fb460c">&#9670;&nbsp;</a></span>operator==() <span class="overload">[7/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1952,7 +1976,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="ab2a19481df4a3e725aa2cc13f112abd2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2a19481df4a3e725aa2cc13f112abd2">&#9670;&nbsp;</a></span>operator==() <span class="overload">[8/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2a19481df4a3e725aa2cc13f112abd2">&#9670;&nbsp;</a></span>operator==() <span class="overload">[8/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1989,8 +2013,46 @@ template&lt;typename... Ts&gt; </div>
 
 </div>
 </div>
+<a id="ab4717f2a6c1baf174dd8d2817cd46111"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4717f2a6c1baf174dd8d2817cd46111">&#9670;&nbsp;</a></span>operator==() <span class="overload">[9/13]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool google::cloud::spanner::v0::operator== </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionOptions.html">PartitionOptions</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionOptions.html">PartitionOptions</a> const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="partition__options_8h_source.html#l00056">56</a> of file <a class="el" href="partition__options_8h_source.html">partition_options.h</a>.</p>
+
+</div>
+</div>
 <a id="af24c668f38aa09af9027a3db544cf30a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af24c668f38aa09af9027a3db544cf30a">&#9670;&nbsp;</a></span>operator==() <span class="overload">[9/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af24c668f38aa09af9027a3db544cf30a">&#9670;&nbsp;</a></span>operator==() <span class="overload">[10/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2020,7 +2082,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a87e2256052e4c7aca49fdfbbafef2f47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87e2256052e4c7aca49fdfbbafef2f47">&#9670;&nbsp;</a></span>operator==() <span class="overload">[10/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a87e2256052e4c7aca49fdfbbafef2f47">&#9670;&nbsp;</a></span>operator==() <span class="overload">[11/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2050,7 +2112,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a487eac4512a1fd3972e907713bbb0c7e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a487eac4512a1fd3972e907713bbb0c7e">&#9670;&nbsp;</a></span>operator==() <span class="overload">[11/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a487eac4512a1fd3972e907713bbb0c7e">&#9670;&nbsp;</a></span>operator==() <span class="overload">[12/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2080,7 +2142,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a8859ae3327162cdab57cbafd2bd92727"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8859ae3327162cdab57cbafd2bd92727">&#9670;&nbsp;</a></span>operator==() <span class="overload">[12/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8859ae3327162cdab57cbafd2bd92727">&#9670;&nbsp;</a></span>operator==() <span class="overload">[13/13]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
