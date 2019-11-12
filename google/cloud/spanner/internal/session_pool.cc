@@ -39,7 +39,7 @@ SessionPool::SessionPool(Database db, std::shared_ptr<SpannerStub> stub,
       options_(options) {
   // Ensure the options have sensible values.
   options_.min_sessions = (std::max)(options_.min_sessions, 0);
-  options_.max_sessions = (std::max)(options_.max_sessions, 1);
+  options_.max_sessions = (std::max)(options_.max_sessions, 2);
   if (options_.max_sessions < options_.min_sessions) {
     options_.max_sessions = options_.min_sessions;
   }
