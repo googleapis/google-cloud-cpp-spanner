@@ -48,8 +48,8 @@ class Session {
   friend class SessionPool;  // for access to stub()
   std::shared_ptr<SpannerStub> stub() const { return stub_; }
 
-  std::string session_name_;
-  std::shared_ptr<SpannerStub> stub_;
+  std::string const session_name_;
+  std::shared_ptr<SpannerStub> const stub_;
 };
 
 /**
