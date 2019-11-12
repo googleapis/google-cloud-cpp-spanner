@@ -43,10 +43,11 @@ class Session {
   Session& operator=(Session&&) = delete;
 
   std::string const& session_name() const { return session_name_; }
-  std::shared_ptr<SpannerStub> stub() const { return stub_; }
-  void set_stub(std::shared_ptr<SpannerStub> stub) { stub_ = std::move(stub); }
 
  private:
+  friend class SessionPool;  // for access to stub()
+  std::shared_ptr<SpannerStub> stub() const { return stub_; }
+
   std::string session_name_;
   std::shared_ptr<SpannerStub> stub_;
 };

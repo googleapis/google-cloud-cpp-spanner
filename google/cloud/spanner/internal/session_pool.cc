@@ -141,12 +141,13 @@ StatusOr<SessionHolder> SessionPool::Allocate(bool dissociate_from_pool) {
   }
 }
 
-void SessionPool::AssignStubIfNeeded(SessionHolder& session) {
-  if (session->stub() == nullptr) {
-    // Sessions that were created for partitioned Reads or Queries may not yet
-    // have a stub, so assign them one.
-    session->set_stub(stub_);
-  }
+std::shared_ptr<SpannerStub> SessionPool::GetStub(Session const& session) {
+  std::shared_ptr<SpannerStub> stub = session.stub();
+  if (stub) return stub;
+
+  // Sessions that were created for partitioned Reads/Queries do not have
+  // their own stub, so return one to use.
+  return stub_;
 }
 
 void SessionPool::Release(Session* session) {
