@@ -106,11 +106,10 @@ ConnectionImpl::ConnectionImpl(Database db, std::shared_ptr<SpannerStub> stub,
                                std::unique_ptr<RetryPolicy> retry_policy,
                                std::unique_ptr<BackoffPolicy> backoff_policy)
     : db_(std::move(db)),
-      stub_(std::move(stub)),
       retry_policy_prototype_(std::move(retry_policy)),
       backoff_policy_prototype_(std::move(backoff_policy)),
       session_pool_(std::make_shared<SessionPool>(
-          db_, stub_, retry_policy_prototype_->clone(),
+          db_, std::move(stub), retry_policy_prototype_->clone(),
           backoff_policy_prototype_->clone())) {}
 
 RowStream ConnectionImpl::Read(ReadParams params) {
@@ -302,6 +301,8 @@ Status ConnectionImpl::PrepareSession(SessionHolder& session,
       return std::move(session_or).status();
     }
     session = std::move(*session_or);
+  } else {
+    session_pool_->AssignStubIfNeeded(session);
   }
   return Status();
 }
@@ -328,10 +329,10 @@ RowStream ConnectionImpl::ReadImpl(SessionHolder& session,
     request.set_partition_token(*std::move(params.partition_token));
   }
 
-  auto const& stub = stub_;
   // Capture a copy of `stub` to ensure the `shared_ptr<>` remains valid through
   // the lifetime of the lambda. Note that the local variable `stub` is a
   // reference to avoid increasing refcounts twice, but the capture is by value.
+  auto const& stub = session->stub();
   auto factory = [stub, request](std::string const& resume_token) mutable {
     request.set_resume_token(resume_token);
     auto context = google::cloud::internal::make_unique<grpc::ClientContext>();
@@ -382,9 +383,9 @@ StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionReadImpl(
   auto response = internal::RetryLoop(
       retry_policy_prototype_->clone(), backoff_policy_prototype_->clone(),
       true,
-      [this](grpc::ClientContext& context,
-             spanner_proto::PartitionReadRequest const& request) {
-        return stub_->PartitionRead(context, request);
+      [&session](grpc::ClientContext& context,
+                 spanner_proto::PartitionReadRequest const& request) {
+        return session->stub()->PartitionRead(context, request);
       },
       request, __func__);
   if (!response.ok()) {
@@ -452,11 +453,10 @@ ResultType ConnectionImpl::CommonQueryImpl(
   if (!prepare_status.ok()) {
     return MakeStatusOnlyResult<ResultType>(std::move(prepare_status));
   }
-  // Capture a copy of of these member variables to ensure the `shared_ptr<>`
-  // remains valid through the lifetime of the lambda. Note that the local
-  // variables are a reference to avoid increasing refcounts twice, but the
-  // capture is by value.
-  auto const& stub = stub_;
+  // Capture a copy of of these to ensure the `shared_ptr<>` remains valid
+  // through the lifetime of the lambda. Note that the local variables are a
+  // reference to avoid increasing refcounts twice, but the capture is by value.
+  auto const& stub = session->stub();
   auto const& retry_policy = retry_policy_prototype_;
   auto const& backoff_policy = backoff_policy_prototype_;
 
@@ -512,11 +512,10 @@ StatusOr<ResultType> ConnectionImpl::CommonDmlImpl(
   if (!prepare_status.ok()) {
     return prepare_status;
   }
-  // Capture a copy of of these member variables to ensure the `shared_ptr<>`
-  // remains valid through the lifetime of the lambda. Note that the local
-  // variables are a reference to avoid increasing refcounts twice, but the
-  // capture is by value.
-  auto const& stub = stub_;
+  // Capture a copy of of these to ensure the `shared_ptr<>` remains valid
+  // through the lifetime of the lambda. Note that the local variables are a
+  // reference to avoid increasing refcounts twice, but the capture is by value.
+  auto const& stub = session->stub();
   auto const& retry_policy = retry_policy_prototype_;
   auto const& backoff_policy = backoff_policy_prototype_;
 
@@ -589,9 +588,9 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQueryImpl(
   auto response = internal::RetryLoop(
       retry_policy_prototype_->clone(), backoff_policy_prototype_->clone(),
       true,
-      [this](grpc::ClientContext& context,
-             spanner_proto::PartitionQueryRequest const& request) {
-        return stub_->PartitionQuery(context, request);
+      [&session](grpc::ClientContext& context,
+                 spanner_proto::PartitionQueryRequest const& request) {
+        return session->stub()->PartitionQuery(context, request);
       },
       request, __func__);
   if (!response.ok()) {
@@ -631,9 +630,9 @@ StatusOr<BatchDmlResult> ConnectionImpl::ExecuteBatchDmlImpl(
   auto response = internal::RetryLoop(
       retry_policy_prototype_->clone(), backoff_policy_prototype_->clone(),
       true,
-      [this](grpc::ClientContext& context,
-             spanner_proto::ExecuteBatchDmlRequest const& request) {
-        return stub_->ExecuteBatchDml(context, request);
+      [&session](grpc::ClientContext& context,
+                 spanner_proto::ExecuteBatchDmlRequest const& request) {
+        return session->stub()->ExecuteBatchDml(context, request);
       },
       request, __func__);
   if (!response) {
@@ -668,9 +667,9 @@ StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDmlImpl(
   auto begin_response = internal::RetryLoop(
       retry_policy_prototype_->clone(), backoff_policy_prototype_->clone(),
       true,
-      [this](grpc::ClientContext& context,
-             spanner_proto::BeginTransactionRequest const& request) {
-        return stub_->BeginTransaction(context, request);
+      [&session](grpc::ClientContext& context,
+                 spanner_proto::BeginTransactionRequest const& request) {
+        return session->stub()->BeginTransaction(context, request);
       },
       begin_request, __func__);
   if (!begin_response) {
@@ -690,9 +689,9 @@ StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDmlImpl(
   auto response = internal::RetryLoop(
       retry_policy_prototype_->clone(), backoff_policy_prototype_->clone(),
       true,
-      [this](grpc::ClientContext& context,
-             spanner_proto::ExecuteSqlRequest const& request) {
-        return stub_->ExecuteSql(context, request);
+      [&session](grpc::ClientContext& context,
+                 spanner_proto::ExecuteSqlRequest const& request) {
+        return session->stub()->ExecuteSql(context, request);
       },
       request, __func__);
   if (!response) {
@@ -732,9 +731,9 @@ StatusOr<CommitResult> ConnectionImpl::CommitImpl(
   auto response = internal::RetryLoop(
       retry_policy_prototype_->clone(), backoff_policy_prototype_->clone(),
       is_idempotent,
-      [this](grpc::ClientContext& context,
-             spanner_proto::CommitRequest const& request) {
-        return stub_->Commit(context, request);
+      [&session](grpc::ClientContext& context,
+                 spanner_proto::CommitRequest const& request) {
+        return session->stub()->Commit(context, request);
       },
       request, __func__);
   if (!response) {
@@ -767,9 +766,9 @@ Status ConnectionImpl::RollbackImpl(SessionHolder& session,
   return internal::RetryLoop(
       retry_policy_prototype_->clone(), backoff_policy_prototype_->clone(),
       true,
-      [this](grpc::ClientContext& context,
-             spanner_proto::RollbackRequest const& request) {
-        return stub_->Rollback(context, request);
+      [&session](grpc::ClientContext& context,
+                 spanner_proto::RollbackRequest const& request) {
+        return session->stub()->Rollback(context, request);
       },
       request, __func__);
 }

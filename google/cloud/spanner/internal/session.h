@@ -15,6 +15,7 @@
 #ifndef GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_SESSION_H_
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_SESSION_H_
 
+#include "google/cloud/spanner/internal/spanner_stub.h"
 #include "google/cloud/spanner/version.h"
 #include <functional>
 #include <memory>
@@ -32,8 +33,8 @@ namespace internal {
  */
 class Session {
  public:
-  Session(std::string session_name) noexcept
-      : session_name_(std::move(session_name)) {}
+  Session(std::string session_name, std::shared_ptr<SpannerStub> stub) noexcept
+      : session_name_(std::move(session_name)), stub_(std::move(stub)) {}
 
   // Not copyable or moveable.
   Session(Session const&) = delete;
@@ -42,9 +43,12 @@ class Session {
   Session& operator=(Session&&) = delete;
 
   std::string const& session_name() const { return session_name_; }
+  std::shared_ptr<SpannerStub> stub() const { return stub_; }
+  void set_stub(std::shared_ptr<SpannerStub> stub) { stub_ = stub; }
 
  private:
   std::string session_name_;
+  std::shared_ptr<SpannerStub> stub_;
 };
 
 /**

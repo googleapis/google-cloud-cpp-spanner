@@ -132,7 +132,8 @@ ResultSet Client::Read(SessionHolder& session, TransactionSelector& selector,
     }
     switch (mode_) {
       case Mode::kReadSucceeds:  // `begin` -> `id`, calls now parallelized
-        session = internal::MakeDissociatedSessionHolder(session_id_);
+        session = internal::MakeDissociatedSessionHolder(session_id_,
+                                                         /*stub=*/nullptr);
         selector.set_id(txn_id_);
         break;
       case Mode::kReadFails:  // leave as `begin`, calls stay serialized

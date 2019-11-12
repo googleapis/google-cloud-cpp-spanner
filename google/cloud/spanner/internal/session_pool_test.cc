@@ -233,6 +233,18 @@ TEST(SessionPool, MaxSessionsBlockUntilRelease) {
   t.join();
 }
 
+TEST(SessionPool, AssignStubIfNeeded) {
+  auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
+  auto db = Database("project", "instance", "database");
+  auto pool = MakeSessionPool(db, mock);
+  auto session = MakeDissociatedSessionHolder("session_id", /*stub=*/nullptr);
+  EXPECT_EQ(session->stub(), nullptr);
+  pool->AssignStubIfNeeded(session);
+  EXPECT_EQ(session->stub(), mock);
+  pool->AssignStubIfNeeded(session);
+  EXPECT_EQ(session->stub(), mock);
+}
+
 }  // namespace
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS

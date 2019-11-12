@@ -122,6 +122,11 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
    */
   StatusOr<SessionHolder> Allocate(bool dissociate_from_pool = false);
 
+  /**
+   * Assign a `SpannerStub` to `session` if it doesn't already have one.
+   */
+  void AssignStubIfNeeded(SessionHolder& session);
+
  private:
   /**
    * Release session back to the pool.
