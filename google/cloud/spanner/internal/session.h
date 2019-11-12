@@ -44,7 +44,7 @@ class Session {
 
   std::string const& session_name() const { return session_name_; }
   std::shared_ptr<SpannerStub> stub() const { return stub_; }
-  void set_stub(std::shared_ptr<SpannerStub> stub) { stub_ = stub; }
+  void set_stub(std::shared_ptr<SpannerStub> stub) { stub_ = std::move(stub); }
 
  private:
   std::string session_name_;
@@ -64,11 +64,7 @@ using SessionHolder = std::unique_ptr<Session, std::function<void(Session*)>>;
  * like partitioned operations where the `Session` may be used on multiple
  * machines and should not be returned to the pool.
  */
-template <typename... Args>
-SessionHolder MakeDissociatedSessionHolder(Args&&... args) {
-  return SessionHolder(new Session(std::forward<Args>(args)...),
-                       std::default_delete<Session>());
-}
+SessionHolder MakeDissociatedSessionHolder(std::string session_name);
 
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS

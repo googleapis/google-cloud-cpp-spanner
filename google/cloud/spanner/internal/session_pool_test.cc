@@ -237,7 +237,7 @@ TEST(SessionPool, AssignStubIfNeeded) {
   auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
   auto db = Database("project", "instance", "database");
   auto pool = MakeSessionPool(db, mock);
-  auto session = MakeDissociatedSessionHolder("session_id", /*stub=*/nullptr);
+  auto session = MakeDissociatedSessionHolder("session_id");
   EXPECT_EQ(session->stub(), nullptr);
   pool->AssignStubIfNeeded(session);
   EXPECT_EQ(session->stub(), mock);
