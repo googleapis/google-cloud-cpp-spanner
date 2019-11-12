@@ -168,13 +168,12 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
-tar -xf v0.1.5.tar.gz
-cd $HOME/Downloads/cpp-cmakefiles-0.1.5
-cmake \
-    -DBUILD_SHARED_LIBS=YES \
-    -H. -Bcmake-out
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -185,14 +184,12 @@ tests.
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-tar -xf release-1.10.0.tar.gz
-cd $HOME/Downloads/googletest-release-1.10.0
-cmake \
-      -DCMAKE_BUILD_TYPE="Release" \
-      -DBUILD_SHARED_LIBS=yes \
-      -H. -Bcmake-out
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -203,13 +200,14 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.13.0.tar.gz
-tar -xf v0.13.0.tar.gz
-cd $HOME/Downloads/google-cloud-cpp-common-0.13.0
-cmake -H. -Bcmake-out \
-    -DBUILD_TESTING=OFF \
-    -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4}
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.16.0.tar.gz && \
+    tar -xf v0.16.0.tar.gz && \
+    cd google-cloud-cpp-common-0.16.0 && \
+    cmake -H. -Bcmake-out \
+        -DBUILD_TESTING=OFF \
+        -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
