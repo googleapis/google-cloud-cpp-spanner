@@ -63,6 +63,7 @@ struct Config {
   int maximum_clients = 1;
 
   std::int64_t table_size = 1000 * 1000L;
+  std::int64_t query_size = 1000;
 };
 
 std::ostream& operator<<(std::ostream& os, Config const& config);
@@ -377,8 +378,8 @@ class ReadExperiment : public Experiment {
       Config const& config,
       std::vector<std::shared_ptr<cs::internal::SpannerStub>> const& stubs,
       int thread_count, SampleSink const& sink) {
-    std::uniform_int_distribution<std::int64_t> random_key(0,
-                                                           config.table_size);
+    std::uniform_int_distribution<std::int64_t> random_key(
+        0, config.table_size - config.query_size);
     RandomKeyGenerator locked_random_key = [this, &random_key] {
       std::lock_guard<std::mutex> lk(mu_);
       return random_key(generator_);
@@ -431,7 +432,10 @@ class ReadExperiment : public Experiment {
     for (auto start = std::chrono::steady_clock::now(),
               deadline = start + config.iteration_duration;
          start < deadline; start = std::chrono::steady_clock::now()) {
-      auto key = cs::KeySet().AddKey(cs::Key{cs::Value(key_generator())});
+      auto begin = key_generator();
+      auto end = begin + config.query_size;
+      auto key = cs::KeySet().AddRange(cs::MakeKeyBoundClosed(cs::Value(begin)),
+                                       cs::MakeKeyBoundClosed(cs::Value(end)));
 
       SimpleTimer timer;
       timer.Start();
@@ -467,8 +471,8 @@ class ReadExperiment : public Experiment {
   void RunIteration(Config const& config,
                     std::vector<cs::Client> const& clients, int thread_count,
                     SampleSink const& sink) {
-    std::uniform_int_distribution<std::int64_t> random_key(0,
-                                                           config.table_size);
+    std::uniform_int_distribution<std::int64_t> random_key(
+        0, config.table_size - config.query_size);
     RandomKeyGenerator locked_random_key = [this, &random_key] {
       std::lock_guard<std::mutex> lk(mu_);
       return random_key(generator_);
@@ -509,12 +513,14 @@ class ReadExperiment : public Experiment {
     for (auto start = std::chrono::steady_clock::now(),
               deadline = start + config.iteration_duration;
          start < deadline; start = std::chrono::steady_clock::now()) {
-      auto key = key_generator();
+      auto begin = key_generator();
+      auto end = begin + config.query_size;
+      auto key = cs::KeySet().AddRange(cs::MakeKeyBoundClosed(cs::Value(begin)),
+                                       cs::MakeKeyBoundClosed(cs::Value(end)));
 
       SimpleTimer timer;
       timer.Start();
-      auto rows = client.Read("KeyValue", cs::KeySet().AddKey(cs::MakeKey(key)),
-                              {"Key", "Data"});
+      auto rows = client.Read("KeyValue", key, {"Key", "Data"});
       for (auto& row :
            cs::StreamOf<std::tuple<std::int64_t, std::string>>(rows)) {
         if (!row) {
@@ -613,6 +619,8 @@ google::cloud::StatusOr<Config> ParseArgs(std::vector<std::string> args) {
        }},
       {"--table-size=",
        [](Config& c, std::string const& v) { c.table_size = std::stol(v); }},
+      {"--query-size=",
+       [](Config& c, std::string const& v) { c.query_size = std::stol(v); }},
   };
 
   auto invalid_argument = [](std::string msg) {
@@ -678,6 +686,19 @@ google::cloud::StatusOr<Config> ParseArgs(std::vector<std::string> args) {
     os << "The maximum number of clients (" << config.maximum_clients << ")"
        << " must be greater or equal than the minimum number of clients ("
        << config.minimum_clients << ")";
+    return invalid_argument(os.str());
+  }
+
+  if (config.query_size <= 0) {
+    std::ostringstream os;
+    os << "The query size (" << config.query_size << ") should be > 1";
+    return invalid_argument(os.str());
+  }
+
+  if (config.table_size < config.query_size) {
+    std::ostringstream os;
+    os << "The table size (" << config.table_size << ") should be greater"
+       << " than the query size (" << config.query_size << ")";
     return invalid_argument(os.str());
   }
   return config;
