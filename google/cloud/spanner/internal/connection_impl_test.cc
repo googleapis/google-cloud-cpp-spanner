@@ -86,8 +86,9 @@ spanner_proto::BatchCreateSessionsResponse MakeSessionsResponse(
 }
 
 // Create a `Connection` suitable for use in tests that continue retrying
-// until the retry policy is exhausted. Attempting that with the default
+// until the retry policy is exhausted - attempting that with the default
 // policies would take too long (10 minutes).
+// Other tests can use this method or just call `MakeConnection()` directly.
 std::shared_ptr<Connection> MakeLimitedRetryConnection(
     Database const& db,
     std::shared_ptr<spanner_testing::MockSpannerStub> mock) {

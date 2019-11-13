@@ -37,8 +37,10 @@ namespace gcsa = ::google::spanner::admin::instance::v1;
 namespace giam = ::google::iam::v1;
 
 // Create a `Connection` suitable for use in tests that continue retrying
-// until the retry policy is exhausted. Attempting that with the default
+// until the retry policy is exhausted - attempting that with the default
 // policies would take too long (30 minutes).
+// Other tests can use this method or just call `MakeInstanceAdminConnection()`
+// directly.
 std::shared_ptr<InstanceAdminConnection> MakeLimitedRetryConnection(
     std::shared_ptr<spanner_testing::MockInstanceAdminStub> mock) {
   LimitedErrorCountRetryPolicy retry(/*maximum_failures=*/2);
