@@ -68,15 +68,16 @@ struct Config {
 
 std::ostream& operator<<(std::ostream& os, Config const& config);
 
-struct SingleRowCpuSample {
+struct RowCpuSample {
   int client_count;
   int thread_count;
   bool using_stub;
+  int row_count;
   std::chrono::microseconds elapsed;
   std::chrono::microseconds cpu_time;
 };
 
-using SampleSink = std::function<void(std::vector<SingleRowCpuSample>)>;
+using SampleSink = std::function<void(std::vector<RowCpuSample>)>;
 
 class Experiment {
  public:
@@ -149,17 +150,18 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  std::cout << "ClientCount,ThreadCount,UsingStub,ElapsedTime,CpuTime\n"
+  std::cout << "ClientCount,ThreadCount,UsingStub"
+            << ",RowCount,ElapsedTime,CpuTime\n"
             << std::flush;
 
   std::mutex cout_mu;
   auto cout_sink =
-      [&cout_mu](std::vector<SingleRowCpuSample> const& samples) mutable {
+      [&cout_mu](std::vector<RowCpuSample> const& samples) mutable {
         std::unique_lock<std::mutex> lk(cout_mu);
         for (auto const& s : samples) {
           std::cout << std::boolalpha << s.client_count << ',' << s.thread_count
-                    << ',' << s.using_stub << ',' << s.elapsed.count() << ','
-                    << s.cpu_time.count() << '\n'
+                    << ',' << s.using_stub << ',' << s.row_count << ','
+                    << s.elapsed.count() << ',' << s.cpu_time.count() << '\n'
                     << std::flush;
         }
       };
@@ -191,6 +193,7 @@ std::ostream& operator<<(std::ostream& os, Config const& config) {
             << "\n# Iteration Duration: " << config.iteration_duration.count()
             << "s"
             << "\n# Table Size: " << config.table_size
+            << "\n# Query Size: " << config.query_size
             << "\n# Compiler: " << cs::internal::CompilerId() << "-"
             << cs::internal::CompilerVersion()
             << "\n# Build Flags: " << cs::internal::BuildFlags() << "\n";
@@ -310,12 +313,11 @@ class ReadExperiment : public Experiment {
     std::vector<std::future<void>> tasks(task_count);
     int task_id = 0;
     for (auto& t : tasks) {
-      t = std::async(
-          std::launch::async,
-          [this, &config, &client](int tc, int ti) {
-            SetUpTask(config, client, tc, ti);
-          },
-          task_count, task_id++);
+      t = std::async(std::launch::async,
+                     [this, &config, &client](int tc, int ti) {
+                       SetUpTask(config, client, tc, ti);
+                     },
+                     task_count, task_id++);
     }
     for (auto& t : tasks) {
       t.get();
@@ -394,8 +396,7 @@ class ReadExperiment : public Experiment {
           }
         };
 
-    std::vector<std::future<std::vector<SingleRowCpuSample>>> tasks(
-        thread_count);
+    std::vector<std::future<std::vector<RowCpuSample>>> tasks(thread_count);
     int task_id = 0;
     for (auto& t : tasks) {
       auto client = stubs[task_id++ % stubs.size()];
@@ -410,7 +411,7 @@ class ReadExperiment : public Experiment {
     }
   }
 
-  std::vector<SingleRowCpuSample> ReadRowsViaStub(
+  std::vector<RowCpuSample> ReadRowsViaStub(
       Config const& config, int thread_count, int client_count,
       cs::Database const& database,
       std::shared_ptr<cs::internal::SpannerStub> stub,
@@ -424,16 +425,16 @@ class ReadExperiment : public Experiment {
       return response->name();
     }();
 
-    std::vector<SingleRowCpuSample> samples;
-    // We expect about 50 reads per second per thread, so allocate enough
-    // memory to start.
+    std::vector<RowCpuSample> samples;
+    // We expect about 50 reads per second per thread. Use that to estimate the
+    // size of the vector.
     samples.reserve(config.iteration_duration.count() * 50);
     std::vector<google::cloud::Status> errors;
     for (auto start = std::chrono::steady_clock::now(),
               deadline = start + config.iteration_duration;
          start < deadline; start = std::chrono::steady_clock::now()) {
       auto begin = key_generator();
-      auto end = begin + config.query_size;
+      auto end = begin + config.query_size - 1;
       auto key = cs::KeySet().AddRange(cs::MakeKeyBoundClosed(cs::Value(begin)),
                                        cs::MakeKeyBoundClosed(cs::Value(end)));
 
@@ -448,9 +449,13 @@ class ReadExperiment : public Experiment {
       request.add_columns("Data");
       *request.mutable_key_set() = cs::internal::ToProto(key);
       auto stream = stub->StreamingRead(context, request);
+      int row_count = 0;
       google::spanner::v1::PartialResultSet result;
       for (bool success = stream->Read(&result); success;
            success = stream->Read(&result)) {
+        if (!result.chunked_value()) {
+          row_count += result.values_size() / 2;
+        }
       }
       auto final = stream->Finish();
       if (!final.ok()) {
@@ -459,9 +464,9 @@ class ReadExperiment : public Experiment {
         continue;
       }
       timer.Stop();
-      samples.push_back(SingleRowCpuSample{thread_count, client_count, true,
-                                           timer.elapsed_time(),
-                                           timer.cpu_time()});
+      samples.push_back(RowCpuSample{thread_count, client_count, true,
+                                     row_count, timer.elapsed_time(),
+                                     timer.cpu_time()});
     }
 
     error_sink(std::move(errors));
@@ -487,8 +492,7 @@ class ReadExperiment : public Experiment {
           }
         };
 
-    std::vector<std::future<std::vector<SingleRowCpuSample>>> tasks(
-        thread_count);
+    std::vector<std::future<std::vector<RowCpuSample>>> tasks(thread_count);
     int task_id = 0;
     for (auto& t : tasks) {
       auto client = clients[task_id++ % clients.size()];
@@ -501,11 +505,11 @@ class ReadExperiment : public Experiment {
     }
   }
 
-  std::vector<SingleRowCpuSample> ReadRows(
-      Config const& config, int thread_count, int client_count,
-      cs::Client client, RandomKeyGenerator const& key_generator,
-      ErrorSink const& error_sink) {
-    std::vector<SingleRowCpuSample> samples;
+  std::vector<RowCpuSample> ReadRows(Config const& config, int thread_count,
+                                     int client_count, cs::Client client,
+                                     RandomKeyGenerator const& key_generator,
+                                     ErrorSink const& error_sink) {
+    std::vector<RowCpuSample> samples;
     // We expect about 50 reads per second per thread, so allocate enough
     // memory to start.
     samples.reserve(config.iteration_duration.count() * 50);
@@ -514,24 +518,26 @@ class ReadExperiment : public Experiment {
               deadline = start + config.iteration_duration;
          start < deadline; start = std::chrono::steady_clock::now()) {
       auto begin = key_generator();
-      auto end = begin + config.query_size;
+      auto end = begin + config.query_size - 1;
       auto key = cs::KeySet().AddRange(cs::MakeKeyBoundClosed(cs::Value(begin)),
                                        cs::MakeKeyBoundClosed(cs::Value(end)));
 
       SimpleTimer timer;
       timer.Start();
       auto rows = client.Read("KeyValue", key, {"Key", "Data"});
+      int row_count = 0;
       for (auto& row :
            cs::StreamOf<std::tuple<std::int64_t, std::string>>(rows)) {
         if (!row) {
           errors.push_back(std::move(row).status());
           break;
         }
+        ++row_count;
       }
       timer.Stop();
-      samples.push_back(SingleRowCpuSample{thread_count, client_count, false,
-                                           timer.elapsed_time(),
-                                           timer.cpu_time()});
+      samples.push_back(RowCpuSample{thread_count, client_count, false,
+                                     row_count, timer.elapsed_time(),
+                                     timer.cpu_time()});
     }
 
     error_sink(std::move(errors));
