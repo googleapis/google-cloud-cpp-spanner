@@ -76,6 +76,7 @@ struct RowCpuSample {
   int row_count;
   std::chrono::microseconds elapsed;
   std::chrono::microseconds cpu_time;
+  Status status;
 };
 
 using SampleSink = std::function<void(std::vector<RowCpuSample>)>;
@@ -154,7 +155,7 @@ int main(int argc, char* argv[]) {
   }
 
   std::cout << "ClientCount,ThreadCount,UsingStub"
-            << ",RowCount,ElapsedTime,CpuTime\n"
+            << ",RowCount,ElapsedTime,CpuTime,StatusCode\n"
             << std::flush;
 
   std::mutex cout_mu;
@@ -164,7 +165,8 @@ int main(int argc, char* argv[]) {
         for (auto const& s : samples) {
           std::cout << std::boolalpha << s.client_count << ',' << s.thread_count
                     << ',' << s.using_stub << ',' << s.row_count << ','
-                    << s.elapsed.count() << ',' << s.cpu_time.count() << '\n'
+                    << s.elapsed.count() << ',' << s.cpu_time.count()
+                    << ',' << s.status.code() << '\n'
                     << std::flush;
         }
       };
@@ -202,9 +204,6 @@ std::ostream& operator<<(std::ostream& os, Config const& config) {
             << cs::internal::CompilerVersion()
             << "\n# Build Flags: " << cs::internal::BuildFlags() << "\n";
 }
-
-using RandomKeyGenerator = std::function<std::int64_t()>;
-using ErrorSink = std::function<void(std::vector<google::cloud::Status>)>;
 
 bool SupportPerThreadUsage();
 
@@ -360,15 +359,6 @@ class ReadExperiment : public Experiment {
       Config const& config,
       std::vector<std::shared_ptr<cs::internal::SpannerStub>> const& stubs,
       int thread_count, SampleSink const& sink) {
-    std::mutex cerr_mu;
-    ErrorSink error_sink =
-        [&cerr_mu](std::vector<google::cloud::Status> const& errors) {
-          std::lock_guard<std::mutex> lk(cerr_mu);
-          for (auto const& e : errors) {
-            std::cerr << "# " << e << "\n";
-          }
-        };
-
     std::vector<std::future<std::vector<RowCpuSample>>> tasks(thread_count);
     int task_id = 0;
     for (auto& t : tasks) {
@@ -377,7 +367,7 @@ class ReadExperiment : public Experiment {
                      config, thread_count, static_cast<int>(stubs.size()),
                      cs::Database(config.project_id, config.instance_id,
                                   config.database_id),
-                     client, error_sink);
+                     client);
     }
     for (auto& t : tasks) {
       sink(t.get());
@@ -387,8 +377,7 @@ class ReadExperiment : public Experiment {
   std::vector<RowCpuSample> ReadRowsViaStub(
       Config const& config, int thread_count, int client_count,
       cs::Database const& database,
-      std::shared_ptr<cs::internal::SpannerStub> stub,
-      ErrorSink const& error_sink) {
+      std::shared_ptr<cs::internal::SpannerStub> stub) {
     auto session = [&]() -> google::cloud::StatusOr<std::string> {
       grpc::ClientContext context;
       google::spanner::v1::CreateSessionRequest request{};
@@ -428,41 +417,25 @@ class ReadExperiment : public Experiment {
         }
       }
       auto final = stream->Finish();
-      if (!final.ok()) {
-        errors.push_back(
-            google::cloud::grpc_utils::MakeStatusFromRpcError(final));
-        continue;
-      }
       timer.Stop();
-      samples.push_back(RowCpuSample{thread_count, client_count, true,
-                                     row_count, timer.elapsed_time(),
-                                     timer.cpu_time()});
+      samples.push_back(RowCpuSample{
+          thread_count, client_count, true, row_count, timer.elapsed_time(),
+          timer.cpu_time(),
+          google::cloud::grpc_utils::MakeStatusFromRpcError(final)});
     }
-
-    error_sink(std::move(errors));
     return samples;
   }
 
   void RunIterationViaClients(Config const& config,
                               std::vector<cs::Client> const& clients,
                               int thread_count, SampleSink const& sink) {
-    std::mutex cerr_mu;
-    ErrorSink error_sink =
-        [&cerr_mu](std::vector<google::cloud::Status> const& errors) {
-          std::lock_guard<std::mutex> lk(cerr_mu);
-          for (auto const& e : errors) {
-            std::cerr << "# " << e << "\n";
-          }
-        };
-
     std::vector<std::future<std::vector<RowCpuSample>>> tasks(thread_count);
     int task_id = 0;
     for (auto& t : tasks) {
       auto client = clients[task_id++ % clients.size()];
       t = std::async(std::launch::async, &ReadExperiment::ReadRowsViaClients,
                      this, config, thread_count,
-                     static_cast<int>(clients.size()), client,
-                     error_sink);
+                     static_cast<int>(clients.size()), client);
     }
     for (auto& t : tasks) {
       sink(t.get());
@@ -472,8 +445,7 @@ class ReadExperiment : public Experiment {
   std::vector<RowCpuSample> ReadRowsViaClients(Config const& config,
                                                int thread_count,
                                                int client_count,
-                                               cs::Client client,
-                                               ErrorSink const& error_sink) {
+                                               cs::Client client) {
     std::vector<RowCpuSample> samples;
     // We expect about 50 reads per second per thread, so allocate enough
     // memory to start.
@@ -488,10 +460,11 @@ class ReadExperiment : public Experiment {
       timer.Start();
       auto rows = client.Read("KeyValue", key, {"Key", "Data"});
       int row_count = 0;
+      Status status;
       for (auto& row :
            cs::StreamOf<std::tuple<std::int64_t, std::string>>(rows)) {
         if (!row) {
-          errors.push_back(std::move(row).status());
+          status = std::move(row).status();
           break;
         }
         ++row_count;
@@ -499,10 +472,8 @@ class ReadExperiment : public Experiment {
       timer.Stop();
       samples.push_back(RowCpuSample{thread_count, client_count, false,
                                      row_count, timer.elapsed_time(),
-                                     timer.cpu_time()});
+                                     timer.cpu_time(), std::move(status)});
     }
-
-    error_sink(std::move(errors));
     return samples;
   }
 
