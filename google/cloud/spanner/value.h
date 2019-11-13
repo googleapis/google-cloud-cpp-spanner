@@ -277,7 +277,7 @@ class Value {
   template <typename T>
   StatusOr<T> get() const& {
     // Ignores the name field because it is never set on the incoming `T`.
-    if (!EqualTypeProtoIgnoringNames(type_, MakeTypeProto(T{})))
+    if (!EqualsType(T{}, type_))
       return Status(StatusCode::kUnknown, "wrong type");
     if (value_.kind_case() == google::protobuf::Value::kNullValue) {
       if (is_optional<T>::value) return T{};
@@ -290,7 +290,7 @@ class Value {
   template <typename T>
   StatusOr<T> get() && {
     // Ignores the name field because it is never set on the incoming `T`.
-    if (!EqualTypeProtoIgnoringNames(type_, MakeTypeProto(T{})))
+    if (!EqualsType(T{}, type_))
       return Status(StatusCode::kUnknown, "wrong type");
     if (value_.kind_case() == google::protobuf::Value::kNullValue) {
       if (is_optional<T>::value) return T{};
@@ -536,6 +536,37 @@ class Value {
   static google::protobuf::Value&& GetProtoListValueElement(
       google::protobuf::Value&& pv, int pos) {
     return std::move(*pv.mutable_list_value()->mutable_values(pos));
+  }
+
+  // Overloads of EqualsType(), each overloaded for the common C++ types that
+  // Spanner supports. There's also an EqualsType<T>() function template for
+  // more complex types that falls back to comparing protobufs.
+  static bool EqualsType(bool, google::spanner::v1::Type const& type) {
+    return type.code() == google::spanner::v1::TypeCode::BOOL;
+  }
+  static bool EqualsType(std::int64_t, google::spanner::v1::Type const& type) {
+    return type.code() == google::spanner::v1::TypeCode::INT64;
+  }
+  static bool EqualsType(double, google::spanner::v1::Type const& type) {
+    return type.code() == google::spanner::v1::TypeCode::FLOAT64;
+  }
+  static bool EqualsType(Timestamp, google::spanner::v1::Type const& type) {
+    return type.code() == google::spanner::v1::TypeCode::TIMESTAMP;
+  }
+  static bool EqualsType(Date, google::spanner::v1::Type const& type) {
+    return type.code() == google::spanner::v1::TypeCode::DATE;
+  }
+  static bool EqualsType(std::string const&,
+                         google::spanner::v1::Type const& type) {
+    return type.code() == google::spanner::v1::TypeCode::STRING;
+  }
+  static bool EqualsType(Bytes const&, google::spanner::v1::Type const& type) {
+    return type.code() == google::spanner::v1::TypeCode::BYTES;
+  }
+
+  template <typename T>
+  static bool EqualsType(T, google::spanner::v1::Type const& type) {
+    return EqualTypeProtoIgnoringNames(type, MakeTypeProto(T{}));
   }
 
   static bool EqualTypeProtoIgnoringNames(google::spanner::v1::Type const& a,
