@@ -219,8 +219,13 @@ StatusOr<PartitionedDmlResult> Client::ExecutePartitionedDml(
 
 std::shared_ptr<Connection> MakeConnection(Database const& db,
                                            ConnectionOptions const& options) {
-  auto stub = internal::CreateDefaultSpannerStub(options);
-  return internal::MakeConnection(db, std::move(stub));
+  std::vector<std::shared_ptr<internal::SpannerStub>> stubs;
+  int num_channels = std::min(options.num_channels(), 1);
+  stubs.reserve(num_channels);
+  for (int i = 0; i < num_channels; ++i) {
+    stubs.push_back(internal::CreateDefaultSpannerStub(options));
+  }
+  return internal::MakeConnection(db, std::move(stubs));
 }
 
 }  // namespace SPANNER_CLIENT_NS
