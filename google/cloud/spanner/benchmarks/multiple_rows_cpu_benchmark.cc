@@ -165,15 +165,15 @@ int main(int argc, char* argv[]) {
         for (auto const& s : samples) {
           std::cout << std::boolalpha << s.client_count << ',' << s.thread_count
                     << ',' << s.using_stub << ',' << s.row_count << ','
-                    << s.elapsed.count() << ',' << s.cpu_time.count()
-                    << ',' << s.status.code() << '\n'
+                    << s.elapsed.count() << ',' << s.cpu_time.count() << ','
+                    << s.status.code() << '\n'
                     << std::flush;
         }
       };
 
   auto experiment = e->second;
   experiment->SetUp(config, database);
-  experiment->Run(std::move(generator), config, database, cout_sink);
+  experiment->Run(generator, config, database, cout_sink);
   experiment->TearDown(config, database);
 
   auto drop = admin_client.DropDatabase(database);
@@ -257,7 +257,7 @@ class SimpleTimer {
  */
 class ReadExperiment : public Experiment {
  public:
-  ReadExperiment() : generator_() {}
+  ReadExperiment() = default;
 
   Status SetUp(Config const& config, cs::Database const& database) override {
     cs::DatabaseAdminClient admin_client;
@@ -286,11 +286,12 @@ class ReadExperiment : public Experiment {
     std::vector<std::future<void>> tasks(task_count);
     int task_id = 0;
     for (auto& t : tasks) {
-      t = std::async(std::launch::async,
-                     [this, &config, &client](int tc, int ti) {
-                       SetUpTask(config, client, tc, ti);
-                     },
-                     task_count, task_id++);
+      t = std::async(
+          std::launch::async,
+          [this, &config, &client](int tc, int ti) {
+            SetUpTask(config, client, tc, ti);
+          },
+          task_count, task_id++);
     }
     for (auto& t : tasks) {
       t.get();
@@ -304,7 +305,7 @@ class ReadExperiment : public Experiment {
   Status Run(google::cloud::internal::DefaultPRNG generator,
              Config const& config, cs::Database const& database,
              SampleSink const& sink) override {
-    generator_ = std::move(generator);
+    generator_ = generator;
     // Create enough clients and stubs for the worst case
     std::vector<cs::Client> clients;
     std::vector<std::shared_ptr<cs::internal::SpannerStub>> stubs;
