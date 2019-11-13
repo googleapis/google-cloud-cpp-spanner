@@ -34,6 +34,7 @@
 
 namespace {
 
+using google::cloud::Status;
 namespace cs = google::cloud::spanner;
 
 /**
@@ -83,9 +84,12 @@ class Experiment {
  public:
   virtual ~Experiment() = default;
 
-  virtual void SetUp(Config const& config, cs::Database const& database) = 0;
-  virtual void Run(Config const& config, cs::Database const& database,
-                   SampleSink const& sink) = 0;
+  virtual Status SetUp(Config const& config, cs::Database const& database) = 0;
+  virtual Status TearDown(Config const& config,
+                          cs::Database const& database) = 0;
+  virtual Status Run(google::cloud::internal::DefaultPRNG generator,
+                     Config const& config, cs::Database const& database,
+                     SampleSink const& sink) = 0;
 };
 
 std::map<std::string, std::shared_ptr<Experiment>> AvailableExperiments();
@@ -107,6 +111,16 @@ int main(int argc, char* argv[]) {
     config = *std::move(c);
   }
 
+  auto available = AvailableExperiments();
+  auto e = available.find(config.experiment);
+  if (e == available.end()) {
+    std::cerr << "Experiment " << config.experiment << " not found\n";
+    return 1;
+  }
+
+  // Once the configuration is validated, print it out.
+  std::cout << config << std::flush;
+
   auto generator = google::cloud::internal::MakeDefaultPRNG();
   if (config.instance_id.empty()) {
     auto instance = google::cloud::spanner_testing::PickRandomInstance(
@@ -124,19 +138,8 @@ int main(int argc, char* argv[]) {
       google::cloud::spanner_testing::RandomDatabaseName(generator));
   config.database_id = database.database_id();
 
-  auto available = AvailableExperiments();
-  auto e = available.find(config.experiment);
-  if (e == available.end()) {
-    std::cerr << "Experiment " << config.experiment << " not found\n";
-    return 1;
-  }
-
   cs::DatabaseAdminClient admin_client;
-  auto created =
-      admin_client.CreateDatabase(database, {R"sql(CREATE TABLE KeyValue (
-                                Key   INT64 NOT NULL,
-                                Data  STRING(1024),
-                             ) PRIMARY KEY (Key))sql"});
+  auto created = admin_client.CreateDatabase(database, {});
   std::cout << "# Waiting for database creation to complete " << std::flush;
   for (;;) {
     auto status = created.wait_for(std::chrono::seconds(1));
@@ -168,7 +171,8 @@ int main(int argc, char* argv[]) {
 
   auto experiment = e->second;
   experiment->SetUp(config, database);
-  experiment->Run(config, database, cout_sink);
+  experiment->Run(std::move(generator), config, database, cout_sink);
+  experiment->TearDown(config, database);
 
   auto drop = admin_client.DropDatabase(database);
   if (!drop.ok()) {
@@ -254,7 +258,262 @@ class SimpleTimer {
  */
 class ReadExperiment : public Experiment {
  public:
-  ReadExperiment() : generator_(google::cloud::internal::MakeDefaultPRNG()) {}
+  ReadExperiment() : generator_() {}
+
+  Status SetUp(Config const& config, cs::Database const& database) override {
+    cs::DatabaseAdminClient admin_client;
+    auto created =
+        admin_client.UpdateDatabase(database, {R"sql(CREATE TABLE KeyValue (
+                                Key   INT64 NOT NULL,
+                                Data  STRING(1024),
+                             ) PRIMARY KEY (Key))sql"});
+    std::cout << "# Waiting for table creation to complete " << std::flush;
+    for (;;) {
+      auto status = created.wait_for(std::chrono::seconds(1));
+      if (status == std::future_status::ready) break;
+      std::cout << '.' << std::flush;
+    }
+    std::cout << " DONE\n";
+    auto db = created.get();
+    if (!db) {
+      std::cerr << "Error creating table: " << db.status() << "\n";
+      return std::move(db).status();
+    }
+
+    // We need to populate some data or all the requests to read will fail.
+    cs::Client client(cs::MakeConnection(database));
+    std::cout << "# Populating database " << std::flush;
+    int const task_count = 16;
+    std::vector<std::future<void>> tasks(task_count);
+    int task_id = 0;
+    for (auto& t : tasks) {
+      t = std::async(std::launch::async,
+                     [this, &config, &client](int tc, int ti) {
+                       SetUpTask(config, client, tc, ti);
+                     },
+                     task_count, task_id++);
+    }
+    for (auto& t : tasks) {
+      t.get();
+    }
+    std::cout << " DONE\n";
+    return {};
+  }
+
+  Status TearDown(Config const&, cs::Database const&) override { return {}; }
+
+  Status Run(google::cloud::internal::DefaultPRNG generator,
+             Config const& config, cs::Database const& database,
+             SampleSink const& sink) override {
+    generator_ = std::move(generator);
+    // Create enough clients and stubs for the worst case
+    std::vector<cs::Client> clients;
+    std::vector<std::shared_ptr<cs::internal::SpannerStub>> stubs;
+    std::cout << "# Creating clients " << std::flush;
+    for (int i = 0; i != config.maximum_clients; ++i) {
+      auto options = cs::ConnectionOptions().set_channel_pool_domain(
+          "task:" + std::to_string(i));
+      clients.emplace_back(cs::Client(cs::MakeConnection(database, options)));
+      stubs.emplace_back(cs::internal::CreateDefaultSpannerStub(options));
+      std::cout << '.' << std::flush;
+    }
+    std::cout << " DONE\n";
+
+    std::uniform_int_distribution<int> use_stubs_gen(0, 1);
+    std::uniform_int_distribution<int> thread_count_gen(config.minimum_threads,
+                                                        config.maximum_threads);
+
+    // Capture some overall getrusage() statistics as comments.
+    SimpleTimer overall;
+    overall.Start();
+    for (int i = 0; i != config.samples; ++i) {
+      auto const use_stubs = use_stubs_gen(generator_) == 1;
+      auto const thread_count = thread_count_gen(generator_);
+      // TODO(#1000) - avoid deadlocks with more than 100 threads per client
+      auto const min_clients = (std::max<std::size_t>)(thread_count / 100 + 1,
+                                                       config.minimum_clients);
+      auto const max_clients = clients.size();
+      auto const client_count = [min_clients, max_clients, this] {
+        if (min_clients <= max_clients) {
+          return min_clients;
+        }
+        return std::uniform_int_distribution<std::size_t>(
+            min_clients, max_clients - 1)(generator_);
+      }();
+      if (use_stubs) {
+        std::vector<std::shared_ptr<cs::internal::SpannerStub>> iteration_stubs(
+            stubs.begin(), stubs.begin() + client_count);
+        RunIterationViaStubs(config, iteration_stubs, thread_count, sink);
+        continue;
+      }
+      std::vector<cs::Client> iteration_clients(clients.begin(),
+                                                clients.begin() + client_count);
+      RunIterationViaClients(config, iteration_clients, thread_count, sink);
+    }
+    overall.Stop();
+    std::cout << overall.annotations();
+    return {};
+  }
+
+ private:
+  void RunIterationViaStubs(
+      Config const& config,
+      std::vector<std::shared_ptr<cs::internal::SpannerStub>> const& stubs,
+      int thread_count, SampleSink const& sink) {
+    std::mutex cerr_mu;
+    ErrorSink error_sink =
+        [&cerr_mu](std::vector<google::cloud::Status> const& errors) {
+          std::lock_guard<std::mutex> lk(cerr_mu);
+          for (auto const& e : errors) {
+            std::cerr << "# " << e << "\n";
+          }
+        };
+
+    std::vector<std::future<std::vector<RowCpuSample>>> tasks(thread_count);
+    int task_id = 0;
+    for (auto& t : tasks) {
+      auto client = stubs[task_id++ % stubs.size()];
+      t = std::async(std::launch::async, &ReadExperiment::ReadRowsViaStub, this,
+                     config, thread_count, static_cast<int>(stubs.size()),
+                     cs::Database(config.project_id, config.instance_id,
+                                  config.database_id),
+                     client, error_sink);
+    }
+    for (auto& t : tasks) {
+      sink(t.get());
+    }
+  }
+
+  std::vector<RowCpuSample> ReadRowsViaStub(
+      Config const& config, int thread_count, int client_count,
+      cs::Database const& database,
+      std::shared_ptr<cs::internal::SpannerStub> stub,
+      ErrorSink const& error_sink) {
+    auto session = [&]() -> google::cloud::StatusOr<std::string> {
+      grpc::ClientContext context;
+      google::spanner::v1::CreateSessionRequest request{};
+      request.set_database(database.FullName());
+      auto response = stub->CreateSession(context, request);
+      if (!response) return std::move(response).status();
+      return response->name();
+    }();
+
+    std::vector<RowCpuSample> samples;
+    // We expect about 50 reads per second per thread. Use that to estimate the
+    // size of the vector.
+    samples.reserve(config.iteration_duration.count() * 50);
+    std::vector<google::cloud::Status> errors;
+    for (auto start = std::chrono::steady_clock::now(),
+              deadline = start + config.iteration_duration;
+         start < deadline; start = std::chrono::steady_clock::now()) {
+      auto key = RandomKeySet(config);
+
+      SimpleTimer timer;
+      timer.Start();
+
+      grpc::ClientContext context;
+      google::spanner::v1::ReadRequest request{};
+      request.set_session(*session);
+      request.set_table("KeyValue");
+      request.add_columns("Key");
+      request.add_columns("Data");
+      *request.mutable_key_set() = cs::internal::ToProto(key);
+      auto stream = stub->StreamingRead(context, request);
+      int row_count = 0;
+      google::spanner::v1::PartialResultSet result;
+      for (bool success = stream->Read(&result); success;
+           success = stream->Read(&result)) {
+        if (!result.chunked_value()) {
+          row_count += result.values_size() / 2;
+        }
+      }
+      auto final = stream->Finish();
+      if (!final.ok()) {
+        errors.push_back(
+            google::cloud::grpc_utils::MakeStatusFromRpcError(final));
+        continue;
+      }
+      timer.Stop();
+      samples.push_back(RowCpuSample{thread_count, client_count, true,
+                                     row_count, timer.elapsed_time(),
+                                     timer.cpu_time()});
+    }
+
+    error_sink(std::move(errors));
+    return samples;
+  }
+
+  void RunIterationViaClients(Config const& config,
+                              std::vector<cs::Client> const& clients,
+                              int thread_count, SampleSink const& sink) {
+    std::mutex cerr_mu;
+    ErrorSink error_sink =
+        [&cerr_mu](std::vector<google::cloud::Status> const& errors) {
+          std::lock_guard<std::mutex> lk(cerr_mu);
+          for (auto const& e : errors) {
+            std::cerr << "# " << e << "\n";
+          }
+        };
+
+    std::vector<std::future<std::vector<RowCpuSample>>> tasks(thread_count);
+    int task_id = 0;
+    for (auto& t : tasks) {
+      auto client = clients[task_id++ % clients.size()];
+      t = std::async(std::launch::async, &ReadExperiment::ReadRowsViaClients,
+                     this, config, thread_count,
+                     static_cast<int>(clients.size()), client,
+                     error_sink);
+    }
+    for (auto& t : tasks) {
+      sink(t.get());
+    }
+  }
+
+  std::vector<RowCpuSample> ReadRowsViaClients(Config const& config,
+                                               int thread_count,
+                                               int client_count,
+                                               cs::Client client,
+                                               ErrorSink const& error_sink) {
+    std::vector<RowCpuSample> samples;
+    // We expect about 50 reads per second per thread, so allocate enough
+    // memory to start.
+    samples.reserve(config.iteration_duration.count() * 50);
+    std::vector<google::cloud::Status> errors;
+    for (auto start = std::chrono::steady_clock::now(),
+              deadline = start + config.iteration_duration;
+         start < deadline; start = std::chrono::steady_clock::now()) {
+      auto key = RandomKeySet(config);
+
+      SimpleTimer timer;
+      timer.Start();
+      auto rows = client.Read("KeyValue", key, {"Key", "Data"});
+      int row_count = 0;
+      for (auto& row :
+           cs::StreamOf<std::tuple<std::int64_t, std::string>>(rows)) {
+        if (!row) {
+          errors.push_back(std::move(row).status());
+          break;
+        }
+        ++row_count;
+      }
+      timer.Stop();
+      samples.push_back(RowCpuSample{thread_count, client_count, false,
+                                     row_count, timer.elapsed_time(),
+                                     timer.cpu_time()});
+    }
+
+    error_sink(std::move(errors));
+    return samples;
+  }
+
+  cs::KeySet RandomKeySet(Config const& config) {
+    std::lock_guard<std::mutex> lk(mu_);
+    auto begin = std::uniform_int_distribution<std::int64_t>(
+        0, config.table_size - config.query_size)(generator_);
+    auto end = begin + config.query_size - 1;
+    return cs::KeySet().AddRange(cs::MakeKeyBoundClosed(cs::Value(begin)),
+                                 cs::MakeKeyBoundClosed(cs::Value(end)));
+  }
 
   void SetUpTask(Config const& config, cs::Client client, int task_count,
                  int task_id) {
@@ -305,268 +564,38 @@ class ReadExperiment : public Experiment {
     force_flush();
   }
 
-  void SetUp(Config const& config, cs::Database const& database) override {
-    // We need to populate some data or all the requests to read will fail.
-    cs::Client client(cs::MakeConnection(database));
-    std::cout << "# Populating database " << std::flush;
-    int const task_count = 16;
-    std::vector<std::future<void>> tasks(task_count);
-    int task_id = 0;
-    for (auto& t : tasks) {
-      t = std::async(std::launch::async,
-                     [this, &config, &client](int tc, int ti) {
-                       SetUpTask(config, client, tc, ti);
-                     },
-                     task_count, task_id++);
-    }
-    for (auto& t : tasks) {
-      t.get();
-    }
-    std::cout << " DONE\n";
-  }
-
-  void Run(Config const& config, cs::Database const& database,
-           SampleSink const& sink) override {
-    std::cout << config << std::flush;
-    // Create enough clients and stubs for the worst case
-    std::vector<cs::Client> clients;
-    std::vector<std::shared_ptr<cs::internal::SpannerStub>> stubs;
-    std::cout << "# Creating clients " << std::flush;
-    for (int i = 0; i != config.maximum_clients; ++i) {
-      auto options = cs::ConnectionOptions().set_channel_pool_domain(
-          "task:" + std::to_string(i));
-      clients.emplace_back(cs::Client(cs::MakeConnection(database, options)));
-      stubs.emplace_back(cs::internal::CreateDefaultSpannerStub(options));
-      std::cout << '.' << std::flush;
-    }
-    std::cout << " DONE\n";
-
-    std::uniform_int_distribution<int> use_stubs_gen(0, 1);
-    std::uniform_int_distribution<int> thread_count_gen(config.minimum_threads,
-                                                        config.maximum_threads);
-
-    // Capture some overall getrusage() statistics as comments.
-    SimpleTimer overall;
-    overall.Start();
-    for (int i = 0; i != config.samples; ++i) {
-      auto const use_stubs = use_stubs_gen(generator_) == 1;
-      auto const thread_count = thread_count_gen(generator_);
-      // TODO(#1000) - avoid deadlocks with more than 100 threads per client
-      auto const min_clients = (std::max<std::size_t>)(thread_count / 100 + 1,
-                                                       config.minimum_clients);
-      auto const max_clients = clients.size();
-      auto const client_count = [min_clients, max_clients, this] {
-        if (min_clients <= max_clients) {
-          return min_clients;
-        }
-        return std::uniform_int_distribution<std::size_t>(
-            min_clients, max_clients - 1)(generator_);
-      }();
-      if (use_stubs) {
-        std::vector<std::shared_ptr<cs::internal::SpannerStub>> iteration_stubs(
-            stubs.begin(), stubs.begin() + client_count);
-        RunIteration(config, iteration_stubs, thread_count, sink);
-        continue;
-      }
-      std::vector<cs::Client> iteration_clients(clients.begin(),
-                                                clients.begin() + client_count);
-      RunIteration(config, iteration_clients, thread_count, sink);
-    }
-    overall.Stop();
-    std::cout << overall.annotations();
-  }
-
-  void RunIteration(
-      Config const& config,
-      std::vector<std::shared_ptr<cs::internal::SpannerStub>> const& stubs,
-      int thread_count, SampleSink const& sink) {
-    std::uniform_int_distribution<std::int64_t> random_key(
-        0, config.table_size - config.query_size);
-    RandomKeyGenerator locked_random_key = [this, &random_key] {
-      std::lock_guard<std::mutex> lk(mu_);
-      return random_key(generator_);
-    };
-
-    std::mutex cerr_mu;
-    ErrorSink error_sink =
-        [&cerr_mu](std::vector<google::cloud::Status> const& errors) {
-          std::lock_guard<std::mutex> lk(cerr_mu);
-          for (auto const& e : errors) {
-            std::cerr << "# " << e << "\n";
-          }
-        };
-
-    std::vector<std::future<std::vector<RowCpuSample>>> tasks(thread_count);
-    int task_id = 0;
-    for (auto& t : tasks) {
-      auto client = stubs[task_id++ % stubs.size()];
-      t = std::async(std::launch::async, &ReadExperiment::ReadRowsViaStub, this,
-                     config, thread_count, static_cast<int>(stubs.size()),
-                     cs::Database(config.project_id, config.instance_id,
-                                  config.database_id),
-                     client, locked_random_key, error_sink);
-    }
-    for (auto& t : tasks) {
-      sink(t.get());
-    }
-  }
-
-  std::vector<RowCpuSample> ReadRowsViaStub(
-      Config const& config, int thread_count, int client_count,
-      cs::Database const& database,
-      std::shared_ptr<cs::internal::SpannerStub> stub,
-      RandomKeyGenerator const& key_generator, ErrorSink const& error_sink) {
-    auto session = [&]() -> google::cloud::StatusOr<std::string> {
-      grpc::ClientContext context;
-      google::spanner::v1::CreateSessionRequest request{};
-      request.set_database(database.FullName());
-      auto response = stub->CreateSession(context, request);
-      if (!response) return std::move(response).status();
-      return response->name();
-    }();
-
-    std::vector<RowCpuSample> samples;
-    // We expect about 50 reads per second per thread. Use that to estimate the
-    // size of the vector.
-    samples.reserve(config.iteration_duration.count() * 50);
-    std::vector<google::cloud::Status> errors;
-    for (auto start = std::chrono::steady_clock::now(),
-              deadline = start + config.iteration_duration;
-         start < deadline; start = std::chrono::steady_clock::now()) {
-      auto begin = key_generator();
-      auto end = begin + config.query_size - 1;
-      auto key = cs::KeySet().AddRange(cs::MakeKeyBoundClosed(cs::Value(begin)),
-                                       cs::MakeKeyBoundClosed(cs::Value(end)));
-
-      SimpleTimer timer;
-      timer.Start();
-
-      grpc::ClientContext context;
-      google::spanner::v1::ReadRequest request{};
-      request.set_session(*session);
-      request.set_table("KeyValue");
-      request.add_columns("Key");
-      request.add_columns("Data");
-      *request.mutable_key_set() = cs::internal::ToProto(key);
-      auto stream = stub->StreamingRead(context, request);
-      int row_count = 0;
-      google::spanner::v1::PartialResultSet result;
-      for (bool success = stream->Read(&result); success;
-           success = stream->Read(&result)) {
-        if (!result.chunked_value()) {
-          row_count += result.values_size() / 2;
-        }
-      }
-      auto final = stream->Finish();
-      if (!final.ok()) {
-        errors.push_back(
-            google::cloud::grpc_utils::MakeStatusFromRpcError(final));
-        continue;
-      }
-      timer.Stop();
-      samples.push_back(RowCpuSample{thread_count, client_count, true,
-                                     row_count, timer.elapsed_time(),
-                                     timer.cpu_time()});
-    }
-
-    error_sink(std::move(errors));
-    return samples;
-  }
-
-  void RunIteration(Config const& config,
-                    std::vector<cs::Client> const& clients, int thread_count,
-                    SampleSink const& sink) {
-    std::uniform_int_distribution<std::int64_t> random_key(
-        0, config.table_size - config.query_size);
-    RandomKeyGenerator locked_random_key = [this, &random_key] {
-      std::lock_guard<std::mutex> lk(mu_);
-      return random_key(generator_);
-    };
-
-    std::mutex cerr_mu;
-    ErrorSink error_sink =
-        [&cerr_mu](std::vector<google::cloud::Status> const& errors) {
-          std::lock_guard<std::mutex> lk(cerr_mu);
-          for (auto const& e : errors) {
-            std::cerr << "# " << e << "\n";
-          }
-        };
-
-    std::vector<std::future<std::vector<RowCpuSample>>> tasks(thread_count);
-    int task_id = 0;
-    for (auto& t : tasks) {
-      auto client = clients[task_id++ % clients.size()];
-      t = std::async(std::launch::async, &ReadExperiment::ReadRows, this,
-                     config, thread_count, static_cast<int>(clients.size()),
-                     client, locked_random_key, error_sink);
-    }
-    for (auto& t : tasks) {
-      sink(t.get());
-    }
-  }
-
-  std::vector<RowCpuSample> ReadRows(Config const& config, int thread_count,
-                                     int client_count, cs::Client client,
-                                     RandomKeyGenerator const& key_generator,
-                                     ErrorSink const& error_sink) {
-    std::vector<RowCpuSample> samples;
-    // We expect about 50 reads per second per thread, so allocate enough
-    // memory to start.
-    samples.reserve(config.iteration_duration.count() * 50);
-    std::vector<google::cloud::Status> errors;
-    for (auto start = std::chrono::steady_clock::now(),
-              deadline = start + config.iteration_duration;
-         start < deadline; start = std::chrono::steady_clock::now()) {
-      auto begin = key_generator();
-      auto end = begin + config.query_size - 1;
-      auto key = cs::KeySet().AddRange(cs::MakeKeyBoundClosed(cs::Value(begin)),
-                                       cs::MakeKeyBoundClosed(cs::Value(end)));
-
-      SimpleTimer timer;
-      timer.Start();
-      auto rows = client.Read("KeyValue", key, {"Key", "Data"});
-      int row_count = 0;
-      for (auto& row :
-           cs::StreamOf<std::tuple<std::int64_t, std::string>>(rows)) {
-        if (!row) {
-          errors.push_back(std::move(row).status());
-          break;
-        }
-        ++row_count;
-      }
-      timer.Stop();
-      samples.push_back(RowCpuSample{thread_count, client_count, false,
-                                     row_count, timer.elapsed_time(),
-                                     timer.cpu_time()});
-    }
-
-    error_sink(std::move(errors));
-    return samples;
-  }
-
- private:
   std::mutex mu_;
   google::cloud::internal::DefaultPRNG generator_;
 };
 
 class RunAllExperiment : public Experiment {
  public:
-  void SetUp(Config const&, cs::Database const&) override {}
+  Status SetUp(Config const&, cs::Database const&) override { return {}; }
+  Status TearDown(Config const&, cs::Database const&) override { return {}; }
 
-  void Run(Config const& cfg, cs::Database const& database,
-           SampleSink const& sink) override {
+  Status Run(google::cloud::internal::DefaultPRNG generator, Config const& cfg,
+             cs::Database const& database, SampleSink const&) override {
     // Smoke test all the experiments by running a very small version of each.
     for (auto& kv : AvailableExperiments()) {
       // Do not recurse, skip this experiment.
       if (kv.first == "run-all") continue;
       Config config = cfg;
-      config.table_size = 10;
+      config.experiment = kv.first;
       config.samples = 2;
       config.iteration_duration = std::chrono::seconds(1);
+      config.minimum_threads = 1;
+      config.maximum_threads = 1;
+      config.minimum_clients = 1;
+      config.maximum_clients = 1;
+      config.table_size = 10;
+      config.query_size = 1;
       std::cout << "# Smoke test for experiment: " << kv.first << "\n";
+      auto discard = [](std::vector<RowCpuSample> const&) {};
       kv.second->SetUp(config, database);
-      kv.second->Run(config, database, sink);
+      kv.second->Run(generator, config, database, discard);
+      kv.second->TearDown(config, database);
     }
+    return {};
   }
 };
 
