@@ -721,7 +721,7 @@ template&lt;typename T &gt; </div>
 </ul>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <div class="fragment"><div class="line">spanner::Value v{3.14};</div><div class="line">StatusOr&lt;double&gt; d = v.get&lt;<span class="keywordtype">double</span>&gt;();</div><div class="line"><span class="keywordflow">if</span> (d) {</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;d=&quot;</span> &lt;&lt; *d;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// Now using a &quot;null&quot; std::int64_t</span></div><div class="line">v = spanner::MakeNullValue&lt;std::int64_t&gt;();</div><div class="line">StatusOr&lt;std::int64_t&gt; i = v.get&lt;std::int64_t&gt;();</div><div class="line"><span class="keywordflow">if</span> (!i) {</div><div class="line">  std::cerr &lt;&lt; <span class="stringliteral">&quot;Could not get integer: &quot;</span> &lt;&lt; i.status();</div><div class="line">}</div><div class="line"></div><div class="line">StatusOr&lt;optional&lt;std::int64_t&gt;&gt; j = v.get&lt;optional&lt;std::int64_t&gt;();</div><div class="line">assert(j.ok());  <span class="comment">// Since we know the types match in this example</span></div><div class="line">assert(!v-&gt;has_value());  <span class="comment">// Since we know v was null in this example</span></div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00291">291</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00290">290</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -850,7 +850,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00108">108</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00106">106</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
 
 </div>
 </div>
@@ -891,7 +891,7 @@ template&lt;typename T &gt; </div>
 <p>Allows Google Test to print internal debugging information when test assertions fail. </p>
 <dl class="section warning"><dt>Warning</dt><dd>This is intended for debugging and human consumption only, not machine consumption as the output format may change without notice. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00112">112</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00110">110</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
 
 </div>
 </div>
