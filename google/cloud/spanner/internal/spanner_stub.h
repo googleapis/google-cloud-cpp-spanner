@@ -103,7 +103,8 @@ class SpannerStub {
 };
 
 /**
- * Creates a SpannerStub configured with @p options.
+ * Creates a SpannerStub configured with @p options and @p channel_id.
+ *
  * @p channel_id should be unique among all stubs in the same Connection pool,
  * to ensure they use different underlying connections.
  */
