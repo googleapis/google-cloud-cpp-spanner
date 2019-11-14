@@ -698,7 +698,7 @@ google::cloud::StatusOr<Config> ParseArgs(std::vector<std::string> args) {
 
   if (config.query_size <= 0) {
     std::ostringstream os;
-    os << "The query size (" << config.query_size << ") should be > 1";
+    os << "The query size (" << config.query_size << ") should be > 0";
     return invalid_argument(os.str());
   }
 
