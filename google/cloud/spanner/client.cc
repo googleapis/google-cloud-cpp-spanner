@@ -222,8 +222,8 @@ std::shared_ptr<Connection> MakeConnection(Database const& db,
   std::vector<std::shared_ptr<internal::SpannerStub>> stubs;
   int num_channels = std::min(options.num_channels(), 1);
   stubs.reserve(num_channels);
-  for (int i = 0; i < num_channels; ++i) {
-    stubs.push_back(internal::CreateDefaultSpannerStub(options));
+  for (int channel_id = 0; channel_id < num_channels; ++channel_id) {
+    stubs.push_back(internal::CreateDefaultSpannerStub(options, channel_id));
   }
   return internal::MakeConnection(db, std::move(stubs));
 }

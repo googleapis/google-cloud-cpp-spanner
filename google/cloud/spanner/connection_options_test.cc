@@ -50,9 +50,11 @@ TEST(ConnectionOptionsTest, AdminEndpoint) {
 
 TEST(ConnectionOptionsTest, NumChannels) {
   ConnectionOptions options(grpc::InsecureChannelCredentials());
-  EXPECT_EQ(1, options.num_channels());
-  options.set_num_channels(4);
-  EXPECT_EQ(4, options.num_channels());
+  int num_channels = options.num_channels();
+  EXPECT_LT(0, num_channels);
+  num_channels *= 2;  // ensure we change it from the default value.
+  options.set_num_channels(num_channels);
+  EXPECT_EQ(num_channels, options.num_channels());
 }
 
 TEST(ConnectionOptionsTest, Tracing) {

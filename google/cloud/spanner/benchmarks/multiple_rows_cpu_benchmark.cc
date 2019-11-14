@@ -314,7 +314,7 @@ class ReadExperiment : public Experiment {
       auto options = cs::ConnectionOptions().set_channel_pool_domain(
           "task:" + std::to_string(i));
       clients.emplace_back(cs::Client(cs::MakeConnection(database, options)));
-      stubs.emplace_back(cs::internal::CreateDefaultSpannerStub(options));
+      stubs.emplace_back(cs::internal::CreateDefaultSpannerStub(options, i));
       std::cout << '.' << std::flush;
     }
     std::cout << " DONE\n";
