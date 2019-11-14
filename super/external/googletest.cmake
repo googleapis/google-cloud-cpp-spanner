@@ -14,8 +14,7 @@
 # limitations under the License.
 # ~~~
 
-include(ExternalProject)
-include(external/external-project-helpers)
+include(ExternalProjectHelper)
 
 if (NOT TARGET googletest-project)
     # Give application developers a hook to configure the version and hash
@@ -25,10 +24,10 @@ if (NOT TARGET googletest-project)
     set(GOOGLE_CLOUD_CPP_GOOGLETEST_SHA256
         "9dc9157a9a1551ec7a7e43daea9a694a0bb5fb8bec81235d8a1e6ef64c716dcb")
 
-    google_cloud_cpp_set_prefix_vars()
-
     set_external_project_build_parallel_level(PARALLEL)
+    set_external_project_vars()
 
+    include(ExternalProject)
     ExternalProject_Add(
         googletest-project
         EXCLUDE_FROM_ALL ON
@@ -37,7 +36,7 @@ if (NOT TARGET googletest-project)
         URL ${GOOGLE_CLOUD_CPP_GOOGLETEST_URL}
         URL_HASH SHA256=${GOOGLE_CLOUD_CPP_GOOGLETEST_SHA256}
         LIST_SEPARATOR |
-        CMAKE_ARGS -G${CMAKE_GENERATOR}
+        CMAKE_ARGS ${GOOGLE_CLOUD_CPP_EXTERNAL_PROJECT_CMAKE_FLAGS}
                    -DCMAKE_PREFIX_PATH=${GOOGLE_CLOUD_CPP_PREFIX_PATH}
                    -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
                    -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>

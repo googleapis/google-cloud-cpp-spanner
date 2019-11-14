@@ -53,7 +53,7 @@ this case. Note that if Ninja is not installed in your workstation you may need
 to remove the `-GNinja` flag:
 
 ```console
-cmake -Hsuper -Bcmake-out/si \
+cmake -Hsuper -Bcmake-out/si -DCMAKE_BUILD_TYPE=Release \
     -DGOOGLE_CLOUD_CPP_EXTERNAL_PREFIX=$HOME/local-spanner -GNinja
 ```
 

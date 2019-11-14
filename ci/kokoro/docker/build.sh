@@ -133,6 +133,8 @@ elif [[ "${BUILD_NAME}" = "cmake" ]]; then
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "cmake-super" ]]; then
   export CMAKE_SOURCE_DIR="super"
+  export BUILD_TYPE=Release
+  export CMAKE_FLAGS=-DBUILD_SHARED_LIBS=yes
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "gcc-4.8" ]]; then
   # The oldest version of GCC we support is 4.8, this build checks the code

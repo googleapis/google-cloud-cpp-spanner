@@ -14,8 +14,7 @@
 # limitations under the License.
 # ~~~
 
-include(ExternalProject)
-include(external/external-project-helpers)
+include(ExternalProjectHelper)
 
 if (NOT TARGET c-ares-project)
     # Give application developers a hook to configure the version and hash
@@ -25,10 +24,10 @@ if (NOT TARGET c-ares-project)
     set(GOOGLE_CLOUD_CPP_C_ARES_SHA256
         "62dd12f0557918f89ad6f5b759f0bf4727174ae9979499f5452c02be38d9d3e8")
 
-    google_cloud_cpp_set_prefix_vars()
-
     set_external_project_build_parallel_level(PARALLEL)
+    set_external_project_vars()
 
+    include(ExternalProject)
     ExternalProject_Add(
         c-ares-project
         EXCLUDE_FROM_ALL ON
@@ -37,7 +36,7 @@ if (NOT TARGET c-ares-project)
         URL ${GOOGLE_CLOUD_CPP_C_ARES_URL}
         URL_HASH SHA256=${GOOGLE_CLOUD_CPP_C_ARES_SHA256}
         LIST_SEPARATOR |
-        CMAKE_ARGS -G${CMAKE_GENERATOR}
+        CMAKE_ARGS ${GOOGLE_CLOUD_CPP_EXTERNAL_PROJECT_CMAKE_FLAGS}
                    -DCMAKE_PREFIX_PATH=${GOOGLE_CLOUD_CPP_PREFIX_PATH}
                    -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
                    -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>

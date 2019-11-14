@@ -14,8 +14,7 @@
 # limitations under the License.
 # ~~~
 
-include(ExternalProject)
-include(external/external-project-helpers)
+include(ExternalProjectHelper)
 include(external/grpc)
 include(external/googleapis)
 include(external/googletest)
@@ -29,9 +28,8 @@ if (NOT TARGET google-cloud-cpp-common-project)
     set(GOOGLE_CLOUD_CPP_SHA256
         "ea7f8f64ee8a6964f8755d1024b908bf13170e505f54b57ffc72c0002d478b8c")
 
-    google_cloud_cpp_set_prefix_vars()
-
     set_external_project_build_parallel_level(PARALLEL)
+    set_external_project_vars()
 
     ExternalProject_Add(
         google-cloud-cpp-common-project
@@ -42,14 +40,20 @@ if (NOT TARGET google-cloud-cpp-common-project)
         URL ${GOOGLE_CLOUD_CPP_URL}
         URL_HASH SHA256=${GOOGLE_CLOUD_CPP_SHA256}
         LIST_SEPARATOR |
-        CMAKE_ARGS -DBUILD_TESTING=OFF
-                   -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON
-                   -DCMAKE_PREFIX_PATH=${GOOGLE_CLOUD_CPP_PREFIX_PATH}
-                   -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
-                   -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+        CONFIGURE_COMMAND
+            ${CMAKE_COMMAND}
+            -G${CMAKE_GENERATOR}
+            ${GOOGLE_CLOUD_CPP_EXTERNAL_PROJECT_CMAKE_FLAGS}
+            -DCMAKE_PREFIX_PATH=${GOOGLE_CLOUD_CPP_PREFIX_PATH}
+            -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
+            -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+            -DBUILD_TESTING=OFF
+            -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON
+            -H<SOURCE_DIR>
+            -B<BINARY_DIR>
         BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> ${PARALLEL}
         LOG_DOWNLOAD ON
-        LOG_CONFIGURE OFF
-        LOG_BUILD OFF
-        LOG_INSTALL OFF)
+        LOG_CONFIGURE ON
+        LOG_BUILD ON
+        LOG_INSTALL ON)
 endif ()

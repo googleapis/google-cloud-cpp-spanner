@@ -14,6 +14,14 @@
 # limitations under the License.
 # ~~~
 
+include(ExternalProject)
+include(GNUInstallDirs)
+
+set(GOOGLE_CLOUD_CPP_EXTERNAL_PREFIX
+    "${CMAKE_BINARY_DIR}/external"
+    CACHE STRING "Configure where the external projects are installed.")
+mark_as_advanced(GOOGLE_CLOUD_CPP_EXTERNAL_PREFIX)
+
 function (set_external_project_build_parallel_level var_name)
     if ("${CMAKE_GENERATOR}" STREQUAL "Unix Makefiles" OR "${CMAKE_GENERATOR}"
                                                           STREQUAL "Ninja")
@@ -35,12 +43,28 @@ function (set_external_project_build_parallel_level var_name)
     endif ()
 endfunction ()
 
-set(GOOGLE_CLOUD_CPP_EXTERNAL_PREFIX
-    "${CMAKE_BINARY_DIR}/local"
-    CACHE STRING "Configure where are the external projects installed.")
-mark_as_advanced(GOOGLE_CLOUD_CPP_EXTERNAL_PREFIX)
+function (set_external_project_vars)
+    set(GOOGLE_CLOUD_CPP_INSTALL_RPATH "<INSTALL_DIR>/lib;<INSTALL_DIR>/lib64")
 
-function (google_cloud_cpp_set_prefix_vars)
+    # On Linux, using an RPATH that is neither an absolute or relative path is
+    # considered a security risk and will cause package building to fail. We use
+    # the Linux-specific variable $ORIGIN to resolve this.
+    if (UNIX AND NOT APPLE)
+        set(GOOGLE_CLOUD_CPP_INSTALL_RPATH
+            "\\\$ORIGIN/../lib;\\\$ORIGIN/../lib64")
+    endif ()
+
+    set(GOOGLE_CLOUD_CPP_PREFIX_PATH
+        "${CMAKE_PREFIX_PATH}" "${GOOGLE_CLOUD_CPP_EXTERNAL_PREFIX}"
+        "<INSTALL_DIR>")
+
+    set(GOOGLE_CLOUD_CPP_EXTERNAL_PROJECT_CMAKE_FLAGS
+        ${GOOGLE_CLOUD_CPP_EXTERNAL_PROJECT_CCACHE}
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+        -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+        -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS})
+
     # When passing a semi-colon delimited list to ExternalProject_Add, we need
     # to escape the semi-colon. Quoting does not work and escaping the semi-
     # colon does not seem to work (see https://reviews.llvm.org/D40257). A
@@ -49,19 +73,19 @@ function (google_cloud_cpp_set_prefix_vars)
     # multiple directories for our RPATH. Normally, it'd make sense to use : as
     # a delimiter since it is a typical path-list separator, but it is a special
     # character in CMake.
-    set(GOOGLE_CLOUD_CPP_PREFIX_PATH "${CMAKE_PREFIX_PATH};<INSTALL_DIR>")
+    string(REPLACE ";" "|" GOOGLE_CLOUD_CPP_INSTALL_RPATH
+                   "${GOOGLE_CLOUD_CPP_INSTALL_RPATH}")
     string(REPLACE ";" "|" GOOGLE_CLOUD_CPP_PREFIX_PATH
                    "${GOOGLE_CLOUD_CPP_PREFIX_PATH}")
 
-    # Depending on the platform libraries get installed in `lib` or `lib64`
-    set(GOOGLE_CLOUD_CPP_INSTALL_RPATH "<INSTALL_DIR>/lib;<INSTALL_DIR>/lib64")
-    string(REPLACE ";" "|" GOOGLE_CLOUD_CPP_INSTALL_RPATH
-                   "${GOOGLE_CLOUD_CPP_INSTALL_RPATH}")
-
+    set(GOOGLE_CLOUD_CPP_INSTALL_RPATH
+        "${GOOGLE_CLOUD_CPP_INSTALL_RPATH}"
+        PARENT_SCOPE)
     set(GOOGLE_CLOUD_CPP_PREFIX_PATH
         "${GOOGLE_CLOUD_CPP_PREFIX_PATH}"
         PARENT_SCOPE)
-    set(GOOGLE_CLOUD_CPP_PREFIX_RPATH
-        "${GOOGLE_CLOUD_CPP_PREFIX_RPATH}"
+    set(GOOGLE_CLOUD_CPP_EXTERNAL_PROJECT_CMAKE_FLAGS
+        "${GOOGLE_CLOUD_CPP_EXTERNAL_PROJECT_CMAKE_FLAGS}"
         PARENT_SCOPE)
+
 endfunction ()

@@ -25,11 +25,10 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
 
 include(external/google-cloud-cpp-common)
 include(external/googletest)
-include(external/external-project-helpers)
 
-google_cloud_cpp_set_prefix_vars()
-
+include(ExternalProjectHelper)
 set_external_project_build_parallel_level(PARALLEL)
+set_external_project_vars()
 
 include(ExternalProject)
 ExternalProject_Add(
@@ -45,7 +44,7 @@ ExternalProject_Add(
         SOURCE_DIR
         "${GOOGLE_CLOUD_CPP_SPANNER_ROOT}"
     LIST_SEPARATOR |
-    CMAKE_ARGS -G${CMAKE_GENERATOR}
+    CMAKE_ARGS ${GOOGLE_CLOUD_CPP_EXTERNAL_PROJECT_CMAKE_FLAGS}
                -DCMAKE_PREFIX_PATH=${GOOGLE_CLOUD_CPP_PREFIX_PATH}
                -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
                -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
