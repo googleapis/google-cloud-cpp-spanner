@@ -1166,6 +1166,7 @@ void QueryData(google::cloud::spanner::Client client) {
 void DmlGettingStartedInsert(google::cloud::spanner::Client client) {
   using google::cloud::StatusOr;
   namespace spanner = google::cloud::spanner;
+
   auto commit_result = client.Commit(
       [&client](spanner::Transaction txn) -> StatusOr<spanner::Mutations> {
         auto insert = client.ExecuteDml(
