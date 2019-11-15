@@ -295,11 +295,12 @@ class ReadExperiment : public Experiment {
     std::vector<std::future<void>> tasks(task_count);
     int task_id = 0;
     for (auto& t : tasks) {
-      t = std::async(std::launch::async,
-                     [this, &config, &client](int tc, int ti) {
-                       SetUpTask(config, client, tc, ti);
-                     },
-                     task_count, task_id++);
+      t = std::async(
+          std::launch::async,
+          [this, &config, &client](int tc, int ti) {
+            SetUpTask(config, client, tc, ti);
+          },
+          task_count, task_id++);
     }
     for (auto& t : tasks) {
       t.get();
@@ -401,7 +402,9 @@ class ReadExperiment : public Experiment {
     // We expect about 50 reads per second per thread. Use that to estimate the
     // size of the vector.
     samples.reserve(config.iteration_duration.count() * 50);
-    std::vector<google::cloud::Status> errors;
+    std::vector<std::string> const columns{"Key",   "Data0", "Data1", "Data2",
+                                           "Data3", "Data4", "Data5", "Data6",
+                                           "Data7", "Data8", "Data9"};
     for (auto start = std::chrono::steady_clock::now(),
               deadline = start + config.iteration_duration;
          start < deadline; start = std::chrono::steady_clock::now()) {
@@ -410,23 +413,37 @@ class ReadExperiment : public Experiment {
       SimpleTimer timer;
       timer.Start();
 
-      grpc::ClientContext context;
       google::spanner::v1::ReadRequest request{};
       request.set_session(*session);
+      request.mutable_transaction()
+          ->mutable_single_use()
+          ->mutable_read_only()
+          ->Clear();
       request.set_table("KeyValue");
-      for (auto const& name :
-           {"Key", "Data0", "Data1", "Data2", "Data3", "Data4", "Data5",
-            "Data6", "Data7", "Data8", "Data9"}) {
+      for (auto const& name : columns) {
         request.add_columns(name);
       }
       *request.mutable_key_set() = cs::internal::ToProto(key);
-      auto stream = stub->StreamingRead(context, request);
+
       int row_count = 0;
       google::spanner::v1::PartialResultSet result;
+      std::vector<google::protobuf::Value> row;
+      grpc::ClientContext context;
+      auto stream = stub->StreamingRead(context, request);
       for (bool success = stream->Read(&result); success;
            success = stream->Read(&result)) {
-        if (!result.chunked_value()) {
-          row_count += result.values_size() / 2;
+        if (result.chunked_value()) {
+          // We do not handle chunked values in the benchmark.
+          continue;
+        }
+        row.resize(columns.size());
+        std::size_t index = 0;
+        for (auto& value : *result.mutable_values()) {
+          row[index++] = std::move(value);
+          if (index == columns.size()) {
+            ++row_count;
+            index = 0;
+          }
         }
       }
       auto final = stream->Finish();
@@ -470,7 +487,6 @@ class ReadExperiment : public Experiment {
     // We expect about 50 reads per second per thread, so allocate enough
     // memory to start.
     samples.reserve(config.iteration_duration.count() * 50);
-    std::vector<google::cloud::Status> errors;
     for (auto start = std::chrono::steady_clock::now(),
               deadline = start + config.iteration_duration;
          start < deadline; start = std::chrono::steady_clock::now()) {
