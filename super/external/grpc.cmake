@@ -14,8 +14,7 @@
 # limitations under the License.
 # ~~~
 
-include(ExternalProject)
-include(external/external-project-helpers)
+include(ExternalProjectHelper)
 include(external/c-ares)
 include(external/ssl)
 include(external/protobuf)
@@ -24,14 +23,14 @@ if (NOT TARGET grpc-project)
     # Give application developers a hook to configure the version and hash
     # downloaded from GitHub.
     set(GOOGLE_CLOUD_CPP_GRPC_URL
-        "https://github.com/grpc/grpc/archive/v1.21.0.tar.gz")
+        "https://github.com/grpc/grpc/archive/v1.24.3.tar.gz")
     set(GOOGLE_CLOUD_CPP_GRPC_SHA256
-        "8da7f32cc8978010d2060d740362748441b81a34e5425e108596d3fcd63a97f2")
-
-    google_cloud_cpp_set_prefix_vars()
+        "c84b3fa140fcd6cce79b3f9de6357c5733a0071e04ca4e65ba5f8d306f10f033")
 
     set_external_project_build_parallel_level(PARALLEL)
+    set_external_project_vars()
 
+    include(ExternalProject)
     ExternalProject_Add(
         grpc-project
         DEPENDS c-ares-project protobuf-project ssl-project
@@ -41,15 +40,15 @@ if (NOT TARGET grpc-project)
         URL ${GOOGLE_CLOUD_CPP_GRPC_URL}
         URL_HASH SHA256=${GOOGLE_CLOUD_CPP_GRPC_SHA256}
         LIST_SEPARATOR |
-        CMAKE_ARGS -G${CMAKE_GENERATOR}
+        CMAKE_ARGS ${GOOGLE_CLOUD_CPP_EXTERNAL_PROJECT_CMAKE_FLAGS}
+                   -DCMAKE_PREFIX_PATH=${GOOGLE_CLOUD_CPP_PREFIX_PATH}
+                   -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
+                   -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
                    -DgRPC_BUILD_TESTS=OFF
                    -DgRPC_ZLIB_PROVIDER=package
                    -DgRPC_SSL_PROVIDER=package
                    -DgRPC_CARES_PROVIDER=package
                    -DgRPC_PROTOBUF_PROVIDER=package
-                   -DCMAKE_PREFIX_PATH=${GOOGLE_CLOUD_CPP_PREFIX_PATH}
-                   -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
-                   -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
         BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> ${PARALLEL}
         LOG_DOWNLOAD ON
         LOG_CONFIGURE ON

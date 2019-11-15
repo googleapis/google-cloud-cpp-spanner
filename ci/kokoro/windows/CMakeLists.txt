@@ -24,8 +24,8 @@ set(GOOGLE_CLOUD_CPP_SPANNER_ROOT "${PROJECT_SOURCE_DIR}/../../..")
 list(APPEND CMAKE_MODULE_PATH "${GOOGLE_CLOUD_CPP_SPANNER_ROOT}/cmake"
             "${GOOGLE_CLOUD_CPP_SPANNER_ROOT}/super")
 
-include(external/external-project-helpers)
-google_cloud_cpp_set_prefix_vars()
+include(ExternalProjectHelper)
+set_external_project_vars()
 
 include(ExternalProject)
 set(GOOGLE_CLOUD_CPP_URL
@@ -33,7 +33,6 @@ set(GOOGLE_CLOUD_CPP_URL
 )
 set(GOOGLE_CLOUD_CPP_SHA256
     "ea7f8f64ee8a6964f8755d1024b908bf13170e505f54b57ffc72c0002d478b8c")
-google_cloud_cpp_set_prefix_vars()
 
 ExternalProject_Add(
     # Use very short names for the project. On Windows the path limit is about
