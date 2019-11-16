@@ -979,14 +979,14 @@ void QueryNewColumn(google::cloud::spanner::Client client) {
     std::cout << "SingerId: " << std::get<0>(*row) << "\t";
     std::cout << "AlbumId: " << std::get<1>(*row) << "\t";
     auto marketing_budget = std::get<2>(*row);
-    if (marketing_budget.has_value()) {
+    if (marketing_budget) {
       std::cout << "MarketingBudget: " << marketing_budget.value() << "\n";
     } else {
       std::cout << "MarketingBudget: NULL"
                 << "\n";
     }
   }
-  std::cout << "Read completed for [spanner_read_data_with_storing_index]\n";
+  std::cout << "Read completed for [spanner_read_data_with_new_column]\n";
 }
 //! [END spanner_query_data_with_new_column]
 
@@ -1006,7 +1006,7 @@ void ReadDataWithStoringIndex(google::cloud::spanner::Client client) {
     std::cout << "AlbumId: " << std::get<0>(*row) << "\t";
     std::cout << "AlbumTitle: " << std::get<1>(*row) << "\t";
     auto marketing_budget = std::get<2>(*row);
-    if (marketing_budget.has_value()) {
+    if (marketing_budget) {
       std::cout << "MarketingBudget: " << marketing_budget.value() << "\n";
     } else {
       std::cout << "MarketingBudget: NULL"
