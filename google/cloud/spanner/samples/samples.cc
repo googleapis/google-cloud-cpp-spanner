@@ -1181,8 +1181,9 @@ void DmlPartitionedUpdate(google::cloud::spanner::Client client) {
 //! [START spanner_dml_structs]
 void DmlStructs(google::cloud::spanner::Client client) {
   namespace spanner = google::cloud::spanner;
+  std::int64_t rows_modified = 0;
   auto commit_result =
-      client.Commit([&client](spanner::Transaction const& txn)
+      client.Commit([&client, &rows_modified](spanner::Transaction const& txn)
                         -> google::cloud::StatusOr<spanner::Mutations> {
         auto singer_info = std::make_tuple("Marc", "Richards");
         auto sql = spanner::SqlStatement(
@@ -1192,12 +1193,14 @@ void DmlStructs(google::cloud::spanner::Client client) {
             {{"name", spanner::Value(std::move(singer_info))}});
         auto dml_result = client.ExecuteDml(txn, std::move(sql));
         if (!dml_result) return dml_result.status();
+        rows_modified = dml_result->RowsModified();
         return spanner::Mutations{};
       });
   if (!commit_result) {
     throw std::runtime_error(commit_result.status().message());
   }
-  std::cout << "Update was successful [spanner_dml_structs]\n";
+  std::cout << rows_modified
+            << " update was successful [spanner_dml_structs]\n";
 }
 //! [END spanner_dml_structs]
 
