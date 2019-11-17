@@ -1563,7 +1563,8 @@ int RunOneCommand(std::vector<std::string> argv) {
   using SampleFunction = void (*)(google::cloud::spanner::Client);
 
   using CommandMap = std::map<std::string, CommandType>;
-  auto make_command_entry = [](std::string sample_name, SampleFunction sample) {
+  auto make_command_entry = [](std::string const& sample_name,
+                               SampleFunction sample) {
     auto make_command = [](std::string const& sample_name,
                            SampleFunction sample) {
       return [sample_name, sample](std::vector<std::string> const& argv) {
@@ -1581,7 +1582,7 @@ int RunOneCommand(std::vector<std::string> argv) {
   using DatabaseAdminSampleFunction =
       void (*)(google::cloud::spanner::DatabaseAdminClient, std::string const&,
                std::string const&, std::string const&);
-  auto make_database_command_entry = [](std::string sample_name,
+  auto make_database_command_entry = [](std::string const& sample_name,
                                         DatabaseAdminSampleFunction sample) {
     auto make_command = [](std::string const& sample_name,
                            DatabaseAdminSampleFunction sample) {
