@@ -431,7 +431,7 @@ void CreateDatabaseCommand(std::vector<std::string> const& argv) {
   CreateDatabase(std::move(client), argv[0], argv[1], argv[2]);
 }
 
-// [START spanner_create_table_with_timestamp_column]
+//! [START spanner_create_table_with_timestamp_column]
 void CreateTableWithTimestamp(
     google::cloud::spanner::DatabaseAdminClient client,
     std::string const& project_id, std::string const& instance_id,
@@ -460,7 +460,7 @@ void CreateTableWithTimestamp(
   std::cout << "`Performances` table created, new DDL:\n"
             << metadata->DebugString() << "\n";
 }
-// [END spanner_create_table_with_timestamp_column]
+//! [END spanner_create_table_with_timestamp_column]
 
 void CreateTableWithTimestampCommand(std::vector<std::string> const& argv) {
   if (argv.size() != 3) {
@@ -471,7 +471,7 @@ void CreateTableWithTimestampCommand(std::vector<std::string> const& argv) {
   CreateTableWithTimestamp(std::move(client), argv[0], argv[1], argv[2]);
 }
 
-// [START spanner_create_index]
+//! [START spanner_create_index]
 void AddIndex(google::cloud::spanner::DatabaseAdminClient client,
               std::string const& project_id, std::string const& instance_id,
               std::string const& database_id) {
@@ -491,7 +491,7 @@ void AddIndex(google::cloud::spanner::DatabaseAdminClient client,
   std::cout << "`AlbumsByAlbumTitle` Index successfully added, new DDL:\n"
             << metadata->DebugString() << "\n";
 }
-// [END spanner_create_index]
+//! [END spanner_create_index]
 
 void AddIndexCommand(std::vector<std::string> const& argv) {
   if (argv.size() != 3) {
@@ -575,7 +575,7 @@ void AddColumnCommand(std::vector<std::string> const& argv) {
   AddColumn(std::move(client), argv[0], argv[1], argv[2]);
 }
 
-// [START spanner_create_storing_index]
+//! [START spanner_create_storing_index]
 void AddStoringIndex(google::cloud::spanner::DatabaseAdminClient client,
                      std::string const& project_id,
                      std::string const& instance_id,
@@ -597,7 +597,7 @@ void AddStoringIndex(google::cloud::spanner::DatabaseAdminClient client,
   std::cout << "`AlbumsByAlbumTitle2` Index successfully added, new DDL:\n"
             << metadata->DebugString() << "\n";
 }
-// [END spanner_create_storing_index]
+//! [END spanner_create_storing_index]
 
 void AddStoringIndexCommand(std::vector<std::string> const& argv) {
   if (argv.size() != 3) {
@@ -1348,7 +1348,7 @@ void QueryDataWithStruct(google::cloud::spanner::Client client) {
 //! [START spanner_query_data_with_array_of_struct]
 void QueryDataWithArrayOfStruct(google::cloud::spanner::Client client) {
   namespace spanner = google::cloud::spanner;
-  // [START spanner_create_array_of_struct_with_data]
+  //! [START spanner_create_array_of_struct_with_data]
   // Cloud Spanner STRUCT<> types with named fields are represented by
   // std::tuple<std::pair<std::string, T>...>, create an alias to make it easier
   // to follow this code.
@@ -1363,7 +1363,7 @@ void QueryDataWithArrayOfStruct(google::cloud::spanner::Client client) {
       make_name("Gabriel", "Wright"),
       make_name("Benjamin", "Martinez"),
   };
-  // [END spanner_create_array_of_struct_with_data]
+  //! [END spanner_create_array_of_struct_with_data]
 
   auto rows = client.ExecuteQuery(spanner::SqlStatement(
       "SELECT SingerId FROM Singers"
