@@ -367,6 +367,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ad64a57ca097a9fe1edb54fac2e3142a0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ad64a57ca097a9fe1edb54fac2e3142a0">MakeTestRow</a> (Ts &amp;&amp;... ts)</td></tr>
 <tr class="memdesc:ad64a57ca097a9fe1edb54fac2e3142a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> with <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>s created from the given arguments and with auto-generated column names.  <a href="#ad64a57ca097a9fe1edb54fac2e3142a0">More...</a><br /></td></tr>
 <tr class="separator:ad64a57ca097a9fe1edb54fac2e3142a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad61009e582d2e6b443a5d62049a8834a"><td class="memTemplParams" colspan="2">template&lt;typename RowRange &gt; </td></tr>
+<tr class="memitem:ad61009e582d2e6b443a5d62049a8834a"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ad61009e582d2e6b443a5d62049a8834a">GetCurrentRow</a> (RowRange &amp;&amp;range) -&gt; typename std::decay&lt; decltype(*std::forward&lt; RowRange &gt;(range).begin())&gt;::type</td></tr>
+<tr class="memdesc:ad61009e582d2e6b443a5d62049a8834a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current row from the given range, if any.  <a href="#ad61009e582d2e6b443a5d62049a8834a">More...</a><br /></td></tr>
+<tr class="separator:ad61009e582d2e6b443a5d62049a8834a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a782a4a4617b9017586334db8e1eb6ff6"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a782a4a4617b9017586334db8e1eb6ff6">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;stmt)</td></tr>
 <tr class="separator:a782a4a4617b9017586334db8e1eb6ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7aedae28062a59c9b7e809205ebe09be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7aedae28062a59c9b7e809205ebe09be">MakeReadOnlyTransaction</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1ReadOnlyOptions.html">Transaction::ReadOnlyOptions</a> opts={})</td></tr>
@@ -846,6 +850,32 @@ Functions</h2></td></tr>
 <dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line">  google::cloud::StatusOr&lt;google::cloud::spanner::ReadPartition&gt;</div><div class="line">  ReceiveReadPartitionFromRemoteMachine() {</div><div class="line">    std::string serialized_partition = Receive();</div><div class="line">    <span class="keywordflow">return</span> <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aca3e9bd1afccb8b09a0a01f34c931bd6">google::cloud::spanner::DeserializeReadPartition</a>(</div><div class="line">        serialized_partition);</div><div class="line">  }</div></div><!-- fragment --></dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="read__partition_8cc_source.html#l00060">60</a> of file <a class="el" href="read__partition_8cc_source.html">read_partition.cc</a>.</p>
+
+</div>
+</div>
+<a id="ad61009e582d2e6b443a5d62049a8834a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad61009e582d2e6b443a5d62049a8834a">&#9670;&nbsp;</a></span>GetCurrentRow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RowRange &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">auto google::cloud::spanner::v0::GetCurrentRow </td>
+          <td>(</td>
+          <td class="paramtype">RowRange &amp;&amp;&#160;</td>
+          <td class="paramname"><em>range</em></td><td>)</td>
+          <td> -&gt; typename std::decay&lt;
+    decltype(*std::forward&lt;RowRange&gt;(range).begin())&gt;::type </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the current row from the given range, if any. </p>
+<p>If there are no rows left, an error <code>Status</code> is returned. This is a convenience function that can be useful if the caller knows there will be only a single row returned. </p>
+
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00442">442</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
