@@ -35,12 +35,15 @@ class QueryPartition;
  * transmission to another process.
  *
  * @note The serialized string may contain NUL and other non-printable
- *     characters.
+ *     characters. Therefore, callers should avoid [formatted IO][formatted-io]
+ *     functions that may incorrectly reformat the string data.
  *
  * @param query_partition - instance to be serialized.
  *
  * @par Example
  * @snippet samples.cc serialize-query-partition
+ *
+ * [formatted-io]: https://en.cppreference.com/w/cpp/string/basic_string/operator_ltltgtgt
  */
 StatusOr<std::string> SerializeQueryPartition(
     QueryPartition const& query_partition);
@@ -52,12 +55,15 @@ StatusOr<std::string> SerializeQueryPartition(
  * previously returned by a call to `SerializeQueryPartition()`.
  *
  * @note The serialized string may contain NUL and other non-printable
- *     characters.
+ *     characters. Therefore, callers should avoid [formatted IO][formatted-io]
+ *     functions that may incorrectly reformat the string data.
  *
  * @param serialized_query_partition
  *
  * @par Example
  * @snippet samples.cc deserialize-query-partition
+ *
+ * [formatted-io]: https://en.cppreference.com/w/cpp/string/basic_string/operator_ltltgtgt
  */
 StatusOr<QueryPartition> DeserializeQueryPartition(
     std::string const& serialized_query_partition);

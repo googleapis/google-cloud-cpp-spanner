@@ -37,12 +37,15 @@ class ReadPartition;
  * transmission to another process.
  *
  * @note The serialized string may contain NUL and other non-printable
- *     characters.
+ *     characters. Therefore, callers should avoid [formatted IO][formatted-io]
+ *     functions that may incorrectly reformat the string data.
  *
  * @param read_partition - instance to be serialized.
  *
  * @par Example
  * @snippet samples.cc serialize-read-partition
+ *
+ * [formatted-io]: https://en.cppreference.com/w/cpp/string/basic_string/operator_ltltgtgt
  */
 StatusOr<std::string> SerializeReadPartition(
     ReadPartition const& read_partition);
@@ -54,12 +57,15 @@ StatusOr<std::string> SerializeReadPartition(
  * previously returned by a call to `SerializeReadPartition()`.
  *
  * @note The serialized string may contain NUL and other non-printable
- *     characters.
+ *     characters. Therefore, callers should avoid [formatted IO][formatted-io]
+ *     functions that may incorrectly reformat the string data.
  *
  * @param serialized_read_partition - string representation to be deserialized.
  *
  * @par Example
  * @snippet samples.cc deserialize-read-partition
+ *
+ * [formatted-io]: https://en.cppreference.com/w/cpp/string/basic_string/operator_ltltgtgt
  */
 StatusOr<ReadPartition> DeserializeReadPartition(
     std::string const& serialized_read_partition);
