@@ -1177,6 +1177,29 @@ void DmlPartitionedUpdate(google::cloud::spanner::Client client) {
   std::cout << "Update was successful [spanner_dml_partitioned_update]\n";
 }
 //! [END spanner_dml_partitioned_update]
+//
+//! [START spanner_dml_structs]
+void DmlStructs(google::cloud::spanner::Client client) {
+  namespace spanner = google::cloud::spanner;
+  auto commit_result =
+      client.Commit([&client](spanner::Transaction const& txn)
+                        -> google::cloud::StatusOr<spanner::Mutations> {
+        auto singer_info = std::make_tuple("Marc", "Richards");
+        auto sql = spanner::SqlStatement(
+            "UPDATE Singers SET FirstName = 'Keith' WHERE "
+            "STRUCT<FirstName String, LastName String>(FirstName, LastName) "
+            "= @name",
+            {{"name", spanner::Value(std::move(singer_info))}});
+        auto dml_result = client.ExecuteDml(txn, std::move(sql));
+        if (!dml_result) return dml_result.status();
+        return spanner::Mutations{};
+      });
+  if (!commit_result) {
+    throw std::runtime_error(commit_result.status().message());
+  }
+  std::cout << "Update was successful [spanner_dml_structs]\n";
+}
+//! [END spanner_dml_structs]
 
 //! [START spanner_write_data_for_struct_queries]
 void WriteDataForStructQueries(google::cloud::spanner::Client client) {
@@ -1644,6 +1667,7 @@ int RunOneCommand(std::vector<std::string> argv) {
       make_command_entry("dml-standard-delete", &DmlStandardDelete),
       make_command_entry("dml-partitioned-update", &DmlPartitionedUpdate),
       make_command_entry("dml-partitioned-delete", &DmlPartitionedDelete),
+      make_command_entry("dml-structs", &DmlStructs),
       make_command_entry("write-data-for-struct-queries",
                          &WriteDataForStructQueries),
       make_command_entry("query-data", &QueryData),
@@ -1904,6 +1928,9 @@ void RunAll() {
 
   std::cout << "\nRunning spanner_dml_partitioned_delete sample\n";
   DmlPartitionedDelete(client);
+
+  std::cout << "\nRunning spanner_dml_structs sample\n";
+  DmlStructs(client);
 
   std::cout << "\nRunning spanner_drop_database sample\n";
   DropDatabase(database_admin_client, project_id, instance_id, database_id);
