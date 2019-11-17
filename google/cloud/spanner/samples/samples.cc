@@ -1563,11 +1563,12 @@ int RunOneCommand(std::vector<std::string> argv) {
   using SampleFunction = void (*)(google::cloud::spanner::Client);
 
   using CommandMap = std::map<std::string, CommandType>;
-  auto make_command_entry = [](char const* sample_name, SampleFunction sample) {
-    auto make_command = [](char const* sample_name, SampleFunction sample) {
+  auto make_command_entry = [](std::string sample_name, SampleFunction sample) {
+    auto make_command = [](std::string const& sample_name,
+                           SampleFunction sample) {
       return [sample_name, sample](std::vector<std::string> const& argv) {
         if (argv.size() != 3) {
-          throw std::runtime_error(std::string(sample_name) +
+          throw std::runtime_error(sample_name +
                                    " <project-id> <instance-id> <database-id>");
         }
         sample(MakeSampleClient(argv[0], argv[1], argv[2]));
@@ -1580,13 +1581,13 @@ int RunOneCommand(std::vector<std::string> argv) {
   using DatabaseAdminSampleFunction =
       void (*)(google::cloud::spanner::DatabaseAdminClient, std::string const&,
                std::string const&, std::string const&);
-  auto make_database_command_entry = [](char const* sample_name,
+  auto make_database_command_entry = [](std::string sample_name,
                                         DatabaseAdminSampleFunction sample) {
-    auto make_command = [](char const* sample_name,
+    auto make_command = [](std::string const& sample_name,
                            DatabaseAdminSampleFunction sample) {
       return [sample_name, sample](std::vector<std::string> const& argv) {
         if (argv.size() != 3) {
-          throw std::runtime_error(std::string(sample_name) +
+          throw std::runtime_error(sample_name +
                                    " <project-id> <instance-id> <database-id>");
         }
         google::cloud::spanner::DatabaseAdminClient client;
