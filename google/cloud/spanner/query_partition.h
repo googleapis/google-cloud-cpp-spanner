@@ -29,8 +29,13 @@ inline namespace SPANNER_CLIENT_NS {
 class QueryPartition;
 
 /**
- * Serializes an instance of `QueryPartition` for transmission to another
- * process.
+ * Serializes an instance of `QueryPartition` to a string of bytes.
+ *
+ * The serialized string of bytes is suitable for writing to disk or
+ * transmission to another process.
+ *
+ * @note The serialized string may contain NUL and other non-printable
+ *     characters.
  *
  * @param query_partition - instance to be serialized.
  *
@@ -41,10 +46,13 @@ StatusOr<std::string> SerializeQueryPartition(
     QueryPartition const& query_partition);
 
 /**
- * Deserializes the provided string into a `QueryPartition`, if able.
+ * Deserializes the provided string into a `QueryPartition`.
  *
- * Returned `Status` should be checked to determine if deserialization was
- * successful.
+ * The @p serialized_query_partition argument must be a string that was
+ * previously returned by a call to `SerializeQueryPartition()`.
+ *
+ * @note The serialized string may contain NUL and other non-printable
+ *     characters.
  *
  * @param serialized_query_partition
  *
