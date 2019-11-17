@@ -43,7 +43,8 @@ class QueryPartition;
  * @par Example
  * @snippet samples.cc serialize-query-partition
  *
- * [formatted-io]: https://en.cppreference.com/w/cpp/string/basic_string/operator_ltltgtgt
+ * [formatted-io]:
+ * https://en.cppreference.com/w/cpp/string/basic_string/operator_ltltgtgt
  */
 StatusOr<std::string> SerializeQueryPartition(
     QueryPartition const& query_partition);
@@ -63,7 +64,8 @@ StatusOr<std::string> SerializeQueryPartition(
  * @par Example
  * @snippet samples.cc deserialize-query-partition
  *
- * [formatted-io]: https://en.cppreference.com/w/cpp/string/basic_string/operator_ltltgtgt
+ * [formatted-io]:
+ * https://en.cppreference.com/w/cpp/string/basic_string/operator_ltltgtgt
  */
 StatusOr<QueryPartition> DeserializeQueryPartition(
     std::string const& serialized_query_partition);

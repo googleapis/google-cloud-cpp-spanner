@@ -45,7 +45,8 @@ class ReadPartition;
  * @par Example
  * @snippet samples.cc serialize-read-partition
  *
- * [formatted-io]: https://en.cppreference.com/w/cpp/string/basic_string/operator_ltltgtgt
+ * [formatted-io]:
+ * https://en.cppreference.com/w/cpp/string/basic_string/operator_ltltgtgt
  */
 StatusOr<std::string> SerializeReadPartition(
     ReadPartition const& read_partition);
@@ -65,7 +66,8 @@ StatusOr<std::string> SerializeReadPartition(
  * @par Example
  * @snippet samples.cc deserialize-read-partition
  *
- * [formatted-io]: https://en.cppreference.com/w/cpp/string/basic_string/operator_ltltgtgt
+ * [formatted-io]:
+ * https://en.cppreference.com/w/cpp/string/basic_string/operator_ltltgtgt
  */
 StatusOr<ReadPartition> DeserializeReadPartition(
     std::string const& serialized_read_partition);
