@@ -136,16 +136,18 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
 
   Status CreateSessions(std::unique_lock<std::mutex>& lk, ChannelInfo& channel,
                         int num_sessions);  // EXCLUSIVE_LOCKS_REQUIRED(mu_)
-  void AddSessionsToPool(ChannelInfo& channel,
-                         std::vector<std::unique_ptr<Session>>
-                             sessions);  // EXCLUSIVE_LOCKS_REQUIRED(mu_)
 
   SessionHolder MakeSessionHolder(std::unique_ptr<Session> session,
                                   bool dissociate_from_pool);
   std::vector<ChannelInfo> CreateChannelInfo(
       std::vector<std::shared_ptr<SpannerStub>> stubs);
 
-  void UpdateLeastLoadedChannel();  // EXCLUSIVE_LOCKS_REQUIRED(mu_)
+  void UpdateNextChannelForCreateSessions();  // EXCLUSIVE_LOCKS_REQUIRED(mu_)
+
+  Database const db_;
+  std::unique_ptr<RetryPolicy const> retry_policy_prototype_;
+  std::unique_ptr<BackoffPolicy const> backoff_policy_prototype_;
+  SessionPoolOptions const options_;
 
   std::mutex mu_;
   std::condition_variable cond_;
@@ -153,13 +155,9 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
   int total_sessions_ = 0;                          // GUARDED_BY(mu_)
   bool create_in_progress_ = false;                 // GUARDED_BY(mu_)
 
-  std::vector<ChannelInfo> channels_;
-  ChannelInfo* least_loaded_channel_;
-
-  Database const db_;
-  std::unique_ptr<RetryPolicy const> retry_policy_prototype_;
-  std::unique_ptr<BackoffPolicy const> backoff_policy_prototype_;
-  SessionPoolOptions const options_;
+  std::vector<ChannelInfo> channels_;              // GUARDED_BY(mu_)
+  ChannelInfo* next_channel_for_create_sessions_;  // GUARDED_BY(mu_)
+  int next_dissociated_stub_index_;                // GUARDED_BY(mu_)
 };
 
 }  // namespace internal

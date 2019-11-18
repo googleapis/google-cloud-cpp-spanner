@@ -34,10 +34,8 @@ namespace {
 // Ensure the options have sensible values.
 SessionPoolOptions SanitizeOptions(SessionPoolOptions options) {
   options.min_sessions = (std::max)(options.min_sessions, 0);
+  options.max_sessions = (std::max)(options.max_sessions, options.min_sessions);
   options.max_sessions = (std::max)(options.max_sessions, 1);
-  if (options.max_sessions < options.min_sessions) {
-    options.max_sessions = options.min_sessions;
-  }
   options.max_idle_sessions = (std::max)(options.max_idle_sessions, 0);
   options.write_sessions_fraction =
       (std::max)(options.write_sessions_fraction, 0.0);
@@ -56,12 +54,13 @@ SessionPool::SessionPool(Database db,
     : db_(std::move(db)),
       retry_policy_prototype_(std::move(retry_policy)),
       backoff_policy_prototype_(std::move(backoff_policy)),
-      options_(SanitizeOptions(options)) {
+      options_(SanitizeOptions(options)),
+      next_dissociated_stub_index_(0) {
   channels_.reserve(stubs.size());
   for (auto& stub : stubs) {
     channels_.emplace_back(std::move(stub));
   }
-  least_loaded_channel_ = &channels_[0];
+  next_channel_for_create_sessions_ = &channels_[0];
 
   if (options_.min_sessions == 0) {
     return;
@@ -71,17 +70,19 @@ SessionPool::SessionPool(Database db,
   std::unique_lock<std::mutex> lk(mu_);
   int num_channels = static_cast<int>(channels_.size());
   int sessions_per_channel = options_.min_sessions / num_channels;
-  // if it doesn't divide evenly, add the remainder to the first channel.
+  // If the number of sessions doesn't divide evenly by the number of channels,
+  // add one extra session to the first `extra_sessions` channels.
   int extra_sessions = options_.min_sessions % num_channels;
   for (auto& channel : channels_) {
+    int num_sessions = sessions_per_channel;
+    if (extra_sessions > 0) {
+      ++num_sessions;
+      --extra_sessions;
+    }
     // Just ignore failures; we'll try again when the caller requests a
     // session, and we'll be in a position to return an error at that time.
-    (void)CreateSessions(lk, channel, sessions_per_channel + extra_sessions);
-    extra_sessions = 0;
+    (void)CreateSessions(lk, channel, num_sessions);
   }
-  // Shuffle the pool so we distribute returned sessions across channels.
-  std::shuffle(sessions_.begin(), sessions_.end(),
-               std::mt19937(std::random_device()()));
 }
 
 StatusOr<SessionHolder> SessionPool::Allocate(bool dissociate_from_pool) {
@@ -125,7 +126,7 @@ StatusOr<SessionHolder> SessionPool::Allocate(bool dissociate_from_pool) {
     // subject to the `max_sessions` cap.
     int sessions_to_create = (std::min)(
         options_.min_sessions + 1, options_.max_sessions - total_sessions_);
-    ChannelInfo& channel = *least_loaded_channel_;
+    ChannelInfo& channel = *next_channel_for_create_sessions_;
     auto create_status = CreateSessions(lk, channel, sessions_to_create);
     if (!create_status.ok()) {
       return create_status;
@@ -140,8 +141,12 @@ std::shared_ptr<SpannerStub> SessionPool::GetStub(Session const& session) {
   if (stub) return stub;
 
   // Sessions that were created for partitioned Reads/Queries do not have
-  // their own stub, so return one to use.
-  return least_loaded_channel_->stub;
+  // their own stub; return one to use by round-robining between the channels.
+  std::unique_lock<std::mutex> lk(mu_);
+  int index = next_dissociated_stub_index_;
+  next_dissociated_stub_index_ =
+      (next_dissociated_stub_index_ + 1) % static_cast<int>(channels_.size());
+  return channels_[index].stub;
 }
 
 void SessionPool::Release(Session* session) {
@@ -161,12 +166,12 @@ void SessionPool::Release(Session* session) {
 // while the RPC is in progress and then reacquired.
 Status SessionPool::CreateSessions(std::unique_lock<std::mutex>& lk,
                                    ChannelInfo& channel, int num_sessions) {
+  create_in_progress_ = true;
+  lk.unlock();
   spanner_proto::BatchCreateSessionsRequest request;
   request.set_database(db_.FullName());
   request.set_session_count(std::int32_t{num_sessions});
   const auto& stub = channel.stub;
-  create_in_progress_ = true;
-  lk.unlock();
   auto response = RetryLoop(
       retry_policy_prototype_->clone(), backoff_policy_prototype_->clone(),
       true,
@@ -180,35 +185,30 @@ Status SessionPool::CreateSessions(std::unique_lock<std::mutex>& lk,
   if (!response.ok()) {
     return response.status();
   }
-  std::vector<std::unique_ptr<Session>> sessions;
-  sessions.reserve(response->session_size());
+  // Add sessions to the pool and update counters for `channel` and the pool.
+  int sessions_created = response->session_size();
+  channel.session_count += sessions_created;
+  total_sessions_ += sessions_created;
+  sessions_.reserve(sessions_.size() + sessions_created);
   for (auto& session : *response->mutable_session()) {
-    sessions.push_back(google::cloud::internal::make_unique<Session>(
+    sessions_.push_back(google::cloud::internal::make_unique<Session>(
         std::move(*session.mutable_name()), stub));
   }
-  AddSessionsToPool(channel, std::move(sessions));
+  // Shuffle the pool so we distribute returned sessions across channels.
+  std::shuffle(sessions_.begin(), sessions_.end(),
+               std::mt19937(std::random_device()()));
+  if (next_channel_for_create_sessions_ == &channel) {
+    UpdateNextChannelForCreateSessions();
+  }
   return Status();
 }
 
-// adds `sessions` to the pool and updates counters for `channel` and the pool.
-void SessionPool::AddSessionsToPool(
-    ChannelInfo& channel, std::vector<std::unique_ptr<Session>> sessions) {
-  int sessions_created = static_cast<int>(sessions.size());
-  channel.session_count += sessions_created;
-  total_sessions_ += sessions_created;
-  // TODO(#307) instead of adding all of these to the end, we could insert
-  // them in random locations to prevent "bunching" of sessions on the same
-  // channel. Currently we do this for the initial allocation only.
-  sessions_.insert(sessions_.end(), std::make_move_iterator(sessions.begin()),
-                   std::make_move_iterator(sessions.end()));
-  UpdateLeastLoadedChannel();
-}
-
-void SessionPool::UpdateLeastLoadedChannel() {
-  least_loaded_channel_ = &channels_[0];
+void SessionPool::UpdateNextChannelForCreateSessions() {
+  next_channel_for_create_sessions_ = &channels_[0];
   for (auto& channel : channels_) {
-    if (channel.session_count < least_loaded_channel_->session_count) {
-      least_loaded_channel_ = &channel;
+    if (channel.session_count <
+        next_channel_for_create_sessions_->session_count) {
+      next_channel_for_create_sessions_ = &channel;
     }
   }
 }
