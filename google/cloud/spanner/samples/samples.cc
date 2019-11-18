@@ -1199,6 +1199,34 @@ void DmlPartitionedUpdate(google::cloud::spanner::Client client) {
   std::cout << "Update was successful [spanner_dml_partitioned_update]\n";
 }
 //! [END spanner_dml_partitioned_update]
+
+//! [START spanner_dml_batch_update]
+void DmlBatchUpdate(google::cloud::spanner::Client client) {
+  namespace spanner = google::cloud::spanner;
+
+  auto txn = spanner::MakeReadWriteTransaction();
+  std::vector<spanner::SqlStatement> statements = {
+      spanner::SqlStatement("INSERT INTO Albums"
+                            " (SingerId, AlbumId, AlbumTitle, MarketingBudget)"
+                            " VALUES (1, 3, 'Test Album Title', 10000)"),
+      spanner::SqlStatement("UPDATE Albums"
+                            " SET MarketingBudget = MarketingBudget * 2"
+                            " WHERE SingerId = 1 and AlbumId = 3")};
+  auto result = client.ExecuteBatchDml(txn, statements);
+  if (!result) throw std::runtime_error(result.status().message());
+  // Also check BatchDmlResult's member `status`.
+  if (!result->status.ok()) {
+    throw std::runtime_error(result->status.message());
+  }
+  for (std::size_t i = 0; i < result->stats.size(); i++) {
+    std::cout << result->stats[i].row_count << " rows affected"
+              << " for the statement " << (i + 1) << "."
+              << "\n";
+  }
+  std::cout << "Update was successful [spanner_dml_batch_update]\n";
+}
+//! [END spanner_dml_batch_update]
+
 //
 //! [START spanner_dml_structs]
 void DmlStructs(google::cloud::spanner::Client client) {
@@ -1781,6 +1809,7 @@ int RunOneCommand(std::vector<std::string> argv) {
       make_command_entry("dml-write-then-read", &DmlWriteThenRead),
       make_command_entry("dml-standard-delete", &DmlStandardDelete),
       make_command_entry("dml-partitioned-update", &DmlPartitionedUpdate),
+      make_command_entry("dml-batch-update", &DmlBatchUpdate),
       make_command_entry("dml-partitioned-delete", &DmlPartitionedDelete),
       make_command_entry("dml-structs", &DmlStructs),
       make_command_entry("write-data-for-struct-queries",
@@ -2006,6 +2035,16 @@ void RunAll() {
 
   std::cout << "\nRunning spanner_dml_write_then_read sample\n";
   DmlWriteThenRead(client);
+
+  std::cout << "\nRunning spanner_dml_standard_delete sample\n";
+  DmlStandardDelete(client);
+
+  // Need to run this before deleting the data with DeleteData below.
+  std::cout << "\nRunning spanner_dml_batch_update sample\n";
+  DmlBatchUpdate(client);
+
+  std::cout << "\nRunning spanner_delete_data sample\n";
+  DeleteData(client);
 
   std::cout << "\nRunning spanner_write_data_for_struct_queries sample\n";
   WriteDataForStructQueries(client);
