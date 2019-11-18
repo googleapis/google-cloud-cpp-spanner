@@ -139,7 +139,8 @@ int main(int argc, char* argv[]) {
       google::cloud::spanner_testing::RandomDatabaseName(generator));
   config.database_id = database.database_id();
 
-  // Once the configuration is and the database name set, print everything out.
+  // Once the configuration is fully initialized and the database name set,
+  // print everything out.
   std::cout << config << std::flush;
 
   cs::DatabaseAdminClient admin_client;
@@ -444,8 +445,8 @@ class ReadExperiment : public Experiment {
         row.resize(columns.size());
         std::size_t index = 0;
         for (auto& value : *result.mutable_values()) {
-          row[index++] = std::move(value);
-          if (index == columns.size()) {
+          row[index] = std::move(value);
+          if (++index == columns.size()) {
             ++row_count;
             index = 0;
           }
