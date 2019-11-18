@@ -30,3 +30,5 @@ google/cloud/storage/testbench/*.pyc
 
 # Ignore Visual Studio Code files.
 .vscode/
+
+callgrind.out*
