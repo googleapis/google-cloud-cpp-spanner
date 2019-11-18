@@ -1102,7 +1102,7 @@ void DmlStandardUpdateWithTimestamp(google::cloud::spanner::Client client) {
 // [END spanner_dml_standard_update_with_timestamp]
 
 //! [START spanner_dml_write_then_read]
-void DmlWriteAndRead(google::cloud::spanner::Client client) {
+void DmlWriteThenRead(google::cloud::spanner::Client client) {
   namespace spanner = google::cloud::spanner;
   using google::cloud::StatusOr;
 
@@ -1129,7 +1129,7 @@ void DmlWriteAndRead(google::cloud::spanner::Client client) {
   if (!commit_result) {
     throw std::runtime_error(commit_result.status().message());
   }
-  std::cout << "Wrie and read suceeded [spanner_dml_write_then_read]\n";
+  std::cout << "Write then read suceeded [spanner_dml_write_then_read]\n";
 }
 //! [END spanner_dml_write_then_read]
 
@@ -1695,7 +1695,7 @@ int RunOneCommand(std::vector<std::string> argv) {
       make_command_entry("dml-standard-update", &DmlStandardUpdate),
       make_command_entry("dml-standard-update-with-timestamp",
                          &DmlStandardUpdateWithTimestamp),
-      make_command_entry("dml-write-and-read", &DmlWriteAndRead),
+      make_command_entry("dml-write-then-read", &DmlWriteThenRead),
       make_command_entry("dml-standard-delete", &DmlStandardDelete),
       make_command_entry("dml-partitioned-update", &DmlPartitionedUpdate),
       make_command_entry("dml-partitioned-delete", &DmlPartitionedDelete),
@@ -1918,7 +1918,7 @@ void RunAll() {
   DmlStandardUpdateWithTimestamp(client);
 
   std::cout << "\nRunning spanner_dml_write_then_read sample\n";
-  DmlWriteAndRead(client);
+  DmlWriteThenRead(client);
 
   std::cout << "\nRunning spanner_dml_standard_delete sample\n";
   DmlStandardDelete(client);
