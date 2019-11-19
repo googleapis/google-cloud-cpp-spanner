@@ -953,8 +953,7 @@ void QueryNewColumn(google::cloud::spanner::Client client) {
     if (marketing_budget) {
       std::cout << "MarketingBudget: " << marketing_budget.value() << "\n";
     } else {
-      std::cout << "MarketingBudget: NULL"
-                << "\n";
+      std::cout << "MarketingBudget: NULL\n";
     }
   }
   std::cout << "Read completed for [spanner_read_data_with_new_column]\n";
@@ -982,8 +981,7 @@ void QueryUsingIndex(google::cloud::spanner::Client client) {
     if (marketing_budget) {
       std::cout << "MarketingBudget: " << marketing_budget.value() << "\n";
     } else {
-      std::cout << "MarketingBudget: NULL"
-                << "\n";
+      std::cout << "MarketingBudget: NULL\n";
     }
   }
   std::cout << "Read completed for [spanner_query_data_with_index]\n";
@@ -1009,8 +1007,7 @@ void ReadDataWithStoringIndex(google::cloud::spanner::Client client) {
     if (marketing_budget) {
       std::cout << "MarketingBudget: " << marketing_budget.value() << "\n";
     } else {
-      std::cout << "MarketingBudget: NULL"
-                << "\n";
+      std::cout << "MarketingBudget: NULL\n";
     }
   }
   std::cout << "Read completed for [spanner_read_data_with_storing_index]\n";
@@ -1304,10 +1301,11 @@ void DmlGettingStartedUpdate(google::cloud::spanner::Client client) {
                         std::int64_t singer_id) -> StatusOr<std::int64_t> {
     auto key = spanner::KeySet().AddKey(spanner::MakeKey(album_id, singer_id));
     auto rows = client.Read(std::move(txn), "Albums", key, {"MarketingBudget"});
-    using RowType = std::tuple<std::int64_t>;
+    using RowType = std::tuple<google::cloud::optional<std::int64_t>>;
     auto row = spanner::GetCurrentRow(spanner::StreamOf<RowType>(rows));
     if (!row) return row.status();
-    return std::get<0>(*row);
+    auto const budget = std::get<0>(*row);
+    return budget ? *budget : 0;
   };
 
   // A helper to update the budget for the given album and singer.
@@ -1327,14 +1325,18 @@ void DmlGettingStartedUpdate(google::cloud::spanner::Client client) {
       [&](spanner::Transaction txn) -> StatusOr<spanner::Mutations> {
         auto budget1 = get_budget(txn, 1, 1);
         if (!budget1) return budget1.status();
-        if (*budget1 > kTransferAmount) {
-          auto budget2 = get_budget(txn, 2, 2);
-          if (!budget2) return budget2.status();
-          auto update = update_budget(txn, 1, 1, *budget1 - kTransferAmount);
-          if (!update) return update.status();
-          update = update_budget(txn, 2, 2, *budget2 + kTransferAmount);
-          if (!update) return update.status();
+        if (*budget1 < kTransferAmount) {
+          return google::cloud::Status(
+              google::cloud::StatusCode::kResourceExhausted,
+              "cannot transfer " + std::to_string(kTransferAmount) +
+                  " from budget of " + std::to_string(*budget1));
         }
+        auto budget2 = get_budget(txn, 2, 2);
+        if (!budget2) return budget2.status();
+        auto update = update_budget(txn, 1, 1, *budget1 - kTransferAmount);
+        if (!update) return update.status();
+        update = update_budget(txn, 2, 2, *budget2 + kTransferAmount);
+        if (!update) return update.status();
         return spanner::Mutations{};
       });
   if (!commit_result) {
@@ -2005,12 +2007,6 @@ void RunAll() {
   std::cout << "\nRunning spanner_dml_write_then_read sample\n";
   DmlWriteThenRead(client);
 
-  std::cout << "\nRunning spanner_dml_standard_delete sample\n";
-  DmlStandardDelete(client);
-
-  std::cout << "\nRunning spanner_delete_data sample\n";
-  DeleteData(client);
-
   std::cout << "\nRunning spanner_write_data_for_struct_queries sample\n";
   WriteDataForStructQueries(client);
 
@@ -2061,6 +2057,12 @@ void RunAll() {
 
   std::cout << "\nRunning spanner_dml_structs sample\n";
   DmlStructs(client);
+
+  std::cout << "\nRunning spanner_dml_standard_delete sample\n";
+  DmlStandardDelete(client);
+
+  std::cout << "\nRunning spanner_delete_data sample\n";
+  DeleteData(client);
 
   std::cout << "\nRunning spanner_drop_database sample\n";
   DropDatabase(database_admin_client, project_id, instance_id, database_id);
