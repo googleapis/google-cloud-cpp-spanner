@@ -718,25 +718,28 @@ class RunAllExperiment : public Experiment {
   google::cloud::internal::DefaultPRNG generator_;
 };
 
-std::map<std::string, ExperimentFactory> AvailableExperiments() {
+template <typename Trait>
+ExperimentFactory MakeReadFactory() {
   using G = google::cloud::internal::DefaultPRNG;
-  using google::cloud::internal::make_unique;
+  return [](G g) {
+    return google::cloud::internal::make_unique<ReadExperiment<Trait>>(g);
+  };
+}
+
+std::map<std::string, ExperimentFactory> AvailableExperiments() {
+  auto make_run_all = [](google::cloud::internal::DefaultPRNG g) {
+    return google::cloud::internal::make_unique<RunAllExperiment>(g);
+  };
+
   return {
-      {"run-all", [](G g) { return make_unique<RunAllExperiment>(g); }},
-      {"read-bool",
-       [](G g) { return make_unique<ReadExperiment<BoolTraits>>(g); }},
-      {"read-bytes",
-       [](G g) { return make_unique<ReadExperiment<BytesTraits>>(g); }},
-      {"read-date",
-       [](G g) { return make_unique<ReadExperiment<DateTraits>>(g); }},
-      {"read-float64",
-       [](G g) { return make_unique<ReadExperiment<Float64Traits>>(g); }},
-      {"read-int64",
-       [](G g) { return make_unique<ReadExperiment<Int64Traits>>(g); }},
-      {"read-string",
-       [](G g) { return make_unique<ReadExperiment<StringTraits>>(g); }},
-      {"read-timestamp",
-       [](G g) { return make_unique<ReadExperiment<TimestampTraits>>(g); }},
+      {"run-all", make_run_all},
+      {"read-bool", MakeReadFactory<BoolTraits>()},
+      {"read-bytes", MakeReadFactory<BytesTraits>()},
+      {"read-date", MakeReadFactory<BytesTraits>()},
+      {"read-float64", MakeReadFactory<Float64Traits>()},
+      {"read-int64", MakeReadFactory<Int64Traits>()},
+      {"read-string", MakeReadFactory<StringTraits>()},
+      {"read-timestamp", MakeReadFactory<TimestampTraits>()},
   };
 }
 
