@@ -92,7 +92,7 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
    *
    * The parameters allow the `SessionPool` to make remote calls needed to
    * manage the pool, and to associate `Session`s with the stubs used to
-   * create them.
+   * create them. `stubs` must not be empty.
    */
   SessionPool(Database db, std::vector<std::shared_ptr<SpannerStub>> stubs,
               std::unique_ptr<RetryPolicy> retry_policy,
@@ -155,9 +155,11 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
   int total_sessions_ = 0;                          // GUARDED_BY(mu_)
   bool create_in_progress_ = false;                 // GUARDED_BY(mu_)
 
-  std::vector<ChannelInfo> channels_;              // GUARDED_BY(mu_)
-  ChannelInfo* next_channel_for_create_sessions_;  // GUARDED_BY(mu_)
-  int next_dissociated_stub_index_;                // GUARDED_BY(mu_)
+  std::vector<ChannelInfo> channels_;  // GUARDED_BY(mu_)
+  std::vector<ChannelInfo>::iterator
+      next_channel_for_create_sessions_;  // GUARDED_BY(mu_)
+  std::vector<ChannelInfo>::iterator
+      next_dissociated_stub_channel_;  // GUARDED_BY(mu_)
 };
 
 }  // namespace internal

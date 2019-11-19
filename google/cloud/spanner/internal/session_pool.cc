@@ -54,13 +54,13 @@ SessionPool::SessionPool(Database db,
     : db_(std::move(db)),
       retry_policy_prototype_(std::move(retry_policy)),
       backoff_policy_prototype_(std::move(backoff_policy)),
-      options_(SanitizeOptions(options)),
-      next_dissociated_stub_index_(0) {
+      options_(SanitizeOptions(options)) {
   channels_.reserve(stubs.size());
   for (auto& stub : stubs) {
     channels_.emplace_back(std::move(stub));
   }
-  next_channel_for_create_sessions_ = &channels_[0];
+  next_dissociated_stub_channel_ = channels_.begin();
+  next_channel_for_create_sessions_ = channels_.begin();
 
   if (options_.min_sessions == 0) {
     return;
@@ -138,15 +138,16 @@ StatusOr<SessionHolder> SessionPool::Allocate(bool dissociate_from_pool) {
 
 std::shared_ptr<SpannerStub> SessionPool::GetStub(Session const& session) {
   std::shared_ptr<SpannerStub> stub = session.stub();
-  if (stub) return stub;
-
-  // Sessions that were created for partitioned Reads/Queries do not have
-  // their own stub; return one to use by round-robining between the channels.
-  std::unique_lock<std::mutex> lk(mu_);
-  int index = next_dissociated_stub_index_;
-  next_dissociated_stub_index_ =
-      (next_dissociated_stub_index_ + 1) % static_cast<int>(channels_.size());
-  return channels_[index].stub;
+  if (!stub) {
+    // Sessions that were created for partitioned Reads/Queries do not have
+    // their own stub; return one to use by round-robining between the channels.
+    std::unique_lock<std::mutex> lk(mu_);
+    stub = next_dissociated_stub_channel_->stub;
+    if (++next_dissociated_stub_channel_ == channels_.end()) {
+      next_dissociated_stub_channel_ = channels_.begin();
+    }
+  }
+  return stub;
 }
 
 void SessionPool::Release(Session* session) {
@@ -197,18 +198,17 @@ Status SessionPool::CreateSessions(std::unique_lock<std::mutex>& lk,
   // Shuffle the pool so we distribute returned sessions across channels.
   std::shuffle(sessions_.begin(), sessions_.end(),
                std::mt19937(std::random_device()()));
-  if (next_channel_for_create_sessions_ == &channel) {
+  if (&*next_channel_for_create_sessions_ == &channel) {
     UpdateNextChannelForCreateSessions();
   }
   return Status();
 }
 
 void SessionPool::UpdateNextChannelForCreateSessions() {
-  next_channel_for_create_sessions_ = &channels_[0];
-  for (auto& channel : channels_) {
-    if (channel.session_count <
-        next_channel_for_create_sessions_->session_count) {
-      next_channel_for_create_sessions_ = &channel;
+  next_channel_for_create_sessions_ = channels_.begin();
+  for (auto it = channels_.begin(); it != channels_.end(); ++it) {
+    if (it->session_count < next_channel_for_create_sessions_->session_count) {
+      next_channel_for_create_sessions_ = it;
     }
   }
 }
