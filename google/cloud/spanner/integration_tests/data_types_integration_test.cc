@@ -31,31 +31,8 @@ namespace {
 class DataTypeIntegrationTest : public ::testing::Test {
  public:
   static void SetUpTestSuite() {
-    std::cout << "Creating additional DataTypes table " << std::flush;
     client_ = google::cloud::internal::make_unique<Client>(
         MakeConnection(spanner_testing::DatabaseEnvironment::GetDatabase()));
-    spanner::DatabaseAdminClient admin_client;
-    auto database_future = admin_client.UpdateDatabase(
-        spanner_testing::DatabaseEnvironment::GetDatabase(),
-        {R"sql(CREATE TABLE DataTypes (
-            Id INT64 NOT NULL,
-            BoolValue BOOL,
-            DateValue DATE,
-          ) PRIMARY KEY (Id))sql"});
-    int i = 0;
-    int const timeout = 120;
-    while (++i < timeout) {
-      auto status = database_future.wait_for(std::chrono::seconds(1));
-      if (status == std::future_status::ready) break;
-      std::cout << '.' << std::flush;
-    }
-    if (i >= timeout) {
-      std::cout << "TIMEOUT\n";
-      FAIL();
-    }
-    auto database = database_future.get();
-    ASSERT_STATUS_OK(database);
-    std::cout << "DONE\n";
   }
 
   void SetUp() override {
