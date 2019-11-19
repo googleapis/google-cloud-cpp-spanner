@@ -244,6 +244,7 @@ class SimpleTimer {
 struct BoolTraits {
   using native_type = bool;
   static std::string spanner_data_type() { return "BOOL"; }
+  static std::string table_suffix() { return "bool"; }
   static native_type make_random(
       google::cloud::internal::DefaultPRNG& generator) {
     return std::uniform_int_distribution<int>(0, 1)(generator) == 1;
@@ -253,6 +254,7 @@ struct BoolTraits {
 struct BytesTraits {
   using native_type = cs::Bytes;
   static std::string spanner_data_type() { return "BYTES(1024)"; }
+  static std::string table_suffix() { return "bytes"; }
   static native_type make_random(
       google::cloud::internal::DefaultPRNG& generator) {
     std::string tmp = google::cloud::internal::Sample(
@@ -264,6 +266,7 @@ struct BytesTraits {
 struct DateTraits {
   using native_type = cs::Date;
   static std::string spanner_data_type() { return "DATE"; }
+  static std::string table_suffix() { return "date"; }
   static native_type make_random(
       google::cloud::internal::DefaultPRNG& generator) {
     return {std::uniform_int_distribution<std::int64_t>(1, 2000)(generator),
@@ -275,6 +278,7 @@ struct DateTraits {
 struct Float64Traits {
   using native_type = double;
   static std::string spanner_data_type() { return "FLOAT64"; }
+  static std::string table_suffix() { return "float64"; }
   static native_type make_random(
       google::cloud::internal::DefaultPRNG& generator) {
     return std::uniform_real_distribution<double>(0.0, 1.0)(generator);
@@ -284,6 +288,7 @@ struct Float64Traits {
 struct Int64Traits {
   using native_type = std::int64_t;
   static std::string spanner_data_type() { return "INT64"; }
+  static std::string table_suffix() { return "int64"; }
   static native_type make_random(
       google::cloud::internal::DefaultPRNG& generator) {
     return std::uniform_int_distribution<std::int64_t>(
@@ -295,6 +300,7 @@ struct Int64Traits {
 struct StringTraits {
   using native_type = std::string;
   static std::string spanner_data_type() { return "STRING(1024)"; }
+  static std::string table_suffix() { return "string"; }
   static native_type make_random(
       google::cloud::internal::DefaultPRNG& generator) {
     return google::cloud::internal::Sample(
@@ -305,6 +311,7 @@ struct StringTraits {
 struct TimestampTraits {
   using native_type = cs::Timestamp;
   static std::string spanner_data_type() { return "TIMESTAMP"; }
+  static std::string table_suffix() { return "timestamp"; }
   static native_type make_random(
       google::cloud::internal::DefaultPRNG& generator) {
     using rep = cs::Timestamp::duration::rep;
@@ -333,9 +340,7 @@ class ReadExperiment : public Experiment {
  public:
   explicit ReadExperiment(google::cloud::internal::DefaultPRNG generator)
       : generator_(generator),
-        table_name_("ReadExperiment_" +
-                    google::cloud::internal::Sample(
-                        generator_, 32, "abcdefghijklmnopqrstuvwxyz")) {}
+        table_name_("ReadExperiment_" + Traits::table_suffix()) {}
 
   Status SetUp(Config const& config, cs::Database const& database) override {
     std::string statement = "CREATE TABLE " + table_name_;
