@@ -441,9 +441,16 @@ class StreamOf {
 template <typename RowRange>
 auto GetCurrentRow(RowRange&& range) -> typename std::decay<
     decltype(*std::forward<RowRange>(range).begin())>::type {
+  static_assert(std::is_rvalue_reference<RowRange>::value,
+                "The range must be an rvalue. Did you forget std::move?");
   auto it = std::forward<RowRange>(range).begin();
-  if (it != std::forward<RowRange>(range).end()) return *it;
-  return Status(StatusCode::kResourceExhausted, "No more rows");
+  if (it == std::forward<RowRange>(range).end()) {
+    return Status(StatusCode::kResourceExhausted, "No rows");
+  }
+  auto row = std::move(*it++);
+  if (it == std::forward<RowRange>(range).end()) return row;
+  return Status(StatusCode::kResourceExhausted,
+                "Multiple rows returned. Only one expected.");
 }
 
 }  // namespace SPANNER_CLIENT_NS
