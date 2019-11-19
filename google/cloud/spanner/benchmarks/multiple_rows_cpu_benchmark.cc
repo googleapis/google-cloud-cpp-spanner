@@ -243,9 +243,9 @@ class SimpleTimer {
 
 struct BoolTraits {
   using native_type = bool;
-  static std::string spanner_data_type() { return "BOOL"; }
-  static std::string table_suffix() { return "bool"; }
-  static native_type make_random(
+  static std::string SpannerDataType() { return "BOOL"; }
+  static std::string TableSuffix() { return "bool"; }
+  static native_type MakeRandomValue(
       google::cloud::internal::DefaultPRNG& generator) {
     return std::uniform_int_distribution<int>(0, 1)(generator) == 1;
   }
@@ -253,9 +253,9 @@ struct BoolTraits {
 
 struct BytesTraits {
   using native_type = cs::Bytes;
-  static std::string spanner_data_type() { return "BYTES(1024)"; }
-  static std::string table_suffix() { return "bytes"; }
-  static native_type make_random(
+  static std::string SpannerDataType() { return "BYTES(1024)"; }
+  static std::string TableSuffix() { return "bytes"; }
+  static native_type MakeRandomValue(
       google::cloud::internal::DefaultPRNG& generator) {
     std::string tmp = google::cloud::internal::Sample(
         generator, 1024, "#@$%^&*()-=+_0123456789[]{}|;:,./<>?");
@@ -265,9 +265,9 @@ struct BytesTraits {
 
 struct DateTraits {
   using native_type = cs::Date;
-  static std::string spanner_data_type() { return "DATE"; }
-  static std::string table_suffix() { return "date"; }
-  static native_type make_random(
+  static std::string SpannerDataType() { return "DATE"; }
+  static std::string TableSuffix() { return "date"; }
+  static native_type MakeRandomValue(
       google::cloud::internal::DefaultPRNG& generator) {
     return {std::uniform_int_distribution<std::int64_t>(1, 2000)(generator),
             std::uniform_int_distribution<int>(1, 12)(generator),
@@ -277,9 +277,9 @@ struct DateTraits {
 
 struct Float64Traits {
   using native_type = double;
-  static std::string spanner_data_type() { return "FLOAT64"; }
-  static std::string table_suffix() { return "float64"; }
-  static native_type make_random(
+  static std::string SpannerDataType() { return "FLOAT64"; }
+  static std::string TableSuffix() { return "float64"; }
+  static native_type MakeRandomValue(
       google::cloud::internal::DefaultPRNG& generator) {
     return std::uniform_real_distribution<double>(0.0, 1.0)(generator);
   }
@@ -287,9 +287,9 @@ struct Float64Traits {
 
 struct Int64Traits {
   using native_type = std::int64_t;
-  static std::string spanner_data_type() { return "INT64"; }
-  static std::string table_suffix() { return "int64"; }
-  static native_type make_random(
+  static std::string SpannerDataType() { return "INT64"; }
+  static std::string TableSuffix() { return "int64"; }
+  static native_type MakeRandomValue(
       google::cloud::internal::DefaultPRNG& generator) {
     return std::uniform_int_distribution<std::int64_t>(
         std::numeric_limits<std::int64_t>::min(),
@@ -299,9 +299,9 @@ struct Int64Traits {
 
 struct StringTraits {
   using native_type = std::string;
-  static std::string spanner_data_type() { return "STRING(1024)"; }
-  static std::string table_suffix() { return "string"; }
-  static native_type make_random(
+  static std::string SpannerDataType() { return "STRING(1024)"; }
+  static std::string TableSuffix() { return "string"; }
+  static native_type MakeRandomValue(
       google::cloud::internal::DefaultPRNG& generator) {
     return google::cloud::internal::Sample(
         generator, 1024, "#@$%^&*()-=+_0123456789[]{}|;:,./<>?");
@@ -310,9 +310,9 @@ struct StringTraits {
 
 struct TimestampTraits {
   using native_type = cs::Timestamp;
-  static std::string spanner_data_type() { return "TIMESTAMP"; }
-  static std::string table_suffix() { return "timestamp"; }
-  static native_type make_random(
+  static std::string SpannerDataType() { return "TIMESTAMP"; }
+  static std::string TableSuffix() { return "timestamp"; }
+  static native_type MakeRandomValue(
       google::cloud::internal::DefaultPRNG& generator) {
     using rep = cs::Timestamp::duration::rep;
     return cs::Timestamp(
@@ -340,14 +340,14 @@ class ReadExperiment : public Experiment {
  public:
   explicit ReadExperiment(google::cloud::internal::DefaultPRNG generator)
       : generator_(generator),
-        table_name_("ReadExperiment_" + Traits::table_suffix()) {}
+        table_name_("ReadExperiment_" + Traits::TableSuffix()) {}
 
   Status SetUp(Config const& config, cs::Database const& database) override {
     std::string statement = "CREATE TABLE " + table_name_;
     statement += " (Key INT64 NOT NULL,\n";
     for (int i = 0; i != 10; ++i) {
-      statement += "Data" + std::to_string(i) + " " +
-                   Traits::spanner_data_type() + ",\n";
+      statement +=
+          "Data" + std::to_string(i) + " " + Traits::SpannerDataType() + ",\n";
     }
     statement += ") PRIMARY KEY (Key)";
     cs::DatabaseAdminClient admin_client;
@@ -612,7 +612,7 @@ class ReadExperiment : public Experiment {
 
   typename Traits::native_type GenerateRandomValue() {
     std::lock_guard<std::mutex> lk(mu_);
-    return Traits::make_random(generator_);
+    return Traits::MakeRandomValue(generator_);
   }
 
   Status SetUpTask(Config const& config, cs::Client client, int task_count,
