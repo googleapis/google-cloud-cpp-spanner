@@ -102,6 +102,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:afc7ec39fedb906fedfa0f4b59a075125"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab007cd58575a10fd09bde17990640c7b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html#ab007cd58575a10fd09bde17990640c7b">Transaction</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1ReadWriteOptions.html">ReadWriteOptions</a> opts)</td></tr>
 <tr class="separator:ab007cd58575a10fd09bde17990640c7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d67e222a2852f4aae7cd99220bb31d1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html#a4d67e222a2852f4aae7cd99220bb31d1">Transaction</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> const &amp;txn, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1ReadWriteOptions.html">ReadWriteOptions</a> opts)</td></tr>
+<tr class="separator:a4d67e222a2852f4aae7cd99220bb31d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Regular value type, supporting copy, assign, move.</div></td></tr>
 <tr class="memitem:a67a4a6c1e3f708f41ef6c2488db77e44"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html#a67a4a6c1e3f708f41ef6c2488db77e44">Transaction</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> &amp;&amp;)=default</td></tr>
 <tr class="separator:a67a4a6c1e3f708f41ef6c2488db77e44"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,14 +128,14 @@ Friends</h2></td></tr>
 <p>All reads/writes in the transaction must be executed within the same session, and that session may have only one transaction active at a time.</p>
 <p>Spanner supports these transaction modes:</p><ul>
 <li>ReadOnly. Provides guaranteed consistency across several reads, but does not allow writes. Can be configured to read at timestamps in the past. Does not need to be committed and does not take locks.</li>
-<li>ReadWrite. Supports reading and writing data at a single point in time. Uses pessimistic locking and, if necessary, two-phase commit. May abort, requiring the application to retry.</li>
+<li>ReadWrite. Supports reading and writing data at a single point in time. Uses pessimistic locking and, if necessary, two-phase commit. May abort, requiring the application to rerun.</li>
 <li>SingleUse. A restricted form of a ReadOnly transaction where Spanner chooses the read timestamp. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="transaction_8h_source.html#l00062">62</a> of file <a class="el" href="transaction_8h_source.html">transaction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="transaction_8h_source.html#l00063">63</a> of file <a class="el" href="transaction_8h_source.html">transaction.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="afc7ec39fedb906fedfa0f4b59a075125"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc7ec39fedb906fedfa0f4b59a075125">&#9670;&nbsp;</a></span>Transaction() <span class="overload">[1/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afc7ec39fedb906fedfa0f4b59a075125">&#9670;&nbsp;</a></span>Transaction() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -155,14 +157,14 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section note"><dt>Note</dt><dd>This is a lazy evaluated operation. No RPCs are made as part of creating a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code> object, instead, the first request to the server (for example as part of a <code>ExecuteQuery()</code> call) will also create the transaction. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This is a lazy evaluated operation. No RPCs are made as part of creating a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code> object. Instead, the first request to the server (for example as part of a <code>ExecuteQuery()</code> call) will also create the transaction. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="transaction_8cc_source.html#l00078">78</a> of file <a class="el" href="transaction_8cc_source.html">transaction.cc</a>.</p>
 
 </div>
 </div>
 <a id="ab007cd58575a10fd09bde17990640c7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab007cd58575a10fd09bde17990640c7b">&#9670;&nbsp;</a></span>Transaction() <span class="overload">[2/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab007cd58575a10fd09bde17990640c7b">&#9670;&nbsp;</a></span>Transaction() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -186,9 +188,42 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p></p>
-<dl class="section note"><dt>Note</dt><dd>This is a lazy evaluated operation. No RPCs are made as part of creating a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code> object, instead, the first request to the server (for example as part of a <code>ExecuteQuery()</code> call) will also create the transaction. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This is a lazy evaluated operation. No RPCs are made as part of creating a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code> object. Instead, the first request to the server (for example as part of a <code>ExecuteQuery()</code> call) will also create the transaction. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="transaction_8cc_source.html#l00084">84</a> of file <a class="el" href="transaction_8cc_source.html">transaction.cc</a>.</p>
+
+</div>
+</div>
+<a id="a4d67e222a2852f4aae7cd99220bb31d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d67e222a2852f4aae7cd99220bb31d1">&#9670;&nbsp;</a></span>Transaction() <span class="overload">[3/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">google::cloud::spanner::v0::Transaction::Transaction </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a> const &amp;&#160;</td>
+          <td class="paramname"><em>txn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1ReadWriteOptions.html">ReadWriteOptions</a>&#160;</td>
+          <td class="paramname"><em>opts</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p></p>
+<dl class="section note"><dt>Note</dt><dd>This is a lazy evaluated operation. No RPCs are made as part of creating a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a></code> object. Instead, the first request to the server (for example as part of a <code>ExecuteQuery()</code> call) will also create the transaction. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="transaction_8cc_source.html#l00090">90</a> of file <a class="el" href="transaction_8cc_source.html">transaction.cc</a>.</p>
 
 </div>
 </div>
@@ -218,7 +253,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="a67a4a6c1e3f708f41ef6c2488db77e44"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67a4a6c1e3f708f41ef6c2488db77e44">&#9670;&nbsp;</a></span>Transaction() <span class="overload">[3/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a67a4a6c1e3f708f41ef6c2488db77e44">&#9670;&nbsp;</a></span>Transaction() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -244,7 +279,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="a8f2b51a5e54235b1db6ef1ec04158e96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f2b51a5e54235b1db6ef1ec04158e96">&#9670;&nbsp;</a></span>Transaction() <span class="overload">[4/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f2b51a5e54235b1db6ef1ec04158e96">&#9670;&nbsp;</a></span>Transaction() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -357,7 +392,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="transaction_8h_source.html#l00154">154</a> of file <a class="el" href="transaction_8h_source.html">transaction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="transaction_8h_source.html#l00157">157</a> of file <a class="el" href="transaction_8h_source.html">transaction.h</a>.</p>
 
 </div>
 </div>
@@ -395,7 +430,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="transaction_8h_source.html#l00151">151</a> of file <a class="el" href="transaction_8h_source.html">transaction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="transaction_8h_source.html#l00154">154</a> of file <a class="el" href="transaction_8h_source.html">transaction.h</a>.</p>
 
 </div>
 </div>
