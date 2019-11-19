@@ -1204,26 +1204,32 @@ void DmlPartitionedUpdate(google::cloud::spanner::Client client) {
 void DmlBatchUpdate(google::cloud::spanner::Client client) {
   namespace spanner = google::cloud::spanner;
 
-  auto txn = spanner::MakeReadWriteTransaction();
-  std::vector<spanner::SqlStatement> statements = {
-      spanner::SqlStatement("INSERT INTO Albums"
-                            " (SingerId, AlbumId, AlbumTitle, MarketingBudget)"
-                            " VALUES (1, 3, 'Test Album Title', 10000)"),
-      spanner::SqlStatement("UPDATE Albums"
-                            " SET MarketingBudget = MarketingBudget * 2"
-                            " WHERE SingerId = 1 and AlbumId = 3")};
-  auto result = client.ExecuteBatchDml(txn, statements);
-  if (!result) throw std::runtime_error(result.status().message());
-  // Batch operations may have partial failures, in which case ExecuteBatchDml
-  // returns with success, but the application should verify that all statements
-  // completed successfully
-  if (!result->status.ok()) {
-    throw std::runtime_error(result->status.message());
-  }
-  for (std::size_t i = 0; i < result->stats.size(); i++) {
-    std::cout << result->stats[i].row_count << " rows affected"
-              << " for the statement " << (i + 1) << "."
-              << "\n";
+  auto commit_result =
+      client.Commit([&client](spanner::Transaction const& txn)
+                        -> google::cloud::StatusOr<spanner::Mutations> {
+        std::vector<spanner::SqlStatement> statements = {
+            spanner::SqlStatement("INSERT INTO Albums"
+                                  " (SingerId, AlbumId, AlbumTitle,"
+                                  " MarketingBudget)"
+                                  " VALUES (1, 3, 'Test Album Title', 10000)"),
+            spanner::SqlStatement("UPDATE Albums"
+                                  " SET MarketingBudget = MarketingBudget * 2"
+                                  " WHERE SingerId = 1 and AlbumId = 3")};
+        auto result = client.ExecuteBatchDml(txn, statements);
+        if (!result) return result.status();
+        for (std::size_t i = 0; i < result->stats.size(); i++) {
+          std::cout << result->stats[i].row_count << " rows affected"
+                    << " for the statement " << (i + 1) << "."
+                    << "\n";
+        }
+        // Batch operations may have partial failures, in which case
+        // ExecuteBatchDml returns with success, but the application should
+        // verify that all statements completed successfully
+        if (!result->status.ok()) return result->status;
+        return spanner::Mutations{};
+      });
+  if (!commit_result) {
+    throw std::runtime_error(commit_result.status().message());
   }
   std::cout << "Update was successful [spanner_dml_batch_update]\n";
 }
