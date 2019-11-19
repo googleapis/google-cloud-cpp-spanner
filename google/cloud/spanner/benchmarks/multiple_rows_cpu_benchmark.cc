@@ -258,7 +258,7 @@ struct BytesTraits {
   static std::string TableSuffix() { return "bytes"; }
   static native_type MakeRandomValue(
       google::cloud::internal::DefaultPRNG& generator) {
-    static std::string const population = [] {
+    static std::string const kPopulation = [] {
       std::string result;
       for (int c = std::numeric_limits<char>::min();
            c <= std::numeric_limits<char>::max(); ++c) {
@@ -267,7 +267,7 @@ struct BytesTraits {
       return result;
     }();
     std::string tmp =
-        google::cloud::internal::Sample(generator, 1024, population);
+        google::cloud::internal::Sample(generator, 1024, kPopulation);
     return cs::Bytes(tmp.begin(), tmp.end());
   }
 };
