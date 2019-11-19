@@ -168,9 +168,10 @@ int main(int argc, char* argv[]) {
 
   auto experiment = e->second(generator);
   auto status = experiment->SetUp(config, database);
-  if (status.ok()) {
+  if (!status.ok()) {
+    std::cout << "# Skipping experiment, SetUp() failed\n";
     exit_status = EXIT_FAILURE;
-    std::cerr << "# Skipping experiment, SetUp() failed\n";
+  } else {
     status = experiment->Run(config, database);
     if (!status.ok()) exit_status = EXIT_FAILURE;
     (void)experiment->TearDown(config, database);
@@ -705,9 +706,13 @@ class RunAllExperiment : public Experiment {
       config.table_size = 10;
       config.query_size = 1;
       std::cout << "# Smoke test for experiment: " << kv.first << "\n";
-      std::cout << cfg << "\n";
+      std::cout << cfg << "\n" << std::flush;
       auto experiment = kv.second(generator_);
-      experiment->SetUp(config, database);
+      auto status = experiment->SetUp(config, database);
+      if (!status.ok()) {
+        std::cout << "# ERROR in SetUp: " << status << "\n";
+        continue;
+      }
       experiment->Run(config, database);
       experiment->TearDown(config, database);
     }
