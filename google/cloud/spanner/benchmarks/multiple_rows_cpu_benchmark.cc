@@ -169,7 +169,7 @@ int main(int argc, char* argv[]) {
   auto experiment = e->second(generator);
   auto status = experiment->SetUp(config, database);
   if (!status.ok()) {
-    std::cout << "# Skipping experiment, SetUp() failed\n";
+    std::cout << "# Skipping experiment, SetUp() failed: " << status << "\n";
     exit_status = EXIT_FAILURE;
   } else {
     status = experiment->Run(config, database);
@@ -258,8 +258,16 @@ struct BytesTraits {
   static std::string TableSuffix() { return "bytes"; }
   static native_type MakeRandomValue(
       google::cloud::internal::DefaultPRNG& generator) {
-    std::string tmp = google::cloud::internal::Sample(
-        generator, 1024, "#@$%^&*()-=+_0123456789[]{}|;:,./<>?");
+    static std::string const population = [] {
+      std::string result;
+      for (int c = std::numeric_limits<char>::min();
+           c <= std::numeric_limits<char>::max(); ++c) {
+        result.push_back(static_cast<char>(c));
+      }
+      return result;
+    }();
+    std::string tmp =
+        google::cloud::internal::Sample(generator, 1024, population);
     return cs::Bytes(tmp.begin(), tmp.end());
   }
 };
@@ -333,8 +341,8 @@ struct TimestampTraits {
  *   - Measure the CPU time required to read the row
  *
  * The values of K, M, N are configurable. The results are reported to a
- * `SampleSink` object, typically a this is a (thread-safe) function that
- * prints to `std::cout`. We use separate scripts to analyze the results.
+ * `SampleSink` object, typically this is a (thread-safe) function that prints
+ * to `std::cout`. We use separate scripts to analyze the results.
  */
 template <typename Traits>
 class ReadExperiment : public Experiment {
