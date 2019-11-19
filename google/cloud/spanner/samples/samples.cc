@@ -1327,7 +1327,7 @@ void DmlGettingStartedUpdate(google::cloud::spanner::Client client) {
         if (!budget1) return budget1.status();
         if (*budget1 < transfer_amount) {
           return google::cloud::Status(
-              google::cloud::StatusCode::kInternal,
+              google::cloud::StatusCode::kUnknown,
               "cannot transfer " + std::to_string(transfer_amount) +
                   " from budget of " + std::to_string(*budget1));
         }
