@@ -735,7 +735,7 @@ std::map<std::string, ExperimentFactory> AvailableExperiments() {
       {"run-all", make_run_all},
       {"read-bool", MakeReadFactory<BoolTraits>()},
       {"read-bytes", MakeReadFactory<BytesTraits>()},
-      {"read-date", MakeReadFactory<BytesTraits>()},
+      {"read-date", MakeReadFactory<DateTraits>()},
       {"read-float64", MakeReadFactory<Float64Traits>()},
       {"read-int64", MakeReadFactory<Int64Traits>()},
       {"read-string", MakeReadFactory<StringTraits>()},
