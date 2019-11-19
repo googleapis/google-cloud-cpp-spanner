@@ -1320,22 +1320,22 @@ void DmlGettingStartedUpdate(google::cloud::spanner::Client client) {
     return client.ExecuteDml(std::move(txn), std::move(sql));
   };
 
-  auto const kTransferAmount = 20000;
+  auto const transfer_amount = 20000;
   auto commit_result = client.Commit(
-      [&](spanner::Transaction txn) -> StatusOr<spanner::Mutations> {
+      [&](spanner::Transaction const& txn) -> StatusOr<spanner::Mutations> {
         auto budget1 = get_budget(txn, 1, 1);
         if (!budget1) return budget1.status();
-        if (*budget1 < kTransferAmount) {
+        if (*budget1 < transfer_amount) {
           return google::cloud::Status(
               google::cloud::StatusCode::kResourceExhausted,
-              "cannot transfer " + std::to_string(kTransferAmount) +
+              "cannot transfer " + std::to_string(transfer_amount) +
                   " from budget of " + std::to_string(*budget1));
         }
         auto budget2 = get_budget(txn, 2, 2);
         if (!budget2) return budget2.status();
-        auto update = update_budget(txn, 1, 1, *budget1 - kTransferAmount);
+        auto update = update_budget(txn, 1, 1, *budget1 - transfer_amount);
         if (!update) return update.status();
-        update = update_budget(txn, 2, 2, *budget2 + kTransferAmount);
+        update = update_budget(txn, 2, 2, *budget2 + transfer_amount);
         if (!update) return update.status();
         return spanner::Mutations{};
       });
