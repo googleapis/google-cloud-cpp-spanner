@@ -139,8 +139,6 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
 
   SessionHolder MakeSessionHolder(std::unique_ptr<Session> session,
                                   bool dissociate_from_pool);
-  std::vector<ChannelInfo> CreateChannelInfo(
-      std::vector<std::shared_ptr<SpannerStub>> stubs);
 
   void UpdateNextChannelForCreateSessions();  // EXCLUSIVE_LOCKS_REQUIRED(mu_)
 
@@ -155,6 +153,9 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
   int total_sessions_ = 0;                          // GUARDED_BY(mu_)
   bool create_in_progress_ = false;                 // GUARDED_BY(mu_)
 
+  // channels_ is guaranteed to be non-empty and will not be resized after
+  // the constructor runs (so the iterators are guaranteed to always be valid).
+  // TODO(#566) replace `vector` with `absl::FixedArray` when available.
   std::vector<ChannelInfo> channels_;  // GUARDED_BY(mu_)
   std::vector<ChannelInfo>::iterator
       next_channel_for_create_sessions_;  // GUARDED_BY(mu_)

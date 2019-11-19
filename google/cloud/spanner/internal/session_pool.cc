@@ -55,10 +55,16 @@ SessionPool::SessionPool(Database db,
       retry_policy_prototype_(std::move(retry_policy)),
       backoff_policy_prototype_(std::move(backoff_policy)),
       options_(SanitizeOptions(options)) {
+  if (stubs.empty()) {
+    google::cloud::internal::ThrowInvalidArgument(
+        "SessionPool requires a non-empty set of stubs");
+  }
+
   channels_.reserve(stubs.size());
   for (auto& stub : stubs) {
     channels_.emplace_back(std::move(stub));
   }
+  // `channels_` is never resized after this point.
   next_dissociated_stub_channel_ = channels_.begin();
   next_channel_for_create_sessions_ = channels_.begin();
 
