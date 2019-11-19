@@ -1214,7 +1214,9 @@ void DmlBatchUpdate(google::cloud::spanner::Client client) {
                             " WHERE SingerId = 1 and AlbumId = 3")};
   auto result = client.ExecuteBatchDml(txn, statements);
   if (!result) throw std::runtime_error(result.status().message());
-  // Also check BatchDmlResult's member `status`.
+  // Batch operations may have partial failures, in which case ExecuteBatchDml
+  // returns with success, but the application should verify that all statements
+  // completed successfully
   if (!result->status.ok()) {
     throw std::runtime_error(result->status.message());
   }
