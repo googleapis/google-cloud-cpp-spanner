@@ -2044,15 +2044,8 @@ void RunAll() {
   std::cout << "\nRunning spanner_dml_write_then_read sample\n";
   DmlWriteThenRead(client);
 
-  std::cout << "\nRunning spanner_dml_standard_delete sample\n";
-  DmlStandardDelete(client);
-
-  // Need to run this before deleting the data with DeleteData below.
   std::cout << "\nRunning spanner_dml_batch_update sample\n";
   DmlBatchUpdate(client);
-
-  std::cout << "\nRunning spanner_delete_data sample\n";
-  DeleteData(client);
 
   std::cout << "\nRunning spanner_write_data_for_struct_queries sample\n";
   WriteDataForStructQueries(client);
