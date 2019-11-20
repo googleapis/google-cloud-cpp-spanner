@@ -1217,10 +1217,9 @@ void DmlBatchUpdate(google::cloud::spanner::Client client) {
                                   " WHERE SingerId = 1 and AlbumId = 3")};
         auto result = client.ExecuteBatchDml(txn, statements);
         if (!result) return result.status();
-        for (std::size_t i = 0; i < result->stats.size(); i++) {
+        for (std::size_t i = 0; i < result->stats.size(); ++i) {
           std::cout << result->stats[i].row_count << " rows affected"
-                    << " for the statement " << (i + 1) << "."
-                    << "\n";
+                    << " for the statement " << (i + 1) << ".\n";
         }
         // Batch operations may have partial failures, in which case
         // ExecuteBatchDml returns with success, but the application should
