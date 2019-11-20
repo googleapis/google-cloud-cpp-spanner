@@ -432,25 +432,33 @@ class StreamOf {
 };
 
 /**
- * Returns the current row from the given range, if any.
+ * Returns the only row from a range that contains exactly one row.
  *
- * If there are no rows left, an error `Status` is returned. This is a
- * convenience function that can be useful if the caller knows there will be
- * only a single row returned.
+ * An error is returned if the given range does not contain exactly one row.
+ * This is a convenience function that may be useful when the caller knows that
+ * a range should contain exactly one row, such as when `LIMIT 1` is used in an
+ * SQL query, or when a read is performed on a guaranteed unique key such that
+ * only a single row could possibly match. In cases where the caller does not
+ * know how many rows may be returned, they should instead consume the range in
+ * a loop.
+ *
+ * @warning Due to the fact that a `RowStreamIteartor` is an input iterator,
+ *     this function may consume the first element in the range, even in cases
+ *     where an error is returned. But again, this function should not be used
+ *     if @p range might contain multiple rows.
  */
 template <typename RowRange>
-auto GetCurrentRow(RowRange&& range) -> typename std::decay<
+auto GetSingularRow(RowRange&& range) -> typename std::decay<
     decltype(*std::forward<RowRange>(range).begin())>::type {
-  static_assert(std::is_rvalue_reference<RowRange>::value,
-                "The range must be an rvalue. Did you forget std::move?");
+  auto const e = std::forward<RowRange>(range).end();
   auto it = std::forward<RowRange>(range).begin();
-  if (it == std::forward<RowRange>(range).end()) {
-    return Status(StatusCode::kResourceExhausted, "No rows");
+  if (it != e) {
+    auto row = std::move(*it);
+    if (++it == e) return row;
   }
-  auto row = std::move(*it++);
-  if (it == std::forward<RowRange>(range).end()) return row;
-  return Status(StatusCode::kResourceExhausted,
-                "Multiple rows returned. Only one expected.");
+  return Status(StatusCode::kInvalidArgument,
+                std::string(it != e ? "too many" : "no") +
+                    " rows (expected exactly one)");
 }
 
 }  // namespace SPANNER_CLIENT_NS
