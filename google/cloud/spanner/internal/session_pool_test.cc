@@ -148,7 +148,7 @@ TEST(SessionPool, Lifo) {
 }
 
 TEST(SessionPool, MinSessionsEagerAllocation) {
-  const int min_sessions = 3;
+  int const min_sessions = 3;
   auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
   auto db = Database("project", "instance", "database");
   EXPECT_CALL(*mock, BatchCreateSessions(_, _))
@@ -161,7 +161,7 @@ TEST(SessionPool, MinSessionsEagerAllocation) {
 }
 
 TEST(SessionPool, MinSessionsMultipleAllocations) {
-  const int min_sessions = 3;
+  int const min_sessions = 3;
   auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
   auto db = Database("project", "instance", "database");
   // The constructor will make this call.
@@ -188,7 +188,7 @@ TEST(SessionPool, MinSessionsMultipleAllocations) {
 }
 
 TEST(SessionPool, MaxSessionsFailOnExhaustion) {
-  const int max_sessions_per_channel = 3;
+  int const max_sessions_per_channel = 3;
   auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
   auto db = Database("project", "instance", "database");
   EXPECT_CALL(*mock, BatchCreateSessions(_, _))
@@ -215,7 +215,7 @@ TEST(SessionPool, MaxSessionsFailOnExhaustion) {
 }
 
 TEST(SessionPool, MaxSessionsBlockUntilRelease) {
-  const int max_sessions_per_channel = 1;
+  int const max_sessions_per_channel = 1;
   auto mock = std::make_shared<spanner_testing::MockSpannerStub>();
   auto db = Database("project", "instance", "database");
   EXPECT_CALL(*mock, BatchCreateSessions(_, _))

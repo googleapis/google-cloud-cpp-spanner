@@ -180,7 +180,7 @@ Status SessionPool::CreateSessions(std::unique_lock<std::mutex>& lk,
   spanner_proto::BatchCreateSessionsRequest request;
   request.set_database(db_.FullName());
   request.set_session_count(std::int32_t{num_sessions});
-  const auto& stub = channel.stub;
+  auto const& stub = channel.stub;
   auto response = RetryLoop(
       retry_policy_prototype_->clone(), backoff_policy_prototype_->clone(),
       true,
