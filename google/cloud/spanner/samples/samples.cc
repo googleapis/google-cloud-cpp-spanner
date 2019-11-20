@@ -1028,7 +1028,6 @@ void ReadWriteTransaction(google::cloud::spanner::Client client) {
     auto rows = client.Read(std::move(txn), "Albums", std::move(key),
                             {"MarketingBudget"});
     using RowType = std::tuple<std::int64_t>;
-    // We expect at most one result from the `Read()` request.
     auto row = spanner::GetSingularRow(spanner::StreamOf<RowType>(rows));
     // Return the error (as opposed to throwing an exception) because
     // Commit() only retries on StatusCode::kAborted.
