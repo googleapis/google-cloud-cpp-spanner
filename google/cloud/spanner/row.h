@@ -452,13 +452,10 @@ auto GetSingularRow(RowRange&& range) -> typename std::decay<
     decltype(*std::forward<RowRange>(range).begin())>::type {
   auto const e = std::forward<RowRange>(range).end();
   auto it = std::forward<RowRange>(range).begin();
-  if (it != e) {
-    auto row = std::move(*it);
-    if (++it == e) return row;
-  }
-  return Status(StatusCode::kInvalidArgument,
-                std::string(it != e ? "too many" : "no") +
-                    " rows (expected exactly one)");
+  if (it == e) return Status(StatusCode::kInvalidArgument, "no rows");
+  auto row = std::move(*it);
+  if (++it != e) return Status(StatusCode::kInvalidArgument, "too many rows");
+  return row;
 }
 
 }  // namespace SPANNER_CLIENT_NS
