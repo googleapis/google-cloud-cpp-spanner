@@ -31,7 +31,8 @@ established) to remain stable unless there is good reason to add overhead.
 We recommend that you compile and run these experiments on a VM running on the
 same region as the spanner instance you will use for the tests. Create and
 configure the VM instance, and then install the development tools for whatever
-platform you chose (see [INSTALL](../../../INSTALL.md) for details).
+platform you chose. See the [INSTALL](../../../../INSTALL.md#table-of-contents)
+instructions for your distribution.
 
 ### Compiling the library
 
@@ -40,13 +41,39 @@ CMake this is:
 
 ```bash
 git clone https://github.com/googleapis/google-cloud-cpp-spanner.git
+cd google-cloud-cpp-spanner
 cmake -Hsuper -Bcmake-out/si -DCMAKE_BUILD_TYPE=Release -GNinja \
      -DGOOGLE_CLOUD_CPP_EXTERNAL_PREFIX=$HOME/local-spanner
 cmake --build cmake-out/si --target project-dependencies
-cmake -H. -B.release -DCMAKE_BUILD_TYPE=Release -GNinja \
+cmake -H. -B.build -DCMAKE_BUILD_TYPE=Release -GNinja \
     -DCMAKE_PREFIX_PATH=$HOME/local-spanner
-cmake --build .release
+cmake --build .build
 ```
+
+### Configuring Authentication
+
+You need to configure the Cloud Spanner client library so it can authenticate
+with Cloud Spanner. While covering authentication in detail is beyond the scope
+of this README, we assume the reader is familiar with the topic, and refer them
+to the [Authentication Overview][authentication-quickstart] if they need a more
+in-depth discussion.
+
+The library can use the application default credentials (though these are no
+longer considered a best practice), which are enabled using:
+
+```bash
+gcloud auth application-default login
+```
+
+Alternatively, you can use a service account credentials, or your own login
+credentials by setting the `GOOGLE_APPLICATION_CREDENTIALS` environment variable
+to the path of a JSON or P12 file containing the credentials you want to use.
+
+If you are running the benchmarks in a virtual machine, the library will
+automatically use the GCE instance service account, but you may need to
+authorize this service account to access Cloud Spanner.
+ 
+[authentication-quickstart]: https://cloud.google.com/docs/authentication/getting-started 'Authentication Getting Started'
 
 ### Running the benchmark
 
@@ -57,7 +84,7 @@ example, to perform the experiment measuring the CPU overhead of reading columns
 of type `STRING` you would run:
 
 ```bash
-.release/google/cloud/spanner/benchmarks/multiple_rows_cpu_benchmark \
+.build/google/cloud/spanner/benchmarks/multiple_rows_cpu_benchmark \
     --project=${GOOGLE_CLOUD_PROJECT} \
     --instance=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE} \
     --table-size=1000000 \
@@ -66,13 +93,16 @@ of type `STRING` you would run:
     --iteration-duration=5 \
     --samples=60 --experiment=read-string
 ```
- `std::string` The program can run different experiments for different datatypes, to run all
-of them in a loop and capture the results use:
+
+Note that the output of this benchmark can be rather large, you may want to
+redirect this to a file.
+
+The program can run the same experiment with other data types:
 
 ```bash
 for exp in read-bool read-bytes read-date read-float64 \
-          read-int64 read-string read-timestamp; do \
-  .release/google/cloud/spanner/benchmarks/multiple_rows_cpu_benchmark \
+           read-int64 read-string read-timestamp; do \
+  .build/google/cloud/spanner/benchmarks/multiple_rows_cpu_benchmark \
     --project=${GOOGLE_CLOUD_PROJECT} \
     --instance=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE} \
     --table-size=1000000 \
@@ -118,7 +148,7 @@ To run the experiment reading data for approximately 5 minutes use 20 samples
 of 15 seconds each:
 
 ```bash
-.release/google/cloud/spanner/benchmarks/single_row_throughput_benchmark \
+.build/google/cloud/spanner/benchmarks/single_row_throughput_benchmark \
     --project=${GOOGLE_CLOUD_PROJECT} \
     --instance=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE} \
     --iteration-duration=15 \
