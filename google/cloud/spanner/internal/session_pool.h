@@ -45,12 +45,12 @@ enum class ActionOnExhaustion { BLOCK, FAIL };
 struct SessionPoolOptions {
   // The minimum number of sessions to keep in the pool.
   // Values <= 0 are treated as 0.
-  // In case of a conflict, `max_sessions_per_channel` takes precedence.
+  // This value will be reduced if it exceeds the overall limit on the number
+  // of sessions (`max_sessions_per_channel` * number of channels).
   int min_sessions = 0;
 
   // The maximum number of sessions to create on each channel.
   // Values <= 1 are treated as 1.
-  // The `max_sessions_per_channel` limit takes precedence over `min_sessions`.
   int max_sessions_per_channel = 100;
 
   // The maximum number of sessions that can be in the pool in an idle state.
@@ -141,7 +141,7 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
   std::unique_ptr<RetryPolicy const> retry_policy_prototype_;
   std::unique_ptr<BackoffPolicy const> backoff_policy_prototype_;
   SessionPoolOptions const options_;
-  const int max_pool_size_;
+  int const max_pool_size_;
 
   std::mutex mu_;
   std::condition_variable cond_;
