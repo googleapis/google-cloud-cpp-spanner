@@ -53,8 +53,8 @@ SessionPool::SessionPool(Database db,
     : db_(std::move(db)),
       retry_policy_prototype_(std::move(retry_policy)),
       backoff_policy_prototype_(std::move(backoff_policy)),
-      options_(SanitizeOptions(options, stubs.size())),
-      max_pool_size_(options.max_sessions_per_channel *
+      options_(SanitizeOptions(options, static_cast<int>(stubs.size()))),
+      max_pool_size_(options_.max_sessions_per_channel *
                      static_cast<int>(stubs.size())) {
   if (stubs.empty()) {
     google::cloud::internal::ThrowInvalidArgument(
