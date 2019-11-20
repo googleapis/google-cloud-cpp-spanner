@@ -72,7 +72,7 @@ to the path of a JSON or P12 file containing the credentials you want to use.
 If you are running the benchmarks in a virtual machine, the library will
 automatically use the GCE instance service account, but you may need to
 authorize this service account to access Cloud Spanner.
- 
+
 [authentication-quickstart]: https://cloud.google.com/docs/authentication/getting-started 'Authentication Getting Started'
 
 ### Running the benchmark
