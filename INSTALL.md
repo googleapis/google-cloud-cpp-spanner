@@ -146,6 +146,7 @@ these dependencies.
 - [Ubuntu (16.04 - Xenial Xerus)](#ubuntu-1604---xenial-xerus)
 - [Debian (10 Buster)](#debian-10---buster)
 - [Debian (9 Stretch)](#debian-9---stretch)
+- [CentOS 8](#centos-8)
 - [CentOS 7](#centos-7)
 
 ### Fedora (30)
