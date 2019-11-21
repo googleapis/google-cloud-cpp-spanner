@@ -141,6 +141,13 @@ these dependencies.
 ## Table of Contents
 
 - [Fedora 30](#fedora-30)
+- [openSUSE (Leap)](#opensuse-leap)
+- [Ubuntu (18.04 - Bionic Beaver)](#ubuntu-1804---bionic-beaver)
+- [Ubuntu (16.04 - Xenial Xerus)](#ubuntu-1604---xenial-xerus)
+- [Debian (10 Buster)](#debian-10---buster)
+- [Debian (9 Stretch)](#debian-9---stretch)
+- [CentOS 8](#centos-8)
+- [CentOS 7](#centos-7)
 
 ### Fedora (30)
 
@@ -160,6 +167,844 @@ tools to compile the dependencies:
 sudo dnf makecache && \
 sudo dnf install -y grpc-devel grpc-plugins \
         libcurl-devel protobuf-compiler tar wget zlib-devel
+```
+
+#### googleapis
+
+We need a recent version of the Google Cloud Platform proto C++ libraries:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### googletest
+
+We need a recent version of GoogleTest to compile the unit and integration
+tests.
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### google-cloud-cpp-common
+
+The project also depends on google-cloud-cpp-common, the libraries shared by
+all the Google Cloud C++ client libraries:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.16.0.tar.gz && \
+    tar -xf v0.16.0.tar.gz && \
+    cd google-cloud-cpp-common-0.16.0 && \
+    cmake -H. -Bcmake-out \
+        -DBUILD_TESTING=OFF \
+        -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### Compile and install the main project
+
+We can now compile, test, and install `google-cloud-cpp-spanner`.
+
+```bash
+cd $HOME/project
+cmake -H. -B/o
+cmake --build /o -- -j "${NCPU:-4}"
+cd /o
+ctest -LE integration-tests --output-on-failure
+cd $HOME/project
+sudo cmake --build /o --target install
+```
+
+
+### openSUSE (Leap)
+
+Install the minimal development tools, libcurl and OpenSSL. The gRPC Makefile
+uses `which` to determine whether the compiler is available. Install this
+command for the extremely rare case where it may be missing from your
+workstation or build server.
+
+```bash
+sudo zypper refresh && \
+sudo zypper install --allow-downgrade -y automake cmake gcc gcc-c++ git gzip \
+        libcurl-devel libopenssl-devel libtool make tar wget which
+```
+
+The following steps will install libraries and tools in `/usr/local`. openSUSE
+does not search for shared libraries in these directories by default, there
+are multiple ways to solve this problem, the following steps are one solution:
+
+```bash
+(echo "/usr/local/lib" ; echo "/usr/local/lib64") | \
+sudo tee /etc/ld.so.conf.d/usrlocal.conf
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig
+export PATH=/usr/local/bin:${PATH}
+```
+
+#### Protobuf
+
+We need to install a version of Protobuf that is recent enough to support the
+Google Cloud Platform proto files:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
+    tar -xf v3.9.1.tar.gz && \
+    cd protobuf-3.9.1/cmake && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -Dprotobuf_BUILD_TESTS=OFF \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### c-ares
+
+Recent versions of gRPC require c-ares >= 1.11, while openSUSE/Leap
+distributes c-ares-1.9. Manually install a newer version:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/c-ares/c-ares/archive/cares-1_14_0.tar.gz && \
+    tar -xf cares-1_14_0.tar.gz && \
+    cd c-ares-cares-1_14_0 && \
+    ./buildconf && ./configure && make -j ${NCPU:-4} && \
+sudo make install && \
+sudo ldconfig
+```
+
+#### gRPC
+
+We also need a version of gRPC that is recent enough to support the Google
+Cloud Platform proto files. We manually install it using:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
+    tar -xf v1.23.1.tar.gz && \
+    cd grpc-1.23.1 && \
+    make -j ${NCPU:-4} && \
+sudo make install && \
+sudo ldconfig
+```
+
+#### googleapis
+
+We need a recent version of the Google Cloud Platform proto C++ libraries:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### googletest
+
+We need a recent version of GoogleTest to compile the unit and integration
+tests.
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### google-cloud-cpp-common
+
+The project also depends on google-cloud-cpp-common, the libraries shared by
+all the Google Cloud C++ client libraries:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.16.0.tar.gz && \
+    tar -xf v0.16.0.tar.gz && \
+    cd google-cloud-cpp-common-0.16.0 && \
+    cmake -H. -Bcmake-out \
+        -DBUILD_TESTING=OFF \
+        -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### Compile and install the main project
+
+We can now compile, test, and install `google-cloud-cpp-spanner`.
+
+```bash
+cd $HOME/project
+cmake -H. -B/o
+cmake --build /o -- -j "${NCPU:-4}"
+cd /o
+ctest -LE integration-tests --output-on-failure
+cd $HOME/project
+sudo cmake --build /o --target install
+```
+
+
+### Ubuntu (18.04 - Bionic Beaver)
+
+Install the minimal development tools, libcurl, OpenSSL and libc-ares:
+
+```bash
+sudo apt update && \
+sudo apt install -y build-essential cmake git gcc g++ cmake \
+        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl-dev make \
+        pkg-config tar wget zlib1g-dev
+```
+
+#### Protobuf
+
+We need to install a version of Protobuf that is recent enough to support the
+Google Cloud Platform proto files:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
+    tar -xf v3.9.1.tar.gz && \
+    cd protobuf-3.9.1/cmake && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -Dprotobuf_BUILD_TESTS=OFF \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### gRPC
+
+We also need a version of gRPC that is recent enough to support the Google
+Cloud Platform proto files. We install it using:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
+    tar -xf v1.23.1.tar.gz && \
+    cd grpc-1.23.1 && \
+    make -j ${NCPU:-4} && \
+sudo make install && \
+sudo ldconfig
+```
+
+#### googleapis
+
+We need a recent version of the Google Cloud Platform proto C++ libraries:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### googletest
+
+We need a recent version of GoogleTest to compile the unit and integration
+tests.
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### google-cloud-cpp-common
+
+The project also depends on google-cloud-cpp-common, the libraries shared by
+all the Google Cloud C++ client libraries:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.16.0.tar.gz && \
+    tar -xf v0.16.0.tar.gz && \
+    cd google-cloud-cpp-common-0.16.0 && \
+    cmake -H. -Bcmake-out \
+        -DBUILD_TESTING=OFF \
+        -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### Compile and install the main project
+
+We can now compile, test, and install `google-cloud-cpp-spanner`.
+
+```bash
+cd $HOME/project
+cmake -H. -B/o
+cmake --build /o -- -j "${NCPU:-4}"
+cd /o
+ctest -LE integration-tests --output-on-failure
+cd $HOME/project
+sudo cmake --build /o --target install
+```
+
+
+### Ubuntu (16.04 - Xenial Xerus)
+
+Install the minimal development tools, OpenSSL and libcurl:
+
+```bash
+sudo apt update && \
+sudo apt install -y automake build-essential cmake git gcc g++ \
+        libcurl4-openssl-dev libssl-dev libtool make \
+        pkg-config tar wget zlib1g-dev
+```
+
+#### Protobuf
+
+We need to install a version of Protobuf that is recent enough to support the
+Google Cloud Platform proto files:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
+    tar -xf v3.9.1.tar.gz && \
+    cd protobuf-3.9.1/cmake && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -Dprotobuf_BUILD_TESTS=OFF \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### c-ares
+
+Recent versions of gRPC require c-ares >= 1.11, while Ubuntu-16.04
+distributes c-ares-1.10. Manually install a newer version:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/c-ares/c-ares/archive/cares-1_14_0.tar.gz && \
+    tar -xf cares-1_14_0.tar.gz && \
+    cd c-ares-cares-1_14_0 && \
+    ./buildconf && ./configure && make -j ${NCPU:-4} && \
+sudo make install && \
+sudo ldconfig
+```
+
+#### gRPC
+
+We also need a version of gRPC that is recent enough to support the Google
+Cloud Platform proto files. We can install gRPC from source using:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
+    tar -xf v1.23.1.tar.gz && \
+    cd grpc-1.23.1 && \
+    make -j ${NCPU:-4} && \
+sudo make install && \
+sudo ldconfig
+```
+
+#### googleapis
+
+We need a recent version of the Google Cloud Platform proto C++ libraries:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### googletest
+
+We need a recent version of GoogleTest to compile the unit and integration
+tests.
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### google-cloud-cpp-common
+
+The project also depends on google-cloud-cpp-common, the libraries shared by
+all the Google Cloud C++ client libraries:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.16.0.tar.gz && \
+    tar -xf v0.16.0.tar.gz && \
+    cd google-cloud-cpp-common-0.16.0 && \
+    cmake -H. -Bcmake-out \
+        -DBUILD_TESTING=OFF \
+        -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### Compile and install the main project
+
+We can now compile, test, and install `google-cloud-cpp-spanner`.
+
+```bash
+cd $HOME/project
+cmake -H. -B/o
+cmake --build /o -- -j "${NCPU:-4}"
+cd /o
+ctest -LE integration-tests --output-on-failure
+cd $HOME/project
+sudo cmake --build /o --target install
+```
+
+
+### Debian (10 - Buster)
+
+Install the minimal development tools, libcurl, and OpenSSL:
+
+```bash
+sudo apt update && \
+sudo apt install -y build-essential cmake git gcc g++ cmake \
+        libcurl4-openssl-dev libssl-dev make pkg-config tar wget zlib1g-dev
+```
+
+Debian 10 includes versions of gRPC and Protobuf that support the
+Google Cloud Platform proto files. We simply install these pre-built versions:
+
+```bash
+sudo apt update && \
+sudo apt install -y libgrpc++-dev libprotobuf-dev libc-ares-dev \
+        protobuf-compiler protobuf-compiler-grpc
+```
+
+#### googleapis
+
+We need a recent version of the Google Cloud Platform proto C++ libraries:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### googletest
+
+We need a recent version of GoogleTest to compile the unit and integration
+tests.
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### google-cloud-cpp-common
+
+The project also depends on google-cloud-cpp-common, the libraries shared by
+all the Google Cloud C++ client libraries:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.16.0.tar.gz && \
+    tar -xf v0.16.0.tar.gz && \
+    cd google-cloud-cpp-common-0.16.0 && \
+    cmake -H. -Bcmake-out \
+        -DBUILD_TESTING=OFF \
+        -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### Compile and install the main project
+
+We can now compile, test, and install `google-cloud-cpp-spanner`.
+
+```bash
+cd $HOME/project
+cmake -H. -B/o
+cmake --build /o -- -j "${NCPU:-4}"
+cd /o
+ctest -LE integration-tests --output-on-failure
+cd $HOME/project
+sudo cmake --build /o --target install
+```
+
+
+### Debian (9 - Stretch)
+
+First install the development tools and libcurl.
+On Debian 9, libcurl links against openssl-1.0.2, and one must link
+against the same version or risk an inconsistent configuration of the library.
+This is especially important for multi-threaded applications, as openssl-1.0.2
+requires explicitly setting locking callbacks. Therefore, to use libcurl one
+must link against openssl-1.0.2. To do so, we need to install libssl1.0-dev.
+Note that this removes libssl-dev if you have it installed already, and would
+prevent you from compiling against openssl-1.1.0.
+
+```bash
+sudo apt update && \
+sudo apt install -y build-essential cmake git gcc g++ cmake \
+        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl1.0-dev make \
+        pkg-config tar wget zlib1g-dev
+```
+
+#### Protobuf
+
+We need to install a version of Protobuf that is recent enough to support the
+Google Cloud Platform proto files:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
+    tar -xf v3.9.1.tar.gz && \
+    cd protobuf-3.9.1/cmake && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -Dprotobuf_BUILD_TESTS=OFF \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### gRPC
+
+To install gRPC we first need to configure pkg-config to find the version of
+Protobuf we just installed in `/usr/local`:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
+    tar -xf v1.23.1.tar.gz && \
+    cd grpc-1.23.1 && \
+    make -j ${NCPU:-4} && \
+sudo make install && \
+sudo ldconfig
+```
+
+#### googleapis
+
+We need a recent version of the Google Cloud Platform proto C++ libraries:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### googletest
+
+We need a recent version of GoogleTest to compile the unit and integration
+tests.
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### google-cloud-cpp-common
+
+The project also depends on google-cloud-cpp-common, the libraries shared by
+all the Google Cloud C++ client libraries:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.16.0.tar.gz && \
+    tar -xf v0.16.0.tar.gz && \
+    cd google-cloud-cpp-common-0.16.0 && \
+    cmake -H. -Bcmake-out \
+        -DBUILD_TESTING=OFF \
+        -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### Compile and install the main project
+
+We can now compile, test, and install `google-cloud-cpp-spanner`.
+
+```bash
+cd $HOME/project
+cmake -H. -B/o
+cmake --build /o -- -j "${NCPU:-4}"
+cd /o
+ctest -LE integration-tests --output-on-failure
+cd $HOME/project
+sudo cmake --build /o --target install
+```
+
+
+### CentOS (8)
+
+Install the minimal development tools, libcurl, OpenSSL, and the c-ares
+library (required by gRPC):
+
+```bash
+sudo dnf makecache && \
+sudo dnf install -y cmake gcc-c++ git make openssl-devel pkgconfig \
+        zlib-devel libcurl-devel c-ares-devel tar wget which
+```
+
+The following steps will install libraries and tools in `/usr/local`. By
+default CentOS-8 does not search for shared libraries in these directories,
+there are multiple ways to solve this problem, the following steps are one
+solution:
+
+```bash
+(echo "/usr/local/lib" ; echo "/usr/local/lib64") | \
+sudo tee /etc/ld.so.conf.d/usrlocal.conf
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig
+export PATH=/usr/local/bin:${PATH}
+```
+
+#### Protobuf
+
+We need to install a version of Protobuf that is recent enough to support the
+Google Cloud Platform proto files:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
+    tar -xf v3.9.1.tar.gz && \
+    cd protobuf-3.9.1/cmake && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -Dprotobuf_BUILD_TESTS=OFF \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### gRPC
+
+We also need a version of gRPC that is recent enough to support the Google
+Cloud Platform proto files. We manually install it using:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
+    tar -xf v1.23.1.tar.gz && \
+    cd grpc-1.23.1 && \
+    make -j ${NCPU:-4} && \
+sudo make install && \
+sudo ldconfig
+```
+
+#### googleapis
+
+We need a recent version of the Google Cloud Platform proto C++ libraries:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz && \
+    tar -xf v0.1.5.tar.gz && \
+    cd cpp-cmakefiles-0.1.5 && \
+    cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### googletest
+
+We need a recent version of GoogleTest to compile the unit and integration
+tests.
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -xf release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
+    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### google-cloud-cpp-common
+
+The project also depends on google-cloud-cpp-common, the libraries shared by
+all the Google Cloud C++ client libraries:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.16.0.tar.gz && \
+    tar -xf v0.16.0.tar.gz && \
+    cd google-cloud-cpp-common-0.16.0 && \
+    cmake -H. -Bcmake-out \
+        -DBUILD_TESTING=OFF \
+        -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### Compile and install the main project
+
+We can now compile, test, and install `google-cloud-cpp-spanner`.
+
+```bash
+cd $HOME/project
+cmake -H. -B/o
+cmake --build /o -- -j "${NCPU:-4}"
+cd /o
+ctest -LE integration-tests --output-on-failure
+cd $HOME/project
+sudo cmake --build /o --target install
+```
+
+
+### CentOS (7)
+
+First install the development tools and OpenSSL. The development tools
+distributed with CentOS 7 (notably CMake) are too old to build
+the project. In these instructions, we use `cmake3` obtained from
+[Software Collections](https://www.softwarecollections.org/).
+
+```bash
+sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+sudo yum install -y centos-release-scl yum-utils
+sudo yum-config-manager --enable rhel-server-rhscl-7-rpms
+sudo yum makecache && \
+sudo yum install -y automake cmake3 curl-devel gcc gcc-c++ git libtool \
+        make openssl-devel pkgconfig tar wget which zlib-devel
+sudo ln -sf /usr/bin/cmake3 /usr/bin/cmake && sudo ln -sf /usr/bin/ctest3 /usr/bin/ctest
+```
+
+The following steps will install libraries and tools in `/usr/local`. By
+default CentOS-7 does not search for shared libraries in these directories,
+there are multiple ways to solve this problem, the following steps are one
+solution:
+
+```bash
+(echo "/usr/local/lib" ; echo "/usr/local/lib64") | \
+sudo tee /etc/ld.so.conf.d/usrlocal.conf
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig
+export PATH=/usr/local/bin:${PATH}
+```
+
+#### Protobuf
+
+We need to install a version of Protobuf that is recent enough to support the
+Google Cloud Platform proto files:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
+    tar -xf v3.9.1.tar.gz && \
+    cd protobuf-3.9.1/cmake && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -Dprotobuf_BUILD_TESTS=OFF \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### c-ares
+
+Recent versions of gRPC require c-ares >= 1.11, while CentOS-7
+distributes c-ares-1.10. Manually install a newer version:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/c-ares/c-ares/archive/cares-1_14_0.tar.gz && \
+    tar -xf cares-1_14_0.tar.gz && \
+    cd c-ares-cares-1_14_0 && \
+    ./buildconf && ./configure && make -j ${NCPU:-4} && \
+sudo make install && \
+sudo ldconfig
+```
+
+#### gRPC
+
+We also need a version of gRPC that is recent enough to support the Google
+Cloud Platform proto files. We manually install it using:
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
+    tar -xf v1.23.1.tar.gz && \
+    cd grpc-1.23.1 && \
+    make -j ${NCPU:-4} && \
+sudo make install && \
+sudo ldconfig
 ```
 
 #### googleapis
