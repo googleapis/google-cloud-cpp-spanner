@@ -13,11 +13,14 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/internal/database_admin_stub.h"
+#include "google/cloud/spanner/background_threads.h"
 #include "google/cloud/spanner/internal/database_admin_logging.h"
 #include "google/cloud/spanner/internal/database_admin_metadata.h"
 #include "google/cloud/grpc_utils/grpc_error_delegate.h"
 #include "google/cloud/log.h"
+#include <grpc/impl/codegen/connectivity_state.h>
 #include <google/longrunning/operations.grpc.pb.h>
+#include <chrono>
 
 namespace google {
 namespace cloud {
@@ -33,9 +36,12 @@ class DefaultDatabaseAdminStub : public DatabaseAdminStub {
  public:
   DefaultDatabaseAdminStub(
       std::unique_ptr<gcsa::DatabaseAdmin::Stub> database_admin,
-      std::unique_ptr<google::longrunning::Operations::Stub> operations)
+      std::unique_ptr<google::longrunning::Operations::Stub> operations,
+      std::unique_ptr<google::cloud::spanner::BackgroundThreads>
+          background_threads)
       : database_admin_(std::move(database_admin)),
-        operations_(std::move(operations)) {}
+        operations_(std::move(operations)),
+        background_threads_(std::move(background_threads)) {}
 
   ~DefaultDatabaseAdminStub() override = default;
 
@@ -162,20 +168,32 @@ class DefaultDatabaseAdminStub : public DatabaseAdminStub {
  private:
   std::unique_ptr<gcsa::DatabaseAdmin::Stub> database_admin_;
   std::unique_ptr<google::longrunning::Operations::Stub> operations_;
+  std::unique_ptr<google::cloud::spanner::BackgroundThreads>
+      background_threads_;
 };
 
 std::shared_ptr<DatabaseAdminStub> CreateDefaultDatabaseAdminStub(
     ConnectionOptions const& options) {
+  auto background_threads = options.background_threads_factory()();
   auto channel =
       grpc::CreateCustomChannel(options.endpoint(), options.credentials(),
                                 options.CreateChannelArguments());
+  using ms = std::chrono::milliseconds;
+  background_threads->cq().MakeRelativeTimer(ms(0)).then(
+      [&channel](future<std::chrono::system_clock::time_point>) {
+        auto state = channel->GetState(true);
+        while (state != GRPC_CHANNEL_READY) {
+          state = channel->GetState(true);
+        }
+      });
   auto spanner_grpc_stub = gcsa::DatabaseAdmin::NewStub(channel);
   auto longrunning_grpc_stub =
       google::longrunning::Operations::NewStub(channel);
 
   std::shared_ptr<DatabaseAdminStub> stub =
       std::make_shared<DefaultDatabaseAdminStub>(
-          std::move(spanner_grpc_stub), std::move(longrunning_grpc_stub));
+          std::move(spanner_grpc_stub), std::move(longrunning_grpc_stub),
+          std::move(background_threads));
 
   stub = std::make_shared<DatabaseAdminMetadata>(std::move(stub));
 

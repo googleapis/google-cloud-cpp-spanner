@@ -188,7 +188,7 @@ class ConnectionOptions {
 
   using BackgroundThreadsFactory =
       std::function<std::unique_ptr<BackgroundThreads>()>;
-  BackgroundThreadsFactory background_threads_factory() {
+  BackgroundThreadsFactory background_threads_factory() const {
     return background_threads_factory_;
   }
 
