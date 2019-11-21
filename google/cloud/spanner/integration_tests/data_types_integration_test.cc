@@ -173,11 +173,12 @@ TEST_F(DataTypeIntegrationTest, WriteReadBytes) {
 }
 
 TEST_F(DataTypeIntegrationTest, WriteReadTimestamp) {
-  auto min = internal::TimestampFromString("0001-01-01T00:00:00Z");
-  auto max = internal::TimestampFromString("9999-12-31T23:59:59.999999999Z");
+  // TODO(#1098): `Timestamp` cannot represent these extreme values.
+  // auto min = internal::TimestampFromString("0001-01-01T00:00:00Z");
+  // auto max = internal::TimestampFromString("9999-12-31T23:59:59.999999999Z");
 
-  ASSERT_STATUS_OK(min);
-  ASSERT_STATUS_OK(max);
+  // ASSERT_STATUS_OK(min);
+  // ASSERT_STATUS_OK(max);
 
   std::vector<Timestamp> const data = {
       // *min,  // TODO(#1098)
