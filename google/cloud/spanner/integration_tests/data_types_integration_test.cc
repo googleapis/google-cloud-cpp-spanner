@@ -15,6 +15,7 @@
 #include "google/cloud/spanner/client.h"
 #include "google/cloud/spanner/database.h"
 #include "google/cloud/spanner/database_admin_client.h"
+#include "google/cloud/spanner/internal/time.h"
 #include "google/cloud/spanner/mutations.h"
 #include "google/cloud/spanner/testing/database_environment.h"
 #include "google/cloud/internal/getenv.h"
@@ -37,10 +38,10 @@ template <typename T>
 StatusOr<T> WriteReadData(Client& client, T const& data,
                           std::string const& column) {
   auto commit_result = client.Commit(
-      [&data, &column](Transaction const& txn) -> StatusOr<Mutations> {
+      [&data, &column](Transaction const&) -> StatusOr<Mutations> {
         Mutations mutations;
         int id = 0;
-        for (auto const x : data) {
+        for (auto const& x : data) {
           mutations.push_back(MakeInsertMutation(
               "DataTypes", {"Id", column}, "Id-" + std::to_string(id++), x));
         }
@@ -82,27 +83,14 @@ class DataTypeIntegrationTest : public ::testing::Test {
 
 std::unique_ptr<Client> DataTypeIntegrationTest::client_;
 
-TEST_F(DataTypeIntegrationTest, ReadWriteDate) {
-  std::vector<Date> const data = {
-      Date(1, 1, 1),       //
-      Date(161, 3, 8),     //
-      Date(),              //
-      Date(2019, 11, 21),  //
-      Date(9999, 12, 31),  //
-  };
-  auto result = WriteReadData(*client_, data, "DateValue");
-  ASSERT_STATUS_OK(result);
-  EXPECT_THAT(*result, UnorderedElementsAreArray(data));
-}
-
-TEST_F(DataTypeIntegrationTest, ReadWriteBool) {
+TEST_F(DataTypeIntegrationTest, WriteReadBool) {
   std::vector<bool> const data = {true, false};
   auto result = WriteReadData(*client_, data, "BoolValue");
   ASSERT_STATUS_OK(result);
   EXPECT_THAT(*result, UnorderedElementsAreArray(data));
 }
 
-TEST_F(DataTypeIntegrationTest, ReadWriteInt64) {
+TEST_F(DataTypeIntegrationTest, WriteReadInt64) {
   std::vector<std::int64_t> const data = {
       std::numeric_limits<std::int64_t>::min(), -123, -42, -1, 0, 1, 42, 123,
       std::numeric_limits<std::int64_t>::max(),
@@ -112,7 +100,7 @@ TEST_F(DataTypeIntegrationTest, ReadWriteInt64) {
   EXPECT_THAT(*result, UnorderedElementsAreArray(data));
 }
 
-TEST_F(DataTypeIntegrationTest, ReadWriteFloat64) {
+TEST_F(DataTypeIntegrationTest, WriteReadFloat64) {
   std::vector<double> const data = {
       -std::numeric_limits<double>::infinity(),
       std::numeric_limits<double>::lowest(),
@@ -140,7 +128,7 @@ TEST_F(DataTypeIntegrationTest, ReadWriteFloat64) {
   EXPECT_THAT(*result, UnorderedElementsAreArray(data));
 }
 
-TEST_F(DataTypeIntegrationTest, ReadWriteFloat64NaN) {
+TEST_F(DataTypeIntegrationTest, WriteReadFloat64NaN) {
   // Since NaN is not equal to anything, including itself, we need to handle
   // NaN separately from other Float64 values.
   std::vector<double> const data = {
@@ -152,7 +140,7 @@ TEST_F(DataTypeIntegrationTest, ReadWriteFloat64NaN) {
   EXPECT_TRUE(std::isnan(result->front()));
 }
 
-TEST_F(DataTypeIntegrationTest, ReadWriteString) {
+TEST_F(DataTypeIntegrationTest, WriteReadString) {
   std::vector<std::string> const data = {
       "",
       "a",
@@ -165,7 +153,7 @@ TEST_F(DataTypeIntegrationTest, ReadWriteString) {
   EXPECT_THAT(*result, UnorderedElementsAreArray(data));
 }
 
-TEST_F(DataTypeIntegrationTest, ReadWriteBytes) {
+TEST_F(DataTypeIntegrationTest, WriteReadBytes) {
   // Makes a blob containing unprintable characters.
   std::string blob;
   for (char c = std::numeric_limits<char>::min();
@@ -184,16 +172,37 @@ TEST_F(DataTypeIntegrationTest, ReadWriteBytes) {
   EXPECT_THAT(*result, UnorderedElementsAreArray(data));
 }
 
-TEST_F(DataTypeIntegrationTest, ReadWriteTimestamp) {
+TEST_F(DataTypeIntegrationTest, WriteReadTimestamp) {
+  auto min = internal::TimestampFromString("0001-01-01T00:00:00Z");
+  auto max = internal::TimestampFromString("9999-12-31T23:59:59.999999999Z");
+
+  ASSERT_STATUS_OK(min);
+  ASSERT_STATUS_OK(max);
+
   std::vector<Timestamp> const data = {
+      *min,
       Timestamp(std::chrono::seconds(-1)),
       Timestamp(std::chrono::nanoseconds(-1)),
       Timestamp(std::chrono::seconds(0)),
       Timestamp(std::chrono::nanoseconds(1)),
       Timestamp(std::chrono::seconds(1)),
       Timestamp(std::chrono::system_clock::now()),
+      *max,
   };
   auto result = WriteReadData(*client_, data, "TimestampValue");
+  ASSERT_STATUS_OK(result);
+  EXPECT_THAT(*result, UnorderedElementsAreArray(data));
+}
+
+TEST_F(DataTypeIntegrationTest, WriteReadDate) {
+  std::vector<Date> const data = {
+      Date(1, 1, 1),       //
+      Date(161, 3, 8),     //
+      Date(),              //
+      Date(2019, 11, 21),  //
+      Date(9999, 12, 31),  //
+  };
+  auto result = WriteReadData(*client_, data, "DateValue");
   ASSERT_STATUS_OK(result);
   EXPECT_THAT(*result, UnorderedElementsAreArray(data));
 }
