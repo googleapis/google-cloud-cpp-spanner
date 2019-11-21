@@ -1012,7 +1012,7 @@ class RunAllExperiment : public Experiment {
       config.table_size = 10;
       config.query_size = 1;
       std::cout << "# Smoke test for experiment: " << kv.first << "\n";
-      std::cout << cfg << "\n" << std::flush;
+      std::cout << config << "\n" << std::flush;
       auto experiment = kv.second(generator_);
       auto status = experiment->SetUp(config, database);
       if (!status.ok()) {
