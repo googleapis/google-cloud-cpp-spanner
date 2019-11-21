@@ -109,7 +109,7 @@ for exp in read-bool read-bytes read-date read-float64 \
     --maximum-clients=8 \
     --maximum-threads=16 \
     --iteration-duration=5 \
-    --samples=60 --experiment=${exp} 2>&1 | tee mrcb-${exp}.csv; \
+    --samples=60 --experiment=${exp} | tee mrcb-${exp}.csv; \
 done
 ```
 
@@ -121,7 +121,7 @@ issue the following commands:
 
 ```R
 require(ggplot2) # may require install.packages("ggplot2") the first time
-df <- ()
+df <- data.frame()
 for(file in c('mrcb-read-bytes.txt', 'mrcb-read-bool.txt', 'mrcb-read-date.txt',
               'mrcb-read-float64.txt', 'mrcb-read-int64.txt',
               'mrcb-read-string.txt', 'mrcb-read-timestamp.txt')) {
@@ -130,6 +130,8 @@ for(file in c('mrcb-read-bytes.txt', 'mrcb-read-bool.txt', 'mrcb-read-date.txt',
     t$experiment = factor(name);
     df <- rbind(df, t);
 }
+
+df$CpuTimePerRow <- df$CpuTime / df$RowCount
 
 aggregate(CpuTimePerRow ~ UsingStub + experiment, data=df, FUN=mean)
 
