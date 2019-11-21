@@ -402,7 +402,7 @@ class ExperimentImpl {
   }
 
   /// Get a snapshot of the random bit generator
-  google::cloud::internal::DefaultPRNG generator() const {
+  google::cloud::internal::DefaultPRNG Generator() const {
     std::lock_guard<std::mutex> lk(mu_);
     return generator_;
   };
@@ -530,7 +530,7 @@ class ReadExperiment : public Experiment {
                                                         config.maximum_threads);
 
     // Get a snapshot of the generator, to be used in this thread only.
-    auto generator = impl_.generator();
+    auto generator = impl_.Generator();
 
     // Capture some overall getrusage() statistics as comments.
     SimpleTimer overall;
@@ -770,7 +770,7 @@ class UpdateExperiment : public Experiment {
     std::uniform_int_distribution<int> thread_count_gen(config.minimum_threads,
                                                         config.maximum_threads);
 
-    auto generator = impl_.generator();
+    auto generator = impl_.Generator();
     // Capture some overall getrusage() statistics as comments.
     SimpleTimer overall;
     overall.Start();
