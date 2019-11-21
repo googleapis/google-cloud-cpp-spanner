@@ -76,7 +76,7 @@ readonly INTEGRATION_TESTS_CONFIG="/c/spanner-integration-tests-config.sh"
 # auto: only try to run integration tests if the config file is executable.
 if [[ "${RUN_INTEGRATION_TESTS}" == "yes" || \
       ( "${RUN_INTEGRATION_TESTS}" == "auto" && \
-        -x "${INTEGRATION_TESTS_CONFIG}" ) ]]; then
+        -r "${INTEGRATION_TESTS_CONFIG}" ) ]]; then
   echo "================================================================"
   echo "Running the integration tests $(date)"
   echo "================================================================"
