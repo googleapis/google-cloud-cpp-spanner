@@ -34,7 +34,8 @@ using ::testing::UnorderedElementsAreArray;
 // given data to the DataTypes table, then it reads all the data back and
 // returns it to the caller.
 template <typename T>
-StatusOr<T> WriteReadData(Client& client, T const& data, std::string const& column) {
+StatusOr<T> WriteReadData(Client& client, T const& data,
+                          std::string const& column) {
   auto commit_result = client.Commit(
       [&data, &column](Transaction const& txn) -> StatusOr<Mutations> {
         Mutations mutations;
