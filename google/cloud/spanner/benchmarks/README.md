@@ -150,5 +150,5 @@ of 15 seconds each:
     --maximum-clients=32 \
     --maximum-threads=1024 \
     --samples=20 2>&1 \
-    --experiment=read 2>&1 | tee srtp-read.txt
+    --experiment=read | tee srtp-read.csv
 ```
