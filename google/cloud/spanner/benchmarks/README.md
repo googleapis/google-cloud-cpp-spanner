@@ -16,7 +16,7 @@ Spanner instance using the console or:
 GOOGLE_CLOUD_PROJECT=...                      # Your project ID
 GOOGLE_CLOUD_CPP_SPANNER_INSTANCE=benchmarks  # Choose your instance ID
 INSTANCE_CONFIG=regional-us-central1          # Choose the instance location(s)
-gcloud spanner instances create ${GOOGLE_CLOUD_CPP_INSTANCE_NAME} \
+gcloud spanner instances create ${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE} \
     --config=${INSTANCE_CONFIG} --description="An instance to run Benchmarks" \
     --nodes=3
 ```
@@ -42,10 +42,10 @@ CMake this is:
 ```bash
 git clone https://github.com/googleapis/google-cloud-cpp-spanner.git
 cd google-cloud-cpp-spanner
-cmake -Hsuper -Bcmake-out/si -DCMAKE_BUILD_TYPE=Release -GNinja \
+cmake -Hsuper -Bcmake-out/si -DCMAKE_BUILD_TYPE=Release \
      -DGOOGLE_CLOUD_CPP_EXTERNAL_PREFIX=$HOME/local-spanner
 cmake --build cmake-out/si --target project-dependencies
-cmake -H. -B.build -DCMAKE_BUILD_TYPE=Release -GNinja \
+cmake -H. -B.build -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_PREFIX_PATH=$HOME/local-spanner
 cmake --build .build
 ```
@@ -58,21 +58,18 @@ of this README, we assume the reader is familiar with the topic, and refer them
 to the [Authentication Overview][authentication-quickstart] if they need a more
 in-depth discussion.
 
-The library can use the application default credentials (though these are no
-longer considered a best practice), which are enabled using:
+Save the credentials you want to use to a file. Then set the
+`GOOGLE_APPLICATION_CREDENTIALS` environment variable to the path of this file.
 
-```bash
-gcloud auth application-default login
-```
+If you are running the benchmarks in a virtual machine, the library can
+automatically use the GCE instance service account (when you do **not** set
+`GOOGLE_APPLICATION_CREDENTIALS`). You may need to grant this service account
+permissions to work with Cloud Spanner. Examine the
+[spanner roles][spanner-roles-link] to chose a role for this account, the
+principal used to run these benchmark should have (at least) the permissions
+granted by the `roles/spanner.databaseAdmin` role.
 
-Alternatively, you can use a service account credentials, or your own login
-credentials by setting the `GOOGLE_APPLICATION_CREDENTIALS` environment variable
-to the path of a JSON or P12 file containing the credentials you want to use.
-
-If you are running the benchmarks in a virtual machine, the library will
-automatically use the GCE instance service account, but you may need to
-authorize this service account to access Cloud Spanner.
-
+[spanner-roles-linl]: https://cloud.google.com/spanner/docs/iam#roles
 [authentication-quickstart]: https://cloud.google.com/docs/authentication/getting-started 'Authentication Getting Started'
 
 ### Running the benchmark
@@ -91,11 +88,8 @@ of type `STRING` you would run:
     --maximum-clients=8 \
     --maximum-threads=16 \
     --iteration-duration=5 \
-    --samples=60 --experiment=read-string
+    --samples=60 --experiment=read-string | tee mrcb-read-string.csv
 ```
-
-Note that the output of this benchmark can be rather large, you may want to
-redirect this to a file.
 
 The program can run the same experiment with other data types:
 
@@ -122,9 +116,7 @@ issue the following commands:
 ```R
 require(ggplot2) # may require install.packages("ggplot2") the first time
 df <- data.frame()
-for(file in c('mrcb-read-bytes.txt', 'mrcb-read-bool.txt', 'mrcb-read-date.txt',
-              'mrcb-read-float64.txt', 'mrcb-read-int64.txt',
-              'mrcb-read-string.txt', 'mrcb-read-timestamp.txt')) {
+for(file in Sys.glob("mrcb-read-*.csv")) {
     t <- read.csv(file, comment.char='#');
     name <- gsub('mrcb-([a-z-]+).*', '\\1', file);
     t$experiment = factor(name);
