@@ -902,7 +902,7 @@ class UpdateExperiment : public Experiment {
       auto response = stub->ExecuteSql(context, request);
       int row_count = 0;
       if (response) {
-        row_count = response->stats().row_count_lower_bound();
+        row_count = static_cast<int>(response->stats().row_count_lower_bound());
       }
       timer.Stop();
       samples.push_back(RowCpuSample{thread_count, client_count, true,
