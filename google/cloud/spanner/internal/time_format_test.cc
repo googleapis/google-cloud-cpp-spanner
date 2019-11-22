@@ -27,6 +27,7 @@ constexpr auto kTimeFormat = "%Y-%m-%dT%H:%M:%S";
 
 TEST(TimeFormat, Format) {
   std::tm tm;
+
   tm.tm_year = 2019 - 1900;
   tm.tm_mon = 6 - 1;
   tm.tm_mday = 21;
@@ -34,6 +35,50 @@ TEST(TimeFormat, Format) {
   tm.tm_min = 52;
   tm.tm_sec = 22;
   EXPECT_EQ("2019-06-21T16:52:22", FormatTime(kTimeFormat, tm));
+
+  tm.tm_year = 123 - 1900;
+  tm.tm_mon = 6 - 1;
+  tm.tm_mday = 21;
+  tm.tm_hour = 16;
+  tm.tm_min = 52;
+  tm.tm_sec = 22;
+  EXPECT_EQ("123-06-21T16:52:22", FormatTime(kTimeFormat, tm));
+
+  tm.tm_year = -12 - 1900;
+  tm.tm_mon = 6 - 1;
+  tm.tm_mday = 21;
+  tm.tm_hour = 16;
+  tm.tm_min = 52;
+  tm.tm_sec = 22;
+  EXPECT_EQ("-12-06-21T16:52:22", FormatTime(kTimeFormat, tm));
+}
+
+TEST(TimeFormat, FormatFixed) {
+  std::tm tm;
+
+  tm.tm_year = 2019 - 1900;
+  tm.tm_mon = 6 - 1;
+  tm.tm_mday = 21;
+  tm.tm_hour = 16;
+  tm.tm_min = 52;
+  tm.tm_sec = 22;
+  EXPECT_EQ("2019-06-21T16:52:22", FormatTime(tm));
+
+  tm.tm_year = 123 - 1900;
+  tm.tm_mon = 6 - 1;
+  tm.tm_mday = 21;
+  tm.tm_hour = 16;
+  tm.tm_min = 52;
+  tm.tm_sec = 22;
+  EXPECT_EQ("0123-06-21T16:52:22", FormatTime(tm));  // note 4-char year
+
+  tm.tm_year = -12 - 1900;
+  tm.tm_mon = 6 - 1;
+  tm.tm_mday = 21;
+  tm.tm_hour = 16;
+  tm.tm_min = 52;
+  tm.tm_sec = 22;
+  EXPECT_EQ("-012-06-21T16:52:22", FormatTime(tm));  // note 4-char year
 }
 
 TEST(TimeFormat, Parse) {
@@ -56,6 +101,28 @@ TEST(TimeFormat, Parse) {
   EXPECT_EQ(tm.tm_sec, 23);
 
   EXPECT_EQ(std::string::npos, ParseTime(kTimeFormat, "garbage in", &tm));
+}
+
+TEST(TimeFormat, ParseFixed) {
+  std::tm tm{};
+
+  EXPECT_EQ(19, ParseTime("2019-06-21T16:52:22", &tm));
+  EXPECT_EQ(tm.tm_year, 2019 - 1900);
+  EXPECT_EQ(tm.tm_mon, 6 - 1);
+  EXPECT_EQ(tm.tm_mday, 21);
+  EXPECT_EQ(tm.tm_hour, 16);
+  EXPECT_EQ(tm.tm_min, 52);
+  EXPECT_EQ(tm.tm_sec, 22);
+
+  EXPECT_EQ(19, ParseTime("2020-07-22T17:53:23xxx", &tm));
+  EXPECT_EQ(tm.tm_year, 2020 - 1900);
+  EXPECT_EQ(tm.tm_mon, 7 - 1);
+  EXPECT_EQ(tm.tm_mday, 22);
+  EXPECT_EQ(tm.tm_hour, 17);
+  EXPECT_EQ(tm.tm_min, 53);
+  EXPECT_EQ(tm.tm_sec, 23);
+
+  EXPECT_EQ(std::string::npos, ParseTime("garbage in", &tm));
 }
 
 }  // namespace
