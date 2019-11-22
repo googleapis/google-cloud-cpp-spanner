@@ -125,6 +125,7 @@ add_library(
     instance_admin_connection.h
     internal/api_client_header.cc
     internal/api_client_header.h
+    internal/background_channel_opener.h
     internal/background_threads_impl.cc
     internal/background_threads_impl.h
     internal/build_info.h

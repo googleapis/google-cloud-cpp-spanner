@@ -14,38 +14,18 @@
 
 #include "google/cloud/spanner/internal/database_admin_stub.h"
 #include "google/cloud/spanner/background_threads.h"
+#include "google/cloud/spanner/internal/background_channel_opener.h"
 #include "google/cloud/spanner/internal/database_admin_logging.h"
 #include "google/cloud/spanner/internal/database_admin_metadata.h"
 #include "google/cloud/grpc_utils/grpc_error_delegate.h"
 #include "google/cloud/log.h"
 #include <grpc/impl/codegen/connectivity_state.h>
-#include <google/longrunning/operations.grpc.pb.h>
-#include <chrono>
 
 namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
-
-/**
- * A function for trying to open the grpc::Channel in background.
- */
-void BackgroundChannelOpener(
-    // NOLINTNEXTLINE(performance-unnecessary-value-param)
-    grpc_utils::CompletionQueue cq, std::shared_ptr<grpc::Channel> channel) {
-  using ms = std::chrono::milliseconds;
-  // TODO(xxx): Find out if this blocks.
-  auto state = channel->GetState(true);
-  if (state != GRPC_CHANNEL_READY) {
-    // Reschedule ourselves to run in 200 ms
-    cq.MakeRelativeTimer(ms(200)).then(
-        [cq, channel](future<std::chrono::system_clock::time_point>) {
-          // NOLINTNEXTLINE(performance-move-const-arg)
-          BackgroundChannelOpener(std::move(cq), std::move(channel));
-        });
-  }
-}
 
 namespace gcsa = google::spanner::admin::database::v1;
 
@@ -198,7 +178,6 @@ std::shared_ptr<DatabaseAdminStub> CreateDefaultDatabaseAdminStub(
       grpc::CreateCustomChannel(options.endpoint(), options.credentials(),
                                 options.CreateChannelArguments());
   auto cq = background_threads->cq();
-
   using ms = std::chrono::milliseconds;
   cq.MakeRelativeTimer(ms(0)).then(
       [cq, channel](future<std::chrono::system_clock::time_point>) {
