@@ -28,6 +28,25 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
+/**
+ * A function for trying to open the grpc::Channel in background.
+ */
+void BackgroundChannelOpener(
+    // NOLINTNEXTLINE(performance-unnecessary-value-param)
+    grpc_utils::CompletionQueue cq, std::shared_ptr<grpc::Channel> channel) {
+  using ms = std::chrono::milliseconds;
+  // TODO(xxx): Find out if this blocks.
+  auto state = channel->GetState(true);
+  if (state != GRPC_CHANNEL_READY) {
+    // Reschedule ourselves to run in 200 ms
+    cq.MakeRelativeTimer(ms(200)).then(
+        [cq, channel](future<std::chrono::system_clock::time_point>) {
+          // NOLINTNEXTLINE(performance-move-const-arg)
+          BackgroundChannelOpener(std::move(cq), std::move(channel));
+        });
+  }
+}
+
 namespace gcsa = google::spanner::admin::database::v1;
 
 DatabaseAdminStub::~DatabaseAdminStub() = default;
@@ -178,14 +197,15 @@ std::shared_ptr<DatabaseAdminStub> CreateDefaultDatabaseAdminStub(
   auto channel =
       grpc::CreateCustomChannel(options.endpoint(), options.credentials(),
                                 options.CreateChannelArguments());
+  auto cq = background_threads->cq();
+
   using ms = std::chrono::milliseconds;
-  background_threads->cq().MakeRelativeTimer(ms(0)).then(
-      [&channel](future<std::chrono::system_clock::time_point>) {
-        auto state = channel->GetState(true);
-        while (state != GRPC_CHANNEL_READY) {
-          state = channel->GetState(true);
-        }
+  cq.MakeRelativeTimer(ms(0)).then(
+      [cq, channel](future<std::chrono::system_clock::time_point>) {
+        // NOLINTNEXTLINE(performance-move-const-arg)
+        BackgroundChannelOpener(std::move(cq), std::move(channel));
       });
+
   auto spanner_grpc_stub = gcsa::DatabaseAdmin::NewStub(channel);
   auto longrunning_grpc_stub =
       google::longrunning::Operations::NewStub(channel);
