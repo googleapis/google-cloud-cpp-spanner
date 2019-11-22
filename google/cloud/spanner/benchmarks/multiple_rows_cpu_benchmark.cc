@@ -411,6 +411,12 @@ class ExperimentImpl {
     std::lock_guard<std::mutex> lk(mu_);
     std::copy(samples.begin(), samples.end(),
               std::ostream_iterator<RowCpuSample>(std::cout, "\n"));
+    auto it = std::find_if(samples.begin(), samples.end(),
+        [](RowCpuSample const& x) { return !x.status.ok(); });
+    if (it == samples.end()) {
+      return;
+    }
+    std::cout << "# FIRST ERROR: " << it->status << "\n";
   }
 
   void LogError(std::string const& s) {
@@ -603,7 +609,7 @@ class ReadExperiment : public Experiment {
 
     if (!session) {
       std::ostringstream os;
-      os << "# SESSION ERROR = " << session.status();
+      os << "SESSION ERROR = " << session.status();
       impl_.LogError(os.str());
       return {};
     }
@@ -844,7 +850,7 @@ class UpdateExperiment : public Experiment {
 
     if (!session) {
       std::ostringstream os;
-      os << "# SESSION ERROR = " << session.status();
+      os << "SESSION ERROR = " << session.status();
       impl_.LogError(os.str());
       return {};
     }
@@ -873,7 +879,7 @@ class UpdateExperiment : public Experiment {
       google::spanner::v1::ExecuteSqlRequest request{};
       request.set_session(*session);
       request.mutable_transaction()
-          ->mutable_single_use()
+          ->mutable_begin()
           ->mutable_read_write()
           ->Clear();
       request.set_sql(statement);
@@ -890,16 +896,35 @@ class UpdateExperiment : public Experiment {
             std::move(tv.second);
       }
 
-      grpc::ClientContext context;
-      auto response = stub->ExecuteSql(context, request);
       int row_count = 0;
-      if (response) {
-        row_count = static_cast<int>(response->stats().row_count_lower_bound());
+      std::string transaction_id;
+      google::cloud::Status status;
+      {
+        grpc::ClientContext context;
+        auto response = stub->ExecuteSql(context, request);
+        if (response) {
+          row_count = static_cast<int>(response->stats().row_count_lower_bound());
+          transaction_id = response->metadata().transaction().id();
+        } else {
+          status = std::move(response).status();
+        }
       }
+
+      if (status.ok()) {
+        grpc::ClientContext context;
+        google::spanner::v1::CommitRequest commit_request;
+        commit_request.set_session(*session);
+        commit_request.set_transaction_id(transaction_id);
+        auto response = stub->Commit(context, commit_request);
+        if (!response) status = std::move(response).status();
+      }
+
+
+
       timer.Stop();
       samples.push_back(RowCpuSample{thread_count, client_count, true,
                                      row_count, timer.elapsed_time(),
-                                     timer.cpu_time(), response.status()});
+                                     timer.cpu_time(), status});
     }
     return samples;
   }
