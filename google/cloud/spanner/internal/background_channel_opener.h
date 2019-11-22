@@ -36,9 +36,9 @@ void BackgroundChannelOpener(
   using ms = std::chrono::milliseconds;
   // TODO(xxx): Find out if this blocks.
   auto state = channel->GetState(true);
-  if (state != GRPC_CHANNEL_READY) {
-    // Reschedule ourselves to run in 200 ms
-    cq.MakeRelativeTimer(ms(200)).then(
+  if (state != GRPC_CHANNEL_CONNECTING && state != GRPC_CHANNEL_READY) {
+    // Reschedule ourselves to run in 20 ms
+    cq.MakeRelativeTimer(ms(20)).then(
         [cq, channel](future<std::chrono::system_clock::time_point>) {
           // NOLINTNEXTLINE(performance-move-const-arg)
           BackgroundChannelOpener(std::move(cq), std::move(channel));

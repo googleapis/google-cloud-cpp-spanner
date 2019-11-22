@@ -306,6 +306,7 @@ function (spanner_client_define_tests)
         instance_admin_connection_test.cc
         instance_test.cc
         internal/api_client_header_test.cc
+        internal/background_channel_opener_test.cc
         internal/background_threads_test.cc
         internal/build_info_test.cc
         internal/compiler_info_test.cc
