@@ -24,6 +24,7 @@
 #include "google/cloud/internal/random.h"
 #include <algorithm>
 #include <future>
+#include <numeric>
 #include <random>
 #include <sstream>
 #include <thread>
