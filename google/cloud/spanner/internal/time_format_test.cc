@@ -42,7 +42,11 @@ TEST(TimeFormat, Format) {
   tm.tm_hour = 16;
   tm.tm_min = 52;
   tm.tm_sec = 22;
+#if defined(__APPLE__)
+  EXPECT_EQ("0123-06-21T16:52:22", FormatTime(kTimeFormat, tm));
+#else
   EXPECT_EQ("123-06-21T16:52:22", FormatTime(kTimeFormat, tm));
+#endif
 
   tm.tm_year = -12 - 1900;
   tm.tm_mon = 6 - 1;
@@ -50,7 +54,11 @@ TEST(TimeFormat, Format) {
   tm.tm_hour = 16;
   tm.tm_min = 52;
   tm.tm_sec = 22;
+#if defined(__APPLE__)
+  EXPECT_EQ("-012-06-21T16:52:22", FormatTime(kTimeFormat, tm));
+#else
   EXPECT_EQ("-12-06-21T16:52:22", FormatTime(kTimeFormat, tm));
+#endif
 }
 
 TEST(TimeFormat, FormatFixed) {
