@@ -295,10 +295,22 @@ TEST_F(DataTypeIntegrationTest, WriteReadArrayDate) {
   EXPECT_THAT(*result, UnorderedElementsAreArray(data));
 }
 
+// This test differs a lot from the other tests since Spanner STRUCT types may
+// not be used as column types, and they may not be returned as top-level
+// objects in a select statement. See
+// https://cloud.google.com/spanner/docs/data-types#struct-type for more info.
+//
+// So the approach taken here instead is to use a STRUCT (i.e., a std::tuple<>
+// in the C++ world), as a bound SQL query parameter to insert some data into
+// the table. This, in a way, tests the "write" path.
+//
+// To test the "read" path, we create a query that returns an array of struct,
+// that we then compare to the original data.
 TEST_F(DataTypeIntegrationTest, InsertAndQueryWithStruct) {
-  using Struct = std::tuple<std::pair<std::string, std::string>,
-                            std::pair<std::string, std::vector<std::int64_t>>>;
-  auto data = Struct{{"StringValue", "foo"}, {"ArrayInt64Value", {1, 2, 3}}};
+  using StructType =
+      std::tuple<std::pair<std::string, std::string>,
+                 std::pair<std::string, std::vector<std::int64_t>>>;
+  auto data = StructType{{"StringValue", "xx"}, {"ArrayInt64Value", {1, 2, 3}}};
 
   auto& client = *client_;
   auto commit_result = client.Commit(
@@ -314,11 +326,16 @@ TEST_F(DataTypeIntegrationTest, InsertAndQueryWithStruct) {
       });
   ASSERT_STATUS_OK(commit_result);
 
-  /* auto rows = client_->ExecuteQuery( */
-  /*     SqlStatement("SELECT (StringValue, ArrayInt64Value) FROM DataTypes")); */
-  /* auto row = GetSingularRow(StreamOf<Struct>(rows)); */
-  /* ASSERT_STATUS_OK(row); */
-  /* EXPECT_EQ(data, *row); */
+  auto rows = client_->ExecuteQuery(
+      SqlStatement("SELECT ARRAY(SELECT STRUCT(StringValue, ArrayInt64Value)) "
+                   "FROM DataTypes"));
+  using RowType = std::tuple<std::vector<StructType>>;
+  auto row = GetSingularRow(StreamOf<RowType>(rows));
+  ASSERT_STATUS_OK(row);
+
+  auto const& v = std::get<0>(*row);
+  EXPECT_EQ(1, v.size());
+  EXPECT_EQ(data, v[0]);
 }
 
 }  // namespace
