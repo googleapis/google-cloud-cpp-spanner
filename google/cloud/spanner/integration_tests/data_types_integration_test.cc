@@ -295,6 +295,32 @@ TEST_F(DataTypeIntegrationTest, WriteReadArrayDate) {
   EXPECT_THAT(*result, UnorderedElementsAreArray(data));
 }
 
+TEST_F(DataTypeIntegrationTest, InsertAndQueryWithStruct) {
+  using Struct = std::tuple<std::pair<std::string, std::string>,
+                            std::pair<std::string, std::vector<std::int64_t>>>;
+  auto data = Struct{{"StringValue", "foo"}, {"ArrayInt64Value", {1, 2, 3}}};
+
+  auto& client = *client_;
+  auto commit_result = client.Commit(
+      [&data, &client](Transaction const& txn) -> StatusOr<Mutations> {
+        auto dml_result = client.ExecuteDml(
+            txn,
+            SqlStatement(
+                "INSERT INTO DataTypes (Id, StringValue, ArrayInt64Value)"
+                "VALUES(@id, @struct.StringValue, @struct.ArrayInt64Value)",
+                {{"id", Value("id-1")}, {"struct", Value(data)}}));
+        if (!dml_result) return dml_result.status();
+        return Mutations{};
+      });
+  ASSERT_STATUS_OK(commit_result);
+
+  /* auto rows = client_->ExecuteQuery( */
+  /*     SqlStatement("SELECT (StringValue, ArrayInt64Value) FROM DataTypes")); */
+  /* auto row = GetSingularRow(StreamOf<Struct>(rows)); */
+  /* ASSERT_STATUS_OK(row); */
+  /* EXPECT_EQ(data, *row); */
+}
+
 }  // namespace
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
