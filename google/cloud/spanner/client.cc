@@ -219,15 +219,18 @@ StatusOr<PartitionedDmlResult> Client::ExecutePartitionedDml(
   return conn_->ExecutePartitionedDml({std::move(statement)});
 }
 
-std::shared_ptr<Connection> MakeConnection(Database const& db,
-                                           ConnectionOptions const& options) {
+std::shared_ptr<Connection> MakeConnection(
+    Database const& db, ConnectionOptions const& connection_options,
+    SessionPoolOptions session_pool_options) {
   std::vector<std::shared_ptr<internal::SpannerStub>> stubs;
-  int num_channels = std::min(options.num_channels(), 1);
+  int num_channels = std::min(connection_options.num_channels(), 1);
   stubs.reserve(num_channels);
   for (int channel_id = 0; channel_id < num_channels; ++channel_id) {
-    stubs.push_back(internal::CreateDefaultSpannerStub(options, channel_id));
+    stubs.push_back(
+        internal::CreateDefaultSpannerStub(connection_options, channel_id));
   }
-  return internal::MakeConnection(db, std::move(stubs));
+  return internal::MakeConnection(db, std::move(stubs),
+                                  std::move(session_pool_options));
 }
 
 }  // namespace SPANNER_CLIENT_NS
