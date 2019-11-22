@@ -411,8 +411,9 @@ class ExperimentImpl {
     std::lock_guard<std::mutex> lk(mu_);
     std::copy(samples.begin(), samples.end(),
               std::ostream_iterator<RowCpuSample>(std::cout, "\n"));
-    auto it = std::find_if(samples.begin(), samples.end(),
-        [](RowCpuSample const& x) { return !x.status.ok(); });
+    auto it =
+        std::find_if(samples.begin(), samples.end(),
+                     [](RowCpuSample const& x) { return !x.status.ok(); });
     if (it == samples.end()) {
       return;
     }
@@ -903,7 +904,8 @@ class UpdateExperiment : public Experiment {
         grpc::ClientContext context;
         auto response = stub->ExecuteSql(context, request);
         if (response) {
-          row_count = static_cast<int>(response->stats().row_count_lower_bound());
+          row_count =
+              static_cast<int>(response->stats().row_count_lower_bound());
           transaction_id = response->metadata().transaction().id();
         } else {
           status = std::move(response).status();
@@ -918,8 +920,6 @@ class UpdateExperiment : public Experiment {
         auto response = stub->Commit(context, commit_request);
         if (!response) status = std::move(response).status();
       }
-
-
 
       timer.Stop();
       samples.push_back(RowCpuSample{thread_count, client_count, true,
