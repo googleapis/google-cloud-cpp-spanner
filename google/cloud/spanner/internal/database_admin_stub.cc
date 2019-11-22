@@ -19,7 +19,7 @@
 #include "google/cloud/spanner/internal/database_admin_metadata.h"
 #include "google/cloud/grpc_utils/grpc_error_delegate.h"
 #include "google/cloud/log.h"
-#include <grpc/impl/codegen/connectivity_state.h>
+#include <google/longrunning/operations.grpc.pb.h>
 
 namespace google {
 namespace cloud {
