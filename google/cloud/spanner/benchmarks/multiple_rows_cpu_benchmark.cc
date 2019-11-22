@@ -65,6 +65,9 @@ struct Config {
 
   std::int64_t table_size = 1000 * 1000L;
   std::int64_t query_size = 1000;
+
+  bool use_only_clients = false;
+  bool use_only_stubs = false;
 };
 
 std::ostream& operator<<(std::ostream& os, Config const& config);
@@ -201,6 +204,8 @@ std::ostream& operator<<(std::ostream& os, Config const& config) {
             << "s"
             << "\n# Table Size: " << config.table_size
             << "\n# Query Size: " << config.query_size
+            << "\n# Use Only Stubs: " << config.use_only_stubs
+            << "\n# Use Only Clients: " << config.use_only_clients
             << "\n# Compiler: " << cs::internal::CompilerId() << "-"
             << cs::internal::CompilerVersion()
             << "\n# Build Flags: " << cs::internal::BuildFlags() << "\n";
@@ -336,8 +341,8 @@ class ExperimentImpl {
   explicit ExperimentImpl(google::cloud::internal::DefaultPRNG const& generator)
       : generator_(generator) {}
 
-  Status FillTable(Config const& config, cs::Database const& database,
-                   std::string const& table_name) {
+  Status CreateTable(Config const&, cs::Database const& database,
+                     std::string const& table_name) {
     std::string statement = "CREATE TABLE " + table_name;
     statement += " (Key INT64 NOT NULL,\n";
     for (int i = 0; i != 10; ++i) {
@@ -359,6 +364,13 @@ class ExperimentImpl {
       std::cerr << "Error creating table: " << db.status() << "\n";
       return std::move(db).status();
     }
+    return {};
+  }
+
+  Status FillTable(Config const& config, cs::Database const& database,
+                   std::string const& table_name) {
+    auto status = CreateTable(config, database, table_name);
+    if (!status.ok()) return status;
 
     // We need to populate some data or all the requests to read will fail.
     cs::Client client(cs::MakeConnection(database));
@@ -399,6 +411,36 @@ class ExperimentImpl {
     auto end = begin + config.query_size - 1;
     return cs::KeySet().AddRange(cs::MakeKeyBoundClosed(cs::Value(begin)),
                                  cs::MakeKeyBoundClosed(cs::Value(end)));
+  }
+
+  bool UseStub(Config const& config) {
+    std::lock_guard<std::mutex> lk(mu_);
+    if (config.use_only_clients) {
+      return false;
+    }
+    if (config.use_only_stubs) {
+      return true;
+    }
+    return std::uniform_int_distribution<int>(0, 1)(generator_) == 1;
+  }
+
+  int ThreadCount(Config const& config) {
+    std::lock_guard<std::mutex> lk(mu_);
+    return std::uniform_int_distribution<int>(
+        config.minimum_threads, config.maximum_threads)(generator_);
+  }
+
+  int ClientCount(Config const& config, int thread_count) {
+    // TODO(#1000) - avoid deadlocks with more than 100 threads per client
+    auto const min_clients =
+        (std::max<int>)(thread_count / 100 + 1, config.minimum_clients);
+    auto const max_clients = config.maximum_clients;
+    if (min_clients <= max_clients) {
+      return min_clients;
+    }
+    std::lock_guard<std::mutex> lk(mu_);
+    return std::uniform_int_distribution<int>(min_clients,
+                                              max_clients - 1)(generator_);
   }
 
   /// Get a snapshot of the random bit generator
@@ -532,30 +574,13 @@ class ReadExperiment : public Experiment {
     }
     std::cout << " DONE\n";
 
-    std::uniform_int_distribution<int> use_stubs_gen(0, 1);
-    std::uniform_int_distribution<int> thread_count_gen(config.minimum_threads,
-                                                        config.maximum_threads);
-
-    // Get a snapshot of the generator, to be used in this thread only.
-    auto generator = impl_.Generator();
-
     // Capture some overall getrusage() statistics as comments.
     SimpleTimer overall;
     overall.Start();
     for (int i = 0; i != config.samples; ++i) {
-      auto const use_stubs = use_stubs_gen(generator) == 1;
-      auto const thread_count = thread_count_gen(generator);
-      // TODO(#1000) - avoid deadlocks with more than 100 threads per client
-      auto const min_clients = (std::max<std::size_t>)(thread_count / 100 + 1,
-                                                       config.minimum_clients);
-      auto const max_clients = clients.size();
-      auto const client_count = [min_clients, max_clients, &generator] {
-        if (min_clients <= max_clients) {
-          return min_clients;
-        }
-        return std::uniform_int_distribution<std::size_t>(
-            min_clients, max_clients - 1)(generator);
-      }();
+      auto const use_stubs = impl_.UseStub(config);
+      auto const thread_count = impl_.ThreadCount(config);
+      auto const client_count = impl_.ClientCount(config, thread_count);
       if (use_stubs) {
         std::vector<std::shared_ptr<cs::internal::SpannerStub>> iteration_stubs(
             stubs.begin(), stubs.begin() + client_count);
@@ -773,28 +798,13 @@ class UpdateExperiment : public Experiment {
     }
     std::cout << " DONE\n";
 
-    std::uniform_int_distribution<int> use_stubs_gen(0, 1);
-    std::uniform_int_distribution<int> thread_count_gen(config.minimum_threads,
-                                                        config.maximum_threads);
-
-    auto generator = impl_.Generator();
     // Capture some overall getrusage() statistics as comments.
     SimpleTimer overall;
     overall.Start();
     for (int i = 0; i != config.samples; ++i) {
-      auto const use_stubs = use_stubs_gen(generator) == 1;
-      auto const thread_count = thread_count_gen(generator);
-      // TODO(#1000) - avoid deadlocks with more than 100 threads per client
-      auto const min_clients = (std::max<std::size_t>)(thread_count / 100 + 1,
-                                                       config.minimum_clients);
-      auto const max_clients = clients.size();
-      auto const client_count = [min_clients, max_clients, &generator] {
-        if (min_clients <= max_clients) {
-          return min_clients;
-        }
-        return std::uniform_int_distribution<std::size_t>(
-            min_clients, max_clients - 1)(generator);
-      }();
+      auto const use_stubs = impl_.UseStub(config);
+      auto const thread_count = impl_.ThreadCount(config);
+      auto const client_count = impl_.ClientCount(config, thread_count);
       if (use_stubs) {
         std::vector<std::shared_ptr<cs::internal::SpannerStub>> iteration_stubs(
             stubs.begin(), stubs.begin() + client_count);
@@ -1014,6 +1024,255 @@ class UpdateExperiment : public Experiment {
   std::string table_name_;
 };
 
+/**
+ * Run an experiment to measure the CPU overhead of the client over raw gRPC.
+ *
+ * These experiments create an empty table. The table schema has an integer key
+ * and 10 columns of the types defined by `Traits`. Then the experiment performs
+ * M iterations of:
+ *   - Randomly select if it will insert using the client library or raw gRPC.
+ *   - Then for N seconds insert random rows
+ *   - Measure the CPU time required by the previous step
+ *
+ * The values of K, M, N are configurable.
+ */
+template <typename Traits>
+class MutationExperiment : public Experiment {
+ public:
+  explicit MutationExperiment(
+      google::cloud::internal::DefaultPRNG const& generator)
+      : impl_(generator),
+        table_name_("MutationExperiment_" + Traits::TableSuffix()) {}
+
+  Status SetUp(Config const& config, cs::Database const& database) override {
+    return impl_.CreateTable(config, database, table_name_);
+  }
+
+  Status TearDown(Config const&, cs::Database const&) override { return {}; }
+
+  Status Run(Config const& config, cs::Database const& database) override {
+    // Create enough clients and stubs for the worst case
+    std::vector<cs::Client> clients;
+    std::vector<std::shared_ptr<cs::internal::SpannerStub>> stubs;
+    std::cout << "# Creating clients and stubs " << std::flush;
+    for (int i = 0; i != config.maximum_clients; ++i) {
+      auto options = cs::ConnectionOptions().set_channel_pool_domain(
+          "task:" + std::to_string(i));
+      clients.emplace_back(cs::Client(cs::MakeConnection(database, options)));
+      stubs.emplace_back(
+          cs::internal::CreateDefaultSpannerStub(options, /*channel_id=*/0));
+      std::cout << '.' << std::flush;
+    }
+    std::cout << " DONE\n";
+
+    random_keys_.resize(config.table_size);
+    std::iota(random_keys_.begin(), random_keys_.end(), 0);
+    auto generator = impl_.Generator();
+    std::shuffle(random_keys_.begin(), random_keys_.end(), generator);
+
+    // Capture some overall getrusage() statistics as comments.
+    SimpleTimer overall;
+    overall.Start();
+    for (int i = 0; i != config.samples; ++i) {
+      auto const use_stubs = impl_.UseStub(config);
+      auto const thread_count = impl_.ThreadCount(config);
+      auto const client_count = impl_.ClientCount(config, thread_count);
+      if (use_stubs) {
+        std::vector<std::shared_ptr<cs::internal::SpannerStub>> iteration_stubs(
+            stubs.begin(), stubs.begin() + client_count);
+        RunIterationViaStubs(config, iteration_stubs, thread_count);
+        continue;
+      }
+      std::vector<cs::Client> iteration_clients(clients.begin(),
+                                                clients.begin() + client_count);
+      RunIterationViaClients(config, iteration_clients, thread_count);
+    }
+    overall.Stop();
+    std::cout << overall.annotations();
+    return {};
+  }
+
+ private:
+  void RunIterationViaStubs(
+      Config const& config,
+      std::vector<std::shared_ptr<cs::internal::SpannerStub>> const& stubs,
+      int thread_count) {
+    std::vector<std::future<std::vector<RowCpuSample>>> tasks(thread_count);
+    int task_id = 0;
+    for (auto& t : tasks) {
+      auto client = stubs[task_id++ % stubs.size()];
+      t = std::async(std::launch::async, &MutationExperiment::InsertRowsViaStub,
+                     this, config, thread_count, static_cast<int>(stubs.size()),
+                     cs::Database(config.project_id, config.instance_id,
+                                  config.database_id),
+                     client);
+    }
+    for (auto& t : tasks) {
+      impl_.DumpSamples(t.get());
+    }
+  }
+
+  std::vector<RowCpuSample> InsertRowsViaStub(
+      Config const& config, int thread_count, int client_count,
+      cs::Database const& database,
+      std::shared_ptr<cs::internal::SpannerStub> const& stub) {
+    std::vector<std::string> const column_names{
+        "Key",   "Data0", "Data1", "Data2", "Data3", "Data4",
+        "Data5", "Data6", "Data7", "Data8", "Data9"};
+
+    auto session = [&]() -> google::cloud::StatusOr<std::string> {
+      Status last_status;
+      for (int i = 0; i != 10; ++i) {
+        grpc::ClientContext context;
+        google::spanner::v1::CreateSessionRequest request{};
+        request.set_database(database.FullName());
+        auto response = stub->CreateSession(context, request);
+        if (response) return response->name();
+        last_status = response.status();
+      }
+      return last_status;
+    }();
+
+    if (!session) {
+      std::ostringstream os;
+      os << "SESSION ERROR = " << session.status();
+      impl_.LogError(os.str());
+      return {};
+    }
+
+    std::vector<RowCpuSample> samples;
+    // We expect about 50 reads per second per thread. Use that to estimate
+    // the size of the vector.
+    samples.reserve(config.iteration_duration.count() * 50);
+    for (auto start = std::chrono::steady_clock::now(),
+              deadline = start + config.iteration_duration;
+         start < deadline; start = std::chrono::steady_clock::now()) {
+      std::int64_t key = 0;
+      {
+        std::lock_guard<std::mutex> lk(mu_);
+        if (random_keys_.empty()) {
+          return samples;
+        }
+        key = random_keys_.back();
+        random_keys_.pop_back();
+      }
+
+      using T = typename Traits::native_type;
+      std::vector<T> const values{
+          impl_.GenerateRandomValue(), impl_.GenerateRandomValue(),
+          impl_.GenerateRandomValue(), impl_.GenerateRandomValue(),
+          impl_.GenerateRandomValue(), impl_.GenerateRandomValue(),
+          impl_.GenerateRandomValue(), impl_.GenerateRandomValue(),
+          impl_.GenerateRandomValue(), impl_.GenerateRandomValue(),
+      };
+
+      SimpleTimer timer;
+      timer.Start();
+
+      grpc::ClientContext context;
+      google::spanner::v1::CommitRequest commit_request;
+      commit_request.set_session(*session);
+      commit_request.mutable_single_use_transaction()
+          ->mutable_read_write()
+          ->Clear();
+      auto& mutation =
+          *commit_request.add_mutations()->mutable_insert_or_update();
+      mutation.set_table(table_name_);
+      for (auto const& c : column_names) {
+        mutation.add_columns(c);
+      }
+      auto& row = *mutation.add_values();
+      row.add_values()->set_string_value(std::to_string(key));
+      for (auto v : values) {
+        *row.add_values() =
+            cs::internal::ToProto(cs::Value(std::move(v))).second;
+      }
+      auto response = stub->Commit(context, commit_request);
+
+      timer.Stop();
+      samples.push_back(RowCpuSample{
+          thread_count, client_count, true, commit_request.mutations_size(),
+          timer.elapsed_time(), timer.cpu_time(), response.status()});
+    }
+    return samples;
+  }
+
+  void RunIterationViaClients(Config const& config,
+                              std::vector<cs::Client> const& clients,
+                              int thread_count) {
+    std::vector<std::future<std::vector<RowCpuSample>>> tasks(thread_count);
+    int task_id = 0;
+    for (auto& t : tasks) {
+      auto client = clients[task_id++ % clients.size()];
+      t = std::async(std::launch::async,
+                     &MutationExperiment::InsertRowsViaClient, this, config,
+                     thread_count, static_cast<int>(clients.size()), client);
+    }
+    for (auto& t : tasks) {
+      impl_.DumpSamples(t.get());
+    }
+  }
+
+  std::vector<RowCpuSample> InsertRowsViaClient(Config const& config,
+                                                int thread_count,
+                                                int client_count,
+                                                cs::Client client) {
+    std::vector<std::string> const column_names{
+        "Key",   "Data0", "Data1", "Data2", "Data3", "Data4",
+        "Data5", "Data6", "Data7", "Data8", "Data9"};
+
+    std::vector<RowCpuSample> samples;
+    // We expect about 50 reads per second per thread, so allocate enough
+    // memory to start.
+    samples.reserve(config.iteration_duration.count() * 50);
+    for (auto start = std::chrono::steady_clock::now(),
+              deadline = start + config.iteration_duration;
+         start < deadline; start = std::chrono::steady_clock::now()) {
+      std::int64_t key = 0;
+      {
+        std::lock_guard<std::mutex> lk(mu_);
+        if (random_keys_.empty()) {
+          return samples;
+        }
+        key = random_keys_.back();
+        random_keys_.pop_back();
+      }
+
+      using T = typename Traits::native_type;
+      std::vector<T> const values{
+          impl_.GenerateRandomValue(), impl_.GenerateRandomValue(),
+          impl_.GenerateRandomValue(), impl_.GenerateRandomValue(),
+          impl_.GenerateRandomValue(), impl_.GenerateRandomValue(),
+          impl_.GenerateRandomValue(), impl_.GenerateRandomValue(),
+          impl_.GenerateRandomValue(), impl_.GenerateRandomValue(),
+      };
+
+      SimpleTimer timer;
+      timer.Start();
+
+      int row_count = 0;
+      auto commit_result =
+          client.Commit([&](cs::Transaction const&)
+                            -> google::cloud::StatusOr<cs::Mutations> {
+            return cs::Mutations{cs::MakeInsertOrUpdateMutation(
+                table_name_, column_names, key, values[0], values[1], values[2],
+                values[3], values[4], values[5], values[6], values[7],
+                values[8], values[9])};
+          });
+      timer.Stop();
+      samples.push_back(RowCpuSample{
+          thread_count, client_count, false, row_count, timer.elapsed_time(),
+          timer.cpu_time(), std::move(commit_result).status()});
+    }
+    return samples;
+  }
+
+  ExperimentImpl<Traits> impl_;
+  std::string table_name_;
+  std::mutex mu_;
+  std::vector<int64_t> random_keys_;
+};
+
 class RunAllExperiment : public Experiment {
  public:
   explicit RunAllExperiment(google::cloud::internal::DefaultPRNG generator)
@@ -1028,7 +1287,7 @@ class RunAllExperiment : public Experiment {
       if (kv.first == "run-all") continue;
       Config config = cfg;
       config.experiment = kv.first;
-      config.samples = 2;
+      config.samples = 1;
       config.iteration_duration = std::chrono::seconds(1);
       config.minimum_threads = 1;
       config.maximum_threads = 1;
@@ -1044,6 +1303,9 @@ class RunAllExperiment : public Experiment {
         std::cout << "# ERROR in SetUp: " << status << "\n";
         continue;
       }
+      config.use_only_clients = true;
+      experiment->Run(config, database);
+      config.use_only_stubs = true;
       experiment->Run(config, database);
       experiment->TearDown(config, database);
     }
@@ -1070,6 +1332,14 @@ ExperimentFactory MakeUpdateFactory() {
   };
 }
 
+template <typename Trait>
+ExperimentFactory MakeMutationFactory() {
+  using G = google::cloud::internal::DefaultPRNG;
+  return [](G g) {
+    return google::cloud::internal::make_unique<MutationExperiment<Trait>>(g);
+  };
+}
+
 std::map<std::string, ExperimentFactory> AvailableExperiments() {
   auto make_run_all = [](google::cloud::internal::DefaultPRNG g) {
     return google::cloud::internal::make_unique<RunAllExperiment>(g);
@@ -1091,6 +1361,13 @@ std::map<std::string, ExperimentFactory> AvailableExperiments() {
       {"update-int64", MakeUpdateFactory<Int64Traits>()},
       {"update-string", MakeUpdateFactory<StringTraits>()},
       {"update-timestamp", MakeUpdateFactory<TimestampTraits>()},
+      {"mutation-bool", MakeMutationFactory<BoolTraits>()},
+      {"mutation-bytes", MakeMutationFactory<BytesTraits>()},
+      {"mutation-date", MakeMutationFactory<DateTraits>()},
+      {"mutation-float64", MakeMutationFactory<Float64Traits>()},
+      {"mutation-int64", MakeMutationFactory<Int64Traits>()},
+      {"mutation-string", MakeMutationFactory<StringTraits>()},
+      {"mutation-timestamp", MakeMutationFactory<TimestampTraits>()},
   };
 }
 
@@ -1144,6 +1421,10 @@ google::cloud::StatusOr<Config> ParseArgs(std::vector<std::string> args) {
        [](Config& c, std::string const& v) { c.table_size = std::stol(v); }},
       {"--query-size=",
        [](Config& c, std::string const& v) { c.query_size = std::stol(v); }},
+      {"--use-only-stubs",
+       [](Config& c, std::string const&) { c.use_only_stubs = true; }},
+      {"--use-only-clients",
+       [](Config& c, std::string const&) { c.use_only_clients = true; }},
   };
 
   auto invalid_argument = [](std::string msg) {
@@ -1224,6 +1505,13 @@ google::cloud::StatusOr<Config> ParseArgs(std::vector<std::string> args) {
        << " than the query size (" << config.query_size << ")";
     return invalid_argument(os.str());
   }
+
+  if (config.use_only_stubs && config.use_only_clients) {
+    std::ostringstream os;
+    os << "Only one of --use-only-stubs or --use-only-clients can be set";
+    return invalid_argument(os.str());
+  }
+
   return config;
 }
 
