@@ -212,7 +212,7 @@ StatusOr<Timestamp> TimestampFromString(std::string const& s) {
       if (scale == 1) continue;                 // drop insignificant digits
       scale /= 10;
       v *= 10;
-      v += dp - kDigits;
+      v += static_cast<Timestamp::duration::rep>(dp - kDigits);
     }
     if (pos == fpos) {
       return Status(StatusCode::kInvalidArgument,
@@ -248,7 +248,7 @@ StatusOr<Timestamp> TimestampFromString(std::string const& s) {
             char const* dp = std::strchr(kDigits, s[pos]);
             if (dp == nullptr || *dp == '\0') break;  // non-digit
             *it *= 10;
-            *it += dp - kDigits;
+            *it += static_cast<std::chrono::minutes::rep>(dp - kDigits);
             if (*it >= 100) break;  // avoid overflow using overall bound
           }
         }
