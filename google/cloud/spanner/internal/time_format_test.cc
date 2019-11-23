@@ -36,6 +36,14 @@ TEST(TimeFormat, Format) {
   tm.tm_sec = 22;
   EXPECT_EQ("2019-06-21T16:52:22", FormatTime(kTimeFormat, tm));
 
+  tm.tm_year = 10000 - 1900;
+  tm.tm_mon = 6 - 1;
+  tm.tm_mday = 21;
+  tm.tm_hour = 16;
+  tm.tm_min = 52;
+  tm.tm_sec = 22;
+  EXPECT_EQ("10000-06-21T16:52:22", FormatTime(kTimeFormat, tm));
+
   tm.tm_year = 123 - 1900;
   tm.tm_mon = 6 - 1;
   tm.tm_mday = 21;
@@ -73,6 +81,14 @@ TEST(TimeFormat, FormatFixed) {
   tm.tm_min = 52;
   tm.tm_sec = 22;
   EXPECT_EQ("2019-06-21T16:52:22", FormatTime(tm));
+
+  tm.tm_year = 10000 - 1900;
+  tm.tm_mon = 6 - 1;
+  tm.tm_mday = 21;
+  tm.tm_hour = 16;
+  tm.tm_min = 52;
+  tm.tm_sec = 22;
+  EXPECT_EQ("10000-06-21T16:52:22", FormatTime(tm));
 
   tm.tm_year = 123 - 1900;
   tm.tm_mon = 6 - 1;

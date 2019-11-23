@@ -346,6 +346,7 @@ TEST(Time, TimestampFromStringFailure) {
   EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:22.9"));
   EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:22.Z"));
   EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:22ZX"));
+  EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:-22Z"));
 
   EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:22+0:"));
   EXPECT_FALSE(TimestampFromString("2019-06-21T16:52:22+:0"));
