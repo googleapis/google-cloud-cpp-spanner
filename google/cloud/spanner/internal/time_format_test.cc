@@ -42,7 +42,7 @@ TEST(TimeFormat, Format) {
   tm.tm_hour = 16;
   tm.tm_min = 52;
   tm.tm_sec = 22;
-#if defined(__APPLE__)
+#if defined(__APPLE__) || defined(_WIN32)
   EXPECT_EQ("0123-06-21T16:52:22", FormatTime(kTimeFormat, tm));
 #else
   EXPECT_EQ("123-06-21T16:52:22", FormatTime(kTimeFormat, tm));
@@ -100,10 +100,10 @@ TEST(TimeFormat, Parse) {
   EXPECT_EQ(tm.tm_min, 52);
   EXPECT_EQ(tm.tm_sec, 22);
 
-  EXPECT_EQ(19, ParseTime(kTimeFormat, "2020-07-22T17:53:23xxx", &tm));
+  EXPECT_EQ(19, ParseTime(kTimeFormat, "2020-02-29T17:53:23xxx", &tm));
   EXPECT_EQ(tm.tm_year, 2020 - 1900);
-  EXPECT_EQ(tm.tm_mon, 7 - 1);
-  EXPECT_EQ(tm.tm_mday, 22);
+  EXPECT_EQ(tm.tm_mon, 2 - 1);
+  EXPECT_EQ(tm.tm_mday, 29);
   EXPECT_EQ(tm.tm_hour, 17);
   EXPECT_EQ(tm.tm_min, 53);
   EXPECT_EQ(tm.tm_sec, 23);
@@ -122,10 +122,10 @@ TEST(TimeFormat, ParseFixed) {
   EXPECT_EQ(tm.tm_min, 52);
   EXPECT_EQ(tm.tm_sec, 22);
 
-  EXPECT_EQ(19, ParseTime("2020-07-22T17:53:23xxx", &tm));
+  EXPECT_EQ(19, ParseTime("2020-02-29T17:53:23xxx", &tm));
   EXPECT_EQ(tm.tm_year, 2020 - 1900);
-  EXPECT_EQ(tm.tm_mon, 7 - 1);
-  EXPECT_EQ(tm.tm_mday, 22);
+  EXPECT_EQ(tm.tm_mon, 2 - 1);
+  EXPECT_EQ(tm.tm_mday, 29);
   EXPECT_EQ(tm.tm_hour, 17);
   EXPECT_EQ(tm.tm_min, 53);
   EXPECT_EQ(tm.tm_sec, 23);
