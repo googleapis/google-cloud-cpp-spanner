@@ -34,7 +34,6 @@ void BackgroundChannelOpener(
     // NOLINTNEXTLINE(performance-unnecessary-value-param)
     grpc_utils::CompletionQueue cq, std::shared_ptr<grpc::Channel> channel) {
   using ms = std::chrono::milliseconds;
-  // TODO(xxx): Find out if this blocks.
   auto state = channel->GetState(true);
   if (state != GRPC_CHANNEL_CONNECTING && state != GRPC_CHANNEL_READY) {
     // Reschedule ourselves to run in 200 ms
