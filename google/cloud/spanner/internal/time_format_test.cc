@@ -48,6 +48,7 @@ TEST(TimeFormat, Format) {
   EXPECT_EQ("123-06-21T16:52:22", FormatTime(kTimeFormat, tm));
 #endif
 
+#if !defined(_WIN32)
   tm.tm_year = -12 - 1900;
   tm.tm_mon = 6 - 1;
   tm.tm_mday = 21;
@@ -58,6 +59,7 @@ TEST(TimeFormat, Format) {
   EXPECT_EQ("-012-06-21T16:52:22", FormatTime(kTimeFormat, tm));
 #else
   EXPECT_EQ("-12-06-21T16:52:22", FormatTime(kTimeFormat, tm));
+#endif
 #endif
 }
 
