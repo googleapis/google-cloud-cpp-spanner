@@ -2125,6 +2125,10 @@ void RunAll() {
   std::cout << "\nRunning example-status-or sample\n";
   ExampleStatusOr(client);
 
+  std::cout << "\nRunning custom-retry-policy sample\n";
+  RunOneCommand(
+      {"", "custom-retry-policy", project_id, instance_id, database_id});
+
   std::cout << "\nRunning spanner_dml_partitioned_update sample\n";
   DmlPartitionedUpdate(client);
 
