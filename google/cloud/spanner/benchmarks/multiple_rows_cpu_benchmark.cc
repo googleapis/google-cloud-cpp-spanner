@@ -480,7 +480,7 @@ class ExperimentImpl {
       }
       mutation.EmplaceRow(key, value0, value1, value2, value3, value4, value5,
                           value6, value7, value8, value9);
-      current_mutations++;
+      ++current_mutations;
       auto status = flush_as_needed();
       if (!status.ok()) return status;
     }
