@@ -1,7 +1,7 @@
 var searchData=
 [
   ['main',['main',['../multiple__rows__cpu__benchmark_8cc.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;multiple_rows_cpu_benchmark.cc'],['../single__row__throughput__benchmark_8cc.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;single_row_throughput_benchmark.cc'],['../samples_8cc.html#adacbe0175a79dff748855d8c9839f82b',1,'main(int ac, char *av[]):&#160;samples.cc']]],
-  ['makeconnection',['MakeConnection',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a34e43f27057136f44b36251a0a379c1b',1,'google::cloud::spanner::v0']]],
+  ['makeconnection',['MakeConnection',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a34e43f27057136f44b36251a0a379c1b',1,'google::cloud::spanner::v0::MakeConnection(Database const  &amp;db, ConnectionOptions const  &amp;options=ConnectionOptions())'],['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ae1118c1297343a7b6a0bf8a4a1fe7195',1,'google::cloud::spanner::v0::MakeConnection(Database const  &amp;db, ConnectionOptions const  &amp;options, std::unique_ptr&lt; RetryPolicy &gt; retry_policy, std::unique_ptr&lt; BackoffPolicy &gt; backoff_policy)']]],
   ['makedatabaseadminconnection',['MakeDatabaseAdminConnection',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a6f04fd3d19b7e1f291bdc7f5a9ed6a77',1,'google::cloud::spanner::v0']]],
   ['makedeletemutation',['MakeDeleteMutation',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a5dbbd67a8f47b3417280deb7ae048609',1,'google::cloud::spanner::v0']]],
   ['makeinsertmutation',['MakeInsertMutation',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#af77b5f3c1a45e35f626398888df17610',1,'google::cloud::spanner::v0']]],
