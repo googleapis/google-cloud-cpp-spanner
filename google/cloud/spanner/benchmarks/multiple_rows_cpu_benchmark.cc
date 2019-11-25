@@ -88,6 +88,8 @@ std::ostream& operator<<(std::ostream& os, RowCpuSample const& s) {
             << ',' << s.cpu_time.count() << ',' << s.status.code();
 }
 
+using OutputSink = std::function<void(std::string const&)>;
+
 class Experiment {
  public:
   virtual ~Experiment() = default;
@@ -95,7 +97,8 @@ class Experiment {
   virtual Status SetUp(Config const& config, cs::Database const& database) = 0;
   virtual Status TearDown(Config const& config,
                           cs::Database const& database) = 0;
-  virtual Status Run(Config const& config, cs::Database const& database) = 0;
+  virtual Status Run(Config const& config, cs::Database const& database,
+                     OutputSink const& sink) = 0;
 };
 
 using ExperimentFactory = std::function<std::unique_ptr<Experiment>(
@@ -175,7 +178,12 @@ int main(int argc, char* argv[]) {
     std::cout << "# Skipping experiment, SetUp() failed: " << status << "\n";
     exit_status = EXIT_FAILURE;
   } else {
-    status = experiment->Run(config, database);
+    std::mutex mu;
+    auto sink = [&mu](std::string const& s) {
+      std::lock_guard<std::mutex> lk(mu);
+      std::cout << s;
+    };
+    status = experiment->Run(config, database, sink);
     if (!status.ok()) exit_status = EXIT_FAILURE;
     (void)experiment->TearDown(config, database);
   }
@@ -449,22 +457,18 @@ class ExperimentImpl {
     return generator_;
   };
 
-  void DumpSamples(std::vector<RowCpuSample> const& samples) const {
-    std::lock_guard<std::mutex> lk(mu_);
+  void DumpSamples(std::vector<RowCpuSample> const& samples,
+                   OutputSink const& sink) const {
+    std::ostringstream os;
     std::copy(samples.begin(), samples.end(),
-              std::ostream_iterator<RowCpuSample>(std::cout, "\n"));
+              std::ostream_iterator<RowCpuSample>(os, "\n"));
     auto it =
         std::find_if(samples.begin(), samples.end(),
                      [](RowCpuSample const& x) { return !x.status.ok(); });
-    if (it == samples.end()) {
-      return;
+    if (it != samples.end()) {
+      os << "# FIRST ERROR: " << it->status << "\n";
     }
-    std::cout << "# FIRST ERROR: " << it->status << "\n";
-  }
-
-  void LogError(std::string const& s) {
-    std::lock_guard<std::mutex> lk(mu_);
-    std::cout << "# " << s << std::endl;
+    sink(os.str());
   }
 
  private:
@@ -559,7 +563,8 @@ class ReadExperiment : public Experiment {
 
   Status TearDown(Config const&, cs::Database const&) override { return {}; }
 
-  Status Run(Config const& config, cs::Database const& database) override {
+  Status Run(Config const& config, cs::Database const& database,
+             OutputSink const& sink) override {
     // Create enough clients and stubs for the worst case
     std::vector<cs::Client> clients;
     std::vector<std::shared_ptr<cs::internal::SpannerStub>> stubs;
@@ -584,12 +589,12 @@ class ReadExperiment : public Experiment {
       if (use_stubs) {
         std::vector<std::shared_ptr<cs::internal::SpannerStub>> iteration_stubs(
             stubs.begin(), stubs.begin() + client_count);
-        RunIterationViaStubs(config, iteration_stubs, thread_count);
+        RunIterationViaStubs(config, iteration_stubs, thread_count, sink);
         continue;
       }
       std::vector<cs::Client> iteration_clients(clients.begin(),
                                                 clients.begin() + client_count);
-      RunIterationViaClients(config, iteration_clients, thread_count);
+      RunIterationViaClients(config, iteration_clients, thread_count, sink);
     }
     overall.Stop();
     std::cout << overall.annotations();
@@ -600,7 +605,7 @@ class ReadExperiment : public Experiment {
   void RunIterationViaStubs(
       Config const& config,
       std::vector<std::shared_ptr<cs::internal::SpannerStub>> const& stubs,
-      int thread_count) {
+      int thread_count, OutputSink const& sink) {
     std::vector<std::future<std::vector<RowCpuSample>>> tasks(thread_count);
     int task_id = 0;
     for (auto& t : tasks) {
@@ -609,17 +614,18 @@ class ReadExperiment : public Experiment {
                      config, thread_count, static_cast<int>(stubs.size()),
                      cs::Database(config.project_id, config.instance_id,
                                   config.database_id),
-                     client);
+                     client, sink);
     }
     for (auto& t : tasks) {
-      impl_.DumpSamples(t.get());
+      impl_.DumpSamples(t.get(), sink);
     }
   }
 
   std::vector<RowCpuSample> ReadRowsViaStub(
       Config const& config, int thread_count, int client_count,
       cs::Database const& database,
-      std::shared_ptr<cs::internal::SpannerStub> const& stub) {
+      std::shared_ptr<cs::internal::SpannerStub> const& stub,
+      OutputSink const& sink) {
     auto session = [&]() -> google::cloud::StatusOr<std::string> {
       Status last_status;
       for (int i = 0; i != 10; ++i) {
@@ -635,8 +641,8 @@ class ReadExperiment : public Experiment {
 
     if (!session) {
       std::ostringstream os;
-      os << "SESSION ERROR = " << session.status();
-      impl_.LogError(os.str());
+      os << "# SESSION ERROR = " << session.status();
+      sink(os.str());
       return {};
     }
 
@@ -700,7 +706,7 @@ class ReadExperiment : public Experiment {
 
   void RunIterationViaClients(Config const& config,
                               std::vector<cs::Client> const& clients,
-                              int thread_count) {
+                              int thread_count, OutputSink const& sink) {
     std::vector<std::future<std::vector<RowCpuSample>>> tasks(thread_count);
     int task_id = 0;
     for (auto& t : tasks) {
@@ -710,7 +716,7 @@ class ReadExperiment : public Experiment {
                      static_cast<int>(clients.size()), client);
     }
     for (auto& t : tasks) {
-      impl_.DumpSamples(t.get());
+      impl_.DumpSamples(t.get(), sink);
     }
   }
 
@@ -783,7 +789,8 @@ class UpdateExperiment : public Experiment {
 
   Status TearDown(Config const&, cs::Database const&) override { return {}; }
 
-  Status Run(Config const& config, cs::Database const& database) override {
+  Status Run(Config const& config, cs::Database const& database,
+             OutputSink const& sink) override {
     // Create enough clients and stubs for the worst case
     std::vector<cs::Client> clients;
     std::vector<std::shared_ptr<cs::internal::SpannerStub>> stubs;
@@ -808,12 +815,12 @@ class UpdateExperiment : public Experiment {
       if (use_stubs) {
         std::vector<std::shared_ptr<cs::internal::SpannerStub>> iteration_stubs(
             stubs.begin(), stubs.begin() + client_count);
-        RunIterationViaStubs(config, iteration_stubs, thread_count);
+        RunIterationViaStubs(config, iteration_stubs, thread_count, sink);
         continue;
       }
       std::vector<cs::Client> iteration_clients(clients.begin(),
                                                 clients.begin() + client_count);
-      RunIterationViaClients(config, iteration_clients, thread_count);
+      RunIterationViaClients(config, iteration_clients, thread_count, sink);
     }
     overall.Stop();
     std::cout << overall.annotations();
@@ -824,7 +831,7 @@ class UpdateExperiment : public Experiment {
   void RunIterationViaStubs(
       Config const& config,
       std::vector<std::shared_ptr<cs::internal::SpannerStub>> const& stubs,
-      int thread_count) {
+      int thread_count, OutputSink const& sink) {
     std::vector<std::future<std::vector<RowCpuSample>>> tasks(thread_count);
     int task_id = 0;
     for (auto& t : tasks) {
@@ -833,17 +840,18 @@ class UpdateExperiment : public Experiment {
                      this, config, thread_count, static_cast<int>(stubs.size()),
                      cs::Database(config.project_id, config.instance_id,
                                   config.database_id),
-                     client);
+                     client, sink);
     }
     for (auto& t : tasks) {
-      impl_.DumpSamples(t.get());
+      impl_.DumpSamples(t.get(), sink);
     }
   }
 
   std::vector<RowCpuSample> UpdateRowsViaStub(
       Config const& config, int thread_count, int client_count,
       cs::Database const& database,
-      std::shared_ptr<cs::internal::SpannerStub> const& stub) {
+      std::shared_ptr<cs::internal::SpannerStub> const& stub,
+      OutputSink const& sink) {
     std::string const statement = CreateStatement();
 
     auto session = [&]() -> google::cloud::StatusOr<std::string> {
@@ -861,8 +869,8 @@ class UpdateExperiment : public Experiment {
 
     if (!session) {
       std::ostringstream os;
-      os << "SESSION ERROR = " << session.status();
-      impl_.LogError(os.str());
+      os << "# SESSION ERROR = " << session.status();
+      sink(os.str());
       return {};
     }
 
@@ -941,7 +949,7 @@ class UpdateExperiment : public Experiment {
 
   void RunIterationViaClients(Config const& config,
                               std::vector<cs::Client> const& clients,
-                              int thread_count) {
+                              int thread_count, OutputSink const& sink) {
     std::vector<std::future<std::vector<RowCpuSample>>> tasks(thread_count);
     int task_id = 0;
     for (auto& t : tasks) {
@@ -951,7 +959,7 @@ class UpdateExperiment : public Experiment {
                      static_cast<int>(clients.size()), client);
     }
     for (auto& t : tasks) {
-      impl_.DumpSamples(t.get());
+      impl_.DumpSamples(t.get(), sink);
     }
   }
 
@@ -1031,7 +1039,8 @@ class RunAllExperiment : public Experiment {
   Status SetUp(Config const&, cs::Database const&) override { return {}; }
   Status TearDown(Config const&, cs::Database const&) override { return {}; }
 
-  Status Run(Config const& cfg, cs::Database const& database) override {
+  Status Run(Config const& cfg, cs::Database const& database,
+             OutputSink const&) override {
     // Smoke test all the experiments by running a very small version of each.
 
     std::vector<std::future<google::cloud::Status>> tasks;
@@ -1066,10 +1075,14 @@ class RunAllExperiment : public Experiment {
               std::cout << "# ERROR in SetUp: " << status << "\n";
               return status;
             }
+            auto output = [&mu, &config](std::string const& s) {
+              std::lock_guard<std::mutex> lk(mu);
+              std::cout << "============ " << config.experiment << "\n" << s;
+            };
             config.use_only_clients = true;
-            experiment->Run(config, database);
+            experiment->Run(config, database, output);
             config.use_only_stubs = true;
-            experiment->Run(config, database);
+            experiment->Run(config, database, output);
             experiment->TearDown(config, database);
             return google::cloud::Status();
           },
