@@ -89,28 +89,22 @@ class BackgroundChannelOpenerTest : public ::testing::Test {
 TEST_F(BackgroundChannelOpenerTest, NoServer) {
   // Make sure it doesn't block forever.
   BackgroundChannelOpener(cq_, channel_);
-  ASSERT_EQ(GRPC_CHANNEL_IDLE, channel_->GetState(false));
 }
 
 TEST_F(BackgroundChannelOpenerTest, WithServer) {
-  ASSERT_EQ(GRPC_CHANNEL_IDLE, channel_->GetState(false));
+  EXPECT_EQ(GRPC_CHANNEL_IDLE, channel_->GetState(false));
   StartServer();
-  using ms = std::chrono::milliseconds;
-  cq_.MakeRelativeTimer(ms(200)).then(
-      [this](future<std::chrono::system_clock::time_point>) {
-        BackgroundChannelOpener(cq_, channel_);
-      });
+  BackgroundChannelOpener(cq_, channel_);
   grpc_connectivity_state state = GRPC_CHANNEL_IDLE;
   int retry = 10;
   while (--retry > 0) {
-    channel_->WaitForStateChange(state,
-                                 std::chrono::system_clock::now() + ms(1000));
     state = channel_->GetState(false);
     if (state == GRPC_CHANNEL_READY || state == GRPC_CHANNEL_CONNECTING) {
       break;
     }
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   }
-  ASSERT_TRUE(state == GRPC_CHANNEL_READY || state == GRPC_CHANNEL_CONNECTING)
+  EXPECT_TRUE(state == GRPC_CHANNEL_READY || state == GRPC_CHANNEL_CONNECTING)
       << "Where state: " << state
       << " not equal neither: " << GRPC_CHANNEL_READY
       << " nor: " << GRPC_CHANNEL_CONNECTING << ".";
