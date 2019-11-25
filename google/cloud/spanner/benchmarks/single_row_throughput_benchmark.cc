@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "google/cloud/spanner/benchmarks/benchmarks_config.h"
 #include "google/cloud/spanner/client.h"
 #include "google/cloud/spanner/database_admin_client.h"
 #include "google/cloud/spanner/internal/build_info.h"
-#include "google/cloud/spanner/internal/compiler_info.h"
 #include "google/cloud/spanner/testing/pick_random_instance.h"
 #include "google/cloud/spanner/testing/random_database_name.h"
 #include "google/cloud/internal/getenv.h"
@@ -29,26 +29,7 @@
 namespace {
 
 namespace cloud_spanner = google::cloud::spanner;
-
-struct Config {
-  std::string experiment;
-
-  std::string project_id;
-  std::string instance_id;
-  std::string database_id;
-
-  int samples = 2;
-  std::chrono::seconds iteration_duration = std::chrono::seconds(5);
-
-  int minimum_threads = 1;
-  int maximum_threads = 4;
-  int minimum_clients = 1;
-  int maximum_clients = 4;
-
-  std::int64_t table_size = 1000 * 1000L;
-};
-
-std::ostream& operator<<(std::ostream& os, Config const& config);
+using ::google::cloud::spanner_benchmarks::Config;
 
 struct SingleRowThroughputSample {
   int client_count;
@@ -72,15 +53,13 @@ class Experiment {
 
 std::map<std::string, std::shared_ptr<Experiment>> AvailableExperiments();
 
-google::cloud::StatusOr<Config> ParseArgs(std::vector<std::string> args);
-
 }  // namespace
 
 int main(int argc, char* argv[]) {
   Config config;
   {
     std::vector<std::string> args{argv, argv + argc};
-    auto c = ParseArgs(args);
+    auto c = google::cloud::spanner_benchmarks::ParseArgs(args);
     if (!c) {
       std::cerr << "Error parsing command-line arguments: " << c.status()
                 << "\n";
@@ -159,25 +138,6 @@ int main(int argc, char* argv[]) {
 }
 
 namespace {
-
-std::ostream& operator<<(std::ostream& os, Config const& config) {
-  return os << std::boolalpha << "# Experiment: " << config.experiment
-            << "\n# Project: " << config.project_id
-            << "\n# Instance: " << config.instance_id
-            << "\n# Database: " << config.database_id
-            << "\n# Samples: " << config.samples
-            << "\n# Minimum Threads: " << config.minimum_threads
-            << "\n# Maximum Threads: " << config.maximum_threads
-            << "\n# Minimum Clients: " << config.minimum_clients
-            << "\n# Maximum Clients: " << config.maximum_clients
-            << "\n# Iteration Duration: " << config.iteration_duration.count()
-            << "s"
-            << "\n# Table Size: " << config.table_size
-            << "\n# Compiler: " << cloud_spanner::internal::CompilerId() << "-"
-            << cloud_spanner::internal::CompilerVersion()
-            << "\n# Build Flags: " << cloud_spanner::internal::BuildFlags()
-            << "\n";
-}
 
 using RandomKeyGenerator = std::function<std::int64_t()>;
 using ErrorSink = std::function<void(std::vector<google::cloud::Status>)>;
@@ -728,116 +688,6 @@ std::map<std::string, std::shared_ptr<Experiment>> AvailableExperiments() {
       {"update", std::make_shared<UpdateDmlExperiment>()},
       {"select", std::make_shared<SelectExperiment>()},
   };
-}
-
-google::cloud::StatusOr<Config> ParseArgs(std::vector<std::string> args) {
-  Config config;
-
-  config.experiment = "run-all";
-
-  config.project_id =
-      google::cloud::internal::GetEnv("GOOGLE_CLOUD_PROJECT").value_or("");
-  config.instance_id =
-      google::cloud::internal::GetEnv("GOOGLE_CLOUD_CPP_SPANNER_INSTANCE")
-          .value_or("");
-
-  struct Flag {
-    std::string flag_name;
-    std::function<void(Config&, std::string)> parser;
-  };
-
-  // NOLINTNEXTLINE(modernize-avoid-c-arrays)
-  Flag flags[] = {
-      {"--experiment=",
-       [](Config& c, std::string v) { c.experiment = std::move(v); }},
-      {"--project=",
-       [](Config& c, std::string v) { c.project_id = std::move(v); }},
-      {"--instance=",
-       [](Config& c, std::string v) { c.instance_id = std::move(v); }},
-      {"--samples=",
-       [](Config& c, std::string const& v) { c.samples = std::stoi(v); }},
-      {"--iteration-duration=",
-       [](Config& c, std::string const& v) {
-         c.iteration_duration = std::chrono::seconds(std::stoi(v));
-       }},
-      {"--minimum-threads=",
-       [](Config& c, std::string const& v) {
-         c.minimum_threads = std::stoi(v);
-       }},
-      {"--maximum-threads=",
-       [](Config& c, std::string const& v) {
-         c.maximum_threads = std::stoi(v);
-       }},
-      {"--minimum-clients=",
-       [](Config& c, std::string const& v) {
-         c.minimum_clients = std::stoi(v);
-       }},
-      {"--maximum-clients=",
-       [](Config& c, std::string const& v) {
-         c.maximum_clients = std::stoi(v);
-       }},
-      {"--table-size=",
-       [](Config& c, std::string const& v) { c.table_size = std::stol(v); }},
-  };
-
-  auto invalid_argument = [](std::string msg) {
-    return google::cloud::Status(google::cloud::StatusCode::kInvalidArgument,
-                                 std::move(msg));
-  };
-
-  for (auto i = std::next(args.begin()); i != args.end(); ++i) {
-    std::string const& arg = *i;
-    bool found = false;
-    for (auto const& flag : flags) {
-      if (arg.rfind(flag.flag_name, 0) != 0) continue;
-      found = true;
-      flag.parser(config, arg.substr(flag.flag_name.size()));
-
-      break;
-    }
-    if (!found && arg.rfind("--", 0) == 0) {
-      return invalid_argument("Unexpected command-line flag " + arg);
-    }
-  }
-
-  if (config.experiment.empty()) {
-    return invalid_argument("Missing value for --experiment flag");
-  }
-
-  if (config.project_id.empty()) {
-    return invalid_argument(
-        "The project id is not set, provide a value in the --project flag,"
-        " or set the GOOGLE_CLOUD_PROJECT environment variable");
-  }
-
-  if (config.minimum_threads <= 0) {
-    std::ostringstream os;
-    os << "The minimum number of threads (" << config.minimum_threads << ")"
-       << " must be greater than zero";
-    return invalid_argument(os.str());
-  }
-  if (config.maximum_threads < config.minimum_threads) {
-    std::ostringstream os;
-    os << "The maximum number of threads (" << config.maximum_threads << ")"
-       << " must be greater or equal than the minimum number of threads ("
-       << config.minimum_threads << ")";
-    return invalid_argument(os.str());
-  }
-
-  if (config.minimum_clients <= 0) {
-    std::ostringstream os;
-    os << "The minimum number of clients (" << config.minimum_clients << ")"
-       << " must be greater than zero";
-    return invalid_argument(os.str());
-  }
-  if (config.maximum_clients < config.minimum_clients) {
-    std::ostringstream os;
-    os << "The maximum number of clients (" << config.maximum_clients << ")"
-       << " must be greater or equal than the minimum number of clients ("
-       << config.minimum_clients << ")";
-    return invalid_argument(os.str());
-  }
-  return config;
 }
 
 }  // namespace
