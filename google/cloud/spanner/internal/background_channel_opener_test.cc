@@ -41,7 +41,7 @@ class DummySpanner final : public gsv1::Spanner::Service {
  * This test prepares the server (not starting it immediately), and the client
  * side grpc::Channel that connecs to the same port.
  */
-class BackgroundChannelOpenerTest : public ::testing::Test {
+class BackgroundChannelOpenerTestWithoutServer : public ::testing::Test {
  protected:
   void SetUp() override {
     int port;
@@ -54,23 +54,18 @@ class BackgroundChannelOpenerTest : public ::testing::Test {
     cq_thread_ = std::thread([this] { cq_.Run(); });
   }
 
-  void StartServer() {
-    server_ = builder_.BuildAndStart();
-    server_thread_ = std::thread([this]() { server_->Wait(); });
-  }
-
   void TearDown() override {
     cq_.Shutdown();
     if (cq_thread_.joinable()) {
       cq_thread_.join();
     }
-    if (server_) {
-      WaitForServerShutdown();
-    }
+    WaitForServerShutdown();
   }
 
   void WaitForServerShutdown() {
-    server_->Shutdown();
+    if (server_) {
+      server_->Shutdown();
+    }
     if (server_thread_.joinable()) {
       server_thread_.join();
     }
@@ -86,14 +81,33 @@ class BackgroundChannelOpenerTest : public ::testing::Test {
   std::thread cq_thread_;
 };
 
-TEST_F(BackgroundChannelOpenerTest, NoServer) {
+/**
+ * This test prepares the server and the client side grpc::Channel that connecs
+ * to the same port.
+ */
+class BackgroundChannelOpenerTest
+    : public BackgroundChannelOpenerTestWithoutServer {
+ protected:
+  void SetUp() override {
+    int port;
+    std::string server_address("[::]:0");
+    builder_.AddListeningPort(server_address, grpc::InsecureServerCredentials(),
+                              &port);
+    builder_.RegisterService(&impl_);
+    server_ = builder_.BuildAndStart();
+    server_thread_ = std::thread([this]() { server_->Wait(); });
+    channel_ = grpc::CreateChannel("localhost:" + std::to_string(port),
+                                   grpc::InsecureChannelCredentials());
+    cq_thread_ = std::thread([this] { cq_.Run(); });
+  }
+};
+
+TEST_F(BackgroundChannelOpenerTestWithoutServer, NoServer) {
   // Make sure it doesn't block forever.
   BackgroundChannelOpener(cq_, channel_);
 }
 
 TEST_F(BackgroundChannelOpenerTest, WithServer) {
-  EXPECT_EQ(GRPC_CHANNEL_IDLE, channel_->GetState(false));
-  StartServer();
   BackgroundChannelOpener(cq_, channel_);
   grpc_connectivity_state state = GRPC_CHANNEL_IDLE;
   int retry = 10;
