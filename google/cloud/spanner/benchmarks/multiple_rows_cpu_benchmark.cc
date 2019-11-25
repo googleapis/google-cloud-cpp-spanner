@@ -414,13 +414,13 @@ class ExperimentImpl {
   }
 
   bool UseStub(Config const& config) {
-    std::lock_guard<std::mutex> lk(mu_);
     if (config.use_only_clients) {
       return false;
     }
     if (config.use_only_stubs) {
       return true;
     }
+    std::lock_guard<std::mutex> lk(mu_);
     return std::uniform_int_distribution<int>(0, 1)(generator_) == 1;
   }
 
