@@ -31,3 +31,5 @@ RawStringFormats:
   - 'pb'
   - 'proto'
   BasedOnStyle: Google
+
+CommentPragmas: '(@copydoc)'
