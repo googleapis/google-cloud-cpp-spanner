@@ -24,7 +24,6 @@
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/status_or.h"
 #include <google/spanner/v1/spanner.pb.h>
-#include <chrono>
 #include <condition_variable>
 #include <cstddef>
 #include <map>
