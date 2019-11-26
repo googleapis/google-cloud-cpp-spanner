@@ -92,6 +92,7 @@ class Experiment {
  public:
   virtual ~Experiment() = default;
 
+  virtual std::string AdditionalDdlStatement() = 0;
   virtual Status SetUp(Config const& config, cs::Database const& database) = 0;
   virtual Status TearDown(Config const& config,
                           cs::Database const& database) = 0;
@@ -149,7 +150,17 @@ int main(int argc, char* argv[]) {
   std::cout << config << std::flush;
 
   cs::DatabaseAdminClient admin_client;
-  auto created = admin_client.CreateDatabase(database, {});
+  std::vector<std::string> additional_statements = [&available, generator] {
+    std::vector<std::string> statements;
+    for (auto const& kv : available) {
+      auto experiment = kv.second(generator);
+      auto s = experiment->AdditionalDdlStatement();
+      if (s.empty()) continue;
+      statements.push_back(std::move(s));
+    }
+    return statements;
+  }();
+  auto created = admin_client.CreateDatabase(database, additional_statements);
   std::cout << "# Waiting for database creation to complete " << std::flush;
   for (;;) {
     auto status = created.wait_for(std::chrono::seconds(1));
@@ -341,8 +352,7 @@ class ExperimentImpl {
   explicit ExperimentImpl(google::cloud::internal::DefaultPRNG const& generator)
       : generator_(generator) {}
 
-  Status CreateTable(Config const&, cs::Database const& database,
-                     std::string const& table_name) {
+  std::string CreateTableStatement(std::string const& table_name) {
     std::string statement = "CREATE TABLE " + table_name;
     statement += " (Key INT64 NOT NULL,\n";
     for (int i = 0; i != 10; ++i) {
@@ -350,28 +360,11 @@ class ExperimentImpl {
           "Data" + std::to_string(i) + " " + Traits::SpannerDataType() + ",\n";
     }
     statement += ") PRIMARY KEY (Key)";
-    cs::DatabaseAdminClient admin_client;
-    auto created = admin_client.UpdateDatabase(database, {statement});
-    std::cout << "# Waiting for table creation to complete " << std::flush;
-    for (;;) {
-      auto status = created.wait_for(std::chrono::seconds(1));
-      if (status == std::future_status::ready) break;
-      std::cout << '.' << std::flush;
-    }
-    std::cout << " DONE\n";
-    auto db = created.get();
-    if (!db) {
-      std::cerr << "Error creating table: " << db.status() << "\n";
-      return std::move(db).status();
-    }
-    return {};
+    return statement;
   }
 
   Status FillTable(Config const& config, cs::Database const& database,
                    std::string const& table_name) {
-    auto status = CreateTable(config, database, table_name);
-    if (!status.ok()) return status;
-
     // We need to populate some data or all the requests to read will fail.
     cs::Client client(cs::MakeConnection(database));
     std::cout << "# Populating database " << std::flush;
@@ -552,6 +545,10 @@ class ReadExperiment : public Experiment {
   explicit ReadExperiment(google::cloud::internal::DefaultPRNG generator)
       : impl_(generator),
         table_name_("ReadExperiment_" + Traits::TableSuffix()) {}
+
+  std::string AdditionalDdlStatement() override {
+    return impl_.CreateTableStatement(table_name_);
+  }
 
   Status SetUp(Config const& config, cs::Database const& database) override {
     return impl_.FillTable(config, database, table_name_);
@@ -776,6 +773,10 @@ class UpdateExperiment : public Experiment {
       google::cloud::internal::DefaultPRNG const& generator)
       : impl_(generator),
         table_name_("UpdateExperiment_" + Traits::TableSuffix()) {}
+
+  std::string AdditionalDdlStatement() override {
+    return impl_.CreateTableStatement(table_name_);
+  }
 
   Status SetUp(Config const& config, cs::Database const& database) override {
     return impl_.FillTable(config, database, table_name_);
@@ -1028,10 +1029,13 @@ class RunAllExperiment : public Experiment {
  public:
   explicit RunAllExperiment(google::cloud::internal::DefaultPRNG generator)
       : generator_(generator) {}
+
+  std::string AdditionalDdlStatement() override { return {}; }
+
   Status SetUp(Config const&, cs::Database const&) override { return {}; }
   Status TearDown(Config const&, cs::Database const&) override { return {}; }
 
-  Status Run(Config const& cfg, cs::Database const& /*database*/) override {
+  Status Run(Config const& cfg, cs::Database const& database) override {
     // Smoke test all the experiments by running a very small version of each.
 
     std::vector<std::future<google::cloud::Status>> tasks;
@@ -1051,12 +1055,10 @@ class RunAllExperiment : public Experiment {
 
       auto experiment = kv.second(generator_);
 
-      // TODO(#1119) - tests disabled until we can stay within admin op quota
-#if 0
       tasks.push_back(std::async(
           std::launch::async,
-          [](Config config, cs::Database const& database,
-             std::mutex& mu, std::unique_ptr<Experiment> experiment) {
+          [](Config config, cs::Database const& database, std::mutex& mu,
+             std::unique_ptr<Experiment> experiment) {
             {
               std::lock_guard<std::mutex> lk(mu);
               std::cout << "# Smoke test for experiment\n";
@@ -1076,7 +1078,6 @@ class RunAllExperiment : public Experiment {
             return google::cloud::Status();
           },
           config, database, std::ref(mu_), std::move(experiment)));
-#endif
     }
 
     Status status;
