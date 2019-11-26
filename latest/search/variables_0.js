@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['columns',['columns',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ReadParams.html#a74cabc19bd570288c0ce510bf8eb906a',1,'google::cloud::spanner::v0::Connection::ReadParams']]],
-  ['commit_5ftimestamp',['commit_timestamp',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html#a66fb3611f13e6fba76c31e8680d90419',1,'google::cloud::spanner::v0::CommitResult']]]
+  ['action_5fon_5fexhaustion',['action_on_exhaustion',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html#a76e868a4cff1cdbb3ebd77fa3c8fd23a',1,'google::cloud::spanner::v0::SessionPoolOptions']]]
 ];

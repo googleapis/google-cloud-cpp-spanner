@@ -70,6 +70,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">google::cloud::spanner::v0 Namespace Reference</div>  </div>
@@ -172,6 +173,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html">RowStreamIterator</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code> is an <a href="https://en.cppreference.com/w/cpp/named_req/InputIterator">Input Iterator</a> that returns a sequence of <code>StatusOr&lt;<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a>&gt;</code> objects.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html">SessionPoolOptions</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a potentially parameterized SQL statement.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -254,14 +257,21 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:a9711d66cf02a8305d987474ac7c5efca"><td class="mdescLeft">&#160;</td><td class="mdescRight">An instant in time.  <a href="#a9711d66cf02a8305d987474ac7c5efca">More...</a><br /></td></tr>
 <tr class="separator:a9711d66cf02a8305d987474ac7c5efca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ac89b78d6c279b93f80dd85ed999c983f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ac89b78d6c279b93f80dd85ed999c983f">ActionOnExhaustion</a> { <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ac89b78d6c279b93f80dd85ed999c983fa4d34f53389ed7f28ca91fc31ea360a66">ActionOnExhaustion::BLOCK</a>, 
+<a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ac89b78d6c279b93f80dd85ed999c983fac2759effffc94bb9acc71d69fe3e8a1f">ActionOnExhaustion::FAIL</a>
+ }</td></tr>
+<tr class="separator:ac89b78d6c279b93f80dd85ed999c983f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a34e43f27057136f44b36251a0a379c1b"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html">Connection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a34e43f27057136f44b36251a0a379c1b">MakeConnection</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const  &amp;db, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a> const  &amp;options=<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a>())</td></tr>
-<tr class="memdesc:a34e43f27057136f44b36251a0a379c1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner.  <a href="#a34e43f27057136f44b36251a0a379c1b">More...</a><br /></td></tr>
-<tr class="separator:a34e43f27057136f44b36251a0a379c1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1118c1297343a7b6a0bf8a4a1fe7195"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html">Connection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ae1118c1297343a7b6a0bf8a4a1fe7195">MakeConnection</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const  &amp;db, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a> const  &amp;options, std::unique_ptr&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7ac0157ff53ff117cda2ebfe18650481">RetryPolicy</a> &gt; retry_policy, std::unique_ptr&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9ad3c388cccb2c4d92c8299ac178af8a">BackoffPolicy</a> &gt; backoff_policy)</td></tr>
-<tr class="memdesc:ae1118c1297343a7b6a0bf8a4a1fe7195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner.  <a href="#ae1118c1297343a7b6a0bf8a4a1fe7195">More...</a><br /></td></tr>
-<tr class="separator:ae1118c1297343a7b6a0bf8a4a1fe7195"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed22de1a3c4a7fa28b78061ed4ca4d4f"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html">Connection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aed22de1a3c4a7fa28b78061ed4ca4d4f">MakeConnection</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const  &amp;db, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a> const  &amp;connection_options=<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a>(), <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html">SessionPoolOptions</a> session_pool_options=<a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html">SessionPoolOptions</a>())</td></tr>
+<tr class="memdesc:aed22de1a3c4a7fa28b78061ed4ca4d4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner.  <a href="#aed22de1a3c4a7fa28b78061ed4ca4d4f">More...</a><br /></td></tr>
+<tr class="separator:aed22de1a3c4a7fa28b78061ed4ca4d4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fd52f9b0ea74a600b92bc1481129f74"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html">Connection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a5fd52f9b0ea74a600b92bc1481129f74">MakeConnection</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const  &amp;db, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a> const  &amp;connection_options, <a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html">SessionPoolOptions</a> session_pool_options, std::unique_ptr&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7ac0157ff53ff117cda2ebfe18650481">RetryPolicy</a> &gt; retry_policy, std::unique_ptr&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9ad3c388cccb2c4d92c8299ac178af8a">BackoffPolicy</a> &gt; backoff_policy)</td></tr>
+<tr class="memdesc:a5fd52f9b0ea74a600b92bc1481129f74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner.  <a href="#a5fd52f9b0ea74a600b92bc1481129f74">More...</a><br /></td></tr>
+<tr class="separator:a5fd52f9b0ea74a600b92bc1481129f74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0068a1796e0899fcfa4c2d33996c6208"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a0068a1796e0899fcfa4c2d33996c6208">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;b)</td></tr>
 <tr class="separator:a0068a1796e0899fcfa4c2d33996c6208"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3940fbbb384d1d50fc260556cf3de2f2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a3940fbbb384d1d50fc260556cf3de2f2">operator!=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;b)</td></tr>
@@ -796,6 +806,35 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="ac89b78d6c279b93f80dd85ed999c983f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac89b78d6c279b93f80dd85ed999c983f">&#9670;&nbsp;</a></span>ActionOnExhaustion</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ac89b78d6c279b93f80dd85ed999c983f">google::cloud::spanner::v0::ActionOnExhaustion</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac89b78d6c279b93f80dd85ed999c983fa4d34f53389ed7f28ca91fc31ea360a66"></a>BLOCK&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac89b78d6c279b93f80dd85ed999c983fac2759effffc94bb9acc71d69fe3e8a1f"></a>FAIL&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="session__pool__options_8h_source.html#l00028">28</a> of file <a class="el" href="session__pool__options_8h_source.html">session_pool_options.h</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a5193c588900afa93d2ba3bd34b698964"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5193c588900afa93d2ba3bd34b698964">&#9670;&nbsp;</a></span>DeserializeQueryPartition()</h2>
@@ -886,8 +925,8 @@ template&lt;typename RowRange &gt; </div>
 
 </div>
 </div>
-<a id="a34e43f27057136f44b36251a0a379c1b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34e43f27057136f44b36251a0a379c1b">&#9670;&nbsp;</a></span>MakeConnection() <span class="overload">[1/2]</span></h2>
+<a id="aed22de1a3c4a7fa28b78061ed4ca4d4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed22de1a3c4a7fa28b78061ed4ca4d4f">&#9670;&nbsp;</a></span>MakeConnection() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -902,7 +941,13 @@ template&lt;typename RowRange &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a> const &amp;&#160;</td>
-          <td class="paramname"><em>options</em> = <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a>()</code>&#160;</td>
+          <td class="paramname"><em>connection_options</em> = <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a>()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html">SessionPoolOptions</a>&#160;</td>
+          <td class="paramname"><em>session_pool_options</em> = <code><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html">SessionPoolOptions</a>()</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -918,7 +963,8 @@ template&lt;typename RowRange &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">db</td><td>See <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html" title="This class identifies a Cloud Spanner Database.">Database</a></code>. </td></tr>
-    <tr><td class="paramname">options</td><td>(optional) configure the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code> created by this function. </td></tr>
+    <tr><td class="paramname">connection_options</td><td>(optional) configure the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code> created by this function. </td></tr>
+    <tr><td class="paramname">session_pool_options</td><td>(optional) configure the <code>SessionPool</code> created by the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -927,8 +973,8 @@ template&lt;typename RowRange &gt; </div>
 
 </div>
 </div>
-<a id="ae1118c1297343a7b6a0bf8a4a1fe7195"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1118c1297343a7b6a0bf8a4a1fe7195">&#9670;&nbsp;</a></span>MakeConnection() <span class="overload">[2/2]</span></h2>
+<a id="a5fd52f9b0ea74a600b92bc1481129f74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fd52f9b0ea74a600b92bc1481129f74">&#9670;&nbsp;</a></span>MakeConnection() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -943,7 +989,13 @@ template&lt;typename RowRange &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">ConnectionOptions</a> const &amp;&#160;</td>
-          <td class="paramname"><em>options</em>, </td>
+          <td class="paramname"><em>connection_options</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html">SessionPoolOptions</a>&#160;</td>
+          <td class="paramname"><em>session_pool_options</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -971,14 +1023,15 @@ template&lt;typename RowRange &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">db</td><td>See <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html" title="This class identifies a Cloud Spanner Database.">Database</a></code>. </td></tr>
-    <tr><td class="paramname">options</td><td>(optional) configure the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code> created by this function.</td></tr>
-    <tr><td class="paramname">retry_policy</td><td>override the default <code>RetryPolicy</code>, controls for how long does the returned <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code> object retry requests on transient failures. </td></tr>
-    <tr><td class="paramname">backoff_policy</td><td>override the default <code>BackoffPolicy</code>, controls for how long does the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code> object waits before retrying a failed request. </td></tr>
+    <tr><td class="paramname">connection_options</td><td>(optional) configure the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code> created by this function. </td></tr>
+    <tr><td class="paramname">session_pool_options</td><td>(optional) configure the <code>SessionPool</code> created by the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code>.</td></tr>
+    <tr><td class="paramname">retry_policy</td><td>override the default <code>RetryPolicy</code>, controls how long the returned <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code> object retries requests on transient failures. </td></tr>
+    <tr><td class="paramname">backoff_policy</td><td>override the default <code>BackoffPolicy</code>, controls how long the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a></code> object waits before retrying a failed request. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00228">228</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00230">230</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
