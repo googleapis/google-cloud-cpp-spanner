@@ -437,8 +437,8 @@ class ExperimentImpl {
 
  private:
   Status FillTableTask(Config const& config, cs::Client client,
-                       std::string const& table_name,
-                       int task_count, int task_id) {
+                       std::string const& table_name, int task_count,
+                       int task_id) {
     std::vector<std::string> const column_names{
         "Key",   "Data0", "Data1", "Data2", "Data3", "Data4",
         "Data5", "Data6", "Data7", "Data8", "Data9"};
@@ -536,8 +536,7 @@ class ReadExperiment : public Experiment {
     // Create enough clients and stubs for the worst case
     std::vector<cs::Client> clients;
     std::vector<std::shared_ptr<cs::internal::SpannerStub>> stubs;
-    std::tie(clients, stubs) =
-        impl_.CreateClientsAndStubs(config, database);
+    std::tie(clients, stubs) = impl_.CreateClientsAndStubs(config, database);
 
     // Capture some overall getrusage() statistics as comments.
     SimpleTimer overall;
@@ -754,8 +753,7 @@ class SelectExperiment : public Experiment {
   Status Run(Config const& config, cs::Database const& database) override {
     std::vector<cs::Client> clients;
     std::vector<std::shared_ptr<cs::internal::SpannerStub>> stubs;
-    std::tie(clients, stubs) =
-        impl_.CreateClientsAndStubs(config, database);
+    std::tie(clients, stubs) = impl_.CreateClientsAndStubs(config, database);
 
     // Capture some overall getrusage() statistics as comments.
     SimpleTimer overall;
@@ -989,8 +987,7 @@ class UpdateExperiment : public Experiment {
   Status Run(Config const& config, cs::Database const& database) override {
     std::vector<cs::Client> clients;
     std::vector<std::shared_ptr<cs::internal::SpannerStub>> stubs;
-    std::tie(clients, stubs) =
-        impl_.CreateClientsAndStubs(config, database);
+    std::tie(clients, stubs) = impl_.CreateClientsAndStubs(config, database);
 
     // Capture some overall getrusage() statistics as comments.
     SimpleTimer overall;
@@ -1242,17 +1239,14 @@ class MutationExperiment : public Experiment {
     return impl_.CreateTableStatement(table_name_);
   }
 
-  Status SetUp(Config const&, cs::Database const&) override {
-    return {};
-  }
+  Status SetUp(Config const&, cs::Database const&) override { return {}; }
 
   Status TearDown(Config const&, cs::Database const&) override { return {}; }
 
   Status Run(Config const& config, cs::Database const& database) override {
     std::vector<cs::Client> clients;
     std::vector<std::shared_ptr<cs::internal::SpannerStub>> stubs;
-    std::tie(clients, stubs) =
-        impl_.CreateClientsAndStubs(config, database);
+    std::tie(clients, stubs) = impl_.CreateClientsAndStubs(config, database);
 
     random_keys_.resize(config.table_size);
     std::iota(random_keys_.begin(), random_keys_.end(), 0);
@@ -1468,9 +1462,7 @@ class RunAllExperiment : public Experiment {
       : generator_(generator) {}
 
   std::string AdditionalDdlStatement() override { return {}; }
-  Status SetUp(Config const&, cs::Database const&) override {
-    return {};
-  }
+  Status SetUp(Config const&, cs::Database const&) override { return {}; }
   Status TearDown(Config const&, cs::Database const&) override { return {}; }
 
   Status Run(Config const& cfg, cs::Database const& database) override {
