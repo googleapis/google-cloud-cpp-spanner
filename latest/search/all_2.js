@@ -12,6 +12,7 @@ var searchData=
   ['commit_5ftimestamp',['commit_timestamp',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html#a66fb3611f13e6fba76c31e8680d90419',1,'google::cloud::spanner::v0::CommitResult']]],
   ['commitparams',['CommitParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1CommitParams.html',1,'google::cloud::spanner::v0::Connection']]],
   ['commitresult',['CommitResult',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html',1,'google::cloud::spanner::v0']]],
+  ['config',['Config',['../structgoogle_1_1cloud_1_1spanner__benchmarks_1_1v0_1_1Config.html',1,'google::cloud::spanner_benchmarks::v0']]],
   ['connection',['Connection',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html',1,'google::cloud::spanner::v0']]],
   ['connection_2eh',['connection.h',['../connection_8h.html',1,'']]],
   ['connection_5foptions_2ecc',['connection_options.cc',['../connection__options_8cc.html',1,'']]],
