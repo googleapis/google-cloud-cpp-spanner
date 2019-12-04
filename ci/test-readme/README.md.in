@@ -1,6 +1,28 @@
 ## Release Notes
 
-### v0.4.x - TBD
+### v0.5.x - TBD
+
+### v0.4.x - 2019-12
+
+* **Breaking Changes**
+    * feat!: replaces PartitionOptions proto with struct (#1035)
+    * refactor!: drop support for compile-time preprocessor config (#1086)
+
+* **Other Changes**
+    * feat: add `SessionPoolOptions` with labels to `MakeConnection()` (#1109)
+    * fix: tell `clang-format` to leave doxygen `@copydoc` directives alone (#1122)
+    * feat: allow users to configure retry policies (#1111)
+    * feat: optimize passing `Bytes` to `Value` (#1104)
+    * feat: change `GetCurrentRow` to `GetSingularRow` (#1092)
+    * feat: update the pool options to match the design (#1089)
+    * feat: support multiple channels in `SessionPool` (#1063)
+    * bug: fix year formatting in `spanner::Date` (#1085)
+    * fix: execute each rerun of an aborted transaction in the same session (#1079)
+    * feat: add function to get a single row from a range (#1074)
+    * feat: add some plumbing to enable multiple channels (#1050)
+    * feat: attempt to speed up hot loop in `NextRow` (#1052)
+    * feat: associate `SpannerStub` with a `Session` (#1041)
+    * add and update several examples, benchmarks, and tests.
 
 ### v0.3.x - 2019-11
 
