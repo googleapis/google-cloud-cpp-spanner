@@ -57,6 +57,7 @@ class SessionPoolOptions {
     min_sessions_ = count;
     return *this;
   }
+
   /// Return the minimum number of sessions to keep in the pool.
   int min_sessions() const { return min_sessions_; }
 
