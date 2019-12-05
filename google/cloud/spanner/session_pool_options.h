@@ -16,6 +16,7 @@
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_SESSION_POOL_OPTIONS_H_
 
 #include "google/cloud/spanner/version.h"
+#include <algorithm>
 #include <chrono>
 #include <map>
 #include <string>
