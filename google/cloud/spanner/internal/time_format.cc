@@ -48,6 +48,8 @@ inline char* Format02d(char* ep, int v) {
   return ep;
 }
 
+// We eschew std::strtol() for reasons of over-generality (whitespace skip,
+// plus-sign parsing, locale-specific formats).
 char const* ParseInt(char const* dp, int min, int max, int* vp) {
   int value = 0;
   bool neg = false;
