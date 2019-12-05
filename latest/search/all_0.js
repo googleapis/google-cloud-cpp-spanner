@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['action_5fon_5fexhaustion',['action_on_exhaustion',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html#a76e868a4cff1cdbb3ebd77fa3c8fd23a',1,'google::cloud::spanner::v0::SessionPoolOptions']]],
+  ['action_5fon_5fexhaustion',['action_on_exhaustion',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html#a00d50e0f383a535765b3fd00155323ac',1,'google::cloud::spanner::v0::SessionPoolOptions']]],
   ['actiononexhaustion',['ActionOnExhaustion',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ac89b78d6c279b93f80dd85ed999c983f',1,'google::cloud::spanner::v0']]],
   ['add_5fuser_5fagent_5fprefix',['add_user_agent_prefix',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#a84b61c82cc1ee9c124af06f1b3f5a1f1',1,'google::cloud::spanner::v0::ConnectionOptions']]],
   ['addkey',['AddKey',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#abe285d80c754f3fd58b535752b7f6b56',1,'google::cloud::spanner::v0::KeySet']]],
