@@ -143,11 +143,11 @@ Consider adding this option to your project's `.bazelrc` file.
 
 ## Required Libraries
 
-`google-cloud-cpp` directly depends on the following libraries:
+`google-cloud-cpp-spanner` directly depends on the following libraries:
 
 | Library | Minimum version | Description |
 | ------- | --------------: | ----------- |
-| gRPC    | 1.16.x | gRPC++ for Cloud Bigtable |
+| gRPC    | 1.16.x | gRPC++ |
 
 Note that these libraries may also depend on other libraries. The following
 instructions include steps to install these indirect dependencies too.
