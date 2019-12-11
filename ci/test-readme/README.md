@@ -6,7 +6,7 @@ The INSTALL file is generated from the Dockerfiles in `ci/kokoro/install`
 just run:
 
 ```bash
-cd google-cloud-cpp
+cd google-cloud-cpp-spanner
 ./ci/test-readme/generate-install.sh >INSTALL.md
 ```
 
@@ -19,7 +19,7 @@ The README file is generated from multiple sources, including the Dockefiles in
 generate it just run:
 
 ```bash
-cd google-cloud-cpp
+cd google-cloud-cpp-spanner
 ./ci/test-readme/generate-readme.sh >README.md
 ```
 
