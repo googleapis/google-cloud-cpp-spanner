@@ -53,7 +53,7 @@ class Session {
   bool is_bad() const { return is_bad_.load(std::memory_order_relaxed); }
 
  private:
-  friend class SessionPool;
+  friend class SessionPool;  // for access to stub()
   std::shared_ptr<SpannerStub> stub() const { return stub_; }
 
   std::string const session_name_;
