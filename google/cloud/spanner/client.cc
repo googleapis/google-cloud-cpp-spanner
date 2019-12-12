@@ -187,7 +187,7 @@ StatusOr<CommitResult> Client::Commit(
       internal::Visit(txn, [](internal::SessionHolder& s,
                               google::spanner::v1::TransactionSelector const&,
                               std::int64_t) {
-        s->set_bad();
+        if (s) s->set_bad();
         return true;
       });
       txn = MakeReadWriteTransaction();
