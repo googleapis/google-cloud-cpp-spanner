@@ -183,12 +183,12 @@ StatusOr<CommitResult> Client::Commit(
     }
     if (internal::IsSessionNotFound(status)) {
       // Marks the session bad and creates a new Transaction for the next loop.
-      internal::Visit(
-          txn, [](internal::SessionHolder& s,
-                  google::spanner::v1::TransactionSelector&, std::int64_t) {
-            s->set_bad();
-            return true;
-          });
+      internal::Visit(txn, [](internal::SessionHolder& s,
+                              google::spanner::v1::TransactionSelector const&,
+                              std::int64_t) {
+        s->set_bad();
+        return true;
+      });
       txn = MakeReadWriteTransaction();
     } else {
       // Create a new transaction for the next loop, but share lock priority
