@@ -17,6 +17,7 @@
 #include "google/cloud/spanner/internal/connection_impl.h"
 #include "google/cloud/spanner/internal/retry_loop.h"
 #include "google/cloud/spanner/internal/spanner_stub.h"
+#include "google/cloud/spanner/internal/status_utils.h"
 #include "google/cloud/spanner/retry_policy.h"
 #include "google/cloud/log.h"
 #include <grpcpp/grpcpp.h>
@@ -176,14 +177,25 @@ StatusOr<CommitResult> Client::Commit(
         return status;
       }
     }
-    // A transient failure (i.e., kAborted), so consider rerunning.
+    // A transient failure (e.g., kAborted), so consider rerunning.
     if (!rerun_policy->OnFailure(status)) {
       return status;  // reruns exhausted
     }
+    if (internal::IsSessionNotFound(status)) {
+      // Marks the session bad and creates a new Transaction for the next loop.
+      internal::Visit(
+          txn, [](internal::SessionHolder& s,
+                  google::spanner::v1::TransactionSelector&, std::int64_t) {
+            s->set_bad();
+            return true;
+          });
+      txn = MakeReadWriteTransaction();
+    } else {
+      // Create a new transaction for the next loop, but share lock priority
+      // so that we have a slightly better chance of avoiding another abort.
+      txn = MakeReadWriteTransaction(std::move(txn));
+    }
     std::this_thread::sleep_for(backoff_policy->OnCompletion());
-    // Create a new transaction for the next loop, but share lock priority
-    // so that we have a slightly better chance of avoiding another abort.
-    txn = MakeReadWriteTransaction(std::move(txn));
   }
 }
 
