@@ -19,6 +19,7 @@
 #include "google/cloud/spanner/internal/spanner_stub.h"
 #include "google/cloud/spanner/internal/status_utils.h"
 #include "google/cloud/spanner/retry_policy.h"
+#include "google/cloud/spanner/transaction.h"
 #include "google/cloud/log.h"
 #include <grpcpp/grpcpp.h>
 #include <thread>
@@ -191,7 +192,7 @@ StatusOr<CommitResult> Client::Commit(
       });
       txn = MakeReadWriteTransaction();
     } else {
-      // Create a new transaction for the next loop, but share lock priority
+      // Create a new transaction for the next loop, but reuse the session
       // so that we have a slightly better chance of avoiding another abort.
       txn = MakeReadWriteTransaction(std::move(txn));
     }

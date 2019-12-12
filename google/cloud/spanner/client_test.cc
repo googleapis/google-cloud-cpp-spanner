@@ -783,9 +783,10 @@ TEST(ClientTest, CommitMutatorSessionNotFound) {
 
   int n = 0;
   auto mutator = [&n](Transaction const& txn) -> StatusOr<Mutations> {
+    EXPECT_THAT(txn, DoesNotHaveSession());
     SetSessionName(txn, "session-" + std::to_string(++n));
     if (n < 3) return Status(StatusCode::kNotFound, "Session not found");
-    return Mutations{MakeDeleteMutation("table", KeySet::All())};
+    return Mutations{};
   };
 
   Client client(conn);
@@ -811,8 +812,9 @@ TEST(ClientTest, CommitSessionNotFound) {
 
   int n = 0;
   auto mutator = [&n](Transaction const& txn) -> StatusOr<Mutations> {
+    EXPECT_THAT(txn, DoesNotHaveSession());
     SetSessionName(txn, "session-" + std::to_string(++n));
-    return Mutations{MakeDeleteMutation("table", KeySet::All())};
+    return Mutations{};
   };
 
   Client client(conn);
