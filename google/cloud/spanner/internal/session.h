@@ -30,6 +30,8 @@ namespace internal {
 
 /**
  * A class that represents a Session.
+ *
+ * This class is thread-safe.
  */
 class Session {
  public:
@@ -46,12 +48,13 @@ class Session {
 
   std::string const& session_name() const { return session_name_; }
 
+  // Note: the "bad" state only transitions from false to true.
   void set_bad() { is_bad_.store(true, std::memory_order_relaxed); }
+  bool is_bad() const { return is_bad_.load(std::memory_order_relaxed); }
 
  private:
   friend class SessionPool;
   std::shared_ptr<SpannerStub> stub() const { return stub_; }
-  bool is_bad() const { return is_bad_.load(std::memory_order_relaxed); }
 
   std::string const session_name_;
   std::shared_ptr<SpannerStub> const stub_;
