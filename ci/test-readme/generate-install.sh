@@ -31,7 +31,7 @@ Or obtain the tarball release:
 ```bash
 mkdir -p $HOME/project
 wget -q https://github.com/googleapis/google-cloud-cpp-spanner/archive/v0.4.0.tar.gz
-tar -xf v0.4.0.tar.gz -C $HOME/project
+tar -xf v0.4.0.tar.gz -C $HOME/project --strip=1
 ```
 
 # Installing google-cloud-cpp-spanner
