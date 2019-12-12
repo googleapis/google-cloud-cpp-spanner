@@ -1,3 +1,19 @@
+# Obtaining google-cloud-cpp-spanner
+
+There are two primary ways of obtaining `google-cloud-cpp-spanner`. You can use git:
+
+```bash
+git clone git@github.com:googleapis/google-cloud-cpp-spanner.git $HOME/project
+```
+
+Or obtain the tarball release:
+
+```bash
+mkdir -p $HOME/project
+wget -q https://github.com/googleapis/google-cloud-cpp-spanner/archive/v0.4.0.tar.gz
+tar -xf v0.4.0.tar.gz -C $HOME/project --strip=1
+```
+
 # Installing google-cloud-cpp-spanner
 
 When built with Bazel or as a CMake super build `google-cloud-cpp-spanner`
@@ -224,12 +240,11 @@ We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
 cd $HOME/project
-cmake -H. -B/o
-cmake --build /o -- -j "${NCPU:-4}"
-cd /o
+cmake -H. -Bcmake-out
+cmake --build cmake-out -- -j "${NCPU:-4}"
+cd $HOME/project/cmake-out
 ctest -LE integration-tests --output-on-failure
-cd $HOME/project
-sudo cmake --build /o --target install
+sudo cmake --build . --target install
 ```
 
 
@@ -362,12 +377,11 @@ We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
 cd $HOME/project
-cmake -H. -B/o
-cmake --build /o -- -j "${NCPU:-4}"
-cd /o
+cmake -H. -Bcmake-out
+cmake --build cmake-out -- -j "${NCPU:-4}"
+cd $HOME/project/cmake-out
 ctest -LE integration-tests --output-on-failure
-cd $HOME/project
-sudo cmake --build /o --target install
+sudo cmake --build . --target install
 ```
 
 
@@ -472,12 +486,11 @@ We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
 cd $HOME/project
-cmake -H. -B/o
-cmake --build /o -- -j "${NCPU:-4}"
-cd /o
+cmake -H. -Bcmake-out
+cmake --build cmake-out -- -j "${NCPU:-4}"
+cd $HOME/project/cmake-out
 ctest -LE integration-tests --output-on-failure
-cd $HOME/project
-sudo cmake --build /o --target install
+sudo cmake --build . --target install
 ```
 
 
@@ -597,12 +610,11 @@ We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
 cd $HOME/project
-cmake -H. -B/o
-cmake --build /o -- -j "${NCPU:-4}"
-cd /o
+cmake -H. -Bcmake-out
+cmake --build cmake-out -- -j "${NCPU:-4}"
+cd $HOME/project/cmake-out
 ctest -LE integration-tests --output-on-failure
-cd $HOME/project
-sudo cmake --build /o --target install
+sudo cmake --build . --target install
 ```
 
 
@@ -680,12 +692,11 @@ We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
 cd $HOME/project
-cmake -H. -B/o
-cmake --build /o -- -j "${NCPU:-4}"
-cd /o
+cmake -H. -Bcmake-out
+cmake --build cmake-out -- -j "${NCPU:-4}"
+cd $HOME/project/cmake-out
 ctest -LE integration-tests --output-on-failure
-cd $HOME/project
-sudo cmake --build /o --target install
+sudo cmake --build . --target install
 ```
 
 
@@ -797,12 +808,11 @@ We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
 cd $HOME/project
-cmake -H. -B/o
-cmake --build /o -- -j "${NCPU:-4}"
-cd /o
+cmake -H. -Bcmake-out
+cmake --build cmake-out -- -j "${NCPU:-4}"
+cd $HOME/project/cmake-out
 ctest -LE integration-tests --output-on-failure
-cd $HOME/project
-sudo cmake --build /o --target install
+sudo cmake --build . --target install
 ```
 
 
@@ -919,12 +929,11 @@ We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
 cd $HOME/project
-cmake -H. -B/o
-cmake --build /o -- -j "${NCPU:-4}"
-cd /o
+cmake -H. -Bcmake-out
+cmake --build cmake-out -- -j "${NCPU:-4}"
+cd $HOME/project/cmake-out
 ctest -LE integration-tests --output-on-failure
-cd $HOME/project
-sudo cmake --build /o --target install
+sudo cmake --build . --target install
 ```
 
 
@@ -1062,11 +1071,10 @@ We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
 cd $HOME/project
-cmake -H. -B/o
-cmake --build /o -- -j "${NCPU:-4}"
-cd /o
+cmake -H. -Bcmake-out
+cmake --build cmake-out -- -j "${NCPU:-4}"
+cd $HOME/project/cmake-out
 ctest -LE integration-tests --output-on-failure
-cd $HOME/project
-sudo cmake --build /o --target install
+sudo cmake --build . --target install
 ```
 

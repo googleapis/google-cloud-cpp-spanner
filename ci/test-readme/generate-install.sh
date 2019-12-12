@@ -18,6 +18,22 @@ set -eu
 readonly BINDIR=$(dirname "$0")
 
 cat <<'END_OF_PREAMBLE'
+# Obtaining google-cloud-cpp-spanner
+
+There are two primary ways of obtaining `google-cloud-cpp-spanner`. You can use git:
+
+```bash
+git clone git@github.com:googleapis/google-cloud-cpp-spanner.git $HOME/project
+```
+
+Or obtain the tarball release:
+
+```bash
+mkdir -p $HOME/project
+wget -q https://github.com/googleapis/google-cloud-cpp-spanner/archive/v0.4.0.tar.gz
+tar -xf v0.4.0.tar.gz -C $HOME/project --strip=1
+```
+
 # Installing google-cloud-cpp-spanner
 
 When built with Bazel or as a CMake super build `google-cloud-cpp-spanner`
