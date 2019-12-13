@@ -2094,7 +2094,7 @@ TEST(ConnectionImplTest, PartitionRead_SessionNotFound) {
   auto txn = MakeReadWriteTransaction();
   SetTransactionId(txn, "test-txn-id");
   auto params = Connection::ReadParams(txn, {}, {}, {}, {});
-  auto response = conn->PartitionRead({params});
+  auto response = conn->PartitionRead({params, {}});
   EXPECT_FALSE(response.ok());
   auto status = response.status();
   EXPECT_TRUE(IsSessionNotFound(status)) << status;
@@ -2240,8 +2240,8 @@ TEST(ConnectionImplTest, PartitionQuery_SessionNotFound) {
   auto conn = MakeLimitedRetryConnection(db, mock);
   auto txn = MakeReadWriteTransaction();
   SetTransactionId(txn, "test-txn-id");
-  auto response =
-      conn->PartitionQuery({Connection::SqlParams{txn, SqlStatement()}});
+  auto sql_params = Connection::SqlParams(txn, SqlStatement());
+  auto response = conn->PartitionQuery({sql_params, {}});
   EXPECT_FALSE(response.ok());
   auto status = response.status();
   EXPECT_TRUE(IsSessionNotFound(status)) << status;
@@ -2265,7 +2265,7 @@ TEST(ConnectionImplTest, ExecuteBatchDml_SessionNotFound) {
   auto conn = MakeLimitedRetryConnection(db, mock);
   auto txn = MakeReadWriteTransaction();
   SetTransactionId(txn, "test-txn-id");
-  auto response = conn->ExecuteBatchDml({txn});
+  auto response = conn->ExecuteBatchDml({txn, {}});
   EXPECT_FALSE(response.ok());
   auto status = response.status();
   EXPECT_TRUE(IsSessionNotFound(status)) << status;
@@ -2275,7 +2275,7 @@ TEST(ConnectionImplTest, ExecuteBatchDml_SessionNotFound) {
 TEST(ConnectionImplTest, ExecutePartitionedDml_SessionNotFound) {
   // NOTE: There's no test here becuase this method does not accept a
   // Transaction and so there's no way to extract the Session to check if it's
-  // valid. We could modify the API to inject/extract this, but this is a
+  // bad. We could modify the API to inject/extract this, but this is a
   // user-facing API that we don't want to mess up.
 }
 
@@ -2295,7 +2295,7 @@ TEST(ConnectionImplTest, Commit_SessionNotFound) {
   auto conn = MakeLimitedRetryConnection(db, mock);
   auto txn = MakeReadWriteTransaction();
   SetTransactionId(txn, "test-txn-id");
-  auto response = conn->Commit({txn});
+  auto response = conn->Commit({txn, {}});
   EXPECT_FALSE(response.ok());
   auto status = response.status();
   EXPECT_TRUE(IsSessionNotFound(status)) << status;
