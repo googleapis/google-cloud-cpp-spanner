@@ -68,6 +68,9 @@ SessionPool::SessionPool(Database db,
 
 void SessionPool::Initialize() {
   // Eagerly initialize the pool with `min_sessions` sessions.
+  // TODO(#307) this was moved to `Initialize` in preparation of using
+  // `shared_from_this()` in the process of creating sessions, which cannot
+  // be done in the constructor.
   if (options_.min_sessions() > 0) {
     std::unique_lock<std::mutex> lk(mu_);
     int num_channels = static_cast<int>(channels_.size());
