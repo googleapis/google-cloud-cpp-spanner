@@ -2322,11 +2322,7 @@ TEST(ConnectionImplTest, Rollback_SessionNotFound) {
   SetTransactionId(txn, "test-txn-id");
   auto status = conn->Rollback({txn});
   EXPECT_TRUE(IsSessionNotFound(status)) << status;
-  internal::Visit(txn, [](SessionHolder& s, spanner_proto::TransactionSelector&,
-                          std::int64_t) {
-    EXPECT_TRUE(s->is_bad());
-    return 0;
-  });
+  EXPECT_THAT(txn, HasBadSession());
 }
 
 }  // namespace
