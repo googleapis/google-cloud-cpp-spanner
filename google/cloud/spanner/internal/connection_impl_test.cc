@@ -74,6 +74,23 @@ MATCHER_P(BatchCreateSessionsRequestHasDatabase, database,
   return arg.database() == database.FullName();
 }
 
+// Matches a spanner::Transaction that is marked "is_bad()"
+MATCHER(HasBadSession, "bound to a session that's marked bad") {
+  return internal::Visit(
+      arg, [&](internal::SessionHolder& session,
+               google::spanner::v1::TransactionSelector&, std::int64_t) {
+        if (!session) {
+          *result_listener << "has no session";
+          return false;
+        }
+        if (!session->is_bad()) {
+          *result_listener << "session expected to be bad, but was not";
+          return false;
+        }
+        return true;
+      });
+}
+
 // Helper to set the Transaction's ID.
 void SetTransactionId(Transaction& txn, std::string tid) {
   internal::Visit(
@@ -1366,7 +1383,7 @@ TEST(ConnectionImplTest, CommitBeginTransaction_SessionNotFound) {
   EXPECT_FALSE(commit.ok());
   auto status = commit.status();
   EXPECT_TRUE(IsSessionNotFound(status)) << status;
-  /* EXPECT_THAT(txn, HasBadSession()); */  // Uncomment after #1141
+  EXPECT_THAT(txn, HasBadSession());
 }
 
 TEST(ConnectionImplTest, CommitCommit_PermanentFailure) {
@@ -2067,22 +2084,6 @@ TEST(ConnectionImplTest, TransactionOutlivesConnection) {
   // cause the `ConnectionImpl` object to be deleted, while `txn` and its
   // associated `Session` continues to live on.
   conn.reset();
-}
-
-MATCHER(HasBadSession, "bound to a session that's marked bad") {
-  return internal::Visit(
-      arg, [&](internal::SessionHolder& session,
-               google::spanner::v1::TransactionSelector&, std::int64_t) {
-        if (!session) {
-          *result_listener << "has no session";
-          return false;
-        }
-        if (!session->is_bad()) {
-          *result_listener << "session expected to be bad, but was not";
-          return false;
-        }
-        return true;
-      });
 }
 
 TEST(ConnectionImplTest, Read_SessionNotFound) {
