@@ -147,6 +147,8 @@ std::shared_ptr<SpannerStub> SessionPool::GetStub(Session const& session) {
 void SessionPool::Release(std::unique_ptr<Session> session) {
   std::unique_lock<std::mutex> lk(mu_);
   if (session->is_bad()) {
+    // Once we have support for background processing, we may want to signal
+    // that to replenish this bad session.
     --total_sessions_;
     return;
   }
