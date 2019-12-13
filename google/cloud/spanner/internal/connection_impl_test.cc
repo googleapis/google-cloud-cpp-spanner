@@ -2287,10 +2287,9 @@ TEST(ConnectionImplTest, Commit_SessionNotFound) {
         return MakeSessionsResponse({"test-session-name"});
       });
   EXPECT_CALL(*mock, Commit(_, _))
-      .WillOnce(
-          [](grpc::ClientContext&, spanner_proto::CommitRequest const&) {
-            return Status(StatusCode::kNotFound, "Session not found");
-          });
+      .WillOnce([](grpc::ClientContext&, spanner_proto::CommitRequest const&) {
+        return Status(StatusCode::kNotFound, "Session not found");
+      });
 
   auto db = Database("project", "instance", "database");
   auto conn = MakeLimitedRetryConnection(db, mock);
