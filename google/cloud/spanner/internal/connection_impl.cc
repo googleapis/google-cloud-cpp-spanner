@@ -728,7 +728,7 @@ StatusOr<CommitResult> ConnectionImpl::CommitImpl(
   if (s.selector_case() != spanner_proto::TransactionSelector::kId) {
     spanner_proto::BeginTransactionRequest begin;
     begin.set_session(session->session_name());
-    *begin.mutable_options() = s.begin();
+    *begin.mutable_options() = s.has_begin() ? s.begin() : s.single_use();
     auto stub = session_pool_->GetStub(*session);
     auto response = internal::RetryLoop(
         retry_policy_prototype_->clone(), backoff_policy_prototype_->clone(),
