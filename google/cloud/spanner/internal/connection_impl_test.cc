@@ -1305,7 +1305,7 @@ TEST(ConnectionImplTest, CommitGetSession_Retry) {
   EXPECT_CALL(*mock, BeginTransaction(_, _)).WillOnce(Return(txn));
   EXPECT_CALL(*mock, Commit(_, _))
       .WillOnce([&txn](grpc::ClientContext&,
-                   spanner_proto::CommitRequest const& request) {
+                       spanner_proto::CommitRequest const& request) {
         EXPECT_EQ("test-session-name", request.session());
         EXPECT_EQ(txn.id(), request.transaction_id());
         return Status(StatusCode::kPermissionDenied, "uh-oh in Commit");
@@ -1413,7 +1413,7 @@ TEST(ConnectionImplTest, CommitCommit_TooManyTransientFailures) {
   EXPECT_CALL(*mock, BeginTransaction(_, _)).WillOnce(Return(txn));
   EXPECT_CALL(*mock, Commit(_, _))
       .WillOnce([&txn](grpc::ClientContext&,
-                   spanner_proto::CommitRequest const& request) {
+                       spanner_proto::CommitRequest const& request) {
         EXPECT_EQ("test-session-name", request.session());
         EXPECT_EQ(txn.id(), request.transaction_id());
         return Status(StatusCode::kPermissionDenied, "uh-oh in Commit");
