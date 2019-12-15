@@ -50,7 +50,6 @@ using ::testing::ElementsAre;
 using ::testing::HasSubstr;
 using ::testing::Return;
 using ::testing::SaveArg;
-using ::testing::UnorderedElementsAre;
 
 TEST(ClientTest, CopyAndMove) {
   auto conn1 = std::make_shared<MockConnection>();
