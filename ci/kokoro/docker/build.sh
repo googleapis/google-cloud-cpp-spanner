@@ -320,7 +320,7 @@ docker_flags=(
 
     # Mount the current directory (which is the top-level directory for the
     # project) as `/v` inside the docker image, and move to that directory.
-    "--volume" "${PWD}:/v"
+    "--volume" "${PWD}:/v:Z"
     "--workdir" "/v"
 
     # Mask any other builds that may exist at the same time. That is, these
