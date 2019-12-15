@@ -14,6 +14,10 @@
 # limitations under the License.
 # ~~~
 
+option(GOOGLE_CLOUD_CPP_ENABLE_WERROR
+       "If set, compiles the library with -Werror and /WX (MSVC)." ON)
+mark_as_advanced(GOOGLE_CLOUD_CPP_ENABLE_WERROR)
+
 # Find out what flags turn on all available warnings and turn those warnings
 # into errors.
 include(CheckCXXCompilerFlag)
@@ -24,7 +28,9 @@ check_cxx_compiler_flag(-Werror GOOGLE_CLOUD_CPP_COMPILER_SUPPORTS_WERROR)
 function (google_cloud_cpp_add_common_options target)
     if (MSVC)
         target_compile_options(${target} PRIVATE "/W3")
-        target_compile_options(${target} PRIVATE "/WX")
+        if (GOOGLE_CLOUD_CPP_ENABLE_WERROR)
+            target_compile_options(${target} PRIVATE "/WX")
+        endif ()
         target_compile_options(${target} PRIVATE "/experimental:external")
         target_compile_options(${target} PRIVATE "/external:W0")
         target_compile_options(${target} PRIVATE "/external:anglebrackets")
@@ -37,7 +43,8 @@ function (google_cloud_cpp_add_common_options target)
     if (GOOGLE_CLOUD_CPP_COMPILER_SUPPORTS_WEXTRA)
         target_compile_options(${target} PRIVATE "-Wextra")
     endif ()
-    if (GOOGLE_CLOUD_CPP_COMPILER_SUPPORTS_WERROR)
+    if (GOOGLE_CLOUD_CPP_COMPILER_SUPPORTS_WERROR
+        AND GOOGLE_CLOUD_CPP_ENABLE_WERROR)
         target_compile_options(${target} PRIVATE "-Werror")
     endif ()
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"
