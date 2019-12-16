@@ -111,7 +111,9 @@ foreach ($pkg in $packages) {
         throw "vcpkg install $pkg failed with exit code $LastExitCode"
     }
     # Remove the buildtree directory
-    Remove-Item -path t:\src\github\vcpkg\buildtrees -recurse
+    if (Test-Path t:\src\github\vcpkg\buildtrees) {
+       Remove-Item -path t:\src\github\vcpkg\buildtrees -recurse
+    }
 }
 
 Write-Host "================================================================"
