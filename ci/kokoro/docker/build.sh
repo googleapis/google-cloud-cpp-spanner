@@ -174,6 +174,17 @@ elif [[ "${BUILD_NAME}" = "bazel-dependency" ]]; then
   export DISTRO=ubuntu
   export DISTRO_VERSION=18.04
   in_docker_script="ci/kokoro/docker/build-in-docker-bazel-dependency.sh"
+elif [[ "${BUILD_NAME}" = "check-api" ]] || [[ "${BUILD_NAME}" = "update-api" ]]; then
+  export DISTRO=fedora-install
+  export DISTRO_VERSION=30
+  export CHECK_API=yes
+  export TEST_INSTALL=yes
+  export CMAKE_FLAGS=-DBUILD_SHARED_LIBS=yes
+  export BUILD_TYPE=Debug
+  if [[ "${BUILD_NAME}" = "update-api" ]]; then
+    export UPDATE_API=yes
+  fi
+  in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 else
   echo "Unknown BUILD_NAME (${BUILD_NAME}). Fix the Kokoro .cfg file."
   exit 1
@@ -289,6 +300,13 @@ docker_flags=(
     # Additional flags to enable CMake features.
     "--env" "CMAKE_FLAGS=${CMAKE_FLAGS:-}"
 
+    # If set, run the check-api.sh script.
+    "--env" "CHECK_API=${CHECK_API:-}"
+
+    # If set, run the check-api.sh script and *then* update the API
+    # baseline.
+    "--env" "UPDATE_API=${UPDATE_API:-}"
+
     # Tells scripts whether they are running as part of a CI or not.
     "--env" "RUNNING_CI=${RUNNING_CI:-no}"
 
@@ -365,5 +383,9 @@ else
 fi
 
 "${PROJECT_ROOT}/ci/kokoro/docker/upload-coverage.sh" "${docker_flags[@]}"
+
+echo "================================================================"
+"${PROJECT_ROOT}/ci/kokoro/docker/dump-reports.sh"
+echo "================================================================"
 
 exit ${exit_status}

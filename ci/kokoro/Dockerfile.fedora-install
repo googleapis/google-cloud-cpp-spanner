@@ -19,10 +19,11 @@ FROM fedora:${DISTRO_VERSION}
 # for `google-cloud-cpp`. Install these packages and additional development
 # tools to compile the dependencies:
 RUN dnf makecache && \
-    dnf install -y clang clang-tools-extra cmake doxygen findutils gcc-c++ git \
+    dnf install -y abi-compliance-checker abi-dumper \
+        clang clang-tools-extra cmake doxygen findutils gcc-c++ git \
         grpc-devel grpc-plugins libcxx-devel libcxxabi-devel libcurl-devel \
         make openssl-devel pkgconfig protobuf-compiler python-pip ShellCheck \
-        tar wget zlib-devel
+        tar w3m wget zlib-devel
 
 # Install the the buildifier tool, which does not compile with the default
 # golang compiler for Ubuntu 16.04 and Ubuntu 18.04.
@@ -58,7 +59,8 @@ RUN wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
 RUN tar -xf release-1.10.0.tar.gz
 WORKDIR /var/tmp/build/googletest-release-1.10.0
 RUN cmake \
-        -H. -Bcmake-out/gtest
+          -DBUILD_SHARED_LIBS=yes \
+          -H. -Bcmake-out/gtest
 RUN cmake --build cmake-out/gtest --target install -- -j $(nproc)
 
 # Download and compile googleapis/cpp-cmakefiles:
@@ -70,6 +72,7 @@ WORKDIR /var/tmp/build/cpp-cmakefiles-0.1.5
 # Compile without the tests because we are testing spanner, not the base
 # libraries
 RUN cmake -H. -Bcmake-out \
+    -DBUILD_SHARED_LIBS=yes \
     -DBUILD_TESTING=OFF \
     -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON
 RUN cmake --build cmake-out -- -j $(nproc)
@@ -84,6 +87,7 @@ WORKDIR /var/tmp/build/google-cloud-cpp-common-0.13.0
 # Compile without the tests because we are testing spanner, not the base
 # libraries
 RUN cmake -H. -Bcmake-out \
+    -DBUILD_SHARED_LIBS=yes \
     -DBUILD_TESTING=OFF \
     -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON
 RUN cmake --build cmake-out -- -j $(nproc)
