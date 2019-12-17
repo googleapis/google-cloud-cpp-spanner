@@ -77,12 +77,12 @@ def google_cloud_cpp_spanner_deps():
     if "com_github_grpc_grpc" not in native.existing_rules():
         http_archive(
             name = "com_github_grpc_grpc",
-            strip_prefix = "grpc-1.24.2",
+            strip_prefix = "grpc-1.26.0-pre1",
             urls = [
-                "https://github.com/grpc/grpc/archive/v1.24.2.tar.gz",
-                "https://mirror.bazel.build/github.com/grpc/grpc/archive/v1.24.2.tar.gz",
+                "https://github.com/grpc/grpc/archive/v1.26.0-pre1.tar.gz",
+                "https://mirror.bazel.build/github.com/grpc/grpc/archive/v1.26.0-pre1.tar.gz",
             ],
-            sha256 = "fd040f5238ff1e32b468d9d38e50f0d7f8da0828019948c9001e9a03093e1d8f",
+            sha256 = "d6af0859d3ae4693b1955e972aa2e590d6f4d44baaa82651467c6beea453e30e",
         )
 
     # We use the cc_proto_library() rule from @com_google_protobuf, which
