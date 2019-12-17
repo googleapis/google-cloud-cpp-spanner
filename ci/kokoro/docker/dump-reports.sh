@@ -20,7 +20,7 @@ if [[ -z "${PROJECT_ROOT+x}" ]]; then
 fi
 source "${PROJECT_ROOT}/ci/kokoro/define-docker-variables.sh"
 
-# If w3m is installed there is nothing to do.
+# If w3m is not installed there is nothing to do.
 if ! type w3m >/dev/null 2>&1; then
   exit 0
 fi
