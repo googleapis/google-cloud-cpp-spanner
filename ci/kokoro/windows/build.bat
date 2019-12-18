@@ -30,6 +30,11 @@ set GOOGLE_APPLICATION_CREDENTIALS=%KOKORO_GFILE_DIR%\spanner-credentials.json
 set GOOGLE_CLOUD_CPP_AUTO_RUN_EXAMPLES=yes
 set GRPC_DEFAULT_SSL_ROOTS_FILE_PATH=T:\src\github\vcpkg\installed\x64-windows-static\share\grpc\roots.pem
 
+@REM TODO(#1034) - Cleanup this workaround after we upgrade gRPC.
+@REM Before 1.25.0 gRPC sometimes crashes when using the c-ares resolver on
+@REM Windows
+set GRPC_DNS_RESOLVER=native
+
 echo %date% %time%
 powershell -exec bypass ci\kokoro\windows\build-dependencies.ps1
 if %errorlevel% neq 0 exit /b %errorlevel%
