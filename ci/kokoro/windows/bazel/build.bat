@@ -52,6 +52,11 @@ if %errorlevel% neq 0 exit /b %errorlevel%
 echo "Running integration tests"
 call "%KOKORO_GFILE_DIR%/spanner-integration-tests-config.bat"
 
+@REM TODO(#1034) - Cleanup this workaround after we upgrade gRPC.
+@REM Before 1.25.0 gRPC sometimes crashes when using the c-ares resolver on
+@REM Windows
+set GRPC_DNS_RESOLVER=native
+
 @rem It seems like redirecting to a file is the easiest way to store the
 @rem command output to a variable.
 bazel --output_user_root=C:\b info output_base > t:\bazel-info.txt
