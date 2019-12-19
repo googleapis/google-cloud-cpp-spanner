@@ -82,6 +82,7 @@ spanner_client_hdrs = [
     "value.h",
     "version.h",
     "version_info.h",
+    "iam_updater.h",
 ]
 
 spanner_client_srcs = [

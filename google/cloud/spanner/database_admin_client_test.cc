@@ -186,7 +186,7 @@ TEST(DatabaseAdminClientTest, SetIamPolicy) {
             return p.policy;
           });
   DatabaseAdminClient client(std::move(mock));
-  auto response = client.SetIamPolicy(expected_db, {});
+  auto response = client.SetIamPolicy(expected_db, google::iam::v1::Policy{});
   EXPECT_STATUS_OK(response);
 }
 

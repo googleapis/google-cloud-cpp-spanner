@@ -156,8 +156,8 @@ TEST(InstanceAdminClientTest, SetIamPolicy) {
       });
 
   InstanceAdminClient client(mock);
-  auto actual =
-      client.SetIamPolicy(Instance("test-project", "test-instance"), {});
+  auto actual = client.SetIamPolicy(Instance("test-project", "test-instance"),
+                                    google::iam::v1::Policy{});
   EXPECT_EQ(StatusCode::kPermissionDenied, actual.status().code());
 }
 

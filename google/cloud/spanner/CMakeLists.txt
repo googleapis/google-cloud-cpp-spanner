@@ -206,7 +206,8 @@ add_library(
     value.h
     version.cc
     version.h
-    version_info.h)
+    version_info.h
+    iam_updater.h)
 target_include_directories(
     spanner_client
     PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
