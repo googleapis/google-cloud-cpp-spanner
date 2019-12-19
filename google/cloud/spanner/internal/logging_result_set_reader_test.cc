@@ -42,6 +42,8 @@ class LoggingResultSetReaderTest : public ::testing::Test {
     logger_id_ = 0;
   }
 
+  void ClearLogCapture() { backend_->log_lines.clear(); }
+
   void HasLogLineWith(std::string const& contents) {
     auto count =
         std::count_if(backend_->log_lines.begin(), backend_->log_lines.end(),
@@ -86,6 +88,9 @@ TEST_F(LoggingResultSetReaderTest, Read) {
   HasLogLineWith("Read");
   HasLogLineWith("test-token");
 
+  // Clear previous captured lines to ensure the following checks for new
+  // messages.
+  ClearLogCapture();
   result = reader.Read();
   ASSERT_FALSE(result.has_value());
   HasLogLineWith("(optional-with-no-value)");
