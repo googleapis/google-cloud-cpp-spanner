@@ -26,9 +26,9 @@ $dir = Split-Path (Get-Item -Path ".\" -Verbose).FullName
 $cmake_flags=@(
     # On Windows ninja is a much faster generator.
     "-GNinja",
-    "-Hci/kokoro/windows",
+    "-H.",
     # Use short path names because we only have 255 characters.
-    "-Bcmake-out/w",
+    "-Bcmake-out",
     # We need to compile OpenSSL using vcpkg because compiling from scratch is hard.
     "-DCMAKE_TOOLCHAIN_FILE=`"$dir\vcpkg\scripts\buildsystems\vcpkg.cmake`"",
     "-DVCPKG_TARGET_TRIPLET=x64-windows-static",
@@ -48,7 +48,7 @@ if ($LastExitCode) {
 
 Write-Host "================================================================"
 Write-Host "Compiling the project $(Get-Date -Format o)."
-cmake --build cmake-out/w
+cmake --build cmake-out
 if ($LastExitCode) {
     throw "cmake failed with exit code $LastExitCode"
 }
@@ -56,7 +56,7 @@ if ($LastExitCode) {
 if ($env:RUN_INTEGRATION_TESTS -eq "true") {
   Write-Host "================================================================"
   Write-Host "Run integration tests $(Get-Date -Format o)."
-  cd cmake-out\w\build\g-c-spanner\src\g-c-spanner-build
+  cd cmake-out
   ctest --output-on-failure -L integration-tests -j 1
   if ($LastExitCode) {
       throw "Integration tests failed with exit code $LastExitCode"
