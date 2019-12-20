@@ -232,9 +232,6 @@ class DatabaseAdminClient {
    * Therefore, the underlying RPCs are only retried if the field is set, and
    * the function returns the first RPC error in any other case.
    *
-   * @par Example
-   * @snippet samples.cc add-database-reader-on-database
-   *
    * @see The [Cloud Spanner
    *     documentation](https://cloud.google.com/spanner/docs/iam) for a
    *     description of the roles and permissions supported by Cloud Spanner.
@@ -260,6 +257,18 @@ class DatabaseAdminClient {
    *
    * The function returns the final IAM policy, or an error if the rerun policy
    * for the underlying connection has expired.
+   *
+   * @par Idempotency
+   * This function always sets the `etag` field on the policy, so the underlying
+   * RPCs are retried automatically.
+   *
+   * @par Example
+   * @snippet samples.cc add-database-reader-on-database
+   *
+   * @param db the identifier for the database where you want to change the IAM
+   *     policy.
+   * @param updater a callback to modify the policy.  Return an unset optional
+   *     to indicate that no changes to the policy are needed.
    */
   StatusOr<google::iam::v1::Policy> SetIamPolicy(Database const& db,
                                                  IamUpdater const& updater);
