@@ -30,6 +30,7 @@ spanner_client_hdrs = [
     "database_admin_client.h",
     "database_admin_connection.h",
     "date.h",
+    "iam_updater.h",
     "instance.h",
     "instance_admin_client.h",
     "instance_admin_connection.h",
@@ -82,7 +83,6 @@ spanner_client_hdrs = [
     "value.h",
     "version.h",
     "version_info.h",
-    "iam_updater.h",
 ]
 
 spanner_client_srcs = [

@@ -295,9 +295,7 @@ void AddDatabaseReader(google::cloud::spanner::InstanceAdminClient client,
                     << current.DebugString();
           return {};
         }
-        if (member_pos == binding.members().end()) {
-          binding.add_members(new_reader);
-        }
+        binding.add_members(new_reader);
         return current;
       });
 
@@ -663,10 +661,8 @@ void AddDatabaseReaderOnDatabase(
               << current->DebugString();
     return;
   }
-  if (member_pos == binding.members().end()) {
-    binding.add_members(new_reader);
-  }
 
+  binding.add_members(new_reader);
   auto result = client.SetIamPolicy(database, *std::move(current));
   if (!result) throw std::runtime_error(result.status().message());
 

@@ -246,7 +246,7 @@ class DatabaseAdminClient {
    * Updates the IAM policy for an instance using an optimistic concurrency
    * control loop.
    *
-   * This function repeatedly reads the current IAM policy in @p in, and then
+   * This function repeatedly reads the current IAM policy in @p db, and then
    * calls the @p updater with the this policy. The @p updater returns an empty
    * optional if no changes are required, or it returns the new desired value
    * for the IAM policy. This function then updates the policy.

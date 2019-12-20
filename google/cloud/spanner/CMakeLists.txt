@@ -117,6 +117,7 @@ add_library(
     database_admin_connection.h
     date.cc
     date.h
+    iam_updater.h
     instance.cc
     instance.h
     instance_admin_client.cc
@@ -206,8 +207,7 @@ add_library(
     value.h
     version.cc
     version.h
-    version_info.h
-    iam_updater.h)
+    version_info.h)
 target_include_directories(
     spanner_client
     PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>

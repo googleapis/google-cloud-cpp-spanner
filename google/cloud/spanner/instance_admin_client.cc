@@ -93,8 +93,7 @@ StatusOr<google::iam::v1::Policy> InstanceAdminClient::SetIamPolicy(
 
   Status last_status =
       Status(StatusCode::kUnknown, "Exhausted before first call");
-  for (; !rerun_policy->IsExhausted();
-       std::this_thread::sleep_for(backoff_policy->OnCompletion())) {
+  do {
     auto current_policy = GetIamPolicy(in);
     if (!current_policy) {
       last_status = std::move(current_policy).status();
@@ -111,10 +110,9 @@ StatusOr<google::iam::v1::Policy> InstanceAdminClient::SetIamPolicy(
       }
       last_status = std::move(result).status();
     }
-    if (!rerun_policy->OnFailure(last_status)) {
-      return last_status;
-    }
-  }
+    if (!rerun_policy->OnFailure(last_status)) break;
+    std::this_thread::sleep_for(backoff_policy->OnCompletion());
+  } while (!rerun_policy->IsExhausted());
   return last_status;
 }
 
