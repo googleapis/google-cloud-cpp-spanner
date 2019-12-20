@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['iamupdater',['IamUpdater',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a17be538be6a68b58dc90bd72c47af092',1,'google::cloud::spanner::v0']]],
   ['insertmutationbuilder',['InsertMutationBuilder',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7447c52a5348dfc769538a160c0d455a',1,'google::cloud::spanner::v0']]],
   ['insertorupdatemutationbuilder',['InsertOrUpdateMutationBuilder',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ac6688b3bbd87a81055018d61f37fd942',1,'google::cloud::spanner::v0']]],
   ['iterator',['iterator',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1StreamOf.html#afe8fa5e3521caa3f27344d2fedbc02ab',1,'google::cloud::spanner::v0::StreamOf']]],

@@ -108,6 +108,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af8f5a36a409bf2f0161fdf37488a7d8d"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; google::iam::v1::Policy &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#af8f5a36a409bf2f0161fdf37488a7d8d">SetIamPolicy</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> db, google::iam::v1::Policy policy)</td></tr>
 <tr class="memdesc:af8f5a36a409bf2f0161fdf37488a7d8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the IAM policy for the given database.  <a href="#af8f5a36a409bf2f0161fdf37488a7d8d">More...</a><br /></td></tr>
 <tr class="separator:af8f5a36a409bf2f0161fdf37488a7d8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a27a871994081f7cb7ad726b4aecc60"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; google::iam::v1::Policy &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#a8a27a871994081f7cb7ad726b4aecc60">SetIamPolicy</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;db, <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a17be538be6a68b58dc90bd72c47af092">IamUpdater</a> const &amp;updater)</td></tr>
+<tr class="memdesc:a8a27a871994081f7cb7ad726b4aecc60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the IAM policy for an instance using an optimistic concurrency control loop.  <a href="#a8a27a871994081f7cb7ad726b4aecc60">More...</a><br /></td></tr>
+<tr class="separator:a8a27a871994081f7cb7ad726b4aecc60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3904f44d08265ea643460b60430b2f4"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; google::iam::v1::Policy &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#ae3904f44d08265ea643460b60430b2f4">SetIamPolicy</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;db, <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a17be538be6a68b58dc90bd72c47af092">IamUpdater</a> const &amp;updater, std::unique_ptr&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a52b5d68feb45c40d761c79ee360b804c">TransactionRerunPolicy</a> &gt; rerun_policy, std::unique_ptr&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9ad3c388cccb2c4d92c8299ac178af8a">BackoffPolicy</a> &gt; backoff_policy)</td></tr>
+<tr class="memdesc:ae3904f44d08265ea643460b60430b2f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the IAM policy for an instance using an optimistic concurrency control loop.  <a href="#ae3904f44d08265ea643460b60430b2f4">More...</a><br /></td></tr>
+<tr class="separator:ae3904f44d08265ea643460b60430b2f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a440216e84d05c6e7f7fd285012d342e8"><td class="memItemLeft" align="right" valign="top">StatusOr&lt; google::iam::v1::TestIamPermissionsResponse &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminClient.html#a440216e84d05c6e7f7fd285012d342e8">TestIamPermissions</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> db, std::vector&lt; std::string &gt; permissions)</td></tr>
 <tr class="memdesc:a440216e84d05c6e7f7fd285012d342e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the subset of the permissions the caller has on the given database.  <a href="#a440216e84d05c6e7f7fd285012d342e8">More...</a><br /></td></tr>
 <tr class="separator:a440216e84d05c6e7f7fd285012d342e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,7 +133,7 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="keyword">namespace </span><a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">cs</a> = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">google::cloud::spanner</a>;</div><div class="line"><span class="keyword">using</span> google::cloud::StatusOr;</div><div class="line">cs::DatabaseAdminClient client = ...;</div><div class="line">StatusOr&lt;google::spanner::admin::database::v1::Database&gt; db =</div><div class="line">    client.CreateDatabase(...).get();</div><div class="line"></div><div class="line"><span class="keywordflow">if</span> (!db) {</div><div class="line">  std::cerr &lt;&lt; <span class="stringliteral">&quot;Error in CreateDatabase: &quot;</span> &lt;&lt; db.status() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div><div class="line">  <span class="keywordflow">return</span>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// Use `db` as a smart pointer here, e.g.:</span></div><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;The database fully qualified name is: &quot;</span> &lt;&lt; db-&gt;name() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div></div><!-- fragment --><dl class="section user"><dt>Long running operations</dt><dd></dd></dl>
 <p>Some operations in this class can take minutes to complete. In this case the class returns a <code>google::cloud::future&lt;StatusOr&lt;T&gt;&gt;</code>, the application can then poll the <code>future</code> or associate a callback to be invoked when the operation completes:</p>
 <div class="fragment"><div class="line"><span class="keyword">namespace </span><a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">cs</a> = <a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">google::cloud::spanner</a>;</div><div class="line">cs::DatabaseAdminClient client = ...;</div><div class="line"><span class="comment">// Make example less verbose.</span></div><div class="line"><span class="keyword">using</span> google::cloud::future;</div><div class="line"><span class="keyword">using</span> google::cloud::StatusOr;</div><div class="line"><span class="keyword">using</span> std::chrono::chrono_literals; <span class="comment">// C++14</span></div><div class="line"></div><div class="line"><span class="keyword">auto</span> database = client.CreateDatabase(...);</div><div class="line"><span class="keywordflow">if</span> (database.wait_for(5m) == std::future_state::ready) {</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Database created in under 5 minutes, yay!\n&quot;</span>;</div><div class="line">  <span class="keywordflow">return</span>;</div><div class="line">}</div><div class="line"><span class="comment">// Too slow, setup a callback instead:</span></div><div class="line">database.then([](<span class="keyword">auto</span> f) {</div><div class="line">  StatusOr&lt;google::spanner::admin::database::v1::Database&gt; db = f.get();</div><div class="line">  <span class="keywordflow">if</span> (!db) {</div><div class="line">      std::cout &lt;&lt; <span class="stringliteral">&quot;Failed creating a database!\n&quot;</span>;</div><div class="line">      <span class="keywordflow">return</span>;</div><div class="line">  }</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Database created!\n&quot;</span>;</div><div class="line">});</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="database__admin__client_8h_source.html#l00108">108</a> of file <a class="el" href="database__admin__client_8h_source.html">database_admin_client.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="database__admin__client_8h_source.html#l00109">109</a> of file <a class="el" href="database__admin__client_8h_source.html">database_admin_client.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5359f2621faada447be80416df5e2eba"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5359f2621faada447be80416df5e2eba">&#9670;&nbsp;</a></span>DatabaseAdminClient() <span class="overload">[1/2]</span></h2>
@@ -183,7 +189,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Create a new client with the given stub. For testing only. </p>
 
-<p class="definition">Definition at line <a class="el" href="database__admin__client_8h_source.html#l00273">273</a> of file <a class="el" href="database__admin__client_8h_source.html">database_admin_client.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="database__admin__client_8h_source.html#l00315">315</a> of file <a class="el" href="database__admin__client_8h_source.html">database_admin_client.h</a>.</p>
 
 </div>
 </div>
@@ -348,7 +354,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="af8f5a36a409bf2f0161fdf37488a7d8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8f5a36a409bf2f0161fdf37488a7d8d">&#9670;&nbsp;</a></span>SetIamPolicy()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af8f5a36a409bf2f0161fdf37488a7d8d">&#9670;&nbsp;</a></span>SetIamPolicy() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -376,12 +382,113 @@ Public Member Functions</h2></td></tr>
 <p>Set the IAM policy for the given database. </p>
 <p>This function changes the IAM policy configured in the given database to the value of <code>policy</code>.</p>
 <dl class="section user"><dt>Idempotency</dt><dd>This function is only idempotent if the <code>etag</code> field in <code>policy</code> is set. Therefore, the underlying RPCs are only retried if the field is set, and the function returns the first RPC error in any other case.</dd></dl>
-<dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line"><span class="keywordtype">void</span> AddDatabaseReaderOnDatabase(</div><div class="line">    google::cloud::spanner::DatabaseAdminClient client,</div><div class="line">    std::string <span class="keyword">const</span>&amp; project_id, std::string <span class="keyword">const</span>&amp; instance_id,</div><div class="line">    std::string <span class="keyword">const</span>&amp; database_id, std::string <span class="keyword">const</span>&amp; new_reader) {</div><div class="line">  google::cloud::spanner::Database database(project_id, instance_id,</div><div class="line">                                            database_id);</div><div class="line">  <span class="keyword">auto</span> current = client.GetIamPolicy(database);</div><div class="line">  <span class="keywordflow">if</span> (!current) <span class="keywordflow">throw</span> std::runtime_error(current.status().message());</div><div class="line"></div><div class="line">  <span class="comment">// Find (or create) the binding for &quot;roles/spanner.databaseReader&quot;.</span></div><div class="line">  <span class="keyword">auto</span>&amp; binding = [&amp;current]() -&gt; google::iam::v1::Binding&amp; {</div><div class="line">    <span class="keyword">auto</span> role_pos =</div><div class="line">        std::find_if(current-&gt;mutable_bindings()-&gt;begin(),</div><div class="line">                     current-&gt;mutable_bindings()-&gt;end(),</div><div class="line">                     [](google::iam::v1::Binding <span class="keyword">const</span>&amp; b) {</div><div class="line">                       <span class="keywordflow">return</span> b.role() == <span class="stringliteral">&quot;roles/spanner.databaseReader&quot;</span> &amp;&amp;</div><div class="line">                              !b.has_condition();</div><div class="line">                     });</div><div class="line">    <span class="keywordflow">if</span> (role_pos != current-&gt;mutable_bindings()-&gt;end()) {</div><div class="line">      <span class="keywordflow">return</span> *role_pos;</div><div class="line">    }</div><div class="line">    <span class="keyword">auto</span>&amp; binding = *current-&gt;add_bindings();</div><div class="line">    binding.set_role(<span class="stringliteral">&quot;roles/spanner.databaseReader&quot;</span>);</div><div class="line">    <span class="keywordflow">return</span> binding;</div><div class="line">  }();</div><div class="line"></div><div class="line">  <span class="keyword">auto</span> member_pos =</div><div class="line">      std::find(binding.members().begin(), binding.members().end(), new_reader);</div><div class="line">  <span class="keywordflow">if</span> (member_pos != binding.members().end()) {</div><div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;The entity &quot;</span> &lt;&lt; new_reader</div><div class="line">              &lt;&lt; <span class="stringliteral">&quot; is already a database reader:\n&quot;</span></div><div class="line">              &lt;&lt; current-&gt;DebugString();</div><div class="line">    <span class="keywordflow">return</span>;</div><div class="line">  }</div><div class="line">  <span class="keywordflow">if</span> (member_pos == binding.members().end()) {</div><div class="line">    binding.add_members(new_reader);</div><div class="line">  }</div><div class="line"></div><div class="line">  <span class="keyword">auto</span> result = client.SetIamPolicy(database, *std::move(current));</div><div class="line">  <span class="keywordflow">if</span> (!result) <span class="keywordflow">throw</span> std::runtime_error(result.status().message());</div><div class="line"></div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Successfully added &quot;</span> &lt;&lt; new_reader</div><div class="line">            &lt;&lt; <span class="stringliteral">&quot; to the database reader role:\n&quot;</span></div><div class="line">            &lt;&lt; result-&gt;DebugString() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div><div class="line">}</div></div><!-- fragment --> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd>The <a href="https://cloud.google.com/spanner/docs/iam">Cloud Spanner documentation</a> for a description of the roles and permissions supported by Cloud Spanner. </dd>
 <dd>
 <a href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a> for an introduction to Identity and Access Management in Google Cloud Platform. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="database__admin__client_8cc_source.html#l00062">62</a> of file <a class="el" href="database__admin__client_8cc_source.html">database_admin_client.cc</a>.</p>
+
+</div>
+</div>
+<a id="a8a27a871994081f7cb7ad726b4aecc60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a27a871994081f7cb7ad726b4aecc60">&#9670;&nbsp;</a></span>SetIamPolicy() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">StatusOr&lt; google::iam::v1::Policy &gt; google::cloud::spanner::v0::DatabaseAdminClient::SetIamPolicy </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;&#160;</td>
+          <td class="paramname"><em>db</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a17be538be6a68b58dc90bd72c47af092">IamUpdater</a> const &amp;&#160;</td>
+          <td class="paramname"><em>updater</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Updates the IAM policy for an instance using an optimistic concurrency control loop. </p>
+<p>This function repeatedly reads the current IAM policy in <code>db</code>, and then calls the <code>updater</code> with the this policy. The <code>updater</code> returns an empty optional if no changes are required, or it returns the new desired value for the IAM policy. This function then updates the policy.</p>
+<p>Updating an IAM policy can fail with retryable errors or can be aborted because there were simultaneous changes the to IAM policy. In these cases this function reruns the loop until it succeeds.</p>
+<p>The function returns the final IAM policy, or an error if the rerun policy for the underlying connection has expired.</p>
+<dl class="section user"><dt>Idempotency</dt><dd>This function always sets the <code>etag</code> field on the policy, so the underlying RPCs are retried automatically.</dd></dl>
+<dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line"><span class="keywordtype">void</span> AddDatabaseReaderOnDatabase(</div><div class="line">    google::cloud::spanner::DatabaseAdminClient client,</div><div class="line">    std::string <span class="keyword">const</span>&amp; project_id, std::string <span class="keyword">const</span>&amp; instance_id,</div><div class="line">    std::string <span class="keyword">const</span>&amp; database_id, std::string <span class="keyword">const</span>&amp; new_reader) {</div><div class="line">  google::cloud::spanner::Database database(project_id, instance_id,</div><div class="line">                                            database_id);</div><div class="line">  <span class="keyword">auto</span> current = client.GetIamPolicy(database);</div><div class="line">  <span class="keywordflow">if</span> (!current) <span class="keywordflow">throw</span> std::runtime_error(current.status().message());</div><div class="line"></div><div class="line">  <span class="comment">// Find (or create) the binding for &quot;roles/spanner.databaseReader&quot;.</span></div><div class="line">  <span class="keyword">auto</span>&amp; binding = [&amp;current]() -&gt; google::iam::v1::Binding&amp; {</div><div class="line">    <span class="keyword">auto</span> role_pos =</div><div class="line">        std::find_if(current-&gt;mutable_bindings()-&gt;begin(),</div><div class="line">                     current-&gt;mutable_bindings()-&gt;end(),</div><div class="line">                     [](google::iam::v1::Binding <span class="keyword">const</span>&amp; b) {</div><div class="line">                       <span class="keywordflow">return</span> b.role() == <span class="stringliteral">&quot;roles/spanner.databaseReader&quot;</span> &amp;&amp;</div><div class="line">                              !b.has_condition();</div><div class="line">                     });</div><div class="line">    <span class="keywordflow">if</span> (role_pos != current-&gt;mutable_bindings()-&gt;end()) {</div><div class="line">      <span class="keywordflow">return</span> *role_pos;</div><div class="line">    }</div><div class="line">    <span class="keyword">auto</span>&amp; binding = *current-&gt;add_bindings();</div><div class="line">    binding.set_role(<span class="stringliteral">&quot;roles/spanner.databaseReader&quot;</span>);</div><div class="line">    <span class="keywordflow">return</span> binding;</div><div class="line">  }();</div><div class="line"></div><div class="line">  <span class="keyword">auto</span> member_pos =</div><div class="line">      std::find(binding.members().begin(), binding.members().end(), new_reader);</div><div class="line">  <span class="keywordflow">if</span> (member_pos != binding.members().end()) {</div><div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;The entity &quot;</span> &lt;&lt; new_reader</div><div class="line">              &lt;&lt; <span class="stringliteral">&quot; is already a database reader:\n&quot;</span></div><div class="line">              &lt;&lt; current-&gt;DebugString();</div><div class="line">    <span class="keywordflow">return</span>;</div><div class="line">  }</div><div class="line"></div><div class="line">  binding.add_members(new_reader);</div><div class="line">  <span class="keyword">auto</span> result = client.SetIamPolicy(database, *std::move(current));</div><div class="line">  <span class="keywordflow">if</span> (!result) <span class="keywordflow">throw</span> std::runtime_error(result.status().message());</div><div class="line"></div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Successfully added &quot;</span> &lt;&lt; new_reader</div><div class="line">            &lt;&lt; <span class="stringliteral">&quot; to the database reader role:\n&quot;</span></div><div class="line">            &lt;&lt; result-&gt;DebugString() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div><div class="line">}</div></div><!-- fragment --> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">db</td><td>the identifier for the database where you want to change the IAM policy. </td></tr>
+    <tr><td class="paramname">updater</td><td>a callback to modify the policy. Return an unset optional to indicate that no changes to the policy are needed. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="database__admin__client_8cc_source.html#l00067">67</a> of file <a class="el" href="database__admin__client_8cc_source.html">database_admin_client.cc</a>.</p>
+
+</div>
+</div>
+<a id="ae3904f44d08265ea643460b60430b2f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3904f44d08265ea643460b60430b2f4">&#9670;&nbsp;</a></span>SetIamPolicy() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">StatusOr&lt; google::iam::v1::Policy &gt; google::cloud::spanner::v0::DatabaseAdminClient::SetIamPolicy </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Database.html">Database</a> const &amp;&#160;</td>
+          <td class="paramname"><em>db</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a17be538be6a68b58dc90bd72c47af092">IamUpdater</a> const &amp;&#160;</td>
+          <td class="paramname"><em>updater</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a52b5d68feb45c40d761c79ee360b804c">TransactionRerunPolicy</a> &gt;&#160;</td>
+          <td class="paramname"><em>rerun_policy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9ad3c388cccb2c4d92c8299ac178af8a">BackoffPolicy</a> &gt;&#160;</td>
+          <td class="paramname"><em>backoff_policy</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Updates the IAM policy for an instance using an optimistic concurrency control loop. </p>
+<p>This function repeatedly reads the current IAM policy in <code>db</code>, and then calls the <code>updater</code> with the this policy. The <code>updater</code> returns an empty optional if no changes are required, or it returns the new desired value for the IAM policy. This function then updates the policy.</p>
+<p>Updating an IAM policy can fail with retryable errors or can be aborted because there were simultaneous changes the to IAM policy. In these cases this function reruns the loop until it succeeds.</p>
+<p>The function returns the final IAM policy, or an error if the rerun policy for the underlying connection has expired.</p>
+<dl class="section user"><dt>Idempotency</dt><dd>This function always sets the <code>etag</code> field on the policy, so the underlying RPCs are retried automatically.</dd></dl>
+<dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line"><span class="keywordtype">void</span> AddDatabaseReaderOnDatabase(</div><div class="line">    google::cloud::spanner::DatabaseAdminClient client,</div><div class="line">    std::string <span class="keyword">const</span>&amp; project_id, std::string <span class="keyword">const</span>&amp; instance_id,</div><div class="line">    std::string <span class="keyword">const</span>&amp; database_id, std::string <span class="keyword">const</span>&amp; new_reader) {</div><div class="line">  google::cloud::spanner::Database database(project_id, instance_id,</div><div class="line">                                            database_id);</div><div class="line">  <span class="keyword">auto</span> current = client.GetIamPolicy(database);</div><div class="line">  <span class="keywordflow">if</span> (!current) <span class="keywordflow">throw</span> std::runtime_error(current.status().message());</div><div class="line"></div><div class="line">  <span class="comment">// Find (or create) the binding for &quot;roles/spanner.databaseReader&quot;.</span></div><div class="line">  <span class="keyword">auto</span>&amp; binding = [&amp;current]() -&gt; google::iam::v1::Binding&amp; {</div><div class="line">    <span class="keyword">auto</span> role_pos =</div><div class="line">        std::find_if(current-&gt;mutable_bindings()-&gt;begin(),</div><div class="line">                     current-&gt;mutable_bindings()-&gt;end(),</div><div class="line">                     [](google::iam::v1::Binding <span class="keyword">const</span>&amp; b) {</div><div class="line">                       <span class="keywordflow">return</span> b.role() == <span class="stringliteral">&quot;roles/spanner.databaseReader&quot;</span> &amp;&amp;</div><div class="line">                              !b.has_condition();</div><div class="line">                     });</div><div class="line">    <span class="keywordflow">if</span> (role_pos != current-&gt;mutable_bindings()-&gt;end()) {</div><div class="line">      <span class="keywordflow">return</span> *role_pos;</div><div class="line">    }</div><div class="line">    <span class="keyword">auto</span>&amp; binding = *current-&gt;add_bindings();</div><div class="line">    binding.set_role(<span class="stringliteral">&quot;roles/spanner.databaseReader&quot;</span>);</div><div class="line">    <span class="keywordflow">return</span> binding;</div><div class="line">  }();</div><div class="line"></div><div class="line">  <span class="keyword">auto</span> member_pos =</div><div class="line">      std::find(binding.members().begin(), binding.members().end(), new_reader);</div><div class="line">  <span class="keywordflow">if</span> (member_pos != binding.members().end()) {</div><div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;The entity &quot;</span> &lt;&lt; new_reader</div><div class="line">              &lt;&lt; <span class="stringliteral">&quot; is already a database reader:\n&quot;</span></div><div class="line">              &lt;&lt; current-&gt;DebugString();</div><div class="line">    <span class="keywordflow">return</span>;</div><div class="line">  }</div><div class="line"></div><div class="line">  binding.add_members(new_reader);</div><div class="line">  <span class="keyword">auto</span> result = client.SetIamPolicy(database, *std::move(current));</div><div class="line">  <span class="keywordflow">if</span> (!result) <span class="keywordflow">throw</span> std::runtime_error(result.status().message());</div><div class="line"></div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Successfully added &quot;</span> &lt;&lt; new_reader</div><div class="line">            &lt;&lt; <span class="stringliteral">&quot; to the database reader role:\n&quot;</span></div><div class="line">            &lt;&lt; result-&gt;DebugString() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div><div class="line">}</div></div><!-- fragment --> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">db</td><td>the identifier for the database where you want to change the IAM policy. </td></tr>
+    <tr><td class="paramname">updater</td><td>a callback to modify the policy. Return an unset optional to indicate that no changes to the policy are needed.</td></tr>
+    <tr><td class="paramname">rerun_policy</td><td>controls for how long (or how many times) the updater will be rerun after the IAM policy update aborts. </td></tr>
+    <tr><td class="paramname">backoff_policy</td><td>controls how long <code>SetIamPolicy</code> waits between reruns. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="database__admin__client_8cc_source.html#l00085">85</a> of file <a class="el" href="database__admin__client_8cc_source.html">database_admin_client.cc</a>.</p>
 
 </div>
 </div>
@@ -420,7 +527,7 @@ Public Member Functions</h2></td></tr>
 <dd>
 <a href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a> for an introduction to Identity and Access Management in Google Cloud Platform. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="database__admin__client_8cc_source.html#l00068">68</a> of file <a class="el" href="database__admin__client_8cc_source.html">database_admin_client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="database__admin__client_8cc_source.html#l00116">116</a> of file <a class="el" href="database__admin__client_8cc_source.html">database_admin_client.cc</a>.</p>
 
 </div>
 </div>
