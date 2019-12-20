@@ -90,7 +90,7 @@ TEST(DatabaseAdminClient, DatabaseBasicCRUD) {
   EXPECT_EQ(0, current_policy->bindings_size());
 
   std::string const reader_role = "roles/spanner.databaseReader";
-  std::string const writer_role = "roles/spanner.databaseWriter";
+  std::string const writer_role = "roles/spanner.databaseUser";
   std::string const expected_member =
       "serviceAccount:" + test_iam_service_account;
   auto& binding = *current_policy->add_bindings();
@@ -119,9 +119,9 @@ TEST(DatabaseAdminClient, DatabaseBasicCRUD) {
   ASSERT_STATUS_OK(updated_policy);
   EXPECT_EQ(2, updated_policy->bindings_size());
   ASSERT_EQ(writer_role, updated_policy->bindings().Get(1).role());
-  ASSERT_EQ(2, updated_policy->bindings().Get(1).members().size());
+  ASSERT_EQ(1, updated_policy->bindings().Get(1).members().size());
   ASSERT_EQ(expected_member,
-            updated_policy->bindings().Get(1).members().Get(1));
+            updated_policy->bindings().Get(1).members().Get(0));
 
   // Fetch the Iam Policy again.
   current_policy = client.GetIamPolicy(db);
