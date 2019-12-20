@@ -88,8 +88,7 @@ StatusOr<google::iam::v1::Policy> DatabaseAdminClient::SetIamPolicy(
     std::unique_ptr<BackoffPolicy> backoff_policy) {
   using RerunnablePolicy = internal::SafeTransactionRerun;
 
-  Status last_status =
-      Status(StatusCode::kUnknown, "Exhausted before first call");
+  Status last_status;
   do {
     auto current_policy = GetIamPolicy(db);
     if (!current_policy) {
