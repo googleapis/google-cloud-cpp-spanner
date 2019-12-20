@@ -221,7 +221,7 @@ TEST(DatabaseAdminClientTest, SetIamPolicyOccNoUpdates) {
   EXPECT_CALL(*mock, SetIamPolicy(_)).Times(0);
 
   DatabaseAdminClient client(mock);
-  auto actual = client.SetIamPolicy(db, [](google::iam::v1::Policy p) {
+  auto actual = client.SetIamPolicy(db, [](google::iam::v1::Policy const& p) {
     EXPECT_EQ("test-etag", p.etag());
     return optional<google::iam::v1::Policy>{};
   });

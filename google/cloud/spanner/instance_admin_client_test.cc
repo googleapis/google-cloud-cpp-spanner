@@ -174,10 +174,11 @@ TEST(InstanceAdminClientTest, SetIamPolicyOccGetFailure) {
       });
 
   InstanceAdminClient client(mock);
-  auto actual = client.SetIamPolicy(
-      Instance("test-project", "test-instance"), [](google::iam::v1::Policy) {
-        return optional<google::iam::v1::Policy>{};
-      });
+  auto actual =
+      client.SetIamPolicy(Instance("test-project", "test-instance"),
+                          [](google::iam::v1::Policy const&) {
+                            return optional<google::iam::v1::Policy>{};
+                          });
   EXPECT_EQ(StatusCode::kPermissionDenied, actual.status().code());
 }
 
@@ -194,11 +195,12 @@ TEST(InstanceAdminClientTest, SetIamPolicyOccNoUpdates) {
   EXPECT_CALL(*mock, SetIamPolicy(_)).Times(0);
 
   InstanceAdminClient client(mock);
-  auto actual = client.SetIamPolicy(
-      Instance("test-project", "test-instance"), [](google::iam::v1::Policy p) {
-        EXPECT_EQ("test-etag", p.etag());
-        return optional<google::iam::v1::Policy>{};
-      });
+  auto actual =
+      client.SetIamPolicy(Instance("test-project", "test-instance"),
+                          [](google::iam::v1::Policy const& p) {
+                            EXPECT_EQ("test-etag", p.etag());
+                            return optional<google::iam::v1::Policy>{};
+                          });
   ASSERT_STATUS_OK(actual);
   EXPECT_EQ("test-etag", actual->etag());
 }
@@ -272,7 +274,7 @@ TEST(InstanceAdminClientTest, SetIamPolicyOccRetryAbortedTooManyFailures) {
         return r;
       });
   EXPECT_CALL(*mock, SetIamPolicy(_))
-  .Times(AtLeast(2))
+      .Times(AtLeast(2))
       .WillRepeatedly([](InstanceAdminConnection::SetIamPolicyParams const& p) {
         EXPECT_THAT(p.instance_name, HasSubstr("test-project"));
         EXPECT_THAT(p.instance_name, HasSubstr("test-instance"));
@@ -283,10 +285,8 @@ TEST(InstanceAdminClientTest, SetIamPolicyOccRetryAbortedTooManyFailures) {
   InstanceAdminClient client(mock);
   auto actual = client.SetIamPolicy(
       Instance("test-project", "test-instance"),
-      [](google::iam::v1::Policy p) {
-        return p;
-      },
-      RerunPolicyForTesting(), BackoffPolicyForTesting());
+      [](google::iam::v1::Policy p) { return p; }, RerunPolicyForTesting(),
+      BackoffPolicyForTesting());
   EXPECT_EQ(StatusCode::kAborted, actual.status().code());
   EXPECT_THAT(actual.status().message(), HasSubstr("test-msg"));
 }
