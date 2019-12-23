@@ -77,7 +77,8 @@ check_library() {
 
 exit_status=0
 # We are keeping the library list alphabetical for now, there is no preferred
-# order otherwise.
+# order otherwise. And while the list only has one element, disable SC2043.
+# shellcheck disable=SC2043
 for library in spanner_client; do
   check_library "${library}" || exit_status=1
 done
