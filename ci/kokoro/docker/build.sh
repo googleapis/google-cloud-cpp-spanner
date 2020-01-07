@@ -30,7 +30,7 @@ if [[ "${RUN_SLOW_INTEGRATION_TESTS:-}" != "yes" ]]; then
 fi
 export RUN_SLOW_INTEGRATION_TESTS
 
-if [[ $# -eq 1 ]]; then
+if [[ $# -ge 1 ]]; then
   export BUILD_NAME="${1}"
 elif [[ -n "${KOKORO_JOB_NAME:-}" ]]; then
   # Kokoro injects the KOKORO_JOB_NAME environment variable, the value of this
@@ -227,8 +227,6 @@ echo "Docker image created $(date)."
 sudo docker image ls
 echo "================================================================"
 
-echo "================================================================"
-echo "Running the full build $(date)."
 # The default user for a Docker container has uid 0 (root). To avoid creating
 # root-owned files in the build directory we tell docker to use the current
 # user ID, if known.
@@ -360,9 +358,23 @@ if [[ -t 0 ]]; then
   docker_flags+=("-it")
 fi
 
-sudo docker run "${docker_flags[@]}" "${IMAGE}:tip" \
-     "/v/${in_docker_script}" "${CMAKE_SOURCE_DIR}" \
-     "${BUILD_OUTPUT}"
+# If more than two arguments are given, arguments after the first one will
+# become the commands run in the container, otherwise run $in_docker_script with
+# appropriate arguments.
+echo "================================================================"
+if [[ $# -ge 2 ]]; then
+  echo "Running the given command '" "${@:2}" "' in the container $(date)."
+  readonly commands=( "${@:2}" )
+else
+  echo "Running the full build $(date)."
+  readonly commands=(
+    "/v/${in_docker_script}"
+    "${CMAKE_SOURCE_DIR}"
+    "${BUILD_OUTPUT}"
+  )
+fi
+
+sudo docker run "${docker_flags[@]}" "${IMAGE}:tip" "${commands[@]}"
 
 exit_status=$?
 echo "Build finished with ${exit_status} exit status $(date)."
