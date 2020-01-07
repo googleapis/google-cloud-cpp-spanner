@@ -348,6 +348,9 @@ docker_flags=(
     "--volume" "/v/cmake-out/home"
     "--volume" "/v/cmake-out"
     "--volume" "${PWD}/${BUILD_OUTPUT}:/v/${BUILD_OUTPUT}"
+
+    # No need to preserve the container.
+    "--rm"
 )
 
 # When running the builds from the command-line they get a tty, and the scripts
@@ -363,10 +366,8 @@ fi
 # appropriate arguments.
 echo "================================================================"
 if [[ $# -ge 2 ]]; then
-  echo "Running the given command '" "${@:2}" "' in the container $(date)."
+  echo "Running the given commands '" "${@:2}" "' in the container $(date)."
   readonly commands=( "${@:2}" )
-  # Delete the container after exit.
-  docker_flags+=("--rm")
 else
   echo "Running the full build $(date)."
   readonly commands=(
