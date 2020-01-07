@@ -25,152 +25,152 @@ namespace {
 
 using ::testing::HasSubstr;
 
-TEST(Timestamp, FromString) {
+TEST(Timestamp, FromRFC3339) {
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 0).value(),
-            Timestamp::FromString("2019-06-21T16:52:22Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22Z").value());
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 9).value(),
-            Timestamp::FromString("2019-06-21T16:52:22.000000009Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22.000000009Z").value());
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 89).value(),
-            Timestamp::FromString("2019-06-21T16:52:22.000000089Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22.000000089Z").value());
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 789).value(),
-            Timestamp::FromString("2019-06-21T16:52:22.000000789Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22.000000789Z").value());
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 6789).value(),
-            Timestamp::FromString("2019-06-21T16:52:22.000006789Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22.000006789Z").value());
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 56789).value(),
-            Timestamp::FromString("2019-06-21T16:52:22.000056789Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22.000056789Z").value());
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 456789).value(),
-            Timestamp::FromString("2019-06-21T16:52:22.000456789Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22.000456789Z").value());
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 3456789).value(),
-            Timestamp::FromString("2019-06-21T16:52:22.003456789Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22.003456789Z").value());
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 23456789).value(),
-            Timestamp::FromString("2019-06-21T16:52:22.023456789Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22.023456789Z").value());
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 123456789).value(),
-            Timestamp::FromString("2019-06-21T16:52:22.123456789Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22.123456789Z").value());
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 123456780).value(),
-            Timestamp::FromString("2019-06-21T16:52:22.12345678Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22.12345678Z").value());
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 123456700).value(),
-            Timestamp::FromString("2019-06-21T16:52:22.1234567Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22.1234567Z").value());
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 123456000).value(),
-            Timestamp::FromString("2019-06-21T16:52:22.123456Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22.123456Z").value());
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 123450000).value(),
-            Timestamp::FromString("2019-06-21T16:52:22.12345Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22.12345Z").value());
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 123400000).value(),
-            Timestamp::FromString("2019-06-21T16:52:22.1234Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22.1234Z").value());
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 123000000).value(),
-            Timestamp::FromString("2019-06-21T16:52:22.123Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22.123Z").value());
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 120000000).value(),
-            Timestamp::FromString("2019-06-21T16:52:22.12Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22.12Z").value());
   EXPECT_EQ(Timestamp::FromCounts(1561135942, 100000000).value(),
-            Timestamp::FromString("2019-06-21T16:52:22.1Z").value());
+            Timestamp::FromRFC3339("2019-06-21T16:52:22.1Z").value());
 }
 
-TEST(Timestamp, FromStringOffset) {
+TEST(Timestamp, FromRFC3339Offset) {
   EXPECT_EQ(Timestamp::FromCounts(1546398245, 0).value(),
-            Timestamp::FromString("2019-01-02T03:04:05+00:00").value());
+            Timestamp::FromRFC3339("2019-01-02T03:04:05+00:00").value());
   EXPECT_EQ(Timestamp::FromCounts(1546398245 + 3600 + 120, 0).value(),
-            Timestamp::FromString("2019-01-02T03:04:05+01:02").value());
+            Timestamp::FromRFC3339("2019-01-02T03:04:05+01:02").value());
   EXPECT_EQ(Timestamp::FromCounts(1546398245 - 3600 - 120, 0).value(),
-            Timestamp::FromString("2019-01-02T03:04:05-01:02").value());
+            Timestamp::FromRFC3339("2019-01-02T03:04:05-01:02").value());
 }
 
-TEST(Timestamp, FromStringFailure) {
-  EXPECT_FALSE(Timestamp::FromString(""));
-  EXPECT_FALSE(Timestamp::FromString("garbage in"));
-  EXPECT_FALSE(Timestamp::FromString("2019-06-21T16:52:22"));
-  EXPECT_FALSE(Timestamp::FromString("2019-06-21T16:52:22.9"));
-  EXPECT_FALSE(Timestamp::FromString("2019-06-21T16:52:22.Z"));
-  EXPECT_FALSE(Timestamp::FromString("2019-06-21T16:52:22ZX"));
-  EXPECT_FALSE(Timestamp::FromString("2019-06-21T16:52:-22Z"));
+TEST(Timestamp, FromRFC3339Failure) {
+  EXPECT_FALSE(Timestamp::FromRFC3339(""));
+  EXPECT_FALSE(Timestamp::FromRFC3339("garbage in"));
+  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22"));
+  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22.9"));
+  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22.Z"));
+  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22ZX"));
+  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:-22Z"));
 
-  EXPECT_FALSE(Timestamp::FromString("2019-06-21T16:52:22+0:"));
-  EXPECT_FALSE(Timestamp::FromString("2019-06-21T16:52:22+:0"));
-  EXPECT_FALSE(Timestamp::FromString("2019-06-21T16:52:22+0:-0"));
-  EXPECT_FALSE(Timestamp::FromString("2019-06-21T16:52:22x00:00"));
-  EXPECT_FALSE(Timestamp::FromString("2019-06-21T16:52:22+ab:cd"));
-  EXPECT_FALSE(Timestamp::FromString("2019-06-21T16:52:22-24:60"));
-  EXPECT_FALSE(Timestamp::FromString("2019-06-21T16:52:22+00:00:00"));
+  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22+0:"));
+  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22+:0"));
+  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22+0:-0"));
+  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22x00:00"));
+  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22+ab:cd"));
+  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22-24:60"));
+  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22+00:00:00"));
 }
 
-TEST(Timestamp, FromStringLimit) {
+TEST(Timestamp, FromRFC3339Limit) {
   // Verify Spanner range requirements.
   EXPECT_EQ(Timestamp::FromCounts(-62135596800, 0).value(),
-            Timestamp::FromString("0001-01-01T00:00:00.000000000Z").value());
+            Timestamp::FromRFC3339("0001-01-01T00:00:00.000000000Z").value());
   EXPECT_EQ(Timestamp::FromCounts(253402300799, 999999999).value(),
-            Timestamp::FromString("9999-12-31T23:59:59.999999999Z").value());
+            Timestamp::FromRFC3339("9999-12-31T23:59:59.999999999Z").value());
 
   // std::tm range limits (including -1900 tm_year bias).
   EXPECT_EQ(
       Timestamp::FromCounts(-67768040609740800, 0).value(),
-      Timestamp::FromString("-2147481748-01-01T00:00:00.000000000Z").value());
+      Timestamp::FromRFC3339("-2147481748-01-01T00:00:00.000000000Z").value());
   EXPECT_EQ(
       Timestamp::FromCounts(67768036191676799, 999999999).value(),
-      Timestamp::FromString("2147485547-12-31T23:59:59.999999999Z").value());
+      Timestamp::FromRFC3339("2147485547-12-31T23:59:59.999999999Z").value());
 
   // One nanosecond beyond std::tm range limits fails to parse.
-  EXPECT_FALSE(Timestamp::FromString("-2147481749-12-31T23:59:59.999999999Z"));
-  EXPECT_FALSE(Timestamp::FromString("2147485548-01-01T00:00:00.000000000Z"));
+  EXPECT_FALSE(Timestamp::FromRFC3339("-2147481749-12-31T23:59:59.999999999Z"));
+  EXPECT_FALSE(Timestamp::FromRFC3339("2147485548-01-01T00:00:00.000000000Z"));
 }
 
-TEST(Timestamp, ToString) {
+TEST(Timestamp, ToRFC3339) {
   EXPECT_EQ("2019-06-21T16:52:22Z",
-            Timestamp::FromCounts(1561135942, 0).value().ToString());
+            Timestamp::FromCounts(1561135942, 0).value().ToRFC3339());
   EXPECT_EQ("2019-06-21T16:52:22.000000009Z",
-            Timestamp::FromCounts(1561135942, 9).value().ToString());
+            Timestamp::FromCounts(1561135942, 9).value().ToRFC3339());
   EXPECT_EQ("2019-06-21T16:52:22.000000089Z",
-            Timestamp::FromCounts(1561135942, 89).value().ToString());
+            Timestamp::FromCounts(1561135942, 89).value().ToRFC3339());
   EXPECT_EQ("2019-06-21T16:52:22.000000789Z",
-            Timestamp::FromCounts(1561135942, 789).value().ToString());
+            Timestamp::FromCounts(1561135942, 789).value().ToRFC3339());
   EXPECT_EQ("2019-06-21T16:52:22.000006789Z",
-            Timestamp::FromCounts(1561135942, 6789).value().ToString());
+            Timestamp::FromCounts(1561135942, 6789).value().ToRFC3339());
   EXPECT_EQ("2019-06-21T16:52:22.000056789Z",
-            Timestamp::FromCounts(1561135942, 56789).value().ToString());
+            Timestamp::FromCounts(1561135942, 56789).value().ToRFC3339());
   EXPECT_EQ("2019-06-21T16:52:22.000456789Z",
-            Timestamp::FromCounts(1561135942, 456789).value().ToString());
+            Timestamp::FromCounts(1561135942, 456789).value().ToRFC3339());
   EXPECT_EQ("2019-06-21T16:52:22.003456789Z",
-            Timestamp::FromCounts(1561135942, 3456789).value().ToString());
+            Timestamp::FromCounts(1561135942, 3456789).value().ToRFC3339());
   EXPECT_EQ("2019-06-21T16:52:22.023456789Z",
-            Timestamp::FromCounts(1561135942, 23456789).value().ToString());
+            Timestamp::FromCounts(1561135942, 23456789).value().ToRFC3339());
   EXPECT_EQ("2019-06-21T16:52:22.123456789Z",
-            Timestamp::FromCounts(1561135942, 123456789).value().ToString());
+            Timestamp::FromCounts(1561135942, 123456789).value().ToRFC3339());
   EXPECT_EQ("2019-06-21T16:52:22.12345678Z",
-            Timestamp::FromCounts(1561135942, 123456780).value().ToString());
+            Timestamp::FromCounts(1561135942, 123456780).value().ToRFC3339());
   EXPECT_EQ("2019-06-21T16:52:22.1234567Z",
-            Timestamp::FromCounts(1561135942, 123456700).value().ToString());
+            Timestamp::FromCounts(1561135942, 123456700).value().ToRFC3339());
   EXPECT_EQ("2019-06-21T16:52:22.123456Z",
-            Timestamp::FromCounts(1561135942, 123456000).value().ToString());
+            Timestamp::FromCounts(1561135942, 123456000).value().ToRFC3339());
   EXPECT_EQ("2019-06-21T16:52:22.12345Z",
-            Timestamp::FromCounts(1561135942, 123450000).value().ToString());
+            Timestamp::FromCounts(1561135942, 123450000).value().ToRFC3339());
   EXPECT_EQ("2019-06-21T16:52:22.1234Z",
-            Timestamp::FromCounts(1561135942, 123400000).value().ToString());
+            Timestamp::FromCounts(1561135942, 123400000).value().ToRFC3339());
   EXPECT_EQ("2019-06-21T16:52:22.123Z",
-            Timestamp::FromCounts(1561135942, 123000000).value().ToString());
+            Timestamp::FromCounts(1561135942, 123000000).value().ToRFC3339());
   EXPECT_EQ("2019-06-21T16:52:22.12Z",
-            Timestamp::FromCounts(1561135942, 120000000).value().ToString());
+            Timestamp::FromCounts(1561135942, 120000000).value().ToRFC3339());
   EXPECT_EQ("2019-06-21T16:52:22.1Z",
-            Timestamp::FromCounts(1561135942, 100000000).value().ToString());
+            Timestamp::FromCounts(1561135942, 100000000).value().ToRFC3339());
 }
 
-TEST(Timestamp, ToStringLimit) {
+TEST(Timestamp, ToRFC3339Limit) {
   // Spanner range requirements.
   EXPECT_EQ("0001-01-01T00:00:00Z",
-            Timestamp::FromCounts(-62135596800, 0).value().ToString());
+            Timestamp::FromCounts(-62135596800, 0).value().ToRFC3339());
   EXPECT_EQ("9999-12-31T23:59:59.999999999Z",
-            Timestamp::FromCounts(253402300799, 999999999).value().ToString());
+            Timestamp::FromCounts(253402300799, 999999999).value().ToRFC3339());
 
   // std::tm range limits (including -1900 tm_year bias).
   EXPECT_EQ("-2147481748-01-01T00:00:00Z",
-            Timestamp::FromCounts(-67768040609740800, 0).value().ToString());
+            Timestamp::FromCounts(-67768040609740800, 0).value().ToRFC3339());
   EXPECT_EQ(
       "2147485547-12-31T23:59:59.999999999Z",
-      Timestamp::FromCounts(67768036191676799, 999999999).value().ToString());
+      Timestamp::FromCounts(67768036191676799, 999999999).value().ToRFC3339());
 
   // One nanosecond beyond std::tm range limits gives unspecified behavior.
   // Here we expect that we *do not* observe the "right" outputs.
   EXPECT_NE(
       "-2147481749-12-31T23:59:59.999999999Z",
-      Timestamp::FromCounts(-67768040609740801, 999999999).value().ToString());
+      Timestamp::FromCounts(-67768040609740801, 999999999).value().ToRFC3339());
   EXPECT_NE("2147485548-01-01T00:00:00",
-            Timestamp::FromCounts(67768036191676800, 0).value().ToString());
+            Timestamp::FromCounts(67768036191676800, 0).value().ToRFC3339());
 }
 
 TEST(Timestamp, FromProto) {

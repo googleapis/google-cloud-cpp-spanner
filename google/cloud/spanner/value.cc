@@ -239,7 +239,7 @@ google::protobuf::Value Value::MakeValueProto(Bytes bytes) {
 
 google::protobuf::Value Value::MakeValueProto(Timestamp ts) {
   google::protobuf::Value v;
-  v.set_string_value(ts.ToString());
+  v.set_string_value(ts.ToRFC3339());
   return v;
 }
 
@@ -342,7 +342,7 @@ StatusOr<Timestamp> Value::GetValue(Timestamp,
   if (pv.kind_case() != google::protobuf::Value::kStringValue) {
     return Status(StatusCode::kUnknown, "missing TIMESTAMP");
   }
-  return Timestamp::FromString(pv.string_value());
+  return Timestamp::FromRFC3339(pv.string_value());
 }
 
 StatusOr<Date> Value::GetValue(Date, google::protobuf::Value const& pv,

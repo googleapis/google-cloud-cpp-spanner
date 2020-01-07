@@ -173,9 +173,9 @@ TEST_F(DataTypeIntegrationTest, WriteReadBytes) {
 }
 
 TEST_F(DataTypeIntegrationTest, WriteReadTimestamp) {
-  auto min = Timestamp::FromString("0001-01-01T00:00:00Z");
+  auto min = Timestamp::FromRFC3339("0001-01-01T00:00:00Z");
   ASSERT_STATUS_OK(min);
-  auto max = Timestamp::FromString("9999-12-31T23:59:59.999999999Z");
+  auto max = Timestamp::FromRFC3339("9999-12-31T23:59:59.999999999Z");
   ASSERT_STATUS_OK(max);
   auto now = Timestamp::FromChrono(std::chrono::system_clock::now());
   ASSERT_STATUS_OK(now);

@@ -120,7 +120,7 @@ std::int64_t TimeZ(std::tm const& tm) {
 
 // TODO(#145): Reconcile this implementation with ParseRfc3339() in
 // google/cloud/internal/parse_rfc3339.h in google-cloud-cpp.
-StatusOr<Timestamp> Timestamp::FromString(std::string const& s) {
+StatusOr<Timestamp> Timestamp::FromRFC3339(std::string const& s) {
   std::tm tm;
   auto const len = s.size();
 
@@ -223,7 +223,7 @@ StatusOr<Timestamp> Timestamp::FromString(std::string const& s) {
 
 // TODO(#145): Reconcile this implementation with FormatRfc3339() in
 // google/cloud/internal/format_time_point.h in google-cloud-cpp.
-std::string Timestamp::ToString() const {
+std::string Timestamp::ToRFC3339() const {
   std::ostringstream output;
 
   // Spanner always uses "Z" but we leave support for a non-zero UTC offset

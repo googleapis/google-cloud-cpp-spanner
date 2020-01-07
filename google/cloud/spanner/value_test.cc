@@ -133,7 +133,7 @@ TEST(Value, BasicSemantics) {
     for (auto nanos : {-1, 0, 1}) {
       auto ts = Timestamp::FromCounts(t, nanos).value();
       SCOPED_TRACE("Testing: google::cloud::spanner::Timestamp " +
-                   ts.ToString());
+                   ts.ToRFC3339());
       TestBasicSemantics(ts);
       std::vector<Timestamp> v(5, ts);
       TestBasicSemantics(v);
@@ -593,7 +593,7 @@ TEST(Value, ProtoConversionTimestamp) {
       auto const p = internal::ToProto(v);
       EXPECT_EQ(v, internal::FromProto(p.first, p.second));
       EXPECT_EQ(google::spanner::v1::TypeCode::TIMESTAMP, p.first.code());
-      EXPECT_EQ(ts.ToString(), p.second.string_value());
+      EXPECT_EQ(ts.ToRFC3339(), p.second.string_value());
     }
   }
 }

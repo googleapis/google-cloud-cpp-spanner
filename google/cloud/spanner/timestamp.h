@@ -55,8 +55,8 @@ class Timestamp {
 
   /// Conversion from/to RFC3339 string.
   ///@{
-  static StatusOr<Timestamp> FromString(std::string const&);
-  std::string ToString() const;
+  static StatusOr<Timestamp> FromRFC3339(std::string const&);
+  std::string ToRFC3339() const;
   ///@}
 
   /// Conversion from/to `google::protobuf::Timestamp`. These conversions never
@@ -122,7 +122,7 @@ class Timestamp {
 
   /// @name Output streaming
   friend std::ostream& operator<<(std::ostream& os, Timestamp ts) {
-    return os << ts.ToString();
+    return os << ts.ToRFC3339();
   }
 
  private:
