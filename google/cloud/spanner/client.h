@@ -464,13 +464,12 @@ class Client {
   /**
    * Commits a read-write transaction.
    *
-   * The commit might return a `kAborted` error. This can occur at any time.
-   * Commonly the cause is conflicts with concurrent transactions, however
+   * The commit might return a `kAborted` error. This can occur at any time;
+   * commonly, the cause is conflicts with concurrent transactions. However,
    * it can also happen for a variety of other reasons. If `Commit` returns
    * `kAborted`, the caller may try to reapply the mutations within a new
-   * read-write transaction (which should share lock priority with the aborted
-   * transaction so that the new attempt has a slightly better chance of
-   * success).
+   * read-write transaction (which should use the same session to ensure an
+   * increase it lock priority).
    *
    * @note Prefer the previous `Commit` overloads if you want to simply reapply
    *     mutations after a `kAborted` error.
