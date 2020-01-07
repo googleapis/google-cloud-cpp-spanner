@@ -365,6 +365,8 @@ echo "================================================================"
 if [[ $# -ge 2 ]]; then
   echo "Running the given command '" "${@:2}" "' in the container $(date)."
   readonly commands=( "${@:2}" )
+  # Delete the container after exit.
+  docker_flags+=("--rm")
 else
   echo "Running the full build $(date)."
   readonly commands=(
