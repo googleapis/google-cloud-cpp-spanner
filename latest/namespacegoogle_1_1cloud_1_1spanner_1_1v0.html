@@ -181,6 +181,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1StreamOf.html">StreamOf</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1StreamOf.html" title="A StreamOf&lt;Tuple&gt; defines a range that parses Tuple objects from the given range of RowStreamIterator...">StreamOf</a>&lt;Tuple&gt;</code> defines a range that parses <code>Tuple</code> objects from the given range of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code>s.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1StreamOf.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html">Timestamp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A representation of the Spanner TIMESTAMP type: An instant in time.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The representation of a Cloud Spanner transaction.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -255,9 +258,10 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a6094ab0a6ec6c6fb30b4e3a6a9431a5c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a6094ab0a6ec6c6fb30b4e3a6a9431a5c">LimitedErrorCountTransactionRerunPolicy</a> = google::cloud::internal::LimitedErrorCountRetryPolicy&lt; google::cloud::Status, internal::SafeTransactionRerun &gt;</td></tr>
 <tr class="memdesc:a6094ab0a6ec6c6fb30b4e3a6a9431a5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A transaction rerun policy that limits the number of failures.  <a href="#a6094ab0a6ec6c6fb30b4e3a6a9431a5c">More...</a><br /></td></tr>
 <tr class="separator:a6094ab0a6ec6c6fb30b4e3a6a9431a5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9711d66cf02a8305d987474ac7c5efca"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9711d66cf02a8305d987474ac7c5efca">Timestamp</a> = std::chrono::time_point&lt; std::chrono::system_clock, std::chrono::nanoseconds &gt;</td></tr>
-<tr class="memdesc:a9711d66cf02a8305d987474ac7c5efca"><td class="mdescLeft">&#160;</td><td class="mdescRight">An instant in time.  <a href="#a9711d66cf02a8305d987474ac7c5efca">More...</a><br /></td></tr>
-<tr class="separator:a9711d66cf02a8305d987474ac7c5efca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac422e19563471fea8eed10b5bb4b5333"><td class="memTemplParams" colspan="2">template&lt;typename Duration &gt; </td></tr>
+<tr class="memitem:ac422e19563471fea8eed10b5bb4b5333"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ac422e19563471fea8eed10b5bb4b5333">sys_time</a> = std::chrono::time_point&lt; std::chrono::system_clock, Duration &gt;</td></tr>
+<tr class="memdesc:ac422e19563471fea8eed10b5bb4b5333"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience alias.  <a href="#ac422e19563471fea8eed10b5bb4b5333">More...</a><br /></td></tr>
+<tr class="separator:ac422e19563471fea8eed10b5bb4b5333"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -388,6 +392,10 @@ Functions</h2></td></tr>
 <tr class="separator:a871688247002c2daf7201c98c75b608e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a782a4a4617b9017586334db8e1eb6ff6"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a782a4a4617b9017586334db8e1eb6ff6">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a> const &amp;stmt)</td></tr>
 <tr class="separator:a782a4a4617b9017586334db8e1eb6ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62f7a3f99155ee6075ec2458c132a5f2"><td class="memTemplParams" colspan="2">template&lt;typename Duration &gt; </td></tr>
+<tr class="memitem:a62f7a3f99155ee6075ec2458c132a5f2"><td class="memTemplItemLeft" align="right" valign="top">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html">Timestamp</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a62f7a3f99155ee6075ec2458c132a5f2">MakeTimestamp</a> (<a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ac422e19563471fea8eed10b5bb4b5333">sys_time</a>&lt; Duration &gt; const &amp;)</td></tr>
+<tr class="memdesc:a62f7a3f99155ee6075ec2458c132a5f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html" title="A representation of the Spanner TIMESTAMP type: An instant in time.">Timestamp</a></code> from a <code>std::chrono::time_point</code> on the system clock.  <a href="#a62f7a3f99155ee6075ec2458c132a5f2">More...</a><br /></td></tr>
+<tr class="separator:a62f7a3f99155ee6075ec2458c132a5f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7aedae28062a59c9b7e809205ebe09be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7aedae28062a59c9b7e809205ebe09be">MakeReadOnlyTransaction</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction_1_1ReadOnlyOptions.html">Transaction::ReadOnlyOptions</a> opts={})</td></tr>
 <tr class="memdesc:a7aedae28062a59c9b7e809205ebe09be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a read-only transaction configured with <code>opts</code>.  <a href="#a7aedae28062a59c9b7e809205ebe09be">More...</a><br /></td></tr>
 <tr class="separator:a7aedae28062a59c9b7e809205ebe09be"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -764,24 +772,24 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a9711d66cf02a8305d987474ac7c5efca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9711d66cf02a8305d987474ac7c5efca">&#9670;&nbsp;</a></span>Timestamp</h2>
+<a id="ac422e19563471fea8eed10b5bb4b5333"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac422e19563471fea8eed10b5bb4b5333">&#9670;&nbsp;</a></span>sys_time</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename Duration &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9711d66cf02a8305d987474ac7c5efca">google::cloud::spanner::v0::Timestamp</a> = typedef std::chrono::time_point&lt;std::chrono::system_clock, std::chrono::nanoseconds&gt;</td>
+          <td class="memname">using <a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ac422e19563471fea8eed10b5bb4b5333">google::cloud::spanner::v0::sys_time</a> = typedef std::chrono::time_point&lt;std::chrono::system_clock, Duration&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>An instant in time. </p>
-<p>A std::chrono::time_point using the system (walltime) clock, represented as a signed integer count (&gt;= 64 bits) of nanoseconds from the clock's epoch.</p>
-<p>Most implementations use an epoch of 1970-01-01T00:00:00+00:00, where the range of values would be about 1677-09-21 through to 2262-04-11.</p>
-<p>Note that this may differ from std::chrono::system_clock::time_point on a particular platform. </p>
+<p>Convenience alias. </p>
+<p><code>std::chrono::sys_time</code> since C++20. </p>
 
-<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00038">38</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00039">39</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
 
 </div>
 </div>
@@ -1326,7 +1334,7 @@ template&lt;typename T &gt; </div>
 <p>Factory to construct a "null" <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a> of the specified type <code>T</code>. </p>
 <p>This is equivalent to passing an <code>optional&lt;T&gt;</code> without a value to the constructor, though this factory may be easier to invoke and result in clearer code at the call site. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00615">615</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00614">614</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -1520,6 +1528,31 @@ template&lt;typename... Ts&gt; </div>
 <p>This function is intended for application developers who are mocking the results of a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a5872b2c678ff7fdddacf78573f2b56c3" title="Executes a SQL query.">Client::ExecuteQuery</a></code> call. </p>
 
 <p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00221">221</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+
+</div>
+</div>
+<a id="a62f7a3f99155ee6075ec2458c132a5f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62f7a3f99155ee6075ec2458c132a5f2">&#9670;&nbsp;</a></span>MakeTimestamp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Duration &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">StatusOr&lt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html">Timestamp</a> &gt; google::cloud::spanner::v0::MakeTimestamp </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ac422e19563471fea8eed10b5bb4b5333">sys_time</a>&lt; Duration &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>tp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Construct a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html" title="A representation of the Spanner TIMESTAMP type: An instant in time.">Timestamp</a></code> from a <code>std::chrono::time_point</code> on the system clock. </p>
+<p>May produce out-of-range errors, depending on the properties of <code>Duration</code> and the <code>std::chrono::system_clock</code> epoch. </p>
+
+<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00202">202</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
 
 </div>
 </div>
@@ -2373,7 +2406,7 @@ template&lt;typename... Ts&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00106">106</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00105">105</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
 
 </div>
 </div>
@@ -2511,7 +2544,7 @@ template&lt;typename... Ts&gt; </div>
 </div><div class="memdoc">
 <dl class="section warning"><dt>Warning</dt><dd>This is intended for debugging and human consumption only, not machine consumption as the output format may change without notice. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00110">110</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00109">109</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
 
 </div>
 </div>

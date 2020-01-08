@@ -64,17 +64,32 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">timestamp.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="version_8h_source.html">google/cloud/spanner/version.h</a>&quot;</code><br />
+<code>#include &quot;google/cloud/status_or.h&quot;</code><br />
+<code>#include &lt;google/protobuf/timestamp.pb.h&gt;</code><br />
 <code>#include &lt;chrono&gt;</code><br />
+<code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;limits&gt;</code><br />
+<code>#include &lt;ostream&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;tuple&gt;</code><br />
 </div>
 <p><a href="timestamp_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html">google::cloud::spanner::v0::Timestamp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A representation of the Spanner TIMESTAMP type: An instant in time.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacegoogle"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle.html">google</a></td></tr>
@@ -91,9 +106,17 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a9711d66cf02a8305d987474ac7c5efca"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9711d66cf02a8305d987474ac7c5efca">google::cloud::spanner::v0::Timestamp</a> = std::chrono::time_point&lt; std::chrono::system_clock, std::chrono::nanoseconds &gt;</td></tr>
-<tr class="memdesc:a9711d66cf02a8305d987474ac7c5efca"><td class="mdescLeft">&#160;</td><td class="mdescRight">An instant in time.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9711d66cf02a8305d987474ac7c5efca">More...</a><br /></td></tr>
-<tr class="separator:a9711d66cf02a8305d987474ac7c5efca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac422e19563471fea8eed10b5bb4b5333"><td class="memTemplParams" colspan="2">template&lt;typename Duration &gt; </td></tr>
+<tr class="memitem:ac422e19563471fea8eed10b5bb4b5333"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ac422e19563471fea8eed10b5bb4b5333">google::cloud::spanner::v0::sys_time</a> = std::chrono::time_point&lt; std::chrono::system_clock, Duration &gt;</td></tr>
+<tr class="memdesc:ac422e19563471fea8eed10b5bb4b5333"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience alias.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ac422e19563471fea8eed10b5bb4b5333">More...</a><br /></td></tr>
+<tr class="separator:ac422e19563471fea8eed10b5bb4b5333"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a62f7a3f99155ee6075ec2458c132a5f2"><td class="memTemplParams" colspan="2">template&lt;typename Duration &gt; </td></tr>
+<tr class="memitem:a62f7a3f99155ee6075ec2458c132a5f2"><td class="memTemplItemLeft" align="right" valign="top">StatusOr&lt; Timestamp &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a62f7a3f99155ee6075ec2458c132a5f2">google::cloud::spanner::v0::MakeTimestamp</a> (sys_time&lt; Duration &gt; const &amp;)</td></tr>
+<tr class="memdesc:a62f7a3f99155ee6075ec2458c132a5f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html" title="A representation of the Spanner TIMESTAMP type: An instant in time.">Timestamp</a></code> from a <code>std::chrono::time_point</code> on the system clock.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a62f7a3f99155ee6075ec2458c132a5f2">More...</a><br /></td></tr>
+<tr class="separator:a62f7a3f99155ee6075ec2458c132a5f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
