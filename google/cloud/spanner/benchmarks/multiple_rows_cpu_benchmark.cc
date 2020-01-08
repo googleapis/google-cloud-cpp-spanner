@@ -69,7 +69,8 @@ class Experiment {
   virtual ~Experiment() = default;
 
   virtual std::string AdditionalDdlStatement() = 0;
-  virtual Status SetUp(Config const& config, cs::Database const& database) = 0;
+  virtual Status SetUp(Config const& config, cs::Database const& database,
+                       bool fill) = 0;
   virtual Status TearDown(Config const& config,
                           cs::Database const& database) = 0;
   virtual Status Run(Config const& config, cs::Database const& database) = 0;
@@ -117,10 +118,16 @@ int main(int argc, char* argv[]) {
     config.instance_id = *std::move(instance);
   }
 
-  cs::Database database(
-      config.project_id, config.instance_id,
-      google::cloud::spanner_testing::RandomDatabaseName(generator));
-  config.database_id = database.database_id();
+  // If the user specified a database name on the command line, re-use it to
+  // reduce setup time when running the benchmark repeatedly. It's assumed that
+  // other flags related to database creation have not been changed across runs.
+  bool user_specified_database = !config.database_id.empty();
+  if (!user_specified_database) {
+    config.database_id =
+        google::cloud::spanner_testing::RandomDatabaseName(generator);
+  }
+  cs::Database database(config.project_id, config.instance_id,
+                        config.database_id);
 
   // Once the configuration is fully initialized and the database name set,
   // print everything out.
@@ -137,18 +144,27 @@ int main(int argc, char* argv[]) {
     }
     return statements;
   }();
-  auto created = admin_client.CreateDatabase(database, additional_statements);
+  auto create_future =
+      admin_client.CreateDatabase(database, additional_statements);
   std::cout << "# Waiting for database creation to complete " << std::flush;
   for (;;) {
-    auto status = created.wait_for(std::chrono::seconds(1));
+    auto status = create_future.wait_for(std::chrono::seconds(1));
     if (status == std::future_status::ready) break;
     std::cout << '.' << std::flush;
   }
   std::cout << " DONE\n";
-  auto db = created.get();
+
+  bool database_created = true;
+  auto db = create_future.get();
   if (!db) {
-    std::cerr << "Error creating database: " << db.status() << "\n";
-    return 1;
+    if (user_specified_database &&
+        db.status().code() == google::cloud::StatusCode::kAlreadyExists) {
+      std::cout << "# Re-using existing database\n";
+      database_created = false;
+    } else {
+      std::cerr << "Error creating database: " << db.status() << "\n";
+      return 1;
+    }
   }
 
   std::cout << "ClientCount,ThreadCount,UsingStub"
@@ -158,7 +174,7 @@ int main(int argc, char* argv[]) {
   int exit_status = EXIT_SUCCESS;
 
   auto experiment = e->second(generator);
-  auto status = experiment->SetUp(config, database);
+  auto status = experiment->SetUp(config, database, database_created);
   if (!status.ok()) {
     std::cout << "# Skipping experiment, SetUp() failed: " << status << "\n";
     exit_status = EXIT_FAILURE;
@@ -168,11 +184,15 @@ int main(int argc, char* argv[]) {
     (void)experiment->TearDown(config, database);
   }
 
-  auto drop = admin_client.DropDatabase(database);
-  if (!drop.ok()) {
-    std::cerr << "# Error dropping database: " << drop << "\n";
+  if (!user_specified_database) {
+    auto drop = admin_client.DropDatabase(database);
+    if (!drop.ok()) {
+      std::cerr << "# Error dropping database: " << drop << "\n";
+    }
   }
-  std::cout << "# Experiment finished, database dropped\n";
+  std::cout << "# Experiment finished, "
+            << (user_specified_database ? "user-specified database kept\n"
+                                        : "database dropped\n");
   return exit_status;
 }
 
@@ -521,8 +541,12 @@ class ReadExperiment : public Experiment {
     return impl_.CreateTableStatement(table_name_);
   }
 
-  Status SetUp(Config const& config, cs::Database const& database) override {
-    return impl_.FillTable(config, database, table_name_);
+  Status SetUp(Config const& config, cs::Database const& database,
+               bool fill) override {
+    if (fill) {
+      return impl_.FillTable(config, database, table_name_);
+    }
+    return Status();
   }
 
   Status TearDown(Config const&, cs::Database const&) override { return {}; }
@@ -739,8 +763,12 @@ class SelectExperiment : public Experiment {
     return impl_.CreateTableStatement(table_name_);
   }
 
-  Status SetUp(Config const& config, cs::Database const& database) override {
-    return impl_.FillTable(config, database, table_name_);
+  Status SetUp(Config const& config, cs::Database const& database,
+               bool fill) override {
+    if (fill) {
+      return impl_.FillTable(config, database, table_name_);
+    }
+    return Status();
   }
 
   Status TearDown(Config const&, cs::Database const&) override { return {}; }
@@ -973,8 +1001,12 @@ class UpdateExperiment : public Experiment {
     return impl_.CreateTableStatement(table_name_);
   }
 
-  Status SetUp(Config const& config, cs::Database const& database) override {
-    return impl_.FillTable(config, database, table_name_);
+  Status SetUp(Config const& config, cs::Database const& database,
+               bool fill) override {
+    if (fill) {
+      return impl_.FillTable(config, database, table_name_);
+    }
+    return Status();
   }
 
   Status TearDown(Config const&, cs::Database const&) override { return {}; }
@@ -1234,7 +1266,7 @@ class MutationExperiment : public Experiment {
     return impl_.CreateTableStatement(table_name_);
   }
 
-  Status SetUp(Config const&, cs::Database const&) override { return {}; }
+  Status SetUp(Config const&, cs::Database const&, bool) override { return {}; }
 
   Status TearDown(Config const&, cs::Database const&) override { return {}; }
 
@@ -1457,7 +1489,10 @@ class RunAllExperiment : public Experiment {
       : generator_(generator) {}
 
   std::string AdditionalDdlStatement() override { return {}; }
-  Status SetUp(Config const&, cs::Database const&) override { return {}; }
+  Status SetUp(Config const&, cs::Database const&, bool fill) override {
+    fill_ = fill;
+    return {};
+  }
   Status TearDown(Config const&, cs::Database const&) override { return {}; }
 
   Status Run(Config const& cfg, cs::Database const& database) override {
@@ -1482,7 +1517,7 @@ class RunAllExperiment : public Experiment {
 
       std::cout << "# Smoke test for experiment\n";
       std::cout << config << "\n" << std::flush;
-      auto status = experiment->SetUp(config, database);
+      auto status = experiment->SetUp(config, database, fill_);
       if (!status.ok()) {
         std::cout << "# ERROR in SetUp: " << status << "\n";
         last_error = status;
@@ -1501,6 +1536,7 @@ class RunAllExperiment : public Experiment {
   }
 
  private:
+  bool fill_;
   std::mutex mu_;
   google::cloud::internal::DefaultPRNG generator_;
 };
