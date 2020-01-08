@@ -110,11 +110,9 @@ StatusOr<SessionHolder> SessionPool::Allocate(bool dissociate_from_pool) {
       if (options_.action_on_exhaustion() == ActionOnExhaustion::FAIL) {
         return Status(StatusCode::kResourceExhausted, "session pool exhausted");
       }
-      ++num_waiting_for_session_;
-      cond_.wait(lk, [this] {
+      Wait(lk, [this] {
         return !sessions_.empty() || total_sessions_ < max_pool_size_;
       });
-      --num_waiting_for_session_;
       continue;
     }
 
@@ -125,10 +123,7 @@ StatusOr<SessionHolder> SessionPool::Allocate(bool dissociate_from_pool) {
     // simulaneous calls if additional sessions are needed. We can also use the
     // number of waiters in the `sessions_to_create` calculation below.
     if (create_in_progress_) {
-      ++num_waiting_for_session_;
-      cond_.wait(lk,
-                 [this] { return !sessions_.empty() || !create_in_progress_; });
-      --num_waiting_for_session_;
+      Wait(lk, [this] { return !sessions_.empty() || !create_in_progress_; });
       continue;
     }
 

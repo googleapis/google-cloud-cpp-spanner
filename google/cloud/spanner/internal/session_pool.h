@@ -100,6 +100,15 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
   // Release session back to the pool.
   void Release(std::unique_ptr<Session> session);
 
+  // Called when a thread needs to wait for a `Session` to become available.
+  // @p specifies the condition to wait for.
+  template <typename Predicate>
+  void Wait(std::unique_lock<std::mutex>& lk, Predicate&& p) {
+    ++num_waiting_for_session_;
+    cond_.wait(lk, std::forward<Predicate>(p));
+    --num_waiting_for_session_;
+  }
+
   Status CreateSessions(std::unique_lock<std::mutex>& lk, ChannelInfo& channel,
                         std::map<std::string, std::string> const& labels,
                         int num_sessions);  // EXCLUSIVE_LOCKS_REQUIRED(mu_)
