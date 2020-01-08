@@ -120,6 +120,7 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
   std::vector<std::unique_ptr<Session>> sessions_;  // GUARDED_BY(mu_)
   int total_sessions_ = 0;                          // GUARDED_BY(mu_)
   bool create_in_progress_ = false;                 // GUARDED_BY(mu_)
+  int num_waiting_for_session_ = 0;                 // GUARDED_BY(mu_)
 
   // `channels_` is guaranteed to be non-empty and will not be resized after
   // the constructor runs (so the iterators are guaranteed to always be valid).
