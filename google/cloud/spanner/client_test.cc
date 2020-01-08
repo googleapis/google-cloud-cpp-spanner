@@ -333,7 +333,7 @@ TEST(ClientTest, ExecutePartitionedDmlSuccess) {
 TEST(ClientTest, CommitSuccess) {
   auto conn = std::make_shared<MockConnection>();
 
-  auto ts = Timestamp::FromCounts(123, 0).value();
+  auto ts = internal::TimestampFromCounts(123, 0).value();
   CommitResult result;
   result.commit_timestamp = ts;
 
@@ -396,7 +396,7 @@ TEST(ClientTest, MakeConnectionOptionalArguments) {
 }
 
 TEST(ClientTest, CommitMutatorSuccess) {
-  auto timestamp = Timestamp::FromRFC3339("2019-08-14T21:16:21.123Z");
+  auto timestamp = internal::TimestampFromRFC3339("2019-08-14T21:16:21.123Z");
   ASSERT_STATUS_OK(timestamp);
 
   auto conn = std::make_shared<MockConnection>();
@@ -587,7 +587,7 @@ TEST(ClientTest, CommitMutatorException) {
 #endif
 
 TEST(ClientTest, CommitMutatorRerunTransientFailures) {
-  auto timestamp = Timestamp::FromRFC3339("2019-08-14T21:16:21.123Z");
+  auto timestamp = internal::TimestampFromRFC3339("2019-08-14T21:16:21.123Z");
   ASSERT_STATUS_OK(timestamp);
 
   auto conn = std::make_shared<MockConnection>();
@@ -730,7 +730,7 @@ TEST(ClientTest, CommitMutatorSessionAffinity) {
   // should see the same session in a new transaction on every rerun.
   std::string const session_name = "CommitMutatorLockPriority.Session";
 
-  auto timestamp = Timestamp::FromRFC3339("2019-11-11T20:05:36.345Z");
+  auto timestamp = internal::TimestampFromRFC3339("2019-11-11T20:05:36.345Z");
   ASSERT_STATUS_OK(timestamp);
 
   auto conn = std::make_shared<MockConnection>();
@@ -772,7 +772,7 @@ TEST(ClientTest, CommitMutatorSessionAffinity) {
 }
 
 TEST(ClientTest, CommitMutatorSessionNotFound) {
-  auto timestamp = Timestamp::FromRFC3339("2019-08-14T21:16:21.123Z");
+  auto timestamp = internal::TimestampFromRFC3339("2019-08-14T21:16:21.123Z");
   ASSERT_STATUS_OK(timestamp);
 
   auto conn = std::make_shared<MockConnection>();
@@ -797,7 +797,7 @@ TEST(ClientTest, CommitMutatorSessionNotFound) {
 }
 
 TEST(ClientTest, CommitSessionNotFound) {
-  auto timestamp = Timestamp::FromRFC3339("2019-08-14T21:16:21.123Z");
+  auto timestamp = internal::TimestampFromRFC3339("2019-08-14T21:16:21.123Z");
   ASSERT_STATUS_OK(timestamp);
 
   auto conn = std::make_shared<MockConnection>();

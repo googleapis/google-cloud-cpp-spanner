@@ -260,7 +260,7 @@ std::string Timestamp::ToRFC3339() const {
   return output.str();
 }
 
-Timestamp Timestamp::FromProto(google::protobuf::Timestamp const& proto) {
+Timestamp Timestamp::FromProto(protobuf::Timestamp const& proto) {
   auto ts = FromCounts(proto.seconds(), proto.nanos());
   if (!ts) {
     // If the proto cannot be normalized (proto.nanos() would need to be
@@ -270,11 +270,11 @@ Timestamp Timestamp::FromProto(google::protobuf::Timestamp const& proto) {
   return *ts;
 }
 
-google::protobuf::Timestamp Timestamp::ToProto() const {
+protobuf::Timestamp Timestamp::ToProto() const {
   // May produce a protobuf::Timestamp outside the documented range of
   // 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z inclusive,
   // but so be it.
-  google::protobuf::Timestamp proto;
+  protobuf::Timestamp proto;
   proto.set_seconds(sec_);
   proto.set_nanos(nsec_);
   return proto;
@@ -380,6 +380,26 @@ StatusOr<std::intmax_t> Timestamp::ToRatio(
   if (count < min) return NegativeOverflow(kDestType);
   return count;
 }
+
+namespace internal {
+
+StatusOr<Timestamp> TimestampFromCounts(std::intmax_t sec, std::intmax_t nsec) {
+  return Timestamp::FromCounts(sec, nsec);
+}
+
+StatusOr<Timestamp> TimestampFromRFC3339(std::string const& s) {
+  return Timestamp::FromRFC3339(s);
+}
+
+std::string TimestampToRFC3339(Timestamp ts) { return ts.ToRFC3339(); }
+
+Timestamp TimestampFromProto(protobuf::Timestamp const& proto) {
+  return Timestamp::FromProto(proto);
+}
+
+protobuf::Timestamp TimestampToProto(Timestamp ts) { return ts.ToProto(); }
+
+}  // namespace internal
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner

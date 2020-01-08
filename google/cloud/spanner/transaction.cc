@@ -56,7 +56,8 @@ Transaction::ReadOnlyOptions::ReadOnlyOptions() {
 }
 
 Transaction::ReadOnlyOptions::ReadOnlyOptions(Timestamp read_timestamp) {
-  *ro_opts_.mutable_read_timestamp() = read_timestamp.ToProto();
+  *ro_opts_.mutable_read_timestamp() =
+      internal::TimestampToProto(read_timestamp);
   ro_opts_.set_return_read_timestamp(true);
 }
 
@@ -73,7 +74,8 @@ Transaction::SingleUseOptions::SingleUseOptions(ReadOnlyOptions opts) {
 }
 
 Transaction::SingleUseOptions::SingleUseOptions(Timestamp min_read_timestamp) {
-  *ro_opts_.mutable_min_read_timestamp() = min_read_timestamp.ToProto();
+  *ro_opts_.mutable_min_read_timestamp() =
+      internal::TimestampToProto(min_read_timestamp);
   ro_opts_.set_return_read_timestamp(true);
 }
 

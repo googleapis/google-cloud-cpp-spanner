@@ -1354,14 +1354,15 @@ TEST(ConnectionImplTest, CommitBeginTransactionRetry) {
         EXPECT_EQ("test-session-name", request.session());
         EXPECT_EQ(txn.id(), request.transaction_id());
         spanner_proto::CommitResponse response;
-        *response.mutable_commit_timestamp() =
-            Timestamp::FromCounts(123, 0).value().ToProto();
+        *response.mutable_commit_timestamp() = internal::TimestampToProto(
+            internal::TimestampFromCounts(123, 0).value());
         return response;
       });
 
   auto commit = conn->Commit({MakeReadWriteTransaction(), {}});
   EXPECT_STATUS_OK(commit);
-  EXPECT_EQ(Timestamp::FromCounts(123, 0).value(), commit->commit_timestamp);
+  EXPECT_EQ(internal::TimestampFromCounts(123, 0).value(),
+            commit->commit_timestamp);
 }
 
 TEST(ConnectionImplTest, CommitBeginTransactionSessionNotFound) {
@@ -1463,8 +1464,8 @@ TEST(ConnectionImplTest, CommitCommitIdempotentTransientSuccess) {
         EXPECT_EQ("test-session-name", request.session());
         EXPECT_EQ("test-txn-id", request.transaction_id());
         spanner_proto::CommitResponse response;
-        *response.mutable_commit_timestamp() =
-            Timestamp::FromCounts(123, 0).value().ToProto();
+        *response.mutable_commit_timestamp() = internal::TimestampToProto(
+            internal::TimestampFromCounts(123, 0).value());
         return response;
       });
 
@@ -1474,7 +1475,8 @@ TEST(ConnectionImplTest, CommitCommitIdempotentTransientSuccess) {
 
   auto commit = conn->Commit({txn, {}});
   EXPECT_STATUS_OK(commit);
-  EXPECT_EQ(Timestamp::FromCounts(123, 0).value(), commit->commit_timestamp);
+  EXPECT_EQ(internal::TimestampFromCounts(123, 0).value(),
+            commit->commit_timestamp);
 }
 
 TEST(ConnectionImplTest, CommitSuccessWithTransactionId) {
@@ -1495,8 +1497,8 @@ TEST(ConnectionImplTest, CommitSuccessWithTransactionId) {
         EXPECT_EQ("test-session-name", request.session());
         EXPECT_EQ("test-txn-id", request.transaction_id());
         spanner_proto::CommitResponse response;
-        *response.mutable_commit_timestamp() =
-            Timestamp::FromCounts(123, 0).value().ToProto();
+        *response.mutable_commit_timestamp() = internal::TimestampToProto(
+            internal::TimestampFromCounts(123, 0).value());
         return response;
       });
 

@@ -30,69 +30,54 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 
+class Timestamp;  // defined below
+
+/**
+ * Convenience alias. `std::chrono::sys_time` since C++20.
+ */
+template <typename Duration>
+using sys_time = std::chrono::time_point<std::chrono::system_clock, Duration>;
+
+/**
+ * Construct a `Timestamp` from a `std::chrono::time_point` on the system
+ * clock. May produce out-of-range errors, depending on the properties of
+ * `Duration` and the `std::chrono::system_clock` epoch.
+ */
+template <typename Duration>
+StatusOr<Timestamp> MakeTimestamp(sys_time<Duration> const&);
+
+namespace internal {
+
+// Internal forward declarations to befriend.
+StatusOr<Timestamp> TimestampFromCounts(std::intmax_t sec, std::intmax_t nsec);
+StatusOr<Timestamp> TimestampFromRFC3339(std::string const&);
+std::string TimestampToRFC3339(Timestamp);
+Timestamp TimestampFromProto(protobuf::Timestamp const&);
+protobuf::Timestamp TimestampToProto(Timestamp);
+
+}  // namespace internal
+
 /**
  * A representation of the Spanner TIMESTAMP type: An instant in time.
  *
- * A `Timestamp` represents an absolute point in time (i.e., is independent of
- * any time zone), with at least nanosecond precision, and with a range of at
- * least 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z.
- *
- * Note that the string and protobuf representations share those precision and
- * range guarantees.
- *
- * The `std::chrono::time_point` conversions depend on the precision/range of
- * the underlying duration and on the `std::chrono::system_clock` epoch.
+ * A `Timestamp` represents an absolute point in time (i.e., is independent
+ * of any time zone), with at least nanosecond precision, and with a range of
+ * at least 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z.
  */
 class Timestamp {
- private:
-  // Convenience alias. `std::chrono::sys_time` since C++20.
-  template <class Duration>
-  using sys_time = std::chrono::time_point<std::chrono::system_clock, Duration>;
-
  public:
-  /// Default construction yields the Unix epoch.
+  /// Default construction yields 1970-01-01T00:00:00Z.
   Timestamp() : Timestamp(0, 0) {}
 
-  /// Conversion from/to RFC3339 string.
+  /// @name Regular value type, supporting copy, assign, move.
   ///@{
-  static StatusOr<Timestamp> FromRFC3339(std::string const&);
-  std::string ToRFC3339() const;
+  Timestamp(Timestamp&&) = default;
+  Timestamp& operator=(Timestamp&&) = default;
+  Timestamp(Timestamp const&) = default;
+  Timestamp& operator=(Timestamp const&) = default;
   ///@}
 
-  /// Conversion from/to `google::protobuf::Timestamp`. These conversions never
-  /// fail, but may accept/produce protobufs outside their documented range.
-  ///@{
-  static Timestamp FromProto(google::protobuf::Timestamp const&);
-  google::protobuf::Timestamp ToProto() const;
-  ///@}
-
-  /// Conversion from/to `std::chrono::time_point` on the system clock.
-  /// May produce out-of-range errors in either direction, depending on the
-  /// properties of `Duration` and the `std::chrono::system_clock` epoch.
-  ///@{
-  template <class Duration>
-  static StatusOr<Timestamp> FromChrono(sys_time<Duration> const& tp) {
-    return FromRatio((tp - UnixEpoch<Duration>()).count(),
-                     Duration::period::num, Duration::period::den);
-  }
-  template <class Duration>
-  StatusOr<sys_time<Duration>> ToChrono() const {
-    auto const count =
-        ToRatio(std::numeric_limits<typename Duration::rep>::min(),
-                std::numeric_limits<typename Duration::rep>::max(),
-                Duration::period::num, Duration::period::den);
-    if (!count) return count.status();
-    return UnixEpoch<Duration>() +
-           Duration(static_cast<typename Duration::rep>(*count));
-  }
-  ///@}
-
-  /// Build a `Timestamp` from raw counts of seconds/nanoseconds since the Unix
-  /// epoch (minus leap seconds), like a C++17 `std::timespec` but out-of-range
-  /// `nsec` values are normalized. Fails if the time cannot be represented.
-  static StatusOr<Timestamp> FromCounts(std::intmax_t sec, std::intmax_t nsec);
-
-  /// Factory functions for special `Timestamp` values.
+  /// @name Factory functions for special `Timestamp` values.
   ///@{
   static Timestamp Min();
   static Timestamp Max();
@@ -125,12 +110,43 @@ class Timestamp {
     return os << ts.ToRFC3339();
   }
 
+  /// Convert the `Timestamp` to the user-specified template type.
+  template <typename T>
+  StatusOr<T> get() const {
+    return ConvertTo(T{});
+  }
+
  private:
+  template <typename Duration>
+  friend StatusOr<Timestamp> MakeTimestamp(sys_time<Duration> const&);
+
+  friend StatusOr<Timestamp> internal::TimestampFromCounts(std::intmax_t sec,
+                                                           std::intmax_t nsec);
+  friend StatusOr<Timestamp> internal::TimestampFromRFC3339(std::string const&);
+  friend std::string internal::TimestampToRFC3339(Timestamp);
+  friend Timestamp internal::TimestampFromProto(protobuf::Timestamp const&);
+  friend protobuf::Timestamp internal::TimestampToProto(Timestamp);
+
   // Arguments must have already been normalized.
   Timestamp(std::int64_t sec, std::int32_t nsec) : sec_(sec), nsec_(nsec) {}
 
-  // Helpers for `FromChrono()` and `ToChrono()`.
-  template <class Duration>
+  // Build a `Timestamp` from raw counts of seconds/nanoseconds since the Unix
+  // epoch (minus leap seconds), like a C++17 `std::timespec` but out-of-range
+  // `nsec` values are normalized. Fails if the time cannot be represented.
+  static StatusOr<Timestamp> FromCounts(std::intmax_t sec, std::intmax_t nsec);
+
+  // Conversion from/to RFC3339 string.
+  static StatusOr<Timestamp> FromRFC3339(std::string const&);
+  std::string ToRFC3339() const;
+
+  // Conversion from/to `protobuf::Timestamp`. These conversions never fail,
+  // but may accept/produce protobufs outside their documented range.
+  static Timestamp FromProto(protobuf::Timestamp const&);
+  protobuf::Timestamp ToProto() const;
+
+  // Helpers for `std::chrono::time_point` conversions. For now we do not
+  // allow for `Duration::rep` being wider than `std::intmax_t`.
+  template <typename Duration>
   static sys_time<Duration> UnixEpoch() {
     return std::chrono::time_point_cast<Duration>(
         sys_time<Duration>::clock::from_time_t(0));
@@ -142,11 +158,31 @@ class Timestamp {
                                   std::intmax_t const numerator,
                                   std::intmax_t const denominator) const;
 
+  // Conversion to a `std::chrono::time_point` on the system clock. May
+  // produce out-of-range errors in either direction, depending on the
+  // properties of `Duration` and the `std::chrono::system_clock` epoch.
+  template <typename Duration>
+  StatusOr<sys_time<Duration>> ConvertTo(sys_time<Duration> const&) const {
+    auto const count =
+        ToRatio(std::numeric_limits<typename Duration::rep>::min(),
+                std::numeric_limits<typename Duration::rep>::max(),
+                Duration::period::num, Duration::period::den);
+    if (!count) return count.status();
+    return Timestamp::UnixEpoch<Duration>() +
+           Duration(static_cast<typename Duration::rep>(*count));
+  }
+
   std::int64_t sec_;   // The number of seconds that have elapsed since
                        // 1970-01-01T00:00:00Z, minus leap seconds.
   std::int32_t nsec_;  // The number of nanoseconds [0..999999999] that
                        // have elapsed within that second.
 };
+
+template <typename Duration>
+StatusOr<Timestamp> MakeTimestamp(sys_time<Duration> const& tp) {
+  return Timestamp::FromRatio((tp - Timestamp::UnixEpoch<Duration>()).count(),
+                              Duration::period::num, Duration::period::den);
+}
 
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner

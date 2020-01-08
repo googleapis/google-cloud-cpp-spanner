@@ -26,151 +26,199 @@ namespace {
 using ::testing::HasSubstr;
 
 TEST(Timestamp, FromRFC3339) {
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 0).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 9).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22.000000009Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 89).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22.000000089Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 789).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22.000000789Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 6789).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22.000006789Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 56789).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22.000056789Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 456789).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22.000456789Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 3456789).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22.003456789Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 23456789).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22.023456789Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 123456789).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22.123456789Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 123456780).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22.12345678Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 123456700).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22.1234567Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 123456000).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22.123456Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 123450000).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22.12345Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 123400000).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22.1234Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 123000000).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22.123Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 120000000).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22.12Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(1561135942, 100000000).value(),
-            Timestamp::FromRFC3339("2019-06-21T16:52:22.1Z").value());
+  EXPECT_EQ(internal::TimestampFromCounts(1561135942, 0).value(),
+            internal::TimestampFromRFC3339("2019-06-21T16:52:22Z").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(1561135942, 9).value(),
+      internal::TimestampFromRFC3339("2019-06-21T16:52:22.000000009Z").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(1561135942, 89).value(),
+      internal::TimestampFromRFC3339("2019-06-21T16:52:22.000000089Z").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(1561135942, 789).value(),
+      internal::TimestampFromRFC3339("2019-06-21T16:52:22.000000789Z").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(1561135942, 6789).value(),
+      internal::TimestampFromRFC3339("2019-06-21T16:52:22.000006789Z").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(1561135942, 56789).value(),
+      internal::TimestampFromRFC3339("2019-06-21T16:52:22.000056789Z").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(1561135942, 456789).value(),
+      internal::TimestampFromRFC3339("2019-06-21T16:52:22.000456789Z").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(1561135942, 3456789).value(),
+      internal::TimestampFromRFC3339("2019-06-21T16:52:22.003456789Z").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(1561135942, 23456789).value(),
+      internal::TimestampFromRFC3339("2019-06-21T16:52:22.023456789Z").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(1561135942, 123456789).value(),
+      internal::TimestampFromRFC3339("2019-06-21T16:52:22.123456789Z").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(1561135942, 123456780).value(),
+      internal::TimestampFromRFC3339("2019-06-21T16:52:22.12345678Z").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(1561135942, 123456700).value(),
+      internal::TimestampFromRFC3339("2019-06-21T16:52:22.1234567Z").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(1561135942, 123456000).value(),
+      internal::TimestampFromRFC3339("2019-06-21T16:52:22.123456Z").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(1561135942, 123450000).value(),
+      internal::TimestampFromRFC3339("2019-06-21T16:52:22.12345Z").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(1561135942, 123400000).value(),
+      internal::TimestampFromRFC3339("2019-06-21T16:52:22.1234Z").value());
+  EXPECT_EQ(internal::TimestampFromCounts(1561135942, 123000000).value(),
+            internal::TimestampFromRFC3339("2019-06-21T16:52:22.123Z").value());
+  EXPECT_EQ(internal::TimestampFromCounts(1561135942, 120000000).value(),
+            internal::TimestampFromRFC3339("2019-06-21T16:52:22.12Z").value());
+  EXPECT_EQ(internal::TimestampFromCounts(1561135942, 100000000).value(),
+            internal::TimestampFromRFC3339("2019-06-21T16:52:22.1Z").value());
 }
 
 TEST(Timestamp, FromRFC3339Offset) {
-  EXPECT_EQ(Timestamp::FromCounts(1546398245, 0).value(),
-            Timestamp::FromRFC3339("2019-01-02T03:04:05+00:00").value());
-  EXPECT_EQ(Timestamp::FromCounts(1546398245 + 3600 + 120, 0).value(),
-            Timestamp::FromRFC3339("2019-01-02T03:04:05+01:02").value());
-  EXPECT_EQ(Timestamp::FromCounts(1546398245 - 3600 - 120, 0).value(),
-            Timestamp::FromRFC3339("2019-01-02T03:04:05-01:02").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(1546398245, 0).value(),
+      internal::TimestampFromRFC3339("2019-01-02T03:04:05+00:00").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(1546398245 + 3600 + 120, 0).value(),
+      internal::TimestampFromRFC3339("2019-01-02T03:04:05+01:02").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(1546398245 - 3600 - 120, 0).value(),
+      internal::TimestampFromRFC3339("2019-01-02T03:04:05-01:02").value());
 }
 
 TEST(Timestamp, FromRFC3339Failure) {
-  EXPECT_FALSE(Timestamp::FromRFC3339(""));
-  EXPECT_FALSE(Timestamp::FromRFC3339("garbage in"));
-  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22"));
-  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22.9"));
-  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22.Z"));
-  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22ZX"));
-  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:-22Z"));
+  EXPECT_FALSE(internal::TimestampFromRFC3339(""));
+  EXPECT_FALSE(internal::TimestampFromRFC3339("garbage in"));
+  EXPECT_FALSE(internal::TimestampFromRFC3339("2019-06-21T16:52:22"));
+  EXPECT_FALSE(internal::TimestampFromRFC3339("2019-06-21T16:52:22.9"));
+  EXPECT_FALSE(internal::TimestampFromRFC3339("2019-06-21T16:52:22.Z"));
+  EXPECT_FALSE(internal::TimestampFromRFC3339("2019-06-21T16:52:22ZX"));
+  EXPECT_FALSE(internal::TimestampFromRFC3339("2019-06-21T16:52:-22Z"));
 
-  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22+0:"));
-  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22+:0"));
-  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22+0:-0"));
-  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22x00:00"));
-  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22+ab:cd"));
-  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22-24:60"));
-  EXPECT_FALSE(Timestamp::FromRFC3339("2019-06-21T16:52:22+00:00:00"));
+  EXPECT_FALSE(internal::TimestampFromRFC3339("2019-06-21T16:52:22+0:"));
+  EXPECT_FALSE(internal::TimestampFromRFC3339("2019-06-21T16:52:22+:0"));
+  EXPECT_FALSE(internal::TimestampFromRFC3339("2019-06-21T16:52:22+0:-0"));
+  EXPECT_FALSE(internal::TimestampFromRFC3339("2019-06-21T16:52:22x00:00"));
+  EXPECT_FALSE(internal::TimestampFromRFC3339("2019-06-21T16:52:22+ab:cd"));
+  EXPECT_FALSE(internal::TimestampFromRFC3339("2019-06-21T16:52:22-24:60"));
+  EXPECT_FALSE(internal::TimestampFromRFC3339("2019-06-21T16:52:22+00:00:00"));
 }
 
 TEST(Timestamp, FromRFC3339Limit) {
   // Verify Spanner range requirements.
-  EXPECT_EQ(Timestamp::FromCounts(-62135596800, 0).value(),
-            Timestamp::FromRFC3339("0001-01-01T00:00:00.000000000Z").value());
-  EXPECT_EQ(Timestamp::FromCounts(253402300799, 999999999).value(),
-            Timestamp::FromRFC3339("9999-12-31T23:59:59.999999999Z").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(-62135596800, 0).value(),
+      internal::TimestampFromRFC3339("0001-01-01T00:00:00.000000000Z").value());
+  EXPECT_EQ(
+      internal::TimestampFromCounts(253402300799, 999999999).value(),
+      internal::TimestampFromRFC3339("9999-12-31T23:59:59.999999999Z").value());
 
   // std::tm range limits (including -1900 tm_year bias).
   EXPECT_EQ(
-      Timestamp::FromCounts(-67768040609740800, 0).value(),
-      Timestamp::FromRFC3339("-2147481748-01-01T00:00:00.000000000Z").value());
+      internal::TimestampFromCounts(-67768040609740800, 0).value(),
+      internal::TimestampFromRFC3339("-2147481748-01-01T00:00:00.000000000Z")
+          .value());
   EXPECT_EQ(
-      Timestamp::FromCounts(67768036191676799, 999999999).value(),
-      Timestamp::FromRFC3339("2147485547-12-31T23:59:59.999999999Z").value());
+      internal::TimestampFromCounts(67768036191676799, 999999999).value(),
+      internal::TimestampFromRFC3339("2147485547-12-31T23:59:59.999999999Z")
+          .value());
 
   // One nanosecond beyond std::tm range limits fails to parse.
-  EXPECT_FALSE(Timestamp::FromRFC3339("-2147481749-12-31T23:59:59.999999999Z"));
-  EXPECT_FALSE(Timestamp::FromRFC3339("2147485548-01-01T00:00:00.000000000Z"));
+  EXPECT_FALSE(
+      internal::TimestampFromRFC3339("-2147481749-12-31T23:59:59.999999999Z"));
+  EXPECT_FALSE(
+      internal::TimestampFromRFC3339("2147485548-01-01T00:00:00.000000000Z"));
 }
 
 TEST(Timestamp, ToRFC3339) {
   EXPECT_EQ("2019-06-21T16:52:22Z",
-            Timestamp::FromCounts(1561135942, 0).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 0).value()));
   EXPECT_EQ("2019-06-21T16:52:22.000000009Z",
-            Timestamp::FromCounts(1561135942, 9).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 9).value()));
   EXPECT_EQ("2019-06-21T16:52:22.000000089Z",
-            Timestamp::FromCounts(1561135942, 89).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 89).value()));
   EXPECT_EQ("2019-06-21T16:52:22.000000789Z",
-            Timestamp::FromCounts(1561135942, 789).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 789).value()));
   EXPECT_EQ("2019-06-21T16:52:22.000006789Z",
-            Timestamp::FromCounts(1561135942, 6789).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 6789).value()));
   EXPECT_EQ("2019-06-21T16:52:22.000056789Z",
-            Timestamp::FromCounts(1561135942, 56789).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 56789).value()));
   EXPECT_EQ("2019-06-21T16:52:22.000456789Z",
-            Timestamp::FromCounts(1561135942, 456789).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 456789).value()));
   EXPECT_EQ("2019-06-21T16:52:22.003456789Z",
-            Timestamp::FromCounts(1561135942, 3456789).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 3456789).value()));
   EXPECT_EQ("2019-06-21T16:52:22.023456789Z",
-            Timestamp::FromCounts(1561135942, 23456789).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 23456789).value()));
   EXPECT_EQ("2019-06-21T16:52:22.123456789Z",
-            Timestamp::FromCounts(1561135942, 123456789).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 123456789).value()));
   EXPECT_EQ("2019-06-21T16:52:22.12345678Z",
-            Timestamp::FromCounts(1561135942, 123456780).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 123456780).value()));
   EXPECT_EQ("2019-06-21T16:52:22.1234567Z",
-            Timestamp::FromCounts(1561135942, 123456700).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 123456700).value()));
   EXPECT_EQ("2019-06-21T16:52:22.123456Z",
-            Timestamp::FromCounts(1561135942, 123456000).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 123456000).value()));
   EXPECT_EQ("2019-06-21T16:52:22.12345Z",
-            Timestamp::FromCounts(1561135942, 123450000).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 123450000).value()));
   EXPECT_EQ("2019-06-21T16:52:22.1234Z",
-            Timestamp::FromCounts(1561135942, 123400000).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 123400000).value()));
   EXPECT_EQ("2019-06-21T16:52:22.123Z",
-            Timestamp::FromCounts(1561135942, 123000000).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 123000000).value()));
   EXPECT_EQ("2019-06-21T16:52:22.12Z",
-            Timestamp::FromCounts(1561135942, 120000000).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 120000000).value()));
   EXPECT_EQ("2019-06-21T16:52:22.1Z",
-            Timestamp::FromCounts(1561135942, 100000000).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(1561135942, 100000000).value()));
 }
 
 TEST(Timestamp, ToRFC3339Limit) {
   // Spanner range requirements.
   EXPECT_EQ("0001-01-01T00:00:00Z",
-            Timestamp::FromCounts(-62135596800, 0).value().ToRFC3339());
-  EXPECT_EQ("9999-12-31T23:59:59.999999999Z",
-            Timestamp::FromCounts(253402300799, 999999999).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(-62135596800, 0).value()));
+  EXPECT_EQ(
+      "9999-12-31T23:59:59.999999999Z",
+      internal::TimestampToRFC3339(
+          internal::TimestampFromCounts(253402300799, 999999999).value()));
 
   // std::tm range limits (including -1900 tm_year bias).
   EXPECT_EQ("-2147481748-01-01T00:00:00Z",
-            Timestamp::FromCounts(-67768040609740800, 0).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(-67768040609740800, 0).value()));
   EXPECT_EQ(
       "2147485547-12-31T23:59:59.999999999Z",
-      Timestamp::FromCounts(67768036191676799, 999999999).value().ToRFC3339());
+      internal::TimestampToRFC3339(
+          internal::TimestampFromCounts(67768036191676799, 999999999).value()));
 
   // One nanosecond beyond std::tm range limits gives unspecified behavior.
   // Here we expect that we *do not* observe the "right" outputs.
-  EXPECT_NE(
-      "-2147481749-12-31T23:59:59.999999999Z",
-      Timestamp::FromCounts(-67768040609740801, 999999999).value().ToRFC3339());
+  EXPECT_NE("-2147481749-12-31T23:59:59.999999999Z",
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(-67768040609740801, 999999999)
+                    .value()));
   EXPECT_NE("2147485548-01-01T00:00:00",
-            Timestamp::FromCounts(67768036191676800, 0).value().ToRFC3339());
+            internal::TimestampToRFC3339(
+                internal::TimestampFromCounts(67768036191676800, 0).value()));
 }
 
 TEST(Timestamp, FromProto) {
@@ -178,36 +226,39 @@ TEST(Timestamp, FromProto) {
 
   proto.set_seconds(0);
   proto.set_nanos(0);
-  EXPECT_EQ(Timestamp::FromCounts(0, 0).value(), Timestamp::FromProto(proto));
+  EXPECT_EQ(internal::TimestampFromCounts(0, 0).value(),
+            internal::TimestampFromProto(proto));
 
   proto.set_seconds(1576030524);
   proto.set_nanos(611422667);
-  EXPECT_EQ(Timestamp::FromCounts(1576030524, 611422667).value(),
-            Timestamp::FromProto(proto));
+  EXPECT_EQ(internal::TimestampFromCounts(1576030524, 611422667).value(),
+            internal::TimestampFromProto(proto));
 
   proto.set_seconds(std::numeric_limits<std::int64_t>::min());
   proto.set_nanos(0);
-  EXPECT_EQ(Timestamp::Min(), Timestamp::FromProto(proto));
+  EXPECT_EQ(Timestamp::Min(), internal::TimestampFromProto(proto));
 
   proto.set_seconds(std::numeric_limits<std::int64_t>::max());
   proto.set_nanos(999999999);
-  EXPECT_EQ(Timestamp::Max(), Timestamp::FromProto(proto));
+  EXPECT_EQ(Timestamp::Max(), internal::TimestampFromProto(proto));
 }
 
 TEST(Timestamp, ToProto) {
-  auto proto = Timestamp::FromCounts(0, 0).value().ToProto();
+  auto proto =
+      internal::TimestampToProto(internal::TimestampFromCounts(0, 0).value());
   EXPECT_EQ(0, proto.seconds());
   EXPECT_EQ(0, proto.nanos());
 
-  proto = Timestamp::FromCounts(1576030524, 611422667).value().ToProto();
+  proto = internal::TimestampToProto(
+      internal::TimestampFromCounts(1576030524, 611422667).value());
   EXPECT_EQ(1576030524, proto.seconds());
   EXPECT_EQ(611422667, proto.nanos());
 
-  proto = Timestamp::Min().ToProto();
+  proto = internal::TimestampToProto(Timestamp::Min());
   EXPECT_EQ(std::numeric_limits<std::int64_t>::min(), proto.seconds());
   EXPECT_EQ(0, proto.nanos());
 
-  proto = Timestamp::Max().ToProto();
+  proto = internal::TimestampToProto(Timestamp::Max());
   EXPECT_EQ(std::numeric_limits<std::int64_t>::max(), proto.seconds());
   EXPECT_EQ(999999999, proto.nanos());
 }
@@ -222,57 +273,57 @@ TEST(Timestamp, FromChrono) {
 
   auto const tp1 = unix_epoch + std::chrono::seconds(2123456789) +
                    std::chrono::nanoseconds(123456789);
-  EXPECT_EQ(Timestamp::FromCounts(2123456789, 123456789).value(),
-            Timestamp::FromChrono(tp1).value());
+  EXPECT_EQ(internal::TimestampFromCounts(2123456789, 123456789).value(),
+            MakeTimestamp(tp1).value());
 
   auto const tp2 = unix_epoch + std::chrono::seconds(2123456789) +
                    std::chrono::microseconds(123456789);
-  EXPECT_EQ(Timestamp::FromCounts(2123456789, 123456789000).value(),
-            Timestamp::FromChrono(tp2).value());
+  EXPECT_EQ(internal::TimestampFromCounts(2123456789, 123456789000).value(),
+            MakeTimestamp(tp2).value());
 
   auto const tp3 = unix_epoch + std::chrono::seconds(2123456789) +
                    std::chrono::milliseconds(123456789);
-  EXPECT_EQ(Timestamp::FromCounts(2123456789, 123456789000000).value(),
-            Timestamp::FromChrono(tp3).value());
+  EXPECT_EQ(internal::TimestampFromCounts(2123456789, 123456789000000).value(),
+            MakeTimestamp(tp3).value());
 
   auto const tp4 = unix_epoch + std::chrono::minutes(2123456789);
-  EXPECT_EQ(Timestamp::FromCounts(2123456789LL * 60, 0).value(),
-            Timestamp::FromChrono(tp4).value());
+  EXPECT_EQ(internal::TimestampFromCounts(2123456789LL * 60, 0).value(),
+            MakeTimestamp(tp4).value());
 
   auto const tp5 = unix_epoch + std::chrono::hours(2123456789);
-  EXPECT_EQ(Timestamp::FromCounts(2123456789LL * 60 * 60, 0).value(),
-            Timestamp::FromChrono(tp5).value());
+  EXPECT_EQ(internal::TimestampFromCounts(2123456789LL * 60 * 60, 0).value(),
+            MakeTimestamp(tp5).value());
 
   auto const tp_big_pos = unix_epoch + big_minutes(153722867280912931LL);
-  auto const ts_big_pos = Timestamp::FromChrono(tp_big_pos);
+  auto const ts_big_pos = MakeTimestamp(tp_big_pos);
   EXPECT_FALSE(ts_big_pos.ok());
   EXPECT_THAT(ts_big_pos.status().message(), HasSubstr("positive overflow"));
 
   auto const tp6 = unix_epoch - std::chrono::seconds(2123456789) +
                    std::chrono::nanoseconds(123456789);
-  EXPECT_EQ(Timestamp::FromCounts(-2123456789, 123456789).value(),
-            Timestamp::FromChrono(tp6).value());
+  EXPECT_EQ(internal::TimestampFromCounts(-2123456789, 123456789).value(),
+            MakeTimestamp(tp6).value());
 
   auto const tp7 = unix_epoch - std::chrono::seconds(2123456789) +
                    std::chrono::microseconds(123456789);
-  EXPECT_EQ(Timestamp::FromCounts(-2123456789, 123456789000).value(),
-            Timestamp::FromChrono(tp7).value());
+  EXPECT_EQ(internal::TimestampFromCounts(-2123456789, 123456789000).value(),
+            MakeTimestamp(tp7).value());
 
   auto const tp8 = unix_epoch - std::chrono::seconds(2123456789) +
                    std::chrono::milliseconds(123456789);
-  EXPECT_EQ(Timestamp::FromCounts(-2123456789, 123456789000000).value(),
-            Timestamp::FromChrono(tp8).value());
+  EXPECT_EQ(internal::TimestampFromCounts(-2123456789, 123456789000000).value(),
+            MakeTimestamp(tp8).value());
 
   auto const tp9 = unix_epoch - std::chrono::minutes(2123456789);
-  EXPECT_EQ(Timestamp::FromCounts(-2123456789LL * 60, 0).value(),
-            Timestamp::FromChrono(tp9).value());
+  EXPECT_EQ(internal::TimestampFromCounts(-2123456789LL * 60, 0).value(),
+            MakeTimestamp(tp9).value());
 
   auto const tp10 = unix_epoch - std::chrono::hours(2123456789);
-  EXPECT_EQ(Timestamp::FromCounts(-2123456789LL * 60 * 60, 0).value(),
-            Timestamp::FromChrono(tp10).value());
+  EXPECT_EQ(internal::TimestampFromCounts(-2123456789LL * 60 * 60, 0).value(),
+            MakeTimestamp(tp10).value());
 
   auto const tp_big_neg = unix_epoch - big_minutes(153722867280912931LL);
-  auto const ts_big_neg = Timestamp::FromChrono(tp_big_neg);
+  auto const ts_big_neg = MakeTimestamp(tp_big_neg);
   EXPECT_FALSE(ts_big_neg.ok());
   EXPECT_THAT(ts_big_neg.status().message(), HasSubstr("negative overflow"));
 }
@@ -282,82 +333,84 @@ TEST(Timestamp, ToChrono) {
   auto const epoch = std::chrono::time_point_cast<std::chrono::seconds>(
       std::chrono::system_clock::from_time_t(0));
 
-  auto const ts_pos = Timestamp::FromCounts(2123456789, 123456789).value();
+  auto const ts_pos =
+      internal::TimestampFromCounts(2123456789, 123456789).value();
 
   auto const tp1 = epoch + std::chrono::seconds(2123456789) +
                    std::chrono::nanoseconds(123456789);
-  EXPECT_EQ(tp1, ts_pos.ToChrono<std::chrono::nanoseconds>().value());
+  EXPECT_EQ(tp1, ts_pos.get<sys_time<std::chrono::nanoseconds>>().value());
 
   auto const tp2 = epoch + std::chrono::seconds(2123456789) +
                    std::chrono::microseconds(123456);
-  EXPECT_EQ(tp2, ts_pos.ToChrono<std::chrono::microseconds>().value());
+  EXPECT_EQ(tp2, ts_pos.get<sys_time<std::chrono::microseconds>>().value());
 
   auto const tp3 =
       epoch + std::chrono::seconds(2123456789) + std::chrono::milliseconds(123);
-  EXPECT_EQ(tp3, ts_pos.ToChrono<std::chrono::milliseconds>().value());
+  EXPECT_EQ(tp3, ts_pos.get<sys_time<std::chrono::milliseconds>>().value());
 
   auto const tp4 = epoch + std::chrono::seconds(2123456789);
-  EXPECT_EQ(tp4, ts_pos.ToChrono<std::chrono::seconds>().value());
+  EXPECT_EQ(tp4, ts_pos.get<sys_time<std::chrono::seconds>>().value());
 
   auto const tp5 = epoch + std::chrono::hours(2123456789 / 60 / 60);
-  EXPECT_EQ(tp5, ts_pos.ToChrono<std::chrono::hours>().value());
+  EXPECT_EQ(tp5, ts_pos.get<sys_time<std::chrono::hours>>().value());
 
   auto const ts_big_pos = Timestamp::Max();
-  auto const tp_big_pos = ts_big_pos.ToChrono<std::chrono::milliseconds>();
+  auto const tp_big_pos = ts_big_pos.get<sys_time<std::chrono::milliseconds>>();
   EXPECT_FALSE(tp_big_pos.ok());
   EXPECT_THAT(tp_big_pos.status().message(), HasSubstr("positive overflow"));
 
-  auto const ts_neg = Timestamp::FromCounts(-2123456789, 123456789).value();
+  auto const ts_neg =
+      internal::TimestampFromCounts(-2123456789, 123456789).value();
 
   auto const tp6 = epoch - std::chrono::seconds(2123456789) +
                    std::chrono::nanoseconds(123456789);
-  EXPECT_EQ(tp6, ts_neg.ToChrono<std::chrono::nanoseconds>().value());
+  EXPECT_EQ(tp6, ts_neg.get<sys_time<std::chrono::nanoseconds>>().value());
 
   auto const tp7 = epoch - std::chrono::seconds(2123456789) +
                    std::chrono::microseconds(123456);
-  EXPECT_EQ(tp7, ts_neg.ToChrono<std::chrono::microseconds>().value());
+  EXPECT_EQ(tp7, ts_neg.get<sys_time<std::chrono::microseconds>>().value());
 
   auto const tp8 =
       epoch - std::chrono::seconds(2123456789) + std::chrono::milliseconds(123);
-  EXPECT_EQ(tp8, ts_neg.ToChrono<std::chrono::milliseconds>().value());
+  EXPECT_EQ(tp8, ts_neg.get<sys_time<std::chrono::milliseconds>>().value());
 
   auto const tp9 = epoch - std::chrono::seconds(2123456789);
-  EXPECT_EQ(tp9, ts_neg.ToChrono<std::chrono::seconds>().value());
+  EXPECT_EQ(tp9, ts_neg.get<sys_time<std::chrono::seconds>>().value());
 
   auto const tp10 = epoch - std::chrono::hours(2123456789 / 60 / 60);
-  EXPECT_EQ(tp10, ts_neg.ToChrono<std::chrono::hours>().value());
+  EXPECT_EQ(tp10, ts_neg.get<sys_time<std::chrono::hours>>().value());
 
   auto const ts_big_neg = Timestamp::Min();
-  auto const tp_big_neg = ts_big_neg.ToChrono<std::chrono::milliseconds>();
+  auto const tp_big_neg = ts_big_neg.get<sys_time<std::chrono::milliseconds>>();
   EXPECT_FALSE(tp_big_neg.ok());
   EXPECT_THAT(tp_big_neg.status().message(), HasSubstr("negative overflow"));
 }
 
 TEST(Timestamp, FromCounts) {
   constexpr std::int64_t kMax = std::numeric_limits<std::int64_t>::max();
-  auto ts = Timestamp::FromCounts(kMax, 999999999);
+  auto ts = internal::TimestampFromCounts(kMax, 999999999);
   EXPECT_TRUE(ts.ok());
-  ts = Timestamp::FromCounts(kMax, 1000000000);
+  ts = internal::TimestampFromCounts(kMax, 1000000000);
   EXPECT_FALSE(ts.ok());
   EXPECT_THAT(ts.status().message(), HasSubstr("positive overflow"));
 
   constexpr std::int64_t kMin = std::numeric_limits<std::int64_t>::min();
-  ts = Timestamp::FromCounts(kMin, 0);
+  ts = internal::TimestampFromCounts(kMin, 0);
   EXPECT_TRUE(ts.ok());
-  ts = Timestamp::FromCounts(kMin, -1);
+  ts = internal::TimestampFromCounts(kMin, -1);
   EXPECT_FALSE(ts.ok());
   EXPECT_THAT(ts.status().message(), HasSubstr("negative overflow"));
 }
 
 TEST(Timestamp, RelationalOperators) {
-  auto const ts1 = Timestamp::FromCounts(1576030524, 611422667);
+  auto const ts1 = internal::TimestampFromCounts(1576030524, 611422667);
   auto ts2 = ts1;
   EXPECT_EQ(ts2, ts1);
 
-  ts2 = Timestamp::FromCounts(1576030524, 999999999);
+  ts2 = internal::TimestampFromCounts(1576030524, 999999999);
   EXPECT_NE(ts2, ts1);
 
-  ts2 = Timestamp::FromCounts(1111111111, 611422667);
+  ts2 = internal::TimestampFromCounts(1111111111, 611422667);
   EXPECT_NE(ts2, ts1);
 }
 

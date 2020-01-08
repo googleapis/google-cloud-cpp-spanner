@@ -295,7 +295,7 @@ struct TimestampTraits {
       google::cloud::internal::DefaultPRNG& generator) {
     auto const nanos = std::uniform_int_distribution<std::int64_t>(
         0, std::numeric_limits<std::int64_t>::max())(generator);
-    return cs::Timestamp::FromCounts(0, nanos).value();
+    return cs::internal::TimestampFromCounts(0, nanos).value();
   }
 };
 

@@ -131,9 +131,9 @@ TEST(Value, BasicSemantics) {
            9223372036LL     // near the limit of 64-bit/ns system_clock
        }) {
     for (auto nanos : {-1, 0, 1}) {
-      auto ts = Timestamp::FromCounts(t, nanos).value();
+      auto ts = internal::TimestampFromCounts(t, nanos).value();
       SCOPED_TRACE("Testing: google::cloud::spanner::Timestamp " +
-                   ts.ToRFC3339());
+                   internal::TimestampToRFC3339(ts));
       TestBasicSemantics(ts);
       std::vector<Timestamp> v(5, ts);
       TestBasicSemantics(v);
@@ -588,12 +588,12 @@ TEST(Value, ProtoConversionTimestamp) {
            9223372036LL     // near the limit of 64-bit/ns system_clock
        }) {
     for (auto nanos : {-1, 0, 1}) {
-      auto ts = Timestamp::FromCounts(t, nanos).value();
+      auto ts = internal::TimestampFromCounts(t, nanos).value();
       Value const v(ts);
       auto const p = internal::ToProto(v);
       EXPECT_EQ(v, internal::FromProto(p.first, p.second));
       EXPECT_EQ(google::spanner::v1::TypeCode::TIMESTAMP, p.first.code());
-      EXPECT_EQ(ts.ToRFC3339(), p.second.string_value());
+      EXPECT_EQ(internal::TimestampToRFC3339(ts), p.second.string_value());
     }
   }
 }

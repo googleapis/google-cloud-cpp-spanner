@@ -114,7 +114,7 @@ ResultSet Client::Read(SessionHolder& session, TransactionSelector& selector,
     if (selector.begin().has_read_only() &&
         selector.begin().read_only().has_read_timestamp()) {
       auto const& proto = selector.begin().read_only().read_timestamp();
-      if (Timestamp::FromProto(proto) == read_timestamp_ && seqno > 0) {
+      if (internal::TimestampFromProto(proto) == read_timestamp_ && seqno > 0) {
         std::unique_lock<std::mutex> lock(mu_);
         switch (mode_) {
           case Mode::kReadSucceeds:
@@ -164,7 +164,8 @@ ResultSet Client::Read(SessionHolder& session, TransactionSelector& selector,
 int MultiThreadedRead(int n_threads, Client* client, std::time_t read_time,
                       std::string const& session_id,
                       std::string const& txn_id) {
-  Timestamp read_timestamp = Timestamp::FromCounts(read_time, 0).value();
+  Timestamp read_timestamp =
+      internal::TimestampFromCounts(read_time, 0).value();
   client->Reset(read_timestamp, session_id, txn_id);
 
   Transaction::ReadOnlyOptions opts(read_timestamp);

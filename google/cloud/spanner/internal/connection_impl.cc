@@ -778,7 +778,8 @@ StatusOr<CommitResult> ConnectionImpl::CommitImpl(
     return status;
   }
   CommitResult r;
-  r.commit_timestamp = Timestamp::FromProto(response->commit_timestamp());
+  r.commit_timestamp =
+      internal::TimestampFromProto(response->commit_timestamp());
   return r;
 }
 

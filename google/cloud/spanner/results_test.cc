@@ -142,10 +142,9 @@ TEST(RowStream, TimestampPresent) {
   auto mock_source = make_unique<MockResultSetSource>();
   spanner_proto::ResultSetMetadata transaction_with_timestamp;
   transaction_with_timestamp.mutable_transaction()->set_id("dummy2");
-  Timestamp timestamp =
-      Timestamp::FromChrono(std::chrono::system_clock::now()).value();
+  Timestamp timestamp = MakeTimestamp(std::chrono::system_clock::now()).value();
   *transaction_with_timestamp.mutable_transaction()->mutable_read_timestamp() =
-      timestamp.ToProto();
+      internal::TimestampToProto(timestamp);
   EXPECT_CALL(*mock_source, Metadata())
       .WillOnce(Return(transaction_with_timestamp));
 
@@ -157,10 +156,9 @@ TEST(ProfileQueryResult, TimestampPresent) {
   auto mock_source = make_unique<MockResultSetSource>();
   spanner_proto::ResultSetMetadata transaction_with_timestamp;
   transaction_with_timestamp.mutable_transaction()->set_id("dummy2");
-  Timestamp timestamp =
-      Timestamp::FromChrono(std::chrono::system_clock::now()).value();
+  Timestamp timestamp = MakeTimestamp(std::chrono::system_clock::now()).value();
   *transaction_with_timestamp.mutable_transaction()->mutable_read_timestamp() =
-      timestamp.ToProto();
+      internal::TimestampToProto(timestamp);
   EXPECT_CALL(*mock_source, Metadata())
       .WillOnce(Return(transaction_with_timestamp));
 

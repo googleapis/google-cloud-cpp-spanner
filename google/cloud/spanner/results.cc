@@ -30,7 +30,8 @@ optional<Timestamp> GetReadTimestamp(
   auto metadata = source->Metadata();
   if (metadata.has_value() && metadata->has_transaction() &&
       metadata->transaction().has_read_timestamp()) {
-    return Timestamp::FromProto(metadata->transaction().read_timestamp());
+    return internal::TimestampFromProto(
+        metadata->transaction().read_timestamp());
   }
   return optional<Timestamp>();
 }

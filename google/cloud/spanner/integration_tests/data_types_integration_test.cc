@@ -173,20 +173,20 @@ TEST_F(DataTypeIntegrationTest, WriteReadBytes) {
 }
 
 TEST_F(DataTypeIntegrationTest, WriteReadTimestamp) {
-  auto min = Timestamp::FromRFC3339("0001-01-01T00:00:00Z");
+  auto min = internal::TimestampFromRFC3339("0001-01-01T00:00:00Z");
   ASSERT_STATUS_OK(min);
-  auto max = Timestamp::FromRFC3339("9999-12-31T23:59:59.999999999Z");
+  auto max = internal::TimestampFromRFC3339("9999-12-31T23:59:59.999999999Z");
   ASSERT_STATUS_OK(max);
-  auto now = Timestamp::FromChrono(std::chrono::system_clock::now());
+  auto now = MakeTimestamp(std::chrono::system_clock::now());
   ASSERT_STATUS_OK(now);
 
   std::vector<Timestamp> const data = {
       *min,
-      Timestamp::FromCounts(-1, 0).value(),
-      Timestamp::FromCounts(0, -1).value(),
-      Timestamp::FromCounts(0, 0).value(),
-      Timestamp::FromCounts(0, 1).value(),
-      Timestamp::FromCounts(1, 0).value(),
+      internal::TimestampFromCounts(-1, 0).value(),
+      internal::TimestampFromCounts(0, -1).value(),
+      internal::TimestampFromCounts(0, 0).value(),
+      internal::TimestampFromCounts(0, 1).value(),
+      internal::TimestampFromCounts(1, 0).value(),
       *now,
       *max,
   };
@@ -268,11 +268,11 @@ TEST_F(DataTypeIntegrationTest, WriteReadArrayBytes) {
 TEST_F(DataTypeIntegrationTest, WriteReadArrayTimestamp) {
   std::vector<std::vector<Timestamp>> const data = {
       std::vector<Timestamp>{},
-      std::vector<Timestamp>{Timestamp::FromCounts(-1, 0).value()},
+      std::vector<Timestamp>{internal::TimestampFromCounts(-1, 0).value()},
       std::vector<Timestamp>{
-          Timestamp::FromCounts(-1, 0).value(),
-          Timestamp::FromCounts(0, 0).value(),
-          Timestamp::FromCounts(1, 0).value(),
+          internal::TimestampFromCounts(-1, 0).value(),
+          internal::TimestampFromCounts(0, 0).value(),
+          internal::TimestampFromCounts(1, 0).value(),
       },
   };
   auto result = WriteReadData(*client_, data, "ArrayTimestampValue");
