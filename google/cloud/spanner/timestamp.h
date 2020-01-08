@@ -63,6 +63,12 @@ protobuf::Timestamp TimestampToProto(Timestamp);
  * A `Timestamp` represents an absolute point in time (i.e., is independent
  * of any time zone), with at least nanosecond precision, and with a range of
  * at least 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z.
+ *
+ * The `MakeTimestamp(src)` factory function(s) should be used to construct
+ * `Timestamp` values from standard representations of absolute time.
+ *
+ * A `Timestamp` can be converted back to a standard representation using
+ * `ts.get<T>()`.
  */
 class Timestamp {
  public:
@@ -110,7 +116,21 @@ class Timestamp {
     return os << ts.ToRFC3339();
   }
 
-  /// Convert the `Timestamp` to the user-specified template type.
+  /**
+   * Convert the `Timestamp` to the user-specified template type. Fails if
+   * `*this` cannot be represented as a `T`.
+   *
+   * Supported destination types are:
+   *   - `google::cloud::spanner::sys_time<Duration>`
+   *
+   * @par Example
+   *
+   * @code
+   *  sys_time<std::chrono::nanoseconds> tp = ...;
+   *  Timestamp ts = MakeTimestamp(tp).value();
+   *  assert(tp == ts.get<sys_time<std::chrono::nanoseconds>>().value());
+   * @endcode
+   */
   template <typename T>
   StatusOr<T> get() const {
     return ConvertTo(T{});
@@ -159,8 +179,8 @@ class Timestamp {
                                   std::intmax_t const denominator) const;
 
   // Conversion to a `std::chrono::time_point` on the system clock. May
-  // produce out-of-range errors in either direction, depending on the
-  // properties of `Duration` and the `std::chrono::system_clock` epoch.
+  // produce out-of-range errors, depending on the properties of `Duration`
+  // and the `std::chrono::system_clock` epoch.
   template <typename Duration>
   StatusOr<sys_time<Duration>> ConvertTo(sys_time<Duration> const&) const {
     auto const count =
