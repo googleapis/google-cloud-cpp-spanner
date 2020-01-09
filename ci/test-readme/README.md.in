@@ -1,6 +1,24 @@
 ## Release Notes
 
+### v0.6.x - TBD
+
 ### v0.5.x - TBD
+
+* **Breaking Changes**
+  * fix!: support full TIMESTAMP range in g::c::spanner::Timestamp (#1166)
+  * refactor!: make `SessionPoolOptions` a class (#1130)
+
+* **Other Changes**
+  * fix: avoid deadlock waiting for Session allocation (#1170)
+  * bug: number of channels was inadvertently limited to 1 (#1169)
+  * bug: deflake rollback integration test (#1164)
+  * feat: add optimistic concurrency control loop for IAM (#1162)
+  * feat: add build to check API breakage (#1155)
+  * feat: add CMake option to disable -Werror/-WX (#1150)
+  * feat: commit begins transaction if not already begun (#1143)
+  * feat: delete bad sessions from pool (#1142)
+  * feat: handle session-not-found in all connection_impl methods (#1141)
+  * bug: set "sticky" I/O format flags before forking threads (#1128)
 
 ### v0.4.x - 2019-12
 
