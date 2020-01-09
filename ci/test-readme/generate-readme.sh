@@ -53,13 +53,12 @@ client library.
 
 ## Status
 
-This library supports Cloud Spanner at the [Alpha](README.md#versioning) quality
-level. The library should be usable for experimental code, but we do not
-recommend that you use this library for production workloads. Please note that,
-as is often the case with C++ libraries, we do **not** follow semantic
-versioning in the Cloud C++ client libraries. We make every effort to document
-backwards-incompatible API changes in the
-[release notes](README.md#release-notes) below.
+This library supports Cloud Spanner at the [Beta](README.md#versioning) quality
+level. This library should perform well for production workloads and we expect
+to make minimal API changes. Please note that, as is often the case with C++
+libraries, we do **not** follow semantic versioning in the Cloud C++ client
+libraries. We make every effort to document backwards-incompatible API changes
+in the [release notes](README.md#release-notes) below.
 
 _EOF_
 
