@@ -151,7 +151,7 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  std::cout << "ClientCount,ThreadCount,UsingStub"
+  std::cout << "ThreadCount,ClientCount,UsingStub"
             << ",RowCount,ElapsedTime,CpuTime,StatusCode\n"
             << std::flush;
 
