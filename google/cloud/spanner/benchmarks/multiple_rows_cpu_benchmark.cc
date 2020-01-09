@@ -69,8 +69,7 @@ class Experiment {
   virtual ~Experiment() = default;
 
   virtual std::string AdditionalDdlStatement() = 0;
-  virtual Status SetUp(Config const& config, cs::Database const& database,
-                       bool fill) = 0;
+  virtual Status SetUp(Config const& config, cs::Database const& database) = 0;
   virtual Status TearDown(Config const& config,
                           cs::Database const& database) = 0;
   virtual Status Run(Config const& config, cs::Database const& database) = 0;
@@ -174,14 +173,16 @@ int main(int argc, char* argv[]) {
   int exit_status = EXIT_SUCCESS;
 
   auto experiment = e->second(generator);
-  auto status = experiment->SetUp(config, database, database_created);
-  if (!status.ok()) {
-    std::cout << "# Skipping experiment, SetUp() failed: " << status << "\n";
-    exit_status = EXIT_FAILURE;
-  } else {
-    status = experiment->Run(config, database);
-    if (!status.ok()) exit_status = EXIT_FAILURE;
-    (void)experiment->TearDown(config, database);
+  if (database_created) {
+    auto status = experiment->SetUp(config, database);
+    if (!status.ok()) {
+      std::cout << "# Skipping experiment, SetUp() failed: " << status << "\n";
+      exit_status = EXIT_FAILURE;
+    } else {
+      status = experiment->Run(config, database);
+      if (!status.ok()) exit_status = EXIT_FAILURE;
+      (void)experiment->TearDown(config, database);
+    }
   }
 
   if (!user_specified_database) {
@@ -541,12 +542,8 @@ class ReadExperiment : public Experiment {
     return impl_.CreateTableStatement(table_name_);
   }
 
-  Status SetUp(Config const& config, cs::Database const& database,
-               bool fill) override {
-    if (fill) {
-      return impl_.FillTable(config, database, table_name_);
-    }
-    return Status();
+  Status SetUp(Config const& config, cs::Database const& database) override {
+    return impl_.FillTable(config, database, table_name_);
   }
 
   Status TearDown(Config const&, cs::Database const&) override { return {}; }
@@ -763,12 +760,8 @@ class SelectExperiment : public Experiment {
     return impl_.CreateTableStatement(table_name_);
   }
 
-  Status SetUp(Config const& config, cs::Database const& database,
-               bool fill) override {
-    if (fill) {
-      return impl_.FillTable(config, database, table_name_);
-    }
-    return Status();
+  Status SetUp(Config const& config, cs::Database const& database) override {
+    return impl_.FillTable(config, database, table_name_);
   }
 
   Status TearDown(Config const&, cs::Database const&) override { return {}; }
@@ -1001,12 +994,8 @@ class UpdateExperiment : public Experiment {
     return impl_.CreateTableStatement(table_name_);
   }
 
-  Status SetUp(Config const& config, cs::Database const& database,
-               bool fill) override {
-    if (fill) {
-      return impl_.FillTable(config, database, table_name_);
-    }
-    return Status();
+  Status SetUp(Config const& config, cs::Database const& database) override {
+    return impl_.FillTable(config, database, table_name_);
   }
 
   Status TearDown(Config const&, cs::Database const&) override { return {}; }
@@ -1266,7 +1255,7 @@ class MutationExperiment : public Experiment {
     return impl_.CreateTableStatement(table_name_);
   }
 
-  Status SetUp(Config const&, cs::Database const&, bool) override { return {}; }
+  Status SetUp(Config const&, cs::Database const&) override { return {}; }
 
   Status TearDown(Config const&, cs::Database const&) override { return {}; }
 
@@ -1489,8 +1478,8 @@ class RunAllExperiment : public Experiment {
       : generator_(generator) {}
 
   std::string AdditionalDdlStatement() override { return {}; }
-  Status SetUp(Config const&, cs::Database const&, bool fill) override {
-    fill_ = fill;
+  Status SetUp(Config const&, cs::Database const&) override {
+    setup_called_ = true;
     return {};
   }
   Status TearDown(Config const&, cs::Database const&) override { return {}; }
@@ -1517,11 +1506,14 @@ class RunAllExperiment : public Experiment {
 
       std::cout << "# Smoke test for experiment\n";
       std::cout << config << "\n" << std::flush;
-      auto status = experiment->SetUp(config, database, fill_);
-      if (!status.ok()) {
-        std::cout << "# ERROR in SetUp: " << status << "\n";
-        last_error = status;
-        continue;
+      if (setup_called_) {
+        // Only call SetUp() on each experiment if our own SetUp() was called.
+        auto status = experiment->SetUp(config, database);
+        if (!status.ok()) {
+          std::cout << "# ERROR in SetUp: " << status << "\n";
+          last_error = status;
+          continue;
+        }
       }
       config.use_only_clients = true;
       config.use_only_stubs = false;
@@ -1536,7 +1528,7 @@ class RunAllExperiment : public Experiment {
   }
 
  private:
-  bool fill_;
+  bool setup_called_ = false;
   std::mutex mu_;
   google::cloud::internal::DefaultPRNG generator_;
 };

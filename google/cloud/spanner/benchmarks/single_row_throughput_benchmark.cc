@@ -45,7 +45,7 @@ class Experiment {
   virtual ~Experiment() = default;
 
   virtual void SetUp(Config const& config,
-                     cloud_spanner::Database const& database, bool fill) = 0;
+                     cloud_spanner::Database const& database) = 0;
   virtual void Run(Config const& config,
                    cloud_spanner::Database const& database,
                    SampleSink const& sink) = 0;
@@ -143,7 +143,9 @@ int main(int argc, char* argv[]) {
       };
 
   auto experiment = e->second;
-  experiment->SetUp(config, database, database_created);
+  if (database_created) {
+    experiment->SetUp(config, database);
+  }
   experiment->Run(config, database, cout_sink);
 
   if (!user_specified_database) {
@@ -238,7 +240,7 @@ int ClientCount(Config const& config,
 
 class InsertOrUpdateExperiment : public Experiment {
  public:
-  void SetUp(Config const&, cloud_spanner::Database const&, bool) override {}
+  void SetUp(Config const&, cloud_spanner::Database const&) override {}
 
   void Run(Config const& config, cloud_spanner::Database const& database,
            SampleSink const& sink) override {
@@ -336,16 +338,14 @@ class ReadExperiment : public Experiment {
  public:
   ReadExperiment() : generator_(std::random_device{}()) {}
 
-  void SetUp(Config const& config, cloud_spanner::Database const& database,
-             bool fill) override {
+  void SetUp(Config const& config,
+             cloud_spanner::Database const& database) override {
     std::string value = [this] {
       std::lock_guard<std::mutex> lk(mu_);
       return google::cloud::internal::Sample(
           generator_, 1024, "#@$%^&*()-=+_0123456789[]{}|;:,./<>?");
     }();
-    if (fill) {
-      FillTable(config, database, mu_, value);
-    }
+    FillTable(config, database, mu_, value);
   }
 
   void Run(Config const& config, cloud_spanner::Database const& database,
@@ -449,16 +449,14 @@ class UpdateDmlExperiment : public Experiment {
  public:
   UpdateDmlExperiment() : generator_(std::random_device{}()) {}
 
-  void SetUp(Config const& config, cloud_spanner::Database const& database,
-             bool fill) override {
+  void SetUp(Config const& config,
+             cloud_spanner::Database const& database) override {
     std::string value = [this] {
       std::lock_guard<std::mutex> lk(mu_);
       return google::cloud::internal::Sample(
           generator_, 1024, "#@$%^&*()-=+_0123456789[]{}|;:,./<>?");
     }();
-    if (fill) {
-      FillTable(config, database, mu_, value);
-    }
+    FillTable(config, database, mu_, value);
   }
 
   void Run(Config const& config, cloud_spanner::Database const& database,
@@ -567,16 +565,14 @@ class SelectExperiment : public Experiment {
  public:
   SelectExperiment() : generator_(std::random_device{}()) {}
 
-  void SetUp(Config const& config, cloud_spanner::Database const& database,
-             bool fill) override {
+  void SetUp(Config const& config,
+             cloud_spanner::Database const& database) override {
     std::string value = [this] {
       std::lock_guard<std::mutex> lk(mu_);
       return google::cloud::internal::Sample(
           generator_, 1024, "#@$%^&*()-=+_0123456789[]{}|;:,./<>?");
     }();
-    if (fill) {
-      FillTable(config, database, mu_, value);
-    }
+    FillTable(config, database, mu_, value);
   }
 
   void Run(Config const& config, cloud_spanner::Database const& database,
@@ -677,9 +673,8 @@ class SelectExperiment : public Experiment {
 
 class RunAllExperiment : public Experiment {
  public:
-  void SetUp(Config const&, cloud_spanner::Database const&,
-             bool fill) override {
-    fill_ = fill;
+  void SetUp(Config const&, cloud_spanner::Database const&) override {
+    setup_called_ = true;
   }
 
   void Run(Config const& cfg, cloud_spanner::Database const& database,
@@ -694,13 +689,16 @@ class RunAllExperiment : public Experiment {
       config.iteration_duration = std::chrono::seconds(1);
       std::cout << "# Smoke test for experiment: " << kv.first << "\n";
       // TODO(#1119) - tests disabled until we can stay within admin op quota
-      kv.second->SetUp(config, database, fill_);
+      if (setup_called_) {
+        // Only call SetUp() on each experiment if our own SetUp() was called.
+        kv.second->SetUp(config, database);
+      }
       kv.second->Run(config, database, sink);
     }
   }
 
  private:
-  bool fill_ = true;
+  bool setup_called_ = false;
 };
 
 std::map<std::string, std::shared_ptr<Experiment>> AvailableExperiments() {
