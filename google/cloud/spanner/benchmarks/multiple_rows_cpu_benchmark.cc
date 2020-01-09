@@ -173,14 +173,19 @@ int main(int argc, char* argv[]) {
   int exit_status = EXIT_SUCCESS;
 
   auto experiment = e->second(generator);
+  Status setup_status;
   if (database_created) {
-    auto status = experiment->SetUp(config, database);
-    if (!status.ok()) {
-      std::cout << "# Skipping experiment, SetUp() failed: " << status << "\n";
+    setup_status = experiment->SetUp(config, database);
+    if (!setup_status.ok()) {
+      std::cout << "# Skipping experiment, SetUp() failed: " << setup_status
+                << "\n";
       exit_status = EXIT_FAILURE;
-    } else {
-      status = experiment->Run(config, database);
-      if (!status.ok()) exit_status = EXIT_FAILURE;
+    }
+  }
+  if (setup_status.ok()) {
+    auto run_status = experiment->Run(config, database);
+    if (!run_status.ok()) exit_status = EXIT_FAILURE;
+    if (database_created) {
       (void)experiment->TearDown(config, database);
     }
   }
