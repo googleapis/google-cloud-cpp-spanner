@@ -151,7 +151,7 @@ Apache 2.0; see [`LICENSE`](LICENSE) for details.
 
 ### v0.6.x - TBD
 
-### v0.5.x - TBD
+### v0.5.x - 2020-01
 
 * **Breaking Changes**
   * fix!: support full TIMESTAMP range in g::c::spanner::Timestamp (#1166)
