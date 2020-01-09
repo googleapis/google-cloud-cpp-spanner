@@ -28,6 +28,7 @@ backwards-incompatible API changes in the
 **Core Builds**
 [![CI status docker/asan][docker/asan-shield]][docker/asan-link]
 [![CI status docker/bazel-dependency][docker/bazel-dependency-shield]][docker/bazel-dependency-link]
+[![CI status docker/check-api][docker/check-api-shield]][docker/check-api-link]
 [![CI status docker/clang-3.8][docker/clang-3.8-shield]][docker/clang-3.8-link]
 [![CI status docker/clang-tidy][docker/clang-tidy-shield]][docker/clang-tidy-link]
 [![CI status docker/cmake][docker/cmake-shield]][docker/cmake-link]
@@ -63,6 +64,8 @@ backwards-incompatible API changes in the
 [docker/asan-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/asan.svg
 [docker/bazel-dependency-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/bazel-dependency-link.html
 [docker/bazel-dependency-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/bazel-dependency.svg
+[docker/check-api-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/check-api-link.html
+[docker/check-api-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/check-api.svg
 [docker/clang-3.8-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/clang-3.8-link.html
 [docker/clang-3.8-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/clang-3.8.svg
 [docker/clang-tidy-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/clang-tidy-link.html
@@ -147,7 +150,25 @@ Apache 2.0; see [`LICENSE`](LICENSE) for details.
 
 ## Release Notes
 
+### v0.6.x - TBD
+
 ### v0.5.x - TBD
+
+* **Breaking Changes**
+  * fix!: support full TIMESTAMP range in g::c::spanner::Timestamp (#1166)
+  * refactor!: make `SessionPoolOptions` a class (#1130)
+
+* **Other Changes**
+  * fix: avoid deadlock waiting for Session allocation (#1170)
+  * bug: number of channels was inadvertently limited to 1 (#1169)
+  * bug: deflake rollback integration test (#1164)
+  * feat: add optimistic concurrency control loop for IAM (#1162)
+  * feat: add build to check API breakage (#1155)
+  * feat: add CMake option to disable -Werror/-WX (#1150)
+  * feat: commit begins transaction if not already begun (#1143)
+  * feat: delete bad sessions from pool (#1142)
+  * feat: handle session-not-found in all connection_impl methods (#1141)
+  * bug: set "sticky" I/O format flags before forking threads (#1128)
 
 ### v0.4.x - 2019-12
 
