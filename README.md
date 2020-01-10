@@ -149,7 +149,16 @@ Apache 2.0; see [`LICENSE`](LICENSE) for details.
 
 ## Release Notes
 
-### v0.6.x - TBD
+### v0.7.x - TBD
+
+### v0.6.x - 2020-01
+
+* **Breaking Changes**
+  * feat!: remove Timestamp::Min() and Timestamp::Max() (#1182)
+
+* **Other Changes**
+  * feat: allow re-using a database across benchmark runs (#1174)
+  * fix: clean up / fix ClientCount logic (#1175)
 
 ### v0.5.x - 2020-01
 
