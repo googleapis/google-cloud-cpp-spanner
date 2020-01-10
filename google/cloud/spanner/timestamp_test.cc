@@ -86,6 +86,11 @@ TEST(Timestamp, RelationalOperators) {
 }
 
 TEST(Timestamp, FromRFC3339) {
+  // Note: You can validate std::time_t/string conversions using date(1).
+  //   $ date --utc +%Y-%m-%dT%H:%M:%SZ --date=@1561135942
+  //   2019-06-21T16:52:22Z
+  //   $ date +%s --date=2019-06-21T16:52:22Z
+  //   1561135942
   EXPECT_EQ(internal::TimestampFromProto(MakeProtoTimestamp(1561135942, 0)),
             internal::TimestampFromRFC3339("2019-06-21T16:52:22Z").value());
   EXPECT_EQ(
