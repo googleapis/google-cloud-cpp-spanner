@@ -374,8 +374,10 @@ Friends</h2></td></tr>
 
 <p>Commits a read-write transaction. </p>
 <p>Calls the <code>mutator</code> in the context of a new read-write transaction. The <code>mutator</code> can execute read/write operations using the transaction, and returns any additional <code>Mutations</code> to commit.</p>
-<p>If the <code>mutator</code> returns <code>StatusCode::kAborted</code> or the transaction commit results in an abort, then that transaction is rolled back and the process repeats (subject to <code>rerun_policy</code> and <code>backoff_policy</code>), by building a new transaction and re-running the <code>mutator</code>. The lock priority of the operation increases after each aborted transaction, meaning that the next attempt has a slightly better chance of success.</p>
-<p>If the <code>mutator</code> and the commit succeed, the <code><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html" title="The result of committing a Transaction.">CommitResult</a></code> is returned. Otherwise the error returned by the <code>mutator</code> or the commit is returned.</p>
+<p>If the <code>mutator</code> succeeds and the transaction commits, then <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a52dc7582b51464255944d3da9583133c" title="Commits a read-write transaction.">Commit()</a></code> returns the <code><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html" title="The result of committing a Transaction.">CommitResult</a></code>.</p>
+<p>If the <code>mutator</code> returns a non-rerunnable status (according to the <code>rerun_policy</code>), the transaction is rolled back and that status is returned. Similarly, if the transaction fails to commit with a non- rerunnable status, that status is returned.</p>
+<p>Otherwise the whole process repeats (subject to <code>rerun_policy</code> and <code>backoff_policy</code>), by building a new transaction and re-running the <code>mutator</code>. The lock priority of the operation increases after each rerun, meaning that the next attempt has a slightly better chance of success.</p>
+<p>Note that the <code>mutator</code> should only return a rerunnable status when the transaction is no longer usable (e.g., it was aborted). Otherwise the transaction will be leaked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mutator</td><td>the function called to create mutations </td></tr>
@@ -445,7 +447,7 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Commits a read-write transaction. </p>
-<p>The commit might return a <code>kAborted</code> error. This can occur at any time; commonly, the cause is conflicts with concurrent transactions. However, it can also happen for a variety of other reasons. If <code>Commit</code> returns <code>kAborted</code>, the caller may try to reapply the mutations within a new read-write transaction (which should use the same session to ensure an increase it lock priority).</p>
+<p>The commit might return a <code>kAborted</code> error. This can occur at any time. Commonly the cause is conflicts with concurrent transactions, however it can also happen for a variety of other reasons. If <code>Commit</code> returns <code>kAborted</code>, the caller may try to reapply the mutations within a new read-write transaction (which should share lock priority with the aborted transaction so that the new attempt has a slightly better chance of success).</p>
 <dl class="section note"><dt>Note</dt><dd>Prefer the previous <code>Commit</code> overloads if you want to simply reapply mutations after a <code>kAborted</code> error.</dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>It is an error to call <code>Commit</code> with a read-only transaction.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
