@@ -95,14 +95,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af4aae62c770bc31c046f8aa4fd19604c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html">Timestamp</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html#af4aae62c770bc31c046f8aa4fd19604c">operator=</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html">Timestamp</a> const &amp;)=default</td></tr>
 <tr class="separator:af4aae62c770bc31c046f8aa4fd19604c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">Factory functions for special &lt;tt&gt;Timestamp&lt;/tt&gt; values.</div></td></tr>
-<tr class="memitem:a029377f18deb5eb837fe2c1f3df4bada"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html">Timestamp</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html#a029377f18deb5eb837fe2c1f3df4bada">Min</a> ()</td></tr>
-<tr class="separator:a029377f18deb5eb837fe2c1f3df4bada"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabcb5e69f0511cef3504eea5d9665eb8"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html">Timestamp</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html#aabcb5e69f0511cef3504eea5d9665eb8">Max</a> ()</td></tr>
-<tr class="separator:aabcb5e69f0511cef3504eea5d9665eb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Relational operators</div></td></tr>
@@ -254,61 +246,7 @@ template&lt;typename T &gt; </div>
 </ul>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <div class="fragment"><div class="line">sys_time&lt;std::chrono::nanoseconds&gt; tp = ...;</div><div class="line"><a class="code" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html#a260ccfcf9fe402a7e1678d4791abaabd">Timestamp</a> ts = <a class="code" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html#a4ce5157f8dc14e55240100620ff20e5c">MakeTimestamp</a>(tp).value();</div><div class="line">assert(tp == ts.get&lt;sys_time&lt;std::chrono::nanoseconds&gt;&gt;().value());</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00135">135</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
-
-</div>
-</div>
-<a id="aabcb5e69f0511cef3504eea5d9665eb8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aabcb5e69f0511cef3504eea5d9665eb8">&#9670;&nbsp;</a></span>Max()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html">Timestamp</a> google::cloud::spanner::v0::Timestamp::Max </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="timestamp_8cc_source.html#l00308">308</a> of file <a class="el" href="timestamp_8cc_source.html">timestamp.cc</a>.</p>
-
-</div>
-</div>
-<a id="a029377f18deb5eb837fe2c1f3df4bada"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a029377f18deb5eb837fe2c1f3df4bada">&#9670;&nbsp;</a></span>Min()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html">Timestamp</a> google::cloud::spanner::v0::Timestamp::Min </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="timestamp_8cc_source.html#l00304">304</a> of file <a class="el" href="timestamp_8cc_source.html">timestamp.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00129">129</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
 
 </div>
 </div>
@@ -394,7 +332,7 @@ template&lt;typename Duration &gt; </div>
 <p>Construct a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html" title="A representation of the Spanner TIMESTAMP type: An instant in time.">Timestamp</a></code> from a <code>std::chrono::time_point</code> on the system clock. </p>
 <p>May produce out-of-range errors, depending on the properties of <code>Duration</code> and the <code>std::chrono::system_clock</code> epoch. </p>
 
-<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00202">202</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00196">196</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
 
 </div>
 </div>
@@ -432,7 +370,7 @@ template&lt;typename Duration &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00097">97</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00091">91</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
 
 </div>
 </div>
@@ -470,7 +408,7 @@ template&lt;typename Duration &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00100">100</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00094">94</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
 
 </div>
 </div>
@@ -508,7 +446,7 @@ template&lt;typename Duration &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00115">115</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00109">109</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
 
 </div>
 </div>
@@ -546,7 +484,7 @@ template&lt;typename Duration &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00103">103</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00097">97</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
 
 </div>
 </div>
@@ -584,7 +522,7 @@ template&lt;typename Duration &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00094">94</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00088">88</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
 
 </div>
 </div>
@@ -622,7 +560,7 @@ template&lt;typename Duration &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00109">109</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00103">103</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
 
 </div>
 </div>
@@ -660,7 +598,7 @@ template&lt;typename Duration &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00106">106</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="timestamp_8h_source.html#l00100">100</a> of file <a class="el" href="timestamp_8h_source.html">timestamp.h</a>.</p>
 
 </div>
 </div>
