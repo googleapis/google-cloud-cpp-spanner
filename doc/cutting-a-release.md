@@ -12,8 +12,7 @@ audience is expected to be familiar with the project itself, [git][git-docs],
 ## Preparing for a release
 
 First you should collect and update the release notes for the project. Prepare
-a pull request (PR) with the necessary changes to the README files in each
-project.
+a pull request (PR) with the necessary changes to the README file.
 
 Assuming you are working on your own fork of the `google-cloud-cpp-spanner`
 project, and `upstream` points to the `googleapis/google-cloud-cpp-spanner`
@@ -46,7 +45,7 @@ Update the instructions to install the library:
 ```
 
 It is not recommended that you create the release branch before this PR is
-ready, but in some circumstances it might be needed, for example, if a large
+*merged*, but in some circumstances it might be needed, for example, if a large
 change that could destabilize the release is about to be merged, or if we want
 to create the release at an specific point in the revision history.
 
