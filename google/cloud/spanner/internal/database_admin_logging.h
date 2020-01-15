@@ -16,6 +16,8 @@
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_DATABASE_ADMIN_LOGGING_H_
 
 #include "google/cloud/spanner/internal/database_admin_stub.h"
+#include <cstdint>
+#include <memory>
 
 namespace google {
 namespace cloud {
@@ -27,8 +29,10 @@ namespace internal {
  */
 class DatabaseAdminLogging : public DatabaseAdminStub {
  public:
-  explicit DatabaseAdminLogging(std::shared_ptr<DatabaseAdminStub> child)
-      : child_(std::move(child)) {}
+  explicit DatabaseAdminLogging(std::shared_ptr<DatabaseAdminStub> child,
+                                std::int64_t truncate_string_field_longer_than)
+      : child_(std::move(child)),
+        truncate_string_field_longer_than_(truncate_string_field_longer_than) {}
 
   ~DatabaseAdminLogging() override = default;
 
@@ -89,6 +93,7 @@ class DatabaseAdminLogging : public DatabaseAdminStub {
 
  private:
   std::shared_ptr<DatabaseAdminStub> child_;
+  std::int64_t truncate_string_field_longer_than_;
 };
 
 }  // namespace internal

@@ -20,13 +20,29 @@
 #include "google/cloud/internal/invoke_result.h"
 #include "google/cloud/log.h"
 #include "google/cloud/status_or.h"
+#include <google/protobuf/io/zero_copy_stream_impl_lite.h>
+#include <google/protobuf/text_format.h>
 #include <grpcpp/grpcpp.h>
+#include <cstdint>
 
 namespace google {
 namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
+
+template <typename Message>
+std::string DebugString(Message const& m,
+                        std::int64_t truncate_string_field_longer_than) {
+  std::string str;
+  {
+    google::protobuf::io::StringOutputStream os(&str);
+    google::protobuf::TextFormat::Printer p;
+    p.SetTruncateStringFieldLongerThan(truncate_string_field_longer_than);
+    p.Print(m, &os);
+  }
+  return str;
+}
 
 template <typename T>
 struct IsStatusOr : public std::false_type {};
@@ -50,8 +66,10 @@ template <
     typename std::enable_if<std::is_same<Result, google::cloud::Status>::value,
                             int>::type = 0>
 Result LogWrapper(Functor&& functor, grpc::ClientContext& context,
-                  Request const& request, char const* where) {
-  GCP_LOG(DEBUG) << where << "() << " << request.DebugString();
+                  Request const& request, char const* where,
+                  std::int64_t truncate_string_field_longer_than) {
+  GCP_LOG(DEBUG) << where << "() << "
+                 << DebugString(request, truncate_string_field_longer_than);
   auto response = functor(context, request);
   GCP_LOG(DEBUG) << where << "() >> status=" << response;
   return response;
@@ -62,13 +80,16 @@ template <typename Functor, typename Request,
               Functor, grpc::ClientContext&, Request const&>,
           typename std::enable_if<IsStatusOr<Result>::value, int>::type = 0>
 Result LogWrapper(Functor&& functor, grpc::ClientContext& context,
-                  Request const& request, char const* where) {
-  GCP_LOG(DEBUG) << where << "() << " << request.DebugString();
+                  Request const& request, char const* where,
+                  std::int64_t truncate_string_field_longer_than) {
+  GCP_LOG(DEBUG) << where << "() << "
+                 << DebugString(request, truncate_string_field_longer_than);
   auto response = functor(context, request);
   if (!response) {
     GCP_LOG(DEBUG) << where << "() >> status=" << response.status();
   } else {
-    GCP_LOG(DEBUG) << where << "() >> response=" << response->DebugString();
+    GCP_LOG(DEBUG) << where << "() >> response="
+                   << DebugString(*response, truncate_string_field_longer_than);
   }
   return response;
 }
@@ -78,8 +99,10 @@ template <typename Functor, typename Request,
               Functor, grpc::ClientContext&, Request const&>,
           typename std::enable_if<IsUniquePtr<Result>::value, int>::type = 0>
 Result LogWrapper(Functor&& functor, grpc::ClientContext& context,
-                  Request const& request, char const* where) {
-  GCP_LOG(DEBUG) << where << "() << " << request.DebugString();
+                  Request const& request, char const* where,
+                  std::int64_t truncate_string_field_longer_than) {
+  GCP_LOG(DEBUG) << where << "() << "
+                 << DebugString(request, truncate_string_field_longer_than);
   auto response = functor(context, request);
   GCP_LOG(DEBUG) << where << "() >> " << (response ? "not null" : "null")
                  << " stream";
@@ -91,8 +114,10 @@ template <
     typename Result =
         google::cloud::internal::invoke_result_t<Functor, Request>,
     typename std::enable_if<IsFutureStatusOr<Result>::value, int>::type = 0>
-Result LogWrapper(Functor&& functor, Request request, char const* where) {
-  GCP_LOG(DEBUG) << where << "() << " << request.DebugString();
+Result LogWrapper(Functor&& functor, Request request, char const* where,
+                  std::int64_t truncate_string_field_longer_than) {
+  GCP_LOG(DEBUG) << where << "() << "
+                 << DebugString(request, truncate_string_field_longer_than);
   auto response = functor(std::move(request));
   // We cannot log the value of the future, even when it is available, because
   // the value can only be extracted once. But we can log if the future is

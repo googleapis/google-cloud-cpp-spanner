@@ -16,6 +16,8 @@
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_INSTANCE_ADMIN_LOGGING_H_
 
 #include "google/cloud/spanner/internal/instance_admin_stub.h"
+#include <cstdint>
+#include <memory>
 
 namespace google {
 namespace cloud {
@@ -30,8 +32,10 @@ namespace gcsa = google::spanner::admin::instance::v1;
  */
 class InstanceAdminLogging : public InstanceAdminStub {
  public:
-  explicit InstanceAdminLogging(std::shared_ptr<InstanceAdminStub> child)
-      : child_(std::move(child)) {}
+  explicit InstanceAdminLogging(std::shared_ptr<InstanceAdminStub> child,
+                                std::int64_t truncate_string_field_longer_than)
+      : child_(std::move(child)),
+        truncate_string_field_longer_than_(truncate_string_field_longer_than) {}
 
   ~InstanceAdminLogging() override = default;
 
@@ -81,6 +85,7 @@ class InstanceAdminLogging : public InstanceAdminStub {
   //@}
  private:
   std::shared_ptr<InstanceAdminStub> child_;
+  std::int64_t truncate_string_field_longer_than_;
 };
 
 }  // namespace internal

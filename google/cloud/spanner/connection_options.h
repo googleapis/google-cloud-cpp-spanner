@@ -24,6 +24,7 @@
 #include <grpcpp/grpcpp.h>
 #include <cstdint>
 #include <functional>
+#include <memory>
 #include <set>
 #include <string>
 
@@ -120,6 +121,11 @@ class ConnectionOptions {
     return *this;
   }
 
+  /// Return the maximum length for string/bytes fields when tracing RPCs.
+  std::int64_t max_text_proto_string_length() const {
+    return max_text_proto_string_length_;
+  }
+
   /**
    * Define the gRPC channel domain for clients configured with this object.
    *
@@ -197,6 +203,7 @@ class ConnectionOptions {
   std::string endpoint_;
   int num_channels_;
   std::set<std::string> tracing_components_;
+  std::int64_t max_text_proto_string_length_;
   std::string channel_pool_domain_;
 
   std::string user_agent_prefix_;

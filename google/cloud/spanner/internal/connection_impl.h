@@ -168,6 +168,7 @@ class ConnectionImpl : public Connection {
   std::shared_ptr<BackoffPolicy const> backoff_policy_prototype_;
   std::shared_ptr<SessionPool> session_pool_;
   bool rpc_stream_tracing_enabled_ = false;
+  std::int64_t max_text_proto_string_length_;
 };
 
 }  // namespace internal

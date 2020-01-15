@@ -50,6 +50,8 @@ ConnectionOptions::ConnectionOptions(
       tracing_components_.insert(token);
     }
   }
+  // TODO(XXX): Provide some way to override this from the environment.
+  max_text_proto_string_length_ = 256;
 
   if (google::cloud::internal::GetEnv("GOOGLE_CLOUD_CPP_ENABLE_CLOG")
           .has_value()) {

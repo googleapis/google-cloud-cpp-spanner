@@ -16,6 +16,8 @@
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_LOGGING_RESULT_SET_READER_H_
 
 #include "google/cloud/spanner/internal/partial_result_set_reader.h"
+#include <cstdint>
+#include <memory>
 
 namespace google {
 namespace cloud {
@@ -25,8 +27,11 @@ namespace internal {
 
 class LoggingResultSetReader : public PartialResultSetReader {
  public:
-  explicit LoggingResultSetReader(std::unique_ptr<PartialResultSetReader> impl)
-      : impl_(std::move(impl)) {}
+  explicit LoggingResultSetReader(
+      std::unique_ptr<PartialResultSetReader> impl,
+      std::int64_t truncate_string_field_longer_than)
+      : impl_(std::move(impl)),
+        truncate_string_field_longer_than_(truncate_string_field_longer_than) {}
   ~LoggingResultSetReader() override = default;
 
   void TryCancel() override;
@@ -35,6 +40,7 @@ class LoggingResultSetReader : public PartialResultSetReader {
 
  private:
   std::unique_ptr<PartialResultSetReader> impl_;
+  std::int64_t truncate_string_field_longer_than_;
 };
 
 }  // namespace internal

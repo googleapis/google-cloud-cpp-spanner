@@ -33,7 +33,8 @@ optional<google::spanner::v1::PartialResultSet> LoggingResultSetReader::Read() {
   if (!result) {
     GCP_LOG(DEBUG) << __func__ << "() >> (optional-with-no-value)";
   } else {
-    GCP_LOG(DEBUG) << __func__ << "() >> " << result->DebugString();
+    GCP_LOG(DEBUG) << __func__ << "() >> "
+                   << DebugString(*result, truncate_string_field_longer_than_);
   }
   return result;
 }
