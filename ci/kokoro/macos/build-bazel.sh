@@ -53,7 +53,11 @@ if [[ -n "${BAZEL_CONFIG}" ]]; then
     bazel_args+=("--config" "${BAZEL_CONFIG}")
 fi
 
-echo
+echo "================================================================"
+echo "Fetching dependencies $(date)"
+"${PROJECT_ROOT}/ci/retry-command.sh" \
+    "${BAZEL_BIN}" fetch -- //google/cloud/...:all
+
 echo "================================================================"
 echo "Build and run unit tests at $(date)."
 "${BAZEL_BIN}" test \
