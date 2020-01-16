@@ -101,7 +101,7 @@ ConnectionImpl::ConnectionImpl(Database db,
                                     retry_policy_prototype_->clone(),
                                     backoff_policy_prototype_->clone())),
       rpc_stream_tracing_enabled_(options.tracing_enabled("rpc-streams")),
-      max_text_proto_string_length_(options.max_text_proto_string_length()) {}
+      tracing_options_(options.tracing_options()) {}
 
 RowStream ConnectionImpl::Read(ReadParams params) {
   return internal::Visit(
@@ -322,9 +322,9 @@ RowStream ConnectionImpl::ReadImpl(SessionHolder& session,
   // the lifetime of the lambda.
   auto stub = session_pool_->GetStub(*session);
   auto const tracing_enabled = rpc_stream_tracing_enabled_;
-  auto const max_text_proto_string_length = max_text_proto_string_length_;
-  auto factory = [stub, request, tracing_enabled, max_text_proto_string_length](
-                     std::string const& resume_token) mutable {
+  auto const tracing_options = tracing_options_;
+  auto factory = [stub, request, tracing_enabled,
+                  tracing_options](std::string const& resume_token) mutable {
     request.set_resume_token(resume_token);
     auto context = google::cloud::internal::make_unique<grpc::ClientContext>();
     std::unique_ptr<PartialResultSetReader> reader =
@@ -332,7 +332,7 @@ RowStream ConnectionImpl::ReadImpl(SessionHolder& session,
             std::move(context), stub->StreamingRead(*context, request));
     if (tracing_enabled) {
       reader = google::cloud::internal::make_unique<LoggingResultSetReader>(
-          std::move(reader), max_text_proto_string_length);
+          std::move(reader), tracing_options);
     }
     return reader;
   };
@@ -462,14 +462,13 @@ ResultType ConnectionImpl::CommonQueryImpl(
   auto const& retry_policy = retry_policy_prototype_;
   auto const& backoff_policy = backoff_policy_prototype_;
   auto const tracing_enabled = rpc_stream_tracing_enabled_;
-  auto const max_text_proto_string_length = max_text_proto_string_length_;
-  auto retry_resume_fn = [stub, retry_policy, backoff_policy, tracing_enabled,
-                          max_text_proto_string_length](
-                             spanner_proto::ExecuteSqlRequest& request) mutable
+  auto const tracing_options = tracing_options_;
+  auto retry_resume_fn =
+      [stub, retry_policy, backoff_policy, tracing_enabled,
+       tracing_options](spanner_proto::ExecuteSqlRequest& request) mutable
       -> StatusOr<std::unique_ptr<ResultSourceInterface>> {
     auto factory = [stub, request, tracing_enabled,
-                    max_text_proto_string_length](
-                       std::string const& resume_token) mutable {
+                    tracing_options](std::string const& resume_token) mutable {
       request.set_resume_token(resume_token);
       auto context =
           google::cloud::internal::make_unique<grpc::ClientContext>();
@@ -478,7 +477,7 @@ ResultType ConnectionImpl::CommonQueryImpl(
               std::move(context), stub->ExecuteStreamingSql(*context, request));
       if (tracing_enabled) {
         reader = google::cloud::internal::make_unique<LoggingResultSetReader>(
-            std::move(reader), max_text_proto_string_length);
+            std::move(reader), tracing_options);
       }
       return reader;
     };

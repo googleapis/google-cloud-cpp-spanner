@@ -16,13 +16,13 @@
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_CONNECTION_OPTIONS_H_
 
 #include "google/cloud/spanner/background_threads.h"
+#include "google/cloud/spanner/tracing_options.h"
 #include "google/cloud/spanner/version.h"
 #include "google/cloud/grpc_utils/completion_queue.h"
 #include "google/cloud/status_or.h"
 #include <google/spanner/admin/database/v1/spanner_database_admin.grpc.pb.h>
 #include <google/spanner/v1/spanner.pb.h>
 #include <grpcpp/grpcpp.h>
-#include <cstdint>
 #include <functional>
 #include <memory>
 #include <set>
@@ -121,10 +121,8 @@ class ConnectionOptions {
     return *this;
   }
 
-  /// Return the maximum length for string/bytes fields when tracing RPCs.
-  std::int64_t max_text_proto_string_length() const {
-    return max_text_proto_string_length_;
-  }
+  /// Return the options for use when tracing RPCs.
+  TracingOptions tracing_options() const { return tracing_options_; }
 
   /**
    * Define the gRPC channel domain for clients configured with this object.
@@ -203,7 +201,7 @@ class ConnectionOptions {
   std::string endpoint_;
   int num_channels_;
   std::set<std::string> tracing_components_;
-  std::int64_t max_text_proto_string_length_;
+  TracingOptions tracing_options_;
   std::string channel_pool_domain_;
 
   std::string user_agent_prefix_;
