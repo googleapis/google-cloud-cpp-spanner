@@ -9,5 +9,6 @@ var searchData=
   ['updatemutationbuilder',['UpdateMutationBuilder',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ace667ae54433716b82aac3e99ea9a285',1,'google::cloud::spanner::v0']]],
   ['use_5fonly_5fclients',['use_only_clients',['../structgoogle_1_1cloud_1_1spanner__benchmarks_1_1v0_1_1Config.html#aa2364ed75f846ca919624986faa11057',1,'google::cloud::spanner_benchmarks::v0::Config']]],
   ['use_5fonly_5fstubs',['use_only_stubs',['../structgoogle_1_1cloud_1_1spanner__benchmarks_1_1v0_1_1Config.html#acda6e001bd600326a401785d14fc5679',1,'google::cloud::spanner_benchmarks::v0::Config']]],
+  ['use_5fshort_5frepeated_5fprimitives',['use_short_repeated_primitives',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TracingOptions.html#ac30a990fa6883de7a96883c754c62ce9',1,'google::cloud::spanner::v0::TracingOptions']]],
   ['user_5fagent_5fprefix',['user_agent_prefix',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#a2d283cc38119f2d56c6c2ec2ae7a5247',1,'google::cloud::spanner::v0::ConnectionOptions']]]
 ];
