@@ -382,7 +382,13 @@ Friends</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">mutator</td><td>the function called to create mutations </td></tr>
     <tr><td class="paramname">rerun_policy</td><td>controls for how long (or how many times) the mutator will be rerun after the transaction aborts. </td></tr>
-    <tr><td class="paramname">backoff_policy</td><td>controls how long <code>Commit</code> waits between reruns. </td></tr>
+    <tr><td class="paramname">backoff_policy</td><td>controls how long <code>Commit</code> waits between reruns.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">Rethrows</td><td>any exception thrown by <code><code>mutator</code></code> (after rolling back the transaction). </td></tr>
   </table>
   </dd>
 </dl>
