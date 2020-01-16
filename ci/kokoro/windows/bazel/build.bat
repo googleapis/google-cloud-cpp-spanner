@@ -31,6 +31,11 @@ set BAZEL_VS=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community
 echo %date% %time%
 bazel version
 
+echo "Downloading dependencies for the project."
+echo %date% %time%
+bazel --output_user_root=C:\b fetch -- ^
+    //google/cloud/spanner/...:all
+
 echo "Compiling the project."
 echo %date% %time%
 bazel --output_user_root=C:\b build --keep_going -- ^
