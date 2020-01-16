@@ -17,15 +17,6 @@ licenses(["notice"])  # Apache 2.0
 
 load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 
-######################
-# BEGIN SPANNER PROTOS
-######################
-
-# WARNING:
-# These Spanner protos exist for prototyping only. Users should not rely on
-# these protos and bazel build targets existing in the future. We will
-# remove/rename these without notice.
-
 cc_proto_library(
     name = "spanner_cc_proto",
     deps = ["//google/spanner/v1:spanner_proto"],
@@ -88,10 +79,6 @@ cc_library(
     includes = ["."],
 )
 
-####################
-# END SPANNER PROTOS
-####################
-
 cc_library(
     name = "grpc_utils_protos",
     includes = [
@@ -100,56 +87,5 @@ cc_library(
     deps = [
         "@com_github_grpc_grpc//:grpc++",
         "//google/rpc:status_cc_proto",
-    ],
-)
-
-# TODO(googleapis/google-cloud-cpp#2807) - will not need these.
-cc_proto_library(
-    name = "bigtableadmin_cc_proto",
-    deps = ["//google/bigtable/admin/v2:bigtableadmin_proto"],
-)
-
-cc_proto_library(
-    name = "bigtable_cc_proto",
-    deps = ["//google/bigtable/v2:bigtable_proto"],
-)
-
-cc_grpc_library(
-    name = "bigtableadmin_cc_grpc",
-    srcs = [
-        "//google/bigtable/admin/v2:bigtableadmin_proto",
-    ],
-    grpc_only = True,
-    use_external = True,
-    well_known_protos = True,
-    deps = [
-        ":bigtableadmin_cc_proto",
-        "//google/longrunning:longrunning_cc_grpc",
-    ],
-)
-
-cc_grpc_library(
-    name = "bigtable_cc_grpc",
-    srcs = ["//google/bigtable/v2:bigtable_proto"],
-    grpc_only = True,
-    use_external = True,
-    well_known_protos = True,
-    deps = [
-        ":bigtable_cc_proto",
-    ],
-)
-
-cc_library(
-    name = "bigtable_protos",
-    includes = [
-        ".",
-    ],
-    deps = [
-        "@com_github_grpc_grpc//:grpc++",
-        ":bigtable_cc_grpc",
-        ":bigtable_cc_proto",
-        ":bigtableadmin_cc_grpc",
-        ":bigtableadmin_cc_proto",
-        "//google/rpc:error_details_cc_proto",
     ],
 )
