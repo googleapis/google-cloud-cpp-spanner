@@ -5,7 +5,7 @@ var searchData=
   ['backgroundthreads',['BackgroundThreads',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1BackgroundThreads.html',1,'google::cloud::spanner::v0']]],
   ['backgroundthreadsfactory',['BackgroundThreadsFactory',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#a98ec1c95e6deeef05f713c257a979dcd',1,'google::cloud::spanner::v0::ConnectionOptions']]],
   ['backoff_5fpolicy_2eh',['backoff_policy.h',['../backoff__policy_8h.html',1,'']]],
-  ['backoffpolicy',['BackoffPolicy',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a9ad3c388cccb2c4d92c8299ac178af8a',1,'google::cloud::spanner::v0']]],
+  ['backoffpolicy',['BackoffPolicy',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ae9894cd07fd5d6262b10e01f1307c951',1,'google::cloud::spanner::v0']]],
   ['batch_5fdml_5fresult_2eh',['batch_dml_result.h',['../batch__dml__result_8h.html',1,'']]],
   ['batchdmlresult',['BatchDmlResult',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1BatchDmlResult.html',1,'google::cloud::spanner::v0']]],
   ['begin',['begin',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStream.html#ab24539cdfd55fcefa17c10848fd38214',1,'google::cloud::spanner::v0::RowStream::begin()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html#a7944e6389116bf41c1f9abb6a088cb45',1,'google::cloud::spanner::v0::ProfileQueryResult::begin()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1StreamOf.html#a92edc1866f083d1fddccba1792ac846f',1,'google::cloud::spanner::v0::StreamOf::begin()']]],
