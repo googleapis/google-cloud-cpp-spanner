@@ -11,12 +11,14 @@ audience is expected to be familiar with the project itself, [git][git-docs],
 
 ## Preparing for a release
 
-First you should collect and update the release notes for the project. Prepare
-a pull request (PR) with the necessary changes to the README file.
-
 Assuming you are working on your own fork of the `google-cloud-cpp-spanner`
 project, and `upstream` points to the `googleapis/google-cloud-cpp-spanner`
-remote, these commands should be useful in identifying important changes:
+remote, these commands should be useful in identifying important changes for
+inclusion in the release notes:
+
+### Update CHANGELOG.md
+
+Update `CHANGELOG.md` based on the release notes:
 
 ```bash
 git log --no-merges --format="format:* %s" \
@@ -24,13 +26,9 @@ git log --no-merges --format="format:* %s" \
     upstream/master
 ```
 
-Write an edited version of these changes to `ci/test-readme/README.md.in`,
-consider skipping information that is not useful for consumers of the library,
-such as CI system changes and internal cleanups.
-
 ### Update README.md
 
-Update the top-level README file:
+Update the instructions to build the library for development:
 
 ```bash
 ./ci/test-readme/generate-readme.sh >README.md
