@@ -67,6 +67,7 @@ else ()
         set(DOXYGEN_EXCLUDE_PATTERNS
             "*/google/cloud/spanner/README.md"
             "*/google/cloud/spanner/internal/*"
+            "*/google/cloud/spanner/benchmarks/*"
             "*/google/cloud/spanner/testing/*"
             "*/google/cloud/spanner/*_test.cc")
 
