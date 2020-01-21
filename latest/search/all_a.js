@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['main',['main',['../multiple__rows__cpu__benchmark_8cc.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;multiple_rows_cpu_benchmark.cc'],['../single__row__throughput__benchmark_8cc.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;single_row_throughput_benchmark.cc'],['../samples_8cc.html#adacbe0175a79dff748855d8c9839f82b',1,'main(int ac, char *av[]):&#160;samples.cc']]],
+  ['main',['main',['../samples_8cc.html#adacbe0175a79dff748855d8c9839f82b',1,'samples.cc']]],
   ['makeconnection',['MakeConnection',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aed22de1a3c4a7fa28b78061ed4ca4d4f',1,'google::cloud::spanner::v0::MakeConnection(Database const  &amp;db, ConnectionOptions const  &amp;connection_options=ConnectionOptions(), SessionPoolOptions session_pool_options=SessionPoolOptions())'],['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a5fd52f9b0ea74a600b92bc1481129f74',1,'google::cloud::spanner::v0::MakeConnection(Database const  &amp;db, ConnectionOptions const  &amp;connection_options, SessionPoolOptions session_pool_options, std::unique_ptr&lt; RetryPolicy &gt; retry_policy, std::unique_ptr&lt; BackoffPolicy &gt; backoff_policy)']]],
   ['makedatabaseadminconnection',['MakeDatabaseAdminConnection',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a6f04fd3d19b7e1f291bdc7f5a9ed6a77',1,'google::cloud::spanner::v0']]],
   ['makedeletemutation',['MakeDeleteMutation',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a5dbbd67a8f47b3417280deb7ae048609',1,'google::cloud::spanner::v0']]],
@@ -20,11 +20,7 @@ var searchData=
   ['max_5fidle_5fsessions',['max_idle_sessions',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html#aa84ce99f8a98be9ee350997ea439c415',1,'google::cloud::spanner::v0::SessionPoolOptions']]],
   ['max_5fpartitions',['max_partitions',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionOptions.html#a2d4ee1d9d731bb2b2dd3dc887c0630c4',1,'google::cloud::spanner::v0::PartitionOptions']]],
   ['max_5fsessions_5fper_5fchannel',['max_sessions_per_channel',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html#a18eec462a9831607a24249c139a69c66',1,'google::cloud::spanner::v0::SessionPoolOptions']]],
-  ['maximum_5fclients',['maximum_clients',['../structgoogle_1_1cloud_1_1spanner__benchmarks_1_1v0_1_1Config.html#a28fb94b1f8bdf52693c95b0b818306eb',1,'google::cloud::spanner_benchmarks::v0::Config']]],
-  ['maximum_5fthreads',['maximum_threads',['../structgoogle_1_1cloud_1_1spanner__benchmarks_1_1v0_1_1Config.html#aad5453a4283c8742107b1a234c9cfa01',1,'google::cloud::spanner_benchmarks::v0::Config']]],
   ['min_5fsessions',['min_sessions',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html#a7a10f8cd745db26e9927e4c2f62603a7',1,'google::cloud::spanner::v0::SessionPoolOptions']]],
-  ['minimum_5fclients',['minimum_clients',['../structgoogle_1_1cloud_1_1spanner__benchmarks_1_1v0_1_1Config.html#a7e0da0e624a4cf4243072944be5084dc',1,'google::cloud::spanner_benchmarks::v0::Config']]],
-  ['minimum_5fthreads',['minimum_threads',['../structgoogle_1_1cloud_1_1spanner__benchmarks_1_1v0_1_1Config.html#a99fbe87f857d38b36fe1483e0488ceeb',1,'google::cloud::spanner_benchmarks::v0::Config']]],
   ['mock_5fconst_5fmethod0',['MOCK_CONST_METHOD0',['../classgoogle_1_1cloud_1_1spanner__mocks_1_1v0_1_1MockResultSetSource.html#a6d238ec602a69af5ac196880267b4059',1,'google::cloud::spanner_mocks::v0::MockResultSetSource']]],
   ['mock_5fdatabase_5fadmin_5fconnection_2eh',['mock_database_admin_connection.h',['../mock__database__admin__connection_8h.html',1,'']]],
   ['mock_5fexecute_5fquery_2ecc',['mock_execute_query.cc',['../mock__execute__query_8cc.html',1,'']]],
@@ -37,7 +33,6 @@ var searchData=
   ['mockinstanceadminconnection',['MockInstanceAdminConnection',['../classgoogle_1_1cloud_1_1spanner__mocks_1_1v0_1_1MockInstanceAdminConnection.html',1,'google::cloud::spanner_mocks::v0']]],
   ['mockresultsetsource',['MockResultSetSource',['../classgoogle_1_1cloud_1_1spanner__mocks_1_1v0_1_1MockResultSetSource.html',1,'google::cloud::spanner_mocks::v0']]],
   ['month',['month',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html#a6bb58d11955b85ac06de2948760e62ee',1,'google::cloud::spanner::v0::Date']]],
-  ['multiple_5frows_5fcpu_5fbenchmark_2ecc',['multiple_rows_cpu_benchmark.cc',['../multiple__rows__cpu__benchmark_8cc.html',1,'']]],
   ['mutation',['Mutation',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html',1,'google::cloud::spanner::v0::Mutation'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html#a311f18265080cd893771a7705df91d17',1,'google::cloud::spanner::v0::Mutation::Mutation()=default'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html#aa52eff25a8ecc973122d2f5fea2ad6b7',1,'google::cloud::spanner::v0::Mutation::Mutation(Mutation &amp;&amp;) noexcept=default'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Mutation.html#a2bc59b7bcb336837dc2250da70ed2454',1,'google::cloud::spanner::v0::Mutation::Mutation(Mutation const &amp;)=default']]],
   ['mutations',['mutations',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1CommitParams.html#a5108f4e97be597f304aceaac79738148',1,'google::cloud::spanner::v0::Connection::CommitParams::mutations()'],['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a283421d14e4073e59922c9168d880cae',1,'google::cloud::spanner::v0::Mutations()']]],
   ['mutations_2ecc',['mutations.cc',['../mutations_8cc.html',1,'']]],

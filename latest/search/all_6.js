@@ -17,7 +17,6 @@ var searchData=
   ['getsingularrow',['GetSingularRow',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a871688247002c2daf7201c98c75b608e',1,'google::cloud::spanner::v0']]],
   ['google',['google',['../namespacegoogle.html',1,'']]],
   ['spanner',['spanner',['../namespacegoogle_1_1cloud_1_1spanner.html',1,'google::cloud']]],
-  ['spanner_5fbenchmarks',['spanner_benchmarks',['../namespacegoogle_1_1cloud_1_1spanner__benchmarks.html',1,'google::cloud']]],
   ['spanner_5fmocks',['spanner_mocks',['../namespacegoogle_1_1cloud_1_1spanner__mocks.html',1,'google::cloud']]],
-  ['v0',['v0',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html',1,'google::cloud::spanner::v0'],['../namespacegoogle_1_1cloud_1_1spanner__benchmarks_1_1v0.html',1,'google::cloud::spanner_benchmarks::v0'],['../namespacegoogle_1_1cloud_1_1spanner__mocks_1_1v0.html',1,'google::cloud::spanner_mocks::v0']]]
+  ['v0',['v0',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html',1,'google::cloud::spanner::v0'],['../namespacegoogle_1_1cloud_1_1spanner__mocks_1_1v0.html',1,'google::cloud::spanner_mocks::v0']]]
 ];
