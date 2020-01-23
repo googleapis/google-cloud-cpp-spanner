@@ -16,12 +16,16 @@ Checks: >
   -google-readability-namespace-comments,
   -google-runtime-references,
   -misc-non-private-member-variables-in-classes,
+  -performance-move-const-arg,
   -readability-named-parameter,
   -readability-braces-around-statements,
   -readability-magic-numbers
 
 # Turn all the warnings from the checks above into errors.
 WarningsAsErrors: "*"
+
+# Enable clang-tidy checks in our headers.
+HeaderFilterRegex: "google/cloud/spanner/internal/.*"
 
 CheckOptions:
   - { key: readability-identifier-naming.NamespaceCase,          value: lower_case }
