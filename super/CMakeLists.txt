@@ -25,6 +25,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
 
 include(external/google-cloud-cpp-common)
 include(external/googletest)
+include(external/benchmark)
 
 include(ExternalProjectHelper)
 set_external_project_build_parallel_level(PARALLEL)
@@ -33,7 +34,7 @@ set_external_project_vars()
 include(ExternalProject)
 ExternalProject_Add(
     google-cloud-cpp-spanner-as-external
-    DEPENDS google-cloud-cpp-common-project googletest-project
+    DEPENDS google-cloud-cpp-common-project googletest-project benchmark-project
     EXCLUDE_FROM_ALL
         OFF
         BUILD_ALWAYS
@@ -59,4 +60,4 @@ ExternalProject_Add(
 # This makes it easy to compile the dependencies before the code.
 add_custom_target(project-dependencies)
 add_dependencies(project-dependencies google-cloud-cpp-common-project
-                 googletest-project)
+                 googletest-project benchmark-project)

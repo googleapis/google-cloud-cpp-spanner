@@ -216,6 +216,24 @@ sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
+#### benchmark
+
+We need a recent version of the Google microbenchmark support library.
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
+    tar -xf v1.5.0.tar.gz && \
+    cd benchmark-1.5.0 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE="Release" \
+        -DBUILD_SHARED_LIBS=yes \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
 #### google-cloud-cpp-common
 
 The project also depends on google-cloud-cpp-common, the libraries shared by
@@ -353,6 +371,24 @@ sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
+#### benchmark
+
+We need a recent version of the Google microbenchmark support library.
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
+    tar -xf v1.5.0.tar.gz && \
+    cd benchmark-1.5.0 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE="Release" \
+        -DBUILD_SHARED_LIBS=yes \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
 #### google-cloud-cpp-common
 
 The project also depends on google-cloud-cpp-common, the libraries shared by
@@ -457,6 +493,24 @@ wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
     tar -xf release-1.10.0.tar.gz && \
     cd googletest-release-1.10.0 && \
     cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### benchmark
+
+We need a recent version of the Google microbenchmark support library.
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
+    tar -xf v1.5.0.tar.gz && \
+    cd benchmark-1.5.0 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE="Release" \
+        -DBUILD_SHARED_LIBS=yes \
+        -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
@@ -586,6 +640,24 @@ sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
+#### benchmark
+
+We need a recent version of the Google microbenchmark support library.
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
+    tar -xf v1.5.0.tar.gz && \
+    cd benchmark-1.5.0 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE="Release" \
+        -DBUILD_SHARED_LIBS=yes \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
 #### google-cloud-cpp-common
 
 The project also depends on google-cloud-cpp-common, the libraries shared by
@@ -663,6 +735,24 @@ wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
     tar -xf release-1.10.0.tar.gz && \
     cd googletest-release-1.10.0 && \
     cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### benchmark
+
+We need a recent version of the Google microbenchmark support library.
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
+    tar -xf v1.5.0.tar.gz && \
+    cd benchmark-1.5.0 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE="Release" \
+        -DBUILD_SHARED_LIBS=yes \
+        -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
@@ -784,6 +874,24 @@ sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
+#### benchmark
+
+We need a recent version of the Google microbenchmark support library.
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
+    tar -xf v1.5.0.tar.gz && \
+    cd benchmark-1.5.0 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE="Release" \
+        -DBUILD_SHARED_LIBS=yes \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
 #### google-cloud-cpp-common
 
 The project also depends on google-cloud-cpp-common, the libraries shared by
@@ -900,6 +1008,24 @@ wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
     tar -xf release-1.10.0.tar.gz && \
     cd googletest-release-1.10.0 && \
     cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### benchmark
+
+We need a recent version of the Google microbenchmark support library.
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
+    tar -xf v1.5.0.tar.gz && \
+    cd benchmark-1.5.0 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE="Release" \
+        -DBUILD_SHARED_LIBS=yes \
+        -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
@@ -1042,6 +1168,24 @@ wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
     tar -xf release-1.10.0.tar.gz && \
     cd googletest-release-1.10.0 && \
     cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
+#### benchmark
+
+We need a recent version of the Google microbenchmark support library.
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
+    tar -xf v1.5.0.tar.gz && \
+    cd benchmark-1.5.0 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE="Release" \
+        -DBUILD_SHARED_LIBS=yes \
+        -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
