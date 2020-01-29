@@ -456,28 +456,25 @@ void CreateTableWithTimestamp(
 // [END spanner_create_table_with_timestamp_column]
 
 // [START spanner_insert_data_with_timestamp_column]
-void InsertDataWithTimestamp(google::cloud::spanner::DatabaseAdminClient client,
-                             std::string const& project_id,
-                             std::string const& instance_id,
-                             std::string const& database_id) {
+void InsertDataWithTimestamp(
+    google::cloud::spanner::DatabaseAdminClient,  // NOLINT
+    std::string const&, std::string const&, std::string const&) {
   // TODO(#1217)
 }
 // [END spanner_insert_data_with_timestamp_column]
 
 // [START spanner_update_data_with_timestamp_column]
-void UpdateDataWithTimestamp(google::cloud::spanner::DatabaseAdminClient client,
-                             std::string const& project_id,
-                             std::string const& instance_id,
-                             std::string const& database_id) {
+void UpdateDataWithTimestamp(
+    google::cloud::spanner::DatabaseAdminClient,  // NOLINT
+    std::string const&, std::string const&, std::string const&) {
   // TODO(#1218)
 }
 // [END spanner_update_data_with_timestamp_column]
 
 // [START spanner_query_data_with_timestamp_column]
-void QueryDataWithTimestamp(google::cloud::spanner::DatabaseAdminClient client,
-                            std::string const& project_id,
-                            std::string const& instance_id,
-                            std::string const& database_id) {
+void QueryDataWithTimestamp(
+    google::cloud::spanner::DatabaseAdminClient,  // NOLINT
+    std::string const&, std::string const&, std::string const&) {
   // TODO(#1219)
 }
 // [END spanner_query_data_with_timestamp_column]
