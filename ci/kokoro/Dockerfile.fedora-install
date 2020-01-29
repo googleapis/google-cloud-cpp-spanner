@@ -63,7 +63,7 @@ RUN cmake \
           -H. -Bcmake-out/gtest
 RUN cmake --build cmake-out/gtest --target install -- -j $(nproc)
 
-# Download and compile benchmark, we need a recent version.
+# Download and compile Google microbenchmark support library:
 WORKDIR /var/tmp/build
 RUN wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz
 RUN tar -xf v1.5.0.tar.gz
