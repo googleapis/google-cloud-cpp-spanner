@@ -29,6 +29,7 @@ declare -A ORIGINAL_COPYRIGHT_YEAR=(
 BUILD_AND_TEST_PROJECT_FRAGMENT=$(replace_fragments \
       "INSTALL_CPP_CMAKEFILES_FROM_SOURCE" \
       "INSTALL_GOOGLETEST_FROM_SOURCE" \
+      "INSTALL_GOOGLE_BENCHMARK_FROM_SOURCE" \
       "INSTALL_GOOGLE_CLOUD_CPP_COMMON_FROM_SOURCE" <<'_EOF_'
 # #### googleapis
 
@@ -45,6 +46,14 @@ BUILD_AND_TEST_PROJECT_FRAGMENT=$(replace_fragments \
 
 # ```bash
 @INSTALL_GOOGLETEST_FROM_SOURCE@
+# ```
+
+# #### benchmark
+
+# We need a recent version of the Google microbenchmark support library.
+
+# ```bash
+@INSTALL_GOOGLE_BENCHMARK_FROM_SOURCE@
 # ```
 
 # #### google-cloud-cpp-common

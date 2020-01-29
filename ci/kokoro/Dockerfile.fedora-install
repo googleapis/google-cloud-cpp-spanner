@@ -63,8 +63,19 @@ RUN cmake \
           -H. -Bcmake-out/gtest
 RUN cmake --build cmake-out/gtest --target install -- -j $(nproc)
 
-# Download and compile googleapis/cpp-cmakefiles:
+# Download and compile Google microbenchmark support library:
+WORKDIR /var/tmp/build
+RUN wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz
+RUN tar -xf v1.5.0.tar.gz
+WORKDIR /var/tmp/build/benchmark-1.5.0
+RUN cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -DBENCHMARK_ENABLE_TESTING=OFF \
+        -H. -Bcmake-out/benchmark
+RUN cmake --build cmake-out/benchmark --target install -- -j $(nproc)
 
+# Download and compile googleapis/cpp-cmakefiles:
 WORKDIR /var/tmp/build
 RUN wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
 RUN tar -xf v0.1.5.tar.gz
@@ -77,7 +88,6 @@ RUN cmake -H. -Bcmake-out \
     -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON
 RUN cmake --build cmake-out -- -j $(nproc)
 RUN cmake --build cmake-out --target install
-
 
 # Download and compile google-cloud-cpp from source too:
 WORKDIR /var/tmp/build
