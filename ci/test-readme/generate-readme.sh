@@ -99,7 +99,7 @@ bazel --output_user_root=C:\b build //google/cloud/spanner/samples:samples
 ```
 
 On Windows and macOS gRPC [requires][grpc-roots-pem-bug] an environment variable
-to find the to manually set the root of trust for SSL. On macOS use:
+to find the root of trust for SSL. On macOS use:
 
 ```console
 wget -q https://raw.githubusercontent.com/grpc/grpc/master/etc/roots.pem
