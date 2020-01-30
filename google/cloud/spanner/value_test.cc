@@ -871,6 +871,14 @@ TEST(Value, CommitTimestamp) {
   EXPECT_THAT(tv.second, IsProtoEqual(expected));
 }
 
+TEST(Value, CommitTimestampGetFails) {
+  auto status = Value::CommitTimestamp().get<std::string>().status();
+  EXPECT_EQ(StatusCode::kUnknown, status.code());
+
+  status = Value::CommitTimestamp().get<spanner::Timestamp>().status();
+  EXPECT_EQ(StatusCode::kInvalidArgument, status.code());
+}
+
 }  // namespace
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
