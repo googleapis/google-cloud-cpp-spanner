@@ -7,5 +7,6 @@ var searchData=
   ['results_2eh',['results.h',['../results_8h.html',1,'']]],
   ['retry_5fpolicy_2eh',['retry_policy.h',['../retry__policy_8h.html',1,'']]],
   ['row_2ecc',['row.cc',['../row_8cc.html',1,'']]],
-  ['row_2eh',['row.h',['../row_8h.html',1,'']]]
+  ['row_2eh',['row.h',['../row_8h.html',1,'']]],
+  ['row_5fbenchmark_2ecc',['row_benchmark.cc',['../row__benchmark_8cc.html',1,'']]]
 ];

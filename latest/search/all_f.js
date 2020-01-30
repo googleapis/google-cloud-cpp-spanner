@@ -25,6 +25,7 @@ var searchData=
   ['row',['Row',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html',1,'google::cloud::spanner::v0::Row'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a1167b2cbb8ee599cc7b15bc6d83f0150',1,'google::cloud::spanner::v0::Row::Row()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a68f25b8b670e80241916d97d7d1e2d68',1,'google::cloud::spanner::v0::Row::Row(Row const &amp;)=default'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html#a268b36e5dbad1ddb8a14b33e6cee0256',1,'google::cloud::spanner::v0::Row::Row(Row &amp;&amp;)=default']]],
   ['row_2ecc',['row.cc',['../row_8cc.html',1,'']]],
   ['row_2eh',['row.h',['../row_8h.html',1,'']]],
+  ['row_5fbenchmark_2ecc',['row_benchmark.cc',['../row__benchmark_8cc.html',1,'']]],
   ['row_5fcount',['row_count',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1BatchDmlResult_1_1Stats.html#a8587ad4c5fcdfc4fb3a640c4dfb2d7a4',1,'google::cloud::spanner::v0::BatchDmlResult::Stats']]],
   ['row_5fcount_5flower_5fbound',['row_count_lower_bound',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1PartitionedDmlResult.html#ad5e64214214d6a9834c80f66e02a2dfa',1,'google::cloud::spanner::v0::PartitionedDmlResult']]],
   ['rowsmodified',['RowsModified',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1DmlResult.html#a7b889ab02eaabe8e535a23af30144fdb',1,'google::cloud::spanner::v0::DmlResult::RowsModified()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileDmlResult.html#a80add594dbe08a68c046e1fbd4fc6f32',1,'google::cloud::spanner::v0::ProfileDmlResult::RowsModified()']]],
