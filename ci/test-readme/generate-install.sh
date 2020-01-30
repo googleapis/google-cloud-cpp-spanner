@@ -18,7 +18,10 @@ set -eu
 readonly BINDIR=$(dirname "$0")
 
 cat <<'END_OF_PREAMBLE'
-# Obtaining google-cloud-cpp-spanner
+# Installing google-cloud-cpp-spanner
+
+<!-- This is an automatically generated file -->
+<!-- Make changes in ci/test-readme/generate-install.sh -->
 
 There are two primary ways of obtaining `google-cloud-cpp-spanner`. You can use git:
 
