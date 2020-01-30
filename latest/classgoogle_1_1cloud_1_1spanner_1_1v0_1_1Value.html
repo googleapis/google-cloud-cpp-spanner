@@ -113,6 +113,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a31be733bafc002766bf2bdbf1045251f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#a31be733bafc002766bf2bdbf1045251f">Value</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html">Timestamp</a> v)</td></tr>
 <tr class="memdesc:a31be733bafc002766bf2bdbf1045251f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an instance with the specified type and value.  <a href="#a31be733bafc002766bf2bdbf1045251f">More...</a><br /></td></tr>
 <tr class="separator:a31be733bafc002766bf2bdbf1045251f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10b188e9e8beffa4f0a35dd956a77e3e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#a10b188e9e8beffa4f0a35dd956a77e3e">Value</a> (<a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitTimestamp.html">CommitTimestamp</a> v)</td></tr>
+<tr class="memdesc:a10b188e9e8beffa4f0a35dd956a77e3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an instance with the specified type and value.  <a href="#a10b188e9e8beffa4f0a35dd956a77e3e">More...</a><br /></td></tr>
+<tr class="separator:a10b188e9e8beffa4f0a35dd956a77e3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea1cdd0a637b91a643800353dbc40e25"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html#aea1cdd0a637b91a643800353dbc40e25">Value</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Date.html">Date</a> v)</td></tr>
 <tr class="memdesc:aea1cdd0a637b91a643800353dbc40e25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an instance with the specified type and value.  <a href="#aea1cdd0a637b91a643800353dbc40e25">More...</a><br /></td></tr>
 <tr class="separator:aea1cdd0a637b91a643800353dbc40e25"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,6 +183,8 @@ Friends</h2></td></tr>
 </table>
 <p>[1] The type <code>T</code> may be any of the other supported types, except for ARRAY/<code>std::vector</code>.</p>
 <p><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a> is a regular C++ value type with support for copy, move, equality, etc. A default-constructed <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a> represents an empty value with no type.</p>
+<dl class="section note"><dt>Note</dt><dd>There is also a C++ type of <code><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitTimestamp.html" title="A sentinel type used to update a commit timestamp column.">CommitTimestamp</a></code> that corresponds to a Cloud Spanner TIMESTAMP object for setting the commit timestamp on a column with the <code>allow_commit_timestamp</code> set to <code>true</code> in the schema.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://cloud.google.com/spanner/docs/commit-timestamp">https://cloud.google.com/spanner/docs/commit-timestamp</a></dd></dl>
 <p>Callers may create instances by passing any of the supported values (shown in the table above) to the constructor. "Null" values are created using the <code>MakeNullValue&lt;T&gt;()</code> factory function or by passing an empty <code>optional&lt;T&gt;</code> to the <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a> constructor..</p>
 <dl class="section user"><dt>Example with a non-null value</dt><dd></dd></dl>
 <div class="fragment"><div class="line">std::string msg = <span class="stringliteral">&quot;hello&quot;</span>;</div><div class="line">spanner::Value v(msg);</div><div class="line">StatusOr&lt;std::string&gt; copy = v.get&lt;std::string&gt;();</div><div class="line"><span class="keywordflow">if</span> (copy) {</div><div class="line">  std::cout &lt;&lt; *copy;  <span class="comment">// prints &quot;hello&quot;</span></div><div class="line">}</div></div><!-- fragment --><dl class="section user"><dt>Example with a null</dt><dd></dd></dl>
@@ -197,10 +202,10 @@ Friends</h2></td></tr>
 <p>Spanner STRUCT fields may optionally contain a string indicating the field's name. Fields names may be empty, unique, or repeated. A named field may be specified as a tuple element of type <code>std::pair&lt;std::string, T&gt;</code>, where the pair's <code>.first</code> member indicate's the field's name, and the <code>.second</code> member is any valid Spanner type <code>T</code>.</p>
 <div class="fragment"><div class="line"><span class="keyword">using</span> Struct = std::tuple&lt;bool, std::pair&lt;std::string, std::int64_t&gt;&gt;;</div><div class="line">Struct s  = {<span class="keyword">true</span>, {<span class="stringliteral">&quot;Foo&quot;</span>, 42}};</div><div class="line">spanner::Value v(s);</div><div class="line">assert(s == *v.get&lt;Struct&gt;());</div></div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>While a STRUCT's (optional) field names are not part of its C++ type, they are part of its Spanner STRUCT type. Array's (i.e., <code>std::vector</code>) must contain a single element type, therefore it is an error to construct a <code>std::vector</code> of <code>std::tuple</code> objects with differently named fields. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00156">156</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00162">162</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aacc02c80956a52a83a4fb0e513d2d243"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aacc02c80956a52a83a4fb0e513d2d243">&#9670;&nbsp;</a></span>Value() <span class="overload">[1/15]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aacc02c80956a52a83a4fb0e513d2d243">&#9670;&nbsp;</a></span>Value() <span class="overload">[1/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -228,7 +233,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="a0b218f860da2b46dff3b66e52815392b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b218f860da2b46dff3b66e52815392b">&#9670;&nbsp;</a></span>Value() <span class="overload">[2/15]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b218f860da2b46dff3b66e52815392b">&#9670;&nbsp;</a></span>Value() <span class="overload">[2/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -254,7 +259,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="aeb00e67e2aa99029eec45726fed4e650"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb00e67e2aa99029eec45726fed4e650">&#9670;&nbsp;</a></span>Value() <span class="overload">[3/15]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb00e67e2aa99029eec45726fed4e650">&#9670;&nbsp;</a></span>Value() <span class="overload">[3/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -280,7 +285,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="a28f24b142265abac7f3639169129e50e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a28f24b142265abac7f3639169129e50e">&#9670;&nbsp;</a></span>Value() <span class="overload">[4/15]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a28f24b142265abac7f3639169129e50e">&#9670;&nbsp;</a></span>Value() <span class="overload">[4/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -305,12 +310,12 @@ Friends</h2></td></tr>
 
 <p>Constructs an instance with the specified type and value. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00172">172</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00178">178</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
 <a id="a34a20a7e6f9a3c423a9e36e2276c6f6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34a20a7e6f9a3c423a9e36e2276c6f6b">&#9670;&nbsp;</a></span>Value() <span class="overload">[5/15]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a34a20a7e6f9a3c423a9e36e2276c6f6b">&#9670;&nbsp;</a></span>Value() <span class="overload">[5/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -335,12 +340,12 @@ Friends</h2></td></tr>
 
 <p>Constructs an instance with the specified type and value. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00174">174</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00180">180</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
 <a id="a1489c12a5692d8bef05afaa7851cbbb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1489c12a5692d8bef05afaa7851cbbb3">&#9670;&nbsp;</a></span>Value() <span class="overload">[6/15]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1489c12a5692d8bef05afaa7851cbbb3">&#9670;&nbsp;</a></span>Value() <span class="overload">[6/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -365,12 +370,12 @@ Friends</h2></td></tr>
 
 <p>Constructs an instance with the specified type and value. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00176">176</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00182">182</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
 <a id="a5bade47553cfba6f104dc24f2fb6c3ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5bade47553cfba6f104dc24f2fb6c3ef">&#9670;&nbsp;</a></span>Value() <span class="overload">[7/15]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bade47553cfba6f104dc24f2fb6c3ef">&#9670;&nbsp;</a></span>Value() <span class="overload">[7/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -395,12 +400,12 @@ Friends</h2></td></tr>
 
 <p>Constructs an instance with the specified type and value. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00178">178</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00184">184</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
 <a id="a318ffa93e4125a52d07380ba5f191ab7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a318ffa93e4125a52d07380ba5f191ab7">&#9670;&nbsp;</a></span>Value() <span class="overload">[8/15]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a318ffa93e4125a52d07380ba5f191ab7">&#9670;&nbsp;</a></span>Value() <span class="overload">[8/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -425,12 +430,12 @@ Friends</h2></td></tr>
 
 <p>Constructs an instance with the specified type and value. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00180">180</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00186">186</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
 <a id="a31be733bafc002766bf2bdbf1045251f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a31be733bafc002766bf2bdbf1045251f">&#9670;&nbsp;</a></span>Value() <span class="overload">[9/15]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a31be733bafc002766bf2bdbf1045251f">&#9670;&nbsp;</a></span>Value() <span class="overload">[9/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -455,12 +460,42 @@ Friends</h2></td></tr>
 
 <p>Constructs an instance with the specified type and value. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00182">182</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00188">188</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+
+</div>
+</div>
+<a id="a10b188e9e8beffa4f0a35dd956a77e3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10b188e9e8beffa4f0a35dd956a77e3e">&#9670;&nbsp;</a></span>Value() <span class="overload">[10/16]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">google::cloud::spanner::v0::Value::Value </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitTimestamp.html">CommitTimestamp</a>&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs an instance with the specified type and value. </p>
+
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00190">190</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
 <a id="aea1cdd0a637b91a643800353dbc40e25"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea1cdd0a637b91a643800353dbc40e25">&#9670;&nbsp;</a></span>Value() <span class="overload">[10/15]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aea1cdd0a637b91a643800353dbc40e25">&#9670;&nbsp;</a></span>Value() <span class="overload">[11/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -485,12 +520,12 @@ Friends</h2></td></tr>
 
 <p>Constructs an instance with the specified type and value. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00184">184</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00193">193</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
 <a id="aa1f1ea80d77af34d7da496cd69d14308"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1f1ea80d77af34d7da496cd69d14308">&#9670;&nbsp;</a></span>Value() <span class="overload">[11/15]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1f1ea80d77af34d7da496cd69d14308">&#9670;&nbsp;</a></span>Value() <span class="overload">[12/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -516,12 +551,12 @@ Friends</h2></td></tr>
 <p>Constructs an instance from common C++ literal types that closely, though not exactly, match supported Spanner types. </p>
 <p>An integer literal in C++ is of type <code>int</code>, which is not exactly an allowed Spanner type. This will be allowed but it will be implicitly up converted to a <code>std::int64_t</code>. Similarly, a C++ string literal will be implicitly converted to a <code>std::string</code>. For example:</p>
 <div class="fragment"><div class="line">spanner::Value v1(42);</div><div class="line">assert(42 == *v1.get&lt;std::int64_t&gt;());</div><div class="line"></div><div class="line">spanner::Value v2(<span class="stringliteral">&quot;hello&quot;</span>);</div><div class="line">assert(<span class="stringliteral">&quot;hello&quot;</span> == *v2.get&lt;std::string&gt;());</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00203">203</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00212">212</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
 <a id="aea8d95de0a61f97af829acf988330452"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea8d95de0a61f97af829acf988330452">&#9670;&nbsp;</a></span>Value() <span class="overload">[12/15]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aea8d95de0a61f97af829acf988330452">&#9670;&nbsp;</a></span>Value() <span class="overload">[13/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -547,12 +582,12 @@ Friends</h2></td></tr>
 <p>Constructs an instance from common C++ literal types that closely, though not exactly, match supported Spanner types. </p>
 <p>An integer literal in C++ is of type <code>int</code>, which is not exactly an allowed Spanner type. This will be allowed but it will be implicitly up converted to a <code>std::int64_t</code>. Similarly, a C++ string literal will be implicitly converted to a <code>std::string</code>. For example:</p>
 <div class="fragment"><div class="line">spanner::Value v1(42);</div><div class="line">assert(42 == *v1.get&lt;std::int64_t&gt;());</div><div class="line"></div><div class="line">spanner::Value v2(<span class="stringliteral">&quot;hello&quot;</span>);</div><div class="line">assert(<span class="stringliteral">&quot;hello&quot;</span> == *v2.get&lt;std::string&gt;());</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00205">205</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00214">214</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
 <a id="aaa807ab741cf8af9b3f44fc4c1e25bb5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa807ab741cf8af9b3f44fc4c1e25bb5">&#9670;&nbsp;</a></span>Value() <span class="overload">[13/15]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa807ab741cf8af9b3f44fc4c1e25bb5">&#9670;&nbsp;</a></span>Value() <span class="overload">[14/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -579,12 +614,12 @@ template&lt;typename T &gt; </div>
 
 <p>Constructs a non-null instance if <code>opt</code> has a value, otherwise constructs a null instance with the specified type <code>T</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00212">212</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00221">221</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
 <a id="a68bd936ff151cb01e0bf55db053b864a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68bd936ff151cb01e0bf55db053b864a">&#9670;&nbsp;</a></span>Value() <span class="overload">[14/15]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a68bd936ff151cb01e0bf55db053b864a">&#9670;&nbsp;</a></span>Value() <span class="overload">[15/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -613,12 +648,12 @@ template&lt;typename T &gt; </div>
 <p>The type <code>T</code> may be any valid type shown above, except vectors of vectors are not allowed.</p>
 <dl class="section warning"><dt>Warning</dt><dd>If <code>T</code> is a <code>std::tuple</code> with field names (i.e., at least one of its element types is a <code>std::pair&lt;std::string, T&gt;</code>) then, all of the vector's elements must have exactly the same field names. Any mismatch in in field names results in undefined behavior. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00228">228</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00237">237</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
 <a id="aacf0fc8c9323a3a3c266b14f258ca246"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aacf0fc8c9323a3a3c266b14f258ca246">&#9670;&nbsp;</a></span>Value() <span class="overload">[15/15]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aacf0fc8c9323a3a3c266b14f258ca246">&#9670;&nbsp;</a></span>Value() <span class="overload">[16/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -646,7 +681,7 @@ template&lt;typename... Ts&gt; </div>
 <p>Constructs an instance from a Spanner STRUCT with a type and values matching the given <code>std::tuple</code>. </p>
 <p>Any STRUCT field may optionally have a name, which is specified as <code>std::pair&lt;std::string, T&gt;</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00241">241</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00250">250</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -684,7 +719,7 @@ template&lt;typename T &gt; </div>
 </ul>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <div class="fragment"><div class="line">spanner::Value v{3.14};</div><div class="line">StatusOr&lt;double&gt; d = v.get&lt;<span class="keywordtype">double</span>&gt;();</div><div class="line"><span class="keywordflow">if</span> (d) {</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;d=&quot;</span> &lt;&lt; *d;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// Now using a &quot;null&quot; std::int64_t</span></div><div class="line">v = spanner::MakeNullValue&lt;std::int64_t&gt;();</div><div class="line">StatusOr&lt;std::int64_t&gt; i = v.get&lt;std::int64_t&gt;();</div><div class="line"><span class="keywordflow">if</span> (!i) {</div><div class="line">  std::cerr &lt;&lt; <span class="stringliteral">&quot;Could not get integer: &quot;</span> &lt;&lt; i.status();</div><div class="line">}</div><div class="line"></div><div class="line">StatusOr&lt;optional&lt;std::int64_t&gt;&gt; j = v.get&lt;optional&lt;std::int64_t&gt;();</div><div class="line">assert(j.ok());  <span class="comment">// Since we know the types match in this example</span></div><div class="line">assert(!v-&gt;has_value());  <span class="comment">// Since we know v was null in this example</span></div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00277">277</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00286">286</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -721,7 +756,7 @@ template&lt;typename T &gt; </div>
 </ul>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <div class="fragment"><div class="line">spanner::Value v{3.14};</div><div class="line">StatusOr&lt;double&gt; d = v.get&lt;<span class="keywordtype">double</span>&gt;();</div><div class="line"><span class="keywordflow">if</span> (d) {</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;d=&quot;</span> &lt;&lt; *d;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// Now using a &quot;null&quot; std::int64_t</span></div><div class="line">v = spanner::MakeNullValue&lt;std::int64_t&gt;();</div><div class="line">StatusOr&lt;std::int64_t&gt; i = v.get&lt;std::int64_t&gt;();</div><div class="line"><span class="keywordflow">if</span> (!i) {</div><div class="line">  std::cerr &lt;&lt; <span class="stringliteral">&quot;Could not get integer: &quot;</span> &lt;&lt; i.status();</div><div class="line">}</div><div class="line"></div><div class="line">StatusOr&lt;optional&lt;std::int64_t&gt;&gt; j = v.get&lt;optional&lt;std::int64_t&gt;();</div><div class="line">assert(j.ok());  <span class="comment">// Since we know the types match in this example</span></div><div class="line">assert(!v-&gt;has_value());  <span class="comment">// Since we know v was null in this example</span></div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00289">289</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00298">298</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -812,7 +847,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00245">245</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00254">254</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
