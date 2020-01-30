@@ -13,19 +13,25 @@ Checks: >
   performance-*,
   portability-*,
   readability-*,
+  -google-readability-braces-around-statements,
   -google-readability-namespace-comments,
   -google-runtime-references,
   -misc-non-private-member-variables-in-classes,
+  -modernize-return-braced-init-list,
   -performance-move-const-arg,
+  -performance-unnecessary-value-param,
   -readability-named-parameter,
   -readability-braces-around-statements,
-  -readability-magic-numbers
+  -readability-magic-numbers,
+  -readability-redundant-declaration,
+  -readability-redundant-member-init,
+  -readability-redundant-string-init
 
 # Turn all the warnings from the checks above into errors.
 WarningsAsErrors: "*"
 
 # Enable clang-tidy checks in our headers.
-HeaderFilterRegex: "google/cloud/spanner/internal/.*"
+HeaderFilterRegex: "google/cloud/spanner/.*"
 
 CheckOptions:
   - { key: readability-identifier-naming.NamespaceCase,          value: lower_case }
