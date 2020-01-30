@@ -199,8 +199,7 @@ StatusOr<Timestamp> MakeTimestamp(sys_time<Duration> const& tp) {
 /**
  * A sentinel type used to update a commit timestamp column.
  *
- * See also https://cloud.google.com/spanner/docs/commit-timestamp for more
- * details.
+ * @see https://cloud.google.com/spanner/docs/commit-timestamp
  */
 struct CommitTimestamp {
   friend bool operator==(CommitTimestamp, CommitTimestamp) { return true; }

@@ -72,10 +72,10 @@ std::pair<google::spanner::v1::Type, google::protobuf::Value> ToProto(Value v);
  * Value is a regular C++ value type with support for copy, move, equality,
  * etc. A default-constructed Value represents an empty value with no type.
  *
- * NOTE: There is also a C++ type of `CommitTimestamp` that corresponds to a
- * Cloud Spanner TIMESTAMP object for updating the commit timestamp on a column
- * with the `allow_commit_timestamp` set to `true` in the schema. See
- * https://cloud.google.com/spanner/docs/commit-timestamp for more details.
+ * @note There is also a C++ type of `CommitTimestamp` that corresponds to a
+ * Cloud Spanner TIMESTAMP object for setting the commit timestamp on a column
+ * with the `allow_commit_timestamp` set to `true` in the schema.
+ * @see https://cloud.google.com/spanner/docs/commit-timestamp
  *
  * Callers may create instances by passing any of the supported values (shown
  * in the table above) to the constructor. "Null" values are created using the
