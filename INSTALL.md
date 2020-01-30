@@ -84,9 +84,9 @@ the following commands to your `WORKSPACE` file:
 # Update the version and SHA256 digest as needed.
 http_archive(
     name = "com_github_googleapis_google_cloud_cpp_spanner",
-    url = "http://github.com/googleapis/google-cloud-cpp-spanner/archive/v0.2.0.tar.gz",
-    strip_prefix = "google-cloud-cpp-0.2.0",
-    sha256 = "TBD",
+    sha256 = "1dbca07e3f268ffab4461a1d98b16201adda4688866a1929ac71c22c46e4fe74",
+    strip_prefix = "google-cloud-cpp-spanner-0.6.0",
+    url = "https://github.com/googleapis/google-cloud-cpp-spanner/archive/v0.6.0.tar.gz",
 )
 
 # Configure @com_google_googleapis to only compile C++ and gRPC:
@@ -228,6 +228,7 @@ wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
     cmake \
         -DCMAKE_BUILD_TYPE="Release" \
         -DBUILD_SHARED_LIBS=yes \
+        -DBENCHMARK_ENABLE_TESTING=OFF \
         -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -383,6 +384,7 @@ wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
     cmake \
         -DCMAKE_BUILD_TYPE="Release" \
         -DBUILD_SHARED_LIBS=yes \
+        -DBENCHMARK_ENABLE_TESTING=OFF \
         -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -510,6 +512,7 @@ wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
     cmake \
         -DCMAKE_BUILD_TYPE="Release" \
         -DBUILD_SHARED_LIBS=yes \
+        -DBENCHMARK_ENABLE_TESTING=OFF \
         -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -652,6 +655,7 @@ wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
     cmake \
         -DCMAKE_BUILD_TYPE="Release" \
         -DBUILD_SHARED_LIBS=yes \
+        -DBENCHMARK_ENABLE_TESTING=OFF \
         -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -752,6 +756,7 @@ wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
     cmake \
         -DCMAKE_BUILD_TYPE="Release" \
         -DBUILD_SHARED_LIBS=yes \
+        -DBENCHMARK_ENABLE_TESTING=OFF \
         -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -886,6 +891,7 @@ wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
     cmake \
         -DCMAKE_BUILD_TYPE="Release" \
         -DBUILD_SHARED_LIBS=yes \
+        -DBENCHMARK_ENABLE_TESTING=OFF \
         -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -1025,6 +1031,7 @@ wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
     cmake \
         -DCMAKE_BUILD_TYPE="Release" \
         -DBUILD_SHARED_LIBS=yes \
+        -DBENCHMARK_ENABLE_TESTING=OFF \
         -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -1185,6 +1192,7 @@ wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
     cmake \
         -DCMAKE_BUILD_TYPE="Release" \
         -DBUILD_SHARED_LIBS=yes \
+        -DBENCHMARK_ENABLE_TESTING=OFF \
         -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
