@@ -297,6 +297,14 @@ class Value {
   }
 
   /**
+   * A placeholder to insert or update the current commit timestamp
+   *
+   * This can be used in mutations and DML statements to set a column value to
+   * the commit timestamp.
+   */
+  static Value CommitTimestamp();
+
+  /**
    * Allows Google Test to print internal debugging information when test
    * assertions fail.
    *

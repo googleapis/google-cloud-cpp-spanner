@@ -106,6 +106,10 @@ bool operator==(Value const& a, Value const& b) {
   return Equal(a.type_, a.value_, b.type_, b.value_);
 }
 
+Value Value::CommitTimestamp() {
+  return Value(std::string{"spanner.commit_timestamp()"});
+}
+
 void PrintTo(Value const& v, std::ostream* os) {
   *os << v.type_.ShortDebugString() << "; " << v.value_.ShortDebugString();
 }

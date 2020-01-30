@@ -853,6 +853,12 @@ TEST(Value, GetBadStruct) {
   EXPECT_FALSE(v.get<std::tuple<bool>>().ok());
 }
 
+TEST(Value, CommitTimestamp) {
+  auto const actual = Value::CommitTimestamp().get<std::string>();
+  ASSERT_STATUS_OK(actual);
+  EXPECT_EQ("spanner.commit_timestamp()", *actual);
+}
+
 }  // namespace
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
