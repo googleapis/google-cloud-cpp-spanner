@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['kblock',['kBlock',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ac89b78d6c279b93f80dd85ed999c983faaf937713a39275d7c02a4a08b982d81a',1,'google::cloud::spanner::v0']]],
   ['kclosed',['kClosed',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a20fa34400f69db573d9f20d403cde4e6af9be16a4ac9fcc9b545ff52f0606eb09',1,'google::cloud::spanner::v0::KeyBound']]],
   ['keep_5falive_5finterval',['keep_alive_interval',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html#a237b306ee1f4b4d1cb09f61808253374',1,'google::cloud::spanner::v0::SessionPoolOptions']]],
   ['key',['key',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a68582e620c937f8e4d87e9a5c172f73e',1,'google::cloud::spanner::v0::KeyBound::key() const &amp;'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a18a84624ff2f7f12778e5fa0c830249a',1,'google::cloud::spanner::v0::KeyBound::key() &amp;&amp;'],['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a26f3fe00592b6234496f6cc9a5503e98',1,'google::cloud::spanner::v0::Key()']]],
@@ -8,5 +9,6 @@ var searchData=
   ['keys_2ecc',['keys.cc',['../keys_8cc.html',1,'']]],
   ['keys_2eh',['keys.h',['../keys_8h.html',1,'']]],
   ['keyset',['KeySet',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html',1,'google::cloud::spanner::v0::KeySet'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#a603ad3a1e5a8da2822f9e4f7615be398',1,'google::cloud::spanner::v0::KeySet::KeySet()=default'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#a9163021cc74f29cd13fe2382c980cd89',1,'google::cloud::spanner::v0::KeySet::KeySet(KeySet const &amp;)=default'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeySet.html#aede0a4e85b2ca6926a4e0b2438fe21ac',1,'google::cloud::spanner::v0::KeySet::KeySet(KeySet &amp;&amp;)=default']]],
+  ['kfail',['kFail',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ac89b78d6c279b93f80dd85ed999c983fa36f2a6ba7a5a19d5ab451e08bc7a7745',1,'google::cloud::spanner::v0']]],
   ['kopen',['kOpen',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1KeyBound.html#a20fa34400f69db573d9f20d403cde4e6ac76ad31b0ff1fcbb03eeae06f73420c8',1,'google::cloud::spanner::v0::KeyBound']]]
 ];
