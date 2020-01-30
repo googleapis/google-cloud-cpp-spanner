@@ -840,14 +840,14 @@ void DeleteData(google::cloud::spanner::Client client) {
 //! [END spanner_update_data]
 
 // [START spanner_update_data_with_timestamp_column]
-void UpdateDataWithTimestamp(
-    google::cloud::spanner::Client client) {
+void UpdateDataWithTimestamp(google::cloud::spanner::Client client) {
   namespace spanner = ::google::cloud::spanner;
   using ::google::cloud::StatusOr;
   auto commit_result = client.Commit([](spanner::Transaction const&) {
     return spanner::Mutations{
         spanner::UpdateMutationBuilder(
-            "Albums", {"SingerId", "AlbumId", "MarketingBudget", "LastUpdateTime"})
+            "Albums",
+            {"SingerId", "AlbumId", "MarketingBudget", "LastUpdateTime"})
             .EmplaceRow(1, 1, 1000000, spanner::Value::CommitTimestamp())
             .EmplaceRow(2, 2, 750000, spanner::Value::CommitTimestamp())
             .Build()};
@@ -855,7 +855,8 @@ void UpdateDataWithTimestamp(
   if (!commit_result) {
     throw std::runtime_error(commit_result.status().message());
   }
-  std::cout << "Update was successful [spanner_update_data_with_timestamp_column]\n";
+  std::cout
+      << "Update was successful [spanner_update_data_with_timestamp_column]\n";
 }
 // [END spanner_update_data_with_timestamp_column]
 
