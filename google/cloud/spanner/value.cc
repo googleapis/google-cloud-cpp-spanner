@@ -107,7 +107,8 @@ bool operator==(Value const& a, Value const& b) {
 }
 
 Value Value::CommitTimestamp() {
-  return Value(std::string{"spanner.commit_timestamp()"});
+  return Value(MakeTypeProto(Timestamp{}),
+               MakeValueProto("spanner.commit_timestamp()"));
 }
 
 void PrintTo(Value const& v, std::ostream* os) {

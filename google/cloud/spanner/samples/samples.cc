@@ -455,14 +455,6 @@ void CreateTableWithTimestamp(
 }
 // [END spanner_create_table_with_timestamp_column]
 
-// [START spanner_insert_data_with_timestamp_column]
-void InsertDataWithTimestamp(
-    google::cloud::spanner::DatabaseAdminClient,  // NOLINT
-    std::string const&, std::string const&, std::string const&) {
-  // TODO(#1217)
-}
-// [END spanner_insert_data_with_timestamp_column]
-
 // [START spanner_create_index]
 void AddIndex(google::cloud::spanner::DatabaseAdminClient client,
               std::string const& project_id, std::string const& instance_id,
@@ -838,6 +830,31 @@ void DeleteData(google::cloud::spanner::Client client) {
   std::cout << "Delete was successful [spanner_delete_data]\n";
 }
 //! [END spanner_update_data]
+
+// [START spanner_insert_data_with_timestamp_column]
+void InsertDataWithTimestamp(google::cloud::spanner::Client client) {
+  namespace spanner = ::google::cloud::spanner;
+  using ::google::cloud::StatusOr;
+  auto commit_result = client.Commit([](spanner::Transaction const&) {
+    return spanner::Mutations{
+        spanner::InsertOrUpdateMutationBuilder(
+            "Performances",
+            {"SingerId", "VenueId", "EventDate", "Revenue", "LastUpdateTime"})
+            .EmplaceRow(1, 4, spanner::Date(2017, 10, 5), 11000,
+                        spanner::Value::CommitTimestamp())
+            .EmplaceRow(1, 19, spanner::Date(2017, 11, 2), 15000,
+                        spanner::Value::CommitTimestamp())
+            .EmplaceRow(2, 42, spanner::Date(2017, 12, 23), 7000,
+                        spanner::Value::CommitTimestamp())
+            .Build()};
+  });
+  if (!commit_result) {
+    throw std::runtime_error(commit_result.status().message());
+  }
+  std::cout
+      << "Update was successful [spanner_insert_data_with_timestamp_column]\n";
+}
+// [END spanner_insert_data_with_timestamp_column]
 
 // [START spanner_update_data_with_timestamp_column]
 void UpdateDataWithTimestamp(google::cloud::spanner::Client client) {
@@ -1889,8 +1906,6 @@ int RunOneCommand(std::vector<std::string> argv) {
       make_database_command_entry("create-database", &CreateDatabase),
       make_database_command_entry("create-table-with-timestamp",
                                   &CreateTableWithTimestamp),
-      make_database_command_entry("insert-data-with-timestamp",
-                                  &InsertDataWithTimestamp),
       make_database_command_entry("add-index", &AddIndex),
       make_database_command_entry("add-storing-index", &AddStoringIndex),
       make_database_command_entry("get-database", &GetDatabase),
@@ -1907,6 +1922,8 @@ int RunOneCommand(std::vector<std::string> argv) {
       make_command_entry("insert-data", &InsertData),
       make_command_entry("update-data", &UpdateData),
       make_command_entry("delete-data", &DeleteData),
+      make_command_entry("insert-data-with-timestamp",
+                         &InsertDataWithTimestamp),
       make_command_entry("update-data-with-timestamp",
                          &UpdateDataWithTimestamp),
       make_command_entry("query-data-with-timestamp", &QueryDataWithTimestamp),
@@ -2119,8 +2136,7 @@ void RunAll() {
   UpdateData(client);
 
   std::cout << "\nRunning spanner_insert_data_with_timestamp_column sample\n";
-  InsertDataWithTimestamp(database_admin_client, project_id, instance_id,
-                          database_id);
+  InsertDataWithTimestamp(client);
 
   std::cout << "\nRunning spanner_update_data_with_timestamp_column sample\n";
   UpdateDataWithTimestamp(client);

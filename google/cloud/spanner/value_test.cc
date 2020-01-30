@@ -14,8 +14,10 @@
 
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/spanner/internal/date.h"
+#include "google/cloud/spanner/testing/matchers.h"
 #include "google/cloud/optional.h"
 #include "google/cloud/testing_util/assert_ok.h"
+#include <google/protobuf/text_format.h>
 #include <gmock/gmock.h>
 #include <chrono>
 #include <cmath>
@@ -30,6 +32,8 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace {
+
+using ::google::cloud::spanner_testing::IsProtoEqual;
 
 std::chrono::time_point<std::chrono::system_clock, std::chrono::nanoseconds>
 MakeTimePoint(std::time_t sec, std::chrono::nanoseconds::rep nanos) {
@@ -854,9 +858,17 @@ TEST(Value, GetBadStruct) {
 }
 
 TEST(Value, CommitTimestamp) {
-  auto const actual = Value::CommitTimestamp().get<std::string>();
-  ASSERT_STATUS_OK(actual);
-  EXPECT_EQ("spanner.commit_timestamp()", *actual);
+  auto const actual = Value::CommitTimestamp();
+  auto tv = internal::ToProto(actual);
+  EXPECT_EQ(google::spanner::v1::TIMESTAMP, tv.first.code());
+
+  google::protobuf::Value expected;
+  ASSERT_TRUE(google::protobuf::TextFormat::ParseFromString(
+      R"pb(
+        string_value: "spanner.commit_timestamp()"
+      )pb",
+      &expected));
+  EXPECT_THAT(tv.second, IsProtoEqual(expected));
 }
 
 }  // namespace
