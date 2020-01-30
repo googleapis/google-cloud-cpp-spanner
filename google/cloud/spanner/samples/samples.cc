@@ -888,8 +888,9 @@ void QueryDataWithTimestamp(google::cloud::spanner::Client client) {
     if (!last_update_time) {
       std::cout << " NULL";
     } else {
-      std::cout << *last_update_time;
+      std::cout << ' ' <<*last_update_time;
     }
+    std::cout << "\n"
   }
 }
 // [END spanner_query_data_with_timestamp_column]
