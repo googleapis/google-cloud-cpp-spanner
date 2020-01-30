@@ -196,6 +196,17 @@ StatusOr<Timestamp> MakeTimestamp(sys_time<Duration> const& tp) {
                               Duration::period::num, Duration::period::den);
 }
 
+/**
+ * A sentinel type used to update a commit timestamp column.
+ *
+ * See also https://cloud.google.com/spanner/docs/commit-timestamp for more
+ * details.
+ */
+struct CommitTimestamp {
+  friend bool operator==(CommitTimestamp, CommitTimestamp) { return true; }
+  friend bool operator!=(CommitTimestamp, CommitTimestamp) { return false; }
+};
+
 }  // namespace SPANNER_CLIENT_NS
 }  // namespace spanner
 }  // namespace cloud
