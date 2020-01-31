@@ -136,6 +136,12 @@ elif [[ "${BUILD_NAME}" = "cmake-super" ]]; then
   export BUILD_TYPE=Release
   export CMAKE_FLAGS=-DBUILD_SHARED_LIBS=yes
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
+elif [[ "${BUILD_NAME}" = "ninja" ]]; then
+  # Compiling with Ninja can catch bugs that may not be caught using Make.
+  export USE_NINJA=yes
+  export CMAKE_SOURCE_DIR="super"
+  export CMAKE_FLAGS=-DBUILD_SHARED_LIBS=yes
+  in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "gcc-4.8" ]]; then
   # The oldest version of GCC we support is 4.8, this build checks the code
   # against that version. The use of CentOS 7 for that build is not a
@@ -297,6 +303,9 @@ docker_flags=(
 
     # Additional flags to enable CMake features.
     "--env" "CMAKE_FLAGS=${CMAKE_FLAGS:-}"
+
+    # If set, enable the Ninja generator with CMake.
+    "--env" "USE_NINJA=${USE_NINJA:-}"
 
     # If set, run the check-api.sh script.
     "--env" "CHECK_API=${CHECK_API:-}"
