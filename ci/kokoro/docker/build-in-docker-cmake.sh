@@ -64,11 +64,21 @@ if [[ "${GOOGLE_CLOUD_CPP_CXX_STANDARD:-}" != "" ]]; then
   cmake_flags+=(
     "-DGOOGLE_CLOUD_CPP_CXX_STANDARD=${GOOGLE_CLOUD_CPP_CXX_STANDARD}")
 fi
+if [[ "${USE_NINJA:-}" == "yes" ]]; then
+  cmake_flags+=( "-GNinja" )
+fi
 
 # We disable the shellcheck warning because we want ${CMAKE_FLAGS} to expand as
 # separate arguments.
+echo "================================================================"
+echo "Running CMake configuration step $(date)."
+echo "    cmake ${CMAKE_FLAGS:-} -H${SOURCE_DIR} -B${BINARY_DIR}" "${cmake_flags[@]}"
 # shellcheck disable=SC2086
 cmake ${CMAKE_FLAGS:-} "-H${SOURCE_DIR}" "-B${BINARY_DIR}" "${cmake_flags[@]}"
+
+echo "================================================================"
+echo "Running CMake build step $(date)."
+echo "    cmake" --build "${BINARY_DIR}" -- -j "$(nproc)"
 cmake --build "${BINARY_DIR}" -- -j "$(nproc)"
 
 TEST_JOB_COUNT="$(nproc)"
