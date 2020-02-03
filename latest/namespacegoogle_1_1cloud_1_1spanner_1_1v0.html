@@ -181,9 +181,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html">SqlStatement</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a potentially parameterized SQL statement.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1StreamOf.html">StreamOf</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1StreamOf.html" title="A StreamOf&lt;Tuple&gt; defines a range that parses Tuple objects from the given range of RowStreamIterator...">StreamOf</a>&lt;Tuple&gt;</code> defines a range that parses <code>Tuple</code> objects from the given range of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code>s.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1StreamOf.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html">Timestamp</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A representation of the Spanner TIMESTAMP type: An instant in time.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Timestamp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -192,6 +189,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html">Transaction</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The representation of a Cloud Spanner transaction.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStream.html">TupleStream</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStream.html" title="A TupleStream&lt;Tuple&gt; defines a range that parses Tuple objects from the given range of RowStreamItera...">TupleStream</a>&lt;Tuple&gt;</code> defines a range that parses <code>Tuple</code> objects from the given range of <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code>s.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStream.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStreamIterator.html">TupleStreamIterator</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStreamIterator.html" title="A TupleStreamIterator&lt;Tuple&gt; is an &quot;Input Iterator&quot; that wraps a RowStreamIterator,...">TupleStreamIterator</a>&lt;Tuple&gt;</code> is an "Input Iterator" that wraps a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code>, parsing its elements into a sequence of <code>StatusOr&lt;Tuple&gt;</code> objects.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStreamIterator.html#details">More...</a><br /></td></tr>
@@ -392,6 +392,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ad64a57ca097a9fe1edb54fac2e3142a0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html">Row</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ad64a57ca097a9fe1edb54fac2e3142a0">MakeTestRow</a> (Ts &amp;&amp;... ts)</td></tr>
 <tr class="memdesc:ad64a57ca097a9fe1edb54fac2e3142a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> with <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>s created from the given arguments and with auto-generated column names.  <a href="#ad64a57ca097a9fe1edb54fac2e3142a0">More...</a><br /></td></tr>
 <tr class="separator:ad64a57ca097a9fe1edb54fac2e3142a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b03a5d2b308a9c3f4b095b824076a32"><td class="memTemplParams" colspan="2">template&lt;typename Tuple , typename RowRange &gt; </td></tr>
+<tr class="memitem:a4b03a5d2b308a9c3f4b095b824076a32"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStream.html">TupleStream</a>&lt; Tuple &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a4b03a5d2b308a9c3f4b095b824076a32">StreamOf</a> (RowRange &amp;&amp;range)</td></tr>
+<tr class="memdesc:a4b03a5d2b308a9c3f4b095b824076a32"><td class="mdescLeft">&#160;</td><td class="mdescRight">A factory that creates a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStream.html" title="A TupleStream&lt;Tuple&gt; defines a range that parses Tuple objects from the given range of RowStreamItera...">TupleStream</a>&lt;Tuple&gt;</code> by wrapping the given <code>range</code>.  <a href="#a4b03a5d2b308a9c3f4b095b824076a32">More...</a><br /></td></tr>
+<tr class="separator:a4b03a5d2b308a9c3f4b095b824076a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a871688247002c2daf7201c98c75b608e"><td class="memTemplParams" colspan="2">template&lt;typename RowRange &gt; </td></tr>
 <tr class="memitem:a871688247002c2daf7201c98c75b608e"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a871688247002c2daf7201c98c75b608e">GetSingularRow</a> (RowRange &amp;&amp;range) -&gt; typename std::decay&lt; decltype(*std::forward&lt; RowRange &gt;(range).begin())&gt;::type</td></tr>
 <tr class="memdesc:a871688247002c2daf7201c98c75b608e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the only row from a range that contains exactly one row.  <a href="#a871688247002c2daf7201c98c75b608e">More...</a><br /></td></tr>
@@ -953,7 +957,7 @@ template&lt;typename RowRange &gt; </div>
 <p>An error is returned if the given range does not contain exactly one row. This is a convenience function that may be useful when the caller knows that a range should contain exactly one row, such as when <code>LIMIT 1</code> is used in an SQL query, or when a read is performed on a guaranteed unique key such that only a single row could possibly match. In cases where the caller does not know how many rows may be returned, they should instead consume the range in a loop.</p>
 <dl class="section warning"><dt>Warning</dt><dd>Due to the fact that a <code>RowStreamIteartor</code> is an input iterator, this function may consume the first element in the range, even in cases where an error is returned. But again, this function should not be used if <code>range</code> might contain multiple rows. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00451">451</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00458">458</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>
@@ -2613,6 +2617,38 @@ template&lt;typename... Ts&gt; </div>
 <dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line">    <span class="keyword">namespace </span><a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">spanner</a> = ::google::cloud::spanner;</div><div class="line">    google::cloud::StatusOr&lt;std::string&gt; serialized_partition =</div><div class="line">        <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a4ff13634f664ceba89bd073110bb5fb8">spanner::SerializeReadPartition</a>(partition);</div><div class="line">    <span class="keywordflow">if</span> (!serialized_partition) {</div><div class="line">      <span class="keywordflow">throw</span> std::runtime_error(serialized_partition.status().message());</div><div class="line">    }</div><div class="line">    std::string <span class="keyword">const</span>&amp; bytes = *serialized_partition;</div><div class="line">    <span class="comment">// `bytes` contains the serialized data, which may contain NULs and other</span></div><div class="line">    <span class="comment">// non-printable characters.</span></div><div class="line">    SendBinaryStringData(bytes);</div></div><!-- fragment --></dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="read__partition_8cc_source.html#l00050">50</a> of file <a class="el" href="read__partition_8cc_source.html">read_partition.cc</a>.</p>
+
+</div>
+</div>
+<a id="a4b03a5d2b308a9c3f4b095b824076a32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b03a5d2b308a9c3f4b095b824076a32">&#9670;&nbsp;</a></span>StreamOf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Tuple , typename RowRange &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStream.html">TupleStream</a>&lt;Tuple&gt; google::cloud::spanner::v0::StreamOf </td>
+          <td>(</td>
+          <td class="paramtype">RowRange &amp;&amp;&#160;</td>
+          <td class="paramname"><em>range</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A factory that creates a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStream.html" title="A TupleStream&lt;Tuple&gt; defines a range that parses Tuple objects from the given range of RowStreamItera...">TupleStream</a>&lt;Tuple&gt;</code> by wrapping the given <code>range</code>. </p>
+<p>The <code>RowRange</code> must be a range defined by <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code> objects.</p>
+<dl class="section note"><dt>Note</dt><dd>ownership of the <code>range</code> is not transferred, so it must outlive the returned <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStream.html" title="A TupleStream&lt;Tuple&gt; defines a range that parses Tuple objects from the given range of RowStreamItera...">TupleStream</a></code>.</dd></dl>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">RowRange</td><td>must be a range defined by <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html" title="A RowStreamIterator is an Input Iterator that returns a sequence of StatusOr&lt;Row&gt; objects.">RowStreamIterator</a></code>s. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00434">434</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 
 </div>
 </div>

@@ -17,5 +17,6 @@ var searchData=
   ['transaction_2eh',['transaction.h',['../transaction_8h.html',1,'']]],
   ['transactionrerunpolicy',['TransactionRerunPolicy',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a52b5d68feb45c40d761c79ee360b804c',1,'google::cloud::spanner::v0']]],
   ['truncate_5fstring_5ffield_5flonger_5fthan',['truncate_string_field_longer_than',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TracingOptions.html#aeaab81ee36d11d19e661674f89a4d341',1,'google::cloud::spanner::v0::TracingOptions']]],
+  ['tuplestream',['TupleStream',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStream.html',1,'google::cloud::spanner::v0']]],
   ['tuplestreamiterator',['TupleStreamIterator',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStreamIterator.html',1,'google::cloud::spanner::v0::TupleStreamIterator&lt; Tuple &gt;'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStreamIterator.html#a4001976dd3cef906351db2ba9f33a7c6',1,'google::cloud::spanner::v0::TupleStreamIterator::TupleStreamIterator()=default'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStreamIterator.html#a7f73f06e0008dd8b2ad849e6db80eebf',1,'google::cloud::spanner::v0::TupleStreamIterator::TupleStreamIterator(RowStreamIterator begin, RowStreamIterator end)']]]
 ];
