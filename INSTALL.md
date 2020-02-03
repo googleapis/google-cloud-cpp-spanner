@@ -228,6 +228,7 @@ wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
     cmake \
         -DCMAKE_BUILD_TYPE="Release" \
         -DBUILD_SHARED_LIBS=yes \
+        -DBENCHMARK_ENABLE_TESTING=OFF \
         -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -332,9 +333,9 @@ Cloud Platform proto files. We manually install it using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
-    tar -xf v1.23.1.tar.gz && \
-    cd grpc-1.23.1 && \
+wget -q https://github.com/grpc/grpc/archive/78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
+    tar -xf 78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
+    cd grpc-78ace4cd5dfcc1f2eced44d22d752f103f377e7b && \
     make -j ${NCPU:-4} && \
 sudo make install && \
 sudo ldconfig
@@ -383,6 +384,7 @@ wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
     cmake \
         -DCMAKE_BUILD_TYPE="Release" \
         -DBUILD_SHARED_LIBS=yes \
+        -DBENCHMARK_ENABLE_TESTING=OFF \
         -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -459,9 +461,9 @@ Cloud Platform proto files. We install it using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
-    tar -xf v1.23.1.tar.gz && \
-    cd grpc-1.23.1 && \
+wget -q https://github.com/grpc/grpc/archive/78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
+    tar -xf 78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
+    cd grpc-78ace4cd5dfcc1f2eced44d22d752f103f377e7b && \
     make -j ${NCPU:-4} && \
 sudo make install && \
 sudo ldconfig
@@ -510,6 +512,7 @@ wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
     cmake \
         -DCMAKE_BUILD_TYPE="Release" \
         -DBUILD_SHARED_LIBS=yes \
+        -DBENCHMARK_ENABLE_TESTING=OFF \
         -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -601,9 +604,9 @@ Cloud Platform proto files. We can install gRPC from source using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
-    tar -xf v1.23.1.tar.gz && \
-    cd grpc-1.23.1 && \
+wget -q https://github.com/grpc/grpc/archive/78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
+    tar -xf 78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
+    cd grpc-78ace4cd5dfcc1f2eced44d22d752f103f377e7b && \
     make -j ${NCPU:-4} && \
 sudo make install && \
 sudo ldconfig
@@ -652,6 +655,7 @@ wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
     cmake \
         -DCMAKE_BUILD_TYPE="Release" \
         -DBUILD_SHARED_LIBS=yes \
+        -DBENCHMARK_ENABLE_TESTING=OFF \
         -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -752,6 +756,7 @@ wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
     cmake \
         -DCMAKE_BUILD_TYPE="Release" \
         -DBUILD_SHARED_LIBS=yes \
+        -DBENCHMARK_ENABLE_TESTING=OFF \
         -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -835,9 +840,9 @@ Protobuf we just installed in `/usr/local`:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
-    tar -xf v1.23.1.tar.gz && \
-    cd grpc-1.23.1 && \
+wget -q https://github.com/grpc/grpc/archive/78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
+    tar -xf 78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
+    cd grpc-78ace4cd5dfcc1f2eced44d22d752f103f377e7b && \
     make -j ${NCPU:-4} && \
 sudo make install && \
 sudo ldconfig
@@ -886,6 +891,7 @@ wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
     cmake \
         -DCMAKE_BUILD_TYPE="Release" \
         -DBUILD_SHARED_LIBS=yes \
+        -DBENCHMARK_ENABLE_TESTING=OFF \
         -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -974,9 +980,9 @@ Cloud Platform proto files. We manually install it using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
-    tar -xf v1.23.1.tar.gz && \
-    cd grpc-1.23.1 && \
+wget -q https://github.com/grpc/grpc/archive/78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
+    tar -xf 78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
+    cd grpc-78ace4cd5dfcc1f2eced44d22d752f103f377e7b && \
     make -j ${NCPU:-4} && \
 sudo make install && \
 sudo ldconfig
@@ -1025,6 +1031,7 @@ wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
     cmake \
         -DCMAKE_BUILD_TYPE="Release" \
         -DBUILD_SHARED_LIBS=yes \
+        -DBENCHMARK_ENABLE_TESTING=OFF \
         -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -1134,9 +1141,9 @@ Cloud Platform proto files. We manually install it using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/v1.23.1.tar.gz && \
-    tar -xf v1.23.1.tar.gz && \
-    cd grpc-1.23.1 && \
+wget -q https://github.com/grpc/grpc/archive/78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
+    tar -xf 78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
+    cd grpc-78ace4cd5dfcc1f2eced44d22d752f103f377e7b && \
     make -j ${NCPU:-4} && \
 sudo make install && \
 sudo ldconfig
@@ -1185,6 +1192,7 @@ wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
     cmake \
         -DCMAKE_BUILD_TYPE="Release" \
         -DBUILD_SHARED_LIBS=yes \
+        -DBENCHMARK_ENABLE_TESTING=OFF \
         -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
