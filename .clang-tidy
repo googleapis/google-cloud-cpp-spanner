@@ -6,6 +6,9 @@
 #  -google-readability-namespace-comments: the *_CLIENT_NS is a macro, and
 #      clang-tidy fails to match it against the initial value.
 #
+#  -modernize-return-braced-init-list: We think removing typenames and using
+#      only braced-init can hurt readability.
+#
 #  -performance-move-const-arg: This warning requires the developer to
 #      know/care more about the implementation details of types/functions than
 #      should be necessary. For example, `A a; F(std::move(a));` will trigger a
@@ -30,6 +33,7 @@ Checks: >
   -google-readability-namespace-comments,
   -google-runtime-references,
   -misc-non-private-member-variables-in-classes,
+  -modernize-return-braced-init-list,
   -performance-move-const-arg,
   -readability-named-parameter,
   -readability-braces-around-statements,
