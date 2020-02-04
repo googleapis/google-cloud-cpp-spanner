@@ -100,8 +100,8 @@ class Bytes {
       using pointer = value_type*;
       using reference = value_type&;
 
-      Iterator(std::string::const_iterator begin,
-               std::string::const_iterator end)
+      explicit Iterator(std::string::const_iterator begin,
+                        std::string::const_iterator end)
           : pos_(begin), end_(end), len_(0) {
         Fill();
       }
