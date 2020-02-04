@@ -38,6 +38,7 @@ in the [release notes](README.md#release-notes) below.
 [![CI status docker/gcc-4.8][docker/gcc-4.8-shield]][docker/gcc-4.8-link]
 [![CI status docker/integration][docker/integration-shield]][docker/integration-link]
 [![CI status docker/msan][docker/msan-shield]][docker/msan-link]
+[![CI status docker/ninja][docker/ninja-shield]][docker/ninja-link]
 [![CI status docker/noex][docker/noex-shield]][docker/noex-link]
 [![CI status docker/publish-refdocs][docker/publish-refdocs-shield]][docker/publish-refdocs-link]
 [![CI status docker/tsan][docker/tsan-shield]][docker/tsan-link]
@@ -84,6 +85,8 @@ in the [release notes](README.md#release-notes) below.
 [docker/integration-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/integration.svg
 [docker/msan-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/msan-link.html
 [docker/msan-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/msan.svg
+[docker/ninja-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/ninja-link.html
+[docker/ninja-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/ninja.svg
 [docker/noex-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/noex-link.html
 [docker/noex-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/noex.svg
 [docker/publish-refdocs-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/docker/publish-refdocs-link.html

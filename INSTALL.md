@@ -242,9 +242,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.16.0.tar.gz && \
-    tar -xf v0.16.0.tar.gz && \
-    cd google-cloud-cpp-common-0.16.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.18.0.tar.gz && \
+    tar -xf v0.18.0.tar.gz && \
+    cd google-cloud-cpp-common-0.18.0 && \
     cmake -H. -Bcmake-out \
         -DBUILD_TESTING=OFF \
         -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
@@ -298,9 +298,9 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
-    tar -xf v3.9.1.tar.gz && \
-    cd protobuf-3.9.1/cmake && \
+wget -q https://github.com/google/protobuf/archive/v3.11.3.tar.gz && \
+    tar -xf v3.11.3.tar.gz && \
+    cd protobuf-3.11.3/cmake && \
     cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
@@ -398,9 +398,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.16.0.tar.gz && \
-    tar -xf v0.16.0.tar.gz && \
-    cd google-cloud-cpp-common-0.16.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.18.0.tar.gz && \
+    tar -xf v0.18.0.tar.gz && \
+    cd google-cloud-cpp-common-0.18.0 && \
     cmake -H. -Bcmake-out \
         -DBUILD_TESTING=OFF \
         -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
@@ -441,9 +441,9 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
-    tar -xf v3.9.1.tar.gz && \
-    cd protobuf-3.9.1/cmake && \
+wget -q https://github.com/google/protobuf/archive/v3.11.3.tar.gz && \
+    tar -xf v3.11.3.tar.gz && \
+    cd protobuf-3.11.3/cmake && \
     cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
@@ -526,9 +526,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.16.0.tar.gz && \
-    tar -xf v0.16.0.tar.gz && \
-    cd google-cloud-cpp-common-0.16.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.18.0.tar.gz && \
+    tar -xf v0.18.0.tar.gz && \
+    cd google-cloud-cpp-common-0.18.0 && \
     cmake -H. -Bcmake-out \
         -DBUILD_TESTING=OFF \
         -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
@@ -569,9 +569,9 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
-    tar -xf v3.9.1.tar.gz && \
-    cd protobuf-3.9.1/cmake && \
+wget -q https://github.com/google/protobuf/archive/v3.11.3.tar.gz && \
+    tar -xf v3.11.3.tar.gz && \
+    cd protobuf-3.11.3/cmake && \
     cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
@@ -669,9 +669,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.16.0.tar.gz && \
-    tar -xf v0.16.0.tar.gz && \
-    cd google-cloud-cpp-common-0.16.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.18.0.tar.gz && \
+    tar -xf v0.18.0.tar.gz && \
+    cd google-cloud-cpp-common-0.18.0 && \
     cmake -H. -Bcmake-out \
         -DBUILD_TESTING=OFF \
         -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
@@ -770,9 +770,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.16.0.tar.gz && \
-    tar -xf v0.16.0.tar.gz && \
-    cd google-cloud-cpp-common-0.16.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.18.0.tar.gz && \
+    tar -xf v0.18.0.tar.gz && \
+    cd google-cloud-cpp-common-0.18.0 && \
     cmake -H. -Bcmake-out \
         -DBUILD_TESTING=OFF \
         -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
@@ -820,9 +820,9 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
-    tar -xf v3.9.1.tar.gz && \
-    cd protobuf-3.9.1/cmake && \
+wget -q https://github.com/google/protobuf/archive/v3.11.3.tar.gz && \
+    tar -xf v3.11.3.tar.gz && \
+    cd protobuf-3.11.3/cmake && \
     cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
@@ -905,9 +905,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.16.0.tar.gz && \
-    tar -xf v0.16.0.tar.gz && \
-    cd google-cloud-cpp-common-0.16.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.18.0.tar.gz && \
+    tar -xf v0.18.0.tar.gz && \
+    cd google-cloud-cpp-common-0.18.0 && \
     cmake -H. -Bcmake-out \
         -DBUILD_TESTING=OFF \
         -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
@@ -960,9 +960,9 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
-    tar -xf v3.9.1.tar.gz && \
-    cd protobuf-3.9.1/cmake && \
+wget -q https://github.com/google/protobuf/archive/v3.11.3.tar.gz && \
+    tar -xf v3.11.3.tar.gz && \
+    cd protobuf-3.11.3/cmake && \
     cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
@@ -1045,9 +1045,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.16.0.tar.gz && \
-    tar -xf v0.16.0.tar.gz && \
-    cd google-cloud-cpp-common-0.16.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.18.0.tar.gz && \
+    tar -xf v0.18.0.tar.gz && \
+    cd google-cloud-cpp-common-0.18.0 && \
     cmake -H. -Bcmake-out \
         -DBUILD_TESTING=OFF \
         -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
@@ -1106,9 +1106,9 @@ Google Cloud Platform proto files:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/google/protobuf/archive/v3.9.1.tar.gz && \
-    tar -xf v3.9.1.tar.gz && \
-    cd protobuf-3.9.1/cmake && \
+wget -q https://github.com/google/protobuf/archive/v3.11.3.tar.gz && \
+    tar -xf v3.11.3.tar.gz && \
+    cd protobuf-3.11.3/cmake && \
     cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=yes \
@@ -1206,9 +1206,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.16.0.tar.gz && \
-    tar -xf v0.16.0.tar.gz && \
-    cd google-cloud-cpp-common-0.16.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.18.0.tar.gz && \
+    tar -xf v0.18.0.tar.gz && \
+    cd google-cloud-cpp-common-0.18.0 && \
     cmake -H. -Bcmake-out \
         -DBUILD_TESTING=OFF \
         -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
