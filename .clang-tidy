@@ -1,9 +1,25 @@
 ---
 # Configure clang-tidy for this project.
 
-# Disabled:
-#  -google-readability-namespace-comments the *_CLIENT_NS is a macro, and
-#   clang-tidy fails to match it against the initial value.
+# Here is an explanation for why some of the checks are disabled:
+#
+#  -google-readability-namespace-comments: the *_CLIENT_NS is a macro, and
+#      clang-tidy fails to match it against the initial value.
+#
+#  -modernize-return-braced-init-list: We think removing typenames and using
+#      only braced-init can hurt readability.
+#
+#  -performance-move-const-arg: This warning requires the developer to
+#      know/care more about the implementation details of types/functions than
+#      should be necessary. For example, `A a; F(std::move(a));` will trigger a
+#      warning IFF `A` is a trivial type (and therefore the move is
+#      meaningless). It would also warn if `F` accepts by `const&`, which is
+#      another detail that the caller need not care about.
+#
+#  -readability-redundant-declaration: A friend declaration inside a class
+#      counts as a declaration, so if we also declare that friend outside the
+#      class in order to document it as part of the public API, that will
+#      trigger a redundant declaration warning from this check.
 Checks: >
   -*,
   bugprone-*,
@@ -13,15 +29,22 @@ Checks: >
   performance-*,
   portability-*,
   readability-*,
+  -google-readability-braces-around-statements,
   -google-readability-namespace-comments,
   -google-runtime-references,
   -misc-non-private-member-variables-in-classes,
+  -modernize-return-braced-init-list,
+  -performance-move-const-arg,
   -readability-named-parameter,
   -readability-braces-around-statements,
-  -readability-magic-numbers
+  -readability-magic-numbers,
+  -readability-redundant-declaration
 
 # Turn all the warnings from the checks above into errors.
 WarningsAsErrors: "*"
+
+# Enable clang-tidy checks in our headers.
+HeaderFilterRegex: "google/cloud/spanner/.*"
 
 CheckOptions:
   - { key: readability-identifier-naming.NamespaceCase,          value: lower_case }
