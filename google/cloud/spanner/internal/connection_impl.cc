@@ -105,7 +105,7 @@ ConnectionImpl::ConnectionImpl(Database db,
 
 RowStream ConnectionImpl::Read(ReadParams params) {
   return internal::Visit(
-      std::move(params.transaction),
+      params.transaction,
       [this, &params](SessionHolder& session,
                       spanner_proto::TransactionSelector& s, std::int64_t) {
         return ReadImpl(session, s, std::move(params));
@@ -115,7 +115,7 @@ RowStream ConnectionImpl::Read(ReadParams params) {
 StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionRead(
     PartitionReadParams params) {
   return internal::Visit(
-      std::move(params.read_params.transaction),
+      params.read_params.transaction,
       [this, &params](SessionHolder& session,
                       spanner_proto::TransactionSelector& s, std::int64_t) {
         return PartitionReadImpl(session, s, params.read_params,
@@ -124,53 +124,48 @@ StatusOr<std::vector<ReadPartition>> ConnectionImpl::PartitionRead(
 }
 
 RowStream ConnectionImpl::ExecuteQuery(SqlParams params) {
-  return internal::Visit(std::move(params.transaction),
-                         [this, &params](SessionHolder& session,
-                                         spanner_proto::TransactionSelector& s,
-                                         std::int64_t seqno) {
-                           return ExecuteQueryImpl(session, s, seqno,
-                                                   std::move(params));
-                         });
+  return internal::Visit(
+      params.transaction, [this, &params](SessionHolder& session,
+                                          spanner_proto::TransactionSelector& s,
+                                          std::int64_t seqno) {
+        return ExecuteQueryImpl(session, s, seqno, std::move(params));
+      });
 }
 
 StatusOr<DmlResult> ConnectionImpl::ExecuteDml(SqlParams params) {
-  return internal::Visit(std::move(params.transaction),
-                         [this, &params](SessionHolder& session,
-                                         spanner_proto::TransactionSelector& s,
-                                         std::int64_t seqno) {
-                           return ExecuteDmlImpl(session, s, seqno,
-                                                 std::move(params));
-                         });
+  return internal::Visit(
+      params.transaction, [this, &params](SessionHolder& session,
+                                          spanner_proto::TransactionSelector& s,
+                                          std::int64_t seqno) {
+        return ExecuteDmlImpl(session, s, seqno, std::move(params));
+      });
 }
 
 ProfileQueryResult ConnectionImpl::ProfileQuery(SqlParams params) {
-  return internal::Visit(std::move(params.transaction),
-                         [this, &params](SessionHolder& session,
-                                         spanner_proto::TransactionSelector& s,
-                                         std::int64_t seqno) {
-                           return ProfileQueryImpl(session, s, seqno,
-                                                   std::move(params));
-                         });
+  return internal::Visit(
+      params.transaction, [this, &params](SessionHolder& session,
+                                          spanner_proto::TransactionSelector& s,
+                                          std::int64_t seqno) {
+        return ProfileQueryImpl(session, s, seqno, std::move(params));
+      });
 }
 
 StatusOr<ProfileDmlResult> ConnectionImpl::ProfileDml(SqlParams params) {
-  return internal::Visit(std::move(params.transaction),
-                         [this, &params](SessionHolder& session,
-                                         spanner_proto::TransactionSelector& s,
-                                         std::int64_t seqno) {
-                           return ProfileDmlImpl(session, s, seqno,
-                                                 std::move(params));
-                         });
+  return internal::Visit(
+      params.transaction, [this, &params](SessionHolder& session,
+                                          spanner_proto::TransactionSelector& s,
+                                          std::int64_t seqno) {
+        return ProfileDmlImpl(session, s, seqno, std::move(params));
+      });
 }
 
 StatusOr<ExecutionPlan> ConnectionImpl::AnalyzeSql(SqlParams params) {
-  return internal::Visit(std::move(params.transaction),
-                         [this, &params](SessionHolder& session,
-                                         spanner_proto::TransactionSelector& s,
-                                         std::int64_t seqno) {
-                           return AnalyzeSqlImpl(session, s, seqno,
-                                                 std::move(params));
-                         });
+  return internal::Visit(
+      params.transaction, [this, &params](SessionHolder& session,
+                                          spanner_proto::TransactionSelector& s,
+                                          std::int64_t seqno) {
+        return AnalyzeSqlImpl(session, s, seqno, std::move(params));
+      });
 }
 
 StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDml(
@@ -187,7 +182,7 @@ StatusOr<PartitionedDmlResult> ConnectionImpl::ExecutePartitionedDml(
 StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
     PartitionQueryParams params) {
   return internal::Visit(
-      std::move(params.sql_params.transaction),
+      params.sql_params.transaction,
       [this, &params](SessionHolder& session,
                       spanner_proto::TransactionSelector& s, std::int64_t) {
         return PartitionQueryImpl(session, s, params.sql_params,
@@ -197,18 +192,17 @@ StatusOr<std::vector<QueryPartition>> ConnectionImpl::PartitionQuery(
 
 StatusOr<BatchDmlResult> ConnectionImpl::ExecuteBatchDml(
     ExecuteBatchDmlParams params) {
-  return internal::Visit(std::move(params.transaction),
-                         [this, &params](SessionHolder& session,
-                                         spanner_proto::TransactionSelector& s,
-                                         std::int64_t seqno) {
-                           return ExecuteBatchDmlImpl(session, s, seqno,
-                                                      std::move(params));
-                         });
+  return internal::Visit(
+      params.transaction, [this, &params](SessionHolder& session,
+                                          spanner_proto::TransactionSelector& s,
+                                          std::int64_t seqno) {
+        return ExecuteBatchDmlImpl(session, s, seqno, std::move(params));
+      });
 }
 
 StatusOr<CommitResult> ConnectionImpl::Commit(CommitParams params) {
   return internal::Visit(
-      std::move(params.transaction),
+      params.transaction,
       [this, &params](SessionHolder& session,
                       spanner_proto::TransactionSelector& s, std::int64_t) {
         return this->CommitImpl(session, s, std::move(params));
@@ -217,7 +211,7 @@ StatusOr<CommitResult> ConnectionImpl::Commit(CommitParams params) {
 
 Status ConnectionImpl::Rollback(RollbackParams params) {
   return internal::Visit(
-      std::move(params.transaction),
+      params.transaction,
       [this](SessionHolder& session, spanner_proto::TransactionSelector& s,
              std::int64_t) { return this->RollbackImpl(session, s); });
 }

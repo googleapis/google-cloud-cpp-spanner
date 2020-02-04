@@ -35,7 +35,7 @@ namespace internal {
 template <typename T>
 Transaction MakeSingleUseTransaction(T&&);
 template <typename Functor>
-VisitInvokeResult<Functor> Visit(Transaction, Functor&&);
+VisitInvokeResult<Functor> Visit(Transaction const&, Functor&&);
 Transaction MakeTransactionFromIds(std::string session_id,
                                    std::string transaction_id);
 }  // namespace internal
@@ -165,8 +165,8 @@ class Transaction {
   template <typename T>
   friend Transaction internal::MakeSingleUseTransaction(T&&);
   template <typename Functor>
-  friend internal::VisitInvokeResult<Functor> internal::Visit(Transaction,
-                                                              Functor&&);
+  friend internal::VisitInvokeResult<Functor> internal::Visit(
+      Transaction const&, Functor&&);
   friend Transaction internal::MakeTransactionFromIds(
       std::string session_id, std::string transaction_id);
 
@@ -205,7 +205,7 @@ inline Transaction MakeReadWriteTransaction(
  * success.
  */
 inline Transaction MakeReadWriteTransaction(
-    Transaction txn, Transaction::ReadWriteOptions opts = {}) {
+    Transaction const& txn, Transaction::ReadWriteOptions opts = {}) {
   return Transaction(txn, std::move(opts));
 }
 
@@ -219,7 +219,7 @@ Transaction MakeSingleUseTransaction(T&& opts) {
 }
 
 template <typename Functor>
-VisitInvokeResult<Functor> Visit(Transaction txn, Functor&& f) {
+VisitInvokeResult<Functor> Visit(Transaction const& txn, Functor&& f) {
   return txn.impl_->Visit(std::forward<Functor>(f));
 }
 
