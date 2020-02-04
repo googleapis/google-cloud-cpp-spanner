@@ -16,19 +16,22 @@
 # loaded into a different Bazel project.
 workspace(name = "com_github_googleapis_google_cloud_cpp_spanner_test_install")
 
-# Spanner currently does not have a release. Applications should use something
-# like the following:
+# To use the Cloud Spanner C++ client library applications should download it
+# using `http_archive()`. For example, use the following Starlark commands
+# (change the version and SHA256 hash as needed):
+#
+# load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 #
 # http_archive(
 #     name = "com_github_googleapis_google_cloud_cpp_spanner",
-#     url = "http://github.com/googleapis/google-cloud-cpp-spanner/archive/v0.1.0.tar.gz",
-#     strip_prefix = "google-cloud-cpp-spanner-0.1.0",
-#     sha256 = "...",
+#     sha256 = "9d7bd3de8e38f7e4b3e917766ed08fd8c8ff59a8b2f0997c4b1cb781a6fd1558",
+#     strip_prefix = "google-cloud-cpp-spanner-0.7.0",
+#     url = "https://github.com/googleapis/google-cloud-cpp-spanner/archive/v0.7.0.tar.gz",
 # )
 #
-
-# But we want to test that the *current* version is correct, the CI builds
-# always have the source in /v.
+# In this WORKSPACE file we want to test that the *current* version is correct,
+# the CI builds always have the source in /v, so we use:
+#
 local_repository(
     name = "com_github_googleapis_google_cloud_cpp_spanner",
     path = "/v",
