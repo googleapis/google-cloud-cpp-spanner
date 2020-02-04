@@ -70,8 +70,8 @@ class Client {
   }
 
   // User-visible read operation.
-  ResultSet Read(Transaction txn, std::string const& table, KeySet const& keys,
-                 std::vector<std::string> const& columns) {
+  ResultSet Read(Transaction const& txn, std::string const& table,
+                 KeySet const& keys, std::vector<std::string> const& columns) {
     auto read = [this, &table, &keys, &columns](SessionHolder& session,
                                                 TransactionSelector& selector,
                                                 std::int64_t seqno) {
@@ -80,7 +80,7 @@ class Client {
 #if GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
     try {
 #endif
-      return internal::Visit(std::move(txn), std::move(read));
+      return internal::Visit(txn, std::move(read));
 #if GOOGLE_CLOUD_CPP_HAVE_EXCEPTIONS
     } catch (char const*) {
       return {};
