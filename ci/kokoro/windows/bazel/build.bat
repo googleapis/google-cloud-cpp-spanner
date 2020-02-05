@@ -32,23 +32,23 @@ call "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Auxiliary
 set BAZEL_VS=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community
 
 echo %date% %time%
-bazel version
+C:\ProgramData\chocolatey\lib\bazel version
 
 echo "Downloading dependencies for the project."
 echo %date% %time%
-bazel --output_user_root=C:\b fetch -- ^
+C:\ProgramData\chocolatey\lib\bazel --output_user_root=C:\b fetch -- ^
     //google/cloud/spanner/...:all
 
 echo "Compiling the project."
 echo %date% %time%
-bazel --output_user_root=C:\b build --keep_going -- ^
+C:\ProgramData\chocolatey\lib\bazel --output_user_root=C:\b build --keep_going -- ^
     //google/cloud/spanner/...:all
 
 if %errorlevel% neq 0 exit /b %errorlevel%
 
 echo "Running unit tests"
 echo %date% %time%
-bazel --output_user_root=C:\b test ^
+C:\ProgramData\chocolatey\lib\bazel --output_user_root=C:\b test ^
   --keep_going ^
   --test_output=errors ^
   --verbose_failures=true ^
@@ -67,12 +67,12 @@ set GRPC_DNS_RESOLVER=native
 
 @rem It seems like redirecting to a file is the easiest way to store the
 @rem command output to a variable.
-bazel --output_user_root=C:\b info output_base > t:\bazel-info.txt
+C:\ProgramData\chocolatey\lib\bazel --output_user_root=C:\b info output_base > t:\bazel-info.txt
 set /p BAZEL_OUTPUT_DIR=<t:\bazel-info.txt
 del t:\bazel-info.txt
 
 echo %date% %time%
-bazel --output_user_root=C:\b test ^
+C:\ProgramData\chocolatey\lib\bazel --output_user_root=C:\b test ^
   --jobs=1 ^
   --keep_going ^
   --test_output=errors ^
