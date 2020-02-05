@@ -12,9 +12,6 @@ REM WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 REM See the License for the specific language governing permissions and
 REM limitations under the License.
 
-REM Install Bazel using Chocolatey
-choco install -y bazel --version 2.0.0
-
 REM Set it to "no" for any value other than "yes".
 if "%RUN_SLOW_INTEGRATION_TESTS%" neq "yes" set RUN_SLOW_INTEGRATION_TESTS=no
 
