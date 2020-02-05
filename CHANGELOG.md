@@ -1,6 +1,32 @@
 # Changelog
 
-## v0.7.x - TBD
+## v0.8.x - TBD
+
+## v0.7.x - 2020-02
+
+* **Breaking Changes**
+  * fix!: avoid single-arg forwarding c'tor (#1233)
+  * chore!: prep cleanup for enabling clang-tidy in headers (#1222)
+
+* **Other Changes**
+  * docs: add summary of result classes (#1243)
+  * feat: const qualify ConnectionOptions::background_threads_factory() (#1240)
+  * doc: document how to run samples using Bazel (#1228)
+  * feat: implement query and update timestamp samples (#1223)
+  * feat: add CommitTimestamp support (#1225)
+  * doc: add skeletons for *_with_timestamp_column (#1220)
+  * doc: add spanner_create_user_defined_struct example (#1214)
+  * style: cleanup use of `noexcept`, `explicit` and `= default` (#1209)
+  * doc: exclude benchmarks for doxygen docs (#1208)
+  * docs: specify how Commit(mutator, ...) handles exceptions (#1198)
+  * feat: use 1 client with multiple channels for the benchmark (#1194)
+  * fix: remove unnecessary dependency on bigtable (#1195)
+  * feat: support truncation of strings/bytes fields in protobuf logging (#1192)
+  * feat: a small script to plot benchmark results (#1189)
+  * fix: complete test coverage for g:c:spanner::Timestamp (#1190)
+  * fix: only check for per-thread rusage in the benchmark that requires it (#1186)
+  * docs: Tighten up some documentation for g:c:spanner::Client::Commit() (#1173)
+  * feat: remove internal::TimestampFromCounts() (#1183)
 
 ## v0.6.x - 2020-01
 
