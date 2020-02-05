@@ -14,6 +14,7 @@ REM limitations under the License.
 
 REM Install Bazel using Chocolatey
 choco install -y bazel --version 2.0.0
+call refreshenv.cmd
 
 REM Set it to "no" for any value other than "yes".
 if "%RUN_SLOW_INTEGRATION_TESTS%" neq "yes" set RUN_SLOW_INTEGRATION_TESTS=no
@@ -32,23 +33,23 @@ call "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Auxiliary
 set BAZEL_VS=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community
 
 echo %date% %time%
-C:\ProgramData\chocolatey\lib\bazel version
+C:\ProgramData\chocolatey\bin\bazel version
 
 echo "Downloading dependencies for the project."
 echo %date% %time%
-C:\ProgramData\chocolatey\lib\bazel --output_user_root=C:\b fetch -- ^
+C:\ProgramData\chocolatey\bin\bazel --output_user_root=C:\b fetch -- ^
     //google/cloud/spanner/...:all
 
 echo "Compiling the project."
 echo %date% %time%
-C:\ProgramData\chocolatey\lib\bazel --output_user_root=C:\b build --keep_going -- ^
+C:\ProgramData\chocolatey\bin\bazel --output_user_root=C:\b build --keep_going -- ^
     //google/cloud/spanner/...:all
 
 if %errorlevel% neq 0 exit /b %errorlevel%
 
 echo "Running unit tests"
 echo %date% %time%
-C:\ProgramData\chocolatey\lib\bazel --output_user_root=C:\b test ^
+C:\ProgramData\chocolatey\bin\bazel --output_user_root=C:\b test ^
   --keep_going ^
   --test_output=errors ^
   --verbose_failures=true ^
@@ -67,12 +68,12 @@ set GRPC_DNS_RESOLVER=native
 
 @rem It seems like redirecting to a file is the easiest way to store the
 @rem command output to a variable.
-C:\ProgramData\chocolatey\lib\bazel --output_user_root=C:\b info output_base > t:\bazel-info.txt
+C:\ProgramData\chocolatey\bin\bazel --output_user_root=C:\b info output_base > t:\bazel-info.txt
 set /p BAZEL_OUTPUT_DIR=<t:\bazel-info.txt
 del t:\bazel-info.txt
 
 echo %date% %time%
-C:\ProgramData\chocolatey\lib\bazel --output_user_root=C:\b test ^
+C:\ProgramData\chocolatey\bin\bazel --output_user_root=C:\b test ^
   --jobs=1 ^
   --keep_going ^
   --test_output=errors ^
