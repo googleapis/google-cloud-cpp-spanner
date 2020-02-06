@@ -3,15 +3,15 @@
 There are two primary ways of obtaining `google-cloud-cpp-spanner`. You can use git:
 
 ```bash
-git clone git@github.com:googleapis/google-cloud-cpp-spanner.git $HOME/project
+git clone git@github.com:googleapis/google-cloud-cpp-spanner.git $HOME/google-cloud-cpp-spanner
 ```
 
 Or obtain the tarball release:
 
 ```bash
-mkdir -p $HOME/project
+mkdir -p $HOME/google-cloud-cpp-spanner
 wget -q https://github.com/googleapis/google-cloud-cpp-spanner/archive/v0.4.0.tar.gz
-tar -xf v0.4.0.tar.gz -C $HOME/project --strip=1
+tar -xf v0.4.0.tar.gz -C $HOME/google-cloud-cpp-spanner --strip=1
 ```
 
 # Installing google-cloud-cpp-spanner
@@ -254,10 +254,10 @@ sudo ldconfig
 We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
-cd $HOME/project
+cd $HOME/google-cloud-cpp-spanner
 cmake -H. -Bcmake-out
 cmake --build cmake-out -- -j "${NCPU:-4}"
-cd $HOME/project/cmake-out
+cd $HOME/google-cloud-cpp-spanner/cmake-out
 ctest -LE integration-tests --output-on-failure
 sudo cmake --build . --target install
 ```
@@ -410,10 +410,10 @@ sudo ldconfig
 We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
-cd $HOME/project
+cd $HOME/google-cloud-cpp-spanner
 cmake -H. -Bcmake-out
 cmake --build cmake-out -- -j "${NCPU:-4}"
-cd $HOME/project/cmake-out
+cd $HOME/google-cloud-cpp-spanner/cmake-out
 ctest -LE integration-tests --output-on-failure
 sudo cmake --build . --target install
 ```
@@ -538,10 +538,10 @@ sudo ldconfig
 We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
-cd $HOME/project
+cd $HOME/google-cloud-cpp-spanner
 cmake -H. -Bcmake-out
 cmake --build cmake-out -- -j "${NCPU:-4}"
-cd $HOME/project/cmake-out
+cd $HOME/google-cloud-cpp-spanner/cmake-out
 ctest -LE integration-tests --output-on-failure
 sudo cmake --build . --target install
 ```
@@ -681,10 +681,10 @@ sudo ldconfig
 We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
-cd $HOME/project
+cd $HOME/google-cloud-cpp-spanner
 cmake -H. -Bcmake-out
 cmake --build cmake-out -- -j "${NCPU:-4}"
-cd $HOME/project/cmake-out
+cd $HOME/google-cloud-cpp-spanner/cmake-out
 ctest -LE integration-tests --output-on-failure
 sudo cmake --build . --target install
 ```
@@ -782,10 +782,10 @@ sudo ldconfig
 We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
-cd $HOME/project
+cd $HOME/google-cloud-cpp-spanner
 cmake -H. -Bcmake-out
 cmake --build cmake-out -- -j "${NCPU:-4}"
-cd $HOME/project/cmake-out
+cd $HOME/google-cloud-cpp-spanner/cmake-out
 ctest -LE integration-tests --output-on-failure
 sudo cmake --build . --target install
 ```
@@ -917,10 +917,10 @@ sudo ldconfig
 We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
-cd $HOME/project
+cd $HOME/google-cloud-cpp-spanner
 cmake -H. -Bcmake-out
 cmake --build cmake-out -- -j "${NCPU:-4}"
-cd $HOME/project/cmake-out
+cd $HOME/google-cloud-cpp-spanner/cmake-out
 ctest -LE integration-tests --output-on-failure
 sudo cmake --build . --target install
 ```
@@ -1057,10 +1057,10 @@ sudo ldconfig
 We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
-cd $HOME/project
+cd $HOME/google-cloud-cpp-spanner
 cmake -H. -Bcmake-out
 cmake --build cmake-out -- -j "${NCPU:-4}"
-cd $HOME/project/cmake-out
+cd $HOME/google-cloud-cpp-spanner/cmake-out
 ctest -LE integration-tests --output-on-failure
 sudo cmake --build . --target install
 ```
@@ -1218,10 +1218,10 @@ sudo ldconfig
 We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
-cd $HOME/project
+cd $HOME/google-cloud-cpp-spanner
 cmake -H. -Bcmake-out
 cmake --build cmake-out -- -j "${NCPU:-4}"
-cd $HOME/project/cmake-out
+cd $HOME/google-cloud-cpp-spanner/cmake-out
 ctest -LE integration-tests --output-on-failure
 sudo cmake --build . --target install
 ```
