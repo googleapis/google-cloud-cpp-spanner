@@ -18,7 +18,10 @@ set -eu
 readonly BINDIR=$(dirname "$0")
 
 cat <<'END_OF_PREAMBLE'
-# Obtaining google-cloud-cpp-spanner
+# Installing google-cloud-cpp-spanner
+
+<!-- This is an automatically generated file -->
+<!-- Make changes in ci/test-readme/generate-install.sh -->
 
 There are two primary ways of obtaining `google-cloud-cpp-spanner`. You can use git:
 
@@ -104,9 +107,9 @@ the following commands to your `WORKSPACE` file:
 # Update the version and SHA256 digest as needed.
 http_archive(
     name = "com_github_googleapis_google_cloud_cpp_spanner",
-    url = "http://github.com/googleapis/google-cloud-cpp-spanner/archive/v0.2.0.tar.gz",
-    strip_prefix = "google-cloud-cpp-0.2.0",
-    sha256 = "TBD",
+    sha256 = "1dbca07e3f268ffab4461a1d98b16201adda4688866a1929ac71c22c46e4fe74",
+    strip_prefix = "google-cloud-cpp-spanner-0.6.0",
+    url = "https://github.com/googleapis/google-cloud-cpp-spanner/archive/v0.6.0.tar.gz",
 )
 
 # Configure @com_google_googleapis to only compile C++ and gRPC:
