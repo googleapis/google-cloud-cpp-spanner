@@ -33,13 +33,13 @@ cc_grpc_library(
 
 cc_proto_library(
     name = "spanner_admin_instance_cc_proto",
-    deps = ["//google/spanner/admin/instance/v1:spanner_admin_instance_proto"],
+    deps = ["//google/spanner/admin/instance/v1:instance_proto"],
 )
 
 # Instance Admin
 cc_grpc_library(
     name = "google_spanner_admin_instance_v1_spanner_instance_admin",
-    srcs = ["//google/spanner/admin/instance/v1:spanner_admin_instance_proto"],
+    srcs = ["//google/spanner/admin/instance/v1:instance_proto"],
     deps = [
         ":spanner_admin_instance_cc_proto",
         ":spanner_cc_proto",
@@ -52,13 +52,13 @@ cc_grpc_library(
 
 cc_proto_library(
     name = "spanner_admin_database_cc_proto",
-    deps = ["//google/spanner/admin/database/v1:spanner_admin_database_proto"],
+    deps = ["//google/spanner/admin/database/v1:database_proto"],
 )
 
 # Database Admin
 cc_grpc_library(
     name = "google_spanner_admin_database_v1_spanner_database_admin",
-    srcs = ["//google/spanner/admin/database/v1:spanner_admin_database_proto"],
+    srcs = ["//google/spanner/admin/database/v1:database_proto"],
     deps = [
         ":spanner_admin_database_cc_proto",
         "//google/longrunning:longrunning_cc_grpc",
