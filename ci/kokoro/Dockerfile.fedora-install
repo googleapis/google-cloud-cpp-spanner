@@ -77,9 +77,9 @@ RUN cmake --build cmake-out/benchmark --target install -- -j $(nproc)
 
 # Download and compile googleapis/cpp-cmakefiles:
 WORKDIR /var/tmp/build
-RUN wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.1.5.tar.gz
-RUN tar -xf v0.1.5.tar.gz
-WORKDIR /var/tmp/build/cpp-cmakefiles-0.1.5
+RUN wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz
+RUN tar -xf v0.4.1.tar.gz
+WORKDIR /var/tmp/build/cpp-cmakefiles-0.4.1
 # Compile without the tests because we are testing spanner, not the base
 # libraries
 RUN cmake -H. -Bcmake-out \
