@@ -88,12 +88,6 @@ class Connection {
     Transaction transaction;
     SqlStatement statement;
     google::cloud::optional<std::string> partition_token;
-
-    SqlParams(Transaction transaction, SqlStatement statement,
-              google::cloud::optional<std::string> partition_token = {})
-        : transaction(std::move(transaction)),
-          statement(std::move(statement)),
-          partition_token(std::move(partition_token)) {}
   };
 
   /// Wrap the arguments to `ExecutePartitionedDml()`.
