@@ -154,7 +154,8 @@ TEST(ConnectionImplTest, ReadGetSessionFailure) {
                   "table",
                   KeySet::All(),
                   {"column1"},
-                  ReadOptions()});
+                  ReadOptions(),
+                  {}});
   for (auto& row : rows) {
     EXPECT_EQ(StatusCode::kPermissionDenied, row.status().code());
     EXPECT_THAT(row.status().message(), HasSubstr("uh-oh in GetSession"));
@@ -188,7 +189,8 @@ TEST(ConnectionImplTest, ReadStreamingReadFailure) {
                   "table",
                   KeySet::All(),
                   {"column1"},
-                  ReadOptions()});
+                  ReadOptions(),
+                  {}});
   for (auto& row : rows) {
     EXPECT_EQ(StatusCode::kPermissionDenied, row.status().code());
     EXPECT_THAT(row.status().message(),
@@ -250,7 +252,8 @@ TEST(ConnectionImplTest, ReadSuccess) {
                   "table",
                   KeySet::All(),
                   {"UserId", "UserName"},
-                  ReadOptions()});
+                  ReadOptions(),
+                  {}});
   using RowType = std::tuple<std::int64_t, std::string>;
   auto expected = std::vector<RowType>{
       RowType(12, "Steve"),
@@ -291,7 +294,8 @@ TEST(ConnectionImplTest, ReadPermanentFailure) {
                   "table",
                   KeySet::All(),
                   {"UserId", "UserName"},
-                  ReadOptions()});
+                  ReadOptions(),
+                  {}});
   for (auto& row : rows) {
     EXPECT_EQ(StatusCode::kPermissionDenied, row.status().code());
     EXPECT_THAT(row.status().message(), HasSubstr("uh-oh"));
@@ -328,7 +332,8 @@ TEST(ConnectionImplTest, ReadTooManyTransientFailures) {
                   "table",
                   KeySet::All(),
                   {"UserId", "UserName"},
-                  ReadOptions()});
+                  ReadOptions(),
+                  {}});
   for (auto& row : rows) {
     EXPECT_EQ(StatusCode::kUnavailable, row.status().code());
     EXPECT_THAT(row.status().message(), HasSubstr("try-again"));
@@ -362,7 +367,7 @@ TEST(ConnectionImplTest, ReadImplicitBeginTransaction) {
 
   Transaction txn = MakeReadOnlyTransaction(Transaction::ReadOnlyOptions());
   auto rows = conn->Read(
-      {txn, "table", KeySet::All(), {"UserId", "UserName"}, ReadOptions()});
+      {txn, "table", KeySet::All(), {"UserId", "UserName"}, ReadOptions(), {}});
   for (auto& row : rows) {
     EXPECT_STATUS_OK(row);
   }
@@ -1711,9 +1716,10 @@ TEST(ConnectionImplTest, PartitionReadSuccess) {
       .WillOnce(Return(partition_response));
 
   Transaction txn = MakeReadOnlyTransaction(Transaction::ReadOnlyOptions());
-  StatusOr<std::vector<ReadPartition>> result = conn->PartitionRead(
-      {{txn, "table", KeySet::All(), {"UserId", "UserName"}, ReadOptions()},
-       PartitionOptions()});
+  StatusOr<std::vector<ReadPartition>> result = conn->PartitionRead({
+      {txn, "table", KeySet::All(), {"UserId", "UserName"}, ReadOptions(), {}},
+      PartitionOptions(),
+  });
   ASSERT_STATUS_OK(result);
   EXPECT_THAT(txn, HasSessionAndTransactionId("test-session-name", "CAFEDEAD"));
 
@@ -1749,7 +1755,8 @@ TEST(ConnectionImplTest, PartitionReadPermanentFailure) {
         "table",
         KeySet::All(),
         {"UserId", "UserName"},
-        ReadOptions()},
+        ReadOptions(),
+        {}},
        PartitionOptions()});
   EXPECT_EQ(StatusCode::kPermissionDenied, result.status().code());
   EXPECT_THAT(result.status().message(), HasSubstr("uh-oh"));
@@ -1776,7 +1783,8 @@ TEST(ConnectionImplTest, PartitionReadTooManyTransientFailures) {
         "table",
         KeySet::All(),
         {"UserId", "UserName"},
-        ReadOptions()},
+        ReadOptions(),
+        {}},
        PartitionOptions()});
   EXPECT_EQ(StatusCode::kUnavailable, result.status().code());
   EXPECT_THAT(result.status().message(), HasSubstr("try-again"));
@@ -2023,7 +2031,7 @@ TEST(ConnectionImplTest, TransactionSessionBinding) {
   // Now do the actual reads and verify the results.
   Transaction txn1 = MakeReadOnlyTransaction(Transaction::ReadOnlyOptions());
   auto rows =
-      conn->Read({txn1, "table", KeySet::All(), {"Number"}, ReadOptions()});
+      conn->Read({txn1, "table", KeySet::All(), {"Number"}, ReadOptions(), {}});
   EXPECT_THAT(txn1, HasSessionAndTransactionId("session-1", "ABCDEF01"));
   for (auto& row : StreamOf<std::tuple<std::int64_t>>(rows)) {
     EXPECT_STATUS_OK(row);
@@ -2031,21 +2039,24 @@ TEST(ConnectionImplTest, TransactionSessionBinding) {
   }
 
   Transaction txn2 = MakeReadOnlyTransaction(Transaction::ReadOnlyOptions());
-  rows = conn->Read({txn2, "table", KeySet::All(), {"Number"}, ReadOptions()});
+  rows =
+      conn->Read({txn2, "table", KeySet::All(), {"Number"}, ReadOptions(), {}});
   EXPECT_THAT(txn2, HasSessionAndTransactionId("session-2", "ABCDEF02"));
   for (auto& row : StreamOf<std::tuple<std::int64_t>>(rows)) {
     EXPECT_STATUS_OK(row);
     EXPECT_EQ(std::get<0>(*row), 1);
   }
 
-  rows = conn->Read({txn1, "table", KeySet::All(), {"Number"}, ReadOptions()});
+  rows =
+      conn->Read({txn1, "table", KeySet::All(), {"Number"}, ReadOptions(), {}});
   EXPECT_THAT(txn1, HasSessionAndTransactionId("session-1", "ABCDEF01"));
   for (auto& row : StreamOf<std::tuple<std::int64_t>>(rows)) {
     EXPECT_STATUS_OK(row);
     EXPECT_EQ(std::get<0>(*row), 2);
   }
 
-  rows = conn->Read({txn2, "table", KeySet::All(), {"Number"}, ReadOptions()});
+  rows =
+      conn->Read({txn2, "table", KeySet::All(), {"Number"}, ReadOptions(), {}});
   EXPECT_THAT(txn2, HasSessionAndTransactionId("session-2", "ABCDEF02"));
   for (auto& row : StreamOf<std::tuple<std::int64_t>>(rows)) {
     EXPECT_STATUS_OK(row);
@@ -2083,7 +2094,7 @@ TEST(ConnectionImplTest, TransactionOutlivesConnection) {
 
   Transaction txn = MakeReadOnlyTransaction(Transaction::ReadOnlyOptions());
   auto rows = conn->Read(
-      {txn, "table", KeySet::All(), {"UserId", "UserName"}, ReadOptions()});
+      {txn, "table", KeySet::All(), {"UserId", "UserName"}, ReadOptions(), {}});
   EXPECT_THAT(txn, HasSessionAndTransactionId("test-session-name", "ABCDEF00"));
 
   // `conn` is the only reference to the `ConnectionImpl`, so dropping it will
@@ -2110,7 +2121,7 @@ TEST(ConnectionImplTest, ReadSessionNotFound) {
   auto conn = MakeLimitedRetryConnection(db, mock);
   auto txn = MakeReadWriteTransaction();
   SetTransactionId(txn, "test-txn-id");
-  auto params = Connection::ReadParams(txn, {}, {}, {}, {});
+  auto params = Connection::ReadParams{txn, {}, {}, {}, {}, {}};
   auto response = GetSingularRow(conn->Read(std::move(params)));
   EXPECT_FALSE(response.ok());
   auto status = response.status();
@@ -2135,7 +2146,7 @@ TEST(ConnectionImplTest, PartitionReadSessionNotFound) {
   auto conn = MakeLimitedRetryConnection(db, mock);
   auto txn = MakeReadWriteTransaction();
   SetTransactionId(txn, "test-txn-id");
-  auto params = Connection::ReadParams(txn, {}, {}, {}, {});
+  auto params = Connection::ReadParams{txn, {}, {}, {}, {}, {}};
   auto response = conn->PartitionRead({params, {}});
   EXPECT_FALSE(response.ok());
   auto status = response.status();

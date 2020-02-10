@@ -34,8 +34,11 @@ RowStream Client::Read(std::string table, KeySet keys,
                        ReadOptions read_options) {
   return conn_->Read(
       {internal::MakeSingleUseTransaction(Transaction::ReadOnlyOptions()),
-       std::move(table), std::move(keys), std::move(columns),
-       std::move(read_options)});
+       std::move(table),
+       std::move(keys),
+       std::move(columns),
+       std::move(read_options),
+       {}});
 }
 
 RowStream Client::Read(Transaction::SingleUseOptions transaction_options,
@@ -44,15 +47,22 @@ RowStream Client::Read(Transaction::SingleUseOptions transaction_options,
                        ReadOptions read_options) {
   return conn_->Read(
       {internal::MakeSingleUseTransaction(std::move(transaction_options)),
-       std::move(table), std::move(keys), std::move(columns),
-       std::move(read_options)});
+       std::move(table),
+       std::move(keys),
+       std::move(columns),
+       std::move(read_options),
+       {}});
 }
 
 RowStream Client::Read(Transaction transaction, std::string table, KeySet keys,
                        std::vector<std::string> columns,
                        ReadOptions read_options) {
-  return conn_->Read({std::move(transaction), std::move(table), std::move(keys),
-                      std::move(columns), std::move(read_options)});
+  return conn_->Read({std::move(transaction),
+                      std::move(table),
+                      std::move(keys),
+                      std::move(columns),
+                      std::move(read_options),
+                      {}});
 }
 
 RowStream Client::Read(ReadPartition const& read_partition) {
@@ -63,10 +73,13 @@ StatusOr<std::vector<ReadPartition>> Client::PartitionRead(
     Transaction transaction, std::string table, KeySet keys,
     std::vector<std::string> columns, ReadOptions read_options,
     PartitionOptions const& partition_options) {
-  return conn_->PartitionRead(
-      {{std::move(transaction), std::move(table), std::move(keys),
-        std::move(columns), std::move(read_options)},
-       partition_options});
+  return conn_->PartitionRead({{std::move(transaction),
+                                std::move(table),
+                                std::move(keys),
+                                std::move(columns),
+                                std::move(read_options),
+                                {}},
+                               partition_options});
 }
 
 RowStream Client::ExecuteQuery(SqlStatement statement) {
