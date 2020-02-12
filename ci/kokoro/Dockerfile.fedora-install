@@ -93,7 +93,7 @@ RUN cmake --build cmake-out --target install
 WORKDIR /var/tmp/build
 RUN wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.19.0.tar.gz
 RUN tar -xf v0.19.0.tar.gz
-WORKDIR /var/tmp/build/google-cloud-cpp-common-0.18.0
+WORKDIR /var/tmp/build/google-cloud-cpp-common-0.19.0
 # Compile without the tests because we are testing spanner, not the base
 # libraries
 RUN cmake -H. -Bcmake-out \
