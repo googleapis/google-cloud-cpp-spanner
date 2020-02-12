@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/internal/session_pool.h"
+#include "google/cloud/spanner/internal/background_threads_impl.h"
 #include "google/cloud/spanner/internal/session.h"
 #include "google/cloud/spanner/testing/mock_spanner_stub.h"
 #include "google/cloud/internal/make_unique.h"
@@ -67,6 +68,8 @@ std::shared_ptr<SessionPool> MakeSessionPool(
     SessionPoolOptions options) {
   return MakeSessionPool(
       std::move(db), std::move(stubs), std::move(options),
+      google::cloud::internal::make_unique<
+          AutomaticallyCreatedBackgroundThreads>(),
       google::cloud::internal::make_unique<LimitedTimeRetryPolicy>(
           std::chrono::minutes(10)),
       google::cloud::internal::make_unique<ExponentialBackoffPolicy>(
