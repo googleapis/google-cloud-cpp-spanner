@@ -13,11 +13,11 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/internal/session_pool.h"
-#include "google/cloud/spanner/internal/background_threads_impl.h"
 #include "google/cloud/spanner/internal/connection_impl.h"
 #include "google/cloud/spanner/internal/retry_loop.h"
 #include "google/cloud/spanner/internal/session.h"
 #include "google/cloud/grpc_utils/completion_queue.h"
+#include "google/cloud/internal/background_threads_impl.h"
 #include "google/cloud/internal/make_unique.h"
 #include "google/cloud/log.h"
 #include "google/cloud/status.h"
@@ -108,9 +108,9 @@ SessionPool::~SessionPool() {
   // variables, including `current_timer_`.
   //
   // Note that it *is* possible the timer lambda in `ScheduleBackgroundWork`
-  // is executing concurrently; however since we are in the destructor we know
+  // is executing concurrently. However, since we are in the destructor we know
   // that the lambda must not have yet successfully finished a call to `lock()`
-  // on the `weak_ptr` to `this` it holds; any subsequent or in-progress calls
+  // on the `weak_ptr` to `this` it holds. Any subsequent or in-progress calls
   // must return `nullptr`, and the lambda will not do any work nor reschedule
   // the timer.
   current_timer_.cancel();
