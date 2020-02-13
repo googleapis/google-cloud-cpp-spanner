@@ -77,12 +77,12 @@ SessionPool::SessionPool(Database db,
 }
 
 void SessionPool::Initialize() {
-  std::unique_lock<std::mutex> lk(mu_);
   // Eagerly initialize the pool with `min_sessions` sessions.
   // TODO(#307) this was moved to `Initialize` in preparation of using
   // `shared_from_this()` in the process of creating sessions, which cannot
   // be done in the constructor.
   if (options_.min_sessions() > 0) {
+    std::unique_lock<std::mutex> lk(mu_);
     int num_channels = static_cast<int>(channels_.size());
     int sessions_per_channel = options_.min_sessions() / num_channels;
     // If the number of sessions doesn't divide evenly by the number of
@@ -103,24 +103,22 @@ void SessionPool::Initialize() {
 }
 
 SessionPool::~SessionPool() {
-  // Taking `mu_` here is not strictly required because all references to this
-  // object are via `shared_ptr` and the fact we're in the destructor implies
-  // there are no more references.
+  // All references to this object are via `shared_ptr`; since we're in the
+  // destructor that implies there can be no concurrent accesses to any member
+  // variables including `current_timer_`.
   //
   // Note that it *is* possible we're racing against the timer lambda in
   // `ScheduleBackgroundWork`. That does have a `weak_ptr` to `this`, but
   // the `lock()` call (which must not have yet executed, else we wouldn't be
   // in the destructor) will return `nullptr` in that case, so it will not
   // do any work nor reschedule the timer.
-  std::unique_lock<std::mutex> lk(mu_);
-  timer_future_.cancel();
+  current_timer_.cancel();
 }
 
 void SessionPool::ScheduleBackgroundWork(std::chrono::seconds relative_time) {
-  // `mu_` must be held by the caller.
   // See the comment in the destructor about the thread safety of this method.
   std::weak_ptr<SessionPool> pool = shared_from_this();
-  timer_future_ =
+  current_timer_ =
       background_threads_->cq()
           .MakeRelativeTimer(relative_time)
           .then([pool](future<StatusOr<std::chrono::system_clock::time_point>>
@@ -134,7 +132,6 @@ void SessionPool::ScheduleBackgroundWork(std::chrono::seconds relative_time) {
 }
 
 void SessionPool::DoBackgroundWork() {
-  std::unique_lock<std::mutex> lk(mu_);
   // TODO(#1171) Implement SessionPool session refresh
   // TODO(#1172) maintain desired SessionPool size
   ScheduleBackgroundWork(std::chrono::seconds(5));

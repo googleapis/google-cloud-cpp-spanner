@@ -125,8 +125,7 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
 
   void UpdateNextChannelForCreateSessions();  // EXCLUSIVE_LOCKS_REQUIRED(mu_)
 
-  void ScheduleBackgroundWork(
-      std::chrono::seconds relative_time);  // EXCLUSIVE_LOCKS_REQUIRED(mu_)
+  void ScheduleBackgroundWork(std::chrono::seconds relative_time);
   void DoBackgroundWork();
 
   Database const db_;
@@ -142,7 +141,7 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
   int total_sessions_ = 0;                          // GUARDED_BY(mu_)
   bool create_in_progress_ = false;                 // GUARDED_BY(mu_)
   int num_waiting_for_session_ = 0;                 // GUARDED_BY(mu_)
-  future<void> timer_future_;                       // GUARDED_BY(mu_)
+  future<void> current_timer_;
 
   // `channels_` is guaranteed to be non-empty and will not be resized after
   // the constructor runs (so the iterators are guaranteed to always be valid).
