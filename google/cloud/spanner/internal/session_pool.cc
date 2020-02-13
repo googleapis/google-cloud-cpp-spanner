@@ -105,13 +105,14 @@ void SessionPool::Initialize() {
 SessionPool::~SessionPool() {
   // All references to this object are via `shared_ptr`; since we're in the
   // destructor that implies there can be no concurrent accesses to any member
-  // variables including `current_timer_`.
+  // variables, including `current_timer_`.
   //
-  // Note that it *is* possible we're racing against the timer lambda in
-  // `ScheduleBackgroundWork`. That does have a `weak_ptr` to `this`, but
-  // the `lock()` call (which must not have yet executed, else we wouldn't be
-  // in the destructor) will return `nullptr` in that case, so it will not
-  // do any work nor reschedule the timer.
+  // Note that it *is* possible the timer lambda in `ScheduleBackgroundWork`
+  // is executing concurrently; however since we are in the destructor we know
+  // that the lambda must not have yet successfully finished a call to `lock()`
+  // on the `weak_ptr` to `this` it holds; any subsequent or in-progress calls
+  // must return `nullptr`, and the lambda will not do any work nor reschedule
+  // the timer.
   current_timer_.cancel();
 }
 
