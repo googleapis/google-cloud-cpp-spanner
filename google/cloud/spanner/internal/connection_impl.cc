@@ -20,7 +20,7 @@
 #include "google/cloud/spanner/internal/status_utils.h"
 #include "google/cloud/spanner/query_partition.h"
 #include "google/cloud/spanner/read_partition.h"
-#include "google/cloud/grpc_utils/grpc_error_delegate.h"
+#include "google/cloud/grpc_error_delegate.h"
 #include "google/cloud/internal/make_unique.h"
 #include <limits>
 
@@ -50,9 +50,7 @@ class DefaultPartialResultSetReader : public PartialResultSetReader {
     return result;
   }
 
-  Status Finish() override {
-    return grpc_utils::MakeStatusFromRpcError(reader_->Finish());
-  }
+  Status Finish() override { return MakeStatusFromRpcError(reader_->Finish()); }
 
  private:
   std::unique_ptr<grpc::ClientContext> context_;
@@ -667,7 +665,7 @@ StatusOr<BatchDmlResult> ConnectionImpl::ExecuteBatchDmlImpl(
   }
 
   BatchDmlResult result;
-  result.status = grpc_utils::MakeStatusFromRpcError(response->status());
+  result.status = MakeStatusFromRpcError(response->status());
   for (auto const& result_set : response->result_sets()) {
     result.stats.push_back({result_set.stats().row_count_exact()});
   }

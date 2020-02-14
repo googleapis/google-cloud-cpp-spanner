@@ -18,7 +18,7 @@
 #include "google/cloud/spanner/internal/spanner_stub.h"
 #include "google/cloud/spanner/testing/pick_random_instance.h"
 #include "google/cloud/spanner/testing/random_database_name.h"
-#include "google/cloud/grpc_utils/grpc_error_delegate.h"
+#include "google/cloud/grpc_error_delegate.h"
 #include "google/cloud/internal/random.h"
 #include <google/spanner/v1/result_set.pb.h>
 #include <algorithm>
@@ -47,6 +47,7 @@
 namespace {
 
 namespace spanner = ::google::cloud::spanner;
+using ::google::cloud::MakeStatusFromRpcError;
 using ::google::cloud::Status;
 using ::google::cloud::spanner_benchmarks::Config;
 
@@ -710,8 +711,7 @@ class ReadExperiment : public Experiment {
       timer.Stop();
       samples.push_back(RowCpuSample{
           client_count, thread_count, true, row_count, timer.elapsed_time(),
-          timer.cpu_time(),
-          google::cloud::grpc_utils::MakeStatusFromRpcError(final)});
+          timer.cpu_time(), MakeStatusFromRpcError(final)});
     }
     return samples;
   }
@@ -934,8 +934,7 @@ class SelectExperiment : public Experiment {
       timer.Stop();
       samples.push_back(RowCpuSample{
           client_count, thread_count, true, row_count, timer.elapsed_time(),
-          timer.cpu_time(),
-          google::cloud::grpc_utils::MakeStatusFromRpcError(final)});
+          timer.cpu_time(), MakeStatusFromRpcError(final)});
     }
     return samples;
   }
