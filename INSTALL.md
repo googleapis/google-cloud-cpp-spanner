@@ -206,41 +206,6 @@ sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
-#### googletest
-
-We need a recent version of GoogleTest to compile the unit and integration
-tests.
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
-    tar -xf release-1.10.0.tar.gz && \
-    cd googletest-release-1.10.0 && \
-    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
-    cmake --build cmake-out -- -j ${NCPU:-4} && \
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
-sudo ldconfig
-```
-
-#### benchmark
-
-We need a recent version of the Google microbenchmark support library.
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
-    tar -xf v1.5.0.tar.gz && \
-    cd benchmark-1.5.0 && \
-    cmake \
-        -DCMAKE_BUILD_TYPE="Release" \
-        -DBUILD_SHARED_LIBS=yes \
-        -DBENCHMARK_ENABLE_TESTING=OFF \
-        -H. -Bcmake-out && \
-    cmake --build cmake-out -- -j ${NCPU:-4} && \
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
-sudo ldconfig
-```
-
 #### google-cloud-cpp-common
 
 The project also depends on google-cloud-cpp-common, the libraries shared by
@@ -251,9 +216,7 @@ cd $HOME/Downloads
 wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.19.0.tar.gz && \
     tar -xf v0.19.0.tar.gz && \
     cd google-cloud-cpp-common-0.19.0 && \
-    cmake -H. -Bcmake-out \
-        -DBUILD_TESTING=OFF \
-        -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
+    cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
@@ -265,11 +228,9 @@ We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
 cd $HOME/project
-cmake -H. -Bcmake-out
+cmake -H. -Bcmake-out -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release
 cmake --build cmake-out -- -j "${NCPU:-4}"
-cd $HOME/project/cmake-out
-ctest -LE integration-tests --output-on-failure
-sudo cmake --build . --target install
+sudo cmake --build cmake-out --target install
 ```
 
 
@@ -362,41 +323,6 @@ sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
-#### googletest
-
-We need a recent version of GoogleTest to compile the unit and integration
-tests.
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
-    tar -xf release-1.10.0.tar.gz && \
-    cd googletest-release-1.10.0 && \
-    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
-    cmake --build cmake-out -- -j ${NCPU:-4} && \
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
-sudo ldconfig
-```
-
-#### benchmark
-
-We need a recent version of the Google microbenchmark support library.
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
-    tar -xf v1.5.0.tar.gz && \
-    cd benchmark-1.5.0 && \
-    cmake \
-        -DCMAKE_BUILD_TYPE="Release" \
-        -DBUILD_SHARED_LIBS=yes \
-        -DBENCHMARK_ENABLE_TESTING=OFF \
-        -H. -Bcmake-out && \
-    cmake --build cmake-out -- -j ${NCPU:-4} && \
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
-sudo ldconfig
-```
-
 #### google-cloud-cpp-common
 
 The project also depends on google-cloud-cpp-common, the libraries shared by
@@ -407,9 +333,7 @@ cd $HOME/Downloads
 wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.19.0.tar.gz && \
     tar -xf v0.19.0.tar.gz && \
     cd google-cloud-cpp-common-0.19.0 && \
-    cmake -H. -Bcmake-out \
-        -DBUILD_TESTING=OFF \
-        -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
+    cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
@@ -421,11 +345,9 @@ We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
 cd $HOME/project
-cmake -H. -Bcmake-out
+cmake -H. -Bcmake-out -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release
 cmake --build cmake-out -- -j "${NCPU:-4}"
-cd $HOME/project/cmake-out
-ctest -LE integration-tests --output-on-failure
-sudo cmake --build . --target install
+sudo cmake --build cmake-out --target install
 ```
 
 
@@ -490,41 +412,6 @@ sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
-#### googletest
-
-We need a recent version of GoogleTest to compile the unit and integration
-tests.
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
-    tar -xf release-1.10.0.tar.gz && \
-    cd googletest-release-1.10.0 && \
-    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
-    cmake --build cmake-out -- -j ${NCPU:-4} && \
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
-sudo ldconfig
-```
-
-#### benchmark
-
-We need a recent version of the Google microbenchmark support library.
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
-    tar -xf v1.5.0.tar.gz && \
-    cd benchmark-1.5.0 && \
-    cmake \
-        -DCMAKE_BUILD_TYPE="Release" \
-        -DBUILD_SHARED_LIBS=yes \
-        -DBENCHMARK_ENABLE_TESTING=OFF \
-        -H. -Bcmake-out && \
-    cmake --build cmake-out -- -j ${NCPU:-4} && \
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
-sudo ldconfig
-```
-
 #### google-cloud-cpp-common
 
 The project also depends on google-cloud-cpp-common, the libraries shared by
@@ -535,9 +422,7 @@ cd $HOME/Downloads
 wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.19.0.tar.gz && \
     tar -xf v0.19.0.tar.gz && \
     cd google-cloud-cpp-common-0.19.0 && \
-    cmake -H. -Bcmake-out \
-        -DBUILD_TESTING=OFF \
-        -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
+    cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
@@ -549,11 +434,9 @@ We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
 cd $HOME/project
-cmake -H. -Bcmake-out
+cmake -H. -Bcmake-out -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release
 cmake --build cmake-out -- -j "${NCPU:-4}"
-cd $HOME/project/cmake-out
-ctest -LE integration-tests --output-on-failure
-sudo cmake --build . --target install
+sudo cmake --build cmake-out --target install
 ```
 
 
@@ -633,41 +516,6 @@ sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
-#### googletest
-
-We need a recent version of GoogleTest to compile the unit and integration
-tests.
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
-    tar -xf release-1.10.0.tar.gz && \
-    cd googletest-release-1.10.0 && \
-    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
-    cmake --build cmake-out -- -j ${NCPU:-4} && \
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
-sudo ldconfig
-```
-
-#### benchmark
-
-We need a recent version of the Google microbenchmark support library.
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
-    tar -xf v1.5.0.tar.gz && \
-    cd benchmark-1.5.0 && \
-    cmake \
-        -DCMAKE_BUILD_TYPE="Release" \
-        -DBUILD_SHARED_LIBS=yes \
-        -DBENCHMARK_ENABLE_TESTING=OFF \
-        -H. -Bcmake-out && \
-    cmake --build cmake-out -- -j ${NCPU:-4} && \
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
-sudo ldconfig
-```
-
 #### google-cloud-cpp-common
 
 The project also depends on google-cloud-cpp-common, the libraries shared by
@@ -678,9 +526,7 @@ cd $HOME/Downloads
 wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.19.0.tar.gz && \
     tar -xf v0.19.0.tar.gz && \
     cd google-cloud-cpp-common-0.19.0 && \
-    cmake -H. -Bcmake-out \
-        -DBUILD_TESTING=OFF \
-        -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
+    cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
@@ -692,11 +538,9 @@ We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
 cd $HOME/project
-cmake -H. -Bcmake-out
+cmake -H. -Bcmake-out -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release
 cmake --build cmake-out -- -j "${NCPU:-4}"
-cd $HOME/project/cmake-out
-ctest -LE integration-tests --output-on-failure
-sudo cmake --build . --target install
+sudo cmake --build cmake-out --target install
 ```
 
 
@@ -734,41 +578,6 @@ sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
-#### googletest
-
-We need a recent version of GoogleTest to compile the unit and integration
-tests.
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
-    tar -xf release-1.10.0.tar.gz && \
-    cd googletest-release-1.10.0 && \
-    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
-    cmake --build cmake-out -- -j ${NCPU:-4} && \
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
-sudo ldconfig
-```
-
-#### benchmark
-
-We need a recent version of the Google microbenchmark support library.
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
-    tar -xf v1.5.0.tar.gz && \
-    cd benchmark-1.5.0 && \
-    cmake \
-        -DCMAKE_BUILD_TYPE="Release" \
-        -DBUILD_SHARED_LIBS=yes \
-        -DBENCHMARK_ENABLE_TESTING=OFF \
-        -H. -Bcmake-out && \
-    cmake --build cmake-out -- -j ${NCPU:-4} && \
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
-sudo ldconfig
-```
-
 #### google-cloud-cpp-common
 
 The project also depends on google-cloud-cpp-common, the libraries shared by
@@ -779,9 +588,7 @@ cd $HOME/Downloads
 wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.19.0.tar.gz && \
     tar -xf v0.19.0.tar.gz && \
     cd google-cloud-cpp-common-0.19.0 && \
-    cmake -H. -Bcmake-out \
-        -DBUILD_TESTING=OFF \
-        -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
+    cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
@@ -793,11 +600,9 @@ We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
 cd $HOME/project
-cmake -H. -Bcmake-out
+cmake -H. -Bcmake-out -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release
 cmake --build cmake-out -- -j "${NCPU:-4}"
-cd $HOME/project/cmake-out
-ctest -LE integration-tests --output-on-failure
-sudo cmake --build . --target install
+sudo cmake --build cmake-out --target install
 ```
 
 
@@ -869,41 +674,6 @@ sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
-#### googletest
-
-We need a recent version of GoogleTest to compile the unit and integration
-tests.
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
-    tar -xf release-1.10.0.tar.gz && \
-    cd googletest-release-1.10.0 && \
-    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
-    cmake --build cmake-out -- -j ${NCPU:-4} && \
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
-sudo ldconfig
-```
-
-#### benchmark
-
-We need a recent version of the Google microbenchmark support library.
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
-    tar -xf v1.5.0.tar.gz && \
-    cd benchmark-1.5.0 && \
-    cmake \
-        -DCMAKE_BUILD_TYPE="Release" \
-        -DBUILD_SHARED_LIBS=yes \
-        -DBENCHMARK_ENABLE_TESTING=OFF \
-        -H. -Bcmake-out && \
-    cmake --build cmake-out -- -j ${NCPU:-4} && \
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
-sudo ldconfig
-```
-
 #### google-cloud-cpp-common
 
 The project also depends on google-cloud-cpp-common, the libraries shared by
@@ -914,9 +684,7 @@ cd $HOME/Downloads
 wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.19.0.tar.gz && \
     tar -xf v0.19.0.tar.gz && \
     cd google-cloud-cpp-common-0.19.0 && \
-    cmake -H. -Bcmake-out \
-        -DBUILD_TESTING=OFF \
-        -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
+    cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
@@ -928,11 +696,9 @@ We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
 cd $HOME/project
-cmake -H. -Bcmake-out
+cmake -H. -Bcmake-out -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release
 cmake --build cmake-out -- -j "${NCPU:-4}"
-cd $HOME/project/cmake-out
-ctest -LE integration-tests --output-on-failure
-sudo cmake --build . --target install
+sudo cmake --build cmake-out --target install
 ```
 
 
@@ -1009,41 +775,6 @@ sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
-#### googletest
-
-We need a recent version of GoogleTest to compile the unit and integration
-tests.
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
-    tar -xf release-1.10.0.tar.gz && \
-    cd googletest-release-1.10.0 && \
-    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
-    cmake --build cmake-out -- -j ${NCPU:-4} && \
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
-sudo ldconfig
-```
-
-#### benchmark
-
-We need a recent version of the Google microbenchmark support library.
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
-    tar -xf v1.5.0.tar.gz && \
-    cd benchmark-1.5.0 && \
-    cmake \
-        -DCMAKE_BUILD_TYPE="Release" \
-        -DBUILD_SHARED_LIBS=yes \
-        -DBENCHMARK_ENABLE_TESTING=OFF \
-        -H. -Bcmake-out && \
-    cmake --build cmake-out -- -j ${NCPU:-4} && \
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
-sudo ldconfig
-```
-
 #### google-cloud-cpp-common
 
 The project also depends on google-cloud-cpp-common, the libraries shared by
@@ -1054,9 +785,7 @@ cd $HOME/Downloads
 wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.19.0.tar.gz && \
     tar -xf v0.19.0.tar.gz && \
     cd google-cloud-cpp-common-0.19.0 && \
-    cmake -H. -Bcmake-out \
-        -DBUILD_TESTING=OFF \
-        -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
+    cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
@@ -1068,11 +797,9 @@ We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
 cd $HOME/project
-cmake -H. -Bcmake-out
+cmake -H. -Bcmake-out -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release
 cmake --build cmake-out -- -j "${NCPU:-4}"
-cd $HOME/project/cmake-out
-ctest -LE integration-tests --output-on-failure
-sudo cmake --build . --target install
+sudo cmake --build cmake-out --target install
 ```
 
 
@@ -1170,41 +897,6 @@ sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
-#### googletest
-
-We need a recent version of GoogleTest to compile the unit and integration
-tests.
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
-    tar -xf release-1.10.0.tar.gz && \
-    cd googletest-release-1.10.0 && \
-    cmake -DCMAKE_BUILD_TYPE="Release" -DBUILD_SHARED_LIBS=yes -H. -Bcmake-out && \
-    cmake --build cmake-out -- -j ${NCPU:-4} && \
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
-sudo ldconfig
-```
-
-#### benchmark
-
-We need a recent version of the Google microbenchmark support library.
-
-```bash
-cd $HOME/Downloads
-wget -q https://github.com/google/benchmark/archive/v1.5.0.tar.gz && \
-    tar -xf v1.5.0.tar.gz && \
-    cd benchmark-1.5.0 && \
-    cmake \
-        -DCMAKE_BUILD_TYPE="Release" \
-        -DBUILD_SHARED_LIBS=yes \
-        -DBENCHMARK_ENABLE_TESTING=OFF \
-        -H. -Bcmake-out && \
-    cmake --build cmake-out -- -j ${NCPU:-4} && \
-sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
-sudo ldconfig
-```
-
 #### google-cloud-cpp-common
 
 The project also depends on google-cloud-cpp-common, the libraries shared by
@@ -1215,9 +907,7 @@ cd $HOME/Downloads
 wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.19.0.tar.gz && \
     tar -xf v0.19.0.tar.gz && \
     cd google-cloud-cpp-common-0.19.0 && \
-    cmake -H. -Bcmake-out \
-        -DBUILD_TESTING=OFF \
-        -DGOOGLE_CLOUD_CPP_TESTING_UTIL_ENABLE_INSTALL=ON && \
+    cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
@@ -1229,10 +919,8 @@ We can now compile, test, and install `google-cloud-cpp-spanner`.
 
 ```bash
 cd $HOME/project
-cmake -H. -Bcmake-out
+cmake -H. -Bcmake-out -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release
 cmake --build cmake-out -- -j "${NCPU:-4}"
-cd $HOME/project/cmake-out
-ctest -LE integration-tests --output-on-failure
-sudo cmake --build . --target install
+sudo cmake --build cmake-out --target install
 ```
 
