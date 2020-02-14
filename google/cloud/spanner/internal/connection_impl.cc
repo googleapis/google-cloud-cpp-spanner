@@ -50,7 +50,9 @@ class DefaultPartialResultSetReader : public PartialResultSetReader {
     return result;
   }
 
-  Status Finish() override { return MakeStatusFromRpcError(reader_->Finish()); }
+  Status Finish() override {
+    return google::cloud::MakeStatusFromRpcError(reader_->Finish());
+  }
 
  private:
   std::unique_ptr<grpc::ClientContext> context_;
@@ -665,7 +667,7 @@ StatusOr<BatchDmlResult> ConnectionImpl::ExecuteBatchDmlImpl(
   }
 
   BatchDmlResult result;
-  result.status = MakeStatusFromRpcError(response->status());
+  result.status = google::cloud::MakeStatusFromRpcError(response->status());
   for (auto const& result_set : response->result_sets()) {
     result.stats.push_back({result_set.stats().row_count_exact()});
   }

@@ -142,7 +142,7 @@ typename ValueExtractor::ReturnType PollingLoopImpl(
 
   if (operation.has_error()) {
     // The long running operation failed, return the error to the caller.
-    return MakeStatusFromRpcError(operation.error());
+    return google::cloud::MakeStatusFromRpcError(operation.error());
   }
   return ValueExtractor::Extract(operation, location);
 }

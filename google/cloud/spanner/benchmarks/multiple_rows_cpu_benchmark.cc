@@ -47,7 +47,6 @@
 namespace {
 
 namespace spanner = ::google::cloud::spanner;
-using ::google::cloud::MakeStatusFromRpcError;
 using ::google::cloud::Status;
 using ::google::cloud::spanner_benchmarks::Config;
 
@@ -711,7 +710,7 @@ class ReadExperiment : public Experiment {
       timer.Stop();
       samples.push_back(RowCpuSample{
           client_count, thread_count, true, row_count, timer.elapsed_time(),
-          timer.cpu_time(), MakeStatusFromRpcError(final)});
+          timer.cpu_time(), google::cloud::MakeStatusFromRpcError(final)});
     }
     return samples;
   }
@@ -934,7 +933,7 @@ class SelectExperiment : public Experiment {
       timer.Stop();
       samples.push_back(RowCpuSample{
           client_count, thread_count, true, row_count, timer.elapsed_time(),
-          timer.cpu_time(), MakeStatusFromRpcError(final)});
+          timer.cpu_time(), google::cloud::MakeStatusFromRpcError(final)});
     }
     return samples;
   }
