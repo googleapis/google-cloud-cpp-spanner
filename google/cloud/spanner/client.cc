@@ -14,10 +14,14 @@
 
 #include "google/cloud/spanner/client.h"
 #include "google/cloud/spanner/backoff_policy.h"
+#include "google/cloud/spanner/instance_admin_connection.h"
 #include "google/cloud/spanner/internal/connection_impl.h"
+#include "google/cloud/spanner/internal/instance_admin_stub.h"
+#include "google/cloud/spanner/internal/instance_endpoint.h"
 #include "google/cloud/spanner/internal/retry_loop.h"
 #include "google/cloud/spanner/internal/spanner_stub.h"
 #include "google/cloud/spanner/internal/status_utils.h"
+#include "google/cloud/spanner/polling_policy.h"
 #include "google/cloud/spanner/retry_policy.h"
 #include "google/cloud/spanner/transaction.h"
 #include "google/cloud/log.h"
@@ -267,10 +271,23 @@ std::shared_ptr<Connection> MakeConnection(
 }
 
 std::shared_ptr<Connection> MakeConnection(
-    Database const& db, ConnectionOptions const& connection_options,
+    Database const& db, ConnectionOptions connection_options,
     SessionPoolOptions session_pool_options,
     std::unique_ptr<RetryPolicy> retry_policy,
     std::unique_ptr<BackoffPolicy> backoff_policy) {
+  // Possibly overwrite the endpoint with an instance-specific one. Note
+  // that a PollingPolicy is only required for long-running InstanceAdmin
+  // operations like CreateInstance() and UpdateInstance(), however
+  // InstanceEndpoint() just calls GetInstance() so we can pass null.
+  // NOTE: The set_endpoint() will be a no-op if ${SPANNER_EMULATOR_HOST}
+  // is set. That is, we will ignore the instance-specific endpoint.
+  auto conn = internal::MakeInstanceAdminConnection(
+      internal::CreateDefaultInstanceAdminStub(connection_options),
+      retry_policy->clone(), backoff_policy->clone(),
+      std::unique_ptr<PollingPolicy>{});
+  connection_options.set_endpoint(internal::InstanceEndpoint(
+      db.instance(), connection_options.endpoint(), *conn));
+
   std::vector<std::shared_ptr<internal::SpannerStub>> stubs;
   int num_channels = std::max(connection_options.num_channels(), 1);
   stubs.reserve(num_channels);

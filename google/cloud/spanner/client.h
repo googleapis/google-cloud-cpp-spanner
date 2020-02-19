@@ -567,7 +567,7 @@ std::shared_ptr<Connection> MakeConnection(
  *     long the `Connection` object waits before retrying a failed request.
  */
 std::shared_ptr<Connection> MakeConnection(
-    Database const& db, ConnectionOptions const& connection_options,
+    Database const& db, ConnectionOptions connection_options,
     SessionPoolOptions session_pool_options,
     std::unique_ptr<RetryPolicy> retry_policy,
     std::unique_ptr<BackoffPolicy> backoff_policy);
