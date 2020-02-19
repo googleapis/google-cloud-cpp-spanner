@@ -18,13 +18,10 @@
   * refactor: Migrate away from `grpc_utils` namespace (#1266)
   * doc: small tweaks to Doxygen documentation (#1267)
   * feat: use `BackgroundThreads` in `SessionPool` (#1259)
-  * chore: disable warning in test file to simplify code (#1264)
   * chore: upgrade dep to g-c-c-common v0.19 (#1258)
   * chore: upgrade to cpp-cmakefiles v0.4.1 (#1253)
   * doc: fix INSTALL instructions for Bazel (#1226)
   * ci: upgrade protobuf to v3.11.3 (#1247)
-  * chore: expand some TAB indendation (#1249)
-  * chore: bump version numbers for next release (#1246)
 
 ## v0.7.x - 2020-02
 
