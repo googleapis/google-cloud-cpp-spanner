@@ -1,6 +1,30 @@
 # Changelog
 
-## v0.8.x - TBD
+## v0.9.x - TBD
+
+## v0.8.x - 2020-02
+
+* **Breaking Changes**
+  * refactor!: use `BackgroundThreads` from `common` (#1262)
+  * refactor!: prepare for new field in SqlParams (#1265)
+  * refactor!: expand SqlParams members into PartitionQueryParams (#1263)
+  * refactor!: remove c'tors from Connection::* param structs (#1257)
+
+* **Other Changes**
+  * chore: add some async methods to `SpannerStub` (#1270)
+  * feat: environment-variable override of the spanner endpoint (#1269)
+  * doc: improve instructions for WORKSPACE files (#1254)
+  * doc: simplify install instructions (#1268)
+  * refactor: Migrate away from `grpc_utils` namespace (#1266)
+  * doc: small tweaks to Doxygen documentation (#1267)
+  * feat: use `BackgroundThreads` in `SessionPool` (#1259)
+  * chore: disable warning in test file to simplify code (#1264)
+  * chore: upgrade dep to g-c-c-common v0.19 (#1258)
+  * chore: upgrade to cpp-cmakefiles v0.4.1 (#1253)
+  * doc: fix INSTALL instructions for Bazel (#1226)
+  * ci: upgrade protobuf to v3.11.3 (#1247)
+  * chore: expand some TAB indendation (#1249)
+  * chore: bump version numbers for next release (#1246)
 
 ## v0.7.x - 2020-02
 
