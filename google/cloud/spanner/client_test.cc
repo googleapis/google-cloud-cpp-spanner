@@ -21,7 +21,9 @@
 #include "google/cloud/spanner/timestamp.h"
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/internal/make_unique.h"
+#include "google/cloud/internal/setenv.h"
 #include "google/cloud/testing_util/assert_ok.h"
+#include "google/cloud/testing_util/environment_variable_restore.h"
 #include <google/protobuf/text_format.h>
 #include <gmock/gmock.h>
 #include <array>
@@ -384,6 +386,14 @@ TEST(ClientTest, RollbackError) {
 }
 
 TEST(ClientTest, MakeConnectionOptionalArguments) {
+  google::cloud::testing_util::EnvironmentVariableRestore restore1(
+      "GOOGLE_CLOUD_CPP_ENABLE_TRACING");
+  google::cloud::testing_util::EnvironmentVariableRestore restore2(
+      "GOOGLE_CLOUD_CPP_ENABLE_CLOG");
+  google::cloud::internal::SetEnv("GOOGLE_CLOUD_CPP_ENABLE_TRACING",
+                                  "rpc,rpc_streams");
+  google::cloud::internal::SetEnv("GOOGLE_CLOUD_CPP_ENABLE_CLOG", "1");
+
   Database db("foo", "bar", "baz");
   auto conn = MakeConnection(db);
   EXPECT_NE(conn, nullptr);
