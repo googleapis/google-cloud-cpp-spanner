@@ -22,6 +22,8 @@
 #include "google/cloud/spanner/retry_policy.h"
 #include <google/spanner/admin/instance/v1/spanner_instance_admin.grpc.pb.h>
 #include <map>
+#include <string>
+#include <vector>
 
 namespace google {
 namespace cloud {
@@ -86,6 +88,8 @@ class InstanceAdminConnection {
     /// The full name of the instance in
     /// `projects/<project-id>/instances/<instance-id>` format.
     std::string instance_name;
+    /// Request specific fields, or all fields if empty.
+    std::vector<std::string> field_paths;
   };
 
   /// Wrap the arguments for `CreateInstance()`.

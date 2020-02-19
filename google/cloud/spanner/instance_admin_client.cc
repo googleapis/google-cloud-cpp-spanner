@@ -21,7 +21,7 @@ inline namespace SPANNER_CLIENT_NS {
 
 StatusOr<google::spanner::admin::instance::v1::Instance>
 InstanceAdminClient::GetInstance(Instance const& in) {
-  return conn_->GetInstance({in.FullName()});
+  return conn_->GetInstance({in.FullName(), {}});
 }
 
 future<StatusOr<google::spanner::admin::instance::v1::Instance>>

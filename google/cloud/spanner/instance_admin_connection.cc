@@ -72,6 +72,9 @@ class InstanceAdminConnectionImpl : public InstanceAdminConnection {
   StatusOr<gcsa::Instance> GetInstance(GetInstanceParams gip) override {
     gcsa::GetInstanceRequest request;
     request.set_name(std::move(gip.instance_name));
+    for (auto& path : gip.field_paths) {
+      request.mutable_field_mask()->add_paths(std::move(path));
+    }
     return internal::RetryLoop(
         retry_policy_prototype_->clone(), backoff_policy_prototype_->clone(),
         true,

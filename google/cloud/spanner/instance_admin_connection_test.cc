@@ -82,7 +82,7 @@ TEST(InstanceAdminConnectionTest, GetInstanceSuccess) {
           });
 
   auto conn = MakeLimitedRetryConnection(mock);
-  auto actual = conn->GetInstance({expected_name});
+  auto actual = conn->GetInstance({expected_name, {}});
   EXPECT_THAT(*actual, IsProtoEqual(expected_instance));
 }
 
@@ -92,7 +92,7 @@ TEST(InstanceAdminConnectionTest, GetInstancePermanentFailure) {
       .WillOnce(Return(Status(StatusCode::kPermissionDenied, "uh-oh")));
 
   auto conn = MakeLimitedRetryConnection(mock);
-  auto actual = conn->GetInstance({"test-name"});
+  auto actual = conn->GetInstance({"test-name", {}});
   EXPECT_EQ(StatusCode::kPermissionDenied, actual.status().code());
 }
 
@@ -102,7 +102,7 @@ TEST(InstanceAdminConnectionTest, GetInstanceTooManyTransients) {
       .WillRepeatedly(Return(Status(StatusCode::kUnavailable, "try-again")));
 
   auto conn = MakeLimitedRetryConnection(mock);
-  auto actual = conn->GetInstance({"test-name"});
+  auto actual = conn->GetInstance({"test-name", {}});
   EXPECT_EQ(StatusCode::kUnavailable, actual.status().code());
 }
 
