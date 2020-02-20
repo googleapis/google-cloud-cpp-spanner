@@ -38,7 +38,6 @@ using ::testing::Contains;
 using ::testing::HasSubstr;
 using ::testing::UnorderedElementsAre;
 
-// Picking this up from google/cloud/spanner/internal/instance_admin_stub.h
 namespace gcsa = ::google::spanner::admin::instance::v1;
 
 // Create a `Connection` suitable for use in tests that continues retrying

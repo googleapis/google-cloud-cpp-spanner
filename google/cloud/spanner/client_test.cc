@@ -386,13 +386,12 @@ TEST(ClientTest, RollbackError) {
 }
 
 TEST(ClientTest, MakeConnectionOptionalArguments) {
-  google::cloud::testing_util::EnvironmentVariableRestore restore1(
-      "GOOGLE_CLOUD_CPP_ENABLE_TRACING");
-  google::cloud::testing_util::EnvironmentVariableRestore restore2(
-      "GOOGLE_CLOUD_CPP_ENABLE_CLOG");
-  google::cloud::internal::SetEnv("GOOGLE_CLOUD_CPP_ENABLE_TRACING",
-                                  "rpc,rpc_streams");
-  google::cloud::internal::SetEnv("GOOGLE_CLOUD_CPP_ENABLE_CLOG", "1");
+  // NOTE: Disable instance-specific endpoints for this test, otherwise
+  // MakeConnection() will start making RPCs to spanner.googleapis.com.
+  google::cloud::testing_util::EnvironmentVariableRestore restore(
+      "GOOGLE_CLOUD_SPANNER_ENABLE_RESOURCE_BASED_ROUTING");
+  google::cloud::internal::SetEnv(
+      "GOOGLE_CLOUD_SPANNER_ENABLE_RESOURCE_BASED_ROUTING", "false");
 
   Database db("foo", "bar", "baz");
   auto conn = MakeConnection(db);

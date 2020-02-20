@@ -281,6 +281,8 @@ std::shared_ptr<Connection> MakeConnection(
   // InstanceEndpoint() just calls GetInstance() so we can pass null.
   // NOTE: The set_endpoint() will be a no-op if ${SPANNER_EMULATOR_HOST}
   // is set. That is, we will ignore the instance-specific endpoint.
+  // TODO(bww): The InstanceAdmin connection should be injected from above.
+  // Otherwise the unit tests for MakeConnection() cannot mock it out.
   auto conn = internal::MakeInstanceAdminConnection(
       internal::CreateDefaultInstanceAdminStub(connection_options),
       retry_policy->clone(), backoff_policy->clone(),
