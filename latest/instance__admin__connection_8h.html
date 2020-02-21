@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Google Cloud Spanner C++ Client
-   &#160;<span id="projectnumber">0.8.0</span>
+   &#160;<span id="projectnumber">0.9.0</span>
    </div>
    <div id="projectbrief">A C++ Client Library for Google Cloud Spanner</div>
   </td>
@@ -74,9 +74,9 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="backoff__policy_8h_source.html">google/cloud/spanner/backoff_policy.h</a>&quot;</code><br />
 <code>#include &quot;google/cloud/spanner/internal/instance_admin_stub.h&quot;</code><br />
-<code>#include &quot;google/cloud/spanner/internal/range_from_pagination.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="polling__policy_8h_source.html">google/cloud/spanner/polling_policy.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="retry__policy_8h_source.html">google/cloud/spanner/retry_policy.h</a>&quot;</code><br />
+<code>#include &quot;google/cloud/internal/pagination_range.h&quot;</code><br />
 <code>#include &lt;google/spanner/admin/instance/v1/spanner_instance_admin.grpc.pb.h&gt;</code><br />
 <code>#include &lt;map&gt;</code><br />
 </div>
@@ -134,12 +134,12 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a71cb6e79b7fb96cdd1bf646b8ab8e09b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a71cb6e79b7fb96cdd1bf646b8ab8e09b">google::cloud::spanner::v0::ListInstancesRange</a> = internal::PaginationRange&lt; google::spanner::admin::instance::v1::Instance, google::spanner::admin::instance::v1::ListInstancesRequest, google::spanner::admin::instance::v1::ListInstancesResponse &gt;</td></tr>
-<tr class="memdesc:a71cb6e79b7fb96cdd1bf646b8ab8e09b"><td class="mdescLeft">&#160;</td><td class="mdescRight">An input range to stream all the instances in a Cloud project.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a71cb6e79b7fb96cdd1bf646b8ab8e09b">More...</a><br /></td></tr>
-<tr class="separator:a71cb6e79b7fb96cdd1bf646b8ab8e09b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26a21e57b79a55456e5eb82ea075cdf9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a26a21e57b79a55456e5eb82ea075cdf9">google::cloud::spanner::v0::ListInstanceConfigsRange</a> = internal::PaginationRange&lt; google::spanner::admin::instance::v1::InstanceConfig, google::spanner::admin::instance::v1::ListInstanceConfigsRequest, google::spanner::admin::instance::v1::ListInstanceConfigsResponse &gt;</td></tr>
-<tr class="memdesc:a26a21e57b79a55456e5eb82ea075cdf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">An input range to stream all the instance configs in a Cloud project.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a26a21e57b79a55456e5eb82ea075cdf9">More...</a><br /></td></tr>
-<tr class="separator:a26a21e57b79a55456e5eb82ea075cdf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7505c57812676c54d6854fe8bc3d9e1a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7505c57812676c54d6854fe8bc3d9e1a">google::cloud::spanner::v0::ListInstancesRange</a> = google::cloud::internal::PaginationRange&lt; google::spanner::admin::instance::v1::Instance, google::spanner::admin::instance::v1::ListInstancesRequest, google::spanner::admin::instance::v1::ListInstancesResponse &gt;</td></tr>
+<tr class="memdesc:a7505c57812676c54d6854fe8bc3d9e1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">An input range to stream all the instances in a Cloud project.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7505c57812676c54d6854fe8bc3d9e1a">More...</a><br /></td></tr>
+<tr class="separator:a7505c57812676c54d6854fe8bc3d9e1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4717eab0777ca2fd4980fe00847b3ea6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a4717eab0777ca2fd4980fe00847b3ea6">google::cloud::spanner::v0::ListInstanceConfigsRange</a> = google::cloud::internal::PaginationRange&lt; google::spanner::admin::instance::v1::InstanceConfig, google::spanner::admin::instance::v1::ListInstanceConfigsRequest, google::spanner::admin::instance::v1::ListInstanceConfigsResponse &gt;</td></tr>
+<tr class="memdesc:a4717eab0777ca2fd4980fe00847b3ea6"><td class="mdescLeft">&#160;</td><td class="mdescRight">An input range to stream all the instance configs in a Cloud project.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a4717eab0777ca2fd4980fe00847b3ea6">More...</a><br /></td></tr>
+<tr class="separator:a4717eab0777ca2fd4980fe00847b3ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
