@@ -65,30 +65,22 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle">
 <div class="title">connection_options.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="tracing__options_8h_source.html">google/cloud/spanner/tracing_options.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="version_8h_source.html">google/cloud/spanner/version.h</a>&quot;</code><br />
-<code>#include &quot;google/cloud/background_threads.h&quot;</code><br />
-<code>#include &quot;google/cloud/completion_queue.h&quot;</code><br />
-<code>#include &quot;google/cloud/status_or.h&quot;</code><br />
-<code>#include &lt;google/spanner/admin/database/v1/spanner_database_admin.grpc.pb.h&gt;</code><br />
-<code>#include &lt;google/spanner/v1/spanner.pb.h&gt;</code><br />
-<code>#include &lt;grpcpp/grpcpp.h&gt;</code><br />
-<code>#include &lt;functional&gt;</code><br />
-<code>#include &lt;memory&gt;</code><br />
-<code>#include &lt;set&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="version_8h_source.html">google/cloud/spanner/version.h</a>&quot;</code><br />
+<code>#include &quot;google/cloud/connection_options.h&quot;</code><br />
 <code>#include &lt;string&gt;</code><br />
 </div>
 <p><a href="connection__options_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html">google::cloud::spanner::v0::ConnectionOptions</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The configuration parameters for spanner connections.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptionsTraits.html">google::cloud::spanner::v0::ConnectionOptionsTraits</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The traits to configure <code>ConnectionOptions&lt;T&gt;</code> for Cloud Spanner.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptionsTraits.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -104,6 +96,12 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacegoogle_1_1cloud_1_1spanner_1_1v0"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html">google::cloud::spanner::v0</a></td></tr>
 <tr class="memdesc:namespacegoogle_1_1cloud_1_1spanner_1_1v0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The inlined, versioned namespace for the Cloud Spanner C++ client APIs. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a961720bcfc703bd430b89359180eb1c3"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a961720bcfc703bd430b89359180eb1c3">google::cloud::spanner::v0::ConnectionOptions</a> = google::cloud::ConnectionOptions&lt; ConnectionOptionsTraits &gt;</td></tr>
+<tr class="memdesc:a961720bcfc703bd430b89359180eb1c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The options for Cloud Spanner connections.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a961720bcfc703bd430b89359180eb1c3">More...</a><br /></td></tr>
+<tr class="separator:a961720bcfc703bd430b89359180eb1c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

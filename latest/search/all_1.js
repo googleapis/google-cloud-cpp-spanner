@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['background_5fthreads_5ffactory',['background_threads_factory',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#a710afff85e38940810991a362c6ba1e4',1,'google::cloud::spanner::v0::ConnectionOptions']]],
-  ['backgroundthreadsfactory',['BackgroundThreadsFactory',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ConnectionOptions.html#a98ec1c95e6deeef05f713c257a979dcd',1,'google::cloud::spanner::v0::ConnectionOptions']]],
   ['backoff_5fpolicy_2eh',['backoff_policy.h',['../backoff__policy_8h.html',1,'']]],
   ['backoffpolicy',['BackoffPolicy',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ae9894cd07fd5d6262b10e01f1307c951',1,'google::cloud::spanner::v0']]],
   ['batch_5fdml_5fresult_2eh',['batch_dml_result.h',['../batch__dml__result_8h.html',1,'']]],
