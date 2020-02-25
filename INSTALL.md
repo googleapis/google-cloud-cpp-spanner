@@ -131,7 +131,7 @@ cc_binary(
 To workaround a bug in Bazel ([bazelbuild/bazel#4341][bazel-bug-4341-link]) gRPC needs a
 command-line flag when compiled using Bazel on macOS:
 
-[bazel-bug-4341]: https://github.com/bazelbuild/bazel/issues/4341
+[bazel-bug-4341-link]: https://github.com/bazelbuild/bazel/issues/4341
 
 ```bash
 bazel build --copt=-DGRPC_BAZEL_BUILD ...
