@@ -33,8 +33,8 @@ Or obtain the tarball release:
 
 ```bash
 mkdir -p $HOME/google-cloud-cpp-spanner
-wget -q https://github.com/googleapis/google-cloud-cpp-spanner/archive/v0.7.0.tar.gz
-tar -xf v0.7.0.tar.gz -C $HOME/google-cloud-cpp-spanner --strip=1
+wget -q https://github.com/googleapis/google-cloud-cpp-spanner/archive/v0.8.0.tar.gz
+tar -xf v0.8.0.tar.gz -C $HOME/google-cloud-cpp-spanner --strip=1
 ```
 
 # Installing google-cloud-cpp-spanner
@@ -110,9 +110,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 # Update the version and SHA256 digest as needed.
 http_archive(
     name = "com_github_googleapis_google_cloud_cpp_spanner",
-    sha256 = "9d7bd3de8e38f7e4b3e917766ed08fd8c8ff59a8b2f0997c4b1cb781a6fd1558",
-    strip_prefix = "google-cloud-cpp-spanner-0.7.0",
-    url = "https://github.com/googleapis/google-cloud-cpp-spanner/archive/v0.7.0.tar.gz",
+    sha256 = "a833d3c1a6d127132e961350829babac521b62b4c837b88d7c219b400e98fed1",
+    strip_prefix = "google-cloud-cpp-spanner-0.8.0",
+    url = "https://github.com/googleapis/google-cloud-cpp-spanner/archive/v0.8.0.tar.gz",
 )
 
 # Configure @com_google_googleapis to only compile C++ and gRPC:
