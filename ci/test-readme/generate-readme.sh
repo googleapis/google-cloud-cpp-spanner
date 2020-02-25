@@ -95,6 +95,7 @@ limits.
 
 ```console
 mkdir C:\b
+bazel --output_user_root=C:\b test //google/cloud/spanner/samples:samples
 bazel --output_user_root=C:\b build //google/cloud/spanner/samples:samples
 ```
 

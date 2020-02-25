@@ -31,8 +31,8 @@ in the [release notes](README.md#release-notes) below.
 [![CI status docker/check-api][docker/check-api-shield]][docker/check-api-link]
 [![CI status docker/clang-3.8][docker/clang-3.8-shield]][docker/clang-3.8-link]
 [![CI status docker/clang-tidy][docker/clang-tidy-shield]][docker/clang-tidy-link]
-[![CI status docker/cmake][docker/cmake-shield]][docker/cmake-link]
 [![CI status docker/cmake-super][docker/cmake-super-shield]][docker/cmake-super-link]
+[![CI status docker/cmake][docker/cmake-shield]][docker/cmake-link]
 [![CI status docker/coverage][docker/coverage-shield]][docker/coverage-link]
 [![CI status docker/cxx17][docker/cxx17-shield]][docker/cxx17-link]
 [![CI status docker/gcc-4.8][docker/gcc-4.8-shield]][docker/gcc-4.8-link]
@@ -157,6 +157,7 @@ limits.
 
 ```console
 mkdir C:\b
+bazel --output_user_root=C:\b test //google/cloud/spanner/samples:samples
 bazel --output_user_root=C:\b build //google/cloud/spanner/samples:samples
 ```
 
