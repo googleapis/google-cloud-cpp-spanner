@@ -26,7 +26,7 @@ cat <<'END_OF_PREAMBLE'
 There are two primary ways of obtaining `google-cloud-cpp-spanner`. You can use git:
 
 ```bash
-git clone git@github.com:googleapis/google-cloud-cpp-spanner.git $HOME/google-cloud-cpp-spanner
+git clone https://github.com/googleapis/google-cloud-cpp-spanner.git $HOME/google-cloud-cpp-spanner
 ```
 
 Or obtain the tarball release:
