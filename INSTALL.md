@@ -87,7 +87,8 @@ the following commands to your `WORKSPACE` file:
 # Add the necessary Starlark functions to fetch google-cloud-cpp-spanner.
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-# Update the version and SHA256 digest as needed.
+# Fetch the Cloud Spanner C++ library.
+# NOTE: Update this version and SHA256 as needed.
 http_archive(
     name = "com_github_googleapis_google_cloud_cpp_spanner",
     sha256 = "a833d3c1a6d127132e961350829babac521b62b4c837b88d7c219b400e98fed1",
@@ -95,15 +96,20 @@ http_archive(
     url = "https://github.com/googleapis/google-cloud-cpp-spanner/archive/v0.8.0.tar.gz",
 )
 
-# Configure @com_google_googleapis to only compile C++ and gRPC:
+# Call a function to load the Cloud Spanner C++ library's deps
+load("@com_github_googleapis_google_cloud_cpp_spanner//bazel:google_cloud_cpp_spanner_deps.bzl", "google_cloud_cpp_spanner_deps")
+google_cloud_cpp_spanner_deps()
+
+# (optional) Only generate C++ from the protos.
 load("@com_google_googleapis//:repository_rules.bzl", "switched_rules_by_language")
 switched_rules_by_language(
     name = "com_google_googleapis_imports",
-    cc = True,  # C++ support is only "Partially implemented", roll our own.
+    cc = True,
     grpc = True,
 )
 
-# Call the corresponding workspace function for each dependency
+# Load some deps of your deps due to
+# https://github.com/bazelbuild/bazel/issues/1943
 load("@com_github_googleapis_google_cloud_cpp_common//bazel:google_cloud_cpp_common_deps.bzl", "google_cloud_cpp_common_deps")
 google_cloud_cpp_common_deps()
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
