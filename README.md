@@ -171,7 +171,7 @@ On Windows and macOS gRPC [requires][grpc-roots-pem-bug] an environment variable
 to find the root of trust for SSL. On macOS use:
 
 ```console
-wget -q https://raw.githubusercontent.com/grpc/grpc/master/etc/roots.pem
+curl -Lo roots.pem https://raw.githubusercontent.com/grpc/grpc/master/etc/roots.pem
 export GRPC_DEFAULT_SSL_ROOTS_FILE_PATH="$PWD/roots.pem"
 ```
 
