@@ -241,6 +241,7 @@ class Client {
    * efficient and simpler code.
    *
    * @par Example
+   * @snippet samples.cc spanner-query-data
    * @snippet samples.cc spanner-query-data-select-star
    *
    * @param statement The SQL statement to execute.
