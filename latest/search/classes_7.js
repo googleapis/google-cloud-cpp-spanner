@@ -1,6 +1,10 @@
 var searchData=
 [
-  ['listdatabasesparams',['ListDatabasesParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1ListDatabasesParams.html',1,'google::cloud::spanner::v0::DatabaseAdminConnection']]],
-  ['listinstanceconfigsparams',['ListInstanceConfigsParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminConnection_1_1ListInstanceConfigsParams.html',1,'google::cloud::spanner::v0::InstanceAdminConnection']]],
-  ['listinstancesparams',['ListInstancesParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminConnection_1_1ListInstancesParams.html',1,'google::cloud::spanner::v0::InstanceAdminConnection']]]
+  ['iambinding',['IamBinding',['https://googleapis.dev/cpp/google-cloud-common/0.20.0/classgoogle_1_1cloud_1_1v0_1_1IamBinding.html',1,'google::cloud::v0']]],
+  ['iambindings',['IamBindings',['https://googleapis.dev/cpp/google-cloud-common/0.20.0/classgoogle_1_1cloud_1_1v0_1_1IamBindings.html',1,'google::cloud::v0']]],
+  ['iampolicy',['IamPolicy',['https://googleapis.dev/cpp/google-cloud-common/0.20.0/structgoogle_1_1cloud_1_1v0_1_1IamPolicy.html',1,'google::cloud::v0']]],
+  ['instance',['Instance',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Instance.html',1,'google::cloud::spanner::v0']]],
+  ['instanceadminclient',['InstanceAdminClient',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminClient.html',1,'google::cloud::spanner::v0']]],
+  ['instanceadminconnection',['InstanceAdminConnection',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminConnection.html',1,'google::cloud::spanner::v0']]],
+  ['iterator',['Iterator',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bytes_1_1Decoder_1_1Iterator.html',1,'google::cloud::spanner::v0::Bytes::Decoder']]]
 ];
