@@ -14,15 +14,21 @@ limits.
 
 ```console
 mkdir C:\b
-bazel --output_user_root=C:\b test //google/cloud/spanner/samples:samples
 bazel --output_user_root=C:\b build //google/cloud/spanner/samples:samples
+```
+
+If you are using a Bazel version before 2.2.0 you may need to run the following command
+to workaround [bazelbuild/bazel#10621](https://github.com/bazelbuild/bazel/issues/10621).
+
+```console
+bazel --output_user_root=C:\b test //google/cloud/spanner/samples:samples
 ```
 
 On Windows and macOS gRPC [requires][grpc-roots-pem-bug] an environment variable
 to find the root of trust for SSL. On macOS use:
 
 ```console
-wget -q https://raw.githubusercontent.com/grpc/grpc/master/etc/roots.pem
+curl -Lo roots.pem https://raw.githubusercontent.com/grpc/grpc/master/etc/roots.pem
 export GRPC_DEFAULT_SSL_ROOTS_FILE_PATH="$PWD/roots.pem"
 ```
 
@@ -47,7 +53,7 @@ bazel run //google/cloud/spanner/samples:samples -- create-instance [PROJECT ID]
 bazel run //google/cloud/spanner/samples:samples -- create-database [PROJECT ID] [SPANNER INSTANCE] [DATABASE ID]
 ```
 
-Running the command without options will list the available examples:
+Running the command without options will list the available samples:
 
 ```console
 bazel run //google/cloud/spanner/samples:samples
