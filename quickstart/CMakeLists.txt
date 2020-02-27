@@ -21,7 +21,7 @@
 # configuration files are usable.
 
 cmake_minimum_required(VERSION 3.5)
-project(google-cloud-cpp-spanner-install-integration-test CXX C)
+project(google-cloud-cpp-spanner-quickstart CXX C)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -30,5 +30,5 @@ find_package(Threads REQUIRED)
 find_package(spanner_client REQUIRED)
 
 # Once the spanner_client package is found, define new targets.
-add_executable(spanner_install_test spanner_install_test.cc)
-target_link_libraries(spanner_install_test googleapis-c++::spanner_client)
+add_executable(quickstart quickstart.cc)
+target_link_libraries(quickstart googleapis-c++::spanner_client)

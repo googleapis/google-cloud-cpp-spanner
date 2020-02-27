@@ -17,7 +17,24 @@
 CONFIG_DIRECTORY="${KOKORO_GFILE_DIR:-/dev/shm}"
 readonly CONFIG_DIRECTORY
 if [[ -f "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh" ]]; then
+  echo "================================================================"
+  echo "Testing a program built with spanner-as-a-dependency $(date)"
+  echo "================================================================"
   source "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh"
+
+  # Pick one of the instances at random
+  mapfile -t INSTANCES < <(gcloud "--project=${GOOGLE_CLOUD_PROJECT}" \
+                  spanner instances list --filter=NAME:test-instance --format='csv(name)[no-heading]')
+  readonly INSTANCES
+  GOOGLE_CLOUD_CPP_SPANNER_INSTANCE="${INSTANCES[$(( RANDOM % ${#INSTANCES} ))]}"
+  if ! gcloud "--project=${GOOGLE_CLOUD_PROJECT}" \
+           spanner databases list "--instance=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}" | grep -q quickstart-db; then
+    echo "Quickstart database (quickstart-db) already exists"
+  else
+    echo "Creating quickstart-db database"
+    gcloud "--project=${GOOGLE_CLOUD_PROJECT}" \
+        spanner databases create "--instance=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}" quickstart-db
+  fi
 
   run_args=(
     # Remove the container after running
@@ -26,15 +43,13 @@ if [[ -f "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh" ]]; then
     # Set the environment variables for the test program.
     "--env" "GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json"
     "--env" "GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}"
-    "--env" "RUN_SLOW_INTEGRATION_TESTS=${RUN_SLOW_INTEGRATION_TESTS:-no}"
-    "--env" "GOOGLE_CLOUD_CPP_SPANNER_INSTANCE=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}"
-    "--env" "GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA=${GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA}"
 
     # Mount the config directory as a volume in `/c`
     "--volume" "${CONFIG_DIRECTORY}:/c"
   )
   echo "================================================================"
   echo "Run test program against installed libraries ${DISTRO}."
-  docker run "${run_args[@]}" "${INSTALL_RUN_IMAGE}" "/i/spanner_install_test"
+  docker run "${run_args[@]}" "${INSTALL_RUN_IMAGE}" "/i/quickstart" \
+      "${GOOGLE_CLOUD_PROJECT}" "${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}" quickstart-db
   echo "================================================================"
 fi
