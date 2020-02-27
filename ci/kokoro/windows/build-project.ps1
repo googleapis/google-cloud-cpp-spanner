@@ -57,7 +57,7 @@ if ($env:RUN_INTEGRATION_TESTS -eq "true") {
   Write-Host "================================================================"
   Write-Host "Run integration tests $(Get-Date -Format o)."
   cd cmake-out
-  ctest --output-on-failure -L integration-tests
+  ctest --output-on-failure -L integration-tests -j 4
   if ($LastExitCode) {
       throw "Integration tests failed with exit code $LastExitCode"
   }
