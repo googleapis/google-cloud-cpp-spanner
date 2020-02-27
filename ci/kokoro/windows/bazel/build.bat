@@ -74,7 +74,6 @@ del t:\bazel-info.txt
 
 echo %date% %time%
 C:\ProgramData\chocolatey\bin\bazel --output_user_root=C:\b test ^
-  --jobs=1 ^
   --keep_going ^
   --test_output=errors ^
   --verbose_failures=true ^
