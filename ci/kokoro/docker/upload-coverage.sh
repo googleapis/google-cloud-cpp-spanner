@@ -88,7 +88,7 @@ docker_flags+=(
 echo -n "Uploading code coverage to codecov.io..."
 # Run the upload script from codecov.io within a Docker container. Save the log
 # to a file because it can be very large (multiple MiB in size).
-sudo docker run "${docker_flags[@]}" "${IMAGE}:tip" /bin/bash -c \
+sudo docker run "${docker_flags[@]}" "${IMAGE}:latest" /bin/bash -c \
     "/bin/bash <(curl -s https://codecov.io/bash) >/v/${BUILD_OUTPUT}/codecov.log 2>&1"
 exit_status=$?
 echo "DONE"
