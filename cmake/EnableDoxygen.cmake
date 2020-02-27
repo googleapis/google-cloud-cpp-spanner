@@ -70,7 +70,20 @@ else ()
             "*/google/cloud/spanner/benchmarks/*"
             "*/google/cloud/spanner/testing/*"
             "*/google/cloud/spanner/*_test.cc")
-
+        set(GOOGLE_CLOUD_CPP_COMMON_TAG_URL
+            "https://googleapis.dev/cpp/google-cloud-common/")
+        string(APPEND GOOGLE_CLOUD_CPP_COMMON_TAG_URL
+               "${GOOGLE_CLOUD_CPP_COMMON_VERSION}/cloud.tag")
+        message(STATUS "tag url: ${GOOGLE_CLOUD_CPP_COMMON_TAG_URL}")
+        set(GOOGLE_CLOUD_CPP_COMMON_TAG "${PROJECT_BINARY_DIR}/cloud.tag")
+        message(STATUS "tag file: ${GOOGLE_CLOUD_CPP_COMMON_TAG}")
+        file(DOWNLOAD ${GOOGLE_CLOUD_CPP_COMMON_TAG_URL}
+             ${GOOGLE_CLOUD_CPP_COMMON_TAG})
+        set(DOXYGEN_TAGFILES
+            "${GOOGLE_CLOUD_CPP_COMMON_TAG}=https://googleapis.dev/cpp/")
+        string(APPEND DOXYGEN_TAGFILES
+               "google-cloud-common/${GOOGLE_CLOUD_CPP_COMMON_VERSION}/")
+        message(STATUS "tag config: ${DOXYGEN_TAGFILES}")
         doxygen_add_docs(
             doxygen-docs ${CMAKE_CURRENT_SOURCE_DIR} WORKING_DIRECTORY
             ${CMAKE_CURRENT_SOURCE_DIR} COMMENT "Generate HTML documentation")

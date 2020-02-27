@@ -44,4 +44,9 @@ string(CONCAT SPANNER_CLIENT_VERSION "${SPANNER_CLIENT_VERSION_MAJOR}" "."
 
 include(CTest)
 
+set(GOOGLE_CLOUD_CPP_COMMON_VERSION
+    "master"
+    CACHE STRING "The version of google-cloud-cpp-common")
+mark_as_advanced(GOOGLE_CLOUD_CPP_COMMON_VERSION)
+
 add_subdirectory(google/cloud/spanner)
