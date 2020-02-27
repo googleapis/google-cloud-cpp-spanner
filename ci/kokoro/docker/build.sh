@@ -201,6 +201,8 @@ if [[ -z "${PROJECT_ROOT+x}" ]]; then
 fi
 source "${PROJECT_ROOT}/ci/kokoro/define-docker-variables.sh"
 source "${PROJECT_ROOT}/ci/define-dump-log.sh"
+source "${PROJECT_ROOT}/ci/etc/kokoro/install/version-config.sh"
+export GOOGLE_CLOUD_CPP_COMMON_VERSION
 
 echo "================================================================"
 NCPU=$(nproc)
@@ -290,6 +292,10 @@ docker_flags=(
     # invalid links to functions or types). Currently only the CMake builds use
     # this flag.
     "--env" "GENERATE_DOCS=${GENERATE_DOCS:-}"
+
+    # Pass down the g-c-c-common's version for Doxygen cross linking.
+    "--env"
+    "GOOGLE_CLOUD_CPP_COMMON_VERSION=${GOOGLE_CLOUD_CPP_COMMON_VERSION:-}"
 
     # If set, execute tests to verify `make install` works and produces working
     # installations.
