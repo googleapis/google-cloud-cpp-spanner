@@ -12,23 +12,20 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-# A minimal CMakeList.txt to *test* the install Cloud Spanner C++ client.
-#
-# This is not intended to be a demonstration of how to write good CMakeList.txt
-# files, nor is it a general solution to create CMake files for google-cloud-
-# cpp-spanner. It is simply a minimal CMake file to verify that (a) the
-# installed libraries contain all required headers, and (b) the installed CMake
-# configuration files are usable.
+# This CMake file shows how to use `google-cloud-cpp-spanner` from a larger
+# CMake project.
 
 cmake_minimum_required(VERSION 3.5)
 project(google-cloud-cpp-spanner-quickstart CXX C)
 
+# In this example we only require C++11, you can use newer versions in your own
+# project:
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Threads REQUIRED)
+# Use find_package() to find a pre-installed version of google-cloud-cpp-spanner:
 find_package(spanner_client REQUIRED)
 
-# Once the spanner_client package is found, define new targets.
+# Define your targets.
 add_executable(quickstart quickstart.cc)
 target_link_libraries(quickstart googleapis-c++::spanner_client)
