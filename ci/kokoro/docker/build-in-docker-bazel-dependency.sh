@@ -52,7 +52,7 @@ if [[ -n "${BAZEL_CONFIG}" ]]; then
     bazel_args+=(--config "${BAZEL_CONFIG}")
 fi
 
-cd ci/quickstart
+cd quickstart
 
 echo "================================================================"
 echo "Fetching dependencies $(date)"
