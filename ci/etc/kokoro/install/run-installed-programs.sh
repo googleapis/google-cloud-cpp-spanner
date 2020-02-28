@@ -22,18 +22,26 @@ if [[ -f "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh" ]]; then
   echo "================================================================"
   source "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh"
 
+  gcloud auth activate-service-account --key-file \
+    "${CONFIG_DIRECTORY}/spanner-credentials.json"
+
   # Pick one of the instances at random
   mapfile -t INSTANCES < <(gcloud "--project=${GOOGLE_CLOUD_PROJECT}" \
                   spanner instances list --filter=NAME:test-instance --format='csv(name)[no-heading]')
   readonly INSTANCES
   GOOGLE_CLOUD_CPP_SPANNER_INSTANCE="${INSTANCES[$(( RANDOM % ${#INSTANCES} ))]}"
-  if ! gcloud "--project=${GOOGLE_CLOUD_PROJECT}" \
+  export GOOGLE_CLOUD_CPP_SPANNER_INSTANCE
+  readonly GOOGLE_CLOUD_CPP_SPANNER_INSTANCE
+  echo "Searching for quickstart-db database in ${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}"
+  if gcloud "--project=${GOOGLE_CLOUD_PROJECT}" \
            spanner databases list "--instance=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}" | grep -q quickstart-db; then
-    echo "Quickstart database (quickstart-db) already exists"
+    echo "Quickstart database (quickstart-db) already exists in ${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}"
   else
-    echo "Creating quickstart-db database"
+    echo "Creating quickstart-db database in ${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}"
+    # Ignore errors because it could be that another builds creates it
+    # simultaneously.
     gcloud "--project=${GOOGLE_CLOUD_PROJECT}" \
-        spanner databases create "--instance=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}" quickstart-db
+        spanner databases create "--instance=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}" quickstart-db || true
   fi
 
   run_args=(
