@@ -481,13 +481,10 @@ class Client {
       std::function<StatusOr<Mutations>(Transaction)> const& mutator);
 
   /**
-   * Commits a read-write transaction.
+   * Commits the given @p mutations atomically in order.
    *
-   * Same as above, with a mutator that returns @p mutations.
-   *
-   * @param mutations The mutations to be executed when this transaction
-   *     commits. All mutations are applied atomically, in the order they
-   *     appear in this list.
+   * This function uses the re-run loop described above with the default
+   * policies.
    */
   StatusOr<CommitResult> Commit(Mutations mutations);
 
