@@ -66,31 +66,17 @@ echo "================================================================"
 "${BAZEL_BIN}" build  "${bazel_args[@]}" \
     -- //...:all
 
-if [[ -f "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh" ]]; then
+if [[ -f "/c/spanner-integration-tests-config.sh" ]]; then
   echo "================================================================"
   echo "Testing a program built with spanner-as-a-dependency $(date)"
   echo "================================================================"
-  source "${CONFIG_DIRECTORY}/spanner-integration-tests-config.sh"
-
-  # Pick one of the instances at random
-  mapfile -t INSTANCES < <(gcloud "--project=${GOOGLE_CLOUD_PROJECT}" \
-                  spanner instances list --filter=NAME:test-instance --format='csv(name)[no-heading]')
-  readonly INSTANCES
-  GOOGLE_CLOUD_CPP_SPANNER_INSTANCE="${INSTANCES[$(( RANDOM % ${#INSTANCES} ))]}"
-  if ! gcloud "--project=${GOOGLE_CLOUD_PROJECT}" \
-           spanner databases list "--instance=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}" | grep -q quickstart-db; then
-    echo "Quickstart database (quickstart-db) already exists"
-  else
-    echo "Creating quickstart-db database"
-    gcloud "--project=${GOOGLE_CLOUD_PROJECT}" \
-        spanner databases create "--instance=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}" quickstart-db
-  fi
+  source "/c/spanner-integration-tests-config.sh"
 
   # Run the program using the command-line parameters.
+  env "GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json" \
   "${BAZEL_BIN}" run \
       "${bazel_args[@]}" \
       "--spawn_strategy=local" \
-      "--action_env=GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json" \
       :quickstart -- "${GOOGLE_CLOUD_PROJECT}" "${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}" quickstart-db
 
 fi
