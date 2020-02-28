@@ -26,7 +26,7 @@ If you are using Windows or macOS there are additional instructions at the end o
 ## Using with CMake
 
 1. Install CMake. The package managers for most Linux distributions include a package for CMake.
-   Likewise, you can install CMake on Windows using a package manager such as 
+   Likewise, you can install CMake on Windows using a package manager such as
    [chocolatey][choco-cmake-link], and on macOS using [homebrew][homebrew-cmake-link]. You can also obtain the software
    directly from the [cmake.org][https://cmake.org/download/].
 

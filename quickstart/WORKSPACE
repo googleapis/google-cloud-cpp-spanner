@@ -42,7 +42,6 @@ switched_rules_by_language(
     grpc = True,
 )
 
-
 # Load indirect dependencies due to
 #     https://github.com/bazelbuild/bazel/issues/1943
 load("@com_github_googleapis_google_cloud_cpp_common//bazel:google_cloud_cpp_common_deps.bzl", "google_cloud_cpp_common_deps")

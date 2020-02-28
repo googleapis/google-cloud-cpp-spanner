@@ -23,7 +23,8 @@ project(google-cloud-cpp-spanner-quickstart CXX C)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Use find_package() to find a pre-installed version of google-cloud-cpp-spanner:
+# Use find_package() to find a pre-installed version of google-cloud-cpp-
+# spanner:
 find_package(spanner_client REQUIRED)
 
 # Define your targets.
