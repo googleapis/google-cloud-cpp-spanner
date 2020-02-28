@@ -1075,30 +1075,23 @@ void ReadWriteTransaction(google::cloud::spanner::Client client) {
     auto rows = client.Read(std::move(txn), "Albums", std::move(key),
                             {"MarketingBudget"});
     using RowType = std::tuple<std::int64_t>;
-    auto row = spanner::GetSingularRow(spanner::StreamOf<RowType>(rows));
-    // Return the error (as opposed to throwing an exception) because
-    // Commit() only retries on StatusCode::kAborted.
-    if (!row) return std::move(row).status();
-    return std::get<0>(*std::move(row));
-    // Throw an exception because this should terminate the transaction.
-    throw std::runtime_error("Key not found (" + std::to_string(singer_id) +
-                             "," + std::to_string(album_id) + ")");
+    auto row =
+        spanner::GetSingularRow(spanner::StreamOf<RowType>(rows)).value();
+    return std::get<0>(std::move(row));
   };
 
   auto commit = client.Commit(
       [&client, &get_current_budget](
           spanner::Transaction const& txn) -> StatusOr<spanner::Mutations> {
-        auto b1 = get_current_budget(client, txn, 1, 1);
-        if (!b1) return std::move(b1).status();
-        auto b2 = get_current_budget(client, txn, 2, 2);
-        if (!b2) return std::move(b2).status();
+        auto b1 = get_current_budget(client, txn, 1, 1).value();
+        auto b2 = get_current_budget(client, txn, 2, 2).value();
         std::int64_t transfer_amount = 200000;
 
         return spanner::Mutations{
             spanner::UpdateMutationBuilder(
                 "Albums", {"SingerId", "AlbumId", "MarketingBudget"})
-                .EmplaceRow(1, 1, *b1 + transfer_amount)
-                .EmplaceRow(2, 2, *b2 - transfer_amount)
+                .EmplaceRow(1, 1, b1 + transfer_amount)
+                .EmplaceRow(2, 2, b2 - transfer_amount)
                 .Build()};
       });
 
@@ -1260,16 +1253,15 @@ void DmlBatchUpdate(google::cloud::spanner::Client client) {
             spanner::SqlStatement("UPDATE Albums"
                                   " SET MarketingBudget = MarketingBudget * 2"
                                   " WHERE SingerId = 1 and AlbumId = 3")};
-        auto result = client.ExecuteBatchDml(txn, statements);
-        if (!result) return result.status();
-        for (std::size_t i = 0; i < result->stats.size(); ++i) {
-          std::cout << result->stats[i].row_count << " rows affected"
+        auto result = client.ExecuteBatchDml(txn, statements).value();
+        for (std::size_t i = 0; i < result.stats.size(); ++i) {
+          std::cout << result.stats[i].row_count << " rows affected"
                     << " for the statement " << (i + 1) << ".\n";
         }
         // Batch operations may have partial failures, in which case
         // ExecuteBatchDml returns with success, but the application should
         // verify that all statements completed successfully
-        if (!result->status.ok()) return result->status;
+        if (!result.status.ok()) return result.status;
         return spanner::Mutations{};
       });
   if (!commit_result) {
@@ -1293,9 +1285,8 @@ void DmlStructs(google::cloud::spanner::Client client) {
             "STRUCT<FirstName String, LastName String>(FirstName, LastName) "
             "= @name",
             {{"name", spanner::Value(std::move(singer_info))}});
-        auto dml_result = client.ExecuteDml(txn, std::move(sql));
-        if (!dml_result) return dml_result.status();
-        rows_modified = dml_result->RowsModified();
+        auto dml_result = client.ExecuteDml(txn, std::move(sql)).value();
+        rows_modified = dml_result.RowsModified();
         return spanner::Mutations{};
       });
   if (!commit_result) {
@@ -1402,20 +1393,17 @@ void DmlGettingStartedUpdate(google::cloud::spanner::Client client) {
   auto const transfer_amount = 20000;
   auto commit_result = client.Commit(
       [&](spanner::Transaction const& txn) -> StatusOr<spanner::Mutations> {
-        auto budget1 = get_budget(txn, 1, 1);
-        if (!budget1) return budget1.status();
-        if (*budget1 < transfer_amount) {
+        auto budget1 = get_budget(txn, 1, 1).value();
+        if (budget1 < transfer_amount) {
           return google::cloud::Status(
               google::cloud::StatusCode::kUnknown,
               "cannot transfer " + std::to_string(transfer_amount) +
-                  " from budget of " + std::to_string(*budget1));
+                  " from budget of " + std::to_string(budget1));
         }
-        auto budget2 = get_budget(txn, 2, 2);
-        if (!budget2) return budget2.status();
-        auto update = update_budget(txn, 1, 1, *budget1 - transfer_amount);
-        if (!update) return update.status();
-        update = update_budget(txn, 2, 2, *budget2 + transfer_amount);
-        if (!update) return update.status();
+        auto budget2 = get_budget(txn, 2, 2).value();
+        auto update =
+            update_budget(txn, 1, 1, budget1 - transfer_amount).value();
+        update = update_budget(txn, 2, 2, budget2 + transfer_amount).value();
         return spanner::Mutations{};
       });
   if (!commit_result) {
