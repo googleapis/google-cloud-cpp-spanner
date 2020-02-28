@@ -1081,8 +1081,7 @@ void ReadWriteTransaction(google::cloud::spanner::Client client) {
   };
 
   auto commit = client.Commit(
-      [&client, &get_current_budget](
-          spanner::Transaction const& txn) -> StatusOr<spanner::Mutations> {
+      [&client, &get_current_budget](spanner::Transaction const& txn) {
         auto b1 = get_current_budget(client, txn, 1, 1).value();
         auto b2 = get_current_budget(client, txn, 2, 2).value();
         std::int64_t transfer_amount = 200000;
@@ -1277,8 +1276,7 @@ void DmlStructs(google::cloud::spanner::Client client) {
   namespace spanner = ::google::cloud::spanner;
   std::int64_t rows_modified = 0;
   auto commit_result =
-      client.Commit([&client, &rows_modified](spanner::Transaction const& txn)
-                        -> google::cloud::StatusOr<spanner::Mutations> {
+      client.Commit([&client, &rows_modified](spanner::Transaction const& txn) {
         auto singer_info = std::make_tuple("Marc", "Richards");
         auto sql = spanner::SqlStatement(
             "UPDATE Singers SET FirstName = 'Keith' WHERE "
