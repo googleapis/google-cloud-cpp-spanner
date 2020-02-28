@@ -199,7 +199,6 @@ fi
 if [[ -z "${PROJECT_ROOT+x}" ]]; then
   readonly PROJECT_ROOT="$(cd "$(dirname "$0")/../../.."; pwd)"
 fi
-source "${PROJECT_ROOT}/ci/kokoro/define-docker-variables.sh"
 source "${PROJECT_ROOT}/ci/define-dump-log.sh"
 source "${PROJECT_ROOT}/ci/etc/kokoro/install/version-config.sh"
 export GOOGLE_CLOUD_CPP_COMMON_VERSION
@@ -210,30 +209,83 @@ export NCPU
 cd "${PROJECT_ROOT}"
 echo "Building with ${NCPU} cores $(date) on ${PWD}."
 
-
 echo "================================================================"
 echo "Capture Docker version to troubleshoot $(date)."
 sudo docker version
 echo "================================================================"
 
 echo "================================================================"
+echo "Load Google Container Registry configuration parameters $(date)."
+if [[ -f "${KOKORO_GFILE_DIR:-}/gcr-configuration.sh" ]]; then
+  source "${KOKORO_GFILE_DIR:-}/gcr-configuration.sh"
+fi
+source "${PROJECT_ROOT}/ci/kokoro/define-docker-variables.sh"
+
+echo "================================================================"
+echo "Setup Google Container Registry access $(date)."
+if [[ -f "${KOKORO_GFILE_DIR:-}/gcr-service-account.json" ]]; then
+  gcloud auth activate-service-account --key-file \
+    "${KOKORO_GFILE_DIR}/gcr-service-account.json"
+fi
+
+if [[ "${RUNNING_CI:-}" == "yes" ]]; then
+  gcloud auth configure-docker
+fi
+
+echo "================================================================"
+echo "Download existing image (if available) for ${DISTRO} $(date)."
+has_cache="false"
+if [[ -n "${PROJECT_ID:-}" ]] && docker pull "${IMAGE}:latest"; then
+  echo "Existing image successfully downloaded."
+  has_cache="true"
+fi
+
+echo "================================================================"
+echo "Build Docker image ${IMAGE} with development tools for ${DISTRO} $(date)."
+update_cache="false"
+
+docker_build_flags=(
+  # Create the image with the same tag as the cache we are using, so we can
+  # upload it.
+  "-t" "${IMAGE}:latest"
+  "--build-arg" "NCPU=${NCPU}"
+  "-f" "ci/kokoro/Dockerfile.${DISTRO}"
+)
+
+if "${has_cache}"; then
+  docker_build_flags+=("--cache-from=${IMAGE}:latest")
+fi
+
+if [[ "${RUNNING_CI:-}" == "yes" ]] && \
+   [[ -z "${KOKORO_GITHUB_PULL_REQUEST_NUMBER:-}" ]]; then
+  docker_build_flags+=("--no-cache")
+fi
+
+echo "================================================================"
 echo "Creating Docker image with all the development tools $(date)."
+echo "    docker build ${docker_build_flags[*]} ci"
+echo "Logging to ${BUILD_OUTPUT}/create-build-docker-image.log"
 # We do not want to print the log unless there is an error, so disable the -e
 # flag. Later, we will want to print out the emulator(s) logs *only* if there
 # is an error, so disabling from this point on is the right choice.
 set +e
 mkdir -p "${BUILD_OUTPUT}"
-readonly CREATE_DOCKER_IMAGE_LOG="${BUILD_OUTPUT}/create-build-docker-image.log"
-echo "Logging to ${CREATE_DOCKER_IMAGE_LOG}"
-if ! "${PROJECT_ROOT}/ci/retry-command.sh" \
-       "${PROJECT_ROOT}/ci/kokoro/create-docker-image.sh" \
-         >"${CREATE_DOCKER_IMAGE_LOG}" 2>&1 </dev/null; then
-  dump_log "${CREATE_DOCKER_IMAGE_LOG}"
-  exit 1
+if timeout 3600s docker build "${docker_build_flags[@]}" ci \
+    >"${BUILD_OUTPUT}/create-build-docker-image.log" 2>&1 </dev/null; then
+  update_cache="true"
+  echo "Docker image successfully rebuilt"
+else
+  echo "Error updating Docker image, using cached image for this build"
+  dump_log "${BUILD_OUTPUT}/create-build-docker-image.log"
 fi
-echo "Docker image created $(date)."
-sudo docker image ls
-echo "================================================================"
+
+if "${update_cache}" && [[ "${RUNNING_CI:-}" == "yes" ]] &&
+   [[ -z "${KOKORO_GITHUB_PULL_REQUEST_NUMBER:-}" ]]; then
+  echo "================================================================"
+  echo "Uploading updated base image for ${DISTRO} $(date)."
+  # Do not stop the build on a failure to update the cache.
+  docker push "${IMAGE}:latest" || true
+fi
 
 # The default user for a Docker container has uid 0 (root). To avoid creating
 # root-owned files in the build directory we tell docker to use the current
@@ -392,7 +444,7 @@ else
   )
 fi
 
-sudo docker run "${docker_flags[@]}" "${IMAGE}:tip" "${commands[@]}"
+sudo docker run "${docker_flags[@]}" "${IMAGE}:latest" "${commands[@]}"
 
 exit_status=$?
 echo "Build finished with ${exit_status} exit status $(date)."
