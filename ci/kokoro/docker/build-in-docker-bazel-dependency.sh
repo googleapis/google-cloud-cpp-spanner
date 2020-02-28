@@ -66,6 +66,7 @@ echo "================================================================"
 "${BAZEL_BIN}" build  "${bazel_args[@]}" \
     -- //...:all
 
+# shellcheck disable=SC1091
 if [[ -f "/c/spanner-integration-tests-config.sh" ]]; then
   echo "================================================================"
   echo "Testing a program built with spanner-as-a-dependency $(date)"
