@@ -388,7 +388,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">Rethrows</td><td>any exception thrown by <code><code>mutator</code></code> (after rolling back the transaction). </td></tr>
+    <tr><td class="paramname">Rethrows</td><td>any exception thrown by <code><code>mutator</code></code> (after rolling back the transaction). However, a <code>RuntimeStatusError</code> exception is instead consumed and converted into a <code>mutator</code> return value of the enclosed <code>Status</code>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -422,7 +422,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00229">229</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00236">236</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -465,7 +465,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <code>StatusOr</code> containing the result of the commit or error status on failure. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00247">247</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00254">254</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -581,7 +581,7 @@ Friends</h2></td></tr>
 <dd>
 <a href="https://cloud.google.com/spanner/docs/dml-partitioned">Partitioned DML</a> for a description of which SQL statements are supported in Partitioned DML transactions. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00256">256</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00263">263</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -1344,7 +1344,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The error status of the rollback. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00252">252</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00259">259</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
