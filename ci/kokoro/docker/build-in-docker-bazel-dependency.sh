@@ -52,9 +52,7 @@ if [[ -n "${BAZEL_CONFIG}" ]]; then
     bazel_args+=(--config "${BAZEL_CONFIG}")
 fi
 
-cp -r ci/test-install /var/tmp/test-install
-cp google/cloud/spanner/integration_tests/spanner_install_test.cc /var/tmp/test-install
-cd /var/tmp/test-install
+cd quickstart
 
 echo "================================================================"
 echo "Fetching dependencies $(date)"
@@ -68,22 +66,20 @@ echo "================================================================"
 "${BAZEL_BIN}" build  "${bazel_args[@]}" \
     -- //...:all
 
-if [[ -r "/c/spanner-integration-tests-config.sh" ]]; then
+# shellcheck disable=SC1091
+if [[ -f "/c/spanner-integration-tests-config.sh" ]]; then
   echo "================================================================"
-  echo "Running the dependent program $(date)"
+  echo "Testing a program built with spanner-as-a-dependency $(date)"
   echo "================================================================"
-  # shellcheck disable=SC1091
   source "/c/spanner-integration-tests-config.sh"
 
-  # Run the integration tests using Bazel to drive them.
+  # Run the program using the command-line parameters.
   env "GOOGLE_APPLICATION_CREDENTIALS=/c/spanner-credentials.json" \
-      "GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}" \
-      "GOOGLE_CLOUD_CPP_SPANNER_INSTANCE=${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}" \
-      "GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA=${GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA}" \
-      "${BAZEL_BIN}" run \
+  "${BAZEL_BIN}" run \
       "${bazel_args[@]}" \
       "--spawn_strategy=local" \
-      -- //...:all
+      :quickstart -- "${GOOGLE_CLOUD_PROJECT}" "${GOOGLE_CLOUD_CPP_SPANNER_INSTANCE}" quickstart-db
+
 fi
 
 echo "================================================================"
