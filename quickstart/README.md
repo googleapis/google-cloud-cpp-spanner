@@ -61,9 +61,16 @@ If you are using Windows or macOS there are additional instructions at the end o
 gRPC [requires][grpc-roots-pem-bug] an environment variable to configure the trust store for SSL certificates, you
 can download and configure this using:
 
-```console
+```bash
 curl -Lo roots.pem https://raw.githubusercontent.com/grpc/grpc/master/etc/roots.pem
 export GRPC_DEFAULT_SSL_ROOTS_FILE_PATH="$PWD/roots.pem"
+```
+
+To workaround a [bug in Bazel][bazel-grpc-macos-bug], gRPC requires this flag on macOS builds, you can add the option
+manually or include it in your `.bazelrc` file:
+
+```bash
+bazel build --copt=-DGRPC_BAZEL_BUILD ...
 ```
 
 ### Windows
@@ -85,3 +92,4 @@ set GRPC_DEFAULT_SSL_ROOTS_FILE_PATH=%cd%\roots.pem
 [choco-cmake-link]: https://chocolatey.org/packages/cmake
 [homebrew-cmake-link]: https://formulae.brew.sh/formula/cmake
 [cmake-download-link]: https://cmake.org/download/
+[bazel-grpc-macos-bug]: https://github.com/bazelbuild/bazel/issues/4341
