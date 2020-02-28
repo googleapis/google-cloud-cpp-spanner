@@ -481,6 +481,17 @@ class Client {
   /**
    * Commits a read-write transaction.
    *
+   * Same as above, with a mutator that returns @p mutations.
+   *
+   * @param mutations The mutations to be executed when this transaction
+   *     commits. All mutations are applied atomically, in the order they
+   *     appear in this list.
+   */
+  StatusOr<CommitResult> Commit(Mutations mutations);
+
+  /**
+   * Commits a read-write transaction.
+   *
    * The commit might return a `kAborted` error. This can occur at any time.
    * Commonly the cause is conflicts with concurrent transactions, however
    * it can also happen for a variety of other reasons. If `Commit` returns
