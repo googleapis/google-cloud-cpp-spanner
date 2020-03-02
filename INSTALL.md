@@ -108,8 +108,8 @@ switched_rules_by_language(
     grpc = True,
 )
 
-# Load some deps of your deps due to
-# https://github.com/bazelbuild/bazel/issues/1943
+# Load indirect dependencies due to
+#     https://github.com/bazelbuild/bazel/issues/1943
 load("@com_github_googleapis_google_cloud_cpp_common//bazel:google_cloud_cpp_common_deps.bzl", "google_cloud_cpp_common_deps")
 google_cloud_cpp_common_deps()
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")

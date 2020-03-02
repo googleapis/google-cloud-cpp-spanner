@@ -1,6 +1,25 @@
 # Changelog
 
-## v0.9.x - TBD
+## v0.10.x - TBD
+
+## v0.9.x - 2020-03
+
+* **Breaking Changes**
+  * There are no API breaking changes in this release.
+
+* **Other Changes**
+  * cleanup: change to common's {Connection,Tracing}Options (#1279) - this is
+    **not** an API breaking change, but does change the ABI.
+  * cleanup: use common's PaginationRange (#1278) - this is **not** an API
+     breaking change, but does change the ABI.
+  * feat: implement quickstart example (#1318) - shows how to use
+    `google-cloud-cpp-spanner` from a larger project, both with CMake and Bazel.
+  * feat: do not rethrow `RuntimeStatusError` from a `Commit()` mutator (#1320) -
+    allows applications to use `StatusOr<T>::value()` inside a `Commit()` mutator.
+  * feat: add a `Commit()` helper that takes the `Mutations` directly (#1319) -
+    a simpler API to commit a vector of `spanner::Mutation`.
+  * feat: support environment-variable override of default endpoint (#1283)
+  * feat: make emulator endpoint/credentials changes as late as possible (#1277)
 
 ## v0.8.x - 2020-02
 
