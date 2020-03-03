@@ -174,25 +174,6 @@ these dependencies.
 - [CentOS 7](#centos-7)
 
 ### Fedora (30)
-Copyright 2019 Google LLC
-#
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-#
-    http://www.apache.org/licenses/LICENSE-2.0
-#
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-#
-WARNING: This is an automatically generated file. Consider changing the
-    sources instead. You can find the source templates and scripts at:
-    https://github.com/googleapis/google-cloud-cpp-common/tree/master/ci/templates
-#
 
 Install the minimal development tools:
 
@@ -263,25 +244,6 @@ sudo cmake --build cmake-out --target install
 
 
 ### openSUSE (Leap)
-Copyright 2019 Google LLC
-#
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-#
-    http://www.apache.org/licenses/LICENSE-2.0
-#
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-#
-WARNING: This is an automatically generated file. Consider changing the
-    sources instead. You can find the source templates and scripts at:
-    https://github.com/googleapis/google-cloud-cpp-common/tree/master/ci/templates
-#
 
 Install the minimal development tools, libcurl and OpenSSL. The gRPC Makefile
 uses `which` to determine whether the compiler is available. Install this
@@ -399,32 +361,14 @@ sudo cmake --build cmake-out --target install
 
 
 ### Ubuntu (18.04 - Bionic Beaver)
-Copyright 2019 Google LLC
-#
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-#
-    http://www.apache.org/licenses/LICENSE-2.0
-#
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-#
-WARNING: This is an automatically generated file. Consider changing the
-    sources instead. You can find the source templates and scripts at:
-    https://github.com/googleapis/google-cloud-cpp-common/tree/master/ci/templates
-#
 
 Install the minimal development tools, libcurl, OpenSSL and libc-ares:
 
 ```bash
-sudo apt update && \
-sudo apt install -y build-essential cmake git gcc g++ cmake \
-        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl-dev make \
+apt-get update && \
+    apt-get --no-install-recommends install -y apt-transport-https apt-utils \
+        automake build-essential cmake ca-certificates git gcc g++ cmake \
+        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl-dev m4 make \
         pkg-config tar wget zlib1g-dev
 ```
 
@@ -507,32 +451,14 @@ sudo cmake --build cmake-out --target install
 
 
 ### Ubuntu (16.04 - Xenial Xerus)
-Copyright 2019 Google LLC
-#
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-#
-    http://www.apache.org/licenses/LICENSE-2.0
-#
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-#
-WARNING: This is an automatically generated file. Consider changing the
-    sources instead. You can find the source templates and scripts at:
-    https://github.com/googleapis/google-cloud-cpp-common/tree/master/ci/templates
-#
 
 Install the minimal development tools, OpenSSL and libcurl:
 
 ```bash
-sudo apt update && \
-sudo apt install -y automake build-essential cmake git gcc g++ \
-        libcurl4-openssl-dev libssl-dev libtool make \
+apt-get update && \
+    apt-get --no-install-recommends install -y apt-transport-https apt-utils \
+        automake build-essential cmake ca-certificates git gcc g++ cmake \
+        libcurl4-openssl-dev libssl-dev libtool m4 make \
         pkg-config tar wget zlib1g-dev
 ```
 
@@ -630,40 +556,23 @@ sudo cmake --build cmake-out --target install
 
 
 ### Debian (10 - Buster)
-Copyright 2019 Google LLC
-#
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-#
-    http://www.apache.org/licenses/LICENSE-2.0
-#
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-#
-WARNING: This is an automatically generated file. Consider changing the
-    sources instead. You can find the source templates and scripts at:
-    https://github.com/googleapis/google-cloud-cpp-common/tree/master/ci/templates
-#
 
 Install the minimal development tools, libcurl, and OpenSSL:
 
 ```bash
-sudo apt update && \
-sudo apt install -y build-essential cmake git gcc g++ cmake \
-        libcurl4-openssl-dev libssl-dev make pkg-config tar wget zlib1g-dev
+apt-get update && \
+    apt-get --no-install-recommends install -y apt-transport-https apt-utils \
+        automake build-essential ca-certificates cmake git gcc g++ cmake \
+        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl-dev m4 make \
+        pkg-config tar wget zlib1g-dev
 ```
 
 Debian 10 includes versions of gRPC and Protobuf that support the
 Google Cloud Platform proto files. We simply install these pre-built versions:
 
 ```bash
-sudo apt update && \
-sudo apt install -y libgrpc++-dev libprotobuf-dev libc-ares-dev \
+apt-get update && \
+    apt-get --no-install-recommends install -y libgrpc++-dev libprotobuf-dev libc-ares-dev \
         protobuf-compiler protobuf-compiler-grpc
 ```
 
@@ -711,25 +620,6 @@ sudo cmake --build cmake-out --target install
 
 
 ### Debian (9 - Stretch)
-Copyright 2019 Google LLC
-#
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-#
-    http://www.apache.org/licenses/LICENSE-2.0
-#
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-#
-WARNING: This is an automatically generated file. Consider changing the
-    sources instead. You can find the source templates and scripts at:
-    https://github.com/googleapis/google-cloud-cpp-common/tree/master/ci/templates
-#
 
 First install the development tools and libcurl.
 On Debian 9, libcurl links against openssl-1.0.2, and one must link
@@ -741,10 +631,11 @@ Note that this removes libssl-dev if you have it installed already, and would
 prevent you from compiling against openssl-1.1.0.
 
 ```bash
-sudo apt update && \
-sudo apt install -y build-essential cmake git gcc g++ cmake \
-        libc-ares-dev libc-ares2 libcurl4-openssl-dev libssl1.0-dev make \
-        pkg-config tar wget zlib1g-dev
+apt-get update && \
+    apt-get --no-install-recommends install -y apt-transport-https apt-utils \
+        automake build-essential cmake ca-certificates git gcc g++ cmake libc-ares-dev \
+        libc-ares2 libcurl4-openssl-dev libssl1.0-dev make m4 pkg-config tar \
+        wget zlib1g-dev
 ```
 
 #### Protobuf
@@ -826,25 +717,6 @@ sudo cmake --build cmake-out --target install
 
 
 ### CentOS (8)
-Copyright 2019 Google LLC
-#
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-#
-    http://www.apache.org/licenses/LICENSE-2.0
-#
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-#
-WARNING: This is an automatically generated file. Consider changing the
-    sources instead. You can find the source templates and scripts at:
-    https://github.com/googleapis/google-cloud-cpp-common/tree/master/ci/templates
-#
 
 Install the minimal development tools, libcurl, OpenSSL, and the c-ares
 library (required by gRPC):
@@ -946,25 +818,6 @@ sudo cmake --build cmake-out --target install
 
 
 ### CentOS (7)
-Copyright 2019 Google LLC
-#
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-#
-    http://www.apache.org/licenses/LICENSE-2.0
-#
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-#
-WARNING: This is an automatically generated file. Consider changing the
-    sources instead. You can find the source templates and scripts at:
-    https://github.com/googleapis/google-cloud-cpp-common/tree/master/ci/templates
-#
 
 First install the development tools and OpenSSL. The development tools
 distributed with CentOS 7 (notably CMake) are too old to build
