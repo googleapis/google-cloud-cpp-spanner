@@ -174,6 +174,25 @@ these dependencies.
 - [CentOS 7](#centos-7)
 
 ### Fedora (30)
+Copyright 2019 Google LLC
+#
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+#
+    http://www.apache.org/licenses/LICENSE-2.0
+#
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+#
+WARNING: This is an automatically generated file. Consider changing the
+    sources instead. You can find the source templates and scripts at:
+    https://github.com/googleapis/google-cloud-cpp-common/tree/master/ci/templates
+#
 
 Install the minimal development tools:
 
@@ -206,9 +225,9 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz && \
-    tar -xf v0.4.1.tar.gz && \
-    cd cpp-cmakefiles-0.4.1 && \
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz && \
+    tar -xf v0.5.0.tar.gz && \
+    cd cpp-cmakefiles-0.5.0 && \
     cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -222,9 +241,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.20.0.tar.gz && \
-    tar -xf v0.20.0.tar.gz && \
-    cd google-cloud-cpp-common-0.20.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.21.0.tar.gz && \
+    tar -xf v0.21.0.tar.gz && \
+    cd google-cloud-cpp-common-0.21.0 && \
     cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -244,6 +263,25 @@ sudo cmake --build cmake-out --target install
 
 
 ### openSUSE (Leap)
+Copyright 2019 Google LLC
+#
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+#
+    http://www.apache.org/licenses/LICENSE-2.0
+#
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+#
+WARNING: This is an automatically generated file. Consider changing the
+    sources instead. You can find the source templates and scripts at:
+    https://github.com/googleapis/google-cloud-cpp-common/tree/master/ci/templates
+#
 
 Install the minimal development tools, libcurl and OpenSSL. The gRPC Makefile
 uses `which` to determine whether the compiler is available. Install this
@@ -323,9 +361,9 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz && \
-    tar -xf v0.4.1.tar.gz && \
-    cd cpp-cmakefiles-0.4.1 && \
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz && \
+    tar -xf v0.5.0.tar.gz && \
+    cd cpp-cmakefiles-0.5.0 && \
     cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -339,9 +377,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.20.0.tar.gz && \
-    tar -xf v0.20.0.tar.gz && \
-    cd google-cloud-cpp-common-0.20.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.21.0.tar.gz && \
+    tar -xf v0.21.0.tar.gz && \
+    cd google-cloud-cpp-common-0.21.0 && \
     cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -361,6 +399,25 @@ sudo cmake --build cmake-out --target install
 
 
 ### Ubuntu (18.04 - Bionic Beaver)
+Copyright 2019 Google LLC
+#
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+#
+    http://www.apache.org/licenses/LICENSE-2.0
+#
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+#
+WARNING: This is an automatically generated file. Consider changing the
+    sources instead. You can find the source templates and scripts at:
+    https://github.com/googleapis/google-cloud-cpp-common/tree/master/ci/templates
+#
 
 Install the minimal development tools, libcurl, OpenSSL and libc-ares:
 
@@ -412,9 +469,9 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz && \
-    tar -xf v0.4.1.tar.gz && \
-    cd cpp-cmakefiles-0.4.1 && \
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz && \
+    tar -xf v0.5.0.tar.gz && \
+    cd cpp-cmakefiles-0.5.0 && \
     cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -428,9 +485,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.20.0.tar.gz && \
-    tar -xf v0.20.0.tar.gz && \
-    cd google-cloud-cpp-common-0.20.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.21.0.tar.gz && \
+    tar -xf v0.21.0.tar.gz && \
+    cd google-cloud-cpp-common-0.21.0 && \
     cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -450,6 +507,25 @@ sudo cmake --build cmake-out --target install
 
 
 ### Ubuntu (16.04 - Xenial Xerus)
+Copyright 2019 Google LLC
+#
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+#
+    http://www.apache.org/licenses/LICENSE-2.0
+#
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+#
+WARNING: This is an automatically generated file. Consider changing the
+    sources instead. You can find the source templates and scripts at:
+    https://github.com/googleapis/google-cloud-cpp-common/tree/master/ci/templates
+#
 
 Install the minimal development tools, OpenSSL and libcurl:
 
@@ -516,9 +592,9 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz && \
-    tar -xf v0.4.1.tar.gz && \
-    cd cpp-cmakefiles-0.4.1 && \
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz && \
+    tar -xf v0.5.0.tar.gz && \
+    cd cpp-cmakefiles-0.5.0 && \
     cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -532,9 +608,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.20.0.tar.gz && \
-    tar -xf v0.20.0.tar.gz && \
-    cd google-cloud-cpp-common-0.20.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.21.0.tar.gz && \
+    tar -xf v0.21.0.tar.gz && \
+    cd google-cloud-cpp-common-0.21.0 && \
     cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -554,6 +630,25 @@ sudo cmake --build cmake-out --target install
 
 
 ### Debian (10 - Buster)
+Copyright 2019 Google LLC
+#
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+#
+    http://www.apache.org/licenses/LICENSE-2.0
+#
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+#
+WARNING: This is an automatically generated file. Consider changing the
+    sources instead. You can find the source templates and scripts at:
+    https://github.com/googleapis/google-cloud-cpp-common/tree/master/ci/templates
+#
 
 Install the minimal development tools, libcurl, and OpenSSL:
 
@@ -578,9 +673,9 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz && \
-    tar -xf v0.4.1.tar.gz && \
-    cd cpp-cmakefiles-0.4.1 && \
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz && \
+    tar -xf v0.5.0.tar.gz && \
+    cd cpp-cmakefiles-0.5.0 && \
     cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -594,9 +689,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.20.0.tar.gz && \
-    tar -xf v0.20.0.tar.gz && \
-    cd google-cloud-cpp-common-0.20.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.21.0.tar.gz && \
+    tar -xf v0.21.0.tar.gz && \
+    cd google-cloud-cpp-common-0.21.0 && \
     cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -616,6 +711,25 @@ sudo cmake --build cmake-out --target install
 
 
 ### Debian (9 - Stretch)
+Copyright 2019 Google LLC
+#
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+#
+    http://www.apache.org/licenses/LICENSE-2.0
+#
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+#
+WARNING: This is an automatically generated file. Consider changing the
+    sources instead. You can find the source templates and scripts at:
+    https://github.com/googleapis/google-cloud-cpp-common/tree/master/ci/templates
+#
 
 First install the development tools and libcurl.
 On Debian 9, libcurl links against openssl-1.0.2, and one must link
@@ -674,9 +788,9 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz && \
-    tar -xf v0.4.1.tar.gz && \
-    cd cpp-cmakefiles-0.4.1 && \
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz && \
+    tar -xf v0.5.0.tar.gz && \
+    cd cpp-cmakefiles-0.5.0 && \
     cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -690,9 +804,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.20.0.tar.gz && \
-    tar -xf v0.20.0.tar.gz && \
-    cd google-cloud-cpp-common-0.20.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.21.0.tar.gz && \
+    tar -xf v0.21.0.tar.gz && \
+    cd google-cloud-cpp-common-0.21.0 && \
     cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -712,6 +826,25 @@ sudo cmake --build cmake-out --target install
 
 
 ### CentOS (8)
+Copyright 2019 Google LLC
+#
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+#
+    http://www.apache.org/licenses/LICENSE-2.0
+#
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+#
+WARNING: This is an automatically generated file. Consider changing the
+    sources instead. You can find the source templates and scripts at:
+    https://github.com/googleapis/google-cloud-cpp-common/tree/master/ci/templates
+#
 
 Install the minimal development tools, libcurl, OpenSSL, and the c-ares
 library (required by gRPC):
@@ -775,9 +908,9 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz && \
-    tar -xf v0.4.1.tar.gz && \
-    cd cpp-cmakefiles-0.4.1 && \
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz && \
+    tar -xf v0.5.0.tar.gz && \
+    cd cpp-cmakefiles-0.5.0 && \
     cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -791,9 +924,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.20.0.tar.gz && \
-    tar -xf v0.20.0.tar.gz && \
-    cd google-cloud-cpp-common-0.20.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.21.0.tar.gz && \
+    tar -xf v0.21.0.tar.gz && \
+    cd google-cloud-cpp-common-0.21.0 && \
     cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -813,6 +946,25 @@ sudo cmake --build cmake-out --target install
 
 
 ### CentOS (7)
+Copyright 2019 Google LLC
+#
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+#
+    http://www.apache.org/licenses/LICENSE-2.0
+#
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+#
+WARNING: This is an automatically generated file. Consider changing the
+    sources instead. You can find the source templates and scripts at:
+    https://github.com/googleapis/google-cloud-cpp-common/tree/master/ci/templates
+#
 
 First install the development tools and OpenSSL. The development tools
 distributed with CentOS 7 (notably CMake) are too old to build
@@ -897,9 +1049,9 @@ We need a recent version of the Google Cloud Platform proto C++ libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz && \
-    tar -xf v0.4.1.tar.gz && \
-    cd cpp-cmakefiles-0.4.1 && \
+wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz && \
+    tar -xf v0.5.0.tar.gz && \
+    cd cpp-cmakefiles-0.5.0 && \
     cmake -DBUILD_SHARED_LIBS=YES -H. -Bcmake-out && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -913,9 +1065,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.20.0.tar.gz && \
-    tar -xf v0.20.0.tar.gz && \
-    cd google-cloud-cpp-common-0.20.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.21.0.tar.gz && \
+    tar -xf v0.21.0.tar.gz && \
+    cd google-cloud-cpp-common-0.21.0 && \
     cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \

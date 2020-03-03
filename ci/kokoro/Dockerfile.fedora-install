@@ -38,21 +38,6 @@ RUN chmod 755 /usr/bin/buildifier
 RUN pip install --upgrade pip
 RUN pip install cmake_format==0.6.0
 
-# There is no Fedora package for CRC32C, download and install from source.
-WORKDIR /var/tmp/build
-RUN wget -q https://github.com/google/crc32c/archive/1.0.6.tar.gz
-RUN tar -xf 1.0.6.tar.gz
-WORKDIR /var/tmp/build/crc32c-1.0.6
-RUN cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=yes \
-      -DCRC32C_BUILD_TESTS=OFF \
-      -DCRC32C_BUILD_BENCHMARKS=OFF \
-      -DCRC32C_USE_GLOG=OFF \
-      -H. -Bcmake-out/crc32c
-RUN cmake --build cmake-out/crc32c --target install -- -j $(nproc)
-RUN ldconfig
-
 # Download and compile googletest, we need a recent version.
 WORKDIR /var/tmp/build
 RUN wget -q https://github.com/google/googletest/archive/release-1.10.0.tar.gz
@@ -77,9 +62,9 @@ RUN cmake --build cmake-out/benchmark --target install -- -j $(nproc)
 
 # Download and compile googleapis/cpp-cmakefiles:
 WORKDIR /var/tmp/build
-RUN wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.4.1.tar.gz
-RUN tar -xf v0.4.1.tar.gz
-WORKDIR /var/tmp/build/cpp-cmakefiles-0.4.1
+RUN wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.5.0.tar.gz
+RUN tar -xf v0.5.0.tar.gz
+WORKDIR /var/tmp/build/cpp-cmakefiles-0.5.0
 # Compile without the tests because we are testing spanner, not the base
 # libraries
 RUN cmake -H. -Bcmake-out \
@@ -91,9 +76,9 @@ RUN cmake --build cmake-out --target install
 
 # Download and compile google-cloud-cpp from source too:
 WORKDIR /var/tmp/build
-RUN wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.20.0.tar.gz
-RUN tar -xf v0.20.0.tar.gz
-WORKDIR /var/tmp/build/google-cloud-cpp-common-0.20.0
+RUN wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.21.0.tar.gz
+RUN tar -xf v0.21.0.tar.gz
+WORKDIR /var/tmp/build/google-cloud-cpp-common-0.21.0
 # Compile without the tests because we are testing spanner, not the base
 # libraries
 RUN cmake -H. -Bcmake-out \
