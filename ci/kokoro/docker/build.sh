@@ -464,7 +464,64 @@ else
   "${PROJECT_ROOT}/ci/kokoro/docker/upload-docs.sh"
 fi
 
-"${PROJECT_ROOT}/ci/kokoro/docker/upload-coverage.sh" "${docker_flags[@]}"
+if [[ "${BUILD_NAME:-}" != "coverage" ]] || \
+   [[ -z "${KOKORO_GFILE_DIR:-}" ]] || \
+   ! [[ -r "${KOKORO_GFILE_DIR:-}/codecov-io-upload-token" ]]; then
+  echo "Coverage upload not applicable or not configured"
+else
+  CODECOV_TOKEN="$(cat "${KOKORO_GFILE_DIR}/codecov-io-upload-token")"
+  readonly CODECOV_TOKEN
+
+  # Because Kokoro checks out the code in `detached HEAD` mode there is no easy
+  # way to discover what is the current branch (and Kokoro does not expose the
+  # branch as an environment variable, like other CI systems do). We use the
+  # following trick:
+  # - Find out the current commit using git rev-parse HEAD.
+  # - Find out what branches contain that commit.
+  # - Exclude "HEAD detached" branches (they are not really branches).
+  # - Typically this is the single branch that was checked out by Kokoro.
+  VCS_BRANCH_NAME="$(git branch --no-color --contains "$(git rev-parse HEAD)" | \
+      grep -v 'HEAD detached' || exit 0)"
+  VCS_BRANCH_NAME="${VCS_BRANCH_NAME/  /}"
+  # When running locally, in a checked out branch, we need more cleanup.
+  VCS_BRANCH_NAME="${VCS_BRANCH_NAME/* /}"
+  readonly VCS_BRANCH_NAME
+
+  if [[ -n "${KOKORO_GITHUB_PULL_REQUEST_COMMIT:-}" ]]; then
+    readonly VCS_COMMIT_ID="${KOKORO_GITHUB_PULL_REQUEST_COMMIT}"
+  elif [[ -n "${KOKORO_GIT_COMMIT:-}" ]]; then
+    readonly VCS_COMMIT_ID="${KOKORO_GIT_COMMIT}"
+  else
+    readonly VCS_COMMIT_ID="$(git rev-parse HEAD)"
+  fi
+
+  docker_flags+=(
+      # The upload token for codecov.io
+      "--env" "CODECOV_TOKEN=${CODECOV_TOKEN}"
+
+      # Assert to the build
+      "--env" "CI=true"
+
+      # Let codecov.io know if this is a pull request and what is the PR number.
+      "--env" "VCS_PULL_REQUEST=${KOKORO_GITHUB_PULL_REQUEST_NUMBER:-}"
+
+      # Basic information about the commit.
+      "--env" "VCS_COMMIT_ID=${VCS_COMMIT_ID}"
+      "--env" "VCS_BRANCH_NAME=${VCS_BRANCH_NAME}"
+
+      # Let codecov.io know about which build ID this is.
+      "--env" "CI_BUILD_ID=${KOKORO_BUILD_NUMBER:-}"
+      "--env" "CI_JOB_ID=${KOKORO_BUILD_NUMBER:-}"
+  )
+
+  echo -n "Uploading code coverage to codecov.io..."
+  # Run the upload script from codecov.io within a Docker container. Save the log
+  # to a file because it can be very large (multiple MiB in size).
+  sudo docker run "${docker_flags[@]}" "${IMAGE}:latest" /bin/bash -c \
+      "/bin/bash <(curl -s https://codecov.io/bash) >/v/${BUILD_OUTPUT}/codecov.log 2>&1"
+  exit_status=$?
+  echo "DONE"
+fi
 
 echo "================================================================"
 "${PROJECT_ROOT}/ci/kokoro/docker/dump-reports.sh"
