@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nullstream',['NullStream',['https://googleapis.dev/cpp/google-cloud-common/0.20.0/structgoogle_1_1cloud_1_1v0_1_1NullStream.html',1,'google::cloud::v0']]]
+  ['nullstream',['NullStream',['https://googleapis.dev/cpp/google-cloud-common/0.21.0/structgoogle_1_1cloud_1_1v0_1_1NullStream.html',1,'google::cloud::v0']]]
 ];
