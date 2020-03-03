@@ -459,7 +459,7 @@ fi
 
 if [[ "${BUILD_NAME}" == "publish-refdocs" ]]; then
   "${PROJECT_ROOT}/ci/kokoro/docker/publish-refdocs.sh"
-  exit_status=$?
+  [[ ${exit_status} -eq 0 ]] && exit_status=$?
 else
   "${PROJECT_ROOT}/ci/kokoro/docker/upload-docs.sh"
 fi
@@ -519,7 +519,7 @@ else
   # to a file because it can be very large (multiple MiB in size).
   sudo docker run "${docker_flags[@]}" "${IMAGE}:latest" /bin/bash -c \
       "/bin/bash <(curl -s https://codecov.io/bash) >/v/${BUILD_OUTPUT}/codecov.log 2>&1"
-  exit_status=$?
+  [[ ${exit_status} -eq 0 ]] && exit_status=$?
   echo "DONE"
 fi
 
