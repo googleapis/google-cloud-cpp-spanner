@@ -62,7 +62,7 @@ RUN chmod 755 /usr/bin/buildifier
 # Pin this to an specific version because the formatting changes when the
 # "latest" version is updated, and we do not want the builds to break just
 # because some third party changed something.
-RUN pip install --upgrade pip
+RUN pip3 install --upgrade pip
 RUN pip3 install setuptools cmake_format==0.6.0
 
 WORKDIR /var/tmp/ci
