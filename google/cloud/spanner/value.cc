@@ -125,13 +125,16 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
   switch (t.code()) {
     case google::spanner::v1::BOOL:
       return os << (v.bool_value() ? "true" : "false");
+
     case google::spanner::v1::INT64:
       return os << v.string_value();
+
     case google::spanner::v1::FLOAT64:
       if (v.kind_case() == google::protobuf::Value::kStringValue) {
         return os << v.string_value();
       }
       return os << std::to_string(v.number_value());
+
     case google::spanner::v1::TIMESTAMP:
     case google::spanner::v1::DATE:
     case google::spanner::v1::STRING:
