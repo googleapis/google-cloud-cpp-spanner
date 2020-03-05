@@ -932,7 +932,7 @@ TEST_P(ValueStreamOperator, ValueType) {
 INSTANTIATE_TEST_SUITE_P(
     ValueStreamOperatorScalar, ValueStreamOperator,
     testing::Values(
-        std::make_tuple("Bool", Value(false), "false"),
+        std::make_tuple("Bool", Value(false), "FALSE"),
         std::make_tuple("Int64", Value(42), "42"),
         std::make_tuple("NullInt64", MakeNullValue<std::int64_t>(), ""),
         std::make_tuple("Float64", Value(42.0), "42.000000"),
@@ -964,8 +964,8 @@ INSTANTIATE_TEST_SUITE_P(
 INSTANTIATE_TEST_SUITE_P(
     ValueStreamOperatorStruct, ValueStreamOperator,
     testing::Values(
-        std::make_tuple("BoolInt64", Value(std::make_tuple(false, 123)),
-                        "{false | 123}"),
+        std::make_tuple("BoolInt64", Value(std::make_tuple(true, 123)),
+                        "{TRUE | 123}"),
         std::make_tuple("NullBoolInt64",
                         MakeNullValue<std::tuple<bool, std::int64_t>>(), "{}"),
         std::make_tuple(
@@ -979,9 +979,11 @@ INSTANTIATE_TEST_SUITE_P(
                             std::vector<std::int64_t>{1, 2, 3})))),
                         "{{{[1, 2, 3]}}}"),
         std::make_tuple("StructWithFieldNames",
-                        Value(std::make_tuple(std::make_tuple(std::make_tuple(
-                            std::vector<std::int64_t>{1, 2, 3})))),
-                        "{{{[1, 2, 3]}}}")),
+
+                        Value(std::make_tuple(std::make_pair("Last", "Blues"),
+                                              std::make_pair("First",
+                                                             "Elwood"))),
+                        "{Last: Blues | First: Elwood}")),
     ValueStreamOperator::TestName);
 
 }  // namespace

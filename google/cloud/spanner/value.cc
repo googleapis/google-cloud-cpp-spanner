@@ -88,32 +88,6 @@ bool Equal(google::spanner::v1::Type const& pt1,
   }
 }
 
-constexpr char kArrayFieldDelimiter[] = ", ";  // NOLINT (avoid-c-arrays)
-constexpr char kStructFieldDelimiter[] = " | ";  // NOLINT (avoid-c-arrays)
-
-std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
-                           google::spanner::v1::Type const& t);
-
-std::ostream& StructArrayStreamHelper(
-    std::ostream& os, google::protobuf::Value const& v,
-    std::function<std::tuple<char, const char*, char,
-                             google::spanner::v1::Type>(int)> const&
-        delimiters_type_function) {
-  int i = 0;
-  os << std::get<0>(delimiters_type_function(i));
-  if (v.list_value().values_size() > 0) {
-    for (; i < v.list_value().values_size() - 1; ++i) {
-      StreamHelper(os, v.list_value().values(i),
-                   std::get<3>(delimiters_type_function(i)))
-          << std::get<1>(delimiters_type_function(i));
-    }
-    return StreamHelper(os, v.list_value().values(i),
-                        std::get<3>(delimiters_type_function(i)))
-           << std::get<2>(delimiters_type_function(i));
-  }
-  return os << std::get<2>(delimiters_type_function(i));
-}
-
 std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
                            google::spanner::v1::Type const& t) {
   if (v.kind_case() == google::protobuf::Value::kNullValue &&
@@ -122,9 +96,10 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
     return os;
   }
 
+  int i = 0;
   switch (t.code()) {
     case google::spanner::v1::BOOL:
-      return os << (v.bool_value() ? "true" : "false");
+      return os << (v.bool_value() ? "TRUE" : "FALSE");
 
     case google::spanner::v1::INT64:
       return os << v.string_value();
@@ -138,20 +113,45 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
     case google::spanner::v1::TIMESTAMP:
     case google::spanner::v1::DATE:
     case google::spanner::v1::STRING:
-    case google::spanner::v1::BYTES:
       return os << v.string_value();
 
+    case google::spanner::v1::BYTES:
+      return os
+             << internal::BytesFromBase64(v.string_value())->get<std::string>();
+
     case google::spanner::v1::ARRAY:
-      return StructArrayStreamHelper(os, v, [&t](int) {
-        return std::make_tuple('[', kArrayFieldDelimiter, ']',
-                               t.array_element_type());
-      });
+      os << '[';
+      if (v.list_value().values_size() > 0) {
+        for (; i < v.list_value().values_size() - 1; ++i) {
+          StreamHelper(os, v.list_value().values(i), t.array_element_type())
+              << ", ";
+        }
+        return StreamHelper(os, v.list_value().values(i),
+                            t.array_element_type())
+               << ']';
+      }
+      return os << ']';
 
     case google::spanner::v1::STRUCT:
-      return StructArrayStreamHelper(os, v, [&t](int i) {
-        return std::make_tuple('{', kStructFieldDelimiter, '}',
-                               t.struct_type().fields(i).type());
-      });
+      os << '{';
+      if (v.list_value().values_size() > 0) {
+        for (; i < v.list_value().values_size() - 1; ++i) {
+          if (!t.struct_type().fields(i).name().empty()) {
+            os << t.struct_type().fields(i).name() << ": ";
+          }
+          StreamHelper(os, v.list_value().values(i),
+                       t.struct_type().fields(i).type())
+              << " | ";
+        }
+        if (!t.struct_type().fields(i).name().empty()) {
+          os << t.struct_type().fields(i).name() << ": ";
+        }
+
+        return StreamHelper(os, v.list_value().values(i),
+                            t.struct_type().fields(i).type())
+               << '}';
+      }
+      return os << '}';
 
     case google::spanner::v1::TYPE_CODE_UNSPECIFIED:
     case google::spanner::v1::TypeCode_INT_MIN_SENTINEL_DO_NOT_USE_:
