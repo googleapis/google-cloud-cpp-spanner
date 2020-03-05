@@ -945,13 +945,12 @@ INSTANTIATE_TEST_SUITE_P(
         std::make_tuple("NaNFloat64", Value(std::nan("NaN")), "NaN"),
         std::make_tuple("String", Value("Seatac Astronomy"),
                         "Seatac Astronomy"),
-        std::make_tuple("Bytes", Value("DEADBEEF"), "DEADBEEF"),
+        std::make_tuple("Bytes", Value(Bytes("DEADBEEF")), "DEADBEEF"),
         std::make_tuple(
             "Timestamp",
             Value(MakeTimestamp(MakeTimePoint(1561147549LL, 0)).value()),
             "2019-06-21T20:05:49Z"),
         std::make_tuple("Date", Value(Date(1970, 1, 1)), "1970-01-01")),
-
     ValueStreamOperator::TestName);
 
 INSTANTIATE_TEST_SUITE_P(
@@ -976,6 +975,10 @@ INSTANTIATE_TEST_SUITE_P(
                                   std::vector<std::int64_t>{7, 8, 9, 10})),
             "{[1, 2, 3] | [4.100000, 5.200000, 6.300000] | [7, 8, 9, 10]}"),
         std::make_tuple("StructInception",
+                        Value(std::make_tuple(std::make_tuple(std::make_tuple(
+                            std::vector<std::int64_t>{1, 2, 3})))),
+                        "{{{[1, 2, 3]}}}"),
+        std::make_tuple("StructWithFieldNames",
                         Value(std::make_tuple(std::make_tuple(std::make_tuple(
                             std::vector<std::int64_t>{1, 2, 3})))),
                         "{{{[1, 2, 3]}}}")),

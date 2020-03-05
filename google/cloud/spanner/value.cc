@@ -88,8 +88,8 @@ bool Equal(google::spanner::v1::Type const& pt1,
   }
 }
 
-constexpr char kArrayFieldDelimiter[] = ", ";    // NOLINT
-constexpr char kStructFieldDelimiter[] = " | ";  // NOLINT
+constexpr char kArrayFieldDelimiter[] = ", ";  // NOLINT (avoid-c-arrays)
+constexpr char kStructFieldDelimiter[] = " | ";  // NOLINT (avoid-c-arrays)
 
 std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
                            google::spanner::v1::Type const& t);
