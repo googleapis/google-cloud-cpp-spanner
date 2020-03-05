@@ -14,6 +14,8 @@
 
 tab_size = 4
 separate_ctrl_name_with_space = True
+enable_sort = True
+autosort = True
 
 additional_commands = {
     "externalproject_add": {
@@ -39,6 +41,7 @@ additional_commands = {
             "PREFIX": 1,
             "URL": 1,
             "URL_HASH": 1,
+            "BUILD_ALWAYS": 1,
         }
     }
 }

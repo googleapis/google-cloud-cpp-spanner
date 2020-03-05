@@ -63,7 +63,7 @@ RUN chmod 755 /usr/bin/buildifier
 # "latest" version is updated, and we do not want the builds to break just
 # because some third party changed something.
 RUN pip3 install --upgrade pip
-RUN pip3 install setuptools cmake_format==0.6.0
+RUN pip3 install setuptools cmake_format==0.6.8
 
 WORKDIR /var/tmp/ci
 COPY install-bazel.sh /var/tmp/ci
