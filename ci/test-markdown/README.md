@@ -1,4 +1,4 @@
-# Helper tools to generate README.md and doc/packaging.md
+# Helper tools to generate certain markdown files.
 
 ## HOWTO: Generate the doc/packaging.md file.
 
