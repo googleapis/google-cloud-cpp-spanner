@@ -3,6 +3,9 @@
 <!-- This is an automatically generated file -->
 <!-- Make changes in ci/test-markdown/generate-packaging.sh -->
 
+This document is intended for package maintainers or anyone else who might like
+to "install" the google-cloud-cpp-spanner library.
+
 There are two primary ways of obtaining `google-cloud-cpp-spanner`. You can use git:
 
 ```bash
