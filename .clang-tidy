@@ -6,6 +6,10 @@
 #  -google-readability-namespace-comments: the *_CLIENT_NS is a macro, and
 #      clang-tidy fails to match it against the initial value.
 #
+#  -modernize-use-trailing-return-type: clang-tidy recommends using
+#      `auto Foo() -> std::string { return ...; }`, we think the code is less
+#      readable in this form.
+#
 #  -modernize-return-braced-init-list: We think removing typenames and using
 #      only braced-init can hurt readability.
 #
@@ -36,6 +40,7 @@ Checks: >
   -modernize-return-braced-init-list,
   -performance-move-const-arg,
   -readability-named-parameter,
+  -modernize-use-trailing-return-type,
   -readability-braces-around-statements,
   -readability-magic-numbers,
   -readability-redundant-declaration
