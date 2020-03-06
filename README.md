@@ -51,7 +51,7 @@ help you quickly get started using this client library. The following is the
 "Hello World" program you'll be running, which should give you a taste of this
 library.
 
-[quickstart-link]: https://github.com/devjgm/google-cloud-cpp-spanner/tree/new-readme/quickstart
+[quickstart-link]: https://github.com/googleapis/google-cloud-cpp-spanner/tree/master/quickstart
 
 ```cc
 #include "google/cloud/spanner/client.h"
