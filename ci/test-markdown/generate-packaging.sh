@@ -15,13 +15,11 @@
 
 set -eu
 
-readonly BINDIR=$(dirname "$0")
-
 cat <<'END_OF_PREAMBLE'
-# Installing google-cloud-cpp-spanner
+# Packaging google-cloud-cpp-spanner
 
 <!-- This is an automatically generated file -->
-<!-- Make changes in ci/test-readme/generate-install.sh -->
+<!-- Make changes in ci/test-markdown/generate-packaging.sh -->
 
 There are two primary ways of obtaining `google-cloud-cpp-spanner`. You can use git:
 
@@ -67,104 +65,6 @@ Unfortunately getting your system to this state may require multiple steps,
 the following sections describe how to install `google-cloud-cpp-spanner` on
 several platforms.
 
-## Using `google-cloud-cpp-spanner` in CMake-based projects.
-
-Once you have installed `google-cloud-cpp-spanner` you can use the libraries from
-your own projects using `find_package()` in your `CMakeLists.txt` file:
-
-```CMake
-cmake_minimum_required(VERSION 3.5)
-
-find_package(spanner_client REQUIRED)
-
-add_executable(my_program my_program.cc)
-target_link_libraries(my_program spanner_client)
-```
-
-## Using `google-cloud-cpp-spanner` in Make-based projects.
-
-Once you have installed `google-cloud-cpp-spanner` you can use the libraries in
-your own Make-based projects using `pkg-config`:
-
-```Makefile
-GCPP_CXXFLAGS   := $(shell pkg-config spanner_client --cflags)
-GCPP_CXXLDFLAGS := $(shell pkg-config spanner_client --libs-only-L)
-GCPP_LIBS       := $(shell pkg-config spanner_client --libs-only-l)
-
-my_program: my_program.cc
-        $(CXX) $(CXXFLAGS) $(GCPP_CXXFLAGS) $(GCPP_CXXLDFLAGS) -o $@ $^ $(GCPP_LIBS)
-
-```
-
-## Using `google-cloud-cpp-spanner` in Bazel-based projects.
-
-If you use `Bazel` for your builds you do not need to install
-`google-cloud-cpp-spanner`. We provide a Starlark function to automatically
-download and compile `google-cloud-cpp-spanner` as part of you Bazel build. Add
-the following commands to your `WORKSPACE` file:
-
-```Python
-# Add the necessary Starlark functions to fetch google-cloud-cpp-spanner.
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
-# Fetch the Cloud Spanner C++ library.
-# NOTE: Update this version and SHA256 as needed.
-http_archive(
-    name = "com_github_googleapis_google_cloud_cpp_spanner",
-    sha256 = "a833d3c1a6d127132e961350829babac521b62b4c837b88d7c219b400e98fed1",
-    strip_prefix = "google-cloud-cpp-spanner-0.8.0",
-    url = "https://github.com/googleapis/google-cloud-cpp-spanner/archive/v0.8.0.tar.gz",
-)
-
-# Call a function to load the Cloud Spanner C++ library's deps
-load("@com_github_googleapis_google_cloud_cpp_spanner//bazel:google_cloud_cpp_spanner_deps.bzl", "google_cloud_cpp_spanner_deps")
-google_cloud_cpp_spanner_deps()
-
-# (optional) Only generate C++ from the protos.
-load("@com_google_googleapis//:repository_rules.bzl", "switched_rules_by_language")
-switched_rules_by_language(
-    name = "com_google_googleapis_imports",
-    cc = True,
-    grpc = True,
-)
-
-# Load indirect dependencies due to
-#     https://github.com/bazelbuild/bazel/issues/1943
-load("@com_github_googleapis_google_cloud_cpp_common//bazel:google_cloud_cpp_common_deps.bzl", "google_cloud_cpp_common_deps")
-google_cloud_cpp_common_deps()
-load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
-grpc_deps()
-load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
-grpc_extra_deps()
-```
-
-Then you can link the libraries from your `BUILD` files:
-
-```Python
-cc_binary(
-    name = "my_program",
-    srcs = [
-        "my_program.cc",
-    ],
-    deps = [
-        "@com_github_googleapis_google_cloud_cpp_spanner//google/cloud/spanner:spanner_client",
-    ],
-)
-```
-
-### Building with Bazel on macOS
-
-To workaround a bug in Bazel ([bazelbuild/bazel#4341][bazel-bug-4341-link]) gRPC needs a
-command-line flag when compiled using Bazel on macOS:
-
-[bazel-bug-4341-link]: https://github.com/bazelbuild/bazel/issues/4341
-
-```bash
-bazel build --copt=-DGRPC_BAZEL_BUILD ...
-```
-
-Consider adding this option to your project's `.bazelrc` file.
-
 ## Required Libraries
 
 `google-cloud-cpp-spanner` directly depends on the following libraries:
@@ -194,6 +94,7 @@ these dependencies.
 - [CentOS 7](#centos-7)
 END_OF_PREAMBLE
 
+readonly BINDIR=$(dirname "$0")
 readonly DOCKERFILES_DIR="${BINDIR}/../kokoro/install"
 
 echo
