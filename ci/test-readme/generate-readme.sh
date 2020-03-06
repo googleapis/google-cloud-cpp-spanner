@@ -18,19 +18,6 @@ set -eu
 
 readonly BINDIR=$(dirname "$0")
 
-badge() {
-  local -r distro="$1"
-  cat <<_EOF_
-
-[![Kokoro readme ${distro} status][kokoro-readme-${distro}-shield]][kokoro-readme-${distro}-link]
-
-[kokoro-readme-${distro}-shield]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/readme/${distro}.svg
-[kokoro-readme-${distro}-link]: https://storage.googleapis.com/cloud-cpp-kokoro-status/spanner/readme/${distro}-link.html
-_EOF_
-}
-
-readonly DOCKERFILES_DIR="${BINDIR}/../kokoro/readme"
-
 cat <<_EOF_
 # Google Cloud Spanner C++ Client Library
 
