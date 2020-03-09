@@ -317,8 +317,10 @@ class Value {
   /**
    * Outputs string representation of a given Value to the provided stream.
    *
-   * @par Example:
+   * @warning This is intended for debugging and human consumption only, not
+   *   machine consumption as the output format may change without notice.
    *
+   * @par Example:
    * @code
    *   spanner::Value v{42};
    *   std::cout << v << "\n";
