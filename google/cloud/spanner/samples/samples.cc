@@ -1251,6 +1251,41 @@ void QueryNewColumn(google::cloud::spanner::Client client) {
 }
 //! [END spanner_query_data_with_new_column]
 
+void ProfileQuery(google::cloud::spanner::Client client) {
+  namespace spanner = ::google::cloud::spanner;
+
+  //! [profile-query]
+  spanner::SqlStatement select(
+      "SELECT AlbumId, AlbumTitle, MarketingBudget"
+      " FROM Albums"
+      " WHERE AlbumTitle >= @start_title AND AlbumTitle < @end_title",
+      {{"start_title", spanner::Value("Aardvark")},
+       {"end_title", spanner::Value("Goo")}});
+  using RowType = std::tuple<std::int64_t, std::string,
+                             google::cloud::optional<std::int64_t>>;
+  auto profile_query_result = client.ProfileQuery(std::move(select));
+  for (auto const& row : spanner::StreamOf<RowType>(profile_query_result)) {
+    if (!row) throw std::runtime_error(row.status().message());
+    std::cout << "AlbumId: " << std::get<0>(*row) << "\t";
+    std::cout << "AlbumTitle: " << std::get<1>(*row) << "\t";
+    auto marketing_budget = std::get<2>(*row);
+    if (marketing_budget) {
+      std::cout << "MarketingBudget: " << marketing_budget.value() << "\n";
+    } else {
+      std::cout << "MarketingBudget: NULL\n";
+    }
+  }
+
+  // Stats are only available after all rows from the result have been read.
+  auto execution_stats = profile_query_result.ExecutionStats();
+  if (execution_stats) {
+    for (auto const& stat : *execution_stats) {
+      std::cout << stat.first << ":\t" << stat.second << "\n";
+    }
+  }
+  //! [profile-query]
+}
+
 //! [START spanner_query_data_with_index]
 void QueryUsingIndex(google::cloud::spanner::Client client) {
   namespace spanner = ::google::cloud::spanner;
@@ -1394,8 +1429,11 @@ void ReadWriteTransaction(google::cloud::spanner::Client client) {
 void DmlStandardInsert(google::cloud::spanner::Client client) {
   using ::google::cloud::StatusOr;
   namespace spanner = ::google::cloud::spanner;
+  //! [execute-dml]
+  std::int64_t rows_inserted;
   auto commit_result = client.Commit(
-      [&client](spanner::Transaction txn) -> StatusOr<spanner::Mutations> {
+      [&client, &rows_inserted](
+          spanner::Transaction txn) -> StatusOr<spanner::Mutations> {
         auto insert = client.ExecuteDml(
             std::move(txn),
             spanner::SqlStatement(
@@ -1403,11 +1441,14 @@ void DmlStandardInsert(google::cloud::spanner::Client client) {
                 "  VALUES (10, 'Virginia', 'Watson')",
                 {}));
         if (!insert) return insert.status();
+        rows_inserted = insert->RowsModified();
         return spanner::Mutations{};
       });
   if (!commit_result) {
     throw std::runtime_error(commit_result.status().message());
   }
+  std::cout << "Rows inserted: " << rows_inserted;
+  //! [execute-dml]
   std::cout << "Insert was successful [spanner_dml_standard_insert]\n";
 }
 //! [END spanner_dml_standard_insert]
@@ -1433,6 +1474,41 @@ void DmlStandardUpdate(google::cloud::spanner::Client client) {
   std::cout << "Update was successful [spanner_dml_standard_update]\n";
 }
 //! [END spanner_dml_standard_update]
+
+void ProfileDmlStandardUpdate(google::cloud::spanner::Client client) {
+  using ::google::cloud::StatusOr;
+  namespace spanner = ::google::cloud::spanner;
+  //! [profile-dml]
+  StatusOr<spanner::ProfileDmlResult> dml_result;
+  auto commit_result = client.Commit(
+      [&client,
+       &dml_result](spanner::Transaction txn) -> StatusOr<spanner::Mutations> {
+        auto update = client.ProfileDml(
+            std::move(txn),
+            spanner::SqlStatement(
+                "UPDATE Albums SET MarketingBudget = MarketingBudget * 2"
+                " WHERE SingerId = 1 AND AlbumId = 1",
+                {}));
+        if (!update) return update.status();
+        dml_result = std::move(update);
+        return spanner::Mutations{};
+      });
+  if (!commit_result) {
+    throw std::runtime_error(commit_result.status().message());
+  }
+
+  // Stats only available after statement has been executed.
+  if (dml_result) {
+    std::cout << "Rows modified: " << dml_result->RowsModified();
+    auto execution_stats = dml_result->ExecutionStats();
+    if (execution_stats) {
+      for (auto const& stat : *execution_stats) {
+        std::cout << stat.first << ":\t" << stat.second << "\n";
+      }
+    }
+  }
+  //! [profile-dml]
+}
 
 // [START spanner_dml_standard_update_with_timestamp]
 void DmlStandardUpdateWithTimestamp(google::cloud::spanner::Client client) {
@@ -1562,7 +1638,6 @@ void DmlBatchUpdate(google::cloud::spanner::Client client) {
 }
 //! [END spanner_dml_batch_update]
 
-//
 //! [START spanner_dml_structs]
 void DmlStructs(google::cloud::spanner::Client client) {
   namespace spanner = ::google::cloud::spanner;
@@ -2090,11 +2165,26 @@ void PartitionRead(google::cloud::spanner::Client client) {
 void PartitionQuery(google::cloud::spanner::Client client) {
   namespace spanner = ::google::cloud::spanner;
   RemoteConnectionFake remote_connection;
+
+  //! [analyze-query]
+  // Only SQL queries with a Distributed Union as the first operator in the
+  // `ExecutionPlan` can be partitioned.
+  google::cloud::StatusOr<spanner::ExecutionPlan> plan = client.AnalyzeSql(
+      spanner::MakeReadOnlyTransaction(),
+      spanner::SqlStatement(
+          "SELECT SingerId, FirstName, LastName FROM Singers"));
+  if (!plan) throw std::runtime_error(plan.status().message());
+  if (plan->plan_nodes(plan->plan_nodes_size() - 1).kind() !=
+          google::spanner::v1::PlanNode::RELATIONAL &&
+      plan->plan_nodes(plan->plan_nodes_size() - 1).display_name() !=
+          "Distributed Union")
+    throw std::runtime_error("Query is not partitionable");
+  //! [analyze-query]
+
   //! [partition-query]
-  spanner::Transaction ro_transaction = spanner::MakeReadOnlyTransaction();
   google::cloud::StatusOr<std::vector<spanner::QueryPartition>> partitions =
       client.PartitionQuery(
-          ro_transaction,
+          spanner::MakeReadOnlyTransaction(),
           spanner::SqlStatement(
               "SELECT SingerId, FirstName, LastName FROM Singers"));
   if (!partitions) throw std::runtime_error(partitions.status().message());
@@ -2216,6 +2306,8 @@ int RunOneCommand(std::vector<std::string> argv) {
       make_command_entry("dml-standard-update", DmlStandardUpdate),
       make_command_entry("dml-standard-update-with-timestamp",
                          DmlStandardUpdateWithTimestamp),
+      make_command_entry("profile-dml-standard-update",
+                         ProfileDmlStandardUpdate),
       make_command_entry("dml-write-then-read", DmlWriteThenRead),
       make_command_entry("dml-standard-delete", DmlStandardDelete),
       make_command_entry("dml-partitioned-update", DmlPartitionedUpdate),
@@ -2242,6 +2334,7 @@ int RunOneCommand(std::vector<std::string> argv) {
       make_command_entry("example-status-or", ExampleStatusOr),
       make_command_entry("get-singular-row", GetSingularRow),
       make_command_entry("stream-of", StreamOf),
+      make_command_entry("profile-query", ProfileQuery),
       {"custom-retry-policy", CustomRetryPolicy},
   };
 
@@ -2453,6 +2546,9 @@ void RunAll(bool emulator) {
   std::cout << "\nRunning spanner_query_data_with_new_column sample\n";
   QueryNewColumn(client);
 
+  std::cout << "\nRunning spanner_profile_query sample\n";
+  ProfileQuery(client);
+
   std::cout << "\nRunning spanner_query_data_with_index sample\n";
   QueryUsingIndex(client);
 
@@ -2473,6 +2569,9 @@ void RunAll(bool emulator) {
 
   std::cout << "\nRunning spanner_dml_standard_update_with_timestamp sample\n";
   DmlStandardUpdateWithTimestamp(client);
+
+  std::cout << "\nRunning profile_spanner_dml_standard_update sample\n";
+  ProfileDmlStandardUpdate(client);
 
   std::cout << "\nRunning spanner_dml_write_then_read sample\n";
   DmlWriteThenRead(client);
