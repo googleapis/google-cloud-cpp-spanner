@@ -944,8 +944,8 @@ INSTANTIATE_TEST_SUITE_P(
                         "-Infinity"),
         std::make_tuple("NaNFloat64", Value(std::nan("NaN")), "NaN"),
         std::make_tuple("String", Value("Seatac Astronomy"),
-                        "Seatac Astronomy"),
-        std::make_tuple("Bytes", Value(Bytes("DEADBEEF")), "DEADBEEF"),
+                        "\"Seatac Astronomy\""),
+        std::make_tuple("Bytes", Value(Bytes("DEADBEEF")), "B\"DEADBEEF"),
         std::make_tuple(
             "Timestamp",
             Value(MakeTimestamp(MakeTimePoint(1561147549LL, 0)).value()),
@@ -965,25 +965,26 @@ INSTANTIATE_TEST_SUITE_P(
     ValueStreamOperatorStruct, ValueStreamOperator,
     testing::Values(
         std::make_tuple("BoolInt64", Value(std::make_tuple(true, 123)),
-                        "{TRUE | 123}"),
+                        "(TRUE, 123)"),
         std::make_tuple("NullBoolInt64",
-                        MakeNullValue<std::tuple<bool, std::int64_t>>(), "{}"),
-        std::make_tuple(
-            "MixedArrays",
-            Value(std::make_tuple(std::vector<std::int64_t>{1, 2, 3},
-                                  std::vector<double>{4.1, 5.2, 6.3},
-                                  std::vector<std::int64_t>{7, 8, 9, 10})),
-            "{[1, 2, 3] | [4.100000, 5.200000, 6.300000] | [7, 8, 9, 10]}"),
+                        MakeNullValue<std::tuple<bool, std::int64_t>>(), "()"),
+        std::make_tuple("MixedArrays",
+                        Value(std::make_tuple(
+                            std::vector<std::int64_t>{1, 2, 3},
+                            std::make_pair("Middle",
+                                           std::vector<double>{4.1, 5.2, 6.3}),
+                            std::vector<std::int64_t>{7, 8, 9, 10})),
+                        "([1, 2, 3], Middle: [4.100000, 5.200000, 6.300000], "
+                        "[7, 8, 9, 10])"),
         std::make_tuple("StructInception",
                         Value(std::make_tuple(std::make_tuple(std::make_tuple(
                             std::vector<std::int64_t>{1, 2, 3})))),
-                        "{{{[1, 2, 3]}}}"),
+                        "((([1, 2, 3])))"),
         std::make_tuple("StructWithFieldNames",
-
                         Value(std::make_tuple(std::make_pair("Last", "Blues"),
                                               std::make_pair("First",
                                                              "Elwood"))),
-                        "{Last: Blues | First: Elwood}")),
+                        "(Last: \"Blues\", First: \"Elwood\")")),
     ValueStreamOperator::TestName);
 
 }  // namespace

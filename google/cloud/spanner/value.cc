@@ -93,7 +93,7 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
   if (v.kind_case() == google::protobuf::Value::kNullValue &&
       t.code() != google::spanner::v1::ARRAY &&
       t.code() != google::spanner::v1::STRUCT) {
-    return os;
+    return os << "";
   }
 
   int i = 0;
@@ -112,12 +112,16 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
 
     case google::spanner::v1::TIMESTAMP:
     case google::spanner::v1::DATE:
-    case google::spanner::v1::STRING:
       return os << v.string_value();
+
+    case google::spanner::v1::STRING:
+      return os << "\"" << v.string_value() << "\"";
 
     case google::spanner::v1::BYTES:
       return os
-             << internal::BytesFromBase64(v.string_value())->get<std::string>();
+             << "B\""
+             << internal::BytesFromBase64(v.string_value())->get<std::string>()
+             << "\"";
 
     case google::spanner::v1::ARRAY:
       os << '[';
@@ -133,7 +137,7 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
       return os << ']';
 
     case google::spanner::v1::STRUCT:
-      os << '{';
+      os << '(';
       if (v.list_value().values_size() > 0) {
         for (; i < v.list_value().values_size() - 1; ++i) {
           if (!t.struct_type().fields(i).name().empty()) {
@@ -141,7 +145,7 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
           }
           StreamHelper(os, v.list_value().values(i),
                        t.struct_type().fields(i).type())
-              << " | ";
+              << ", ";
         }
         if (!t.struct_type().fields(i).name().empty()) {
           os << t.struct_type().fields(i).name() << ": ";
@@ -149,9 +153,9 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
 
         return StreamHelper(os, v.list_value().values(i),
                             t.struct_type().fields(i).type())
-               << '}';
+               << ')';
       }
-      return os << '}';
+      return os << ')';
 
     case google::spanner::v1::TYPE_CODE_UNSPECIFIED:
     case google::spanner::v1::TypeCode_INT_MIN_SENTINEL_DO_NOT_USE_:
