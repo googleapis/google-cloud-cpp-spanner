@@ -16,6 +16,7 @@
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_CHANNEL_H
 
 #include "google/cloud/spanner/internal/spanner_stub.h"
+#include "google/cloud/spanner/version.h"
 #include <memory>
 
 namespace google {
@@ -28,7 +29,7 @@ namespace internal {
  * `Channel` represents a single gRPC Channel/Stub.
  */
 struct Channel {
-  /// @p stub must not be nullptr
+  /// @p stub_param must not be nullptr
   explicit Channel(std::shared_ptr<SpannerStub> stub_param)
       : stub(std::move(stub_param)) {}
 

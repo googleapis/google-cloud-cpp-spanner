@@ -16,7 +16,6 @@
 #define GOOGLE_CLOUD_CPP_SPANNER_GOOGLE_CLOUD_SPANNER_INTERNAL_SESSION_H
 
 #include "google/cloud/spanner/internal/channel.h"
-#include "google/cloud/spanner/internal/spanner_stub.h"
 #include "google/cloud/spanner/version.h"
 #include <atomic>
 #include <memory>
