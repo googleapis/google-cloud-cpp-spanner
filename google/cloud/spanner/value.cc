@@ -109,7 +109,7 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
       if (v.kind_case() == google::protobuf::Value::kStringValue) {
         return os << v.string_value();
       }
-      return os << std::to_string(v.number_value());
+      return os << v.number_value();
 
     case google::spanner::v1::STRING:
       return os << "\"" << v.string_value() << "\"";

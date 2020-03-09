@@ -935,7 +935,7 @@ INSTANTIATE_TEST_SUITE_P(
         std::make_tuple("Bool", Value(false), "FALSE"),
         std::make_tuple("Int64", Value(42), "42"),
         std::make_tuple("NullInt64", MakeNullValue<std::int64_t>(), "NULL"),
-        std::make_tuple("Float64", Value(42.0), "42.000000"),
+        std::make_tuple("Float64", Value(42.0), "42"),
         std::make_tuple("InfinityFloat64",
                         Value(std::numeric_limits<double>::infinity()),
                         "Infinity"),
@@ -974,7 +974,7 @@ INSTANTIATE_TEST_SUITE_P(
                             std::make_pair("Middle",
                                            std::vector<double>{4.1, 5.2, 6.3}),
                             std::vector<std::int64_t>{7, 8, 9, 10})),
-                        "([1, 2, 3], Middle: [4.100000, 5.200000, 6.300000], "
+                        "([1, 2, 3], Middle: [4.1, 5.2, 6.3], "
                         "[7, 8, 9, 10])"),
         std::make_tuple("StructInception",
                         Value(std::make_tuple(std::make_tuple(std::make_tuple(
