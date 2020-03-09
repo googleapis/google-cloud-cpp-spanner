@@ -34,8 +34,8 @@ struct Channel {
       : stub(std::move(stub_param)) {}
 
   // This class is not copyable or movable.
-  Channel(const Channel&) = delete;
-  Channel& operator=(const Channel&) = delete;
+  Channel(Channel const&) = delete;
+  Channel& operator=(Channel const&) = delete;
 
   std::shared_ptr<SpannerStub> const stub;
   int session_count = 0;
