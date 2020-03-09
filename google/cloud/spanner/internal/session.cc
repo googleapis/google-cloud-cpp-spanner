@@ -21,7 +21,8 @@ inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 
 SessionHolder MakeDissociatedSessionHolder(std::string session_name) {
-  return SessionHolder(new Session(std::move(session_name), /*stub=*/nullptr),
+  return SessionHolder(new Session(std::move(session_name), /*stub=*/nullptr,
+                                   /*channel_session_counter=*/nullptr),
                        std::default_delete<Session>());
 }
 

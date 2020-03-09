@@ -35,9 +35,11 @@ namespace internal {
  */
 class Session {
  public:
-  Session(std::string session_name, std::shared_ptr<SpannerStub> stub)
+  Session(std::string session_name, std::shared_ptr<SpannerStub> stub,
+          int* channel_session_counter)
       : session_name_(std::move(session_name)),
         stub_(std::move(stub)),
+        channel_session_counter_(channel_session_counter),
         is_bad_(false) {}
 
   // Not copyable or moveable.
@@ -53,11 +55,13 @@ class Session {
   bool is_bad() const { return is_bad_.load(std::memory_order_relaxed); }
 
  private:
-  friend class SessionPool;  // for access to stub()
+  friend class SessionPool;  // for access to stub() and channel_info_index()
   std::shared_ptr<SpannerStub> stub() const { return stub_; }
+  int* channel_session_counter() const { return channel_session_counter_; }
 
   std::string const session_name_;
   std::shared_ptr<SpannerStub> const stub_;
+  int* channel_session_counter_;
   std::atomic<bool> is_bad_;
 };
 
