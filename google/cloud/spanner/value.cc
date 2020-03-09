@@ -135,18 +135,14 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
     case google::spanner::v1::STRUCT: {
       const char* delimiter = "";
       os << '(';
-      if (v.list_value().values_size() == t.struct_type().fields_size()) {
-        for (int i = 0; i < v.list_value().values_size(); ++i) {
-          os << delimiter;
-          if (!t.struct_type().fields(i).name().empty()) {
-            os << t.struct_type().fields(i).name() << ": ";
-          }
-          StreamHelper(os, v.list_value().values(i),
-                       t.struct_type().fields(i).type());
-          delimiter = ", ";
+      for (int i = 0; i < v.list_value().values_size(); ++i) {
+        os << delimiter;
+        if (!t.struct_type().fields(i).name().empty()) {
+          os << t.struct_type().fields(i).name() << ": ";
         }
-      } else {
-        os << "Corrupt struct: number of types does not match number of values.";
+        StreamHelper(os, v.list_value().values(i),
+                     t.struct_type().fields(i).type());
+        delimiter = ", ";
       }
       return os << ')';
     }
