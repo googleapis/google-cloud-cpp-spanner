@@ -93,14 +93,15 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
   if (v.kind_case() == google::protobuf::Value::kNullValue &&
       t.code() != google::spanner::v1::ARRAY &&
       t.code() != google::spanner::v1::STRUCT) {
-    return os << "";
+    return os << "NULL";
   }
 
-  int i = 0;
   switch (t.code()) {
     case google::spanner::v1::BOOL:
       return os << (v.bool_value() ? "TRUE" : "FALSE");
 
+    case google::spanner::v1::TIMESTAMP:
+    case google::spanner::v1::DATE:
     case google::spanner::v1::INT64:
       return os << v.string_value();
 
@@ -109,10 +110,6 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
         return os << v.string_value();
       }
       return os << std::to_string(v.number_value());
-
-    case google::spanner::v1::TIMESTAMP:
-    case google::spanner::v1::DATE:
-      return os << v.string_value();
 
     case google::spanner::v1::STRING:
       return os << "\"" << v.string_value() << "\"";
@@ -123,39 +120,34 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
              << internal::BytesFromBase64(v.string_value())->get<std::string>()
              << "\"";
 
-    case google::spanner::v1::ARRAY:
+    case google::spanner::v1::ARRAY: {
+      const char* delimiter = "";
       os << '[';
-      if (v.list_value().values_size() > 0) {
-        for (; i < v.list_value().values_size() - 1; ++i) {
-          StreamHelper(os, v.list_value().values(i), t.array_element_type())
-              << ", ";
-        }
-        return StreamHelper(os, v.list_value().values(i),
-                            t.array_element_type())
-               << ']';
+      for (auto const& e : v.list_value().values()) {
+        os << delimiter;
+        StreamHelper(os, e, t.array_element_type());
+        delimiter = ", ";
       }
       return os << ']';
-
-    case google::spanner::v1::STRUCT:
+    }
+    case google::spanner::v1::STRUCT: {
+      const char* delimiter = "";
       os << '(';
-      if (v.list_value().values_size() > 0) {
-        for (; i < v.list_value().values_size() - 1; ++i) {
-          if (!t.struct_type().fields(i).name().empty()) {
-            os << t.struct_type().fields(i).name() << ": ";
-          }
-          StreamHelper(os, v.list_value().values(i),
-                       t.struct_type().fields(i).type())
-              << ", ";
-        }
+      for (int i = 0;
+           v.list_value().values_size() > 0 &&
+           v.list_value().values_size() == t.struct_type().fields_size() &&
+           i < v.list_value().values_size();
+           ++i) {
+        os << delimiter;
         if (!t.struct_type().fields(i).name().empty()) {
           os << t.struct_type().fields(i).name() << ": ";
         }
-
-        return StreamHelper(os, v.list_value().values(i),
-                            t.struct_type().fields(i).type())
-               << ')';
+        StreamHelper(os, v.list_value().values(i),
+                     t.struct_type().fields(i).type());
+        delimiter = ", ";
       }
       return os << ')';
+    }
 
     case google::spanner::v1::TYPE_CODE_UNSPECIFIED:
     case google::spanner::v1::TypeCode_INT_MIN_SENTINEL_DO_NOT_USE_:

@@ -934,7 +934,7 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Values(
         std::make_tuple("Bool", Value(false), "FALSE"),
         std::make_tuple("Int64", Value(42), "42"),
-        std::make_tuple("NullInt64", MakeNullValue<std::int64_t>(), ""),
+        std::make_tuple("NullInt64", MakeNullValue<std::int64_t>(), "NULL"),
         std::make_tuple("Float64", Value(42.0), "42.000000"),
         std::make_tuple("InfinityFloat64",
                         Value(std::numeric_limits<double>::infinity()),
