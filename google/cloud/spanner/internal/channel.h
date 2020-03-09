@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,6 +32,10 @@ struct Channel {
   /// @p stub_param must not be nullptr
   explicit Channel(std::shared_ptr<SpannerStub> stub_param)
       : stub(std::move(stub_param)) {}
+
+  // This class is not copyable or movable.
+  Channel(const Channel&) = delete;
+  Channel& operator=(const Channel&) = delete;
 
   std::shared_ptr<SpannerStub> const stub;
   int session_count = 0;
