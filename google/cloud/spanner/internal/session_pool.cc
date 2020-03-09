@@ -131,21 +131,22 @@ void SessionPool::MaintainPoolSize() {
 
 /**
  * Grow the session pool by creating up to `sessions_to_create` sessions and
- * adding them to the pool.  Note that `lk` may be dropped in the process.
+ * adding them to the pool.  Note that `lk` may be released and reacquired in
+ * this method.
  *
  * TODO(#1271) eliminate the `async` parameter and do all creation
  * asynchronously. The main obstacle is making existing tests pass.
  */
 Status SessionPool::Grow(std::unique_lock<std::mutex>& lk,
                          int sessions_to_create, bool async) {
-  create_in_progress_ = true;
   int num_channels = static_cast<int>(channels_.size());
   int session_limit = options_.max_sessions_per_channel() * num_channels;
   if (total_sessions_ == session_limit) {
-    create_in_progress_ = false;
     // Can't grow the pool since we're already at max size.
     return Status(StatusCode::kResourceExhausted, "session pool exhausted");
   }
+
+  create_in_progress_ = true;
 
   // Compute how many Sessions to create on each Channel, trying to keep the
   // number of Sessions on each channel equal.
@@ -174,8 +175,9 @@ Status SessionPool::Grow(std::unique_lock<std::mutex>& lk,
   int channels_remaining = num_channels;
   std::vector<std::pair<std::shared_ptr<Channel>, int>> create_counts;
   for (auto& channel : channels_by_count) {
-    int target = (sessions_remaining / channels_remaining) +
-                 (sessions_remaining % channels_remaining == 0 ? 0 : 1);
+    // The target number of sessions for this channel, rounded up.
+    int target =
+        (sessions_remaining + channels_remaining - 1) / channels_remaining;
     --channels_remaining;
     if (channel->session_count < target) {
       int sessions_to_create = target - channel->session_count;
@@ -190,7 +192,7 @@ Status SessionPool::Grow(std::unique_lock<std::mutex>& lk,
     }
   }
 
-  // Create all the sessions (note that `lk` can be dropped during creation,
+  // Create all the sessions (note that `lk` can be released during creation,
   // which is why we don't do this directly in the loop above).
   for (auto& op : create_counts) {
     if (!async) {
