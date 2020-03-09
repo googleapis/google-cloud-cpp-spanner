@@ -945,7 +945,7 @@ INSTANTIATE_TEST_SUITE_P(
         std::make_tuple("NaNFloat64", Value(std::nan("NaN")), "NaN"),
         std::make_tuple("String", Value("Seatac Astronomy"),
                         "\"Seatac Astronomy\""),
-        std::make_tuple("Bytes", Value(Bytes("DEADBEEF")), "B\"DEADBEEF"),
+        std::make_tuple("Bytes", Value(Bytes("DEADBEEF")), "B\"DEADBEEF\""),
         std::make_tuple(
             "Timestamp",
             Value(MakeTimestamp(MakeTimePoint(1561147549LL, 0)).value()),

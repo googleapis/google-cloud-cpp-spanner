@@ -115,10 +115,11 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
       return os << "\"" << v.string_value() << "\"";
 
     case google::spanner::v1::BYTES:
-      return os
-             << "B\""
-             << internal::BytesFromBase64(v.string_value())->get<std::string>()
-             << "\"";
+      return os << "B\""
+                << internal::BytesFromBase64(v.string_value())
+                       ->get<std::string>()
+                       .c_str()
+                << "\"";
 
     case google::spanner::v1::ARRAY: {
       const char* delimiter = "";
@@ -130,21 +131,22 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
       }
       return os << ']';
     }
+
     case google::spanner::v1::STRUCT: {
       const char* delimiter = "";
       os << '(';
-      for (int i = 0;
-           v.list_value().values_size() > 0 &&
-           v.list_value().values_size() == t.struct_type().fields_size() &&
-           i < v.list_value().values_size();
-           ++i) {
-        os << delimiter;
-        if (!t.struct_type().fields(i).name().empty()) {
-          os << t.struct_type().fields(i).name() << ": ";
+      if (v.list_value().values_size() == t.struct_type().fields_size()) {
+        for (int i = 0; i < v.list_value().values_size(); ++i) {
+          os << delimiter;
+          if (!t.struct_type().fields(i).name().empty()) {
+            os << t.struct_type().fields(i).name() << ": ";
+          }
+          StreamHelper(os, v.list_value().values(i),
+                       t.struct_type().fields(i).type());
+          delimiter = ", ";
         }
-        StreamHelper(os, v.list_value().values(i),
-                     t.struct_type().fields(i).type());
-        delimiter = ", ";
+      } else {
+        os << "Corrupt struct: number of types does not match number of values.";
       }
       return os << ')';
     }
