@@ -533,7 +533,7 @@ TEST(Value, SpannerStructWithNull) {
   auto protos1 = internal::ToProto(v1);
   auto protos2 = internal::ToProto(v2);
 
-  // The type protos match for both values, but he value protos DO NOT match.
+  // The type protos match for both values, but the value protos DO NOT match.
   EXPECT_THAT(protos1.first, IsProtoEqual(protos2.first));
   EXPECT_THAT(protos1.second, Not(IsProtoEqual(protos2.second)));
 
