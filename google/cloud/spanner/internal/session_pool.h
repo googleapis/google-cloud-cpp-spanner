@@ -123,8 +123,9 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
   void ScheduleBackgroundWork(std::chrono::seconds relative_time);
   void DoBackgroundWork();
   void MaintainPoolSize();
+  enum class WaitForSessionAllocation { kWait, kNoWait };
   Status Grow(std::unique_lock<std::mutex>& lk, int sessions_to_create,
-              bool async);
+              WaitForSessionAllocation wait);
 
   Database const db_;
   SessionPoolOptions const options_;

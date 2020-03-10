@@ -79,7 +79,7 @@ SessionPool::SessionPool(Database db,
 void SessionPool::Initialize() {
   if (options_.min_sessions() > 0) {
     std::unique_lock<std::mutex> lk(mu_);
-    (void)Grow(lk, options_.min_sessions(), /*async=*/false);
+    (void)Grow(lk, options_.min_sessions(), WaitForSessionAllocation::kWait);
   }
   ScheduleBackgroundWork(std::chrono::seconds(5));
 }
@@ -120,12 +120,13 @@ void SessionPool::DoBackgroundWork() {
   ScheduleBackgroundWork(std::chrono::seconds(5));
 }
 
+// Ensure the pool size conforms to what was specified in the `SessionOptions`,
+// creating or deleting sessions as necessary.
 void SessionPool::MaintainPoolSize() {
-  // Ensure the pool size conforms to what was specified in the
-  // `SessionOptions`, creating or deleting sessions as necessary.
   std::unique_lock<std::mutex> lk(mu_);
   if (!create_in_progress_ && total_sessions_ < options_.min_sessions()) {
-    Grow(lk, total_sessions_ - options_.min_sessions(), /*async=*/true);
+    Grow(lk, total_sessions_ - options_.min_sessions(),
+         WaitForSessionAllocation::kNoWait);
   }
 }
 
@@ -134,11 +135,12 @@ void SessionPool::MaintainPoolSize() {
  * adding them to the pool.  Note that `lk` may be released and reacquired in
  * this method.
  *
- * TODO(#1271) eliminate the `async` parameter and do all creation
+ * TODO(#1271) eliminate the `wait` parameter and do all creation
  * asynchronously. The main obstacle is making existing tests pass.
  */
 Status SessionPool::Grow(std::unique_lock<std::mutex>& lk,
-                         int sessions_to_create, bool async) {
+                         int sessions_to_create,
+                         WaitForSessionAllocation wait) {
   int num_channels = static_cast<int>(channels_.size());
   int session_limit = options_.max_sessions_per_channel() * num_channels;
   if (total_sessions_ == session_limit) {
@@ -158,11 +160,7 @@ Status SessionPool::Grow(std::unique_lock<std::mutex>& lk,
       (std::min)(total_sessions_ + sessions_to_create, session_limit);
 
   // Sort the channels in *descending* order of session count.
-  std::vector<std::shared_ptr<Channel>> channels_by_count;
-  channels_by_count.reserve(num_channels);
-  for (auto& channel : channels_) {
-    channels_by_count.push_back(channel);
-  }
+  std::vector<std::shared_ptr<Channel>> channels_by_count = channels_;
   std::sort(channels_by_count.begin(), channels_by_count.end(),
             [](std::shared_ptr<Channel> const& lhs,
                std::shared_ptr<Channel> const& rhs) {
@@ -195,17 +193,23 @@ Status SessionPool::Grow(std::unique_lock<std::mutex>& lk,
   // Create all the sessions (note that `lk` can be released during creation,
   // which is why we don't do this directly in the loop above).
   for (auto& op : create_counts) {
-    if (!async) {
-      auto status = CreateSessions(lk, op.first, options_.labels(), op.second);
-      if (!status.ok()) {
-        create_in_progress_ = false;
-        return status;
-      }
-    } else {
-      // TODO(#1172) make an async create call
+    switch (wait) {
+      case WaitForSessionAllocation::kWait: {
+        auto status =
+            CreateSessions(lk, op.first, options_.labels(), op.second);
+        if (!status.ok()) {
+          create_in_progress_ = false;
+          return status;
+        }
+      } break;
+      case WaitForSessionAllocation::kNoWait:
+        // TODO(#1172) make an async create call
+        break;
     }
   }
-  // TODO(#1172) in the async case this needs to happen when the calls finish.
+
+  // TODO(#1172) when we implement kNoWait, setting create_in_progress_ and
+  // notifying cond_ should only happen after the calls finish.
   create_in_progress_ = false;
   // Wake up everyone that was waiting for a session.
   cond_.notify_all();
@@ -254,7 +258,8 @@ StatusOr<SessionHolder> SessionPool::Allocate(bool dissociate_from_pool) {
 
     // Try to add some sessions to the pool; for now add `min_sessions` plus
     // one for the `Session` this caller is waiting for.
-    auto status = Grow(lk, options_.min_sessions() + 1, /*async=*/false);
+    auto status =
+        Grow(lk, options_.min_sessions() + 1, WaitForSessionAllocation::kWait);
     if (!status.ok()) {
       return status;
     }
