@@ -72,6 +72,12 @@ void TestBasicSemantics(T init) {
   auto const protos = internal::ToProto(v);
   EXPECT_EQ(v, internal::FromProto(protos.first, protos.second));
 
+  // Ensures that the protos for a NULL T have the same "type" as a non-null T.
+  auto const null_protos = internal::ToProto(null);
+  EXPECT_THAT(null_protos.first, IsProtoEqual(protos.first));
+  EXPECT_EQ(null_protos.second.null_value(),
+            google::protobuf::NullValue::NULL_VALUE);
+
   Value const not_null{optional<T>(init)};
   EXPECT_STATUS_OK(not_null.get<T>());
   EXPECT_EQ(init, *not_null.get<T>());
