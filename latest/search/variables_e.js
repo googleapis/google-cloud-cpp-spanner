@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['use_5fonly_5fclients',['use_only_clients',['../structgoogle_1_1cloud_1_1spanner__benchmarks_1_1v0_1_1Config.html#aa2364ed75f846ca919624986faa11057',1,'google::cloud::spanner_benchmarks::v0::Config']]],
-  ['use_5fonly_5fstubs',['use_only_stubs',['../structgoogle_1_1cloud_1_1spanner__benchmarks_1_1v0_1_1Config.html#acda6e001bd600326a401785d14fc5679',1,'google::cloud::spanner_benchmarks::v0::Config']]]
+  ['value_5f',['value_',['https://googleapis.dev/cpp/google-cloud-common/0.21.0/classgoogle_1_1cloud_1_1v0_1_1StatusOr.html#ad1c759d091fc4e1a86b88c011ed5740f',1,'google::cloud::v0::StatusOr']]],
+  ['version',['version',['https://googleapis.dev/cpp/google-cloud-common/0.21.0/structgoogle_1_1cloud_1_1v0_1_1IamPolicy.html#afcce19b41adb89af1daac9287a8b744d',1,'google::cloud::v0::IamPolicy']]]
 ];

@@ -91,6 +91,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">Client</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs database client operations on Spanner.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html">ClientOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html" title="ClientOptions allows the caller to set a variety of options when constructing a Client instance.">ClientOptions</a> allows the caller to set a variety of options when constructing a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html" title="Performs database client operations on Spanner.">Client</a></code> instance.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ClientOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html">CommitResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The result of committing a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Transaction.html" title="The representation of a Cloud Spanner transaction.">Transaction</a>.  <a href="structgoogle_1_1cloud_1_1spanner_1_1v0_1_1CommitResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,6 +159,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html">ProfileQueryResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the stream of <code>Rows</code> and profile stats returned from <code>spanner::Client::ProfileQuery()</code>.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1ProfileQueryResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryOptions.html">QueryOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">These <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryOptions.html" title="These QueryOptions allow users to configure features about how their SQL queries executes on the serv...">QueryOptions</a> allow users to configure features about how their SQL queries executes on the server.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html">QueryPartition</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html" title="The QueryPartition class is a regular type that represents a single slice of a parallel SQL read.">QueryPartition</a></code> class is a regular type that represents a single slice of a parallel SQL read.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1QueryPartition.html#details">More...</a><br /></td></tr>
@@ -1046,7 +1052,7 @@ template&lt;typename RowRange &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00272">272</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00320">320</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -1108,7 +1114,7 @@ template&lt;typename RowRange &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00280">280</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00328">328</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -1550,7 +1556,7 @@ template&lt;typename... Ts&gt; </div>
 
 <p>Creates a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> with the specified column names and values. </p>
 <p>This overload accepts a vector of pairs, allowing the caller to specify both the column names and the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code> that goes in each column.</p>
-<p>This function is intended for application developers who are mocking the results of a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a5872b2c678ff7fdddacf78573f2b56c3" title="Executes a SQL query.">Client::ExecuteQuery</a></code> call. </p>
+<p>This function is intended for application developers who are mocking the results of a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a58777bc2415ee600e675469161ee8830" title="Executes a SQL query.">Client::ExecuteQuery</a></code> call. </p>
 
 <p class="definition">Definition at line <a class="el" href="row_8cc_source.html#l00036">36</a> of file <a class="el" href="row_8cc_source.html">row.cc</a>.</p>
 
@@ -1576,7 +1582,7 @@ template&lt;typename... Ts&gt; </div>
 
 <p>Creates a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Row.html" title="A Row is a sequence of columns each with a name and an associated Value.">Row</a></code> with <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>s created from the given arguments and with auto-generated column names. </p>
 <p>This overload accepts a variadic list of arguments that will be used to create the <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a></code>s in the row. The column names will be implicitly generated, the first column being "0", the second "1", and so on, corresponding to the argument's position.</p>
-<p>This function is intended for application developers who are mocking the results of a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a5872b2c678ff7fdddacf78573f2b56c3" title="Executes a SQL query.">Client::ExecuteQuery</a></code> call. </p>
+<p>This function is intended for application developers who are mocking the results of a <code><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#a58777bc2415ee600e675469161ee8830" title="Executes a SQL query.">Client::ExecuteQuery</a></code> call. </p>
 
 <p class="definition">Definition at line <a class="el" href="row_8h_source.html#l00221">221</a> of file <a class="el" href="row_8h_source.html">row.h</a>.</p>
 

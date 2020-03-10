@@ -2,6 +2,7 @@ var searchData=
 [
   ['client_2ecc',['client.cc',['../client_8cc.html',1,'']]],
   ['client_2eh',['client.h',['../client_8h.html',1,'']]],
+  ['client_5foptions_2eh',['client_options.h',['../client__options_8h.html',1,'']]],
   ['commit_5fresult_2eh',['commit_result.h',['../commit__result_8h.html',1,'']]],
   ['completion_5fqueue_2ecc',['completion_queue.cc',['https://googleapis.dev/cpp/google-cloud-common/0.21.0/completion__queue_8cc.html',1,'']]],
   ['completion_5fqueue_2eh',['completion_queue.h',['https://googleapis.dev/cpp/google-cloud-common/0.21.0/completion__queue_8h.html',1,'']]],
