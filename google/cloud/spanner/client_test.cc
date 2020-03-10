@@ -23,7 +23,7 @@
 #include "google/cloud/internal/make_unique.h"
 #include "google/cloud/internal/setenv.h"
 #include "google/cloud/testing_util/assert_ok.h"
-#include "google/cloud/testing_util/environment_variable_restore.h"
+#include "google/cloud/testing_util/scoped_environment.h"
 #include <google/protobuf/text_format.h>
 #include <gmock/gmock.h>
 #include <array>
@@ -1028,8 +1028,7 @@ TEST(ClientTest, QueryOptionsOverlayPrecedence) {
   auto constexpr kEnvName = "SPANNER_OPTIMIZER_VERSION";
   auto conn = std::make_shared<MockConnection>();
   for (auto const& level : levels) {
-    google::cloud::testing_util::EnvironmentVariableRestore restore(kEnvName);
-    google::cloud::internal::SetEnv(kEnvName, level.env);
+    google::cloud::testing_util::ScopedEnvironment env(kEnvName, level.env);
     auto client_qo = QueryOptions().set_optimizer_version(level.client);
     Client client(conn, ClientOptions().set_query_options(client_qo));
     auto expected = QueryOptions().set_optimizer_version(level.expected);
