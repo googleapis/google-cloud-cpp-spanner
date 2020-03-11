@@ -973,7 +973,6 @@ INSTANTIATE_TEST_SUITE_P(
         std::make_tuple("StringNullValue", Value(optional<std::string>()),
                         "NULL"),
         std::make_tuple("StringLiteralNullValue", Value("NULL"), "\"NULL\""),
-
         std::make_tuple("Bytes", Value(Bytes(std::string("DEADBEEF"))),
                         "B\"DEADBEEF\""),
         std::make_tuple(

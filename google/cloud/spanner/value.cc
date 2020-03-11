@@ -116,7 +116,6 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
       return os
              << "B\""
              << internal::BytesFromBase64(v.string_value())->get<std::string>()
-
              << "\"";
 
     case google::spanner::v1::ARRAY: {
