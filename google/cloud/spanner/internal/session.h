@@ -40,7 +40,7 @@ class Session {
       : session_name_(std::move(session_name)),
         channel_(std::move(channel)),
         is_bad_(false),
-        last_use_time_(std::chrono::system_clock::now()) {}
+        last_use_time_(std::chrono::steady_clock::now()) {}
 
   // Not copyable or moveable.
   Session(Session const&) = delete;
@@ -61,17 +61,17 @@ class Session {
 
   // The caller is responsible for ensuring these methods are used in a
   // thread-safe manner (i.e. using external locking).
-  std::chrono::system_clock::time_point last_use_time() const {
+  std::chrono::steady_clock::time_point last_use_time() const {
     return last_use_time_;
   }
   void reset_last_use_time() {
-    last_use_time_ = std::chrono::system_clock::now();
+    last_use_time_ = std::chrono::steady_clock::now();
   }
 
   std::string const session_name_;
   std::shared_ptr<Channel> const channel_;
   std::atomic<bool> is_bad_;
-  std::chrono::system_clock::time_point last_use_time_;
+  std::chrono::steady_clock::time_point last_use_time_;
 };
 
 /**
