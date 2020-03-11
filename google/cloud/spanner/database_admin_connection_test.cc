@@ -715,15 +715,8 @@ TEST(DatabaseAdminClientTest, CreateBackupCancel) {
         return google::cloud::Status();
       });
   EXPECT_CALL(*mock, GetOperation(_, _))
-      .WillOnce([](grpc::ClientContext&,
-                   google::longrunning::GetOperationRequest const& r) {
-        EXPECT_EQ("test-operation-name", r.name());
-        google::longrunning::Operation op;
-        op.set_name(r.name());
-        return make_status_or(op);
-      })
-      .WillOnce([](grpc::ClientContext&,
-                   google::longrunning::GetOperationRequest const& r) {
+      .WillRepeatedly([](grpc::ClientContext&,
+                         google::longrunning::GetOperationRequest const& r) {
         EXPECT_EQ("test-operation-name", r.name());
         google::longrunning::Operation op;
         op.set_name(r.name());
