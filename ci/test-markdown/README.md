@@ -6,7 +6,7 @@ This file is generated from the Dockerfiles in `ci/kokoro/install` just run:
 
 ```bash
 cd google-cloud-cpp-spanner
-./ci/test-readme/generate-packaging.sh > doc/packaging.md
+./ci/test-markdown/generate-packaging.sh > doc/packaging.md
 ```
 
 and then create a pull request to merge your changes.
@@ -17,7 +17,7 @@ To generate the README.md file just run:
 
 ```bash
 cd google-cloud-cpp-spanner
-./ci/test-readme/generate-readme.sh > README.md
+./ci/test-markdown/generate-readme.sh > README.md
 ```
 
 ## HOWTO: Manually verify the instructions.
