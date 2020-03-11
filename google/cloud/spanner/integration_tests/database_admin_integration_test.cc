@@ -171,7 +171,7 @@ TEST(DatabaseAdminClient, DatabaseBasicCRUD) {
 
   // Tests for Backup are taking long time. To run them, set
   // RUN_SLOW_INTEGRATION_TESTS environment variable to yes.
-  if (run_slow_integration_tests == "yes") {
+  if (run_slow_integration_tests == "yes" && !emulator) {
     auto backup_future = client.CreateBackup(
         db, database_id,
         std::chrono::system_clock::now() + std::chrono::hours(7));

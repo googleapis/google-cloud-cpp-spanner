@@ -213,9 +213,13 @@ class DatabaseAdminClient {
   ListDatabaseRange ListDatabases(Instance in);
 
   /**
-   * Create a new database by restoring from a completed backup. The new
-   * database must be in the same project and in an instance with the same
-   * instance configuration as the instance containing the backup.
+   * Create a new database by restoring from a completed backup.
+   *
+   * @par Idempotency
+   * This is not an idempotent operation. Transient failures are not retried.
+   *
+   * The new database must be in the same project and in an instance with the
+   * same instance configuration as the instance containing the backup.
    *
    * @return A `google::cloud::future` that becomes satisfied when the operation
    *   completes on the service. Note that this can take minutes in some cases.
@@ -227,9 +231,13 @@ class DatabaseAdminClient {
   RestoreDatabase(Database db, Backup const& backup);
 
   /**
-   * Create a new database by restoring from a completed backup. The new
-   * database must be in the same project and in an instance with the same
-   * instance configuration as the instance containing the backup.
+   * Create a new database by restoring from a completed backup.
+   *
+   * @par Idempotency
+   * This is not an idempotent operation. Transient failures are not retried.
+   *
+   * The new database must be in the same project and in an instance with the
+   * same instance configuration as the instance containing the backup.
    *
    * @return A `google::cloud::future` that becomes satisfied when the operation
    *   completes on the service. Note that this can take minutes in some cases.
@@ -342,6 +350,9 @@ class DatabaseAdminClient {
   /**
    * Creates a new Cloud Spanner backup for the given database.
    *
+   * @par Idempotency
+   * This is not an idempotent operation. Transient failures are not retried.
+   *
    * This function creates a database backup for the given Google Cloud Spanner
    * database.
    *
@@ -352,8 +363,8 @@ class DatabaseAdminClient {
    * case letters, numbers, underscore (`_`) or dashes (`-`), that is, they must
    * belong to the `[a-z0-9_-]` character set.
    *
-   * The expire_time must be at least 6 hours and at most 366 days from the time
-   * the CreateBackup request is processed.
+   * The @p expire_time must be at least 6 hours and at most 366 days from the
+   * time the `CreateBackup()` request is processed.
    *
    * @return A `google::cloud::future` that becomes satisfied when the operation
    *   completes on the service. Note that this can take minutes in some cases.
@@ -380,12 +391,20 @@ class DatabaseAdminClient {
 
   /**
    * Deletes a pending or completed Backup.
+   *
+   * @par Idempotency
+   * We treat this operation as idempotent. Transient failures are automatically
+   * retried.
    */
   Status DeleteBackup(
       google::spanner::admin::database::v1::Backup const& backup);
 
   /**
    * Deletes a pending or completed Backup.
+   *
+   * @par Idempotency
+   * We treat this operation as idempotent. Transient failures are automatically
+   * retried.
    *
    * @par Example
    * @snippet samples.cc delete-backup
@@ -401,17 +420,19 @@ class DatabaseAdminClient {
    *
    * @param in An instance where the backup operations belong to.
    * @param filter A filter expression that filters backups listed in the
-   *  response. See [this
-   * documentation](https://cloud.google.com/spanner/docs/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.ListBackupsRequest)
-   *  for the syntax of the filter expression.
+   *  response. See [this documentation][spanner-api-reference-link] for the
+   *  syntax of the filter expression.
    *
    * @par Example
    * @snippet samples.cc list-backups
+   *
+   * [spanner-api-reference-link]:
+   * https://cloud.google.com/spanner/docs/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.ListBackupsRequest
    */
-  ListBackupsRange ListBackups(Instance in, std::string filter = "");
+  ListBackupsRange ListBackups(Instance in, std::string filter = {});
 
   /**
-   * Update backup's expire_time.
+   * Update backup's @p expire_time.
    *
    * @par Idempotency
    * This operation is idempotent as its result does not depend on the previous
@@ -424,7 +445,7 @@ class DatabaseAdminClient {
       std::chrono::system_clock::time_point const& expire_time);
 
   /**
-   * Update backup's expire_time.
+   * Update backup's @p expire_time.
    *
    * @par Idempotency
    * This operation is idempotent as its result does not depend on the previous
@@ -448,15 +469,17 @@ class DatabaseAdminClient {
    *
    * @param in An instance where the backup operations belong to.
    * @param filter A filter expression that filters what operations are returned
-   * in the response. See [this
-   * documentation](https://cloud.google.com/spanner/docs/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.ListBackupOperationsRequest)
-   *  for the syntax of the filter expression.
+   * in the response. See [this documentation][spanner-api-reference-link] for
+   * the syntax of the filter expression.
    *
    * @par Example
    * @snippet samples.cc list-backup-operations
+   *
+   * [spanner-api-reference-link]:
+   * https://cloud.google.com/spanner/docs/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.ListBackupOperationsRequest
    */
   ListBackupOperationsRange ListBackupOperations(Instance in,
-                                                 std::string filter = "");
+                                                 std::string filter = {});
 
   /**
    * List all the database operations in a given project and instance that match
@@ -467,14 +490,17 @@ class DatabaseAdminClient {
    *
    * @param in An instance where the database operations belong to.
    * @param filter A filter expression that filters what operations are returned
-   * in the response. See [this
-   * documentation](https://cloud.google.com/spanner/docs/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.ListDatabaseOperationsRequest)
-   *  for the syntax of the filter expression.
+   * in the response. See [this documentation][spanner-api-reference-link] for
+   * the syntax of the filter expression.
+   *
    * @par Example
    * @snippet samples.cc list-database-operations
+   *
+   * [spanner-api-reference-link]:
+   * https://cloud.google.com/spanner/docs/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.ListDatabaseOperationsRequest
    */
   ListDatabaseOperationsRange ListDatabaseOperations(Instance in,
-                                                     std::string filter = "");
+                                                     std::string filter = {});
 
   /// Create a new client with the given stub. For testing only.
   explicit DatabaseAdminClient(std::shared_ptr<DatabaseAdminConnection> c)

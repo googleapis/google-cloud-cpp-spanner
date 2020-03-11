@@ -28,7 +28,7 @@ inline namespace SPANNER_CLIENT_NS {
 /**
  * This class identifies a Cloud Spanner Backup
  *
- * A Cloud Spanner backup is identified by `Instance` and `backup_id`.
+ * A Cloud Spanner backup is identified by an `Instance` and a `backup_id`.
  *
  * @note this class makes no effort to validate the components of the
  *     backup name. It is the application's responsibility to provide valid

@@ -47,8 +47,7 @@ using ListDatabaseRange = google::cloud::internal::PaginationRange<
     google::spanner::admin::database::v1::ListDatabasesResponse>;
 
 /**
- * An input range to stream all the backup operations in a Cloud Spanner
- * instance.
+ * An input range to stream backup operations in Cloud Spanner instance.
  *
  * This type models an [input range][cppref-input-range] of
  * `google::longrunning::Operation` objects. Applications can make a
@@ -62,8 +61,7 @@ using ListBackupOperationsRange = google::cloud::internal::PaginationRange<
     google::spanner::admin::database::v1::ListBackupOperationsResponse>;
 
 /**
- * An input range to stream all the database operations in a Cloud Spanner
- * instance.
+ * An input range to stream database operations in Cloud Spanner instance.
  *
  * This type models an [input range][cppref-input-range] of
  * `google::longrunning::Operation` objects. Applications can make a
@@ -77,7 +75,7 @@ using ListDatabaseOperationsRange = google::cloud::internal::PaginationRange<
     google::spanner::admin::database::v1::ListDatabaseOperationsResponse>;
 
 /**
- * An input range to stream all the backups in a Cloud Spanner instance.
+ * An input range to stream backups in Cloud Spanner instance.
  *
  * This type models an [input range][cppref-input-range] of
  * `google::longrunning::Operation` objects. Applications can make a
@@ -181,38 +179,46 @@ class DatabaseAdminConnection {
     std::string backup_id;
     std::chrono::system_clock::time_point expire_time;
   };
+
   /// Wrap the arguments for `GetBackup()`.
   struct GetBackupParams {
     /// The name of the backup.
     std::string backup_full_name;
   };
+
   /// Wrap the arguments for `DeleteBackup()`.
   struct DeleteBackupParams {
     /// The name of the backup.
     std::string backup_full_name;
   };
+
   /// Wrap the arguments for `ListBackups()`.
   struct ListBackupsParams {
     /// The name of the instance.
     Instance instance;
     std::string filter;
   };
+
+  /// Wrap the arguments for `RestoreDatabase()`.
   struct RestoreDatabaseParams {
     /// The name of the database.
     Database database;
     /// The source backup for the restore.
     std::string backup_full_name;
   };
+
   /// Wrap the arguments for `UpdateBackup()`.
   struct UpdateBackupParams {
     google::spanner::admin::database::v1::UpdateBackupRequest request;
   };
+
   /// Wrap the arguments for `ListBackupOperations()`.
   struct ListBackupOperationsParams {
     /// The name of the instance.
     Instance instance;
     std::string filter;
   };
+
   /// Wrap the arguments for `ListDatabaseOperations()`.
   struct ListDatabaseOperationsParams {
     /// The name of the instance.

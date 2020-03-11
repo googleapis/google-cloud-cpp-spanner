@@ -160,6 +160,7 @@ class DatabaseAdminConnectionImpl : public DatabaseAdminConnection {
   ListDatabaseRange ListDatabases(ListDatabasesParams p) override {
     gcsa::ListDatabasesRequest request;
     request.set_parent(p.instance.FullName());
+    request.clear_page_token();
     auto stub = stub_;
     // Because we do not have C++14 generalized lambda captures we cannot just
     // use the unique_ptr<> here, so convert to shared_ptr<> instead.

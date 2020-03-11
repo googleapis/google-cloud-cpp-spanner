@@ -32,8 +32,7 @@ StatusOr<google::protobuf::Timestamp> ConvertTimePointToProtoTimestamp(
     sys_time<Duration> time_point) {
   auto const ts = MakeTimestamp(time_point);
   if (!ts) {
-    return Status(StatusCode::kInvalidArgument,
-                  "Given time_point is too extreme");
+    return ts.status();
   }
   return TimestampToProto(*ts);
 }

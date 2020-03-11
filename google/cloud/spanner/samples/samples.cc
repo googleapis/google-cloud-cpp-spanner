@@ -803,15 +803,6 @@ void ListBackupOperations(google::cloud::spanner::DatabaseAdminClient client,
 }
 //! [list-backup-operations] [END spanner_list_backup_operations]
 
-void ListBackupOperationsCommand(std::vector<std::string> const& argv) {
-  if (argv.size() != 3) {
-    throw std::runtime_error(
-        "list-backup-operations <project-id> <instance-id> <database-id>");
-  }
-  google::cloud::spanner::DatabaseAdminClient client;
-  ListBackupOperations(std::move(client), argv[0], argv[1], argv[2]);
-}
-
 //! [list-database-operations] [START spanner_list_database_operations]
 void ListDatabaseOperations(google::cloud::spanner::DatabaseAdminClient client,
                             std::string const& project_id,
@@ -2207,7 +2198,8 @@ int RunOneCommand(std::vector<std::string> argv) {
       {"delete-backup", DeleteBackupCommand},
       {"create-backup-and-cancel", CreateBackupAndCancelCommand},
       {"list-backups", ListBackupsCommand},
-      {"list-backup-operations", ListBackupOperationsCommand},
+      make_database_command_entry("list-backup-operations",
+                                  ListBackupOperations),
       {"list-database-operations", ListDatabaseOperationsCommand},
       make_database_command_entry("drop-database", DropDatabase),
       make_database_command_entry("database-get-iam-policy",
@@ -2573,7 +2565,7 @@ void RunAll(bool emulator) {
   std::cout << "\nRunning spanner_delete_data sample\n";
   DeleteData(client);
 
-  if (run_slow_integration_tests == "yes") {
+  if (run_slow_integration_tests == "yes" && (!emulator)) {
     std::string backup_id =
         google::cloud::spanner_testing::RandomBackupName(generator);
 
