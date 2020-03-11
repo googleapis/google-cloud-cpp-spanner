@@ -64,7 +64,7 @@ class Session {
   std::chrono::steady_clock::time_point last_use_time() const {
     return last_use_time_;
   }
-  void reset_last_use_time() {
+  void update_last_use_time() {
     last_use_time_ = std::chrono::steady_clock::now();
   }
 
