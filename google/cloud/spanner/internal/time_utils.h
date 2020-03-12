@@ -31,9 +31,7 @@ template <typename Duration>
 StatusOr<google::protobuf::Timestamp> ConvertTimePointToProtoTimestamp(
     sys_time<Duration> time_point) {
   auto const ts = MakeTimestamp(time_point);
-  if (!ts) {
-    return ts.status();
-  }
+  if (!ts) return std::move(ts).status();
   return TimestampToProto(*ts);
 }
 
