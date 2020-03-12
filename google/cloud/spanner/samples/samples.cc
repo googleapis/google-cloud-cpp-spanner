@@ -2174,11 +2174,15 @@ void PartitionQuery(google::cloud::spanner::Client client) {
       spanner::SqlStatement(
           "SELECT SingerId, FirstName, LastName FROM Singers"));
   if (!plan) throw std::runtime_error(plan.status().message());
+  for (auto const& plan_node : plan->plan_nodes()) {
+    std::cout << plan_node.index() << ": " << plan_node.kind() << ": " << plan_node.display_name() << "\n";
+  }
   if (plan->plan_nodes(plan->plan_nodes_size() - 1).kind() !=
           google::spanner::v1::PlanNode::RELATIONAL &&
       plan->plan_nodes(plan->plan_nodes_size() - 1).display_name() !=
-          "Distributed Union")
-    throw std::runtime_error("Query is not partitionable");
+          "Distributed Union") {
+    std::cout << "Query is not partitionable";
+  }
   //! [analyze-query]
 
   //! [partition-query]
