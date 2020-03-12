@@ -728,8 +728,8 @@ TEST(DatabaseAdminClientTest, CreateBackupCancel) {
         p.get_future().get();
         return make_status_or(op);
       })
-      .WillOnce([&p](grpc::ClientContext&,
-                     google::longrunning::GetOperationRequest const& r) {
+      .WillOnce([](grpc::ClientContext&,
+                   google::longrunning::GetOperationRequest const& r) {
         EXPECT_EQ("test-operation-name", r.name());
         google::longrunning::Operation op;
         op.set_name(r.name());
