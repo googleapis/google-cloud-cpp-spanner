@@ -700,6 +700,8 @@ TEST(DatabaseAdminClientTest, CreateBackupSuccess) {
 /// @test Verify cancellation.
 TEST(DatabaseAdminClientTest, CreateBackupCancel) {
   auto mock = std::make_shared<MockDatabaseAdminStub>();
+  // Suppress a false leak.
+  Mock::AllowLeak(mock.get());
   promise<void> p;
 
   EXPECT_CALL(*mock, CreateBackup(_, _))
@@ -746,7 +748,6 @@ TEST(DatabaseAdminClientTest, CreateBackupCancel) {
   auto backup = fut.get();
   EXPECT_STATUS_OK(backup);
   EXPECT_EQ("test-backup", backup->name());
-  EXPECT_TRUE(Mock::VerifyAndClearExpectations(mock.get()));
 }
 
 /// @test Verify that a permanent error in CreateBackup is immediately
