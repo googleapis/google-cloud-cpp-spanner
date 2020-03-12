@@ -699,6 +699,8 @@ TEST(DatabaseAdminClientTest, CreateBackupSuccess) {
 /// @test Verify cancellation.
 TEST(DatabaseAdminClientTest, CreateBackupCancel) {
   auto mock = std::make_shared<MockDatabaseAdminStub>();
+  promise<void> p;
+  future<void> f = p.get_future();
 
   EXPECT_CALL(*mock, CreateBackup(_, _))
       .WillOnce([](grpc::ClientContext&, gcsa::CreateBackupRequest const&) {
@@ -715,8 +717,17 @@ TEST(DatabaseAdminClientTest, CreateBackupCancel) {
         return google::cloud::Status();
       });
   EXPECT_CALL(*mock, GetOperation(_, _))
-      .WillRepeatedly([](grpc::ClientContext&,
-                         google::longrunning::GetOperationRequest const& r) {
+      .WillOnce([&f](grpc::ClientContext&,
+                   google::longrunning::GetOperationRequest const& r) {
+        EXPECT_EQ("test-operation-name", r.name());
+        google::longrunning::Operation op;
+        op.set_name(r.name());
+        // wait for `cancel` call in the main thread.
+        f.get();
+        return make_status_or(op);
+      })
+      .WillOnce([](grpc::ClientContext&,
+                   google::longrunning::GetOperationRequest const& r) {
         EXPECT_EQ("test-operation-name", r.name());
         google::longrunning::Operation op;
         op.set_name(r.name());
@@ -731,9 +742,9 @@ TEST(DatabaseAdminClientTest, CreateBackupCancel) {
   Database dbase("test-project", "test-instance", "test-db");
   auto fut = conn->CreateBackup({dbase, "test-backup", {}});
   fut.cancel();
+  p.set_value();
   auto backup = fut.get();
   EXPECT_STATUS_OK(backup);
-
   EXPECT_EQ("test-backup", backup->name());
 }
 
