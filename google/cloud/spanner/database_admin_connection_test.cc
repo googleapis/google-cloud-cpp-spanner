@@ -700,7 +700,6 @@ TEST(DatabaseAdminClientTest, CreateBackupSuccess) {
 TEST(DatabaseAdminClientTest, CreateBackupCancel) {
   auto mock = std::make_shared<MockDatabaseAdminStub>();
   promise<void> p;
-  future<void> f = p.get_future();
 
   EXPECT_CALL(*mock, CreateBackup(_, _))
       .WillOnce([](grpc::ClientContext&, gcsa::CreateBackupRequest const&) {
@@ -713,20 +712,23 @@ TEST(DatabaseAdminClientTest, CreateBackupCancel) {
       .WillOnce([](grpc::ClientContext&,
                    google::longrunning::CancelOperationRequest const& r) {
         EXPECT_EQ("test-operation-name", r.name());
-        google::longrunning::Operation op;
         return google::cloud::Status();
       });
   EXPECT_CALL(*mock, GetOperation(_, _))
-      .WillOnce([&f](grpc::ClientContext&,
+      .WillOnce([&p](grpc::ClientContext&,
                      google::longrunning::GetOperationRequest const& r) {
         EXPECT_EQ("test-operation-name", r.name());
         google::longrunning::Operation op;
         op.set_name(r.name());
+        op.set_done(false);
+        gcsa::Backup backup;
+        backup.set_name("test-backup");
+        op.mutable_response()->PackFrom(backup);
         // wait for `cancel` call in the main thread.
-        f.get();
+        p.get_future().get();
         return make_status_or(op);
       })
-      .WillOnce([](grpc::ClientContext&,
+      .WillOnce([&p](grpc::ClientContext&,
                    google::longrunning::GetOperationRequest const& r) {
         EXPECT_EQ("test-operation-name", r.name());
         google::longrunning::Operation op;
