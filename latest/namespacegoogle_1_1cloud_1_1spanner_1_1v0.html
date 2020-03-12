@@ -444,8 +444,6 @@ Functions</h2></td></tr>
 <tr class="separator:a715e0bbb465ff09b464476c5e17233e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8859ae3327162cdab57cbafd2bd92727"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a8859ae3327162cdab57cbafd2bd92727">operator==</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> const &amp;a, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> const &amp;b)</td></tr>
 <tr class="separator:a8859ae3327162cdab57cbafd2bd92727"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afeeb8397799463d7cf6386cd1315013e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#afeeb8397799463d7cf6386cd1315013e">PrintTo</a> (<a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> const &amp;v, std::ostream *os)</td></tr>
-<tr class="separator:afeeb8397799463d7cf6386cd1315013e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66b78d4211196ee1197cb179d425a973"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a66b78d4211196ee1197cb179d425a973">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> const &amp;v)</td></tr>
 <tr class="separator:a66b78d4211196ee1197cb179d425a973"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3b5712ab2b1add6e7e610effc5f35b4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -1468,7 +1466,7 @@ template&lt;typename T &gt; </div>
 <p>Factory to construct a "null" <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html" title="The Value class represents a type-safe, nullable Spanner value.">Value</a> of the specified type <code>T</code>. </p>
 <p>This is equivalent to passing an <code>optional&lt;T&gt;</code> without a value to the constructor, though this factory may be easier to invoke and result in clearer code at the call site. </p>
 
-<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00643">643</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8h_source.html#l00642">642</a> of file <a class="el" href="value_8h_source.html">value.h</a>.</p>
 
 </div>
 </div>
@@ -2147,6 +2145,7 @@ template&lt;typename... Ts&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="section warning"><dt>Warning</dt><dd>This is intended for debugging and human consumption only, not machine consumption, as the output format may change without notice. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="sql__statement_8cc_source.html#l00058">58</a> of file <a class="el" href="sql__statement_8cc_source.html">sql_statement.cc</a>.</p>
 
@@ -2177,10 +2176,10 @@ template&lt;typename... Ts&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section warning"><dt>Warning</dt><dd>This is intended for debugging and human consumption only, not machine consumption as the output format may change without notice.</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>This is intended for debugging and human consumption only, not machine consumption, as the output format may change without notice.</dd></dl>
 <dl class="section user"><dt>Example:</dt><dd><div class="fragment"><div class="line">spanner::Value v{42};</div><div class="line">std::cout &lt;&lt; v &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div></div><!-- fragment --> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00177">177</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00173">173</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
 
 </div>
 </div>
@@ -2743,7 +2742,7 @@ template&lt;typename... Ts&gt; </div>
 </div>
 </div>
 <a id="a84d22bc4420b8d5ef47776274fce29ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84d22bc4420b8d5ef47776274fce29ee">&#9670;&nbsp;</a></span>PrintTo() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a84d22bc4420b8d5ef47776274fce29ee">&#9670;&nbsp;</a></span>PrintTo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2770,37 +2769,6 @@ template&lt;typename... Ts&gt; </div>
 <dl class="section warning"><dt>Warning</dt><dd>This is intended for debugging and human consumption only, not machine consumption as the output format may change without notice. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="mutations_8cc_source.html#l00029">29</a> of file <a class="el" href="mutations_8cc_source.html">mutations.cc</a>.</p>
-
-</div>
-</div>
-<a id="afeeb8397799463d7cf6386cd1315013e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afeeb8397799463d7cf6386cd1315013e">&#9670;&nbsp;</a></span>PrintTo() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void google::cloud::spanner::v0::PrintTo </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Value.html">Value</a> const &amp;&#160;</td>
-          <td class="paramname"><em>v</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::ostream *&#160;</td>
-          <td class="paramname"><em>os</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section warning"><dt>Warning</dt><dd>This is intended for debugging and human consumption only, not machine consumption as the output format may change without notice. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="value_8cc_source.html#l00173">173</a> of file <a class="el" href="value_8cc_source.html">value.cc</a>.</p>
 
 </div>
 </div>
