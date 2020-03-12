@@ -94,6 +94,11 @@ if [[ "${BUILD_TYPE}" == "Coverage" ]]; then
 fi
 readonly TEST_JOB_COUNT
 
+ctest_args=("--output-on-failure" "-j" "${TEST_JOB_COUNT}")
+if [[ -n "${RUNS_PER_TEST}" ]]; then
+    ctest_args+=("--repeat-until-fail" "${RUNS_PER_TEST}")
+fi
+
 # When user a super-build the tests are hidden in a subdirectory. We can tell
 # that ${BINARY_DIR} does not have the tests by checking for this file:
 if [[ -r "${BINARY_DIR}/CTestTestfile.cmake" ]]; then
@@ -102,7 +107,7 @@ if [[ -r "${BINARY_DIR}/CTestTestfile.cmake" ]]; then
   # automatically runs them.
   echo "Running the unit tests $(date)"
   env -C "${BINARY_DIR}" ctest \
-      -LE integration-tests --output-on-failure -j "${TEST_JOB_COUNT}"
+      -LE integration-tests "${ctest_args[@]}"
   echo "================================================================"
 fi
 
@@ -122,7 +127,7 @@ if [[ "${RUN_INTEGRATION_TESTS}" == "yes" || \
 
   # Run the integration tests too.
   env -C "${BINARY_DIR}" ctest \
-      -L integration-tests --output-on-failure -j "${TEST_JOB_COUNT}"
+      -L integration-tests "${ctest_args[@]}"
   echo "================================================================"
 fi
 

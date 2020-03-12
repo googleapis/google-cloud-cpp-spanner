@@ -372,7 +372,8 @@ docker_flags=(
     # baseline.
     "--env" "UPDATE_API=${UPDATE_API:-}"
 
-    # If set, add a flag --runs_per_test=<value> to bazel
+    # If set, add a flag --runs_per_test=<value> to bazel or --repeat-until-fail
+    # to ctest.
     "--env" "RUNS_PER_TEST=${RUNS_PER_TEST:-}"
 
     # Tells scripts whether they are running as part of a CI or not.
