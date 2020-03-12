@@ -701,6 +701,8 @@ TEST(DatabaseAdminClientTest, CreateBackupSuccess) {
 TEST(DatabaseAdminClientTest, CreateBackupCancel) {
   auto mock = std::make_shared<MockDatabaseAdminStub>();
   // Suppress a false leak.
+  // TODO(#127): After we fix the issue #127, we won't need to use
+  // `AllowLeak()` any more.
   Mock::AllowLeak(mock.get());
   promise<void> p;
 
@@ -748,6 +750,8 @@ TEST(DatabaseAdminClientTest, CreateBackupCancel) {
   auto backup = fut.get();
   EXPECT_STATUS_OK(backup);
   EXPECT_EQ("test-backup", backup->name());
+  // Explicitly verify the expectations in the mock.
+  EXPECT_TRUE(Mock::VerifyAndClearExpectations(mock.get()));
 }
 
 /// @test Verify that a permanent error in CreateBackup is immediately
