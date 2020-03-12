@@ -21,6 +21,7 @@
 #include <gmock/gmock.h>
 #include <chrono>
 #include <cmath>
+#include <ios>
 #include <limits>
 #include <string>
 #include <tuple>
@@ -937,8 +938,17 @@ TEST(Value, CommitTimestamp) {
   EXPECT_FALSE(bad.ok());
 }
 
+// This TEST_P fixture expects a "Param" that is a std::tuple containing the
+// following members:
+//
+// 1. The test case's name. This is for gtest and needs to be unique.
+// 2. The `Value` instance to stringify.
+// 3. The expect stringified string value
+// 4. An optional lambda (nullptr is allowed) that may apply IO manipulators to
+//    the ostream that may affect the rendered output of the stringified `Value.
 class ValueStreamOperator
-    : public TestWithParam<std::tuple<std::string, Value, std::string>> {
+    : public TestWithParam<std::tuple<std::string, Value, std::string,
+                                      std::function<void(std::ostream&)>>> {
  public:
   static std::string TestName(
       TestParamInfo<ValueStreamOperator::ParamType> const& info) {
@@ -948,62 +958,94 @@ class ValueStreamOperator
 
 TEST_P(ValueStreamOperator, ValueType) {
   auto param = GetParam();
-  std::stringstream scalar_value_stream;
-  scalar_value_stream << std::get<1>(param);
-  EXPECT_EQ(scalar_value_stream.str(), std::get<2>(param));
+  std::stringstream ss;
+  if (auto f = std::get<3>(param)) f(ss);
+  ss << std::get<1>(param);
+  EXPECT_EQ(ss.str(), std::get<2>(param));
 }
 
 INSTANTIATE_TEST_SUITE_P(
     ValueStreamOperatorScalar, ValueStreamOperator,
     testing::Values(
-        std::make_tuple("Bool", Value(false), "FALSE"),
-        std::make_tuple("Int64", Value(42), "42"),
-        std::make_tuple("NullInt64", MakeNullValue<std::int64_t>(), "NULL"),
-        std::make_tuple("Float64", Value(42.0), "42"),
-        std::make_tuple("InfinityFloat64",
-                        Value(std::numeric_limits<double>::infinity()),
-                        "Infinity"),
-        std::make_tuple("NegativeInfinityFloat64",
-                        Value(-std::numeric_limits<double>::infinity()),
-                        "-Infinity"),
-        std::make_tuple("NaNFloat64", Value(std::nan("NaN")), "NaN"),
+        std::make_tuple("Bool", Value(false), "0", nullptr),
+        std::make_tuple("BoolAlpha", Value(false), "false",
+                        [](std::ostream& os) { os << std::boolalpha; }),
+        std::make_tuple("Int64", Value(42), "42", nullptr),
+        std::make_tuple("Int64Hex", Value(42), "2a",
+                        [](std::ostream& os) { os << std::hex; }),
+        std::make_tuple("NullInt64", MakeNullValue<std::int64_t>(), "NULL",
+                        nullptr),
+        std::make_tuple("Float64", Value(42.0), "42", nullptr),
+        std::make_tuple("Float64Point", Value(42.0), "42.00",
+                        [](std::ostream& os) {
+                          os << std::showpoint << std::setprecision(4);
+                        }),
+        std::make_tuple("InfFloat64",
+                        Value(std::numeric_limits<double>::infinity()), "inf",
+                        nullptr),
+        std::make_tuple("NegativeInfFloat64",
+                        Value(-std::numeric_limits<double>::infinity()), "-inf",
+                        nullptr),
+        std::make_tuple("NaNFloat64", Value(std::nan("NaN")), "nan", nullptr),
         std::make_tuple("String", Value("Seatac Astronomy"),
-                        "\"Seatac Astronomy\""),
-        std::make_tuple("EmptyString", Value(""), "\"\""),
+                        "\"Seatac Astronomy\"", nullptr),
+        std::make_tuple("EmptyString", Value(""), "\"\"", nullptr),
         std::make_tuple("StringNullValue", Value(optional<std::string>()),
-                        "NULL"),
-        std::make_tuple("StringLiteralNullValue", Value("NULL"), "\"NULL\""),
+                        "NULL", nullptr),
+        std::make_tuple("StringLiteralNullValue", Value("NULL"), "\"NULL\"",
+                        nullptr),
         std::make_tuple("Bytes", Value(Bytes(std::string("DEADBEEF"))),
-                        "B\"DEADBEEF\""),
+                        "B\"DEADBEEF\"", nullptr),
         std::make_tuple(
             "Timestamp",
             Value(MakeTimestamp(MakeTimePoint(1561147549LL, 0)).value()),
-            "2019-06-21T20:05:49Z"),
-        std::make_tuple("Date", Value(Date(1970, 1, 1)), "1970-01-01")),
+            "2019-06-21T20:05:49Z", nullptr),
+        std::make_tuple("Date", Value(Date(1970, 1, 1)), "1970-01-01",
+                        nullptr)),
     ValueStreamOperator::TestName);
 
 INSTANTIATE_TEST_SUITE_P(
     ValueStreamOperatorArray, ValueStreamOperator,
     testing::Values(
+        std::make_tuple("Bool", Value(std::vector<bool>{true, false, true}),
+                        "[1, 0, 1]", nullptr),
+        std::make_tuple("BoolAlpha",
+                        Value(std::vector<bool>{true, false, true}),
+                        "[true, false, true]",
+                        [](std::ostream& os) { os << std::boolalpha; }),
         std::make_tuple("Int64", Value(std::vector<std::int64_t>{1, 2, 3}),
-                        "[1, 2, 3]"),
-        std::make_tuple("EmptyInt64", Value(std::vector<std::int64_t>()), "[]"),
+                        "[1, 2, 3]", nullptr),
+        std::make_tuple("Int64Hex",
+                        Value(std::vector<std::int64_t>{10, 11, 12}),
+                        "[a, b, c]", [](std::ostream& os) { os << std::hex; }),
+        std::make_tuple("EmptyInt64", Value(std::vector<std::int64_t>()), "[]",
+                        nullptr),
         std::make_tuple("NullInt64", MakeNullValue<std::vector<std::int64_t>>(),
-                        "NULL"),
+                        "NULL", nullptr),
         std::make_tuple("NullableInt64",
                         Value(std::vector<optional<std::int64_t>>{
                             1, optional<std::int64_t>(), 3}),
-                        "[1, NULL, 3]")),
+                        "[1, NULL, 3]", nullptr),
+        std::make_tuple(
+            "Float64Point", Value(std::vector<double>{1.0, 2.0, 3.0}),
+            "[1.0, 2.0, 3.0]",
+            [](std::ostream&
+                   os) { os << std::showpoint << std::setprecision(2); })),
     ValueStreamOperator::TestName);
 
 INSTANTIATE_TEST_SUITE_P(
     ValueStreamOperatorStruct, ValueStreamOperator,
     testing::Values(
         std::make_tuple("BoolInt64", Value(std::make_tuple(true, 123)),
-                        "(TRUE, 123)"),
+                        "(1, 123)", nullptr),
+        std::make_tuple("BoolInt64AlphaHex", Value(std::make_tuple(true, 123)),
+                        "(true, 7b)",
+                        [](std::ostream& os) {
+                          os << std::boolalpha << std::hex;
+                        }),
         std::make_tuple("NullBoolInt64",
-                        MakeNullValue<std::tuple<bool, std::int64_t>>(),
-                        "NULL"),
+                        MakeNullValue<std::tuple<bool, std::int64_t>>(), "NULL",
+                        nullptr),
         std::make_tuple("MixedArrays",
                         Value(std::make_tuple(
                             std::vector<std::int64_t>{1, 2, 3},
@@ -1011,26 +1053,32 @@ INSTANTIATE_TEST_SUITE_P(
                                            std::vector<double>{4.1, 5.2, 6.3}),
                             std::vector<std::int64_t>{7, 8, 9, 10})),
                         "([1, 2, 3], Middle: [4.1, 5.2, 6.3], "
-                        "[7, 8, 9, 10])"),
+                        "[7, 8, 9, 10])",
+                        nullptr),
         std::make_tuple("StructInception",
                         Value(std::make_tuple(std::make_tuple(std::make_tuple(
                             std::vector<std::int64_t>{1, 2, 3})))),
-                        "((([1, 2, 3])))"),
+                        "((([1, 2, 3])))", nullptr),
+        std::make_tuple("StructInceptionHex",
+                        Value(std::make_tuple(std::make_tuple(std::make_tuple(
+                            std::vector<std::int64_t>{10, 11, 12})))),
+                        "((([a, b, c])))",
+                        [](std::ostream& os) { os << std::hex; }),
         std::make_tuple("StructWithFieldNames",
                         Value(std::make_tuple(std::make_pair("Last", "Blues"),
                                               std::make_pair("First",
                                                              "Elwood"))),
-                        "(Last: \"Blues\", First: \"Elwood\")"),
+                        "(Last: \"Blues\", First: \"Elwood\")", nullptr),
         std::make_tuple("StructWithNullFieldFirst",
                         Value(std::make_tuple(optional<bool>(), 123)),
-                        "(NULL, 123)"),
+                        "(NULL, 123)", nullptr),
         std::make_tuple("StructWithNullFieldLast",
                         Value(std::make_tuple(true, optional<std::int64_t>())),
-                        "(TRUE, NULL)"),
+                        "(1, NULL)", nullptr),
         std::make_tuple("StructWithNullFieldMiddle",
                         Value(std::make_tuple(true, optional<std::int64_t>(),
                                               42.0)),
-                        "(TRUE, NULL, 42)")),
+                        "(1, NULL, 42)", nullptr)),
     ValueStreamOperator::TestName);
 
 }  // namespace
