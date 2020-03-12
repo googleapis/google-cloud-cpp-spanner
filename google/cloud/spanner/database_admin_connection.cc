@@ -24,6 +24,78 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace gcsa = ::google::spanner::admin::database::v1;
 
+future<StatusOr<google::spanner::admin::database::v1::Backup>>
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+DatabaseAdminConnection::CreateBackup(CreateBackupParams) {
+  return google::cloud::make_ready_future(StatusOr<gcsa::Backup>(
+      Status(StatusCode::kUnimplemented, "not implemented")));
+}
+
+future<StatusOr<google::spanner::admin::database::v1::Database>>
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+DatabaseAdminConnection::RestoreDatabase(RestoreDatabaseParams) {
+  return google::cloud::make_ready_future(StatusOr<gcsa::Database>(
+      Status(StatusCode::kUnimplemented, "not implemented")));
+}
+
+StatusOr<google::spanner::admin::database::v1::Backup>
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+DatabaseAdminConnection::GetBackup(GetBackupParams) {
+  return Status(StatusCode::kUnimplemented, "not implemented");
+}
+
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+Status DatabaseAdminConnection::DeleteBackup(DeleteBackupParams) {
+  return Status(StatusCode::kUnimplemented, "not implemented");
+}
+
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+ListBackupsRange DatabaseAdminConnection::ListBackups(ListBackupsParams) {
+  return ListBackupsRange(
+      gcsa::ListBackupsRequest{},
+      [](gcsa::ListBackupsRequest const&) {
+        return StatusOr<gcsa::ListBackupsResponse>(
+            Status(StatusCode::kUnimplemented, "not implemented"));
+      },
+      [](gcsa::ListBackupsResponse const&) {
+        return std::vector<gcsa::Backup>{};
+      });
+}
+
+StatusOr<google::spanner::admin::database::v1::Backup>
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+DatabaseAdminConnection::UpdateBackup(UpdateBackupParams) {
+  return Status(StatusCode::kUnimplemented, "not implemented");
+}
+
+ListBackupOperationsRange DatabaseAdminConnection::ListBackupOperations(
+    // NOLINTNEXTLINE(performance-unnecessary-value-param)
+    ListBackupOperationsParams) {
+  return ListBackupOperationsRange(
+      gcsa::ListBackupOperationsRequest{},
+      [](gcsa::ListBackupOperationsRequest const&) {
+        return StatusOr<gcsa::ListBackupOperationsResponse>(
+            Status(StatusCode::kUnimplemented, "not implemented"));
+      },
+      [](gcsa::ListBackupOperationsResponse const&) {
+        return std::vector<google::longrunning::Operation>{};
+      });
+}
+
+ListDatabaseOperationsRange DatabaseAdminConnection::ListDatabaseOperations(
+    // NOLINTNEXTLINE(performance-unnecessary-value-param)
+    ListDatabaseOperationsParams) {
+  return ListDatabaseOperationsRange(
+      gcsa::ListDatabaseOperationsRequest{},
+      [](gcsa::ListDatabaseOperationsRequest const&) {
+        return StatusOr<gcsa::ListDatabaseOperationsResponse>(
+            Status(StatusCode::kUnimplemented, "not implemented"));
+      },
+      [](gcsa::ListDatabaseOperationsResponse const&) {
+        return std::vector<google::longrunning::Operation>{};
+      });
+}
+
 namespace {
 
 std::unique_ptr<RetryPolicy> DefaultAdminRetryPolicy() {

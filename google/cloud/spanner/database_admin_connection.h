@@ -259,7 +259,7 @@ class DatabaseAdminConnection {
   /// Define the interface for a google.spanner.v1.DatabaseAdmin.RestoreDatabase
   /// RPC.
   virtual future<StatusOr<google::spanner::admin::database::v1::Database>>
-      RestoreDatabase(RestoreDatabaseParams) = 0;
+      RestoreDatabase(RestoreDatabaseParams);
 
   /// Define the interface for a google.spanner.v1.DatabaseAdmin.GetIamPolicy
   /// RPC.
@@ -279,34 +279,34 @@ class DatabaseAdminConnection {
   /// Define the interface for a google.spanner.v1.DatabaseAdmin.CreateBackup
   /// RPC.
   virtual future<StatusOr<google::spanner::admin::database::v1::Backup>>
-      CreateBackup(CreateBackupParams) = 0;
+      CreateBackup(CreateBackupParams);
 
   /// Define the interface for a google.spanner.v1.DatabaseAdmin.GetBackup RPC.
   virtual StatusOr<google::spanner::admin::database::v1::Backup> GetBackup(
-      GetBackupParams) = 0;
+      GetBackupParams);
 
   /// Define the interface for a google.spanner.v1.DatabaseAdmin.DeleteBackup
   /// RPC.
-  virtual Status DeleteBackup(DeleteBackupParams) = 0;
+  virtual Status DeleteBackup(DeleteBackupParams);
 
   /// Define the interface for a google.spanner.v1.DatabaseAdmin.ListBackups
   /// RPC.
-  virtual ListBackupsRange ListBackups(ListBackupsParams) = 0;
+  virtual ListBackupsRange ListBackups(ListBackupsParams);
 
   /// Define the interface for a google.spanner.v1.DatabaseAdmin.UpdateBackup
   /// RPC.
   virtual StatusOr<google::spanner::admin::database::v1::Backup> UpdateBackup(
-      UpdateBackupParams) = 0;
+      UpdateBackupParams);
 
   /// Define the interface for a
   /// google.spanner.v1.DatabaseAdmin.ListBackupOperations RPC.
   virtual ListBackupOperationsRange ListBackupOperations(
-      ListBackupOperationsParams) = 0;
+      ListBackupOperationsParams);
 
   /// Define the interface for a
   /// google.spanner.v1.DatabaseAdmin.ListDatabaseOperations RPC.
   virtual ListDatabaseOperationsRange ListDatabaseOperations(
-      ListDatabaseOperationsParams) = 0;
+      ListDatabaseOperationsParams);
 };
 
 /**
