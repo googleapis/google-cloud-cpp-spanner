@@ -31,6 +31,7 @@ using ::google::protobuf::TextFormat;
 using ::testing::_;
 using ::testing::AtLeast;
 using ::testing::ElementsAre;
+using ::testing::Mock;
 using ::testing::Return;
 namespace gcsa = ::google::spanner::admin::database::v1;
 
@@ -745,6 +746,7 @@ TEST(DatabaseAdminClientTest, CreateBackupCancel) {
   auto backup = fut.get();
   EXPECT_STATUS_OK(backup);
   EXPECT_EQ("test-backup", backup->name());
+  EXPECT_TRUE(Mock::VerifyAndClearExpectations(mock.get()));
 }
 
 /// @test Verify that a permanent error in CreateBackup is immediately
