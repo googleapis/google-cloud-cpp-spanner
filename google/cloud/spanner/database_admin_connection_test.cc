@@ -718,7 +718,7 @@ TEST(DatabaseAdminClientTest, CreateBackupCancel) {
       });
   EXPECT_CALL(*mock, GetOperation(_, _))
       .WillOnce([&f](grpc::ClientContext&,
-                   google::longrunning::GetOperationRequest const& r) {
+                     google::longrunning::GetOperationRequest const& r) {
         EXPECT_EQ("test-operation-name", r.name());
         google::longrunning::Operation op;
         op.set_name(r.name());
