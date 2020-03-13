@@ -15,11 +15,14 @@
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/spanner/internal/date.h"
 #include "google/cloud/log.h"
+#include <cctype>
 #include <cerrno>
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
+#include <iomanip>
 #include <ios>
+#include <sstream>
 #include <string>
 
 namespace google {
@@ -111,11 +114,24 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
     case google::spanner::v1::DATE:
       return os << v.string_value();
 
-    case google::spanner::v1::BYTES:
-      return os
-             << "B\""
-             << internal::BytesFromBase64(v.string_value())->get<std::string>()
-             << "\"";
+    case google::spanner::v1::BYTES: {
+      auto const bytes = internal::BytesFromBase64(v.string_value())
+                             ->get<std::vector<unsigned char>>();
+      // Uses a separate stream so we don't mess up the formatting configured
+      // on the caller-provided `os` stream. The format used is B"...", where
+      // printable characters are included normally, and unprintable characters
+      // are printed in octal like "\011".
+      std::ostringstream ss;
+      ss << std::setfill('0') << std::oct;
+      for (char const byte : bytes) {
+        if (!std::isprint(byte)) {
+          ss << R"(\)" << std::setw(3) << static_cast<int>(byte);
+        } else {
+          ss << byte;
+        }
+      }
+      return os << R"(B")" << ss.str() << R"(")";
+    }
 
     case google::spanner::v1::ARRAY: {
       const char* delimiter = "";

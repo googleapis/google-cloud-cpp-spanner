@@ -988,6 +988,18 @@ TEST(Value, OutputStream) {
       {MakeNullValue<Date>(), "NULL", normal},
       {MakeNullValue<Timestamp>(), "NULL", normal},
 
+      // Tests escaping of bytes
+      {Value(Bytes(std::string("ab\tZ"))), R"(B"ab\011Z")", normal},
+      {Value(Bytes(std::string("ab\tZ"))), R"(B"ab\011Z")", hex},
+      {Value(Bytes(std::string("ab\001Z\0211"))), R"(B"ab\001Z\0211")", normal},
+      {Value(Bytes(std::string("ab\001Z\0211"))), R"(B"ab\001Z\0211")", hex},
+      {Value(Bytes(std::string(3, '\0'))), R"(B"\000\000\000")", normal},
+      {Value(Bytes(std::string(3, '\0'))), R"(B"\000\000\000")", hex},
+      {Value(Bytes(std::string("!@#$%^&*()-."))), R"(B"!@#$%^&*()-.")", normal},
+      {Value(Bytes(std::string("!@#$%^&*()-."))), R"(B"!@#$%^&*()-.")", hex},
+      {Value(Bytes("foo")), R"(B"foo\000")", normal},
+      {Value(Bytes("foo")), R"(B"foo\000")", hex},
+
       // Tests arrays
       {Value(std::vector<bool>{false, true}), "[0, 1]", normal},
       {Value(std::vector<bool>{false, true}), "[false, true]", boolalpha},
