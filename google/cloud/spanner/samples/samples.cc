@@ -1465,7 +1465,7 @@ void ProfileDmlStandardUpdate(google::cloud::spanner::Client client) {
   using ::google::cloud::StatusOr;
   namespace spanner = ::google::cloud::spanner;
   //! [profile-dml]
-  StatusOr<spanner::ProfileDmlResult> dml_result;
+  spanner::ProfileDmlResult dml_result;
   auto commit_result = client.Commit(
       [&client,
        &dml_result](spanner::Transaction txn) -> StatusOr<spanner::Mutations> {
@@ -1475,7 +1475,7 @@ void ProfileDmlStandardUpdate(google::cloud::spanner::Client client) {
                 "UPDATE Albums SET MarketingBudget = MarketingBudget * 2"
                 " WHERE SingerId = 1 AND AlbumId = 1"));
         if (!update) return update.status();
-        dml_result = std::move(update);
+        dml_result = *std::move(update);
         return spanner::Mutations{};
       });
   if (!commit_result) {
@@ -1483,13 +1483,11 @@ void ProfileDmlStandardUpdate(google::cloud::spanner::Client client) {
   }
 
   // Stats only available after statement has been executed.
-  if (dml_result) {
-    std::cout << "Rows modified: " << dml_result->RowsModified();
-    auto execution_stats = dml_result->ExecutionStats();
-    if (execution_stats) {
-      for (auto const& stat : *execution_stats) {
-        std::cout << stat.first << ":\t" << stat.second << "\n";
-      }
+  std::cout << "Rows modified: " << dml_result.RowsModified();
+  auto execution_stats = dml_result.ExecutionStats();
+  if (execution_stats) {
+    for (auto const& stat : *execution_stats) {
+      std::cout << stat.first << ":\t" << stat.second << "\n";
     }
   }
   //! [profile-dml]
