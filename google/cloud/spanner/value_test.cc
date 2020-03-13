@@ -1071,7 +1071,7 @@ TEST(Value, OutputStream) {
 TEST(Value, OutputStreamBytesEscaping) {
   using ByteType = unsigned char;
   // The expected value for `b` is `b` if it's printable, otherwise it's b's
-  // octal escape sequence like `\000`.
+  // octal escape sequence like `\000`. Whitespace short forms are preferred.
   auto get_expected = [](ByteType b) {
     std::ostringstream expected;
     switch (b) {
