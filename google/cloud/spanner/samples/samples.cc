@@ -1257,7 +1257,7 @@ void ProfileQuery(google::cloud::spanner::Client client) {
   spanner::SqlStatement select(
       "SELECT AlbumId, AlbumTitle, MarketingBudget"
       " FROM Albums"
-      " WHERE AlbumTitle >= Aardvark AND AlbumTitle < Goo");
+      " WHERE AlbumTitle >= 'Aardvark' AND AlbumTitle < 'Goo'");
   auto profile_query_result = client.ProfileQuery(std::move(select));
   for (auto const& row : profile_query_result) {
     if (!row) throw std::runtime_error(row.status().message());
