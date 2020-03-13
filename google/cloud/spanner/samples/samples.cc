@@ -2151,7 +2151,8 @@ void PartitionQuery(google::cloud::spanner::Client client) {
   // Only SQL queries with a Distributed Union as the first operator in the
   // `ExecutionPlan` can be partitioned.
   auto is_partitionable = [](spanner::ExecutionPlan const& plan) {
-    return (plan.plan_nodes(0).kind() ==
+    return (!plan.plan_nodes().empty() &&
+            plan.plan_nodes(0).kind() ==
                 google::spanner::v1::PlanNode::RELATIONAL &&
             plan.plan_nodes(0).display_name() == "Distributed Union");
   };
