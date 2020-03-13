@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) try {
       client.ExecuteQuery(spanner::SqlStatement("SELECT 'Hello World'"));
 
   for (auto const& row : spanner::StreamOf<std::tuple<std::string>>(rows)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << std::get<0>(*row) << "\n";
   }
 

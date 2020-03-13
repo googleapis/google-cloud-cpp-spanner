@@ -43,7 +43,7 @@ void GetInstance(google::cloud::spanner::InstanceAdminClient client,
                  std::string const& instance_id) {
   google::cloud::spanner::Instance in(project_id, instance_id);
   auto instance = client.GetInstance(in);
-  if (!instance) throw std::runtime_error(instance.status().message());
+  if (!instance) throw google::cloud::RuntimeStatusError(instance.status());
 
   std::cout << "The instance " << instance->name()
             << " exists and its metadata is:\n"
@@ -93,7 +93,7 @@ void CreateInstance(google::cloud::spanner::InstanceAdminClient client,
               .Build());
   StatusOr<google::spanner::admin::instance::v1::Instance> instance = f.get();
   if (!instance) {
-    throw std::runtime_error(instance.status().message());
+    throw google::cloud::RuntimeStatusError(instance.status());
   }
   std::cout << "Created instance [" << in << "]\n";
 }
@@ -121,7 +121,7 @@ void UpdateInstance(google::cloud::spanner::InstanceAdminClient client,
           .SetDisplayName(new_display_name)
           .Build());
   auto instance = f.get();
-  if (!instance) throw std::runtime_error(instance.status().message());
+  if (!instance) throw google::cloud::RuntimeStatusError(instance.status());
   std::cout << "Updated instance [" << in << "]\n";
 }
 //! [update-instance]
@@ -143,7 +143,7 @@ void DeleteInstance(google::cloud::spanner::InstanceAdminClient client,
   google::cloud::spanner::Instance in(project_id, instance_id);
 
   auto status = client.DeleteInstance(in);
-  if (!status.ok()) throw std::runtime_error(status.message());
+  if (!status.ok()) throw google::cloud::RuntimeStatusError(status);
   std::cout << "Deleted instance [" << in << "]\n";
 }
 //! [delete-instance]
@@ -163,7 +163,7 @@ void ListInstanceConfigs(google::cloud::spanner::InstanceAdminClient client,
   int count = 0;
   for (auto const& instance_config : client.ListInstanceConfigs(project_id)) {
     if (!instance_config) {
-      throw std::runtime_error(instance_config.status().message());
+      throw google::cloud::RuntimeStatusError(instance_config.status());
     }
     ++count;
     std::cout << "Instance config [" << count << "]:\n"
@@ -191,7 +191,7 @@ void GetInstanceConfig(google::cloud::spanner::InstanceAdminClient client,
   auto instance_config = client.GetInstanceConfig(
       "projects/" + project_id + "/instanceConfigs/" + instance_config_name);
   if (!instance_config) {
-    throw std::runtime_error(instance_config.status().message());
+    throw google::cloud::RuntimeStatusError(instance_config.status());
   }
 
   std::cout << "The instanceConfig " << instance_config->name()
@@ -215,7 +215,7 @@ void ListInstances(google::cloud::spanner::InstanceAdminClient client,
                    std::string const& project_id) {
   int count = 0;
   for (auto const& instance : client.ListInstances(project_id, "")) {
-    if (!instance) throw std::runtime_error(instance.status().message());
+    if (!instance) throw google::cloud::RuntimeStatusError(instance.status());
     ++count;
     std::cout << "Instance [" << count << "]:\n"
               << instance->DebugString() << "\n";
@@ -241,7 +241,7 @@ void InstanceGetIamPolicy(google::cloud::spanner::InstanceAdminClient client,
                           std::string const& instance_id) {
   google::cloud::spanner::Instance in(project_id, instance_id);
   auto actual = client.GetIamPolicy(in);
-  if (!actual) throw std::runtime_error(actual.status().message());
+  if (!actual) throw google::cloud::RuntimeStatusError(actual.status());
 
   std::cout << "The IAM policy for instance " << instance_id << " is:\n"
             << actual->DebugString() << "\n";
@@ -297,7 +297,7 @@ void AddDatabaseReader(google::cloud::spanner::InstanceAdminClient client,
         return current;
       });
 
-  if (!result) throw std::runtime_error(result.status().message());
+  if (!result) throw google::cloud::RuntimeStatusError(result.status());
   std::cout << "Successfully added " << new_reader
             << " to the database reader role:\n"
             << result->DebugString() << "\n";
@@ -346,7 +346,7 @@ void RemoveDatabaseReader(google::cloud::spanner::InstanceAdminClient client,
         return current;
       });
 
-  if (!result) throw std::runtime_error(result.status().message());
+  if (!result) throw google::cloud::RuntimeStatusError(result.status());
   std::cout << "Successfully removed " << reader
             << " from the database reader role:\n"
             << result->DebugString() << "\n";
@@ -369,7 +369,7 @@ void InstanceTestIamPermissions(
     std::string const& project_id, std::string const& instance_id) {
   google::cloud::spanner::Instance in(project_id, instance_id);
   auto actual = client.TestIamPermissions(in, {"spanner.databases.list"});
-  if (!actual) throw std::runtime_error(actual.status().message());
+  if (!actual) throw google::cloud::RuntimeStatusError(actual.status());
 
   char const* msg = actual->permissions().empty() ? "does not" : "does";
 
@@ -415,7 +415,7 @@ void CreateDatabase(google::cloud::spanner::DatabaseAdminClient client,
           ) PRIMARY KEY (SingerId, AlbumId),
               INTERLEAVE IN PARENT Singers ON DELETE CASCADE)"""});
   StatusOr<google::spanner::admin::database::v1::Database> db = f.get();
-  if (!db) throw std::runtime_error(db.status().message());
+  if (!db) throw google::cloud::RuntimeStatusError(db.status());
   std::cout << "Created database [" << database << "]\n";
 }
 //! [create-database] [END spanner_create_database]
@@ -443,7 +443,7 @@ void CreateTableWithTimestamp(
                 INTERLEAVE IN PARENT Singers ON DELETE CASCADE)"""});
   StatusOr<google::spanner::admin::database::v1::UpdateDatabaseDdlMetadata>
       metadata = f.get();
-  if (!metadata) throw std::runtime_error(metadata.status().message());
+  if (!metadata) throw google::cloud::RuntimeStatusError(metadata.status());
   std::cout << "`Performances` table created, new DDL:\n"
             << metadata->DebugString() << "\n";
 }
@@ -463,7 +463,7 @@ void AddIndex(google::cloud::spanner::DatabaseAdminClient client,
           database, {"CREATE INDEX AlbumsByAlbumTitle ON Albums(AlbumTitle)"});
   StatusOr<google::spanner::admin::database::v1::UpdateDatabaseDdlMetadata>
       metadata = f.get();
-  if (!metadata) throw std::runtime_error(metadata.status().message());
+  if (!metadata) throw google::cloud::RuntimeStatusError(metadata.status());
   std::cout << "`AlbumsByAlbumTitle` Index successfully added, new DDL:\n"
             << metadata->DebugString() << "\n";
 }
@@ -476,7 +476,7 @@ void GetDatabase(google::cloud::spanner::DatabaseAdminClient client,
   namespace spanner = ::google::cloud::spanner;
   auto database = client.GetDatabase(
       spanner::Database(project_id, instance_id, database_id));
-  if (!database) throw std::runtime_error(database.status().message());
+  if (!database) throw google::cloud::RuntimeStatusError(database.status());
   std::cout << "Database metadata is:\n" << database->DebugString() << "\n";
 }
 //! [get-database]
@@ -489,7 +489,7 @@ void GetDatabaseDdl(google::cloud::spanner::DatabaseAdminClient client,
   namespace spanner = ::google::cloud::spanner;
   auto database = client.GetDatabaseDdl(
       spanner::Database(project_id, instance_id, database_id));
-  if (!database) throw std::runtime_error(database.status().message());
+  if (!database) throw google::cloud::RuntimeStatusError(database.status());
   std::cout << "Database metadata is:\n" << database->DebugString() << "\n";
 }
 //! [get-database-ddl]
@@ -508,7 +508,7 @@ void AddColumn(google::cloud::spanner::DatabaseAdminClient client,
           database, {"ALTER TABLE Albums ADD COLUMN MarketingBudget INT64"});
   StatusOr<google::spanner::admin::database::v1::UpdateDatabaseDdlMetadata>
       metadata = f.get();
-  if (!metadata) throw std::runtime_error(metadata.status().message());
+  if (!metadata) throw google::cloud::RuntimeStatusError(metadata.status());
   std::cout << "Added MarketingBudget column\n";
 }
 //! [update-database] [END spanner_add_column]
@@ -529,7 +529,7 @@ void AddTimestampColumn(google::cloud::spanner::DatabaseAdminClient client,
                      "OPTIONS (allow_commit_timestamp=true)"});
   StatusOr<google::spanner::admin::database::v1::UpdateDatabaseDdlMetadata>
       metadata = f.get();
-  if (!metadata) throw std::runtime_error(metadata.status().message());
+  if (!metadata) throw google::cloud::RuntimeStatusError(metadata.status());
   std::cout << "Added LastUpdateTime column\n";
 }
 // [END spanner_add_timestamp_column]
@@ -550,7 +550,7 @@ void AddStoringIndex(google::cloud::spanner::DatabaseAdminClient client,
                 STORING (MarketingBudget))"""});
   StatusOr<google::spanner::admin::database::v1::UpdateDatabaseDdlMetadata>
       metadata = f.get();
-  if (!metadata) throw std::runtime_error(metadata.status().message());
+  if (!metadata) throw google::cloud::RuntimeStatusError(metadata.status());
   std::cout << "`AlbumsByAlbumTitle2` Index successfully added, new DDL:\n"
             << metadata->DebugString() << "\n";
 }
@@ -563,7 +563,7 @@ void ListDatabases(google::cloud::spanner::DatabaseAdminClient client,
   google::cloud::spanner::Instance in(project_id, instance_id);
   int count = 0;
   for (auto const& database : client.ListDatabases(in)) {
-    if (!database) throw std::runtime_error(database.status().message());
+    if (!database) throw google::cloud::RuntimeStatusError(database.status());
     std::cout << "Database " << database->name() << " full metadata:\n"
               << database->DebugString() << "\n";
     ++count;
@@ -597,7 +597,7 @@ void CreateBackup(google::cloud::spanner::DatabaseAdminClient client,
                                   std::chrono::system_clock::now() +
                                       std::chrono::hours(7))
                     .get();
-  if (!backup.ok()) throw std::runtime_error(backup.status().message());
+  if (!backup.ok()) throw google::cloud::RuntimeStatusError(backup.status());
   std::cout << "Backup '" << backup->name() << "' of size "
             << backup->size_bytes() << " bytes was created at "
             << google::protobuf::util::TimeUtil::ToString(backup->create_time())
@@ -629,7 +629,7 @@ void RestoreDatabase(google::cloud::spanner::DatabaseAdminClient client,
       google::cloud::spanner::Instance(project_id, instance_id), backup_id);
   auto restored_db = client.RestoreDatabase(database, backup).get();
   if (!restored_db.ok())
-    throw std::runtime_error(restored_db.status().message());
+    throw google::cloud::RuntimeStatusError(restored_db.status());
   std::cout << "Database '" << restored_db->name() << "' was restored from "
             << " backup '" << backup.FullName() << "'.\n";
 }
@@ -653,7 +653,7 @@ void GetBackup(google::cloud::spanner::DatabaseAdminClient client,
   google::cloud::spanner::Backup backup_name(
       google::cloud::spanner::Instance(project_id, instance_id), backup_id);
   auto backup = client.GetBackup(backup_name);
-  if (!backup.ok()) throw std::runtime_error(backup.status().message());
+  if (!backup.ok()) throw google::cloud::RuntimeStatusError(backup.status());
   std::cout << "Backup '" << backup->name() << "' of size "
             << backup->size_bytes() << " bytes was created at "
             << google::protobuf::util::TimeUtil::ToString(backup->create_time())
@@ -679,7 +679,7 @@ void UpdateBackup(google::cloud::spanner::DatabaseAdminClient client,
       google::cloud::spanner::Instance(project_id, instance_id), backup_id);
   auto backup = client.UpdateBackupExpireTime(
       backup_name, std::chrono::system_clock::now() + std::chrono::hours(7));
-  if (!backup.ok()) throw std::runtime_error(backup.status().message());
+  if (!backup.ok()) throw google::cloud::RuntimeStatusError(backup.status());
   std::cout << "Backup '" << backup->name() << "' updated to new expire_time "
             << google::protobuf::util::TimeUtil::ToString(backup->expire_time())
             << ".\n";
@@ -703,7 +703,7 @@ void DeleteBackup(google::cloud::spanner::DatabaseAdminClient client,
   google::cloud::spanner::Backup backup(
       google::cloud::spanner::Instance(project_id, instance_id), backup_id);
   Status status = client.DeleteBackup(backup);
-  if (!status.ok()) throw std::runtime_error(status.message());
+  if (!status.ok()) throw google::cloud::RuntimeStatusError(status);
   std::cout << "Backup '" << backup.FullName() << "' was deleted.\n";
 }
 //! [delete-backup] [END spanner_delete_backup]
@@ -736,7 +736,7 @@ void CreateBackupAndCancel(google::cloud::spanner::DatabaseAdminClient client,
   auto backup = f.get();
   if (backup.ok()) {
     Status status = client.DeleteBackup(backup.value());
-    if (!status.ok()) throw std::runtime_error(status.message());
+    if (!status.ok()) throw google::cloud::RuntimeStatusError(status);
     std::cout << "Backup '" << backup->name() << "' was deleted.\n";
   } else {
     std::cout << "CreateBackup operation was cancelled with the message '"
@@ -762,9 +762,7 @@ void ListBackups(google::cloud::spanner::DatabaseAdminClient client,
   google::cloud::spanner::Instance in(project_id, instance_id);
   std::cout << "All backups:\n";
   for (auto const& backup : client.ListBackups(in)) {
-    if (!backup) {
-      throw std::runtime_error(backup.status().message());
-    }
+    if (!backup) throw google::cloud::RuntimeStatusError(backup.status());
     std::cout << "Backup " << backup->name() << " on database "
               << backup->database() << " with size : " << backup->size_bytes()
               << " bytes.\n";
@@ -790,9 +788,7 @@ void ListBackupOperations(google::cloud::spanner::DatabaseAdminClient client,
                 "(metadata.@type:type.googleapis.com/" +
                 "google.spanner.admin.database.v1.CreateBackupMetadata)";
   for (auto const& operation : client.ListBackupOperations(in, filter)) {
-    if (!operation) {
-      throw std::runtime_error(operation.status().message());
-    }
+    if (!operation) throw google::cloud::RuntimeStatusError(operation.status());
     google::spanner::admin::database::v1::CreateBackupMetadata metadata;
     operation->metadata().UnpackTo(&metadata);
     std::cout << "Backup " << metadata.name() << " on database "
@@ -812,9 +808,7 @@ void ListDatabaseOperations(google::cloud::spanner::DatabaseAdminClient client,
       "(metadata.@type:type.googleapis.com/"
       "google.spanner.admin.database.v1.OptimizeRestoredDatabaseMetadata)");
   for (auto const& operation : client.ListDatabaseOperations(in, filter)) {
-    if (!operation) {
-      throw std::runtime_error(operation.status().message());
-    }
+    if (!operation) throw google::cloud::RuntimeStatusError(operation.status());
     google::spanner::admin::database::v1::OptimizeRestoredDatabaseMetadata
         metadata;
     operation->metadata().UnpackTo(&metadata);
@@ -839,8 +833,8 @@ void DropDatabase(google::cloud::spanner::DatabaseAdminClient client,
                   std::string const& database_id) {
   google::cloud::spanner::Database database(project_id, instance_id,
                                             database_id);
-  google::cloud::Status status = client.DropDatabase(database);
-  if (!status.ok()) throw std::runtime_error(status.message());
+  auto status = client.DropDatabase(database);
+  if (!status.ok()) throw google::cloud::RuntimeStatusError(status);
   std::cout << "Database " << database << " successfully dropped\n";
 }
 //! [drop-database] [END spanner_drop_database]
@@ -853,7 +847,7 @@ void DatabaseGetIamPolicy(google::cloud::spanner::DatabaseAdminClient client,
   google::cloud::spanner::Database database(project_id, instance_id,
                                             database_id);
   auto actual = client.GetIamPolicy(database);
-  if (!actual) throw std::runtime_error(actual.status().message());
+  if (!actual) throw google::cloud::RuntimeStatusError(actual.status());
 
   std::cout << "The IAM policy for database " << database_id << " is:\n"
             << actual->DebugString() << "\n";
@@ -868,7 +862,7 @@ void AddDatabaseReaderOnDatabase(
   google::cloud::spanner::Database database(project_id, instance_id,
                                             database_id);
   auto current = client.GetIamPolicy(database);
-  if (!current) throw std::runtime_error(current.status().message());
+  if (!current) throw google::cloud::RuntimeStatusError(current.status());
 
   // Find (or create) the binding for "roles/spanner.databaseReader".
   auto& binding = [&current]() -> google::iam::v1::Binding& {
@@ -898,7 +892,7 @@ void AddDatabaseReaderOnDatabase(
 
   binding.add_members(new_reader);
   auto result = client.SetIamPolicy(database, *std::move(current));
-  if (!result) throw std::runtime_error(result.status().message());
+  if (!result) throw google::cloud::RuntimeStatusError(result.status());
 
   std::cout << "Successfully added " << new_reader
             << " to the database reader role:\n"
@@ -925,7 +919,7 @@ void DatabaseTestIamPermissions(
     std::string const& database_id, std::string const& permission) {
   google::cloud::spanner::Database db(project_id, instance_id, database_id);
   auto actual = client.TestIamPermissions(db, {permission});
-  if (!actual) throw std::runtime_error(actual.status().message());
+  if (!actual) throw google::cloud::RuntimeStatusError(actual.status());
 
   char const* msg = actual->permissions().empty() ? "does not" : "does";
 
@@ -962,7 +956,7 @@ void Quickstart(std::string const& project_id, std::string const& instance_id,
 
   using RowType = std::tuple<std::string>;
   for (auto const& row : spanner::StreamOf<RowType>(rows)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << std::get<0>(*row) << "\n";
   }
 }
@@ -1008,7 +1002,7 @@ void InsertData(google::cloud::spanner::Client client) {
   auto commit_result =
       client.Commit(spanner::Mutations{insert_singers, insert_albums});
   if (!commit_result) {
-    throw std::runtime_error(commit_result.status().message());
+    throw google::cloud::RuntimeStatusError(commit_result.status());
   }
   std::cout << "Insert was successful [spanner_insert_data]\n";
 }
@@ -1024,7 +1018,7 @@ void UpdateData(google::cloud::spanner::Client client) {
           .EmplaceRow(2, 2, 500000)
           .Build()});
   if (!commit_result) {
-    throw std::runtime_error(commit_result.status().message());
+    throw google::cloud::RuntimeStatusError(commit_result.status());
   }
   std::cout << "Update was successful [spanner_update_data]\n";
 }
@@ -1053,7 +1047,7 @@ void DeleteData(google::cloud::spanner::Client client) {
   auto commit_result =
       client.Commit(spanner::Mutations{delete_albums, delete_singers});
   if (!commit_result) {
-    throw std::runtime_error(commit_result.status().message());
+    throw google::cloud::RuntimeStatusError(commit_result.status());
   }
   std::cout << "Delete was successful [spanner_delete_data]\n";
 }
@@ -1074,7 +1068,7 @@ void InsertDataWithTimestamp(google::cloud::spanner::Client client) {
                       spanner::CommitTimestamp{})
           .Build()});
   if (!commit_result) {
-    throw std::runtime_error(commit_result.status().message());
+    throw google::cloud::RuntimeStatusError(commit_result.status());
   }
   std::cout
       << "Update was successful [spanner_insert_data_with_timestamp_column]\n";
@@ -1092,7 +1086,7 @@ void UpdateDataWithTimestamp(google::cloud::spanner::Client client) {
           .EmplaceRow(2, 2, 750000, spanner::CommitTimestamp{})
           .Build()});
   if (!commit_result) {
-    throw std::runtime_error(commit_result.status().message());
+    throw google::cloud::RuntimeStatusError(commit_result.status());
   }
   std::cout
       << "Update was successful [spanner_update_data_with_timestamp_column]\n";
@@ -1113,7 +1107,7 @@ void QueryDataWithTimestamp(google::cloud::spanner::Client client) {
 
   auto rows = client.ExecuteQuery(select);
   for (auto const& row : spanner::StreamOf<RowType>(rows)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << std::get<0>(*row) << " " << std::get<1>(*row);
     auto marketing_budget = std::get<2>(*row);
     if (!marketing_budget) {
@@ -1145,7 +1139,7 @@ void ReadOnlyTransaction(google::cloud::spanner::Client client) {
   auto rows1 = client.ExecuteQuery(read_only, select);
   std::cout << "Read 1 results\n";
   for (auto const& row : spanner::StreamOf<RowType>(rows1)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << "SingerId: " << std::get<0>(*row)
               << " AlbumId: " << std::get<1>(*row)
               << " AlbumTitle: " << std::get<2>(*row) << "\n";
@@ -1155,7 +1149,7 @@ void ReadOnlyTransaction(google::cloud::spanner::Client client) {
   auto rows2 = client.ExecuteQuery(read_only, select);
   std::cout << "Read 2 results\n";
   for (auto const& row : spanner::StreamOf<RowType>(rows2)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << "SingerId: " << std::get<0>(*row)
               << " AlbumId: " << std::get<1>(*row)
               << " AlbumTitle: " << std::get<2>(*row) << "\n";
@@ -1175,7 +1169,7 @@ void ReadStaleData(google::cloud::spanner::Client client) {
 
   auto rows = client.ExecuteQuery(read_only, select);
   for (auto const& row : spanner::StreamOf<RowType>(rows)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << "SingerId: " << std::get<0>(*row)
               << " AlbumId: " << std::get<1>(*row)
               << " AlbumTitle: " << std::get<2>(*row) << "\n";
@@ -1193,12 +1187,12 @@ void UsePartitionQuery(google::cloud::spanner::Client client) {
   using RowType = std::tuple<std::int64_t, std::string, std::string>;
 
   auto partitions = client.PartitionQuery(std::move(txn), select, {});
-  if (!partitions) throw std::runtime_error(partitions.status().message());
+  if (!partitions) throw google::cloud::RuntimeStatusError(partitions.status());
   int number_of_rows = 0;
   for (auto const& partition : *partitions) {
     auto rows = client.ExecuteQuery(partition);
     for (auto const& row : spanner::StreamOf<RowType>(rows)) {
-      if (!row) throw std::runtime_error(row.status().message());
+      if (!row) throw google::cloud::RuntimeStatusError(row.status());
       number_of_rows++;
     }
   }
@@ -1218,7 +1212,7 @@ void ReadDataWithIndex(google::cloud::spanner::Client client) {
                           {"AlbumId", "AlbumTitle"}, read_options);
   using RowType = std::tuple<std::int64_t, std::string>;
   for (auto const& row : spanner::StreamOf<RowType>(rows)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << "AlbumId: " << std::get<0>(*row) << "\t";
     std::cout << "AlbumTitle: " << std::get<1>(*row) << "\n";
   }
@@ -1237,7 +1231,7 @@ void QueryNewColumn(google::cloud::spanner::Client client) {
                              google::cloud::optional<std::int64_t>>;
   auto rows = client.ExecuteQuery(std::move(select));
   for (auto const& row : spanner::StreamOf<RowType>(rows)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << "SingerId: " << std::get<0>(*row) << "\t";
     std::cout << "AlbumId: " << std::get<1>(*row) << "\t";
     auto marketing_budget = std::get<2>(*row);
@@ -1265,7 +1259,7 @@ void QueryUsingIndex(google::cloud::spanner::Client client) {
                              google::cloud::optional<std::int64_t>>;
   auto rows = client.ExecuteQuery(std::move(select));
   for (auto const& row : spanner::StreamOf<RowType>(rows)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << "AlbumId: " << std::get<0>(*row) << "\t";
     std::cout << "AlbumTitle: " << std::get<1>(*row) << "\t";
     auto marketing_budget = std::get<2>(*row);
@@ -1311,7 +1305,7 @@ void QueryWithQueryOptions(google::cloud::spanner::Client client) {
 
   using RowType = std::tuple<std::int64_t, std::string>;
   for (auto const& row : spanner::StreamOf<RowType>(rows)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << "SingerId: " << std::get<0>(*row) << "\t";
     std::cout << "FirstName: " << std::get<1>(*row) << "\n";
   }
@@ -1330,7 +1324,7 @@ void ReadDataWithStoringIndex(google::cloud::spanner::Client client) {
   using RowType = std::tuple<std::int64_t, std::string,
                              google::cloud::optional<std::int64_t>>;
   for (auto const& row : spanner::StreamOf<RowType>(rows)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << "AlbumId: " << std::get<0>(*row) << "\t";
     std::cout << "AlbumTitle: " << std::get<1>(*row) << "\t";
     auto marketing_budget = std::get<2>(*row);
@@ -1363,9 +1357,6 @@ void ReadWriteTransaction(google::cloud::spanner::Client client) {
     // Commit() only retries on StatusCode::kAborted.
     if (!row) return std::move(row).status();
     return std::get<0>(*std::move(row));
-    // Throw an exception because this should terminate the transaction.
-    throw std::runtime_error("Key not found (" + std::to_string(singer_id) +
-                             "," + std::to_string(album_id) + ")");
   };
 
   auto commit = client.Commit(
@@ -1385,7 +1376,7 @@ void ReadWriteTransaction(google::cloud::spanner::Client client) {
                 .Build()};
       });
 
-  if (!commit) throw std::runtime_error(commit.status().message());
+  if (!commit) throw google::cloud::RuntimeStatusError(commit.status());
   std::cout << "Transfer was successful [spanner_read_write_transaction]\n";
 }
 //! [END spanner_read_write_transaction]
@@ -1406,7 +1397,7 @@ void DmlStandardInsert(google::cloud::spanner::Client client) {
         return spanner::Mutations{};
       });
   if (!commit_result) {
-    throw std::runtime_error(commit_result.status().message());
+    throw google::cloud::RuntimeStatusError(commit_result.status());
   }
   std::cout << "Insert was successful [spanner_dml_standard_insert]\n";
 }
@@ -1428,7 +1419,7 @@ void DmlStandardUpdate(google::cloud::spanner::Client client) {
         return spanner::Mutations{};
       });
   if (!commit_result) {
-    throw std::runtime_error(commit_result.status().message());
+    throw google::cloud::RuntimeStatusError(commit_result.status());
   }
   std::cout << "Update was successful [spanner_dml_standard_update]\n";
 }
@@ -1449,7 +1440,7 @@ void DmlStandardUpdateWithTimestamp(google::cloud::spanner::Client client) {
         return spanner::Mutations{};
       });
   if (!commit_result) {
-    throw std::runtime_error(commit_result.status().message());
+    throw google::cloud::RuntimeStatusError(commit_result.status());
   }
   std::cout << "Update was successful "
             << "[spanner_dml_standard_update_with_timestamp]\n";
@@ -1482,7 +1473,7 @@ void DmlWriteThenRead(google::cloud::spanner::Client client) {
         return spanner::Mutations{};
       });
   if (!commit_result) {
-    throw std::runtime_error(commit_result.status().message());
+    throw google::cloud::RuntimeStatusError(commit_result.status());
   }
   std::cout << "Write then read suceeded [spanner_dml_write_then_read]\n";
 }
@@ -1501,7 +1492,7 @@ void DmlStandardDelete(google::cloud::spanner::Client client) {
     return spanner::Mutations{};
   });
   if (!commit_result) {
-    throw std::runtime_error(commit_result.status().message());
+    throw google::cloud::RuntimeStatusError(commit_result.status());
   }
   std::cout << "Delete was successful [spanner_dml_standard_delete]\n";
 }
@@ -1512,7 +1503,7 @@ void DmlPartitionedDelete(google::cloud::spanner::Client client) {
   namespace spanner = ::google::cloud::spanner;
   auto result = client.ExecutePartitionedDml(
       spanner::SqlStatement("DELETE FROM Singers WHERE SingerId > 10"));
-  if (!result) throw std::runtime_error(result.status().message());
+  if (!result) throw google::cloud::RuntimeStatusError(result.status());
   std::cout << "Delete was successful [spanner_dml_partitioned_delete]\n";
 }
 //! [execute-sql-partitioned] [END spanner_dml_partitioned_delete]
@@ -1523,7 +1514,7 @@ void DmlPartitionedUpdate(google::cloud::spanner::Client client) {
   auto result = client.ExecutePartitionedDml(
       spanner::SqlStatement("UPDATE Albums SET MarketingBudget = 100000"
                             " WHERE SingerId > 1"));
-  if (!result) throw std::runtime_error(result.status().message());
+  if (!result) throw google::cloud::RuntimeStatusError(result.status());
   std::cout << "Update was successful [spanner_dml_partitioned_update]\n";
 }
 //! [END spanner_dml_partitioned_update]
@@ -1556,7 +1547,7 @@ void DmlBatchUpdate(google::cloud::spanner::Client client) {
         return spanner::Mutations{};
       });
   if (!commit_result) {
-    throw std::runtime_error(commit_result.status().message());
+    throw google::cloud::RuntimeStatusError(commit_result.status());
   }
   std::cout << "Update was successful [spanner_dml_batch_update]\n";
 }
@@ -1582,7 +1573,7 @@ void DmlStructs(google::cloud::spanner::Client client) {
         return spanner::Mutations{};
       });
   if (!commit_result) {
-    throw std::runtime_error(commit_result.status().message());
+    throw google::cloud::RuntimeStatusError(commit_result.status());
   }
   std::cout << rows_modified
             << " update was successful [spanner_dml_structs]\n";
@@ -1601,7 +1592,7 @@ void WriteDataForStructQueries(google::cloud::spanner::Client client) {
                              .EmplaceRow(9, "Hannah", "Harris")
                              .Build()});
   if (!commit_result) {
-    throw std::runtime_error(commit_result.status().message());
+    throw google::cloud::RuntimeStatusError(commit_result.status());
   }
   std::cout << "Insert was successful "
             << "[spanner_write_data_for_struct_queries]\n";
@@ -1616,7 +1607,7 @@ void QueryData(google::cloud::spanner::Client client) {
   using RowType = std::tuple<std::int64_t, std::string>;
   auto rows = client.ExecuteQuery(std::move(select));
   for (auto const& row : spanner::StreamOf<RowType>(rows)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << "SingerId: " << std::get<0>(*row) << "\t";
     std::cout << "LastName: " << std::get<1>(*row) << "\n";
   }
@@ -1645,7 +1636,7 @@ void DmlGettingStartedInsert(google::cloud::spanner::Client client) {
         return spanner::Mutations{};
       });
   if (!commit_result) {
-    throw std::runtime_error(commit_result.status().message());
+    throw google::cloud::RuntimeStatusError(commit_result.status());
   }
   std::cout << "Insert was successful [spanner_dml_getting_started_insert]\n";
 }
@@ -1700,7 +1691,7 @@ void DmlGettingStartedUpdate(google::cloud::spanner::Client client) {
         return spanner::Mutations{};
       });
   if (!commit_result) {
-    throw std::runtime_error(commit_result.status().message());
+    throw google::cloud::RuntimeStatusError(commit_result.status());
   }
   std::cout << "Update was successful [spanner_dml_getting_started_update]\n";
 }
@@ -1717,7 +1708,7 @@ void QueryWithParameter(google::cloud::spanner::Client client) {
   using RowType = std::tuple<std::int64_t, std::string, std::string>;
   auto rows = client.ExecuteQuery(std::move(select));
   for (auto const& row : spanner::StreamOf<RowType>(rows)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << "SingerId: " << std::get<0>(*row) << "\t";
     std::cout << "FirstName: " << std::get<1>(*row) << "\t";
     std::cout << "LastName: " << std::get<2>(*row) << "\n";
@@ -1735,7 +1726,7 @@ void ReadData(google::cloud::spanner::Client client) {
                           {"SingerId", "AlbumId", "AlbumTitle"});
   using RowType = std::tuple<std::int64_t, std::int64_t, std::string>;
   for (auto const& row : spanner::StreamOf<RowType>(rows)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << "SingerId: " << std::get<0>(*row) << "\t";
     std::cout << "AlbumId: " << std::get<1>(*row) << "\t";
     std::cout << "AlbumTitle: " << std::get<2>(*row) << "\n";
@@ -1755,7 +1746,7 @@ void QueryDataSelectStar(google::cloud::spanner::Client client) {
   spanner::SqlStatement select_star("SELECT * FROM Singers");
   auto rows = client.ExecuteQuery(std::move(select_star));
   for (auto const& row : rows) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
 
     if (auto singer_id = row->get<std::int64_t>("SingerId")) {
       std::cout << "SingerId: " << *singer_id << "\t";
@@ -1791,7 +1782,7 @@ void QueryDataWithStruct(google::cloud::spanner::Client client) {
   //! [spanner-sql-statement-params]
 
   for (auto const& row : spanner::StreamOf<std::tuple<std::int64_t>>(rows)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << "SingerId: " << std::get<0>(*row) << "\n";
   }
   std::cout << "Query completed for [spanner_query_data_with_struct]\n";
@@ -1825,7 +1816,7 @@ void QueryDataWithArrayOfStruct(google::cloud::spanner::Client client) {
       {{"names", spanner::Value(singer_info)}}));
 
   for (auto const& row : spanner::StreamOf<std::tuple<std::int64_t>>(rows)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << "SingerId: " << std::get<0>(*row) << "\n";
   }
   std::cout << "Query completed for"
@@ -1848,7 +1839,7 @@ void FieldAccessOnStructParameters(google::cloud::spanner::Client client) {
       {{"name", spanner::Value(name)}}));
 
   for (auto const& row : spanner::StreamOf<std::tuple<std::int64_t>>(rows)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << "SingerId: " << std::get<0>(*row) << "\n";
   }
   std::cout << "Query completed for"
@@ -1884,7 +1875,7 @@ void FieldAccessOnNestedStruct(google::cloud::spanner::Client client) {
 
   using RowType = std::tuple<std::int64_t, std::string>;
   for (auto const& row : spanner::StreamOf<RowType>(rows)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << "SingerId: " << std::get<0>(*row)
               << " SongName: " << std::get<1>(*row) << "\n";
   }
@@ -1952,7 +1943,7 @@ void CustomRetryPolicy(std::vector<std::string> argv) {
         client.ExecuteQuery(spanner::SqlStatement("SELECT 'Hello World'"));
 
     for (auto const& row : spanner::StreamOf<std::tuple<std::string>>(rows)) {
-      if (!row) throw std::runtime_error(row.status().message());
+      if (!row) throw google::cloud::RuntimeStatusError(row.status());
       std::cout << std::get<0>(*row) << "\n";
     }
   }
@@ -1971,7 +1962,7 @@ void GetSingularRow(google::cloud::spanner::Client client) {
   // helper returns a single row or an error:
   using RowType = std::tuple<std::string, std::string>;
   auto row = GetSingularRow(spanner::StreamOf<RowType>(query));
-  if (!row) throw std::runtime_error(row.status().message());
+  if (!row) throw google::cloud::RuntimeStatusError(row.status());
   std::cout << "FirstName: " << std::get<0>(*row)
             << "\nLastName: " << std::get<1>(*row) << "\n";
 }
@@ -1987,7 +1978,7 @@ void StreamOf(google::cloud::spanner::Client client) {
   using RowType = std::tuple<std::int64_t, std::string, std::string>;
 
   for (auto& row : spanner::StreamOf<RowType>(query)) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     std::cout << "  FirstName: " << std::get<0>(*row)
               << "\n  LastName: " << std::get<1>(*row) << "\n";
   }
@@ -2008,7 +1999,7 @@ class RemoteConnectionFake {
     google::cloud::StatusOr<std::string> serialized_partition =
         spanner::SerializeReadPartition(partition);
     if (!serialized_partition) {
-      throw std::runtime_error(serialized_partition.status().message());
+      throw google::cloud::RuntimeStatusError(serialized_partition.status());
     }
     std::string const& bytes = *serialized_partition;
     // `bytes` contains the serialized data, which may contain NULs and other
@@ -2024,7 +2015,7 @@ class RemoteConnectionFake {
     google::cloud::StatusOr<std::string> serialized_partition =
         spanner::SerializeQueryPartition(partition);
     if (!serialized_partition) {
-      throw std::runtime_error(serialized_partition.status().message());
+      throw google::cloud::RuntimeStatusError(serialized_partition.status());
     }
     std::string const& bytes = *serialized_partition;
     // `bytes` contains the serialized data, which may contain NULs and other
@@ -2069,7 +2060,7 @@ void PartitionRead(google::cloud::spanner::Client client) {
   google::cloud::StatusOr<std::vector<spanner::ReadPartition>> partitions =
       client.PartitionRead(ro_transaction, "Singers", key_set,
                            {"SingerId", "FirstName", "LastName"});
-  if (!partitions) throw std::runtime_error(partitions.status().message());
+  if (!partitions) throw google::cloud::RuntimeStatusError(partitions.status());
   for (auto& partition : *partitions) {
     remote_connection.SendPartitionToRemoteMachine(partition);
   }
@@ -2078,10 +2069,10 @@ void PartitionRead(google::cloud::spanner::Client client) {
   //! [read-read-partition]
   google::cloud::StatusOr<spanner::ReadPartition> partition =
       remote_connection.ReceiveReadPartitionFromRemoteMachine();
-  if (!partition) throw std::runtime_error(partition.status().message());
+  if (!partition) throw google::cloud::RuntimeStatusError(partition.status());
   auto rows = client.Read(*partition);
   for (auto const& row : rows) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     ProcessRow(*row);
   }
   //! [read-read-partition]
@@ -2097,7 +2088,7 @@ void PartitionQuery(google::cloud::spanner::Client client) {
           ro_transaction,
           spanner::SqlStatement(
               "SELECT SingerId, FirstName, LastName FROM Singers"));
-  if (!partitions) throw std::runtime_error(partitions.status().message());
+  if (!partitions) throw google::cloud::RuntimeStatusError(partitions.status());
   for (auto& partition : *partitions) {
     remote_connection.SendPartitionToRemoteMachine(partition);
   }
@@ -2106,10 +2097,10 @@ void PartitionQuery(google::cloud::spanner::Client client) {
   //! [execute-sql-query-partition]
   google::cloud::StatusOr<spanner::QueryPartition> partition =
       remote_connection.ReceiveQueryPartitionFromRemoteMachine();
-  if (!partition) throw std::runtime_error(partition.status().message());
+  if (!partition) throw google::cloud::RuntimeStatusError(partition.status());
   auto rows = client.ExecuteQuery(*partition);
   for (auto const& row : rows) {
-    if (!row) throw std::runtime_error(row.status().message());
+    if (!row) throw google::cloud::RuntimeStatusError(row.status());
     ProcessRow(*row);
   }
   //! [execute-sql-query-partition]
@@ -2307,8 +2298,7 @@ void RunAll(bool emulator) {
   auto random_instance =
       google::cloud::spanner_testing::PickRandomInstance(generator, project_id);
   if (!random_instance) {
-    throw std::runtime_error("Cannot find an instance to run the examples: " +
-                             random_instance.status().message());
+    throw google::cloud::RuntimeStatusError(random_instance.status());
   }
 
   std::string instance_id = *std::move(random_instance);
