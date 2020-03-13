@@ -994,6 +994,7 @@ TEST(Value, OutputStream) {
       {Value(std::vector<std::int64_t>{10, 11}), "[10, 11]", normal},
       {Value(std::vector<std::int64_t>{10, 11}), "[a, b]", hex},
       {Value(std::vector<double>{1.0, 2.0}), "[1, 2]", normal},
+      {Value(std::vector<double>{1.0, 2.0}), "[1.000, 2.000]", float4},
       {Value(std::vector<std::string>{"a", "b"}), R"(["a", "b"])", normal},
       {Value(std::vector<Bytes>{2}), R"([B"", B""])", normal},
       {Value(std::vector<Date>{2}), "[1970-01-01, 1970-01-01]", normal},
