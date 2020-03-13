@@ -989,8 +989,8 @@ TEST(Value, OutputStream) {
       {MakeNullValue<Timestamp>(), "NULL", normal},
 
       // Tests escaping of bytes
-      {Value(Bytes(std::string("ab\tZ"))), R"(B"ab\011Z")", normal},
-      {Value(Bytes(std::string("ab\tZ"))), R"(B"ab\011Z")", hex},
+      {Value(Bytes(std::string("ab\tZ"))), R"(B"ab\tZ")", normal},
+      {Value(Bytes(std::string("ab\tZ"))), R"(B"ab\tZ")", hex},
       {Value(Bytes(std::string("ab\001Z\0211"))), R"(B"ab\001Z\0211")", normal},
       {Value(Bytes(std::string("ab\001Z\0211"))), R"(B"ab\001Z\0211")", hex},
       {Value(Bytes(std::string(3, '\0'))), R"(B"\000\000\000")", normal},
@@ -1065,6 +1065,55 @@ TEST(Value, OutputStream) {
     std::stringstream ss;
     tc.manip(ss) << tc.value;
     EXPECT_EQ(ss.str(), tc.expected);
+  }
+}
+
+TEST(Value, OutputStreamBytesEscaping) {
+  using ByteType = unsigned char;
+  // The expected value for `b` is `b` if it's printable, otherwise it's b's
+  // octal escape sequence like `\000`.
+  auto get_expected = [](ByteType b) {
+    std::ostringstream expected;
+    switch (b) {
+      case '\a':
+        expected << "\\a";
+        break;
+      case '\b':
+        expected << "\\b";
+        break;
+      case '\t':
+        expected << "\\t";
+        break;
+      case '\n':
+        expected << "\\n";
+        break;
+      case '\v':
+        expected << "\\v";
+        break;
+      case '\f':
+        expected << "\\f";
+        break;
+      case '\r':
+        expected << "\\r";
+        break;
+      default:
+        if (std::isprint(b)) {
+          expected << b;
+        } else {
+          expected << std::setfill('0') << std::oct;
+          expected << R"(\)" << std::setw(3) << static_cast<int>(b);
+        }
+    }
+    return expected.str();
+  };
+
+  // Loop through all byte values and ensure they're printed correctly.
+  for (int i = 0; i < std::numeric_limits<ByteType>::max() + 1; ++i) {
+    auto const b = static_cast<ByteType>(i);
+    auto const expected = R"(B")" + get_expected(b) + R"(")";
+    std::stringstream ss;
+    ss << Value(Bytes(std::array<ByteType, 1>{b}));
+    EXPECT_EQ(ss.str(), expected) << "i=" << i;
   }
 }
 
