@@ -19,12 +19,12 @@
 #include "google/cloud/spanner/testing/random_backup_name.h"
 #include "google/cloud/spanner/testing/random_database_name.h"
 #include "google/cloud/spanner/testing/random_instance_name.h"
+#include "google/cloud/internal/format_time_point.h"
 #include "google/cloud/internal/getenv.h"
 #include "google/cloud/internal/random.h"
 #include "google/cloud/testing_util/assert_ok.h"
 #include <gmock/gmock.h>
 #include <chrono>
-#include <ctime>
 #include <regex>
 
 namespace google {
@@ -80,11 +80,12 @@ class BackupTestWithCleanup : public BackupTest {
           auto instance_id = m[1];
           auto date_str = m[2];
           std::string cut_off_date = "1973-03-01";
-          auto cut_off_time_t = time(nullptr) - (60 * 60 * 48);
-          std::strftime(&cut_off_date[0], cut_off_date.size() + 1, "%Y-%m-%d",
-                        std::localtime(&cut_off_time_t));
+          auto cutoff_date =
+              google::cloud::internal::FormatRfc3339(
+                  std::chrono::system_clock::now() - std::chrono::hours(48))
+                  .substr(0, 10);
           // Compare the strings
-          if (date_str < cut_off_date) {
+          if (date_str < cutoff_date) {
             instance_ids.push_back(instance_id);
           }
         }
@@ -109,7 +110,8 @@ TEST_F(BackupTestWithCleanup, BackupTestSuite) {
   }
 #if !defined(__clang__) && defined(__GNUC__) && \
     (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 9))
-  // gcc 4.8 or lower
+  // This test (not the code) depends on regexp and this is not
+  // implemented in gcc 4.8 or lower.
   GTEST_SKIP();
 #endif
   auto generator = google::cloud::internal::MakeDefaultPRNG();
@@ -131,6 +133,7 @@ TEST_F(BackupTestWithCleanup, BackupTestSuite) {
     for (auto const& instance_config :
          instance_admin_client_.ListInstanceConfigs(project_id_)) {
       EXPECT_STATUS_OK(instance_config);
+      if (!instance_config) return {};
       return instance_config->name();
     }
     return {};
