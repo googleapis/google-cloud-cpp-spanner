@@ -80,8 +80,7 @@ class BackupTestWithCleanup : public BackupTest {
           auto instance_id = m[1];
           auto date_str = m[2];
           std::string cut_off_date = "1973-03-01";
-          auto cut_off_time_t = std::chrono::system_clock::to_time_t(
-              std::chrono::system_clock::now() - std::chrono::hours(48));
+          auto cut_off_time_t = time(nullptr) - (60 * 60 * 48);
           std::strftime(&cut_off_date[0], cut_off_date.size() + 1, "%Y-%m-%d",
                         std::localtime(&cut_off_time_t));
           // Compare the strings
@@ -108,6 +107,11 @@ TEST_F(BackupTestWithCleanup, BackupTestSuite) {
   if (run_slow_integration_tests_ != "yes" || emulator_) {
     GTEST_SKIP();
   }
+#if !defined(__clang__) && defined(__GNUC__) && \
+    (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 9))
+  // gcc 4.8 or lower
+  GTEST_SKIP();
+#endif
   auto generator = google::cloud::internal::MakeDefaultPRNG();
   std::string instance_id =
       google::cloud::spanner_testing::RandomInstanceName(generator);
@@ -123,27 +127,23 @@ TEST_F(BackupTestWithCleanup, BackupTestSuite) {
   std::smatch m;
   auto full_name = in.FullName();
   EXPECT_TRUE(std::regex_match(full_name, m, instance_name_regex_));
-  std::vector<std::string> instance_config_names = [this]() mutable {
-    std::vector<std::string> names;
+  std::string instance_config = [this]() mutable -> std::string {
     for (auto const& instance_config :
          instance_admin_client_.ListInstanceConfigs(project_id_)) {
       EXPECT_STATUS_OK(instance_config);
-      if (!instance_config) break;
-      names.push_back(instance_config->name());
+      return instance_config->name();
     }
-    return names;
+    return {};
   }();
-  ASSERT_FALSE(instance_config_names.empty());
-  // Use the name of the first element from the list of instance configs.
-  auto instance_config = instance_config_names[0];
-
+  ASSERT_FALSE(instance_config.empty())
+      << "could not get an instance config name";
   future<StatusOr<google::spanner::admin::instance::v1::Instance>> f =
       instance_admin_client_.CreateInstance(
           CreateInstanceRequestBuilder(in, instance_config)
               .SetDisplayName("test-display-name")
               .SetNodeCount(1)
               .Build());
-  StatusOr<google::spanner::admin::instance::v1::Instance> instance = f.get();
+  auto instance = f.get();
 
   EXPECT_STATUS_OK(instance);
 
