@@ -126,7 +126,7 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
           // formatting on `os` for other streaming operations.
           std::array<char, sizeof(R"(\000)")> buf;
           auto n = std::snprintf(&buf[0], buf.size(), R"(\%03o)", byte);
-          if (n == buf.size() - 1) os << buf.data();
+          if (n == static_cast<int>(buf.size() - 1)) os << buf.data();
         }
       }
       return os << R"(")";
