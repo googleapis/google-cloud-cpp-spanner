@@ -446,10 +446,11 @@ Friends</h2></td></tr>
 <p>Same as above, but uses the default rerun and backoff policies.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mutator</td><td>the function called to create mutations </td></tr>
+    <tr><td class="paramname">mutator</td><td>the function called to create mutations</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line">  using ::google::cloud::StatusOr;</div><div class="line">  <span class="keyword">namespace </span><a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">spanner</a> = ::google::cloud::spanner;</div><div class="line">  <span class="keyword">auto</span> commit_result = client.Commit(</div><div class="line">      [&amp;client](spanner::Transaction txn) -&gt; StatusOr&lt;spanner::Mutations&gt; {</div><div class="line">        <span class="keyword">auto</span> update = client.ExecuteDml(</div><div class="line">            std::move(txn),</div><div class="line">            spanner::SqlStatement(</div><div class="line">                <span class="stringliteral">&quot;UPDATE Albums SET MarketingBudget = MarketingBudget * 2&quot;</span></div><div class="line">                <span class="stringliteral">&quot; WHERE SingerId = 1 AND AlbumId = 1&quot;</span>));</div><div class="line">        <span class="keywordflow">if</span> (!update) <span class="keywordflow">return</span> update.status();</div><div class="line">        <span class="keywordflow">return</span> <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a283421d14e4073e59922c9168d880cae">spanner::Mutations</a>{};</div><div class="line">      });</div><div class="line">  <span class="keywordflow">if</span> (!commit_result) {</div><div class="line">    <span class="keywordflow">throw</span> std::runtime_error(commit_result.status().message());</div><div class="line">  }</div></div><!-- fragment --></dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00258">258</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
@@ -472,7 +473,8 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Commits the given <code>mutations</code> atomically in order. </p>
-<p>This function uses the re-run loop described above with the default policies. </p>
+<p>This function uses the re-run loop described above with the default policies.</p>
+<dl class="section user"><dt>Example</dt><dd><div class="fragment"><div class="line">  <span class="keyword">namespace </span><a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">spanner</a> = ::google::cloud::spanner;</div><div class="line">  <span class="keyword">auto</span> commit_result = client.Commit(<a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a283421d14e4073e59922c9168d880cae">spanner::Mutations</a>{</div><div class="line">      <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ace667ae54433716b82aac3e99ea9a285">spanner::UpdateMutationBuilder</a>(<span class="stringliteral">&quot;Albums&quot;</span>,</div><div class="line">                                     {<span class="stringliteral">&quot;SingerId&quot;</span>, <span class="stringliteral">&quot;AlbumId&quot;</span>, <span class="stringliteral">&quot;MarketingBudget&quot;</span>})</div><div class="line">          .EmplaceRow(1, 1, 100000)</div><div class="line">          .EmplaceRow(2, 2, 500000)</div><div class="line">          .Build()});</div><div class="line">  <span class="keywordflow">if</span> (!commit_result) {</div><div class="line">    <span class="keywordflow">throw</span> std::runtime_error(commit_result.status().message());</div><div class="line">  }</div></div><!-- fragment --></dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00276">276</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
