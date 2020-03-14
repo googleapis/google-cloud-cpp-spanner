@@ -1010,6 +1010,7 @@ void InsertData(google::cloud::spanner::Client client) {
 
 //! [update-mutation-builder] [START spanner_update_data]
 void UpdateData(google::cloud::spanner::Client client) {
+  //! [commit-with-mutations]
   namespace spanner = ::google::cloud::spanner;
   auto commit_result = client.Commit(spanner::Mutations{
       spanner::UpdateMutationBuilder("Albums",
@@ -1020,6 +1021,7 @@ void UpdateData(google::cloud::spanner::Client client) {
   if (!commit_result) {
     throw std::runtime_error(commit_result.status().message());
   }
+  //! [commit-with-mutations]
   std::cout << "Update was successful [spanner_update_data]\n";
 }
 //! [update-mutation-builder] [END spanner_update_data]
@@ -1363,6 +1365,7 @@ void ReadDataWithStoringIndex(google::cloud::spanner::Client client) {
 
 //! [START spanner_read_write_transaction]
 void ReadWriteTransaction(google::cloud::spanner::Client client) {
+  //! [commit-with-mutator]
   namespace spanner = ::google::cloud::spanner;
   using ::google::cloud::StatusOr;
 
@@ -1398,6 +1401,7 @@ void ReadWriteTransaction(google::cloud::spanner::Client client) {
       });
 
   if (!commit) throw std::runtime_error(commit.status().message());
+  //! [commit-with-mutator]
   std::cout << "Transfer was successful [spanner_read_write_transaction]\n";
 }
 //! [END spanner_read_write_transaction]
