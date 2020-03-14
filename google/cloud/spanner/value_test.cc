@@ -989,8 +989,8 @@ TEST(Value, OutputStream) {
       {MakeNullValue<Timestamp>(), "NULL", normal},
 
       // Tests escaping of bytes
-      {Value(Bytes(std::string("ab\tZ"))), R"(B"ab\011Z")", normal},
-      {Value(Bytes(std::string("ab\tZ"))), R"(B"ab\011Z")", hex},
+      {Value(Bytes(std::string("ab\011Z"))), R"(B"ab\011Z")", normal},
+      {Value(Bytes(std::string("ab\011Z"))), R"(B"ab\011Z")", hex},
       {Value(Bytes(std::string("ab\001Z\0211"))), R"(B"ab\001Z\0211")", normal},
       {Value(Bytes(std::string("ab\001Z\0211"))), R"(B"ab\001Z\0211")", hex},
       {Value(Bytes(std::string(3, '\0'))), R"(B"\000\000\000")", normal},
