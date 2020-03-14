@@ -74,8 +74,7 @@ function (spanner_client_define_integration_tests)
         # is "safe". This is a relatively obscure feature to add compile flags
         # to just one source:
         set_property(
-            SOURCE backup_integration_test.cc
-                   instance_admin_integration_test.cc
+            SOURCE backup_integration_test.cc instance_admin_integration_test.cc
             APPEND_STRING
             PROPERTY COMPILE_DEFINITIONS "_CRT_SECURE_NO_WARNINGS")
     endif ()
