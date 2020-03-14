@@ -119,7 +119,7 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
                              ->get<std::vector<unsigned char>>();
       os << R"(B")";
       for (auto const byte : bytes) {
-        if (std::isprint(byte) != 0) {
+        if (std::isprint(byte)) {
           os << byte;
         } else {
           // This uses snprintf rather than iomanip so we don't mess up the
