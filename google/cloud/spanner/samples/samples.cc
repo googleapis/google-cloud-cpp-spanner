@@ -1365,7 +1365,6 @@ void ReadDataWithStoringIndex(google::cloud::spanner::Client client) {
 
 //! [START spanner_read_write_transaction]
 void ReadWriteTransaction(google::cloud::spanner::Client client) {
-  //! [commit-with-mutator]
   namespace spanner = ::google::cloud::spanner;
   using ::google::cloud::StatusOr;
 
@@ -1401,7 +1400,6 @@ void ReadWriteTransaction(google::cloud::spanner::Client client) {
       });
 
   if (!commit) throw std::runtime_error(commit.status().message());
-  //! [commit-with-mutator]
   std::cout << "Transfer was successful [spanner_read_write_transaction]\n";
 }
 //! [END spanner_read_write_transaction]
@@ -1435,6 +1433,7 @@ void DmlStandardInsert(google::cloud::spanner::Client client) {
 
 //! [START spanner_dml_standard_update]
 void DmlStandardUpdate(google::cloud::spanner::Client client) {
+  //! [commit-with-mutator]
   using ::google::cloud::StatusOr;
   namespace spanner = ::google::cloud::spanner;
   auto commit_result = client.Commit(
@@ -1450,6 +1449,7 @@ void DmlStandardUpdate(google::cloud::spanner::Client client) {
   if (!commit_result) {
     throw std::runtime_error(commit_result.status().message());
   }
+  //! [commit-with-mutator]
   std::cout << "Update was successful [spanner_dml_standard_update]\n";
 }
 //! [END spanner_dml_standard_update]
