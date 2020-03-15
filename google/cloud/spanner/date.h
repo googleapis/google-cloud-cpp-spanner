@@ -17,6 +17,7 @@
 
 #include "google/cloud/spanner/version.h"
 #include <cstdint>
+#include <ostream>
 #include <tuple>
 
 namespace google {
