@@ -15,6 +15,7 @@
 #include "google/cloud/spanner/bytes.h"
 #include "google/cloud/status.h"
 #include <array>
+#include <cctype>
 #include <climits>
 #include <cstdio>
 
@@ -78,7 +79,8 @@ std::ostream& operator<<(std::ostream& os, Bytes const& bytes) {
       }
     }
   }
-  return os << R"(")";
+  // Can't use raw string literal here because of a doxygen bug.
+  return os << "\"";
 }
 
 void Bytes::Encoder::Flush() {
