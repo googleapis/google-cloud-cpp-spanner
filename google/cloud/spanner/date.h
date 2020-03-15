@@ -40,6 +40,9 @@ class Date {
   int month() const { return month_; }
   int day() const { return day_; }
 
+  /// @name Output streaming
+  friend std::ostream& operator<<(std::ostream& os, Date const& date);
+
  private:
   std::int64_t year_;
   int month_;
