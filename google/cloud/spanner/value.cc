@@ -15,11 +15,8 @@
 #include "google/cloud/spanner/value.h"
 #include "google/cloud/spanner/internal/date.h"
 #include "google/cloud/log.h"
-#include <array>
-#include <cctype>
 #include <cerrno>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ios>
