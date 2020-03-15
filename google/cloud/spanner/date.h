@@ -41,14 +41,13 @@ class Date {
   int month() const { return month_; }
   int day() const { return day_; }
 
-  /// @name Output streaming
-  friend std::ostream& operator<<(std::ostream& os, Date const& date);
-
  private:
   std::int64_t year_;
   int month_;
   int day_;
 };
+
+std::ostream& operator<<(std::ostream& os, Date const& date);
 
 inline bool operator==(Date const& a, Date const& b) {
   return std::make_tuple(a.year(), a.month(), a.day()) ==
