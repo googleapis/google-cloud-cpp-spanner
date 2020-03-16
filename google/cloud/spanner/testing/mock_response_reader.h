@@ -1,4 +1,4 @@
-// Copyright 2018 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,55 +28,6 @@ namespace google {
 namespace cloud {
 namespace spanner {
 namespace testing {
-/**
- * Refactor code common to several mock objects.
- *
- * Mocking a grpc::ClientReaderInterface<> was getting tedious. This refactors
- * most (but unfortunately cannnot refactor all) the code for such objects.
- *
- * @tparam Response the response type.
- */
-template <typename Response, typename Request>
-class MockResponseReader : public grpc::ClientReaderInterface<Response> {
- public:
-  explicit MockResponseReader(std::string method)
-      : method_(std::move(method)) {}
-  MOCK_METHOD0(WaitForInitialMetadata, void());
-  MOCK_METHOD0(Finish, grpc::Status());
-  MOCK_METHOD1(NextMessageSize, bool(std::uint32_t*));
-  MOCK_METHOD1_T(Read, bool(Response*));
-
-  using UniquePtr = std::unique_ptr<grpc::ClientReaderInterface<Response>>;
-
-  /// Return a `std::unique_ptr< mocked-class >`
-  UniquePtr AsUniqueMocked() { return UniquePtr(this); }
-
-  /**
-   * Create a lambda that returns a `std::unique_ptr< mocked-class >`.
-   *
-   * Often the test code has to create a lambda that returns one of these mocks
-   * wrapped in the correct (the base class) `std::unique_ptr<>`.
-   *
-   * We cannot use just `::testing::Return()` because that binds to the static
-   * type of the returned object, and we need to return a `std::unique_ptr<Foo>`
-   * where we have a `MockFoo*`.  And we cannot create a `std::unique_ptr<>`
-   * and pass it because `::testing::Return()` assumes copy constructions and
-   * `std::unique_ptr<>` only supports move constructors.
-   */
-  std::function<UniquePtr(grpc::ClientContext*, Request const&)>
-  MakeMockReturner() {
-    return [this](grpc::ClientContext* context, Request const&) {
-      EXPECT_STATUS_OK(google::cloud::spanner_testing::IsContextMDValid(
-          *context, method_,
-          google::cloud::spanner::internal::ApiClientHeader()));
-      return UniquePtr(this);
-    };
-  }
-
- private:
-  std::string method_;
-};
-
 /**
  * Define the interface to mock the result of starting a unary async RPC.
  *
@@ -114,16 +65,6 @@ class MockAsyncResponseReader
   MOCK_METHOD0(StartCall, void());
   MOCK_METHOD1(ReadInitialMetadata, void(void*));
   MOCK_METHOD3_T(Finish, void(Response*, grpc::Status*, void*));
-};
-
-template <typename Response>
-class MockClientAsyncReaderInterface
-    : public grpc::ClientAsyncReaderInterface<Response> {
- public:
-  MOCK_METHOD1(StartCall, void(void*));
-  MOCK_METHOD1(ReadInitialMetadata, void(void*));
-  MOCK_METHOD2(Finish, void(grpc::Status*, void*));
-  MOCK_METHOD2_T(Read, void(Response*, void*));
 };
 
 }  // namespace testing
