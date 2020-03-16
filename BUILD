@@ -19,3 +19,11 @@ licenses(["notice"])  # Apache 2.0
 exports_files([
     "LICENSE",
 ])
+
+cc_library(
+    name = "spanner_client",
+    includes = ["."],
+    deps = [
+        "//google/cloud/spanner:spanner_client",
+    ],
+)

@@ -159,7 +159,7 @@ cc_binary(
         "my_program.cc",
     ],
     deps = [
-        "@com_github_googleapis_google_cloud_cpp_spanner//google/cloud/spanner:spanner_client",
+        "@com_github_googleapis_google_cloud_cpp_spanner//:spanner",
     ],
 )
 ```
