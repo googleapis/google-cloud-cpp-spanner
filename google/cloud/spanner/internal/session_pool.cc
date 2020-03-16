@@ -365,7 +365,9 @@ SessionHolder SessionPool::MakeSessionHolder(std::unique_ptr<Session> session,
 
 future<StatusOr<spanner_proto::BatchCreateSessionsResponse>>
 SessionPool::AsyncBatchCreateSessions(
-    CompletionQueue& cq, std::shared_ptr<SpannerStub> stub,
+    CompletionQueue& cq,
+    // NOLINTNEXTLINE(performance-unnecessary-value-param)
+    std::shared_ptr<SpannerStub> stub,
     std::map<std::string, std::string> const& labels, int num_sessions) {
   spanner_proto::BatchCreateSessionsRequest request;
   request.set_database(db_.FullName());
@@ -376,43 +378,45 @@ SessionPool::AsyncBatchCreateSessions(
       __func__, retry_policy_prototype_->clone(),
       backoff_policy_prototype_->clone(),
       internal::ConstantIdempotencyPolicy(true),
-      [&stub](grpc::ClientContext* context,
-              spanner_proto::BatchCreateSessionsRequest const& request,
-              grpc::CompletionQueue* cq) {
+      [stub](grpc::ClientContext* context,
+             spanner_proto::BatchCreateSessionsRequest const& request,
+             grpc::CompletionQueue* cq) {
         return stub->AsyncBatchCreateSessions(*context, request, cq);
       },
       std::move(request), cq);
 }
 
 future<StatusOr<google::protobuf::Empty>> SessionPool::AsyncDeleteSession(
-    CompletionQueue& cq, std::shared_ptr<SpannerStub> stub,
-    std::string session_name) {
+    CompletionQueue& cq,
+    // NOLINTNEXTLINE(performance-unnecessary-value-param)
+    std::shared_ptr<SpannerStub> stub, std::string session_name) {
   spanner_proto::DeleteSessionRequest request;
   request.set_name(std::move(session_name));
   return internal::StartRetryAsyncUnaryRpc(
       __func__, retry_policy_prototype_->clone(),
       backoff_policy_prototype_->clone(),
       internal::ConstantIdempotencyPolicy(true),
-      [&stub](grpc::ClientContext* context,
-              spanner_proto::DeleteSessionRequest const& request,
-              grpc::CompletionQueue* cq) {
+      [stub](grpc::ClientContext* context,
+             spanner_proto::DeleteSessionRequest const& request,
+             grpc::CompletionQueue* cq) {
         return stub->AsyncDeleteSession(*context, request, cq);
       },
       std::move(request), cq);
 }
 
 future<StatusOr<spanner_proto::Session>> SessionPool::AsyncGetSession(
-    CompletionQueue& cq, std::shared_ptr<SpannerStub> stub,
-    std::string session_name) {
+    CompletionQueue& cq,
+    // NOLINTNEXTLINE(performance-unnecessary-value-param)
+    std::shared_ptr<SpannerStub> stub, std::string session_name) {
   spanner_proto::GetSessionRequest request;
   request.set_name(std::move(session_name));
   return internal::StartRetryAsyncUnaryRpc(
       __func__, retry_policy_prototype_->clone(),
       backoff_policy_prototype_->clone(),
       internal::ConstantIdempotencyPolicy(true),
-      [&stub](grpc::ClientContext* context,
-              spanner_proto::GetSessionRequest const& request,
-              grpc::CompletionQueue* cq) {
+      [stub](grpc::ClientContext* context,
+             spanner_proto::GetSessionRequest const& request,
+             grpc::CompletionQueue* cq) {
         return stub->AsyncGetSession(*context, request, cq);
       },
       std::move(request), cq);
