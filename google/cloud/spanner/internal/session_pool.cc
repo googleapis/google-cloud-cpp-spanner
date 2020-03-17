@@ -23,6 +23,7 @@
 #include "google/cloud/status.h"
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 #include <random>
 #include <thread>
 #include <vector>
@@ -121,7 +122,8 @@ void SessionPool::DoBackgroundWork() {
 // creating or deleting sessions as necessary.
 void SessionPool::MaintainPoolSize() {
   std::unique_lock<std::mutex> lk(mu_);
-  if (!create_in_progress_ && total_sessions_ < options_.min_sessions()) {
+  if (create_calls_in_progress_ == 0 &&
+      total_sessions_ < options_.min_sessions()) {
     Grow(lk, total_sessions_ - options_.min_sessions(),
          WaitForSessionAllocation::kNoWait);
   }
@@ -144,8 +146,6 @@ Status SessionPool::Grow(std::unique_lock<std::mutex>& lk,
     // Can't grow the pool since we're already at max size.
     return Status(StatusCode::kResourceExhausted, "session pool exhausted");
   }
-
-  create_in_progress_ = true;
 
   // Compute how many Sessions to create on each Channel, trying to keep the
   // number of Sessions on each channel equal.
@@ -187,30 +187,27 @@ Status SessionPool::Grow(std::unique_lock<std::mutex>& lk,
     }
   }
 
-  // Create all the sessions (note that `lk` can be released during creation,
-  // which is why we don't do this directly in the loop above).
+  // Create all the sessions without the lock held (the lock will be
+  // reacquired independently when the remote calls complete).
+  create_calls_in_progress_ += create_counts.size();
+  lk.unlock();
+  Status return_status;
   for (auto& op : create_counts) {
+    Status status;
     switch (wait) {
-      case WaitForSessionAllocation::kWait: {
-        auto status =
-            CreateSessions(lk, op.first, options_.labels(), op.second);
-        if (!status.ok()) {
-          create_in_progress_ = false;
-          return status;
-        }
-      } break;
+      case WaitForSessionAllocation::kWait:
+        status = CreateSessions(op.first, options_.labels(), op.second);
+        break;
       case WaitForSessionAllocation::kNoWait:
-        // TODO(#1172) make an async create call
+        CreateSessionsAsync(op.first, options_.labels(), op.second);
         break;
     }
+    if (!status.ok()) {
+      return_status = status;
+    }
   }
-
-  // TODO(#1172) when we implement kNoWait, setting create_in_progress_ and
-  // notifying cond_ should only happen after the calls finish.
-  create_in_progress_ = false;
-  // Wake up everyone that was waiting for a session.
-  cond_.notify_all();
-  return Status();
+  lk.lock();
+  return return_status;
 }
 
 StatusOr<SessionHolder> SessionPool::Allocate(bool dissociate_from_pool) {
@@ -248,8 +245,10 @@ StatusOr<SessionHolder> SessionPool::Allocate(bool dissociate_from_pool) {
     // possible enhancement is tracking the number of waiters and issuing more
     // simulaneous calls if additional sessions are needed. We can also use the
     // number of waiters in the `sessions_to_create` calculation below.
-    if (create_in_progress_) {
-      Wait(lk, [this] { return !sessions_.empty() || !create_in_progress_; });
+    if (create_calls_in_progress_ > 0) {
+      Wait(lk, [this] {
+        return !sessions_.empty() || create_calls_in_progress_ == 0;
+      });
       continue;
     }
 
@@ -301,14 +300,9 @@ void SessionPool::Release(std::unique_ptr<Session> session) {
 }
 
 // Creates `num_sessions` on `channel` and adds them to the pool.
-//
-// Requires `lk` has locked `mu_` prior to this call. `lk` will be dropped
-// while the RPC is in progress and then reacquired.
 Status SessionPool::CreateSessions(
-    std::unique_lock<std::mutex>& lk, std::shared_ptr<Channel> const& channel,
+    std::shared_ptr<Channel> const& channel,
     std::map<std::string, std::string> const& labels, int num_sessions) {
-  create_in_progress_ = true;
-  lk.unlock();
   spanner_proto::BatchCreateSessionsRequest request;
   request.set_database(db_.FullName());
   request.mutable_session_template()->mutable_labels()->insert(labels.begin(),
@@ -323,24 +317,22 @@ Status SessionPool::CreateSessions(
         return stub->BatchCreateSessions(context, request);
       },
       request, __func__);
-  lk.lock();
-  create_in_progress_ = false;
-  if (!response.ok()) {
-    return response.status();
-  }
-  // Add sessions to the pool and update counters for `channel` and the pool.
-  int sessions_created = response->session_size();
-  channel->session_count += sessions_created;
-  total_sessions_ += sessions_created;
-  sessions_.reserve(sessions_.size() + sessions_created);
-  for (auto& session : *response->mutable_session()) {
-    sessions_.push_back(google::cloud::internal::make_unique<Session>(
-        std::move(*session.mutable_name()), channel));
-  }
-  // Shuffle the pool so we distribute returned sessions across channels.
-  std::shuffle(sessions_.begin(), sessions_.end(),
-               std::mt19937(std::random_device()()));
-  return Status();
+  return HandleBatchCreateSessionsDone(channel, std::move(response));
+}
+
+void SessionPool::CreateSessionsAsync(
+    std::shared_ptr<Channel> const& channel,
+    std::map<std::string, std::string> const& labels, int num_sessions) {
+  std::weak_ptr<SessionPool> pool = shared_from_this();
+  AsyncBatchCreateSessions(cq_, channel->stub, labels, num_sessions)
+      .then([pool, channel](
+                future<StatusOr<spanner_proto::BatchCreateSessionsResponse>>
+                    result) {
+        if (auto shared_pool = pool.lock()) {
+          shared_pool->HandleBatchCreateSessionsDone(channel,
+                                                     std::move(result).get());
+        }
+      });
 }
 
 SessionHolder SessionPool::MakeSessionHolder(std::unique_ptr<Session> session,
@@ -416,6 +408,33 @@ future<StatusOr<spanner_proto::Session>> SessionPool::AsyncGetSession(
         return stub->AsyncGetSession(*context, request, cq);
       },
       std::move(request), cq);
+}
+
+Status SessionPool::HandleBatchCreateSessionsDone(
+    std::shared_ptr<Channel> const& channel,
+    StatusOr<spanner_proto::BatchCreateSessionsResponse> response) {
+  std::unique_lock<std::mutex> lk(mu_);
+  --create_calls_in_progress_;
+  if (!response.ok()) {
+    return response.status();
+  }
+  // Add sessions to the pool and update counters for `channel` and the pool.
+  int sessions_created = response->session_size();
+  channel->session_count += sessions_created;
+  total_sessions_ += sessions_created;
+  sessions_.reserve(sessions_.size() + sessions_created);
+  for (auto& session : *response->mutable_session()) {
+    sessions_.push_back(google::cloud::internal::make_unique<Session>(
+        std::move(*session.mutable_name()), channel));
+  }
+  // Shuffle the pool so we distribute returned sessions across channels.
+  std::shuffle(sessions_.begin(), sessions_.end(),
+               std::mt19937(std::random_device()()));
+
+  // Wake up anyone who was waiting for a `Session`.
+  lk.unlock();
+  cond_.notify_all();
+  return Status();
 }
 
 }  // namespace internal

@@ -109,10 +109,12 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
     --num_waiting_for_session_;
   }
 
-  Status CreateSessions(std::unique_lock<std::mutex>& lk,
-                        std::shared_ptr<Channel> const& channel,
+  Status CreateSessions(std::shared_ptr<Channel> const& channel,
                         std::map<std::string, std::string> const& labels,
-                        int num_sessions);  // EXCLUSIVE_LOCKS_REQUIRED(mu_)
+                        int num_sessions);  // LOCKS_EXCLUDED(mu_)
+  void CreateSessionsAsync(std::shared_ptr<Channel> const& channel,
+                           std::map<std::string, std::string> const& labels,
+                           int num_sessions);  // LOCKS_EXCLUDED(mu_)
 
   SessionHolder MakeSessionHolder(std::unique_ptr<Session> session,
                                   bool dissociate_from_pool);
@@ -129,6 +131,10 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
   future<StatusOr<google::spanner::v1::Session>> AsyncGetSession(
       CompletionQueue& cq, std::shared_ptr<SpannerStub> stub,
       std::string session_name);
+
+  Status HandleBatchCreateSessionsDone(
+      std::shared_ptr<Channel> const& channel,
+      StatusOr<google::spanner::v1::BatchCreateSessionsResponse> response);
 
   void UpdateNextChannelForCreateSessions();  // EXCLUSIVE_LOCKS_REQUIRED(mu_)
 
@@ -150,7 +156,7 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
   std::condition_variable cond_;
   std::vector<std::unique_ptr<Session>> sessions_;  // GUARDED_BY(mu_)
   int total_sessions_ = 0;                          // GUARDED_BY(mu_)
-  bool create_in_progress_ = false;                 // GUARDED_BY(mu_)
+  int create_calls_in_progress_ = 0;                // GUARDED_BY(mu_)
   int num_waiting_for_session_ = 0;                 // GUARDED_BY(mu_)
   future<void> current_timer_;
 
