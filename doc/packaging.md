@@ -127,9 +127,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.21.0.tar.gz && \
-    tar -xf v0.21.0.tar.gz && \
-    cd google-cloud-cpp-common-0.21.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.23.0.tar.gz && \
+    tar -xf v0.23.0.tar.gz && \
+    cd google-cloud-cpp-common-0.23.0 && \
     cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -244,9 +244,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.21.0.tar.gz && \
-    tar -xf v0.21.0.tar.gz && \
-    cd google-cloud-cpp-common-0.21.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.23.0.tar.gz && \
+    tar -xf v0.23.0.tar.gz && \
+    cd google-cloud-cpp-common-0.23.0 && \
     cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -334,9 +334,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.21.0.tar.gz && \
-    tar -xf v0.21.0.tar.gz && \
-    cd google-cloud-cpp-common-0.21.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.23.0.tar.gz && \
+    tar -xf v0.23.0.tar.gz && \
+    cd google-cloud-cpp-common-0.23.0 && \
     cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -439,9 +439,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.21.0.tar.gz && \
-    tar -xf v0.21.0.tar.gz && \
-    cd google-cloud-cpp-common-0.21.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.23.0.tar.gz && \
+    tar -xf v0.23.0.tar.gz && \
+    cd google-cloud-cpp-common-0.23.0 && \
     cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -503,9 +503,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.21.0.tar.gz && \
-    tar -xf v0.21.0.tar.gz && \
-    cd google-cloud-cpp-common-0.21.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.23.0.tar.gz && \
+    tar -xf v0.23.0.tar.gz && \
+    cd google-cloud-cpp-common-0.23.0 && \
     cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -600,9 +600,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.21.0.tar.gz && \
-    tar -xf v0.21.0.tar.gz && \
-    cd google-cloud-cpp-common-0.21.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.23.0.tar.gz && \
+    tar -xf v0.23.0.tar.gz && \
+    cd google-cloud-cpp-common-0.23.0 && \
     cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -701,9 +701,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.21.0.tar.gz && \
-    tar -xf v0.21.0.tar.gz && \
-    cd google-cloud-cpp-common-0.21.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.23.0.tar.gz && \
+    tar -xf v0.23.0.tar.gz && \
+    cd google-cloud-cpp-common-0.23.0 && \
     cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
@@ -823,9 +823,9 @@ all the Google Cloud C++ client libraries:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.21.0.tar.gz && \
-    tar -xf v0.21.0.tar.gz && \
-    cd google-cloud-cpp-common-0.21.0 && \
+wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.23.0.tar.gz && \
+    tar -xf v0.23.0.tar.gz && \
+    cd google-cloud-cpp-common-0.23.0 && \
     cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
 sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
