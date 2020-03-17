@@ -41,8 +41,8 @@ cd google-cloud-cpp-spanner/quickstart
 
 @par Example: Hello World
 
-The following shows the code that you'll run in the `quickstart/` repo, which
-should give you a taste of the Cloud Spanner C++ client library API.
+The following shows the code that you'll run in the `quickstart/` directory,
+which should give you a taste of the Cloud Spanner C++ client library API.
 
 @include quickstart.cc
 
