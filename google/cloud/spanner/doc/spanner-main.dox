@@ -48,7 +48,7 @@ should give you a taste of the Cloud Spanner C++ client library API.
 
 ## API Notes
 
-The following are general notes about using the API.
+The following are general notes about using the library.
 
 ### Environment Variables
 
