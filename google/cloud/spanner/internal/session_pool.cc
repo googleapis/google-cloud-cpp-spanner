@@ -79,7 +79,7 @@ void SessionPool::Initialize() {
     std::unique_lock<std::mutex> lk(mu_);
     (void)Grow(lk, options_.min_sessions(), WaitForSessionAllocation::kWait);
   }
-  ScheduleBackgroundWork(std::chrono::seconds(0));
+  ScheduleBackgroundWork(std::chrono::seconds(5));
 }
 
 SessionPool::~SessionPool() {
