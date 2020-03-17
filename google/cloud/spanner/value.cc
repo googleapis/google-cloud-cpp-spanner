@@ -132,6 +132,7 @@ std::ostream& StreamHelper(std::ostream& os, google::protobuf::Value const& v,
           EscapeQuotes(os, v.string_value());
           return os << '"';
       }
+      return os;  // Unreachable, but quiets warning.
 
     case google::spanner::v1::BYTES:
       return os << internal::BytesFromBase64(v.string_value()).value();
