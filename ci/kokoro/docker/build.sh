@@ -24,12 +24,6 @@ export CMAKE_SOURCE_DIR="."
 
 in_docker_script="ci/kokoro/docker/build-in-docker-bazel.sh"
 
-# Set it to "no" for any value other than "yes".
-if [[ "${RUN_SLOW_INTEGRATION_TESTS:-}" != "yes" ]]; then
-  RUN_SLOW_INTEGRATION_TESTS="no"
-fi
-export RUN_SLOW_INTEGRATION_TESTS
-
 if [[ $# -ge 1 ]]; then
   export BUILD_NAME="${1}"
 elif [[ -n "${KOKORO_JOB_NAME:-}" ]]; then
@@ -88,7 +82,10 @@ elif [[ "${BUILD_NAME}" = "coverage" ]]; then
   export DISTRO=fedora-install
   export DISTRO_VERSION=31
   : "${RUN_INTEGRATION_TESTS:=$DEFAULT_RUN_INTEGRATION_TESTS}"
-  export RUN_SLOW_INTEGRATION_TESTS=yes
+  if [[ -z "${RUN_SLOW_INTEGRATION_TESTS:-}" ]]; then
+    # Defaults to "instance" for the coverage test.
+    export RUN_SLOW_INTEGRATION_TESTS=instance
+  fi
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "publish-refdocs" ]]; then
   export DISTRO=fedora-install
