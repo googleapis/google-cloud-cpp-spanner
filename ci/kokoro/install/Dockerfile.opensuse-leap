@@ -118,9 +118,9 @@ RUN wget -q https://github.com/googleapis/cpp-cmakefiles/archive/v0.6.0.tar.gz &
 
 # ```bash
 WORKDIR /var/tmp/build
-RUN wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.23.0.tar.gz && \
-    tar -xf v0.23.0.tar.gz && \
-    cd google-cloud-cpp-common-0.23.0 && \
+RUN wget -q https://github.com/googleapis/google-cloud-cpp-common/archive/v0.24.0.tar.gz && \
+    tar -xf v0.24.0.tar.gz && \
+    cd google-cloud-cpp-common-0.24.0 && \
     cmake -H. -Bcmake-out -DBUILD_TESTING=OFF && \
     cmake --build cmake-out -- -j ${NCPU:-4} && \
     cmake --build cmake-out --target install -- -j ${NCPU:-4} && \

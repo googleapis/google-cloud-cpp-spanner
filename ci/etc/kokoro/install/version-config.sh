@@ -13,4 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-readonly GOOGLE_CLOUD_CPP_COMMON_VERSION=0.23.0
+readonly GOOGLE_CLOUD_CPP_COMMON_VERSION=0.24.0
