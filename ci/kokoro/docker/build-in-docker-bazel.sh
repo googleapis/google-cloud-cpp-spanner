@@ -46,6 +46,11 @@ echo "Verify formatting $(date)"
 (cd "${PROJECT_ROOT}" ; ./ci/check-style.sh)
 echo "================================================================"
 
+echo "================================================================"
+echo "Verify markdown $(date)"
+(cd "${PROJECT_ROOT}" ; ./ci/check-markdown.sh)
+echo "================================================================"
+
 readonly BAZEL_BIN="/usr/local/bin/bazel"
 echo "Using Bazel in ${BAZEL_BIN}"
 
