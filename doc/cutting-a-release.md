@@ -26,23 +26,7 @@ git log --no-merges --format="format:* %s" \
     upstream/master
 ```
 
-### Update README.md
-
-Update the instructions to build the library for development:
-
-```bash
-./ci/test-readme/generate-readme.sh >README.md
-```
-
-### Update INSTALL.md
-
-Update the instructions to install the library:
-
-```bash
-./ci/test-readme/generate-install.sh >INSTALL.md
-```
-
-It is not recommended that you create the release branch before this PR is
+It is **not** recommended that you create the release branch before this PR is
 *merged*, but in some circumstances it might be needed, for example, if a large
 change that could destabilize the release is about to be merged, or if we want
 to create the release at an specific point in the revision history.
