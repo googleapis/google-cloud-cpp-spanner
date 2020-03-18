@@ -45,14 +45,14 @@ class BackupTest : public testing::Test {
         google::cloud::internal::GetEnv("SPANNER_EMULATOR_HOST").has_value();
     project_id_ =
         google::cloud::internal::GetEnv("GOOGLE_CLOUD_PROJECT").value_or("");
-    auto run_slow_integration_tests =
-        google::cloud::internal::GetEnv("RUN_SLOW_INTEGRATION_TESTS")
-            .value_or("");
     test_iam_service_account_ =
         google::cloud::internal::GetEnv("GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA")
             .value_or("");
-    auto pos = run_slow_integration_tests.find("backup");
-    run_slow_backup_tests_ = (pos != std::string::npos);
+    auto const run_slow_integration_tests =
+        google::cloud::internal::GetEnv("RUN_SLOW_INTEGRATION_TESTS")
+            .value_or("");
+    run_slow_backup_tests_ =
+        run_slow_integration_tests.find("backup") != std::string::npos;
   }
   InstanceAdminClient instance_admin_client_;
   DatabaseAdminClient database_admin_client_;

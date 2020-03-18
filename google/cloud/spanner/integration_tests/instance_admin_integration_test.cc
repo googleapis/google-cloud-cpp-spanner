@@ -48,14 +48,14 @@ class InstanceAdminClientTest : public testing::Test {
     instance_id_ =
         google::cloud::internal::GetEnv("GOOGLE_CLOUD_CPP_SPANNER_INSTANCE")
             .value_or("");
-    auto run_slow_integration_tests =
-        google::cloud::internal::GetEnv("RUN_SLOW_INTEGRATION_TESTS")
-            .value_or("");
-    auto pos = run_slow_integration_tests.find("instance");
-    run_slow_instance_tests_ = (pos != std::string::npos);
     test_iam_service_account_ =
         google::cloud::internal::GetEnv("GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA")
             .value_or("");
+    auto const run_slow_integration_tests =
+        google::cloud::internal::GetEnv("RUN_SLOW_INTEGRATION_TESTS")
+            .value_or("");
+    run_slow_instance_tests_ =
+        run_slow_integration_tests.find("instance") != std::string::npos;
   }
   InstanceAdminClient client_;
   bool emulator_;

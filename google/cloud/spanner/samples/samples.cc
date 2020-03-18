@@ -2584,13 +2584,13 @@ int RunOneCommand(std::vector<std::string> argv) {
 }
 
 void RunAll(bool emulator) {
-  auto run_slow_integration_tests =
+  auto const run_slow_integration_tests =
       google::cloud::internal::GetEnv("RUN_SLOW_INTEGRATION_TESTS")
           .value_or("");
-  auto pos = run_slow_integration_tests.find("backup");
-  bool run_slow_backup_tests = (pos != std::string::npos);
-  pos = run_slow_integration_tests.find("instance");
-  bool run_slow_instance_tests = (pos != std::string::npos);
+  auto const run_slow_backup_tests =
+      run_slow_integration_tests.find("backup") != std::string::npos;
+  auto const run_slow_instance_tests =
+      run_slow_integration_tests.find("instance") != std::string::npos;
   auto project_id =
       google::cloud::internal::GetEnv("GOOGLE_CLOUD_PROJECT").value_or("");
   if (project_id.empty()) {
