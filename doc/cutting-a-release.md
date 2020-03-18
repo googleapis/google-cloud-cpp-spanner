@@ -31,7 +31,7 @@ git log --no-merges --format="format:* %s" \
 Update the instructions to build the library for development:
 
 ```bash
-./ci/test-readme/generate-readme.sh >README.md
+./ci/generate-markdown/generate-readme.sh >README.md
 ```
 
 ### Update INSTALL.md
@@ -39,7 +39,7 @@ Update the instructions to build the library for development:
 Update the instructions to install the library:
 
 ```bash
-./ci/test-readme/generate-install.sh >INSTALL.md
+./ci/generate-markdown/generate-packaging.sh >doc/packaging.md
 ```
 
 It is not recommended that you create the release branch before this PR is
