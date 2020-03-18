@@ -144,7 +144,7 @@ Status SessionPool::Grow(std::unique_lock<std::mutex>& lk,
   if (!create_counts.ok()) {
     return create_counts.status();
   }
-  create_calls_in_progress_ += create_counts->size();
+  create_calls_in_progress_ += static_cast<int>(create_counts->size());
 
   // Create all the sessions without the lock held (the lock will be
   // reacquired independently when the remote calls complete).
