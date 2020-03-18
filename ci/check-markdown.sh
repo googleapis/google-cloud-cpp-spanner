@@ -25,14 +25,17 @@ declare -A -r GENERATOR_MAP=(
   ["ci/generate-markdown/generate-packaging.sh"]="doc/packaging.md"
 )
 
-for K in "${!GENERATOR_MAP[@]}"; do
-  generator="$K"
-  file="${GENERATOR_MAP[$K]}"
+exit_status=0
+for k in "${!GENERATOR_MAP[@]}"; do
+  generator="${k}"
+  file="${GENERATOR_MAP[${k}]}"
   out=$(diff <("${generator}") "${file}" || true)
   if [[ -n "${out}" ]]; then
     echo "Did you forget to run ${generator}?"
     echo "Unexpected diff found in ${file}:"
     echo "$out"
-    exit 1
+    exit_status=1
   fi
 done
+
+exit ${exit_status}
