@@ -1,5 +1,10 @@
 var searchData=
 [
-  ['executebatchdmlparams',['ExecuteBatchDmlParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ExecuteBatchDmlParams.html',1,'google::cloud::spanner::v0::Connection']]],
-  ['executepartitioneddmlparams',['ExecutePartitionedDmlParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ExecutePartitionedDmlParams.html',1,'google::cloud::spanner::v0::Connection']]]
+  ['genericpollingpolicy',['GenericPollingPolicy',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1GenericPollingPolicy.html',1,'google::cloud::spanner::v0']]],
+  ['getbackupparams',['GetBackupParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1GetBackupParams.html',1,'google::cloud::spanner::v0::DatabaseAdminConnection']]],
+  ['getdatabaseddlparams',['GetDatabaseDdlParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1GetDatabaseDdlParams.html',1,'google::cloud::spanner::v0::DatabaseAdminConnection']]],
+  ['getdatabaseparams',['GetDatabaseParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1GetDatabaseParams.html',1,'google::cloud::spanner::v0::DatabaseAdminConnection']]],
+  ['getiampolicyparams',['GetIamPolicyParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1GetIamPolicyParams.html',1,'google::cloud::spanner::v0::DatabaseAdminConnection::GetIamPolicyParams'],['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminConnection_1_1GetIamPolicyParams.html',1,'google::cloud::spanner::v0::InstanceAdminConnection::GetIamPolicyParams']]],
+  ['getinstanceconfigparams',['GetInstanceConfigParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminConnection_1_1GetInstanceConfigParams.html',1,'google::cloud::spanner::v0::InstanceAdminConnection']]],
+  ['getinstanceparams',['GetInstanceParams',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1InstanceAdminConnection_1_1GetInstanceParams.html',1,'google::cloud::spanner::v0::InstanceAdminConnection']]]
 ];

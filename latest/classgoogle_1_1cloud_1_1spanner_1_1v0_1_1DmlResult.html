@@ -100,7 +100,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd><code>ExecuteDmlResult</code> returns the number of rows modified.</dd></dl>
 <dl class="section user"><dt>Example:</dt><dd><div class="fragment"><div class="line">  using ::google::cloud::StatusOr;</div><div class="line">  <span class="keyword">namespace </span><a class="code" href="namespacegoogle_1_1cloud_1_1spanner.html">spanner</a> = ::google::cloud::spanner;</div><div class="line">  std::int64_t rows_inserted;</div><div class="line">  <span class="keyword">auto</span> commit_result = client.Commit(</div><div class="line">      [&amp;client, &amp;rows_inserted](</div><div class="line">          spanner::Transaction txn) -&gt; StatusOr&lt;spanner::Mutations&gt; {</div><div class="line">        <span class="keyword">auto</span> insert = client.ExecuteDml(</div><div class="line">            std::move(txn),</div><div class="line">            spanner::SqlStatement(</div><div class="line">                <span class="stringliteral">&quot;INSERT INTO Singers (SingerId, FirstName, LastName)&quot;</span></div><div class="line">                <span class="stringliteral">&quot;  VALUES (10, &#39;Virginia&#39;, &#39;Watson&#39;)&quot;</span>));</div><div class="line">        <span class="keywordflow">if</span> (!insert) <span class="keywordflow">return</span> insert.status();</div><div class="line">        rows_inserted = insert-&gt;RowsModified();</div><div class="line">        <span class="keywordflow">return</span> <a class="code" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a283421d14e4073e59922c9168d880cae">spanner::Mutations</a>{};</div><div class="line">      });</div><div class="line">  <span class="keywordflow">if</span> (!commit_result) {</div><div class="line">    <span class="keywordflow">throw</span> std::runtime_error(commit_result.status().message());</div><div class="line">  }</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Rows inserted: &quot;</span> &lt;&lt; rows_inserted;</div></div><!-- fragment --></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00109">109</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00110">110</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="acd9605bde2bb13decb7ae356b4e65e73"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acd9605bde2bb13decb7ae356b4e65e73">&#9670;&nbsp;</a></span>DmlResult() <span class="overload">[1/3]</span></h2>
@@ -151,7 +151,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00112">112</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="results_8h_source.html#l00113">113</a> of file <a class="el" href="results_8h_source.html">results.h</a>.</p>
 
 </div>
 </div>

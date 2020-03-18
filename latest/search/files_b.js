@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['partition_5foptions_2ecc',['partition_options.cc',['../partition__options_8cc.html',1,'']]],
-  ['partition_5foptions_2eh',['partition_options.h',['../partition__options_8h.html',1,'']]],
-  ['partitioned_5fdml_5fresult_2eh',['partitioned_dml_result.h',['../partitioned__dml__result_8h.html',1,'']]],
-  ['polling_5fpolicy_2eh',['polling_policy.h',['../polling__policy_8h.html',1,'']]]
+  ['update_5finstance_5frequest_5fbuilder_2eh',['update_instance_request_builder.h',['../update__instance__request__builder_8h.html',1,'']]]
 ];

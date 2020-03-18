@@ -1,6 +1,5 @@
 var searchData=
 [
   ['backup_5ffull_5fname',['backup_full_name',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1GetBackupParams.html#a11cd4bbfb96cfdea8ac61a8481cfed36',1,'google::cloud::spanner::v0::DatabaseAdminConnection::GetBackupParams::backup_full_name()'],['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1DeleteBackupParams.html#ad686e1490f8015a82dae4ad1ff938c2a',1,'google::cloud::spanner::v0::DatabaseAdminConnection::DeleteBackupParams::backup_full_name()'],['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1RestoreDatabaseParams.html#a37afae8d7df044ba6b0b4d3e00c838be',1,'google::cloud::spanner::v0::DatabaseAdminConnection::RestoreDatabaseParams::backup_full_name()']]],
-  ['backup_5fid',['backup_id',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1CreateBackupParams.html#a9aea904bea1125114cb57de8c89dc9c0',1,'google::cloud::spanner::v0::DatabaseAdminConnection::CreateBackupParams']]],
-  ['bindings',['bindings',['https://googleapis.dev/cpp/google-cloud-common/0.23.0/structgoogle_1_1cloud_1_1v0_1_1IamPolicy.html#a94aea5b484c1e9f20529d33ee5de18fe',1,'google::cloud::v0::IamPolicy']]]
+  ['backup_5fid',['backup_id',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1DatabaseAdminConnection_1_1CreateBackupParams.html#a9aea904bea1125114cb57de8c89dc9c0',1,'google::cloud::spanner::v0::DatabaseAdminConnection::CreateBackupParams']]]
 ];
