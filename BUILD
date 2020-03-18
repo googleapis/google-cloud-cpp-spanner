@@ -23,6 +23,7 @@ exports_files([
 cc_library(
     name = "spanner_client",
     includes = ["."],
+    tags = ["manual"],
     deps = [
         "//google/cloud/spanner:spanner_client",
     ],
