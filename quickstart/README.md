@@ -1,8 +1,33 @@
 # HOWTO: using google-cloud-cpp-spanner in your project
 
-This directory contains small examples showing how to use the Cloud Spanner C++ client library in your own project.
-These instructions assumne that you have some experience as a C++ developer and that you have a working C++ toolchain
+This directory contains small examples showing how to use the Cloud Spanner C++
+client library in your own project. These instructions assume that you have
+some experience as a C++ developer and that you have a working C++ toolchain
 (compiler, linker, etc.) installed on your platform.
+
+## Configuring authentication for the C++ Client Library
+
+Like most Google Cloud Platform (GCP) services, Cloud Spanner requires that
+your application authenticates with the service before accessing any data. If
+you are not familiar with GCP authentication please take this opportunity to
+review the [Authentication Overview][authentication-quickstart]. This library
+uses the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to find the
+credentials file. For example:
+
+| Shell              | Command                                        |
+| :----------------- | ---------------------------------------------- |
+| Bash/zsh/ksh/etc.  | `export GOOGLE_APPLICATION_CREDENTIALS=[PATH]` |
+| sh                 | `GOOGLE_APPLICATION_CREDENTIALS=[PATH];` `export GOOGLE_APPLICATION_CREDENTIALS` |
+| csh/tsch           | `setenv GOOGLE_APPLICATION_CREDENTIALS [PATH]` |
+| Windows Powershell | `$env:GOOGLE_APPLICATION_CREDENTIALS=[PATH]`   |
+| Windows cmd.exe    | `set GOOGLE_APPLICATION_CREDENTIALS=[PATH]`    |
+
+Setting this environment variable is the recommended way to configure the
+authentication preferences, though if the environment variable is not set, the
+library searches for a credentials file in the same location as the [Cloud
+SDK](https://cloud.google.com/sdk/). For more information about *Application
+Default Credentials*, see
+https://cloud.google.com/docs/authentication/production
 
 ## Using with Bazel
 
@@ -93,3 +118,5 @@ set GRPC_DEFAULT_SSL_ROOTS_FILE_PATH=%cd%\roots.pem
 [homebrew-cmake-link]: https://formulae.brew.sh/formula/cmake
 [cmake-download-link]: https://cmake.org/download/
 [bazel-grpc-macos-bug]: https://github.com/bazelbuild/bazel/issues/4341
+[authentication-quickstart]: https://cloud.google.com/docs/authentication/getting-started 'Authentication Getting Started'
+
