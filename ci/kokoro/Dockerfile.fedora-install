@@ -20,7 +20,7 @@ FROM fedora:${DISTRO_VERSION}
 # tools to compile the dependencies:
 RUN dnf makecache && \
     dnf install -y abi-compliance-checker abi-dumper \
-        clang clang-tools-extra cmake doxygen findutils gcc-c++ git \
+        clang clang-tools-extra cmake diffutils doxygen findutils gcc-c++ git \
         grpc-devel grpc-plugins libcxx-devel libcxxabi-devel libcurl-devel \
         make openssl-devel pkgconfig protobuf-compiler \
         python3 python3-pip ShellCheck \
