@@ -33,6 +33,7 @@
 #include <map>
 #include <memory>
 #include <mutex>
+#include <random>
 #include <string>
 #include <utility>
 #include <vector>
@@ -97,6 +98,14 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
   std::shared_ptr<SpannerStub> GetStub(Session const& session);
 
  private:
+  // Represents a request to create `session_count` sessions on `channel`
+  // See `ComputeCreateCounts` and `CreateSessions`.
+  struct CreateCount {
+    std::shared_ptr<Channel> channel;
+    int session_count;
+  };
+  enum class WaitForSessionAllocation { kWait, kNoWait };
+
   // Release session back to the pool.
   void Release(std::unique_ptr<Session> session);
 
@@ -109,9 +118,15 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
     --num_waiting_for_session_;
   }
 
-  Status CreateSessions(std::shared_ptr<Channel> const& channel,
-                        std::map<std::string, std::string> const& labels,
-                        int num_sessions);  // LOCKS_EXCLUDED(mu_)
+  Status Grow(std::unique_lock<std::mutex>& lk, int sessions_to_create,
+              WaitForSessionAllocation wait);  // EXCLUSIVE_LOCKS_REQUIRED(mu_)
+  StatusOr<std::vector<CreateCount>> ComputeCreateCounts(
+      int sessions_to_create);  // EXCLUSIVE_LOCKS_REQUIRED(mu_)
+  Status CreateSessions(std::vector<CreateCount> create_counts,
+                        WaitForSessionAllocation wait);  // LOCKS_EXCLUDED(mu_)
+  Status CreateSessionsSync(std::shared_ptr<Channel> const& channel,
+                            std::map<std::string, std::string> const& labels,
+                            int num_sessions);  // LOCKS_EXCLUDED(mu_)
   void CreateSessionsAsync(std::shared_ptr<Channel> const& channel,
                            std::map<std::string, std::string> const& labels,
                            int num_sessions);  // LOCKS_EXCLUDED(mu_)
@@ -141,9 +156,6 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
   void ScheduleBackgroundWork(std::chrono::seconds relative_time);
   void DoBackgroundWork();
   void MaintainPoolSize();
-  enum class WaitForSessionAllocation { kWait, kNoWait };
-  Status Grow(std::unique_lock<std::mutex>& lk, int sessions_to_create,
-              WaitForSessionAllocation wait);
 
   Database const db_;
   SessionPoolOptions const options_;
@@ -151,6 +163,7 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
   std::unique_ptr<RetryPolicy const> retry_policy_prototype_;
   std::unique_ptr<BackoffPolicy const> backoff_policy_prototype_;
   int const max_pool_size_;
+  std::mt19937 random_generator_;
 
   std::mutex mu_;
   std::condition_variable cond_;

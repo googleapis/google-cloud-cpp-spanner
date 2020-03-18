@@ -23,7 +23,6 @@
 #include "google/cloud/status.h"
 #include <algorithm>
 #include <chrono>
-#include <cmath>
 #include <random>
 #include <thread>
 #include <vector>
@@ -61,7 +60,8 @@ SessionPool::SessionPool(Database db,
       retry_policy_prototype_(std::move(retry_policy)),
       backoff_policy_prototype_(std::move(backoff_policy)),
       max_pool_size_(options_.max_sessions_per_channel() *
-                     static_cast<int>(stubs.size())) {
+                     static_cast<int>(stubs.size())),
+      random_generator_(std::random_device()()) {
   if (stubs.empty()) {
     google::cloud::internal::ThrowInvalidArgument(
         "SessionPool requires a non-empty set of stubs");
@@ -140,6 +140,22 @@ void SessionPool::MaintainPoolSize() {
 Status SessionPool::Grow(std::unique_lock<std::mutex>& lk,
                          int sessions_to_create,
                          WaitForSessionAllocation wait) {
+  auto create_counts = ComputeCreateCounts(sessions_to_create);
+  if (!create_counts.ok()) {
+    return create_counts.status();
+  }
+  create_calls_in_progress_ += create_counts->size();
+
+  // Create all the sessions without the lock held (the lock will be
+  // reacquired independently when the remote calls complete).
+  lk.unlock();
+  Status status = CreateSessions(*std::move(create_counts), wait);
+  lk.lock();
+  return status;
+}
+
+StatusOr<std::vector<SessionPool::CreateCount>>
+SessionPool::ComputeCreateCounts(int sessions_to_create) {
   int num_channels = static_cast<int>(channels_.size());
   int session_limit = options_.max_sessions_per_channel() * num_channels;
   if (total_sessions_ == session_limit) {
@@ -168,7 +184,7 @@ Status SessionPool::Grow(std::unique_lock<std::mutex>& lk,
   // Compute the number of new Sessions to create on each channel.
   int sessions_remaining = target_total_sessions;
   int channels_remaining = num_channels;
-  std::vector<std::pair<std::shared_ptr<Channel>, int>> create_counts;
+  std::vector<CreateCount> create_counts;
   for (auto& channel : channels_by_count) {
     // The target number of sessions for this channel, rounded up.
     int target =
@@ -176,7 +192,7 @@ Status SessionPool::Grow(std::unique_lock<std::mutex>& lk,
     --channels_remaining;
     if (channel->session_count < target) {
       int sessions_to_create = target - channel->session_count;
-      create_counts.emplace_back(channel, sessions_to_create);
+      create_counts.push_back({channel, sessions_to_create});
       // Subtract the number of Sessions this channel will have after creation
       // finishes from the remaining sessions count.
       sessions_remaining -= target;
@@ -186,27 +202,28 @@ Status SessionPool::Grow(std::unique_lock<std::mutex>& lk,
       sessions_remaining -= channel->session_count;
     }
   }
+  return create_counts;
+}
 
-  // Create all the sessions without the lock held (the lock will be
-  // reacquired independently when the remote calls complete).
-  create_calls_in_progress_ += create_counts.size();
-  lk.unlock();
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+Status SessionPool::CreateSessions(std::vector<CreateCount> create_counts,
+                                   WaitForSessionAllocation wait) {
   Status return_status;
   for (auto& op : create_counts) {
-    Status status;
     switch (wait) {
-      case WaitForSessionAllocation::kWait:
-        status = CreateSessions(op.first, options_.labels(), op.second);
+      case WaitForSessionAllocation::kWait: {
+        Status status =
+            CreateSessionsSync(op.channel, options_.labels(), op.session_count);
+        if (!status.ok()) {
+          return_status = status;
+        }
         break;
+      }
       case WaitForSessionAllocation::kNoWait:
-        CreateSessionsAsync(op.first, options_.labels(), op.second);
+        CreateSessionsAsync(op.channel, options_.labels(), op.session_count);
         break;
-    }
-    if (!status.ok()) {
-      return_status = status;
     }
   }
-  lk.lock();
   return return_status;
 }
 
@@ -300,7 +317,7 @@ void SessionPool::Release(std::unique_ptr<Session> session) {
 }
 
 // Creates `num_sessions` on `channel` and adds them to the pool.
-Status SessionPool::CreateSessions(
+Status SessionPool::CreateSessionsSync(
     std::shared_ptr<Channel> const& channel,
     std::map<std::string, std::string> const& labels, int num_sessions) {
   spanner_proto::BatchCreateSessionsRequest request;
@@ -419,7 +436,7 @@ Status SessionPool::HandleBatchCreateSessionsDone(
     return response.status();
   }
   // Add sessions to the pool and update counters for `channel` and the pool.
-  int sessions_created = response->session_size();
+  auto const sessions_created = response->session_size();
   channel->session_count += sessions_created;
   total_sessions_ += sessions_created;
   sessions_.reserve(sessions_.size() + sessions_created);
@@ -428,8 +445,7 @@ Status SessionPool::HandleBatchCreateSessionsDone(
         std::move(*session.mutable_name()), channel));
   }
   // Shuffle the pool so we distribute returned sessions across channels.
-  std::shuffle(sessions_.begin(), sessions_.end(),
-               std::mt19937(std::random_device()()));
+  std::shuffle(sessions_.begin(), sessions_.end(), random_generator_);
 
   // Wake up anyone who was waiting for a `Session`.
   lk.unlock();
