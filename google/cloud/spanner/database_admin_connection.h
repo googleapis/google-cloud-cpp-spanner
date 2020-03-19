@@ -335,8 +335,7 @@ std::shared_ptr<DatabaseAdminConnection> MakeDatabaseAdminConnection(
  *     running checked for completion
  */
 std::shared_ptr<DatabaseAdminConnection> MakeDatabaseAdminConnection(
-    ConnectionOptions const& options,
-    std::unique_ptr<RetryPolicy> retry_policy,
+    ConnectionOptions const& options, std::unique_ptr<RetryPolicy> retry_policy,
     std::unique_ptr<BackoffPolicy> backoff_policy,
     std::unique_ptr<PollingPolicy> polling_policy);
 

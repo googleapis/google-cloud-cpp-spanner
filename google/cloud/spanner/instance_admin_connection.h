@@ -225,8 +225,7 @@ std::shared_ptr<InstanceAdminConnection> MakeInstanceAdminConnection(
  *     running checked for completion
  */
 std::shared_ptr<InstanceAdminConnection> MakeInstanceAdminConnection(
-    ConnectionOptions const& options,
-    std::unique_ptr<RetryPolicy> retry_policy,
+    ConnectionOptions const& options, std::unique_ptr<RetryPolicy> retry_policy,
     std::unique_ptr<BackoffPolicy> backoff_policy,
     std::unique_ptr<PollingPolicy> polling_policy);
 
