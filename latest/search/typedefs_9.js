@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['reference',['reference',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bytes_1_1Decoder_1_1Iterator.html#aa65194e74733e6963fb46f2ab2226788',1,'google::cloud::spanner::v0::Bytes::Decoder::Iterator::reference()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html#ad468476c5c666aa66105a6d6ff5a2343',1,'google::cloud::spanner::v0::RowStreamIterator::reference()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStreamIterator.html#a2893ff046c69611cd00e6a0b028564bd',1,'google::cloud::spanner::v0::TupleStreamIterator::reference()']]],
-  ['replacemutationbuilder',['ReplaceMutationBuilder',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a03af1aa6020a519966ff4b79a7a24aad',1,'google::cloud::spanner::v0']]],
-  ['retrypolicy',['RetryPolicy',['../namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a7ac0157ff53ff117cda2ebfe18650481',1,'google::cloud::spanner::v0']]]
+  ['reference',['reference',['../classgoogle_1_1cloud_1_1spanner_1_1v1_1_1Bytes_1_1Decoder_1_1Iterator.html#a7968f37929c923d527bf054800153bf9',1,'google::cloud::spanner::v1::Bytes::Decoder::Iterator::reference()'],['../classgoogle_1_1cloud_1_1spanner_1_1v1_1_1RowStreamIterator.html#a4066d684d1d561273380c39a8c8d0c2d',1,'google::cloud::spanner::v1::RowStreamIterator::reference()'],['../classgoogle_1_1cloud_1_1spanner_1_1v1_1_1TupleStreamIterator.html#a6e2cea89f696305656c99122c58e3778',1,'google::cloud::spanner::v1::TupleStreamIterator::reference()']]],
+  ['replacemutationbuilder',['ReplaceMutationBuilder',['../namespacegoogle_1_1cloud_1_1spanner_1_1v1.html#a56a097f42f92c1d739e64c72867840e4',1,'google::cloud::spanner::v1']]],
+  ['retrypolicy',['RetryPolicy',['../namespacegoogle_1_1cloud_1_1spanner_1_1v1.html#a0a6f212ac417db25226f570953f8ca0a',1,'google::cloud::spanner::v1']]]
 ];

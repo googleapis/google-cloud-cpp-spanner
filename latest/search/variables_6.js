@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['keys',['keys',['../structgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection_1_1ReadParams.html#ae70da8c97cb19e1324ae28f87f2d237b',1,'google::cloud::spanner::v0::Connection::ReadParams']]]
+  ['keys',['keys',['../structgoogle_1_1cloud_1_1spanner_1_1v1_1_1Connection_1_1ReadParams.html#a7364faf2cb8810214e309c522fe09ecd',1,'google::cloud::spanner::v1::Connection::ReadParams']]]
 ];

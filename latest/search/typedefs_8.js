@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['paramtype',['ParamType',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SqlStatement.html#aac057a4f7b0d17caa6622b42565567ee',1,'google::cloud::spanner::v0::SqlStatement']]],
-  ['pointer',['pointer',['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Bytes_1_1Decoder_1_1Iterator.html#a45e6cb2b782866f16070d13830961a62',1,'google::cloud::spanner::v0::Bytes::Decoder::Iterator::pointer()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1RowStreamIterator.html#a14c7e82ea9fc25652257a482fea55e1a',1,'google::cloud::spanner::v0::RowStreamIterator::pointer()'],['../classgoogle_1_1cloud_1_1spanner_1_1v0_1_1TupleStreamIterator.html#a9921205ecd6b3b0d783b04de973bc1af',1,'google::cloud::spanner::v0::TupleStreamIterator::pointer()']]]
+  ['paramtype',['ParamType',['../classgoogle_1_1cloud_1_1spanner_1_1v1_1_1SqlStatement.html#ac4383e0e95138674b02cf7d36eb35c9b',1,'google::cloud::spanner::v1::SqlStatement']]],
+  ['pointer',['pointer',['../classgoogle_1_1cloud_1_1spanner_1_1v1_1_1Bytes_1_1Decoder_1_1Iterator.html#a869afdb56619c7d68d831a1788cbff16',1,'google::cloud::spanner::v1::Bytes::Decoder::Iterator::pointer()'],['../classgoogle_1_1cloud_1_1spanner_1_1v1_1_1RowStreamIterator.html#a5a1e4a846bf8358bd2555884bc8ac50e',1,'google::cloud::spanner::v1::RowStreamIterator::pointer()'],['../classgoogle_1_1cloud_1_1spanner_1_1v1_1_1TupleStreamIterator.html#ae03098e5d40680a329ad45864fa6e4bc',1,'google::cloud::spanner::v1::TupleStreamIterator::pointer()']]]
 ];

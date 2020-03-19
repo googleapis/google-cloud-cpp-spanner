@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Google Cloud Spanner C++ Client
-   &#160;<span id="projectnumber">0.10.0</span>
+   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">A C++ Client Library for Google Cloud Spanner</div>
   </td>
@@ -104,8 +104,8 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html">google::cloud::spanner::v0::Client</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs database client operations on Spanner.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Client.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v1_1_1Client.html">google::cloud::spanner::v1::Client</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs database client operations on Spanner.  <a href="classgoogle_1_1cloud_1_1spanner_1_1v1_1_1Client.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -118,18 +118,18 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacegoogle_1_1cloud_1_1spanner"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner.html">google::cloud::spanner</a></td></tr>
 <tr class="memdesc:namespacegoogle_1_1cloud_1_1spanner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains all the Cloud Spanner C++ client types and functions. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacegoogle_1_1cloud_1_1spanner_1_1v0"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html">google::cloud::spanner::v0</a></td></tr>
-<tr class="memdesc:namespacegoogle_1_1cloud_1_1spanner_1_1v0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The inlined, versioned namespace for the Cloud Spanner C++ client APIs. <br /></td></tr>
+<tr class="memitem:namespacegoogle_1_1cloud_1_1spanner_1_1v1"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v1.html">google::cloud::spanner::v1</a></td></tr>
+<tr class="memdesc:namespacegoogle_1_1cloud_1_1spanner_1_1v1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The inlined, versioned namespace for the Cloud Spanner C++ client APIs. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aed22de1a3c4a7fa28b78061ed4ca4d4f"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; Connection &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aed22de1a3c4a7fa28b78061ed4ca4d4f">google::cloud::spanner::v0::MakeConnection</a> (Database const  &amp;db, ConnectionOptions const  &amp;connection_options=ConnectionOptions(), SessionPoolOptions session_pool_options=SessionPoolOptions())</td></tr>
-<tr class="memdesc:aed22de1a3c4a7fa28b78061ed4ca4d4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#aed22de1a3c4a7fa28b78061ed4ca4d4f">More...</a><br /></td></tr>
-<tr class="separator:aed22de1a3c4a7fa28b78061ed4ca4d4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5fd52f9b0ea74a600b92bc1481129f74"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; Connection &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a5fd52f9b0ea74a600b92bc1481129f74">google::cloud::spanner::v0::MakeConnection</a> (Database const  &amp;db, ConnectionOptions const  &amp;connection_options, SessionPoolOptions session_pool_options, std::unique_ptr&lt; RetryPolicy &gt; retry_policy, std::unique_ptr&lt; BackoffPolicy &gt; backoff_policy)</td></tr>
-<tr class="memdesc:a5fd52f9b0ea74a600b92bc1481129f74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#a5fd52f9b0ea74a600b92bc1481129f74">More...</a><br /></td></tr>
-<tr class="separator:a5fd52f9b0ea74a600b92bc1481129f74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef558059b23cddd57ddbb33ac4825ae4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; Connection &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v1.html#aef558059b23cddd57ddbb33ac4825ae4">google::cloud::spanner::v1::MakeConnection</a> (Database const  &amp;db, ConnectionOptions const  &amp;connection_options=ConnectionOptions(), SessionPoolOptions session_pool_options=SessionPoolOptions())</td></tr>
+<tr class="memdesc:aef558059b23cddd57ddbb33ac4825ae4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v1_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v1.html#aef558059b23cddd57ddbb33ac4825ae4">More...</a><br /></td></tr>
+<tr class="separator:aef558059b23cddd57ddbb33ac4825ae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa84a1b1edc2531ba3d960bf1e17cb756"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; Connection &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v1.html#aa84a1b1edc2531ba3d960bf1e17cb756">google::cloud::spanner::v1::MakeConnection</a> (Database const  &amp;db, ConnectionOptions const  &amp;connection_options, SessionPoolOptions session_pool_options, std::unique_ptr&lt; RetryPolicy &gt; retry_policy, std::unique_ptr&lt; BackoffPolicy &gt; backoff_policy)</td></tr>
+<tr class="memdesc:aa84a1b1edc2531ba3d960bf1e17cb756"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v1_1_1Connection.html" title="A connection to a Spanner database instance.">Connection</a> object that can be used for interacting with Spanner.  <a href="namespacegoogle_1_1cloud_1_1spanner_1_1v1.html#aa84a1b1edc2531ba3d960bf1e17cb756">More...</a><br /></td></tr>
+<tr class="separator:aa84a1b1edc2531ba3d960bf1e17cb756"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
