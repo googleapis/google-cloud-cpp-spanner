@@ -275,6 +275,8 @@ function (spanner_client_define_tests)
 
     add_library(
         spanner_client_testing
+        testing/cleanup_stale_instances.cc
+        testing/cleanup_stale_instances.h
         testing/compiler_supports_regexp.h
         testing/database_environment.cc
         testing/database_environment.h
