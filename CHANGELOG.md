@@ -1,6 +1,55 @@
 # Changelog
 
-## v0.10.x - TBD
+## v1.1.0 - TBD
+
+## v1.0.0 - 2020-03
+
+* **Breaking Changes**
+
+  * feat!: add support for QueryOptions (#1351), this is a breaking
+    change for any developers that used
+    `Connection::SqlParams::placeholder_do_not_use_name_will_change`.
+  * feat!: implement SessionPool session refresh (#1425), this is a
+    breaking change as the return type for
+    `SessionOptions::keep_alive_interval` changed from
+    `std::chrono::minutes` to `std::chrono::seconds`.
+
+We believe the risk of developers being impacted by these changes
+is small, but do apologize if this impacts you.
+
+* **Other Changes**
+
+* feat: add Managed Backup feature (#1358)
+* feat: sessions are automatically created and refreshed by
+  background threads as described in:
+      https://cloud.google.com/spanner/docs/sessions#best_practices
+* We made multiple improvements (detailed below) to the documentation and
+  code samples.
+* fix: polling policy stops after 'too many' successes (#1427)
+* feat: clean up main doxygen page (#1404)
+* feat: implement async session creation (#1405)
+* fix: avoid deadlocks during shutdown (#1397)
+* feat: streaming Value STRING only quotes in aggregates (#1401)
+* doc: small improvements to Client samples (#1398)
+* doc: link existing example for ExecuteBatchDml (#1395)
+* doc: update snippets for all mutation types (#1394)
+* fix: Value::op==() correctly handles Date and Timestamp (#1386)
+* feat: taught Date how to stream itself (#1385)
+* feat: escape non-printable bytes in Value::op<< (#1371)
+* docs: add snippets for Commit() with a mutator or mutations (#1374)
+* docs: updated snippets and samples for profile and analyze methods (#1364)
+* feat: Value streaming respects io manipulators (#1362)
+* feat: SqlStatement uses `op<<(Value)` (#1361)
+* cleanup: make use of the new Client::Commit(Mutations) overload (#1359)
+* feat: add ostream operator for Value (#1336)
+* feat: refactor and enhance session creation logic (#1343)
+* doc: link to the style guide in the common repo (#1348)
+* fix: associate each `Session` with a `Channel` (#1346)
+* feat: moved INSTALL.md -> doc/packaging.md (#1341)
+* fix: use correct quickstart URL (#1339)
+* feat: simplify README.md (#1338)
+* doc: add more snippets to documentation (#1331)
+* doc: an example of spanner::GetSingularRow (#1327)
 
 ## v0.9.x - 2020-03
 
