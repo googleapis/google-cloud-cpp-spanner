@@ -25,7 +25,6 @@ is small, but do apologize if this impacts you.
       https://cloud.google.com/spanner/docs/sessions#best_practices
 * We made multiple improvements (detailed below) to the documentation and
   code samples.
-
 * fix: polling policy stops after 'too many' successes (#1427)
 * feat: clean up main doxygen page (#1404)
 * feat: implement async session creation (#1405)
