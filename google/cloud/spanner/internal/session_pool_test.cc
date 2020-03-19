@@ -386,9 +386,10 @@ TEST(SessionPool, GetStubForStublessSession) {
   EXPECT_EQ(pool->GetStub(*session), mock);
 }
 
-// NOTE: This test runs in real time. SessionPool does not currently provide
-// any mechanism to inject a clock source, or to control its background-work
-// scheduling. This makes the test slower and more fragile than desired.
+// TODO(#1428): This test runs in real time. SessionPool does not currently
+// provide any mechanism to inject a clock source, or to control its
+// background-work scheduling. This makes the test slower and more fragile
+// than desired.
 TEST(SessionPool, SessionRefresh) {
   auto mock = std::make_shared<StrictMock<spanner_testing::MockSpannerStub>>();
   EXPECT_CALL(*mock, BatchCreateSessions(_, _))
