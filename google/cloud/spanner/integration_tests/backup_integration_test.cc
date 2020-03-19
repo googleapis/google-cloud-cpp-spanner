@@ -16,7 +16,9 @@
 #include "google/cloud/spanner/database_admin_client.h"
 #include "google/cloud/spanner/instance_admin_client.h"
 #include "google/cloud/spanner/internal/time_utils.h"
+#include "google/cloud/spanner/testing/compiler_supports_regexp.h"
 #include "google/cloud/spanner/testing/pick_instance_config.h"
+#include "google/cloud/spanner/testing/policies.h"
 #include "google/cloud/spanner/testing/random_backup_name.h"
 #include "google/cloud/spanner/testing/random_database_name.h"
 #include "google/cloud/spanner/testing/random_instance_name.h"
@@ -35,40 +37,17 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace {
 
-// For this tests, use 15 minutes as the maximum polling and retry periods. The
-// default is longer, but we need to timeout earlier in the CI builds.
-auto constexpr kMaximumWaitTimeMinutes = 15;
-auto constexpr kBackoffScaling = 2.0;
-
-std::unique_ptr<RetryPolicy> TestRetryPolicy() {
-  return LimitedTimeRetryPolicy(std::chrono::minutes(kMaximumWaitTimeMinutes))
-      .clone();
-}
-
-std::unique_ptr<BackoffPolicy> TestBackoffPolicy() {
-  return ExponentialBackoffPolicy(std::chrono::seconds(1),
-                                  std::chrono::minutes(1), kBackoffScaling)
-      .clone();
-}
-
-std::unique_ptr<PollingPolicy> TestPollingPolicy() {
-  return GenericPollingPolicy<>(
-             LimitedTimeRetryPolicy(
-                 std::chrono::minutes(kMaximumWaitTimeMinutes)),
-             ExponentialBackoffPolicy(std::chrono::seconds(1),
-                                      std::chrono::minutes(1), kBackoffScaling))
-      .clone();
-}
-
 class BackupTest : public testing::Test {
  public:
   BackupTest()
       : instance_admin_client_(MakeInstanceAdminConnection(
-            ConnectionOptions{}, TestRetryPolicy(), TestBackoffPolicy(),
-            TestPollingPolicy())),
+            ConnectionOptions{}, spanner_testing::TestRetryPolicy(),
+            spanner_testing::TestBackoffPolicy(),
+            spanner_testing::TestPollingPolicy())),
         database_admin_client_(MakeDatabaseAdminConnection(
-            ConnectionOptions{}, TestRetryPolicy(), TestBackoffPolicy(),
-            TestPollingPolicy())) {}
+            ConnectionOptions{}, spanner_testing::TestRetryPolicy(),
+            spanner_testing::TestBackoffPolicy(),
+            spanner_testing::TestPollingPolicy())) {}
 
  protected:
   void SetUp() override {
@@ -136,24 +115,12 @@ class BackupTestWithCleanup : public BackupTest {
   std::regex instance_config_regex_;
 };
 
-bool CompilerSupportsRegexp() {
-#if !defined(__clang__) && defined(__GNUC__) && \
-    (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 9))
-  // gcc-4.8 ships with a broken regexp library, it compiles, but does not match
-  // correctly:
-  //    https://stackoverflow.com/questions/12530406/is-gcc-4-8-or-earlier-buggy-about-regular-expressions
-  return false;
-#else
-  return true;
-#endif
-}
-
 /// @test Backup related integration tests.
 TEST_F(BackupTestWithCleanup, BackupTestSuite) {
   if (!run_slow_backup_tests_ || emulator_) {
     GTEST_SKIP();
   }
-  if (!CompilerSupportsRegexp()) {
+  if (!spanner_testing::CompilerSupportsRegexp()) {
     // This test (not the code) depends on regexp.
     GTEST_SKIP();
   }
