@@ -157,7 +157,12 @@ void SessionPool::RefreshExpiringSessions() {
   for (auto& refresh : sessions_to_refresh) {
     AsyncGetSession(cq_, std::move(refresh.first), std::move(refresh.second))
         .then([](future<StatusOr<spanner_proto::Session>> result) {
-          (void)result.get();  // discard response
+          // We simply discard the response as handling IsSessionNotFound()
+          // by removing the session from the pool is problematic (and would
+          // not eliminate the possibility of IsSessionNotFound() elsewhere).
+          // The last-use time has already been updated to throttle attempts.
+          // TODO(#1430): Re-evaluate these decisions.
+          (void)result.get();
         });
   }
 }
