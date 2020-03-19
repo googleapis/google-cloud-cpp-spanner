@@ -35,9 +35,40 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace {
 
+// For this tests, use 15 minutes as the maximum polling and retry periods. The
+// default is longer, but we need to timeout earlier in the CI builds.
+auto constexpr kMaximumWaitTimeMinutes = 15;
+auto constexpr kBackoffScaling = 2.0;
+
+std::unique_ptr<RetryPolicy> TestRetryPolicy() {
+  return LimitedTimeRetryPolicy(std::chrono::minutes(kMaximumWaitTimeMinutes))
+      .clone();
+}
+
+std::unique_ptr<BackoffPolicy> TestBackoffPolicy() {
+  return ExponentialBackoffPolicy(std::chrono::seconds(1),
+                                  std::chrono::minutes(1), kBackoffScaling)
+      .clone();
+}
+
+std::unique_ptr<PollingPolicy> TestPollingPolicy() {
+  return GenericPollingPolicy<>(
+             LimitedTimeRetryPolicy(
+                 std::chrono::minutes(kMaximumWaitTimeMinutes)),
+             ExponentialBackoffPolicy(std::chrono::seconds(1),
+                                      std::chrono::minutes(1), kBackoffScaling))
+      .clone();
+}
+
 class BackupTest : public testing::Test {
  public:
-  BackupTest() : instance_admin_client_(MakeInstanceAdminConnection()) {}
+  BackupTest()
+      : instance_admin_client_(MakeInstanceAdminConnection(
+            ConnectionOptions{}, TestRetryPolicy(), TestBackoffPolicy(),
+            TestPollingPolicy())),
+        database_admin_client_(MakeDatabaseAdminConnection(
+            ConnectionOptions{}, TestRetryPolicy(), TestBackoffPolicy(),
+            TestPollingPolicy())) {}
 
  protected:
   void SetUp() override {
@@ -45,9 +76,6 @@ class BackupTest : public testing::Test {
         google::cloud::internal::GetEnv("SPANNER_EMULATOR_HOST").has_value();
     project_id_ =
         google::cloud::internal::GetEnv("GOOGLE_CLOUD_PROJECT").value_or("");
-    test_iam_service_account_ =
-        google::cloud::internal::GetEnv("GOOGLE_CLOUD_CPP_SPANNER_IAM_TEST_SA")
-            .value_or("");
     auto const run_slow_integration_tests =
         google::cloud::internal::GetEnv("RUN_SLOW_INTEGRATION_TESTS")
             .value_or("");
@@ -56,10 +84,9 @@ class BackupTest : public testing::Test {
   }
   InstanceAdminClient instance_admin_client_;
   DatabaseAdminClient database_admin_client_;
-  bool emulator_;
+  bool emulator_ = false;
   std::string project_id_;
-  std::string test_iam_service_account_;
-  bool run_slow_backup_tests_;
+  bool run_slow_backup_tests_ = false;
 };
 
 class BackupTestWithCleanup : public BackupTest {
@@ -109,17 +136,27 @@ class BackupTestWithCleanup : public BackupTest {
   std::regex instance_config_regex_;
 };
 
+bool CompilerSupportsRegexp() {
+#if !defined(__clang__) && defined(__GNUC__) && \
+    (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 9))
+  // gcc-4.8 ships with a broken regexp library, it compiles, but does not match
+  // correctly:
+  //    https://stackoverflow.com/questions/12530406/is-gcc-4-8-or-earlier-buggy-about-regular-expressions
+  return false;
+#else
+  return true;
+#endif
+}
+
 /// @test Backup related integration tests.
 TEST_F(BackupTestWithCleanup, BackupTestSuite) {
   if (!run_slow_backup_tests_ || emulator_) {
     GTEST_SKIP();
   }
-#if !defined(__clang__) && defined(__GNUC__) && \
-    (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 9))
-  // This test (not the code) depends on regexp and this is not
-  // implemented in gcc 4.8 or lower.
-  GTEST_SKIP();
-#endif
+  if (!CompilerSupportsRegexp()) {
+    // This test (not the code) depends on regexp.
+    GTEST_SKIP();
+  }
   auto generator = google::cloud::internal::MakeDefaultPRNG();
   std::string instance_id =
       google::cloud::spanner_testing::RandomInstanceName(generator);
@@ -225,9 +262,9 @@ TEST_F(BackupTestWithCleanup, BackupTestSuite) {
   EXPECT_STATUS_OK(drop_restored_db_status);
   filter = std::string("expire_time < \"3000-01-01T00:00:00Z\"");
   std::vector<std::string> backup_names;
-  for (auto const& backup : database_admin_client_.ListBackups(in, filter)) {
+  for (auto const& b : database_admin_client_.ListBackups(in, filter)) {
     if (!backup) break;
-    backup_names.push_back(backup->name());
+    backup_names.push_back(b->name());
   }
   EXPECT_LE(
       1, std::count(backup_names.begin(), backup_names.end(), backup->name()))
