@@ -109,11 +109,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a00d50e0f383a535765b3fd00155323ac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacegoogle_1_1cloud_1_1spanner_1_1v0.html#ac89b78d6c279b93f80dd85ed999c983f">ActionOnExhaustion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html#a00d50e0f383a535765b3fd00155323ac">action_on_exhaustion</a> () const</td></tr>
 <tr class="memdesc:a00d50e0f383a535765b3fd00155323ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the action to take (kBlock or kFail) when attempting to allocate a session when the pool is exhausted.  <a href="#a00d50e0f383a535765b3fd00155323ac">More...</a><br /></td></tr>
 <tr class="separator:a00d50e0f383a535765b3fd00155323ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6dc1c141d2e88269c2c661b16b0c7d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html">SessionPoolOptions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html#ac6dc1c141d2e88269c2c661b16b0c7d4">set_keep_alive_interval</a> (std::chrono::minutes minutes)</td></tr>
-<tr class="separator:ac6dc1c141d2e88269c2c661b16b0c7d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a237b306ee1f4b4d1cb09f61808253374"><td class="memItemLeft" align="right" valign="top">std::chrono::minutes&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html#a237b306ee1f4b4d1cb09f61808253374">keep_alive_interval</a> () const</td></tr>
-<tr class="memdesc:a237b306ee1f4b4d1cb09f61808253374"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the interval at which we refresh sessions to prevent GC.  <a href="#a237b306ee1f4b4d1cb09f61808253374">More...</a><br /></td></tr>
-<tr class="separator:a237b306ee1f4b4d1cb09f61808253374"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76429d63db4f9d1a53cc67b7411d9760"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html">SessionPoolOptions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html#a76429d63db4f9d1a53cc67b7411d9760">set_keep_alive_interval</a> (std::chrono::seconds interval)</td></tr>
+<tr class="separator:a76429d63db4f9d1a53cc67b7411d9760"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa00f510cb7aaf9e4c6fffbe7e53fc1fd"><td class="memItemLeft" align="right" valign="top">std::chrono::seconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html#aa00f510cb7aaf9e4c6fffbe7e53fc1fd">keep_alive_interval</a> () const</td></tr>
+<tr class="memdesc:aa00f510cb7aaf9e4c6fffbe7e53fc1fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the interval at which we refresh sessions to prevent GC.  <a href="#aa00f510cb7aaf9e4c6fffbe7e53fc1fd">More...</a><br /></td></tr>
+<tr class="separator:aa00f510cb7aaf9e4c6fffbe7e53fc1fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4f87fddf63e5298765211eb7663ff0f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html">SessionPoolOptions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html#ac4f87fddf63e5298765211eb7663ff0f">set_labels</a> (std::map&lt; std::string, std::string &gt; <a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html#a3a3d8157d19b2040ff13465dcd0e7108">labels</a>)</td></tr>
 <tr class="memdesc:ac4f87fddf63e5298765211eb7663ff0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the labels used when creating sessions within the pool.  <a href="#ac4f87fddf63e5298765211eb7663ff0f">More...</a><br /></td></tr>
 <tr class="separator:ac4f87fddf63e5298765211eb7663ff0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -189,8 +189,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a237b306ee1f4b4d1cb09f61808253374"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a237b306ee1f4b4d1cb09f61808253374">&#9670;&nbsp;</a></span>keep_alive_interval()</h2>
+<a id="aa00f510cb7aaf9e4c6fffbe7e53fc1fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa00f510cb7aaf9e4c6fffbe7e53fc1fd">&#9670;&nbsp;</a></span>keep_alive_interval()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -199,7 +199,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::chrono::minutes google::cloud::spanner::v0::SessionPoolOptions::keep_alive_interval </td>
+          <td class="memname">std::chrono::seconds google::cloud::spanner::v0::SessionPoolOptions::keep_alive_interval </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -364,8 +364,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ac6dc1c141d2e88269c2c661b16b0c7d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac6dc1c141d2e88269c2c661b16b0c7d4">&#9670;&nbsp;</a></span>set_keep_alive_interval()</h2>
+<a id="a76429d63db4f9d1a53cc67b7411d9760"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76429d63db4f9d1a53cc67b7411d9760">&#9670;&nbsp;</a></span>set_keep_alive_interval()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -376,8 +376,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classgoogle_1_1cloud_1_1spanner_1_1v0_1_1SessionPoolOptions.html">SessionPoolOptions</a>&amp; google::cloud::spanner::v0::SessionPoolOptions::set_keep_alive_interval </td>
           <td>(</td>
-          <td class="paramtype">std::chrono::minutes&#160;</td>
-          <td class="paramname"><em>minutes</em></td><td>)</td>
+          <td class="paramtype">std::chrono::seconds&#160;</td>
+          <td class="paramname"><em>interval</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
