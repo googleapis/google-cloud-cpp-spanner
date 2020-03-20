@@ -2234,7 +2234,7 @@ void CustomInstanceAdminPolicies(std::vector<std::string> argv) {
                             /*maximum_duration=*/std::chrono::minutes(25))
                             .clone();
     // The backoff policy controls how long does the client wait between
-    // retrying after a transient failure. Use an truncated exponential backoff
+    // retrying after a transient failure. Use a truncated exponential backoff
     // with jitter to wait between retries:
     //   https://en.wikipedia.org/wiki/Exponential_backoff
     //   https://cloud.google.com/storage/docs/exponential-backoff
@@ -2243,11 +2243,12 @@ void CustomInstanceAdminPolicies(std::vector<std::string> argv) {
                               /*maximum_delay=*/std::chrono::minutes(10),
                               /*scaling=*/2.0)
                               .clone();
-    // The polling policy controls how does the client wait for long running
+    // The polling policy controls how the client waits for long-running
     // operations (such as creating new instances). `GenericPollingPolicy<>`
-    // combines existing policies.  In this case, wait for try for up to 45
-    // minutes. Initially pause for 10 seconds between polling, increasing the
-    // pause by a factor of 4 until it becomes 2 minutes.
+    // combines existing policies.  In this case, keep polling until the
+    // operation completes (with success or error) or 45 minutes, whichever
+    // happens first. Initially pause for 10 seconds between polling requests,
+    // increasing the pause by a factor of 4 until it becomes 2 minutes.
     auto polling_policy =
         spanner::GenericPollingPolicy<>(
             spanner::LimitedTimeRetryPolicy(
@@ -2282,13 +2283,13 @@ void CustomDatabaseAdminPolicies(std::vector<std::string> argv) {
   //! [custom-database-admin-policies]
   namespace spanner = ::google::cloud::spanner;
   [](std::string const& project_id, std::string const& instance_id) {
-    // An database admin client is controlled by three policies. The retry
+    // A database admin client is controlled by three policies. The retry
     // policy determines for how long the client will retry transient failures.
     auto retry_policy = spanner::LimitedTimeRetryPolicy(
                             /*maximum_duration=*/std::chrono::minutes(25))
                             .clone();
     // The backoff policy controls how long does the client wait between
-    // retrying after a transient failure. Use an truncated exponential backoff
+    // retrying after a transient failure. Use a truncated exponential backoff
     // with jitter to wait between retries:
     //   https://en.wikipedia.org/wiki/Exponential_backoff
     //   https://cloud.google.com/storage/docs/exponential-backoff
@@ -2297,11 +2298,12 @@ void CustomDatabaseAdminPolicies(std::vector<std::string> argv) {
                               /*maximum_delay=*/std::chrono::minutes(10),
                               /*scaling=*/2.0)
                               .clone();
-    // The polling policy controls how does the client wait for long running
-    // operations (such as creating new databases). `GenericPollingPolicy<>`
-    // combines existing policies.  In this case, wait for try for up to 45
-    // minutes. Initially pause for 10 seconds between polling, increasing the
-    // pause by a factor of 4 until it becomes 2 minutes.
+    // The polling policy controls how the client waits for long-running
+    // operations (such as creating new instances). `GenericPollingPolicy<>`
+    // combines existing policies.  In this case, keep polling until the
+    // operation completes (with success or error) or 45 minutes, whichever
+    // happens first. Initially pause for 10 seconds between polling requests,
+    // increasing the pause by a factor of 4 until it becomes 2 minutes.
     auto polling_policy =
         spanner::GenericPollingPolicy<>(
             spanner::LimitedTimeRetryPolicy(
