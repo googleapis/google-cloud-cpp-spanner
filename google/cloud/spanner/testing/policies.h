@@ -36,7 +36,7 @@ inline std::unique_ptr<spanner::RetryPolicy> TestRetryPolicy() {
 }
 
 inline std::unique_ptr<spanner::BackoffPolicy> TestBackoffPolicy() {
-  return internal::ExponentialBackoffPolicy(
+  return spanner::ExponentialBackoffPolicy(
              std::chrono::seconds(1), std::chrono::minutes(1), kBackoffScaling)
       .clone();
 }
@@ -45,9 +45,9 @@ inline std::unique_ptr<spanner::PollingPolicy> TestPollingPolicy() {
   return spanner::GenericPollingPolicy<>(
              spanner::LimitedTimeRetryPolicy(
                  std::chrono::minutes(kMaximumWaitTimeMinutes)),
-             internal::ExponentialBackoffPolicy(std::chrono::seconds(1),
-                                                std::chrono::minutes(1),
-                                                kBackoffScaling))
+             spanner::ExponentialBackoffPolicy(std::chrono::seconds(1),
+                                               std::chrono::minutes(1),
+                                               kBackoffScaling))
       .clone();
 }
 
