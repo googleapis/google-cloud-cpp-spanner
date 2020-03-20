@@ -84,8 +84,8 @@ elif [[ "${BUILD_NAME}" = "coverage" ]]; then
   export DISTRO_VERSION=31
   : "${RUN_INTEGRATION_TESTS:=$DEFAULT_RUN_INTEGRATION_TESTS}"
   if [[ -z "${RUN_SLOW_INTEGRATION_TESTS:-}" ]]; then
-    # Defaults to "instance" for the coverage test.
-    export RUN_SLOW_INTEGRATION_TESTS=instance
+    # Defaults to run all the slow tests for the coverage test.
+    export RUN_SLOW_INTEGRATION_TESTS=instance,backup
   fi
   in_docker_script="ci/kokoro/docker/build-in-docker-cmake.sh"
 elif [[ "${BUILD_NAME}" = "publish-refdocs" ]]; then
