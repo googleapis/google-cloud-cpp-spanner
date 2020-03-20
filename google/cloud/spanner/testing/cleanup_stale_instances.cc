@@ -30,9 +30,7 @@ Status CleanupStaleInstances(std::string const& project_id,
       spanner::MakeDatabaseAdminConnection());
   spanner::InstanceAdminClient instance_admin_client(
       spanner::MakeInstanceAdminConnection());
-  std::vector<std::string> instance_ids =
-      [&instance_admin_client, &project_id,
-       &instance_name_regex]() -> std::vector<std::string> {
+  std::vector<std::string> instance_ids = [&]() -> std::vector<std::string> {
     std::vector<std::string> instance_ids;
     for (auto const& instance :
          instance_admin_client.ListInstances(project_id, {})) {
