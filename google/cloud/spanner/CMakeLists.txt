@@ -129,7 +129,7 @@ add_library(
     instance_admin_connection.h
     internal/api_client_header.cc
     internal/api_client_header.h
-        internal/build_info.h
+    internal/build_info.h
     internal/channel.h
     internal/compiler_info.cc
     internal/compiler_info.h
@@ -276,10 +276,10 @@ function (spanner_client_define_tests)
         testing/database_environment.cc
         testing/database_environment.h
         testing/matchers.h
-            testing/mock_database_admin_stub.h
+        testing/mock_database_admin_stub.h
         testing/mock_instance_admin_stub.h
         testing/mock_partial_result_set_reader.h
-            testing/mock_spanner_stub.h
+        testing/mock_spanner_stub.h
         testing/pick_instance_config.cc
         testing/pick_instance_config.h
         testing/pick_random_instance.cc
@@ -323,7 +323,7 @@ function (spanner_client_define_tests)
         instance_admin_connection_test.cc
         instance_test.cc
         internal/api_client_header_test.cc
-            internal/build_info_test.cc
+        internal/build_info_test.cc
         internal/compiler_info_test.cc
         internal/connection_impl_test.cc
         internal/database_admin_logging_test.cc

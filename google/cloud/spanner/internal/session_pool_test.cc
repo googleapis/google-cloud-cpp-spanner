@@ -421,8 +421,7 @@ TEST(SessionPool, SessionRefresh) {
   auto db = Database("project", "instance", "database");
   SessionPoolOptions options;
   options.set_keep_alive_interval(std::chrono::seconds(10));
-  auto impl =
-      std::make_shared<MockCompletionQueue>();
+  auto impl = std::make_shared<MockCompletionQueue>();
   auto pool = MakeSessionPool(db, {mock}, options, CompletionQueue(impl));
 
   // now == t0: Allocate and release two sessions such that "s1" will expire
