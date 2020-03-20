@@ -2233,9 +2233,9 @@ void CustomInstanceAdminPolicies(std::vector<std::string> argv) {
     auto retry_policy = spanner::LimitedTimeRetryPolicy(
                             /*maximum_duration=*/std::chrono::minutes(25))
                             .clone();
-    // The backoff policy controls how long does the client wait between
-    // retrying after a transient failure. Use a truncated exponential backoff
-    // with jitter to wait between retries:
+    // The backoff policy controls how long does the client waits to retry after
+    // a transient failure. Here we configure a truncated exponential backoff
+    // with jitter:
     //   https://en.wikipedia.org/wiki/Exponential_backoff
     //   https://cloud.google.com/storage/docs/exponential-backoff
     auto backoff_policy = spanner::ExponentialBackoffPolicy(
@@ -2288,9 +2288,9 @@ void CustomDatabaseAdminPolicies(std::vector<std::string> argv) {
     auto retry_policy = spanner::LimitedTimeRetryPolicy(
                             /*maximum_duration=*/std::chrono::minutes(25))
                             .clone();
-    // The backoff policy controls how long does the client wait between
-    // retrying after a transient failure. Use a truncated exponential backoff
-    // with jitter to wait between retries:
+    // The backoff policy controls how long does the client waits to retry after
+    // a transient failure. Here we configure a truncated exponential backoff
+    // with jitter:
     //   https://en.wikipedia.org/wiki/Exponential_backoff
     //   https://cloud.google.com/storage/docs/exponential-backoff
     auto backoff_policy = spanner::ExponentialBackoffPolicy(
