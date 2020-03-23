@@ -217,7 +217,12 @@ echo "Load Google Container Registry configuration parameters $(date)."
 if [[ -f "${KOKORO_GFILE_DIR:-}/gcr-configuration.sh" ]]; then
   source "${KOKORO_GFILE_DIR:-}/gcr-configuration.sh"
 fi
+
 source "${PROJECT_ROOT}/ci/kokoro/define-docker-variables.sh"
+source "${PROJECT_ROOT}/ci/etc/repo-config.sh"
+
+echo "================================================================"
+echo "Building with ${NCPU} cores $(date) on ${PWD}."
 
 echo "================================================================"
 echo "Setup Google Container Registry access $(date)."
@@ -293,6 +298,8 @@ docker_uid="${UID:-0}"
 docker_user="${USER:-root}"
 docker_home_prefix="${PWD}/cmake-out/home"
 if [[ "${docker_uid}" == "0" ]]; then
+  # If the UID is 0, then the HOME directory will be set to /root, and we
+  # need to mount the ccache files is /root/.ccache.
   docker_home_prefix="${PWD}/cmake-out/root"
 fi
 
@@ -359,7 +366,7 @@ docker_flags=(
     # If set, pass -DGOOGLE_CLOUD_CPP_CXX_STANDARD=<value> to CMake.
     "--env" "GOOGLE_CLOUD_CPP_CXX_STANDARD=${GOOGLE_CLOUD_CPP_CXX_STANDARD:-}"
 
-    # The type of the build for CMake
+    # The type of the build for CMake.
     "--env" "BUILD_TYPE=${BUILD_TYPE:-Release}"
 
     # Additional flags to enable CMake features.
@@ -421,6 +428,7 @@ docker_flags=(
     # in your workstation.
     "--volume" "/v/cmake-out/home"
     "--volume" "/v/cmake-out"
+    "--volume" "/v/cmake-build-debug"
     "--volume" "${PWD}/${BUILD_OUTPUT}:/v/${BUILD_OUTPUT}"
 
     # No need to preserve the container.
@@ -434,6 +442,16 @@ docker_flags=(
 if [[ -t 0 ]]; then
   docker_flags+=("-it")
 fi
+
+CACHE_BUCKET="${GOOGLE_CLOUD_CPP_KOKORO_RESULTS:-cloud-cpp-kokoro-results}"
+readonly CACHE_BUCKET
+CACHE_FOLDER="${CACHE_BUCKET}/build-cache/${GOOGLE_CLOUD_CPP_REPOSITORY}"
+readonly CACHE_FOLDER
+CACHE_NAME="cache-${DOCKER_IMAGE_BASENAME}-${BUILD_NAME}"
+readonly CACHE_NAME
+
+"${PROJECT_ROOT}/ci/kokoro/docker/download-cache.sh" \
+      "${CACHE_FOLDER}" "${CACHE_NAME}" "${BUILD_HOME}" || true
 
 # If more than two arguments are given, arguments after the first one will
 # become the commands run in the container, otherwise run $in_docker_script with
@@ -451,18 +469,13 @@ else
   )
 fi
 
+# Run the docker image with that giant collection of flags.
+echo sudo docker run "${docker_flags[@]}" "${IMAGE}:latest" "${commands[@]}"
 sudo docker run "${docker_flags[@]}" "${IMAGE}:latest" "${commands[@]}"
 
 exit_status=$?
 echo "Build finished with ${exit_status} exit status $(date)."
 echo "================================================================"
-
-if [[ "${exit_status}" != 0 ]]; then
-  echo "================================================================"
-  echo "Build failed, printing out logs $(date)."
-  "${PROJECT_ROOT}/ci/kokoro/dump-logs.sh"
-  echo "================================================================"
-fi
 
 if [[ "${BUILD_NAME}" == "publish-refdocs" ]]; then
   "${PROJECT_ROOT}/ci/kokoro/docker/publish-refdocs.sh"
@@ -473,8 +486,23 @@ fi
 
 "${PROJECT_ROOT}/ci/kokoro/docker/upload-coverage.sh" "${IMAGE}:latest" "${docker_flags[@]}"
 
+if [[ "${exit_status}" -eq 0 ]]; then
+  "${PROJECT_ROOT}/ci/kokoro/docker/upload-cache.sh" \
+      "${CACHE_FOLDER}" "${CACHE_NAME}" "${BUILD_HOME}" || true
+fi
+
+if [[ "${exit_status}" != 0 ]]; then
+  echo "================================================================"
+  echo "Build failed, printing out logs $(date)."
+  "${PROJECT_ROOT}/ci/kokoro/dump-logs.sh"
+  echo "================================================================"
+fi
+
 echo "================================================================"
 "${PROJECT_ROOT}/ci/kokoro/docker/dump-reports.sh"
 echo "================================================================"
 
+echo
+echo "Build script finished with ${exit_status} exit status $(date)."
+echo
 exit ${exit_status}
