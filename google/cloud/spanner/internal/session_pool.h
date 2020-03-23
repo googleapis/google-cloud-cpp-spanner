@@ -43,6 +43,7 @@ namespace cloud {
 namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
+struct SessionPoolFriendForTest;
 
 /**
  * Maintains a pool of `Session` objects.
@@ -97,19 +98,6 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
    */
   std::shared_ptr<SpannerStub> GetStub(Session const& session);
 
-  // Asynchronous calls used to maintain the pool.
-  future<StatusOr<google::spanner::v1::BatchCreateSessionsResponse>>
-  AsyncBatchCreateSessions(CompletionQueue& cq,
-                           std::shared_ptr<SpannerStub> stub,
-                           std::map<std::string, std::string> const& labels,
-                           int num_sessions);
-  future<StatusOr<google::protobuf::Empty>> AsyncDeleteSession(
-      CompletionQueue& cq, std::shared_ptr<SpannerStub> stub,
-      std::string session_name);
-  future<StatusOr<google::spanner::v1::Session>> AsyncGetSession(
-      CompletionQueue& cq, std::shared_ptr<SpannerStub> stub,
-      std::string session_name);
-
  private:
   // Represents a request to create `session_count` sessions on `channel`
   // See `ComputeCreateCounts` and `CreateSessions`.
@@ -146,6 +134,20 @@ class SessionPool : public std::enable_shared_from_this<SessionPool> {
 
   SessionHolder MakeSessionHolder(std::unique_ptr<Session> session,
                                   bool dissociate_from_pool);
+
+  friend struct SessionPoolFriendForTest;  // To test Async*()
+  // Asynchronous calls used to maintain the pool.
+  future<StatusOr<google::spanner::v1::BatchCreateSessionsResponse>>
+  AsyncBatchCreateSessions(CompletionQueue& cq,
+                           std::shared_ptr<SpannerStub> stub,
+                           std::map<std::string, std::string> const& labels,
+                           int num_sessions);
+  future<StatusOr<google::protobuf::Empty>> AsyncDeleteSession(
+      CompletionQueue& cq, std::shared_ptr<SpannerStub> stub,
+      std::string session_name);
+  future<StatusOr<google::spanner::v1::Session>> AsyncGetSession(
+      CompletionQueue& cq, std::shared_ptr<SpannerStub> stub,
+      std::string session_name);
 
   Status HandleBatchCreateSessionsDone(
       std::shared_ptr<Channel> const& channel,
