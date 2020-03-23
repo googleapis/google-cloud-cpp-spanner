@@ -24,7 +24,7 @@ namespace spanner {
 inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 struct SessionPoolFriendForTest {
-  future<StatusOr<google::spanner::v1::BatchCreateSessionsResponse>>
+  static future<StatusOr<google::spanner::v1::BatchCreateSessionsResponse>>
   AsyncBatchCreateSessions(std::shared_ptr<SessionPool> const& session_pool,
                            CompletionQueue& cq,
                            std::shared_ptr<SpannerStub> stub,
@@ -34,14 +34,14 @@ struct SessionPoolFriendForTest {
                                                   num_sessions);
   }
 
-  future<StatusOr<google::protobuf::Empty>> AsyncDeleteSession(
+  static future<StatusOr<google::protobuf::Empty>> AsyncDeleteSession(
       std::shared_ptr<SessionPool> const& session_pool, CompletionQueue& cq,
       std::shared_ptr<SpannerStub> stub, std::string session_name) {
     return session_pool->AsyncDeleteSession(cq, std::move(stub),
                                             std::move(session_name));
   }
 
-  future<StatusOr<google::spanner::v1::Session>> AsyncGetSession(
+  static future<StatusOr<google::spanner::v1::Session>> AsyncGetSession(
       std::shared_ptr<SessionPool> const& session_pool, CompletionQueue& cq,
       std::shared_ptr<SpannerStub> stub, std::string session_name) {
     return session_pool->AsyncGetSession(cq, std::move(stub),
@@ -65,10 +65,9 @@ TEST(SessionPoolIntegrationTest, SessionAsyncCRUD) {
   // Make an asynchronous request, but immediately block until the response
   // arrives
   auto constexpr kNumTestSession = 4;
-  auto create_response =
-      SessionPoolFriendForTest{}
-          .AsyncBatchCreateSessions(session_pool, cq, stub, {}, kNumTestSession)
-          .get();
+  auto create_response = SessionPoolFriendForTest::AsyncBatchCreateSessions(
+                             session_pool, cq, stub, {}, kNumTestSession)
+                             .get();
   ASSERT_STATUS_OK(create_response);
   EXPECT_EQ(kNumTestSession, create_response->session_size());
 
@@ -76,16 +75,15 @@ TEST(SessionPoolIntegrationTest, SessionAsyncCRUD) {
   std::vector<future<bool>> async_get;
   for (auto const& s : create_response->session()) {
     auto const& session_name = s.name();
-    async_get.push_back(
-        SessionPoolFriendForTest{}
-            .AsyncGetSession(session_pool, cq, stub, session_name)
-            .then([session_name](future<StatusOr<Session>> f) {
-              auto session = f.get();
-              EXPECT_STATUS_OK(session);
-              if (!session) return false;
-              EXPECT_EQ(session->name(), session_name);
-              return session->name() == session_name;
-            }));
+    async_get.push_back(SessionPoolFriendForTest::AsyncGetSession(
+                            session_pool, cq, stub, session_name)
+                            .then([session_name](future<StatusOr<Session>> f) {
+                              auto session = f.get();
+                              EXPECT_STATUS_OK(session);
+                              if (!session) return false;
+                              EXPECT_EQ(session->name(), session_name);
+                              return session->name() == session_name;
+                            }));
   }
   for (auto& ag : async_get) {
     auto matched = ag.get();
@@ -96,8 +94,8 @@ TEST(SessionPoolIntegrationTest, SessionAsyncCRUD) {
   for (auto const& s : create_response->session()) {
     auto const& session_name = s.name();
     async_delete.push_back(
-        SessionPoolFriendForTest{}
-            .AsyncDeleteSession(session_pool, cq, stub, session_name)
+        SessionPoolFriendForTest::AsyncDeleteSession(session_pool, cq, stub,
+                                                     session_name)
             .then([](future<StatusOr<google::protobuf::Empty>> f) {
               return f.get().status();
             }));
