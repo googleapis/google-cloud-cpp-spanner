@@ -161,7 +161,7 @@ elif [[ "${BUILD_NAME}" = "clang-3.8" ]]; then
   # particularly interesting about that version. It is simply the version
   # included with Ubuntu:16.04, and the oldest version tested by
   # google-cloud-cpp.
-  export DISTRO=ubuntu
+  export DISTRO=ubuntu-xenial
   export DISTRO_VERSION=16.04
   export CC=clang
   export CXX=clang++
