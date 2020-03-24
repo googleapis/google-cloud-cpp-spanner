@@ -27,6 +27,28 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
+# If ccache is installed use it for the build. This makes the Travis
+# configuration agnostic as to wether ccache is installed or not.
+option(GOOGLE_CLOUD_CPP_ENABLE_CCACHE "Automatically use ccache if available"
+       ON)
+mark_as_advanced(GOOGLE_CLOUD_CPP_ENABLE_CCACHE)
+
+if ("${GOOGLE_CLOUD_CPP_ENABLE_CCACHE}")
+    find_program(GOOGLE_CLOUD_CPP_CCACHE_PROGRAM ccache NAMES /usr/bin/ccache)
+    mark_as_advanced(GOOGLE_CLOUD_CPP_CCACHE_PROGRAM)
+    if (GOOGLE_CLOUD_CPP_CCACHE_PROGRAM)
+        message(STATUS "ccache found: ${GOOGLE_CLOUD_CPP_CCACHE_PROGRAM}")
+        set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE
+                                     "${GOOGLE_CLOUD_CPP_CCACHE_PROGRAM}")
+        set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK
+                                     "${GOOGLE_CLOUD_CPP_CCACHE_PROGRAM}")
+
+        set(GOOGLE_CLOUD_CPP_EXTERNAL_PROJECT_CCACHE
+            "-DCMAKE_CXX_COMPILER_LAUNCHER=${GOOGLE_CLOUD_CPP_CCACHE_PROGRAM}"
+            "-DCMAKE_CC_COMPILER_LAUNCHER=${GOOGLE_CLOUD_CPP_CCACHE_PROGRAM}")
+    endif ()
+endif ()
+
 # If possible, enable a code coverage build type.
 include(EnableCoverage)
 include(SelectMSVCRuntime)

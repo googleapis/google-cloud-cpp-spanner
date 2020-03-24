@@ -54,10 +54,6 @@ cmake_flags=(
     # Configure the build type (Debug, Release, etc)
     "-DCMAKE_BUILD_TYPE=${BUILD_TYPE}"
 
-    # Always disable ccache in the CI builds because they can flake if the
-    # ccache.conf file is not created properly
-    "-DGOOGLE_CLOUD_CPP_ENABLE_CCACHE=OFF"
-
     # To test installs without root privileges we cannot install in the default
     # directory (typically /usr/local)
     "-DCMAKE_INSTALL_PREFIX=$HOME/staging"
