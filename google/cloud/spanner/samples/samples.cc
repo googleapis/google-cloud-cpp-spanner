@@ -1036,7 +1036,8 @@ void UpdateData(google::cloud::spanner::Client client) {
 }
 //! [END spanner_update_data]
 
-//! [START spanner_delete_data] [make-key] [make-keybound-closed] [keyset-add-key]
+//! [START spanner_delete_data] [make-key] [make-keybound-closed]
+//! [keyset-add-key]
 void DeleteData(google::cloud::spanner::Client client) {
   namespace spanner = ::google::cloud::spanner;
 
