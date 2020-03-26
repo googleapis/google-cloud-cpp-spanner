@@ -1036,7 +1036,7 @@ void UpdateData(google::cloud::spanner::Client client) {
 }
 //! [END spanner_update_data]
 
-//! [START spanner_delete_data]
+//! [START spanner_delete_data] [make-keybound-open] [make-key] [keyset-add-key]
 void DeleteData(google::cloud::spanner::Client client) {
   namespace spanner = ::google::cloud::spanner;
 
@@ -1052,8 +1052,8 @@ void DeleteData(google::cloud::spanner::Client client) {
                            .Build();
   auto delete_singers =
       spanner::DeleteMutationBuilder(
-          "Singers", spanner::KeySet().AddRange(spanner::MakeKeyBoundClosed(1),
-                                                spanner::MakeKeyBoundClosed(5)))
+          "Singers", spanner::KeySet().AddRange(spanner::MakeKeyBoundOpen(0),
+                                                spanner::MakeKeyBoundOpen(6)))
           .Build();
 
   auto commit_result =
@@ -1063,7 +1063,7 @@ void DeleteData(google::cloud::spanner::Client client) {
   }
   std::cout << "Delete was successful [spanner_delete_data]\n";
 }
-//! [END spanner_delete_data]
+//! [END spanner_delete_data] [make-keybound-open] [make-key] [keyset-add-key]
 
 //! [keyset-all]
 void DeleteAll(google::cloud::spanner::Client client) {
@@ -2433,8 +2433,10 @@ void PartitionRead(google::cloud::spanner::Client client) {
   namespace spanner = ::google::cloud::spanner;
   RemoteConnectionFake remote_connection;
   //! [key-set-builder]
+  //! [make-keybound-closed]
   auto key_set = spanner::KeySet().AddRange(spanner::MakeKeyBoundClosed(1),
                                             spanner::MakeKeyBoundClosed(10));
+  //! [make-keybound-closed]
   //! [key-set-builder]
 
   //! [partition-read]
