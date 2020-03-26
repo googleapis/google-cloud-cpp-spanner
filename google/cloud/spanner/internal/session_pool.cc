@@ -195,8 +195,7 @@ Status SessionPool::Grow(std::unique_lock<std::mutex>& lk,
 StatusOr<std::vector<SessionPool::CreateCount>>
 SessionPool::ComputeCreateCounts(int sessions_to_create) {
   int num_channels = static_cast<int>(channels_.size());
-  int session_limit = options_.max_sessions_per_channel() * num_channels;
-  if (total_sessions_ == session_limit) {
+  if (total_sessions_ == max_pool_size_) {
     // Can't grow the pool since we're already at max size.
     return Status(StatusCode::kResourceExhausted, "session pool exhausted");
   }
@@ -208,7 +207,7 @@ SessionPool::ComputeCreateCounts(int sessions_to_create) {
   // to delete sessions just to make the counts equal, so do the best we
   // can within those constraints.
   int target_total_sessions =
-      (std::min)(total_sessions_ + sessions_to_create, session_limit);
+      (std::min)(total_sessions_ + sessions_to_create, max_pool_size_);
 
   // Sort the channels in *descending* order of session count.
   std::vector<std::shared_ptr<Channel>> channels_by_count = channels_;
