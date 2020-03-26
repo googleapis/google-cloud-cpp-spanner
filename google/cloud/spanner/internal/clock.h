@@ -32,41 +32,44 @@ namespace internal {
  */
 class Clock {
  public:
+  // It would be better if these types were independent of any underlying
+  // clock but there is no clear way to do that, so use `steady_clock`.
   using time_point = std::chrono::steady_clock::time_point;
   using duration = std::chrono::steady_clock::duration;
 
   virtual ~Clock() = default;
-  virtual time_point Now() = 0;
+  virtual time_point Now() const = 0;
 };
 
-class RealClock : public Clock {
+class SteadyClock : public Clock {
  public:
-  time_point Now() override { return std::chrono::steady_clock::now(); }
+  // `Now()` can never decrease as physical time moves forward.
+  Clock::time_point Now() const override {
+    return std::chrono::steady_clock::now();
+  }
 };
 
 class FakeClock : public Clock {
  public:
-  /// Construct a `FakeClock` with an optional starting `time_point` of `now`.
-  explicit FakeClock(time_point now = {}) { now_ = now; }
-  time_point Now() override {
+  Clock::time_point Now() const override {
     std::lock_guard<std::mutex> lock(mu_);
     return now_;
   }
 
   /// Sets the time to `now`.
-  void SetTime(time_point now) {
+  void SetTime(Clock::time_point now) {
     std::lock_guard<std::mutex> lock(mu_);
     now_ = now;
   }
   /// Advances the time by `increment`.
-  void AdvanceTime(duration increment) {
+  void AdvanceTime(Clock::duration increment) {
     std::lock_guard<std::mutex> lock(mu_);
     now_ += increment;
   }
 
  private:
-  std::mutex mu_;
-  time_point now_;
+  mutable std::mutex mu_;
+  Clock::time_point now_;
 };
 
 }  // namespace internal

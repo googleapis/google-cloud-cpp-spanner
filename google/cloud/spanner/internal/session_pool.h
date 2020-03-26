@@ -204,7 +204,7 @@ std::shared_ptr<SessionPool> MakeSessionPool(
     SessionPoolOptions options, google::cloud::CompletionQueue cq,
     std::unique_ptr<RetryPolicy> retry_policy,
     std::unique_ptr<BackoffPolicy> backoff_policy,
-    std::shared_ptr<Clock> clock = std::make_shared<RealClock>());
+    std::shared_ptr<Clock> clock = std::make_shared<SteadyClock>());
 
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS

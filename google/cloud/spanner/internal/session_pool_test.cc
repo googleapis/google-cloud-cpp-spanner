@@ -73,7 +73,7 @@ spanner_proto::BatchCreateSessionsResponse MakeSessionsResponse(
 std::shared_ptr<SessionPool> MakeSessionPool(
     Database db, std::vector<std::shared_ptr<SpannerStub>> stubs,
     SessionPoolOptions options, CompletionQueue cq,
-    std::shared_ptr<Clock> clock = std::make_shared<RealClock>()) {
+    std::shared_ptr<Clock> clock = std::make_shared<SteadyClock>()) {
   return MakeSessionPool(
       std::move(db), std::move(stubs), std::move(options), std::move(cq),
       google::cloud::internal::make_unique<LimitedTimeRetryPolicy>(

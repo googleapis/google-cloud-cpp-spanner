@@ -23,17 +23,18 @@ inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 namespace {
 
-TEST(Clock, RealClock) {
-  std::shared_ptr<Clock> clock = std::make_shared<RealClock>();
+TEST(Clock, SteadyClock) {
+  std::shared_ptr<Clock> clock = std::make_shared<SteadyClock>();
   auto now = clock->Now();
   auto now2 = clock->Now();
   EXPECT_LE(now, now2);
 }
 
 TEST(Clock, FakeClock) {
-  RealClock real_clock;
+  SteadyClock real_clock;
+  FakeClock clock;
   Clock::time_point time(real_clock.Now());
-  FakeClock clock(time);
+  clock.SetTime(time);
   EXPECT_EQ(clock.Now(), time);
 
   time += std::chrono::minutes(3);

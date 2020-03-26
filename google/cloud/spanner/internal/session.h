@@ -38,7 +38,7 @@ namespace internal {
 class Session {
  public:
   Session(std::string session_name, std::shared_ptr<Channel> channel,
-          std::shared_ptr<Clock> clock = std::make_shared<RealClock>())
+          std::shared_ptr<Clock> clock = std::make_shared<SteadyClock>())
       : session_name_(std::move(session_name)),
         channel_(std::move(channel)),
         is_bad_(false),

@@ -138,14 +138,14 @@ void SessionPool::MaintainPoolSize() {
 void SessionPool::RefreshExpiringSessions() {
   std::vector<std::pair<std::shared_ptr<SpannerStub>, std::string>>
       sessions_to_refresh;
-  Clock::time_point now = clock_->Now();
-  Clock::time_point refresh_limit = now - options_.keep_alive_interval();
+  auto now = clock_->Now();
+  auto refresh_limit = now - options_.keep_alive_interval();
   {
     std::unique_lock<std::mutex> lk(mu_);
     if (last_use_time_lower_bound_ <= refresh_limit) {
       last_use_time_lower_bound_ = now;
       for (auto const& session : sessions_) {
-        Clock::time_point last_use_time = session->last_use_time();
+        auto last_use_time = session->last_use_time();
         if (last_use_time <= refresh_limit) {
           sessions_to_refresh.emplace_back(session->channel()->stub,
                                            session->session_name());
