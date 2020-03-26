@@ -17,9 +17,9 @@
 
 #include "google/cloud/spanner/internal/clock.h"
 #include "google/cloud/spanner/version.h"
-#include <atomic>
 #include <chrono>
 #include <memory>
+#include <mutex>
 
 namespace google {
 namespace cloud {
@@ -36,24 +36,33 @@ class FakeClock {
   using duration = google::cloud::spanner::internal::Clock::duration;
 
   /// Construct a `FakeClock` with an optional starting `time_point` of `now`.
-  explicit FakeClock(time_point now = {})
-      : now_(std::make_shared<std::atomic<time_point>>(now)) {}
+  explicit FakeClock(time_point now = {}) : state_(std::make_shared<State>()) {
+    state_->now = now;
+  }
 
-  time_point now() const { return now_->load(); }
+  time_point now() const {
+    std::lock_guard<std::mutex> lock(state_->mu);
+    return state_->now;
+  }
   time_point operator()() const { return now(); }
 
   /// Sets the time to `now`.
-  void Set(time_point now) { now_->store(now); }
+  void Set(time_point now) {
+    std::lock_guard<std::mutex> lock(state_->mu);
+    state_->now = now;
+  }
   /// Advances the time by `increment`.
   void Advance(duration increment) {
-    time_point now = now_->load();
-    while (!now_->compare_exchange_weak(now, now + increment)) {
-      // empty
-    }
+    std::lock_guard<std::mutex> lock(state_->mu);
+    state_->now += increment;
   }
 
  private:
-  std::shared_ptr<std::atomic<time_point>> now_;
+  struct State {
+    std::mutex mu;
+    time_point now;
+  };
+  std::shared_ptr<State> state_;
 };
 
 }  // namespace spanner_testing

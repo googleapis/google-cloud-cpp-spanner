@@ -40,8 +40,7 @@ std::shared_ptr<SessionPool> MakeSessionPool(
     Database db, std::vector<std::shared_ptr<SpannerStub>> stubs,
     SessionPoolOptions options, google::cloud::CompletionQueue cq,
     std::unique_ptr<RetryPolicy> retry_policy,
-    std::unique_ptr<BackoffPolicy> backoff_policy,
-    ClockNowSource time_now) {
+    std::unique_ptr<BackoffPolicy> backoff_policy, ClockNowSource time_now) {
   auto pool = std::make_shared<SessionPool>(
       std::move(db), std::move(stubs), std::move(options), std::move(cq),
       std::move(retry_policy), std::move(backoff_policy), std::move(time_now));
