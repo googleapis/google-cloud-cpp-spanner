@@ -19,6 +19,15 @@
 [codecov-io-badge]: https://codecov.io/gh/googleapis/google-cloud-cpp-spanner/branch/master/graph/badge.svg
 [codecov-io-link]: https://codecov.io/gh/googleapis/google-cloud-cpp-spanner
 
+> **NOTICE:** This repo will be merging with the
+[googleapis/google-cloud-cpp](https://github.com/googleapis/google-cloud-cpp)
+monorepo in 60 days, around **June 1, 2020**. This change should not break any
+users who are using a released version. We expect this new monorepo
+organization to be better for our existing and new customers going forward.
+Please see
+[googleapis/google-cloud-cpp#3612](https://github.com/googleapis/google-cloud-cpp/issues/3612)
+for more details.
+
 This repository contains an idiomatic C++ client library for interacting with
 [Google Cloud Spanner](https://cloud.google.com/spanner/), which is a fully
 managed, scalable, relational database service for regional and global
