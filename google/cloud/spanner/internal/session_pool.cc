@@ -41,7 +41,7 @@ std::shared_ptr<SessionPool> MakeSessionPool(
     SessionPoolOptions options, google::cloud::CompletionQueue cq,
     std::unique_ptr<RetryPolicy> retry_policy,
     std::unique_ptr<BackoffPolicy> backoff_policy,
-    std::shared_ptr<Clock> clock) {
+    std::shared_ptr<Session::Clock> clock) {
   auto pool = std::make_shared<SessionPool>(
       std::move(db), std::move(stubs), std::move(options), std::move(cq),
       std::move(retry_policy), std::move(backoff_policy), std::move(clock));
@@ -55,7 +55,7 @@ SessionPool::SessionPool(Database db,
                          google::cloud::CompletionQueue cq,
                          std::unique_ptr<RetryPolicy> retry_policy,
                          std::unique_ptr<BackoffPolicy> backoff_policy,
-                         std::shared_ptr<Clock> clock)
+                         std::shared_ptr<Session::Clock> clock)
     : db_(std::move(db)),
       options_(std::move(
           options.EnforceConstraints(static_cast<int>(stubs.size())))),

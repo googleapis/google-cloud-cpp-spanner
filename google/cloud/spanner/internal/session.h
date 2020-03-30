@@ -37,8 +37,9 @@ namespace internal {
  */
 class Session {
  public:
+  using Clock = ::google::cloud::spanner::internal::SteadyClock;
   Session(std::string session_name, std::shared_ptr<Channel> channel,
-          std::shared_ptr<Clock> clock = std::make_shared<SteadyClock>())
+          std::shared_ptr<Clock> clock = std::make_shared<Clock>())
       : session_name_(std::move(session_name)),
         channel_(std::move(channel)),
         is_bad_(false),

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "google/cloud/spanner/internal/clock.h"
+#include "google/cloud/spanner/testing/fake_clock.h"
 #include <gmock/gmock.h>
 #include <memory>
 
@@ -23,17 +24,28 @@ inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 namespace {
 
+using ::google::cloud::spanner_testing::FakeClock;
+
 TEST(Clock, SteadyClock) {
-  std::shared_ptr<Clock> clock = std::make_shared<SteadyClock>();
+  auto clock = std::make_shared<SteadyClock>();
   auto now = clock->Now();
   auto now2 = clock->Now();
+  // `SteadyClock::Now()` can never decrease as physical time moves forward.
   EXPECT_LE(now, now2);
+}
+
+TEST(Clock, SystemClock) {
+  auto clock = std::make_shared<SystemClock>();
+  // There is no guarantee that `SystemClock::Now()` can never decrease, so
+  // we can't test that like we do for `SteadyClock`, so for now just make
+  // sure `Now()` is callable.
+  (void)clock->Now();
 }
 
 TEST(Clock, FakeClock) {
   SteadyClock real_clock;
-  FakeClock clock;
-  Clock::time_point time(real_clock.Now());
+  FakeClock<SteadyClock> clock;
+  SteadyClock::time_point time(real_clock.Now());
   clock.SetTime(time);
   EXPECT_EQ(clock.Now(), time);
 
@@ -41,7 +53,7 @@ TEST(Clock, FakeClock) {
   clock.SetTime(time);
   EXPECT_EQ(clock.Now(), time);
 
-  Clock::duration duration = std::chrono::hours(89);
+  SteadyClock::duration duration = std::chrono::hours(89);
   time += duration;
   clock.AdvanceTime(duration);
   EXPECT_EQ(clock.Now(), time);
