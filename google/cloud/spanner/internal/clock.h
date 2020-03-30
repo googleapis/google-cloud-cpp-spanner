@@ -29,48 +29,33 @@ namespace internal {
  * A simple `Clock` class that can be overridden for testing.
  *
  * All implementations of this class are required to be thread-safe.
+ *
+ * The template type `TrivialClock` must meet the C++ named requirements for
+ * `TrivialClock` (for example, clocks from `std::chrono`).
  */
+template <typename TrivialClock>
 class Clock {
  public:
-  // It would be better if these types were independent of any underlying
-  // clock but there is no clear way to do that, so use `steady_clock`.
-  using time_point = std::chrono::steady_clock::time_point;
-  using duration = std::chrono::steady_clock::duration;
+  using time_point = typename TrivialClock::time_point;
+  using duration = typename TrivialClock::duration;
 
   virtual ~Clock() = default;
-  virtual time_point Now() const = 0;
+  virtual time_point Now() const { return TrivialClock::now(); }
 };
 
-class SteadyClock : public Clock {
- public:
-  // `Now()` can never decrease as physical time moves forward.
-  Clock::time_point Now() const override {
-    return std::chrono::steady_clock::now();
-  }
-};
+/**
+ * `SteadyClock` is a monotonic clock where time points cannot decrease as
+ * physical time moves forward. It is not related to wall clock time.
+ */
+using SteadyClock =
+    ::google::cloud::spanner::internal::Clock<std::chrono::steady_clock>;
 
-class FakeClock : public Clock {
- public:
-  Clock::time_point Now() const override {
-    std::lock_guard<std::mutex> lock(mu_);
-    return now_;
-  }
-
-  /// Sets the time to `now`.
-  void SetTime(Clock::time_point now) {
-    std::lock_guard<std::mutex> lock(mu_);
-    now_ = now;
-  }
-  /// Advances the time by `increment`.
-  void AdvanceTime(Clock::duration increment) {
-    std::lock_guard<std::mutex> lock(mu_);
-    now_ += increment;
-  }
-
- private:
-  mutable std::mutex mu_;
-  Clock::time_point now_;
-};
+/**
+ * `SystemClock` reprsents the system-wide real time wall clock.
+ * It may not be monotonic.
+ */
+using SystemClock =
+    ::google::cloud::spanner::internal::Clock<std::chrono::system_clock>;
 
 }  // namespace internal
 }  // namespace SPANNER_CLIENT_NS

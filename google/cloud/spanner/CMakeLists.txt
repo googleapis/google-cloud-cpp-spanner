@@ -279,6 +279,7 @@ function (spanner_client_define_tests)
         testing/compiler_supports_regexp.h
         testing/database_environment.cc
         testing/database_environment.h
+        testing/fake_clock.h
         testing/matchers.h
         testing/mock_database_admin_stub.h
         testing/mock_instance_admin_stub.h

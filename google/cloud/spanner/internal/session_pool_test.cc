@@ -15,6 +15,7 @@
 #include "google/cloud/spanner/internal/session_pool.h"
 #include "google/cloud/spanner/internal/clock.h"
 #include "google/cloud/spanner/internal/session.h"
+#include "google/cloud/spanner/testing/fake_clock.h"
 #include "google/cloud/spanner/testing/mock_spanner_stub.h"
 #include "google/cloud/internal/background_threads_impl.h"
 #include "google/cloud/internal/make_unique.h"
@@ -36,6 +37,7 @@ inline namespace SPANNER_CLIENT_NS {
 namespace internal {
 namespace {
 
+using ::google::cloud::spanner_testing::FakeSteadyClock;
 using ::google::cloud::testing_util::MockAsyncResponseReader;
 using ::google::cloud::testing_util::MockCompletionQueue;
 using ::testing::_;
@@ -73,7 +75,7 @@ spanner_proto::BatchCreateSessionsResponse MakeSessionsResponse(
 std::shared_ptr<SessionPool> MakeSessionPool(
     Database db, std::vector<std::shared_ptr<SpannerStub>> stubs,
     SessionPoolOptions options, CompletionQueue cq,
-    std::shared_ptr<Clock> clock = std::make_shared<SteadyClock>()) {
+    std::shared_ptr<SteadyClock> clock = std::make_shared<SteadyClock>()) {
   return MakeSessionPool(
       std::move(db), std::move(stubs), std::move(options), std::move(cq),
       google::cloud::internal::make_unique<LimitedTimeRetryPolicy>(
@@ -421,7 +423,7 @@ TEST(SessionPool, SessionRefresh) {
   SessionPoolOptions options;
   options.set_keep_alive_interval(std::chrono::seconds(1));
   auto impl = std::make_shared<MockCompletionQueue>();
-  auto clock = std::make_shared<FakeClock>();
+  auto clock = std::make_shared<FakeSteadyClock>();
   auto pool =
       MakeSessionPool(db, {mock}, options, CompletionQueue(impl), clock);
 
