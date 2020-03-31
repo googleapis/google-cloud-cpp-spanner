@@ -26,7 +26,7 @@ END {
 # Reset the state at the beginning of each file.
 BEGINFILE {
     # The guard must begin with the name of the project.
-    guard_prefix="GOOGLE_CLOUD_CPP_SPANNER_"
+    guard_prefix="GOOGLE_CLOUD_CPP_"
     # The guard name is the filename (including path from the root of the
     # project), with "/" and "." characters replaced with "_", and all
     # characters converted to uppercase:
