@@ -17,7 +17,6 @@
 
 #include "google/cloud/spanner/version.h"
 #include <chrono>
-#include <mutex>
 
 namespace google {
 namespace cloud {
@@ -51,7 +50,7 @@ using SteadyClock =
     ::google::cloud::spanner::internal::Clock<std::chrono::steady_clock>;
 
 /**
- * `SystemClock` reprsents the system-wide real time wall clock.
+ * `SystemClock` represents the system-wide real time wall clock.
  * It may not be monotonic.
  */
 using SystemClock =
