@@ -3,32 +3,29 @@
 ## v1.2.0 - TBD
 
 ## v1.1.0 - 2020-04
+> **NOTICE:** This repo will be merging with the
+[googleapis/google-cloud-cpp](https://github.com/googleapis/google-cloud-cpp)
+monorepo in 60 days, around **June 1, 2020**. This change should not break any
+users who are using a released version. We expect this new monorepo
+organization to be better for our existing and new customers going forward.
+Please see
+[googleapis/google-cloud-cpp#3612](https://github.com/googleapis/google-cloud-cpp/issues/3612)
+for more details.
 
 * **Breaking Changes**
   * NONE
 
 * **Other Changes**
-  * chore: update g-c-cpp-common to v0.25.0 (#1458)
-  * feat: provide a mockable `Clock` class (#1452)
-  * fix: change include guard prefix to GOOGLE_CLOUD_CPP_ (#1456)
   * feat: announce move to monorepo (#1455)
-  * fix: made .clang-format generic for any repo (#1454)
   * feat: allow for the emulator in ClientIntegrationTest.QueryOptionsWork (#1453)
   * docs: add snippets for methods and classes in keys.h (#1451)
-  * cleanup: eliminate an unnecessary local variable (#1450)
   * doc: add mention of GOOGLE_CLOUD_CPP_TRACING_OPTIONS env var (#1448)
-  * chore: remove some unncessary NOLINTs (#1447)
-  * ci: use build cache for ci/kokoro/docker builds (#1446)
   * test: write integration test for SessionPool (#1442)
-  * test: reduce running time of SessionPool.SessionRefresh (16s to 2s) (#1445)
-  * cleanup: remove dead code from SpannerStub (#1444)
   * doc: snippets for admin clients with custom policies (#1440)
   * testing: improvements for Backup related tests (#1438)
   * refactor: use g-c-cpp-common's async retry loop (#1441)
   * feat: add overloads to admin connections for specifying policies (#1439)
   * feat: change quickstart to use recommended build target (#1436)
-  * fix: typo in dox (#1434)
-  * chore: update version numbers after v1.0.0 (#1433)
 
 ## v1.0.0 - 2020-03
 
