@@ -1,6 +1,31 @@
 # Changelog
 
-## v1.1.0 - TBD
+## v1.2.0 - TBD
+
+## v1.1.0 - 2020-04
+> **NOTICE:** This repo will be merging with the
+[googleapis/google-cloud-cpp](https://github.com/googleapis/google-cloud-cpp)
+monorepo in 60 days, around **June 1, 2020**. This change should not break any
+users who are using a released version. We expect this new monorepo
+organization to be better for our existing and new customers going forward.
+Please see
+[googleapis/google-cloud-cpp#3612](https://github.com/googleapis/google-cloud-cpp/issues/3612)
+for more details.
+
+* **Breaking Changes**
+  * NONE
+
+* **Other Changes**
+  * feat: announce move to monorepo (#1455)
+  * feat: allow for the emulator in ClientIntegrationTest.QueryOptionsWork (#1453)
+  * docs: add snippets for methods and classes in keys.h (#1451)
+  * doc: add mention of GOOGLE_CLOUD_CPP_TRACING_OPTIONS env var (#1448)
+  * test: write integration test for SessionPool (#1442)
+  * doc: snippets for admin clients with custom policies (#1440)
+  * testing: improvements for Backup related tests (#1438)
+  * refactor: use g-c-cpp-common's async retry loop (#1441)
+  * feat: add overloads to admin connections for specifying policies (#1439)
+  * feat: change quickstart to use recommended build target (#1436)
 
 ## v1.0.0 - 2020-03
 
