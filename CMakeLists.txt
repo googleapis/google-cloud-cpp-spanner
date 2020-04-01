@@ -58,7 +58,7 @@ include(EnableCxxExceptions)
 
 # This should be included from the top level CMakeLists file
 set(SPANNER_CLIENT_VERSION_MAJOR 1)
-set(SPANNER_CLIENT_VERSION_MINOR 1)
+set(SPANNER_CLIENT_VERSION_MINOR 2)
 set(SPANNER_CLIENT_VERSION_PATCH 0)
 string(CONCAT SPANNER_CLIENT_VERSION "${SPANNER_CLIENT_VERSION_MAJOR}" "."
               "${SPANNER_CLIENT_VERSION_MINOR}" "."
