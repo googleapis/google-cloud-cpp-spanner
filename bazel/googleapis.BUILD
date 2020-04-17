@@ -13,78 +13,26 @@
 # limitations under the License.
 
 package(default_visibility = ["//visibility:public"])
+
 licenses(["notice"])  # Apache 2.0
 
 load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 
-cc_proto_library(
-    name = "spanner_cc_proto",
-    deps = ["//google/spanner/v1:spanner_proto"],
-)
-
-cc_grpc_library(
-    name = "grpc_spanner_proto",
-    srcs = ["//google/spanner/v1:spanner_proto"],
-    deps = [":spanner_cc_proto"],
-    grpc_only = True,
-    well_known_protos = True,
-    use_external = True,
-)
-
-cc_proto_library(
-    name = "spanner_admin_instance_cc_proto",
-    deps = ["//google/spanner/admin/instance/v1:instance_proto"],
-)
-
-# Instance Admin
-cc_grpc_library(
-    name = "google_spanner_admin_instance_v1_spanner_instance_admin",
-    srcs = ["//google/spanner/admin/instance/v1:instance_proto"],
-    deps = [
-        ":spanner_admin_instance_cc_proto",
-        ":spanner_cc_proto",
-        "//google/longrunning:longrunning_cc_grpc",
-    ],
-    grpc_only = True,
-    well_known_protos = True,
-    use_external = True,
-)
-
-cc_proto_library(
-    name = "spanner_admin_database_cc_proto",
-    deps = ["//google/spanner/admin/database/v1:database_proto"],
-)
-
-# Database Admin
-cc_grpc_library(
-    name = "google_spanner_admin_database_v1_spanner_database_admin",
-    srcs = ["//google/spanner/admin/database/v1:database_proto"],
-    deps = [
-        ":spanner_admin_database_cc_proto",
-        "//google/longrunning:longrunning_cc_grpc",
-    ],
-    grpc_only = True,
-    well_known_protos = True,
-    use_external = True,
-)
-
+# This rule is needed by `google-cloud-cpp-common`. It lets us include headers
+# from googleapis targets using angle brackets like system includes.
 cc_library(
-    name = "spanner_protos",
-    deps = [
-        ":grpc_spanner_proto",
-        ":google_spanner_admin_instance_v1_spanner_instance_admin",
-        ":google_spanner_admin_database_v1_spanner_database_admin",
-        "@com_github_grpc_grpc//:grpc++",
-    ],
-    includes = ["."],
-)
-
-cc_library(
-    name = "grpc_utils_protos",
+    name = "googleapis_system_includes",
     includes = [
         ".",
     ],
+)
+
+# TODO(googleapis/google-cloud-cpp#3838): Delete this rule once it's no longer
+# used after the next release of -common.
+cc_library(
+    name = "grpc_utils_protos",
     deps = [
+        ":googleapis_system_includes",
         "@com_github_grpc_grpc//:grpc++",
         "//google/rpc:status_cc_proto",
     ],
