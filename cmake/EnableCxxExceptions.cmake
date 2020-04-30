@@ -14,12 +14,11 @@
 # limitations under the License.
 # ~~~
 
-option(GOOGLE_CLOUD_CPP_SPANNER_ENABLE_CXX_EXCEPTIONS
-       "Enable C++ Exception Support" ON)
+option(GOOGLE_CLOUD_CPP_ENABLE_CXX_EXCEPTIONS "Enable C++ Exception Support" ON)
 
 # If the user disabled C++ exceptions we should give them a heads up about the
 # consequences.
-if (NOT GOOGLE_CLOUD_CPP_SPANNER_ENABLE_CXX_EXCEPTIONS)
+if (NOT GOOGLE_CLOUD_CPP_ENABLE_CXX_EXCEPTIONS)
     message(
         WARNING
             "C++ Exceptions disabled, any operation that normally"
@@ -27,10 +26,10 @@ if (NOT GOOGLE_CLOUD_CPP_SPANNER_ENABLE_CXX_EXCEPTIONS)
             " std::abort().  In addition, some examples and tests will not be"
             " compiled.")
     if (MSVC)
-        set(GOOGLE_CLOUD_CPP_SPANNER_EXCEPTIONS_FLAG "/EHs-c-")
+        set(GOOGLE_CLOUD_CPP_EXCEPTIONS_FLAG "/EHs-c-")
     else ()
-        set(GOOGLE_CLOUD_CPP_SPANNER_EXCEPTIONS_FLAG "-fno-exceptions")
+        set(GOOGLE_CLOUD_CPP_EXCEPTIONS_FLAG "-fno-exceptions")
     endif ()
 else ()
-    set(GOOGLE_CLOUD_CPP_SPANNER_EXCEPTIONS_FLAG "")
+    set(GOOGLE_CLOUD_CPP_EXCEPTIONS_FLAG "")
 endif ()
