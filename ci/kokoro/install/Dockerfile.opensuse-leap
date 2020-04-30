@@ -147,7 +147,7 @@ ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig
 
 # Verify that the installed files are actually usable
 WORKDIR /home/build/test-install-cmake
-COPY quickstart /home/build/test-install-cmake
+COPY google/cloud/spanner/quickstart /home/build/test-install-cmake
 # Disable pkg-config with CMake to verify it is not used in package discovery.
 RUN env -u PKG_CONFIG_PATH cmake -H. -B/i
 RUN cmake --build /i -- -j "${NCPU:-4}"

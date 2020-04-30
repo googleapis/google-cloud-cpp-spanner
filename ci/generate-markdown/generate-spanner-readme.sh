@@ -53,22 +53,17 @@ Please note that the Google Cloud C++ client libraries do **not** follow
 
 ## Quickstart
 
-<!-- TODO(googleapis/google-cloud-cpp#3973): move the quickstart directory -->
-
-The [quickstart/](../../../quickstart/) directory contains a minimal environment to
-help you quickly get started using this client library. The following is the
-"Hello World" program you'll be running, which should give you a taste of this
+The [quickstart/](quickstart/) directory contains a minimal environment to help
+you quickly get started using this client library. The following is the "Hello
+World" program you'll be running, which should give you a taste of this
 library.
 
 ```cc
 _EOF_
 
-# TODO(googleapis/google-cloud-cpp#3973): move the quickstart directory to
-# google/cloud/spanner.
-#
 # Dumps the contents of quickstart.cc starting at the first #include, so we
 # skip the license header comment.
-sed -n '/^#/,$p' "${BINDIR}/../../quickstart/quickstart.cc"
+sed -n '/^#/,$p' "${BINDIR}/../../google/cloud/spanner/quickstart/quickstart.cc"
 
 cat <<'_EOF_'
 ````
