@@ -52,7 +52,7 @@ if [[ -n "${BAZEL_CONFIG}" ]]; then
     bazel_args+=(--config "${BAZEL_CONFIG}")
 fi
 
-cd quickstart
+cd google/cloud/spanner/quickstart
 
 echo "================================================================"
 echo "Fetching dependencies $(date)"
