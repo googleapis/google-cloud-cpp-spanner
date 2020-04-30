@@ -1,4 +1,4 @@
 ci/
 cmake-out/
 cmake-build-*/
-quickstart/
+google/cloud/spanner/quickstart/

@@ -55,12 +55,12 @@ Please note that the Google Cloud C++ client libraries do **not** follow
 
 ## Quickstart
 
-The [quickstart/][quickstart-link] directory contains a minimal environment to
-help you quickly get started using this client library. The following is the
-"Hello World" program you'll be running, which should give you a taste of this
-library.
+The [google/cloud/spanner/quickstart/][quickstart-link] directory contains a
+minimal environment to help you quickly get started using this client library.
+The following is the "Hello World" program you'll be running, which should give
+you a taste of this library.
 
-[quickstart-link]: https://github.com/googleapis/google-cloud-cpp-spanner/tree/master/quickstart
+[quickstart-link]: https://github.com/googleapis/google-cloud-cpp-spanner/tree/master/google/cloud/spanner/quickstart
 
 ```cc
 #include "google/cloud/spanner/client.h"
