@@ -27,6 +27,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # spanner:
 find_package(spanner_client REQUIRED)
 
+# MSVC requires some additional code to select the correct runtime library
+if (VCPKG_TARGET_TRIPLET MATCHES "-static$")
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+else ()
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+endif ()
+
 # Define your targets.
 add_executable(quickstart quickstart.cc)
 target_link_libraries(quickstart googleapis-c++::spanner_client)
