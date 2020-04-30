@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['main',['main',['../samples_8cc.html#adacbe0175a79dff748855d8c9839f82b',1,'samples.cc']]],
+  ['main',['main',['../quickstart_8cc.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;quickstart.cc'],['../samples_8cc.html#adacbe0175a79dff748855d8c9839f82b',1,'main(int ac, char *av[]):&#160;samples.cc']]],
   ['make_5foptional',['make_optional',['https://googleapis.dev/cpp/google-cloud-common/0.25.0/namespacegoogle_1_1cloud_1_1v0.html#aaf27bf714b6385f2c3639f7ddb12f9f4',1,'google::cloud::v0']]],
   ['make_5fready_5ffuture',['make_ready_future',['https://googleapis.dev/cpp/google-cloud-common/0.25.0/namespacegoogle_1_1cloud_1_1v0.html#a0ef9ac1f5c1c80ae778485237561ff4e',1,'google::cloud::v0::make_ready_future(T &amp;&amp;t)'],['https://googleapis.dev/cpp/google-cloud-common/0.25.0/namespacegoogle_1_1cloud_1_1v0.html#a6d29299230b3b47e9443b5f94c4abd2e',1,'google::cloud::v0::make_ready_future()']]],
   ['make_5fstatus_5for',['make_status_or',['https://googleapis.dev/cpp/google-cloud-common/0.25.0/namespacegoogle_1_1cloud_1_1v0.html#a884172db14c5663a6061c5d52d350bcb',1,'google::cloud::v0']]],
