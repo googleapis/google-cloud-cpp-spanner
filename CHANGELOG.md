@@ -1,16 +1,25 @@
 # Changelog
 
-## v1.2.0 - TBD
-
-## v1.1.0 - 2020-04
 > **NOTICE:** This repo will be merging with the
 [googleapis/google-cloud-cpp](https://github.com/googleapis/google-cloud-cpp)
-monorepo in 60 days, around **June 1, 2020**. This change should not break any
-users who are using a released version. We expect this new monorepo
+monorepo around **June 1, 2020**. This change should not break
+any users who are using a released version. We expect this new monorepo
 organization to be better for our existing and new customers going forward.
 Please see
 [googleapis/google-cloud-cpp#3612](https://github.com/googleapis/google-cloud-cpp/issues/3612)
 for more details.
+
+## v1.2.0 - 2020-05
+
+**BREAKING CHANGES**
+
+No breaking changes in this release.
+
+**OTHER CHANGES**
+
+* feat: moved quickstart/ -> google/cloud/spanner/ (#1479)
+
+## v1.1.0 - 2020-04
 
 * **Breaking Changes**
   * NONE
