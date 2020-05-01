@@ -58,7 +58,7 @@ include(EnableCxxExceptions)
 
 # This should be included from the top level CMakeLists file
 set(GOOGLE_CLOUD_CPP_VERSION_MAJOR 1)
-set(GOOGLE_CLOUD_CPP_VERSION_MINOR 2)
+set(GOOGLE_CLOUD_CPP_VERSION_MINOR 3)
 set(GOOGLE_CLOUD_CPP_VERSION_PATCH 0)
 string(CONCAT GOOGLE_CLOUD_CPP_VERSION "${GOOGLE_CLOUD_CPP_VERSION_MAJOR}" "."
               "${GOOGLE_CLOUD_CPP_VERSION_MINOR}" "."
