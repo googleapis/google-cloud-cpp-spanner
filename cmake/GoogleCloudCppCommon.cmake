@@ -48,6 +48,17 @@ include(SelectMSVCRuntime)
 # Enable doxygen
 include(EnableDoxygen)
 
+# Finds some packages that Spanner gets from the google-cloud-cpp-common repo.
+# Once Spanner moves to google-cloud-cpp, these packages will then come from
+# that repo, and these `find_package()` calls will not be necessary.
+find_package(google_cloud_cpp_common CONFIG REQUIRED)
+find_package(google_cloud_cpp_grpc_utils CONFIG REQUIRED)
+
+if (BUILD_TESTING)
+    find_package(GTest CONFIG REQUIRED)
+    find_package(google_cloud_cpp_testing CONFIG REQUIRED)
+endif (BUILD_TESTING)
+
 function (google_cloud_cpp_add_common_options target)
     if (GOOGLE_CLOUD_CPP_COMPILER_SUPPORTS_CPP_LATEST)
         target_compile_options(${target} INTERFACE "/std:c++latest")
