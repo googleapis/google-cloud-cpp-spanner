@@ -53,7 +53,11 @@ include(EnableDoxygen)
 # that repo, and these `find_package()` calls will not be necessary.
 find_package(google_cloud_cpp_common CONFIG REQUIRED)
 find_package(google_cloud_cpp_grpc_utils CONFIG REQUIRED)
-find_package(google_cloud_cpp_testing CONFIG REQUIRED)
+
+if (BUILD_TESTING)
+    find_package(GTest CONFIG REQUIRED)
+    find_package(google_cloud_cpp_testing CONFIG REQUIRED)
+endif (BUILD_TESTING)
 
 function (google_cloud_cpp_add_common_options target)
     if (GOOGLE_CLOUD_CPP_COMPILER_SUPPORTS_CPP_LATEST)
