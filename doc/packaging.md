@@ -207,6 +207,24 @@ sudo make install && \
 sudo ldconfig
 ```
 
+#### Abseil
+
+gRPC needs Abseil
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/abseil/abseil-cpp/archive/20200225.2.tar.gz && \
+    tar -xf 20200225.2.tar.gz && \
+    cd abseil-cpp-20200225.2 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
 #### gRPC
 
 We also need a version of gRPC that is recent enough to support the Google
@@ -214,11 +232,21 @@ Cloud Platform proto files. We manually install it using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
-    tar -xf 78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
-    cd grpc-78ace4cd5dfcc1f2eced44d22d752f103f377e7b && \
-    make -j ${NCPU:-4} && \
-sudo make install && \
+wget -q https://github.com/grpc/grpc/archive/v1.28.1.tar.gz && \
+    tar -xf v1.28.1.tar.gz && \
+    cd grpc-1.28.1 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -DgRPC_INSTALL=ON \
+        -DgRPC_ABSL_PROVIDER=package \
+        -DgRPC_CARES_PROVIDER=package \
+        -DgRPC_PROTOBUF_PROVIDER=package \
+        -DgRPC_SSL_PROVIDER=package \
+        -DgRPC_ZLIB_PROVIDER=package \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -297,6 +325,24 @@ sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
+#### Abseil
+
+gRPC needs Abseil
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/abseil/abseil-cpp/archive/20200225.2.tar.gz && \
+    tar -xf 20200225.2.tar.gz && \
+    cd abseil-cpp-20200225.2 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
 #### gRPC
 
 We also need a version of gRPC that is recent enough to support the Google
@@ -304,11 +350,21 @@ Cloud Platform proto files. We install it using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
-    tar -xf 78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
-    cd grpc-78ace4cd5dfcc1f2eced44d22d752f103f377e7b && \
-    make -j ${NCPU:-4} && \
-sudo make install && \
+wget -q https://github.com/grpc/grpc/archive/v1.28.1.tar.gz && \
+    tar -xf v1.28.1.tar.gz && \
+    cd grpc-1.28.1 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -DgRPC_INSTALL=ON \
+        -DgRPC_ABSL_PROVIDER=package \
+        -DgRPC_CARES_PROVIDER=package \
+        -DgRPC_PROTOBUF_PROVIDER=package \
+        -DgRPC_SSL_PROVIDER=package \
+        -DgRPC_ZLIB_PROVIDER=package \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -402,6 +458,24 @@ sudo make install && \
 sudo ldconfig
 ```
 
+#### Abseil
+
+gRPC needs Abseil
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/abseil/abseil-cpp/archive/20200225.2.tar.gz && \
+    tar -xf 20200225.2.tar.gz && \
+    cd abseil-cpp-20200225.2 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
 #### gRPC
 
 We also need a version of gRPC that is recent enough to support the Google
@@ -409,11 +483,21 @@ Cloud Platform proto files. We can install gRPC from source using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
-    tar -xf 78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
-    cd grpc-78ace4cd5dfcc1f2eced44d22d752f103f377e7b && \
-    make -j ${NCPU:-4} && \
-sudo make install && \
+wget -q https://github.com/grpc/grpc/archive/v1.28.1.tar.gz && \
+    tar -xf v1.28.1.tar.gz && \
+    cd grpc-1.28.1 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -DgRPC_INSTALL=ON \
+        -DgRPC_ABSL_PROVIDER=package \
+        -DgRPC_CARES_PROVIDER=package \
+        -DgRPC_PROTOBUF_PROVIDER=package \
+        -DgRPC_SSL_PROVIDER=package \
+        -DgRPC_ZLIB_PROVIDER=package \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -563,6 +647,24 @@ sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
+#### Abseil
+
+gRPC needs Abseil
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/abseil/abseil-cpp/archive/20200225.2.tar.gz && \
+    tar -xf 20200225.2.tar.gz && \
+    cd abseil-cpp-20200225.2 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
 #### gRPC
 
 To install gRPC we first need to configure pkg-config to find the version of
@@ -570,11 +672,21 @@ Protobuf we just installed in `/usr/local`:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
-    tar -xf 78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
-    cd grpc-78ace4cd5dfcc1f2eced44d22d752f103f377e7b && \
-    make -j ${NCPU:-4} && \
-sudo make install && \
+wget -q https://github.com/grpc/grpc/archive/v1.28.1.tar.gz && \
+    tar -xf v1.28.1.tar.gz && \
+    cd grpc-1.28.1 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -DgRPC_INSTALL=ON \
+        -DgRPC_ABSL_PROVIDER=package \
+        -DgRPC_CARES_PROVIDER=package \
+        -DgRPC_PROTOBUF_PROVIDER=package \
+        -DgRPC_SSL_PROVIDER=package \
+        -DgRPC_ZLIB_PROVIDER=package \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -664,6 +776,24 @@ sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
+#### Abseil
+
+gRPC needs Abseil
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/abseil/abseil-cpp/archive/20200225.2.tar.gz && \
+    tar -xf 20200225.2.tar.gz && \
+    cd abseil-cpp-20200225.2 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
 #### gRPC
 
 We also need a version of gRPC that is recent enough to support the Google
@@ -671,11 +801,21 @@ Cloud Platform proto files. We manually install it using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
-    tar -xf 78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
-    cd grpc-78ace4cd5dfcc1f2eced44d22d752f103f377e7b && \
-    make -j ${NCPU:-4} && \
-sudo make install && \
+wget -q https://github.com/grpc/grpc/archive/v1.28.1.tar.gz && \
+    tar -xf v1.28.1.tar.gz && \
+    cd grpc-1.28.1 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -DgRPC_INSTALL=ON \
+        -DgRPC_ABSL_PROVIDER=package \
+        -DgRPC_CARES_PROVIDER=package \
+        -DgRPC_PROTOBUF_PROVIDER=package \
+        -DgRPC_SSL_PROVIDER=package \
+        -DgRPC_ZLIB_PROVIDER=package \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
@@ -786,6 +926,24 @@ sudo make install && \
 sudo ldconfig
 ```
 
+#### Abseil
+
+gRPC needs Abseil
+
+```bash
+cd $HOME/Downloads
+wget -q https://github.com/abseil/abseil-cpp/archive/20200225.2.tar.gz && \
+    tar -xf 20200225.2.tar.gz && \
+    cd abseil-cpp-20200225.2 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
+sudo ldconfig
+```
+
 #### gRPC
 
 We also need a version of gRPC that is recent enough to support the Google
@@ -793,11 +951,21 @@ Cloud Platform proto files. We manually install it using:
 
 ```bash
 cd $HOME/Downloads
-wget -q https://github.com/grpc/grpc/archive/78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
-    tar -xf 78ace4cd5dfcc1f2eced44d22d752f103f377e7b.tar.gz && \
-    cd grpc-78ace4cd5dfcc1f2eced44d22d752f103f377e7b && \
-    make -j ${NCPU:-4} && \
-sudo make install && \
+wget -q https://github.com/grpc/grpc/archive/v1.28.1.tar.gz && \
+    tar -xf v1.28.1.tar.gz && \
+    cd grpc-1.28.1 && \
+    cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=yes \
+        -DgRPC_INSTALL=ON \
+        -DgRPC_ABSL_PROVIDER=package \
+        -DgRPC_CARES_PROVIDER=package \
+        -DgRPC_PROTOBUF_PROVIDER=package \
+        -DgRPC_SSL_PROVIDER=package \
+        -DgRPC_ZLIB_PROVIDER=package \
+        -H. -Bcmake-out && \
+    cmake --build cmake-out -- -j ${NCPU:-4} && \
+sudo cmake --build cmake-out --target install -- -j ${NCPU:-4} && \
 sudo ldconfig
 ```
 
