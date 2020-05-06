@@ -78,7 +78,7 @@ RUN wget -q https://github.com/c-ares/c-ares/archive/cares-1_14_0.tar.gz && \
 WORKDIR /var/tmp/build
 RUN wget -q https://github.com/grpc/grpc/archive/v1.28.1.tar.gz && \
     tar -xf v1.28.1.tar.gz && \
-    cd grpc-v.1.28.1 && \
+    cd grpc-1.28.1 && \
     make -j ${NCPU:-4} && \
     make install && \
     ldconfig
