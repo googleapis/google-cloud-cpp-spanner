@@ -18,5 +18,6 @@ set -eu
 
 cat <<_EOF_
 # This repo has moved
+
 It now lives in the https://github.com/googleapis/google-cloud-cpp monorepo.
 _EOF_
